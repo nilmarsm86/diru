@@ -3,6 +3,7 @@
 namespace App\Entity\Traits;
 
 use BackedEnum;
+use Closure;
 use Symfony\Component\OptionsResolver\Options;
 
 trait EnumsTrait
@@ -34,8 +35,8 @@ trait EnumsTrait
      */
     public static function getValue(): callable
     {
-        return static function (Options $options): ?\Closure {
-            return fn (?\BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
+        return static function (): ?Closure {
+            return fn (?BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
         };
     }
 

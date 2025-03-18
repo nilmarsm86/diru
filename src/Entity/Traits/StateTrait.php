@@ -56,7 +56,7 @@ trait StateTrait
     }
 
     /**
-     * Activate
+     * Activate user
      * @return $this
      */
     public function activate(): static
@@ -67,7 +67,7 @@ trait StateTrait
     }
 
     /**
-     * Deactivate
+     * Deactivate user
      * @return $this
      */
     public function deactivate(): static

@@ -22,4 +22,47 @@ return [
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@symfony/ux-live-component' => [
+        'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
+    ],
+    '@hotwired/turbo' => [
+        'version' => '7.3.0',
+    ],
+    'tom-select' => [
+        'version' => '2.4.3',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'tom-select/dist/css/tom-select.default.min.css' => [
+        'version' => '2.4.3',
+        'type' => 'css',
+    ],
+    'intl-messageformat' => [
+        'version' => '10.7.15',
+    ],
+    'tslib' => [
+        'version' => '2.8.1',
+    ],
+    '@formatjs/fast-memoize' => [
+        'version' => '2.2.6',
+    ],
+    '@formatjs/icu-messageformat-parser' => [
+        'version' => '2.11.1',
+    ],
+    '@formatjs/icu-skeleton-parser' => [
+        'version' => '1.8.13',
+    ],
+    '@symfony/ux-translator' => [
+        'path' => './vendor/symfony/ux-translator/assets/dist/translator_controller.js',
+    ],
+    '@app/translations' => [
+        'path' => './var/translations/index.js',
+    ],
+    '@app/translations/configuration' => [
+        'path' => './var/translations/configuration.js',
+    ],
 ];

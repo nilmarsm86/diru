@@ -23,10 +23,9 @@ class Role
     const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id = null;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     /**
      * @param string $name
@@ -35,7 +34,7 @@ class Role
     {
         $this->name = $name;
     }
-    public function getId(): ?Uuid
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -59,6 +58,17 @@ class Role
     public function isSuperAdmin(): bool
     {
         return $this->getName() === static::ROLE_SUPER_ADMIN;
+    }
+
+    public function saveName(string $role = null): string
+    {
+        return match ($role ?: $this->getName()) {
+            static::ROLE_CLIENT => 'client',
+            static::ROLE_DIRECTOR => 'director',
+            static::ROLE_PLANNER => 'planner',
+            static::ROLE_ADMIN => 'admin',
+            static::ROLE_SUPER_ADMIN => 'super_admin',
+        };
     }
 
 }

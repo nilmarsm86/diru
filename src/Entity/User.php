@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Validator\Username;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -21,15 +22,15 @@ use App\Entity\Enums\State;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[DoctrineAssert\UniqueEntity(fields: ['username'], message: 'Ya existe un usuario con este nombre de usuario.')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use StateTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id = null;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El nombre del usuario no puede estar vacío.')]
@@ -63,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         min: 1,
         minMessage: 'Debe establecer al menos 1 rol para el usuario.',
     )]
-    private ArrayCollection $roles;
+    private Collection $roles;
 
     /**
      * @var string The hashed password
@@ -82,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = new ArrayCollection();
     }
 
-    public function getId(): ?Uuid
+    public function getId(): ?int
     {
         return $this->id;
     }

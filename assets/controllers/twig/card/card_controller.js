@@ -1,9 +1,14 @@
 import AbstractController from "../../AbstractController.js";
 import {SHOW as BACKDROP_SHOW, HIDE as BACKDROP_HIDE} from "../backdrop/backdrop_controller.js";
 import {useBackdrop} from "../../../behaviors/use-backdrop.js";
+import {FILTER as FILTER_DROPDOWN} from "./filter-drop-down_controller.js";
+import {FILTER as FILTER_REFRESH} from "./refresh_controller.js";
+
 
 export const NEW = "App\\Component\\Twig\\Card\\Card_new";
 export const CLOSE = "App\\Component\\Twig\\Card\\Card_close";
+export const REFRESH = "App\\Component\\Twig\\Card\\Card_refresh";
+
 
 /*
  * This is an example Stimulus controller!
@@ -30,6 +35,9 @@ export default class extends AbstractController {
 
         this.element.addEventListener('corporate-entity-form:submit', this.submit.bind(this));
         this.element.addEventListener('corporate-entity-form:submitEnd', this.submitEnd.bind(this));
+
+        this.addListener(this.element, FILTER_DROPDOWN, this.filter.bind(this), {}, 'twig/card/filter-drop-down');
+        this.addListener(this.element, FILTER_REFRESH, this.filter.bind(this), {}, 'twig/card/refresh');
     }
 
     submit(event){
@@ -51,7 +59,7 @@ export default class extends AbstractController {
      * @param event
      */
     newElement(event) {
-        this.dispatch(NEW, {detail: {url: event.params.url}});
+        super.dispatch(NEW, {detail: {url: event.params.url}});
     }
 
     /**
@@ -59,7 +67,12 @@ export default class extends AbstractController {
      * @param event
      */
     close(event) {
-        this.dispatch(CLOSE);
+        super.dispatch(CLOSE);
+    }
+
+    filter(event){
+        history.pushState({}, '', event.detail.url);
+        super.dispatch(REFRESH, {detail:{url:event.detail.url}});
     }
 
 }

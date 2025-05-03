@@ -1,4 +1,5 @@
 import AbstractController from "../../AbstractController.js";
+import {useFilter} from "../../../behaviors/use-filter.js";
 
 export const NAVIGATE = "App\\Component\\Twig\\Table\\Navigation_change";
 /*
@@ -15,6 +16,8 @@ export default class extends AbstractController {
     static targets = ["pageLink"];
 
     connect() {
+        useFilter(this);
+
         let currentPath = new URL(document.location);
         if (currentPath.searchParams.has(this.queryNameValue)) {
             currentPath.searchParams.set(this.queryNameValue, this.pageValue);
@@ -22,22 +25,22 @@ export default class extends AbstractController {
         }
 
         this.pageLinkTargets.forEach((pageLink) => {
-            pageLink.addEventListener('click', this.onChange.bind(this));
+            pageLink.addEventListener('click', (event) => this.filter(event, NAVIGATE, this.queryNameValue, event.currentTarget.dataset.number));
         });
     }
 
-    /**
-     * Show amount elements to show on table
-     * @param event change select event
-     */
-    onChange(event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
-        let currentPath = new URL(document.location);
-        currentPath.searchParams.set(this.queryNameValue, event.currentTarget.dataset.number);
-        super.dispatch(NAVIGATE, {detail: {url: currentPath}});
-        // document.location = currentPath.toString();
-    }
+    // /**
+    //  * Show amount elements to show on table
+    //  * @param event change select event
+    //  */
+    // onChange(event) {
+    //     event.preventDefault();
+    //     event.stopImmediatePropagation();
+    //
+    //     let currentPath = new URL(document.location);
+    //     currentPath.searchParams.set(this.queryNameValue, event.currentTarget.dataset.number);
+    //     super.dispatch(NAVIGATE, {detail: {url: currentPath}});
+    //     // document.location = currentPath.toString();
+    // }
 
 }

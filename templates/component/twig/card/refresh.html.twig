@@ -1,0 +1,5 @@
+{% if this.showRefresh() %}
+    <a class="btn btn-sm btn-link text-decoration-none" title="Resetear" href="{{ path }}" {{ stimulusController('twig/card/refresh') }}>
+        {{ ux_icon('uiw:reload', {class:'bi'}) }}
+    </a>
+{% endif %}

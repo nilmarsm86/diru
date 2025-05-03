@@ -4,7 +4,7 @@ import {useVisibility} from "../behaviors/visibility/use-visibility.js";
 import AbstractController from "./AbstractController.js";
 
 import {SHOW as BACKDROP_SHOW, HIDE as BACKDROP_HIDE} from "./twig/backdrop/backdrop_controller.js";
-import {NEW as CARD_NEW, CLOSE as CARD_CLOSE} from "./twig/card/card_controller.js";
+import {NEW as CARD_NEW, CLOSE as CARD_CLOSE, REFRESH as CARD_REFRESH} from "./twig/card/card_controller.js";
 // import {SUCCESS as FORM_SUCCESS} from "./live-form_controller.js";
 const FORM_SUCCESS = ':form_success';
 import {
@@ -60,6 +60,9 @@ export default class extends AbstractController {
 
         //refrescar el contenido de la tabla
         this.addListener(this.element, TABLE_REFRESH, this.refreshListContent.bind(this), {}, 'twig/table/table');
+
+        //refrescar el contenido de la card
+        this.addListener(this.element, CARD_REFRESH, this.refreshListContent.bind(this), {}, 'twig/card/card');
 
         //ocultar el contenedor del formulario
         this.addListener(this.element, CARD_CLOSE, this.onCardClose.bind(this), {}, 'twig/card/card');

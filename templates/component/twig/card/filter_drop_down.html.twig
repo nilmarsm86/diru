@@ -1,0 +1,27 @@
+<div class="dropdown d-inline-block" {{ stimulusController('twig/card/filter-drop-down', {'queryName':queryName}) }}>
+    <button type="button"
+            class="btn
+            {% if app.request.query.get((queryName)) != '' %}btn-dark active{% else %}btn-link{% endif %}
+            text-decoration-none btn-sm dropdown-toggle show dropdown-sm"
+            {#            {% if app.request.query.get((queryName)) != '' %}active{% endif %}" #}
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+    >
+        {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }}
+        {{ label }}
+    </button>
+    <ul class="dropdown-menu">
+        {% for option in options %}
+            {% if option.value != '' %}
+                <li>
+                    <a class="dropdown-item" {{ stimulusTarget('twig/card/filter-drop-down', 'option') }} data-value="{{ option.value }}"
+                       href="{{ path(path, {(queryName): option.value} + app.request.query.all) }}">
+                        {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %}
+                        {{ ux_icon(icon, {class:'bi'}) }}
+                        {{ option.getLabelFrom(option) }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

@@ -1,100 +1,3 @@
-{# {% embed "embeds/card.html.twig" %} #}
-{#    {% from 'macros/buttons.html.twig' import tableActionButton, tableHeaderButton, tableHeaderButtonDropdown %} #}
-
-{#    {% block card_css_class %}mb-4{% endblock %} #}
-
-{#    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %} #}
-
-{#    {% block card_title %}Listado de entidades{% endblock %} #}
-
-{#    {% block card_header_options %} #}
-{#        <div> #}
-{#            {% if app.request.query.get('type') != '' %} #}
-{#                {{ tableHeaderButton(path('app_corporate_entity_index'), 'uiw:reload', '', 'Resetear', 'btn-link text-decoration-none') }} #}
-{#            {% endif %} #}
-
-{#            {{ tableHeaderButtonDropdown('app_corporate_entity_index', 'Tipos de entidad', 'type', types) }} #}
-{#            {{ tableActionButton(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad') }} #}
-{#        </div> #}
-{#    {% endblock %} #}
-
-{#    {% block card_body %} #}
-{#        {% embed "embeds/table.html.twig" %} #}
-{#            {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %} #}
-
-{#            {% block table_message %} #}
-{#                {% if app.request.query.get('type') != '' %} #}
-{#                    <span class="text-primary"> #}
-{#                    Entidades corporativas de tipo #}
-{#                    {% if app.request.query.get('type') == '0' %}cliente{% endif %} #}
-{#                    {% if app.request.query.get('type') == '1' %}Contructora{% endif %} #}
-{#                    {% if app.request.query.get('type') == '2' %}Cliente y Contructora{% endif %} #}
-{#                    </span> #}
-{#                {% endif %} #}
-{#            {% endblock %} #}
-
-{#            {% block table_head %} #}
-{#                <tr> #}
-{#                    <th>Nombre</th> #}
-{#                    <th>Código</th> #}
-{#                    <th>NIT</th> #}
-{#                    <th>Organismo</th> #}
-{#                    {% if app.request.query.get('type') == '' %} #}
-{#                        <th>Tipo</th> #}
-{#                    {% endif %} #}
-{#                    <th>Provincia</th> #}
-{#                    <th>Municipio</th> #}
-{#                    <th></th> #}
-{#                </tr> #}
-{#            {% endblock %} #}
-
-{#            {% block table_body %} #}
-{#                {% for corporateEntity in paginator.getData() %} #}
-{#                    <tr> #}
-{#                        <td>{{ corporateEntity.name }}</td> #}
-{#                        <td>{{ corporateEntity.code }}</td> #}
-{#                        <td>{{ corporateEntity.nit }}</td> #}
-{#                        <td> #}
-{#                            <a href="{{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': corporateEntity.organism.name}) }}" #}
-{#                               class="text-decoration-none" #}
-{#                            > #}
-{#                                {{ corporateEntity.organism.name }} #}
-{#                            </a> #}
-{#                        </td> #}
-{#                        {% if app.request.query.get('type') == '' %} #}
-{#                            <td>{{ corporateEntity.type.getLabelFrom(corporateEntity.type) }}</td> #}
-{#                        {% endif %} #}
-{#                        <td> #}
-{#                            <a href="{{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': corporateEntity.getProvinceName()}) }}" #}
-{#                               class="text-decoration-none" #}
-{#                            > #}
-{#                                {{ corporateEntity.getProvinceName() }} #}
-{#                            </a> #}
-{#                        </td> #}
-{#                        <td> #}
-{#                            <a href="{{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': corporateEntity.getMunicipalityName()}) }}" #}
-{#                               class="text-decoration-none" #}
-{#                            > #}
-{#                                {{ corporateEntity.getMunicipalityName() }} #}
-{#                            </a> #}
-{#                        </td> #}
-{#                        <td class="text-end" data-controller="submit-form-async" #}
-{#                            data-action="submit->submit-form-async#submit"> #}
-{#                            {{ tableActionButton(path('app_corporate_entity_show', {'id': corporateEntity.id}), 'bi:eye', '', 'Detalle de la entidad') }} #}
-{#                            {{ tableActionButton(path('app_corporate_entity_edit', {'id': corporateEntity.id}), 'fa:edit', '', 'Editar entidad') }} #}
-{#                            {{ deleteFormButton(path('app_corporate_entity_delete', {'id': corporateEntity.id}), 'bi:trash', 'delete' ~ corporateEntity.id, '', 'Eliminar entidad', 'Está seguro que desea eliminar la entidad?') }} #}
-{#                        </td> #}
-{#                    </tr> #}
-{#                {% else %} #}
-{#                    <tr> #}
-{#                        <td colspan="8">No se encontraron entidades.</td> #}
-{#                    </tr> #}
-{#                {% endfor %} #}
-{#            {% endblock %} #}
-{#        {% endembed %} #}
-{#    {% endblock %} #}
-{# {% endembed %} #}
-
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
@@ -105,11 +8,17 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
         <div>
-            {% if app.request.query.get('type') != '' %}
-                {{ tableHeaderButton(path('app_corporate_entity_index'), 'uiw:reload', '', 'Resetear', 'btn-link text-decoration-none') }}
-            {% endif %}
+            {{ component('Card:Refresh', {
+                path: path('app_corporate_entity_index'),
+                queryNames:['entity', 'amount', 'filter', 'page']
+            }) }}
 
-            {{ tableHeaderButtonDropdown('app_corporate_entity_index', 'Tipos de entidad', 'type', types) }}
+            {{ component('Card:FilterDropDown', {
+                path:'app_corporate_entity_index',
+                label:'Tipos de entidad corporativa',
+                queryName: 'entity',
+                options:types
+            }) }}
 
             {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad corporativa', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
         </div>

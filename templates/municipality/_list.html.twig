@@ -1,0 +1,66 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de municipios',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Provincia</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton3 %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for municipality in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ municipality.name }}</td>
+                        <td>
+                            <a href="{{ filterLink(municipality.province) }}"
+                               class="text-decoration-none"
+                            >
+                                {{ municipality.province }}
+                            </a>
+                        </td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }}
+                            {{ tableActionButton3(path('app_municipality_edit', {'id': municipality.id}), 'fa:edit', '', 'Editar municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_edit', {'id': municipality.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_municipality_delete', {'id': municipality.id}),
+                                confirm: 'Está seguro que desea eliminar el municipio?',
+                                token: 'delete' ~ municipality.id,
+                                title: 'Eliminar municipio',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron municipios.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

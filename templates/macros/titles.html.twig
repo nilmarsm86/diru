@@ -1,0 +1,8 @@
+{% macro h1(title, icon=null) %}
+    <h1 class="col-md-9">
+        {% if icon is not null %}
+            {{ ux_icon(icon, {class:'bi bi-title'}) }}
+        {% endif %}
+        {{ title }}
+    </h1>
+{% endmacro %}

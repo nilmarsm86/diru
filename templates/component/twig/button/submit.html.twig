@@ -1,0 +1,10 @@
+<button
+        type="submit"
+        class="btn btn-success btn-sm
+        {% if component %}
+            {# component.hasValidationErrors ? 'disabled' : '' #}
+        {% endif %}"
+>
+    {{ ux_icon(icon, {class:'bi'}) }}
+    {{ label }}
+</button>

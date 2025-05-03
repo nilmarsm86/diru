@@ -1,0 +1,18 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h1 class="col-md-9">Dashboard</h1>
+        {{ breadcrumb([
+            {label: 'Inicio'},
+        ]) }}
+    </div>
+
+    <div class="row">
+        <h2>Section title</h2>
+    </div>
+{% endblock %}

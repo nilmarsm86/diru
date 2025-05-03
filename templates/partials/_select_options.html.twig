@@ -1,0 +1,10 @@
+{% for entity in entities %}
+    {% if selected is defined and selected == entity.id %}
+        <option value="{{ entity.id }}" selected="selected">
+    {% else %}
+        <option value="{{ entity.id }}">
+    {% endif %}
+
+        {{ entity.name }}
+    </option>
+{% endfor %}

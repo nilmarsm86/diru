@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Nueva persona natural{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Clientes', 'fa:user') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Personas naturales', href: path('app_individual_client_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar persona natural</h2>
+
+    {{ include('individual_client/_form.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% macro flashes() %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            {{ _self.flash(label, message) }}
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro flash(type, message, icon='', close=true) %}
+    <div class="alert alert-{{ type }} alert-dismissible fade show d-inline-flex align-items-center text-bg-{{ type }}" role="alert" style="margin-bottom: 0">
+        {% if type == 'success' %}
+            {% set icon = 'lets-icons:check-fill' %}
+        {% endif %}
+
+        {% if icon %}
+            {{ ux_icon(icon, {class:'bi', style:'width:24px;height:24px'}) }}
+        {% endif %}
+
+        {% if close %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="float: right"></button>
+        {% endif %}
+        <div>{{ message }}</div>
+    </div>
+{% endmacro %}

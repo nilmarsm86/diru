@@ -1,0 +1,4 @@
+'Invalid credentials.': 'Credenciales inválidas'
+inactive.user: 'Aun no han activado el usuario en el sistema'
+sign.out: 'Salir'
+sign.out.question: 'Está seguro que desea salir del sistema?'

@@ -1,0 +1,65 @@
+{#{% extends 'content.html.twig' %}#}
+
+{#{% block title %}Cliente Individual{% endblock %}#}
+
+{#{% block content %}#}
+{#    <h1>IndividualClient</h1>#}
+
+{#    <table class="table">#}
+{#        <tbody>#}
+{#        #}{#            <tr> #}
+{#        #}{#                <th>Id</th> #}
+{#        #}{#                <td>{{ individual_client.id }}</td> #}
+{#        #}{#            </tr> #}
+{#        <tr>#}
+{#            <th>Nombre</th>#}
+{#            <td>{{ individual_client.person.name }}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <th>Carne</th>#}
+{#            <td>{{ individual_client.person.identificationNumber }}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <th>Pasaporte</th>#}
+{#            <td>{{ individual_client.person.passport }}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <th>Phone</th>#}
+{#            <td>{{ individual_client.phone }}</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <th>Email</th>#}
+{#            <td>{{ individual_client.email }}</td>#}
+{#        </tr>#}
+{#        </tbody>#}
+{#    </table>#}
+
+{#    <a class="btn btn-sm btn-primary" href="{{ path('app_individual_client_index') }}">Listado</a>#}
+
+{#    <a class="btn btn-sm btn-primary" href="{{ path('app_individual_client_edit', {'id': individual_client.id}) }}">Modificar</a>#}
+
+{#    {{ include('individual_client/_delete_form.html.twig') }}#}
+{#{% endblock %}#}
+
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Persona natural: {{ individual_client.person.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Clientes', 'fa:user') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Personas naturales', href: path('app_individual_client_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Persona natural: {{ individual_client.person.name }}</h2>
+
+    {{ include('individual_client/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

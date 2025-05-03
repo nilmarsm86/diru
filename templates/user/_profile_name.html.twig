@@ -1,0 +1,79 @@
+{{ form_start(formName) }}
+<div class="row">
+    <div class="col">
+        <div class="mb-3">
+            {{ form_label(formName.name) }}
+            <div class="col-sm-6 mb-3 mb-sm-0 input-group">
+                <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
+                    {{ ux_icon('fa:edit', {class:'bi'}) }}
+                </span>
+                {{ form_widget(formName.name) }}
+            </div>
+            {{ form_errors(formName.name) }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="mb-3">
+            {{ form_label(formName.lastname) }}
+            <div class="col-sm-6 mb-3 mb-sm-0 input-group">
+                <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
+                    {{ ux_icon('fa:edit', {class:'bi'}) }}
+                </span>
+                {{ form_widget(formName.lastname) }}
+            </div>
+            {{ form_errors(formName.lastname) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="mb-3">
+            {{ form_label(formName.identificationNumber) }}
+            <div class="col-sm-6 mb-3 mb-sm-0 input-group">
+                <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
+                    {{ ux_icon('fa:edit', {class:'bi'}) }}
+                </span>
+                {{ form_widget(formName.identificationNumber) }}
+            </div>
+            {{ form_errors(formName.identificationNumber) }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="mb-3">
+            {{ form_label(formName.phone) }}
+            <div class="col-sm-6 mb-3 mb-sm-0 input-group">
+                <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
+                    {{ ux_icon('fa:edit', {class:'bi'}) }}
+                </span>
+                {{ form_widget(formName.phone) }}
+            </div>
+            {{ form_errors(formName.phone) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="mb-3">
+            {{ form_label(formName.email) }}
+            <div class="col-sm-6 mb-3 mb-sm-0 input-group">
+                <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
+                    {{ ux_icon('fa:edit', {class:'bi'}) }}
+                </span>
+                {{ form_widget(formName.email) }}
+            </div>
+            {{ form_errors(formName.email) }}
+        </div>
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+<div class="mb-3">
+    <button class="btn btn-primary btn-sm" type="submit">
+        {{ ux_icon('fa:save', {class:'bi'}) }}
+        Salvar
+    </button>
+</div>
+{{ form_end(formName) }}

@@ -1,0 +1,43 @@
+<nav
+        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers"
+        {{ stimulusController('twig/table/navigation', {queryName: this.queryName, page:this.page}) }}
+>
+    {% if this.paginator.maxPage > 1 %}
+        <ul class="pagination">
+            <li class="page-item {% if this.paginator.currentPage == 1 %}disabled{% endif %}">
+                <a
+                        class="page-link"
+                        aria-label="First"
+                        href="{{ this.getNumberPath(1) }}"
+                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                        data-number="1"
+                >
+                    <span aria-hidden="true">«</span>
+                </a>
+            </li>
+            {% for item in 1..paginator.maxPage %}
+                <li class="page-item {% if paginator.currentPage == item %}active{% endif %}">
+                    <a
+                            class="page-link"
+                            href="{{ this.getNumberPath(item) }}"
+                            {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                            data-number="{{ item }}"
+                    >
+                        {{ item }}
+                    </a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if paginator.currentPage == paginator.maxPage %}disabled{% endif %}">
+                <a
+                        class="page-link"
+                        aria-label="Last"
+                        href="{{ this.getNumberPath(paginator.maxPage) }}"
+                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                        data-number="{{ paginator.maxPage }}"
+                >
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+</nav>

@@ -1,0 +1,14 @@
+<form
+        method="post"
+        action="{{ path }}"
+        onsubmit="return confirm('{{ confirm }}');"
+        style="display: inline"
+        {{ attributes }}
+>
+    <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
+    <button class="btn btn-sm btn-danger" title="{{ title }}">
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </button>
+</form>
+

@@ -1,0 +1,24 @@
+{% macro toast(id, type='text-bg-primary', message='', state='') %}
+    <div
+            id="{{ id }}"
+            class="toast align-items-center {{ type }} border-0 {{ state }}"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+    >
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message| raw }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro toasts() %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            {{ _self.toast('id', 'text-bg-'~label, message, 'show') }}
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}

@@ -1,0 +1,6 @@
+twig_component:
+    anonymous_template_directory: 'component/twig/'
+    defaults:
+        # Namespace & directory for components
+        App\Component\Twig\: 'component/twig/'
+        App\Component\Live\: 'component/live/'

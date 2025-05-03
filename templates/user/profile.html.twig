@@ -1,0 +1,78 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Perfil de usuario{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Perfil', 'fa:user') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Perfil'},
+        ]) }}
+    </div>
+
+    <div class="row mb-3">
+        <h2 class="mb-4">Perfil de usuario y gestión de datos</h2>
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body text-center shadow">
+                    {{ ux_icon('bi:person-circle', {class:'bi', style:'width:90px;height:90px'}) }}
+                    <div class="mb-3">
+                        <span class="badge text-bg-primary">{{ app.user.fullName }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="badge text-bg-primary">{{ app.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="text-primary fw-bold m-0">Roles asignados</h6>
+                </div>
+                <div class="card-body">
+                    {% for role in roles %}
+                        {% if role.isSuperAdmin() == false %}
+                            <h4 class="small fw-bold">
+                                {{ role.capitalizeName }}
+                            </h4>
+                            <div class="progress progress-sm mb-3">
+                                <div class="progress-bar bg-success"
+                                     aria-valuenow="{% if app.user.hasRole(role) %}100{% else %}0{% endif %}"
+                                     aria-valuemin="0" aria-valuemax="100"
+                                     style="width: {% if app.user.hasRole(role) %}100{% else %}0{% endif %}%;">
+                                    <span class="visually-hidden">20%</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <p class="text-primary m-0 fw-bold">Datos</p>
+                        </div>
+                        <div class="card-body">
+                            {% include 'user/_profile_name.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="text-primary m-0 fw-bold">Contraseña</p>
+                        </div>
+                        <div class="card-body">
+                            {% include 'user/_profile_password.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

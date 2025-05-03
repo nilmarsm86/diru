@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Editar Provincia{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Provincias', 'ic:outline-place') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Provincias', href: path('app_province_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Editar provincia</h2>
+
+    {{ include('province/_form.html.twig', {showButton: true, title: title}) }}
+{% endblock %}

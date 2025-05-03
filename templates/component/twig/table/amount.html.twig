@@ -1,0 +1,21 @@
+{# Show amount #}
+<div
+        id="dataTable_length"
+        class="dataTables_length"
+        aria-controls="dataTable"
+        {{ stimulusController('twig/table/amount', {'queryName':this.queryName}) }}
+>
+    <label class="form-label">{{ label }}:&nbsp;
+        <select
+                class="d-inline-block form-select form-select-sm"
+                {{ stimulusTarget('twig/table/amount', 'select') }}
+        >
+            {% for item in this.options %}
+                <option value="{{ item }}" {% if this.amount == item %}selected{% endif %}>
+                    {{ item }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+</div>
+{# Show amount #}

@@ -1,0 +1,75 @@
+<div {{ stimulusController('twig/table/table') }} style="position: relative" {% block table_container %}{% endblock %}>
+    <div class="row">
+        <div class="col-md-3 text-nowrap">
+            {% if paginator is not null %}
+                {{ component('Table:Amount', {
+                    label: 'Mostrar',
+                    options: [2, 10, 25, 50, 100],
+                    amount: app.request.query.get('amount', 10),
+                    queryName: 'amount',
+                    queryStrings: {
+                        'filter':app.request.query.get('filter'),
+                        'page':app.request.query.get('page')
+                    },
+                }) }}
+            {% endif %}
+        </div>
+
+        <div class="col-md-3 text-nowrap">
+            {% block table_message %}{% endblock %}
+        </div>
+
+        <div class="col-md-6">
+            {% if paginator is not null %}
+                {% block table_filter %}
+                    {{ component('Table:Filter', {
+                        filter: app.request.query.get('filter', ''),
+                        queryName: 'filter',
+                        queryStrings: {
+                            'amount':app.request.query.get('amount'),
+                            'page':app.request.query.get('page')
+                        },
+                    }) }}
+                {% endblock %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+        <table class="table table-hover my-0">
+            <thead>
+            {% block table_head %}{% endblock %}
+            </thead>
+            <tbody class="table-group-divider">
+            {% block table_body %}{% endblock %}
+            </tbody>
+            <tfoot>
+            {% block table_footer %}{% endblock %}
+            </tfoot>
+        </table>
+    </div>
+
+    {% if paginator is not null %}
+        <div class="row">
+            <div class="col-md-6 align-self-center">
+                <p class="dataTables_info" role="status" aria-live="polite">
+                    Mostrar <strong>{{ paginator.from }}</strong> al <strong>{{ paginator.to }}</strong> de
+                    <strong>{{ paginator.total }}</strong>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                {{ component('Table:Navigation', {
+                    page: app.request.query.get('page', 1),
+                    paginator: paginator,
+                    queryName: 'page',
+                    queryStrings: {
+                        'amount':app.request.query.get('amount'),
+                        'filter':app.request.query.get('filter')
+                    },
+                }) }}
+            </div>
+        </div>
+    {% endif %}
+    <backdrop-component class="card-backdrop" data-table-target="backdropComponent"></backdrop-component>
+</div>

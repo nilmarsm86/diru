@@ -1,0 +1,4 @@
+{% from 'macros/toast.html.twig' import toast %}
+
+{% set msg = message ? message : '' %}
+{{ toast(id, type, msg) }}

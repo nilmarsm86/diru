@@ -1,0 +1,12 @@
+<div class="card {% block card_css_class %}{% endblock %}" {% block card_extra %}{% endblock %}>
+    <div class="card-header {% block card_header_css_class %}{% endblock %}">
+        <p class="text-primary m-0 fw-bold">{% block card_title %}{% endblock %}</p>
+        {% block card_header_options %}{% endblock %}
+    </div>
+    <div class="card-body">
+        {% block card_body %}{% endblock %}
+    </div>
+    {% block card_footer %}{% endblock %}
+{#    <backdrop-component data-loading="addClass(d-block)" class="card-backdrop"></backdrop-component>#}
+    {{ component('Backdrop:Backdrop', {id: 'card-backdrop'}) }}
+</div>

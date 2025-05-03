@@ -1,0 +1,31 @@
+<div class="row"
+     data-controller="content-loader visibility page" data-page-list-container-url-value="{{ list_container_url| default }}"
+     data-action="
+            page:onShowFormContent->visibility#show {# cuando se muestra el contenido cargado por ajax mostrar el contenedor #}
+            page:onShowFormContent->content-loader#refreshContent {# cuando se muestra el contenido cargado por ajax refrescar el contenedor #}
+            submit-form-async:success->page#sendFormSuccess {# si se envio el formulario correctamente llamar metodo del controlador #}
+            {# page:onSendFormSuccess->visibility#hide  si se envio el formulario correctamente ocultar el contenedor #}
+            page:onSendFormSuccess->content-loader#refreshContent {# si se envio el formulario correctamente refrescar el contenedor del formulario #}
+            page:onSendFormSuccess->page#hideFormContent
+            page:onHideFormContent->visibility#hide {# cuando se cierra la ventana ocultar el contenedor #}
+            content-loader:loaded->page#generateCsrfToken {# generar el token cuando se carga el formulario #}
+            {{ rest_data_action| default }}
+        "
+>
+    <div class="col-12" data-page-target="listContainer" id="listContainer">
+        {{ include(list) }}
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-12" id="formContainer"
+         style="display: none;position: relative"
+         data-visibility-target="target"
+         data-page-target="formContainer"
+         data-controller="submit-form-async content-loader"
+         data-action="submit->submit-form-async#submit"
+         {# data-content-loader-event-loaded-name-value="portLoaded"  #}
+    >
+        <backdrop-component class="card-backdrop d-block"></backdrop-component>
+    </div>
+</div>

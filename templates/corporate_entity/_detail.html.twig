@@ -1,0 +1,91 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="corporate_entity_detail_' ~ corporate_entity.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_corporate_entity_new',
+            label: 'Nueva',
+            title: 'Nueva entidad corporativa',
+            entity: corporate_entity,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ corporate_entity.name }}</td>
+                </tr>
+                <tr>
+                    <th>Código de empresa:</th>
+                    <td>
+                        {{ corporate_entity.code }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        NIT
+                        <em class="small" style="font-weight: lighter">(Número de Identificación Tributaria)</em>:
+                    </th>
+                    <td>
+                        {{ corporate_entity.nit }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Organismo:</th>
+                    <td>
+                        <a href="{{ path('app_organism_show', {'id': corporate_entity.organism.id }) }}">
+                            {{ corporate_entity.organism }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tipo de entidad:</th>
+                    <td>
+                        {{ corporate_entity.type.getLabelFrom(corporate_entity.type) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Provincia:</th>
+                    <td>
+                        <a href="{{ path('app_province_show', {'id': corporate_entity.municipality.province.id }) }}">
+                            {{ corporate_entity.getProvinceName() }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Municipio:</th>
+                    <td>
+                        <a href="{{ path('app_municipality_show', {'id': corporate_entity.municipality.id }) }}">
+                            {{ corporate_entity.getMunicipalityName() }}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_corporate_entity_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_corporate_entity_edit', label: 'Editar', title:'Editar entidad corporativa'},
+            delete: {href: 'app_corporate_entity_delete', label: 'Eliminar', title:'Eliminar entidad corporativa'},
+            id: corporate_entity.id,
+            message: 'Está seguro que desea eliminar la entidad corporativa?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

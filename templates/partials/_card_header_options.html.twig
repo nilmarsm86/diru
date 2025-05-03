@@ -1,0 +1,17 @@
+{% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton,tableActionButton2, tableActionButton3 %}
+
+<div>
+    {% if showButton is defined and showButton == true %}
+        {% if state == 'form' %}
+            {% if entity.id is not null %}
+                {{ tableActionButton(path(goTo), 'bi:plus-lg', label, title) }}
+            {% endif %}
+        {% endif %}
+
+        {% if state == 'detail' %}
+            {{ tableActionButton(path(goTo), 'bi:plus-lg', label, title) }}
+        {% endif %}
+    {% else %}
+        {{ tableActionButton3('#', 'mdi:close', '', 'Cerrar', stimulusAction('twig/card/card', 'close:prevent'), 'btn-link') }}
+    {% endif %}
+</div>

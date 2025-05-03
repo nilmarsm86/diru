@@ -1,0 +1,90 @@
+{% embed "embeds/card.html.twig" %}
+    {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}
+
+    {% block card_css_class %}mb-4{% endblock %}
+
+    {% block card_extra %}id="individual_client_detail_{{ individual_client.id }}"{% endblock %}
+
+    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %}
+
+    {% block card_title %}{{ title }}{% endblock %}
+
+    {% block card_header_options %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_individual_client_new',
+            label: 'Nuevo',
+            title: 'Nuevo cliente',
+            state: 'detail'
+        }) }}
+    {% endblock %}
+
+    {% block card_body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ individual_client.person.name }}</td>
+                </tr>
+                <tr>
+                    <th>Carnet:</th>
+                    <td>{{ individual_client.person.identificationNumber }}</td>
+                </tr>
+                <tr>
+                    <th>Pasaporte:</th>
+                    <td>{{ individual_client.person.passport }}</td>
+                </tr>
+                <tr>
+                    <th>Teléfono:</th>
+                    <td>
+                        <a href="phone:{{ individual_client.email }}">
+                            {{ individual_client.phone }}
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Correo:</th>
+                    <td>
+                        <a href="mailto:{{ individual_client.email }}">
+                            {{ individual_client.email }}
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Provincia:</th>
+                    <td>
+                        <a href="{{ path('app_province_show', {'id': individual_client.municipality.province.id }) }}">
+                            {{ individual_client.getProvinceName() }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Municipio:</th>
+                    <td>
+                        <a href="{{ path('app_municipality_show', {'id': individual_client.municipality.id }) }}">
+                            {{ individual_client.getMunicipalityName() }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dirección:</th>
+                    <td>falta</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block card_footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_individual_client_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_individual_client_edit', label: 'Editar', title:'Editar cliente'},
+            delete: {href: 'app_individual_client_delete', label: 'Eliminar', title:'Eliminar cliente'},
+            id: individual_client.id,
+            message: 'Está seguro que desea eliminar el cliente individual?',
+            state: 'detail'
+        }) }}
+    {% endblock %}
+{% endembed %}

@@ -1,0 +1,11 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}New Person{% endblock %}
+
+{% block content %}
+    <h1>Nueva persona</h1>
+
+    {{ include('person/_form.html.twig') }}
+
+    <a class="btn btn-sm btn-primary" href="{{ path('app_person_index') }}">Listado</a>
+{% endblock %}

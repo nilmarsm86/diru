@@ -1,0 +1,146 @@
+{% extends 'register.html.twig' %}
+
+{% from 'macros/flashes.html.twig' import flash %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+    <div class="col-lg-5 d-none d-lg-flex">
+        <div class="flex-grow-1 bg-register-image"
+             style="background-image: url({{ asset('images/logo.jpg') }});background-repeat: no-repeat;background-position: center;background-size: contain;"></div>
+    </div>
+    <div class="col-lg-7">
+        <div class="p-5">
+            <div class="text-center">
+                <h4 class="mb-4">
+                    <div class="sidebar-brand-icon rotate-n-15" style="display:inline">
+                        {{ ux_icon('mdi:user-key', {class:'bi', style:'width:32px;height:32px'}) }}
+                    </div>
+                    Registrarse en el sistema!
+                </h4>
+            </div>
+            {{ form_start(form) }}
+            <hr>
+            {% if error %}
+                {{ flash('danger', message) }}
+            {% endif %}
+            <br><br>
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.name) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.lastname) }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    {{ form_errors(form.name) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    {{ form_errors(form.lastname) }}
+                </div>
+            </div>
+
+{#            <div class="mb-3 input-group">#}
+{#                <span class="input-group-text login-text-icon" id="basic-addon1">#}
+{#                    {{ ux_icon('fa:user', {class:'bi'}) }}#}
+{#                </span>#}
+{#                {{ form_widget(form.username) }}#}
+{#            </div>#}
+{#            <div class="mb-3 input-group">#}
+{#                {{ form_errors(form.username) }}#}
+{#            </div>#}
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.identificationNumber) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.phone) }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    {{ form_errors(form.identificationNumber) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    {{ form_errors(form.phone) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.email) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:edit', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.username) }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="col-sm-6 input-group" style="width:50%">
+                    {{ form_errors(form.username) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:lock', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.plainPassword.first) }}
+                </div>
+
+                <div class="col-sm-6 input-group login-text-icon" style="width:50%">
+                    <span class="input-group-text login-text-icon" id="basic-addon1">
+                        {{ ux_icon('fa:lock', {class:'bi'}) }}
+                    </span>
+                    {{ form_widget(form.plainPassword.second) }}
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+            <div class="mb-3 input-group">
+                <div class="form-check">
+                    {{ form_widget(form.agreeTerms) }}
+                    <label class="form-check-label" for="formCheck-1">
+                        <strong>Aceptar términos</strong>
+                    </label>
+                    {{ form_errors(form.agreeTerms) }}
+                </div>
+            </div>
+            <button class="btn btn-primary d-block btn-user w-100" type="submit">
+                {{ ux_icon('fa:user-plus', {class:'bi'}) }} Crear Cuenta
+            </button>
+            <br><br>
+            <hr>
+            {{ form_end(form) }}
+            <div class="text-center">
+                <a class="btn btn-primary d-block btn-user w-100 btn-google link-button" href="{{ path('app_login') }}">
+                    {{ ux_icon('bi:backpack', {class:'bi'}) }} Ya tiene una cuenta? Entre al sistema!
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

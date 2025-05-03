@@ -1,0 +1,4 @@
+{% from 'macros/toast.html.twig' import toast %}
+
+{% set msg = message ? message : action ~ ' <strong>' ~ role.capitalizeName() ~ '</strong> para el usuario <strong>' ~ user.username ~ '</strong>.' %}
+{{ toast(id, type, msg) }}

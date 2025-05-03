@@ -1,0 +1,19 @@
+<div
+        class="text-md-end dataTables_filter"
+        id="dataTable_filter"
+        {{ stimulusController('twig/table/filter', {'queryName':this.queryName}) }}
+>
+    <form method="get">
+        <label class="form-label">
+            <input
+                    type="search"
+                    class="form-control form-control-sm"
+                    aria-controls="dataTable"
+                    placeholder="{{ this.placeholder }}"
+                    name="filter"
+                    value="{{ this.filter }}"
+                    {{ stimulusTarget('twig/table/filter', 'input') }}
+            >
+        </label>
+    </form>
+</div>

@@ -1,0 +1,15 @@
+<div class="row" {{ attributes.defaults(stimulusController('manage-page')) }}>
+    <div class="col-12" id="listContainer" {{ stimulusTarget('manage-page', 'listContainer') }}>
+        {% block list %}{% endblock %}
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-12" id="formContainer" style="display: none;position: relative" {{ stimulusTarget('manage-page', 'formContainer') }}>
+
+    </div>
+
+    <div class="col-12" style="position: relative">
+        {{ component('Backdrop:Backdrop', {'id':'form-container-backdrop', attr:"data-manage-page-target=backdrop"}) }}
+    </div>
+</div>

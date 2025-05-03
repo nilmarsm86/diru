@@ -1,0 +1,13 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}Modificar Persona{% endblock %}
+
+{% block content %}
+    <h1>Modificar Persona</h1>
+
+    {{ include('person/_form.html.twig', {'button_label': 'Modificar'}) }}
+
+    <a class="btn btn-sm btn-primary" href="{{ path('app_person_index') }}">Listado</a>
+
+    {{ include('person/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% block address_row %}
+    <div
+            class="mb-0 {% if row == false and col == true %}row{% endif %}"
+            {% if live_form == false %}
+                {{ stimulusController('type/address', {url:path('province_municipality', {'id': 0})}) }}
+            {% endif %}
+    >
+        {% if row == true and col == false %}
+            {{ form_row(form.province) }}
+            {{ form_row(form.municipality) }}
+        {% endif %}
+
+        {% if row == false and col == true %}
+            <div class="col">
+                {{ form_row(form.province, {label_attr:{'class':'col-sm-4'}, attr:{'data-type--address-target' : "province"}}) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.municipality, {label_attr:{'class':'col-sm-4'}, attr:{'data-type--address-target' : "municipality"}}) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

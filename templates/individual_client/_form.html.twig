@@ -1,0 +1,56 @@
+{% embed "embeds/card.html.twig" %}
+    {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, submitFormButton %}
+    {% from 'macros/form.html.twig' import formEnumRow, formAddressCol, formCol, formStreetAddressCol %}
+
+    {% block card_css_class %}mb-4{% endblock %}
+
+    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %}
+
+    {% block card_title %}{{ title }}{% endblock %}
+
+    {% block card_header_options %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_individual_client_new',
+            label: 'Nuevo',
+            title: 'Nuevo cliente individual',
+            entity: individual_client,
+            state: 'form'
+        }) }}
+    {% endblock %}
+
+    {% block card_body %}
+        {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %}
+
+        {{ form_start(form) }}
+
+        {{ form_row(form.person.name) }}
+        {{ form_row(form.person.identificationNumber) }}
+        {{ form_row(form.person.passport) }}
+
+        <div class="mb-3 row">
+            {{ formCol(form.phone) }}
+            {{ formCol(form.email) }}
+        </div>
+
+{#        {{ formStreetAddressCol(form) }}#}
+        {{ form_row(form.streetAddress) }}
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                {{ submitFormButton() }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    {% endblock %}
+
+    {% block card_footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_individual_client_index', label: 'Listado', title:'Volver al listado'},
+            delete: {href: 'app_individual_client_delete', label: 'Eliminar', title:'Eliminar cliente'},
+            id: individual_client.id,
+            message: 'Está seguro que desea eliminar la persona natural?',
+            state: 'form',
+            old: true
+        }) }}
+    {% endblock %}
+{% endembed %}

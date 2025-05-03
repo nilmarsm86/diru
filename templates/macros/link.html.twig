@@ -1,0 +1,7 @@
+{% macro activeLink(route) %}
+    {% if app.request.attributes.get('_route') == route %}active{% endif %}
+{% endmacro %}
+
+{% macro filterLink(filter) %}
+    {{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': filter}) }}
+{% endmacro %}

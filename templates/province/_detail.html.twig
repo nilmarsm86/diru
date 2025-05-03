@@ -1,0 +1,59 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="province_detail_' ~ province.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_province_new',
+            label: 'Nueva',
+            title: 'Nueva provincia',
+            entity: province,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ province.name }}</td>
+                </tr>
+                <tr>
+                    <th>Municipios:</th>
+                    <td>
+                        <ul class="px-0 list-unstyled">
+                            {% for municipality in province.municipalities %}
+                                <li>
+                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}">{{ municipality.name }}</a>
+                                </li>
+                            {% else %}
+                                <li class="text-danger">No tiene municipios asociados</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_province_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_province_edit', label: 'Editar', title:'Editar provincia'},
+            delete: {href: 'app_province_delete', label: 'Eliminar', title:'Eliminar provincia'},
+            id: province.id,
+            message: 'Está seguro que desea eliminar la provincia?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+

@@ -1,0 +1,103 @@
+{#{% embed "embeds/card.html.twig" %}#}
+{#    {% from 'macros/buttons.html.twig' import tableActionButton %}#}
+
+{#    {% block card_css_class %}mb-4{% endblock %}#}
+
+{#    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %}#}
+
+{#    {% block card_title %}Listado de organismos{% endblock %}#}
+
+{#    {% block card_header_options %}#}
+{#        <div>#}
+{#            {{ tableActionButton(path('app_organism_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo organismo') }}#}
+{#        </div>#}
+{#    {% endblock %}#}
+
+{#    {% block card_body %}#}
+{#        {% embed "embeds/table.html.twig" %}#}
+{#            {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}#}
+
+{#            {% block table_head %}#}
+{#                <tr>#}
+{#                    <th>Nombre</th>#}
+{#                    <th></th>#}
+{#                </tr>#}
+{#            {% endblock %}#}
+
+{#            {% block table_body %}#}
+{#                {% for organism in paginator.getData() %}#}
+{#                    <tr>#}
+{#                        <td>{{ organism.name }}</td>#}
+{#                        <td class="text-end" data-controller="submit-form-async" data-action="submit->submit-form-async#submit">#}
+{#                            {{ tableActionButton(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo') }}#}
+{#                            {{ tableActionButton(path('app_organism_edit', {'id': organism.id}), 'fa:edit', '', 'Editar organismo') }}#}
+{#                            {{ deleteFormButton(path('app_organism_delete', {'id': organism.id}), 'bi:trash', 'delete' ~ organism.id, '', 'Eliminar organismo', 'Está seguro que desea eliminar el organismo?') }}#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% else %}#}
+{#                    <tr>#}
+{#                        <td colspan="3">No se encontraron organismos.</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            {% endblock %}#}
+{#        {% endembed %}#}
+{#    {% endblock %}#}
+{#{% endembed %}#}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de organismos',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_organism_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo organismo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_organism_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for organism in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ organism.name }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }}
+                            {{ tableActionButton3(path('app_organism_edit', {'id': organism.id}), 'fa:edit', '', 'Editar provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_edit', {'id': organism.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_organism_delete', {'id': organism.id}),
+                                confirm: 'Está seguro que desea eliminar el organismo?',
+                                token: 'delete' ~ organism.id,
+                                title: 'Eliminar organismo',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron organismos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

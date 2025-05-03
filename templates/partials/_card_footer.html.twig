@@ -1,0 +1,57 @@
+{% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}
+
+{% if showButton is defined and showButton == true %}
+    <div class="card-footer text-body-secondary">
+        <div class="row">
+            <div class="col-6">
+                {{ tableActionButton(path(list.href), 'bi:arrow-left-circle', list.label, list.title) }}
+            </div>
+            <div class="col-6 text-end">
+                {% if state == 'detail' %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        {{ tableActionButton(path(edit.href, {'id': id}), 'fa:edit', edit.label, edit.title) }}
+                        {#                        {{ deleteFormButton(path(delete.href, {'id': id}), 'bi:trash', 'delete' ~ id, delete.label, delete.title, message) }} #}
+                        {{ component('DeleteForm', {
+                            path: path(delete.href, {'id': id}),
+                            confirm: message,
+                            token: 'delete' ~ id,
+                            title: delete.title,
+                            icon: 'bi:trash',
+                            label: delete.label
+                        }) }}
+                    </div>
+                {% endif %}
+
+                {% if state == 'form' %}
+                    {% if id is not null %}
+                        {#                        {% if old is defined and old == true %} #}
+                        {#                            {{ deleteFormButton(path(delete.href, {'id': id}), 'bi:trash', 'delete' ~ id, delete.label, delete.title, message) }} #}
+                        {#                        {% else %} #}
+                        {#                            {{ component('DeleteForm', { #}
+                        {#                                path: path('app_province_delete', {'id': province.id}), #}
+                        {#                                confirmMessage: 'Esta seguro que desea borrarlo?', #}
+                        {#                                buttonTitle: 'Eliminar provincia', #}
+                        {#                                buttonLabel: 'Eliminar', #}
+                        {#                                icon: 'bi:trash', #}
+                        {#                                token: 'delete' ~ province.id, #}
+                        {#                                id: province.id, #}
+                        {#                                entityClass: constant('class', province), #}
+                        {#                                successMessage: 'Se ha eliminado la provincia.', #}
+                        {#                                goTo: path('app_province_index'), #}
+                        {#                                ajax: false #}
+                        {#                            }) }} #}
+                        {#                        {% endif %} #}
+                        {{ component('DeleteForm', {
+                            path: path(delete.href, {'id': id}),
+                            confirm: message,
+                            token: 'delete' ~ id,
+                            title: delete.title,
+                            icon: 'bi:trash',
+                            label: delete.label
+                        }) }}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,103 @@
+{% macro tableActionButton(path, icon, label='', title='', dataAction='page#showFormContent', cssClass='btn-primary') %}
+    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
+       href="{{ path }}"
+       data-action="{{ dataAction }}"
+    >
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro tableActionButton2(path, icon, label='', title='', dataAction='', dataLiveActionParam='', cssClass='btn-primary') %}
+    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
+       href="{{ path }}"
+            {#       data-action="{{ dataAction }}" #}
+       data-action="{{ dataAction }}"
+       data-live-action-param="{{ dataLiveActionParam }}"
+       data-live-url-param="{{ path }}"
+    >
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro tableActionButton3(path, icon, label='', title='', action='', cssClass='btn-primary') %}
+    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
+       href="{{ path }}"
+            {{ action|raw }}
+    >
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </a>
+{% endmacro %}
+
+
+{% macro deleteFormButton(path, icon, token, label='', title='', confirm='Esta seguro que desea borrarlo?') %}
+    <form method="post" action="{{ path }}"
+          onsubmit="return confirm('{{ confirm }}');" style="display: inline">
+        <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
+        <button class="btn btn-sm btn-danger" title="{{ title }}">
+            {{ ux_icon(icon, {class:'bi'}) }}
+            {{ label }}
+        </button>
+    </form>
+{% endmacro %}
+
+{#{% macro deleteFormButton2(path, icon, token, label='', title='', confirm='Esta seguro que desea borrarlo?') %}#}
+
+{#    <form#}
+{#            method="post"#}
+{#            action="{{ path }}"#}
+{#            onsubmit="return confirm('{{ confirm }}');"#}
+{#            style="display: inline"#}
+{#    >#}
+{#        <input type="hidden" name="_token" value="{{ csrf_token(token) }}">#}
+{#        <button class="btn btn-sm btn-danger" title="{{ title }}">#}
+{#            {{ ux_icon(icon, {class:'bi'}) }}#}
+{#            {{ label }}#}
+{#        </button>#}
+{#    </form>#}
+
+{#{% endmacro %}#}
+
+{% macro submitFormButton(icon='fa:save', label='Salvar', component=false) %}
+    <button type="submit"
+            class="btn btn-success btn-sm {% if component %} {# component.hasValidationErrors ? 'disabled' : '' #} {% endif %}">
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </button>
+{% endmacro %}
+
+{% macro tableHeaderButton(path, icon, label='', title='', cssClass='btn-primary') %}
+    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
+       href="{{ path }}"
+    >
+        {{ ux_icon(icon, {class:'bi'}) }}
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{% macro tableHeaderButtonDropdown(path, label, queryName, enumsOptions) %}
+    <div class="dropdown d-inline-block">
+        <button type="button"
+                class="btn {% if app.request.query.get((queryName)) != '' %}btn-dark{% else %}btn-link{% endif %} text-decoration-none btn-sm dropdown-toggle show dropdown-sm {% if app.request.query.get((queryName)) != '' %}active{% endif %}"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }}
+            {{ label }}
+        </button>
+        <ul class="dropdown-menu">
+            {% for option in enumsOptions %}
+                {% if option.value != '' %}
+                    <li>
+                        <a class="dropdown-item"
+                           href="{{ path(path, {(queryName): option.value} + app.request.query.all) }}">
+                            {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %}
+                            {{ ux_icon(icon, {class:'bi'}) }}
+                            {{ option.getLabelFrom(option) }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}

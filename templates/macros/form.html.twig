@@ -1,0 +1,102 @@
+{% macro formEnumRow(form, field, message, cssClass='mb-3', labelCssClass='col-sm-2', containerCssClass='col-sm-10') %}
+    {% set typeMessage = form.vars.errors|find(error => error.message == message) %}
+    <div class="{{ cssClass }} row {% if typeMessage != null and typeMessage.message == message %}is-invalid{% endif %}">
+        {{ form_label(form.type, null, {label_attr:{'class':labelCssClass}}) }}
+        <div class="{{ containerCssClass }}">
+            {% if typeMessage != null and typeMessage.message == message %}
+                {{ form_widget(field,{'attr': {'class': 'is-invalid'}}) }}
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+
+            {% if typeMessage != null and typeMessage.message == message %}
+                <div class="invalid-feedback d-block">
+                    {{ form.vars.errors|find(error => error.message == message).message }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro formAddressCol(form) %}
+    <div class="mb-3 row" data-controller="address"
+{#         data-action="address:onSelectProvince->content-loader#refreshContent"#}
+         data-address-url-value="{{ path('province_municipality', {'id': 0}) }}"
+    >
+        {#        {{ form_row(form.address.province) }} #}
+        {{ _self.formCol(form.address.province) }}
+        {#        {{ form_row(form.address.municipality) }} #}
+        {{ _self.formCol(form.address.municipality) }}
+    </div>
+{% endmacro %}
+
+{% macro formStreetAddressCol(form) %}
+    <div class="mb-3 row" data-controller="address"
+{#         data-action="address:onSelectProvince->content-loader#refreshContent"#}
+         data-address-url-value="{{ path('province_municipality', {'id': 0}) }}"
+    >
+{#        {{ _self.formCol(form.streetAddress.street) }}#}
+        <div class="col {% if form_errors(form.streetAddress.street) %}is-invalid{% endif %}">
+            <div class="mb-0 row">
+                {{ form_label(form.streetAddress.street, null, {label_attr:{'class':'col-sm-6'}}) }}
+                <div class="col-sm-6" style="">
+                    {{ form_widget(form.streetAddress.street, {attr:{'class': (form_errors(form.streetAddress.street) ? 'is-invalid' : '')}}) }}
+                    {{ form_help(form.streetAddress.street) }}
+                    {% if form_errors(form.streetAddress.street) %}
+                        {{ form_errors(form.streetAddress.street) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {{ _self.formCol(form.streetAddress.address.province) }}
+        {{ _self.formCol(form.streetAddress.address.municipality) }}
+    </div>
+{% endmacro %}
+
+{% macro formAddressRow(form) %}
+    <div class="mb-3 row" data-controller="address content-loader"
+         data-action="address:onSelectProvince->content-loader#refreshContent"
+         data-address-url-value="{{ path('province_municipality', {'id': 0}) }}"
+    >
+        {{ form_row(form.address.province) }}
+        {{ form_row(form.address.municipality) }}
+    </div>
+{% endmacro %}
+
+{% macro formCol(field, containerCssClass='', icon=null, containerStyle='') %}
+    <div class="col {% if form_errors(field) %}is-invalid{% endif %}">
+        <div class="mb-0 row">
+            {{ form_label(field, null, {label_attr:{'class':'col-sm-4'}}) }}
+            <div class="{{ containerCssClass }} col-sm-8" style="{{ containerStyle }}">
+                {{ form_widget(field, {attr:{'class': (form_errors(field) ? 'is-invalid' : '')}}) }}
+                {% if icon is not null %}
+                    <button class="btn btn-outline-secondary" type="button">
+                        {{ ux_icon(icon, {class:'bi'}) }}
+                    </button>
+                {% endif %}
+                {{ form_help(field) }}
+                {% if form_errors(field) %}
+                    {{ form_errors(field) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro formRow(field, containerCssClass='', icon=null, containerStyle='') %}
+    <div class="mb-3 row">
+        {{ form_label(field, null, {label_attr:{'class':'col-sm-2'}}) }}
+        <div class="{{ containerCssClass }} col-sm-10" style="{{ containerStyle }}">
+            {{ form_widget(field, {attr:{'class': (form_errors(field) ? 'is-invalid' : '')}}) }}
+            {% if icon is not null %}
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#add-province">
+                    {{ ux_icon(icon, {class:'bi'}) }}
+                </button>
+            {% endif %}
+            {{ form_help(field) }}
+            {% if form_errors(field) %}
+                {{ form_errors(field) }}
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

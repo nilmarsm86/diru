@@ -1,0 +1,29 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Organismos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Organismos', 'bi:list-check') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Organismos'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de organismos</h2>
+
+{#    {{ include('partials/_index_container.html.twig', {#}
+{#        list: 'organism/_list.html.twig',#}
+{#        rest_data_action: 'page:onChangeState->content-loader#refreshContent'#}
+{#    }) }}#}
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('organism/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

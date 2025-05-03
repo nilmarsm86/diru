@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Entidades corporativas: {{ corporate_entity.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Entidades Coporativas', 'bi:building') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Entidades', href: path('app_corporate_entity_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Entidad corporativa: {{ corporate_entity.name }}</h2>
+
+    {{ include('corporate_entity/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

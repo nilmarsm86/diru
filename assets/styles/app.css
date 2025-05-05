@@ -161,6 +161,11 @@ label.required::after {
     color: var(--bs-danger);
 }
 
+label[for=registration_form_agreeTerms].required::after {
+    content: '';
+}
+
+
 form div.help-text {
     font-size: .75rem;
     font-style: italic;
@@ -207,5 +212,10 @@ form div.help-text {
     border-color: var(--bs-form-invalid-border-color);
     border-top-right-radius: var(--bs-border-radius) !important;
     border-bottom-right-radius: var(--bs-border-radius) !important;
+}
 
+.bg-register-image, .bg-login-image{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }

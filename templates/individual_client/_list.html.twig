@@ -1,24 +1,92 @@
-{% embed "embeds/card.html.twig" %}
-    {% from 'macros/buttons.html.twig' import tableActionButton %}
+{#{% embed "embeds/card.html.twig" %}#}
+{#    {% from 'macros/buttons.html.twig' import tableActionButton %}#}
 
-    {% block card_css_class %}mb-4{% endblock %}
+{#    {% block card_css_class %}mb-4{% endblock %}#}
 
-    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %}
+{#    {% block card_header_css_class %}d-flex justify-content-between align-items-center{% endblock %}#}
 
-    {% block card_title %}Listado de personas naturales{% endblock %}
+{#    {% block card_title %}Listado de personas naturales{% endblock %}#}
 
-    {% block card_header_options %}
+{#    {% block card_header_options %}#}
+{#        <div>#}
+{#            {{ tableActionButton(path('app_individual_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente') }}#}
+{#        </div>#}
+{#    {% endblock %}#}
+
+{#    {% block card_body %}#}
+{#        {% embed "embeds/table.html.twig" %}#}
+{#            {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}#}
+{#            {% from 'macros/link.html.twig' import filterLink %}#}
+
+{#            {% block table_head %}#}
+{#                <tr>#}
+{#                    <th>Nombre</th>#}
+{#                    <th>Carnet</th>#}
+{#                    <th>Pasaporte</th>#}
+{#                    <th>Teléfono</th>#}
+{#                    <th>Correo</th>#}
+{#                    <th>Provincia</th>#}
+{#                    <th>Municipio</th>#}
+{#                    <th></th>#}
+{#                </tr>#}
+{#            {% endblock %}#}
+
+{#            {% block table_body %}#}
+{#                {% for client in paginator.getData() %}#}
+{#                    <tr>#}
+{#                        <td>{{ client.person.name }}</td>#}
+{#                        <td>{{ client.person.identificationNumber }}</td>#}
+{#                        <td>{{ client.person.passport }}</td>#}
+{#                        <td>{{ client.phone }}</td>#}
+{#                        <td>{{ client.email }}</td>#}
+{#                        <td>#}
+{#                            <a href="{{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': client.getProvinceName()}) }}"#}
+{#                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">#}
+{#                                {{ client.getProvinceName() }}#}
+{#                            </a>#}
+{#                        </td>#}
+{#                        <td>#}
+{#                            <a href="{{ filterLink(client.getMunicipalityName()) }}" class="text-decoration-none">#}
+{#                                {{ client.getMunicipalityName() }}#}
+{#                            </a>#}
+{#                        </td>#}
+{#                        <td class="text-end" data-controller="submit-form-async"#}
+{#                            data-action="submit->submit-form-async#submit">#}
+{#                            {{ tableActionButton(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente') }}#}
+{#                            {{ tableActionButton(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente') }}#}
+{#                            {{ deleteFormButton(path('app_individual_client_delete', {'id': client.id}), 'bi:trash', 'delete' ~ client.id, '', 'Eliminar cliente', 'Está seguro que desea eliminar el cliente?') }}#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% else %}#}
+{#                    <tr>#}
+{#                        <td colspan="4">No se encontraron clietes individuales</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            {% endblock %}#}
+{#        {% endembed %}#}
+{#    {% endblock %}#}
+{#{% endembed %}#}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de personas naturales',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
         <div>
-            {{ tableActionButton(path('app_individual_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente') }}
+            {{ tableActionButton3(path('app_individual_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_individual_client_new')})) }}
         </div>
     {% endblock %}
 
-    {% block card_body %}
-        {% embed "embeds/table.html.twig" %}
-            {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}
-            {% from 'macros/link.html.twig' import filterLink %}
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
 
-            {% block table_head %}
+            {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
                     <th>Carnet</th>
@@ -31,16 +99,18 @@
                 </tr>
             {% endblock %}
 
-            {% block table_body %}
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
                 {% for client in paginator.getData() %}
-                    <tr>
+                    <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ client.person.name }}</td>
                         <td>{{ client.person.identificationNumber }}</td>
                         <td>{{ client.person.passport }}</td>
                         <td>{{ client.phone }}</td>
                         <td>{{ client.email }}</td>
                         <td>
-{#                            <a href="{{ path(app.request.attributes.get('_route'), {...app.request.query.all, 'filter': client.getProvinceName()}) }}"#}
                             <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
                                 {{ client.getProvinceName() }}
                             </a>
@@ -50,19 +120,28 @@
                                 {{ client.getMunicipalityName() }}
                             </a>
                         </td>
-                        <td class="text-end" data-controller="submit-form-async"
-                            data-action="submit->submit-form-async#submit">
-                            {{ tableActionButton(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente') }}
-                            {{ tableActionButton(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente') }}
-                            {{ deleteFormButton(path('app_individual_client_delete', {'id': client.id}), 'bi:trash', 'delete' ~ client.id, '', 'Eliminar cliente', 'Está seguro que desea eliminar el cliente?') }}
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_show', {'id': client.id})})) }}
+                            {{ tableActionButton3(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_edit', {'id': client.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_individual_client_delete', {'id': client.id}),
+                                confirm: 'Está seguro que desea eliminar el cliente?',
+                                token: 'delete' ~ client.id,
+                                title: 'Eliminar cliente',
+                                icon: 'bi:trash'
+                            }) }}
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4">No se encontraron clietes individuales</td>
+                        <td colspan="2">No se encontraron provincias.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}
-        {% endembed %}
+
+        {% endcomponent %}
+
     {% endblock %}
-{% endembed %}
+
+{% endcomponent %}

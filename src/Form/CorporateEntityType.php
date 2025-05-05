@@ -63,7 +63,6 @@ class CorporateEntityType extends AbstractType
             ],
             'province' => 0,
             'municipality' => 0,
-            'crud' => false,
             'error_mapping' => [
                 'enumType' => 'type',
             ],

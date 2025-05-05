@@ -54,7 +54,9 @@ class RegistrationFormType extends AbstractType
                     'aria-describedby' => 'usernameHelp'
                 ]
             ])
-            ->add('agreeTerms', CheckboxType::class)
+            ->add('agreeTerms', CheckboxType::class, [
+                'label' => false
+            ])
 
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,

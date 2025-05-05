@@ -30,13 +30,13 @@
         } %}
 
             {% block message %}
-                {% if app.request.query.get('type') != '' %}
+                {% if app.request.query.get('entity') != '' %}
                     <span class="text-primary">
-                        Entidades corporativas de tipo
-                        {% if app.request.query.get('type') == '0' %}Cliente{% endif %}
-                        {% if app.request.query.get('type') == '1' %}Constructora{% endif %}
-                        {% if app.request.query.get('type') == '2' %}Cliente y Constructora{% endif %}
-                    </span>
+                        Entidades corporativas de tipo <span class="badge text-bg-primary">
+                        {% if app.request.query.get('entity') == '0' %}Cliente{% endif %}
+                            {% if app.request.query.get('entity') == '1' %}Constructora{% endif %}
+                            {% if app.request.query.get('entity') == '2' %}Cliente y Constructora{% endif %}
+                    </span></span>
                 {% endif %}
             {% endblock %}
 
@@ -46,7 +46,7 @@
                     <th>Código</th>
                     <th>NIT</th>
                     <th>Organismo</th>
-                    {% if app.request.query.get('type') == '' %}
+                    {% if app.request.query.get('entity') == '' %}
                         <th>Tipo</th>
                     {% endif %}
                     <th>Provincia</th>
@@ -71,7 +71,7 @@
                                 {{ corporateEntity.organism.name }}
                             </a>
                         </td>
-                        {% if app.request.query.get('type') == '' %}
+                        {% if app.request.query.get('entity') == '' %}
                             <td>{{ corporateEntity.type.getLabelFrom(corporateEntity.type) }}</td>
                         {% endif %}
                         <td>

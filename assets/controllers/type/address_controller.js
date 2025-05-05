@@ -29,8 +29,8 @@ export default class extends AbstractController {
         event.detail = {};
         event.detail.url = this.urlValue.replace('0', this.provinceTarget.value);
         this.refreshContent(event);
-        this.municipalityTarget.disabled = (!this.provinceTarget.value);
-        this.municipalityTarget.dispatchEvent(new Event('change'));
+        // this.municipalityTarget.disabled = (!this.provinceTarget.value);
+        // this.municipalityTarget.dispatchEvent(new Event('change'));
     }
 
 }

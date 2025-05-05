@@ -6,11 +6,11 @@
 
 {% block content %}
     <div class="col-lg-5 d-none d-lg-flex">
-        <div class="flex-grow-1 bg-register-image"
-             style="background-image: url({{ asset('images/logo.jpg') }});background-repeat: no-repeat;background-position: center;background-size: contain;"></div>
+        <div class="flex-grow-1 bg-register-image rounded"
+             style="background-image: url({{ asset('images/logo.jpg') }});"></div>
     </div>
     <div class="col-lg-7">
-        <div class="p-5">
+        <div class="p-5" style="padding-top: 0 !important;padding-bottom: 0 !important;">
             <div class="text-center">
                 <h4 class="mb-4">
                     <div class="sidebar-brand-icon rotate-n-15" style="display:inline">
@@ -48,15 +48,15 @@
                 </div>
             </div>
 
-{#            <div class="mb-3 input-group">#}
-{#                <span class="input-group-text login-text-icon" id="basic-addon1">#}
-{#                    {{ ux_icon('fa:user', {class:'bi'}) }}#}
-{#                </span>#}
-{#                {{ form_widget(form.username) }}#}
-{#            </div>#}
-{#            <div class="mb-3 input-group">#}
-{#                {{ form_errors(form.username) }}#}
-{#            </div>#}
+            {#            <div class="mb-3 input-group"> #}
+            {#                <span class="input-group-text login-text-icon" id="basic-addon1"> #}
+            {#                    {{ ux_icon('fa:user', {class:'bi'}) }} #}
+            {#                </span> #}
+            {#                {{ form_widget(form.username) }} #}
+            {#            </div> #}
+            {#            <div class="mb-3 input-group"> #}
+            {#                {{ form_errors(form.username) }} #}
+            {#            </div> #}
             <div class="row mb-3">
                 <div class="col-sm-6 mb-3 mb-sm-0 input-group" style="width:50%">
                     <span class="input-group-text login-text-icon" id="basic-addon1">
@@ -91,7 +91,7 @@
                     <span class="input-group-text login-text-icon" id="basic-addon1">
                         {{ ux_icon('fa:edit', {class:'bi'}) }}
                     </span>
-                    {{ form_widget(form.username) }}
+                    {{ form_widget(form.username, {attr:{'data-controller':'lower'}}) }}
                 </div>
             </div>
             <div class="row mb-3">
@@ -122,13 +122,11 @@
                 {{ form_errors(form.plainPassword.first) }}
             </div>
             <div class="mb-3 input-group">
-                <div class="form-check">
-                    {{ form_widget(form.agreeTerms) }}
-                    <label class="form-check-label" for="formCheck-1">
-                        <strong>Aceptar términos</strong>
-                    </label>
-                    {{ form_errors(form.agreeTerms) }}
-                </div>
+                {{ form_widget(form.agreeTerms, {attr:{'style':'margin-top:10px'}}) }}
+                <button class="btn btn-link" data-bs-target="#terms-conditions" type="button" data-bs-toggle="modal">
+                    Aceptar Terminos y condiciones
+                </button>
+                {{ form_errors(form.agreeTerms) }}
             </div>
             <button class="btn btn-primary d-block btn-user w-100" type="submit">
                 {{ ux_icon('fa:user-plus', {class:'bi'}) }} Crear Cuenta
@@ -143,4 +141,16 @@
             </div>
         </div>
     </div>
+
+    {% component 'Modal:Modal' with {
+        title: 'Términos y condiciones',
+        id: 'terms-conditions'
+    } %}
+        {% block body %}
+            {{ include('static/term_conditions.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}
+
+
+

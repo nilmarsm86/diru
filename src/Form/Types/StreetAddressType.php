@@ -15,14 +15,16 @@ class StreetAddressType extends AbstractType
         $builder
             ->add('street', TextareaType::class, [
                 'label' => 'Dirección:',
-                'mapped' => false,
+//                'mapped' => false,
                 'data' => $options['street'],
                 'constraints' => $this->getStreetConstraints($options),
+//                'property_path' => '[address]'
             ])
             ->add('address', AddressType::class, [
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
+                'live_form' => $options['live_form']
             ]);
     }
 
@@ -35,11 +37,13 @@ class StreetAddressType extends AbstractType
             'province' => 0,
             'municipality' => 0,
             'street' => '',
+            'live_form' => false
         ]);
 
         $resolver->setAllowedTypes('province', ['int']);
         $resolver->setAllowedTypes('municipality', ['int']);
         $resolver->setAllowedTypes('street', ['string']);
+        $resolver->setAllowedTypes('live_form', 'bool');
     }
 
     /**

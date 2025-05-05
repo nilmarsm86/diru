@@ -3,13 +3,8 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\CorporateEntity;
-use App\Entity\Municipality;
-use App\Entity\Province;
 use App\Form\CorporateEntityType;
-use App\Form\MunicipalityType;
-use App\Form\ProvinceType;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\OrganismRepository;
@@ -64,18 +59,6 @@ final class CorporateEntityForm extends AbstractController
         $this->ce = $ce;
         if (is_null($this->ce)) {
             $this->ce = new CorporateEntity();
-        } else {
-//            if (!is_null($this->ce->getOrganism())) {
-//                $this->organism = $this->ce->getOrganism()->getId();
-//            }
-//
-//            if (!is_null($this->ce->getMunicipality())) {
-//                $this->province = $this->ce->getMunicipality()->getProvince()->getId();
-//            }
-//
-//            if (!is_null($this->ce->getMunicipality())) {
-//                $this->municipality = $this->ce->getMunicipality()->getId();
-//            }
         }
     }
 
@@ -142,11 +125,6 @@ final class CorporateEntityForm extends AbstractController
                     if ((string)$mun->getProvince()->getId() !== $this->formValues['address']['province']) {
                         $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
                         if (!is_null($prov)) {
-//                            if ($prov->getMunicipalities()->count()) {
-//                                $this->formValues['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
-//                            } else {
-//                                $this->formValues['address']['municipality'] = '';
-//                            }
                             $this->formValues['address']['municipality'] = ($prov->getMunicipalities()->count())
                                 ? (string)$prov->getMunicipalities()->first()->getId()
                                 : '';

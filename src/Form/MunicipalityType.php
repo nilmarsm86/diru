@@ -16,34 +16,28 @@ class MunicipalityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $provinceAttr = [
+            'class' => Province::class,
+            'choice_label' => 'name',
+            'label' => 'Provincia:',
+            'attr' => [
+                'data-model' => 'province'
+            ],
+            'query_builder' => $this->getProvinceQueryBuilder(),
+        ];
+
         $builder
             ->add('name', null, [
-                'label' => 'Nombre:'
+                'label' => 'Nombre:',
             ]);
 
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
-                'class' => Province::class,
-                'choice_label' => 'name',
-                'label' => 'Provincia:',
                 'modal_id' => '#add-province',
-                'attr' => [
-                    'data-model' => 'province'
-                ],
-                'path' => 'app_province_options'
-            ]);
+                'path' => 'app_province_options',
+            ]+$provinceAttr);
         } else {
-            $builder->add('province', EntityType::class, [
-                'class' => Province::class,
-                'choice_label' => 'name',
-                'label' => 'Provincia:',
-//                'modal_id' => '#add-province',
-                'attr' => [
-                    'data-model' => 'province'
-                ],
-//                'path' => 'app_province_options'
-                'query_builder' => $this->getProvinceQueryBuilder(),
-            ]);
+            $builder->add('province', EntityType::class, []+$provinceAttr);
         }
     }
 

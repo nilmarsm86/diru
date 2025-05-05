@@ -12,7 +12,7 @@ export default class extends AbstractController {
 
     static values = {
         modal: {type: String, default: ''},
-        render: {type: Boolean, default: false},
+        // render: {type: Boolean, default: false},
     };
 
     connect() {

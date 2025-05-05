@@ -30,6 +30,7 @@ class IndividualClientType extends AbstractType
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
+                'live_form' => $options['live_form']
             ]);
     }
 
@@ -43,10 +44,12 @@ class IndividualClientType extends AbstractType
             'province' => 0,
             'municipality' => 0,
             'street' => '',
+            'live_form' => false
         ]);
 
         $resolver->setAllowedTypes('province', 'int');
         $resolver->setAllowedTypes('municipality', 'int');
         $resolver->setAllowedTypes('street', 'string');
+        $resolver->setAllowedTypes('live_form', 'bool');
     }
 }

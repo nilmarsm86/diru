@@ -16,11 +16,12 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Personas naturales</h2>
+    <h2 class="mb-4">Gestion de personas naturales</h2>
 
-    {{ include('partials/_index_container.html.twig', {
-        list: 'individual_client/_list.html.twig',
-        rest_data_action: 'page:onChangeState->content-loader#refreshContent'
-    }) }}
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('individual_client/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 
 {% endblock %}

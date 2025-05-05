@@ -40,9 +40,6 @@ class AddressType extends AbstractType
                 'constraints' => $this->getProvinceConstraints($options),
                 'data' => $province,
                 'query_builder' => $this->getProvinceQueryBuilder($options),
-                'attr' => [
-//                    'data-model' => 'norender|province',
-                ],
                 'modal_id' => '#add-province',
                 'path' => 'app_province_options'
             ])
@@ -54,10 +51,6 @@ class AddressType extends AbstractType
                 'label' => 'Municipio:',
                 'constraints' => $this->getMunicipalityConstraints($options),
                 'data' => $municipality,
-                'attr' => [
-//                    'data-model' => 'norender|municipality',
-//                    'data-model' => 'municipality',
-                ],
                 'modal_id' => '#add-municipality',
                 'path' => 'app_municipality_options'
             ]);

@@ -38,9 +38,9 @@ class Client
     #[ORM\JoinColumn(nullable: false)]
     protected ?Municipality $municipality = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
-    private ?string $address = null;
+    #[ORM\Column(type: Types::TEXT, name: 'address')]
+//    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
+    private ?string $street = null;
 
     public function getId(): ?int
     {
@@ -95,14 +95,14 @@ class Client
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getStreet(): ?string
     {
-        return $this->address;
+        return $this->street;
     }
 
-    public function setAddress(string $address): static
+    public function setStreet(string $street): static
     {
-        $this->address = $address;
+        $this->street = $street;
 
         return $this;
     }

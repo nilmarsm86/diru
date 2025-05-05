@@ -26,8 +26,6 @@ final class CorporateEntityController extends AbstractController
 {
     use MunicipalityTrait;
 
-    /**
-     */
     #[Route(name: 'app_corporate_entity_index', methods: ['GET'])]
     public function index(Request $request, CorporateEntityRepository $corporateEntityRepository): Response
     {
@@ -35,7 +33,7 @@ final class CorporateEntityController extends AbstractController
         $amountPerPage = $request->query->get('amount', 10);
         $pageNumber = $request->query->get('page', 1);
 
-        $type = $request->query->get('type', '');
+        $type = $request->query->get('entity', '');
 
         $data = $corporateEntityRepository->findEntities($filter, $amountPerPage, $pageNumber, $type);
 
@@ -54,7 +52,7 @@ final class CorporateEntityController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/new', name: 'app_corporate_entity_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, CorporateEntityRepository $corporateEntityRepository, CrudActionService $crudActionService): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $corporateEntity = new CorporateEntity();
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [

@@ -2,18 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\AddressTrait;
 use App\Repository\EnterpriseClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EnterpriseClientRepository::class)]
 class EnterpriseClient extends Client
 {
+    use AddressTrait;
+
     #[ORM\ManyToOne(inversedBy: 'enterpriseClients')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CorporateEntity $corporateEntity = null;
-
-    #[ORM\Column]
-    private ?bool $activeContract = false;
 
     public function getCorporateEntity(): ?CorporateEntity
     {
@@ -27,15 +27,4 @@ class EnterpriseClient extends Client
         return $this;
     }
 
-    public function isActiveContract(): ?bool
-    {
-        return $this->activeContract;
-    }
-
-    public function setActiveContract(bool $activeContract): static
-    {
-        $this->activeContract = $activeContract;
-
-        return $this;
-    }
 }

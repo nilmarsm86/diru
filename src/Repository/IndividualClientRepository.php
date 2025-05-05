@@ -48,9 +48,6 @@ class IndividualClientRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    /**
-     * @inheritDoc
-     */
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
@@ -73,7 +70,6 @@ class IndividualClientRepository extends ServiceEntityRepository
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @param string $type
      * @return Paginator Returns an array of User objects
      */
     public function findIndividuals(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator

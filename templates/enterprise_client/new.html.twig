@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EnterpriseClient{% endblock %}
+
+{% block body %}
+    <h1>Create new EnterpriseClient</h1>
+
+    {{ include('enterprise_client/_form.html.twig') }}
+
+    <a href="{{ path('app_enterprise_client_index') }}">back to list</a>
+{% endblock %}

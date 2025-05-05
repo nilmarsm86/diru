@@ -1,0 +1,68 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}EnterpriseClient index{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>EnterpriseClient index</h1>#}
+
+{#    <table class="table">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>Id</th>#}
+{#                <th>Phone</th>#}
+{#                <th>Email</th>#}
+{#                <th>Street</th>#}
+{#                <th>actions</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for enterprise_client in enterprise_clients %}#}
+{#            <tr>#}
+{#                <td>{{ enterprise_client.id }}</td>#}
+{#                <td>{{ enterprise_client.phone }}</td>#}
+{#                <td>{{ enterprise_client.email }}</td>#}
+{#                <td>{{ enterprise_client.street }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('app_enterprise_client_show', {'id': enterprise_client.id}) }}">show</a>#}
+{#                    <a href="{{ path('app_enterprise_client_edit', {'id': enterprise_client.id}) }}">edit</a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="5">no records found</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+
+{#    <a href="{{ path('app_enterprise_client_new') }}">Create new</a>#}
+{#{% endblock %}#}
+
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Clientes', 'fa:user') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Clientes empresariales'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestion de clientes empresariales</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('enterprise_client/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+
+{% endblock %}
+

@@ -1,0 +1,76 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de clientes empresariales',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_enterprise_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_enterprise_client_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Representante</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Entidad</th>
+                    <th>Provincia</th>
+                    <th>Municipio</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for client in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ client.person.name }} ({{ client.email }})</td>
+                        <td>{{ client.phone }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.corporateEntity }}</td>
+                        <td>
+                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
+                                {{ client.getProvinceName() }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ filterLink(client.getMunicipalityName()) }}" class="text-decoration-none">
+                                {{ client.getMunicipalityName() }}
+                            </a>
+                        </td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_enterprise_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_enterprise_client_show', {'id': client.id})})) }}
+                            {{ tableActionButton3(path('app_enterprise_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_enterprise_client_edit', {'id': client.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_enterprise_client_delete', {'id': client.id}),
+                                confirm: 'Está seguro que desea eliminar el cliente?',
+                                token: 'delete' ~ client.id,
+                                title: 'Eliminar cliente',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">No se encontraron clientes empresariales.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

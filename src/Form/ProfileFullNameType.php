@@ -17,7 +17,7 @@ class ProfileFullNameType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Nombres: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left'
@@ -27,7 +27,7 @@ class ProfileFullNameType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Apellidos: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left'
@@ -37,7 +37,7 @@ class ProfileFullNameType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Carne de identidad: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',
@@ -47,7 +47,7 @@ class ProfileFullNameType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Teléfono: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',
@@ -57,7 +57,7 @@ class ProfileFullNameType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Correo: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',

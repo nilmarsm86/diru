@@ -18,7 +18,7 @@ class ProfilePasswordType extends AbstractType
                 'label_html' => true,
                 'label' => '<strong>Contraseña actual: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label'
+                    'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left'
@@ -33,6 +33,9 @@ class ProfilePasswordType extends AbstractType
                     ],
                     'label_html' => true,
                     'label' => '<strong>Nueva contraseña:</strong>',
+                    'label_attr' => [
+                        'class' => 'form-label col-sm-12'
+                    ]
                 ],
                 'second_options' => [
                     'attr' => [
@@ -41,6 +44,9 @@ class ProfilePasswordType extends AbstractType
                     ],
                     'label_html' => true,
                     'label' => '<strong>Repetir contraseña:</strong>',
+                    'label_attr' => [
+                        'class' => 'form-label col-sm-12'
+                    ]
                 ],
             ])
         ;

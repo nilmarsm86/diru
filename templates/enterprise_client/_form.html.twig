@@ -1,4 +1,62 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_enterprise_client_new',
+            label: 'Nuevo',
+            title: 'Nuevo cliente empresarial',
+            entity: enterprise_client,
+            state: 'form',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        {{ component('EnterpriseClientForm', {modal:null, ec: enterprise_client, ajax: ajax}) }}
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_enterprise_client_index', label: 'Listado', title:'Volver al listado'},
+            delete: {href: 'app_enterprise_client_delete', label: 'Eliminar', title:'Eliminar cliente'},
+            id: enterprise_client.id,
+            message: 'Está seguro que desea eliminar el cliente?',
+            state: 'form',
+            showButton: (showButton is defined and showButton == true) ? true : false,
+            entity: enterprise_client
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+{% component 'Modal:Modal' with {
+    title: 'Agregar Entidad',
+    id: 'add-entity'
+} %}
+    {% block body %}
+        {{ component('CorporateEntityForm', {modal:'add-entity', prov: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}
+
+{% component 'Modal:Modal' with {
+    title: 'Agregar Provincia',
+    id: 'add-province'
+} %}
+    {% block body %}
+        {{ component('ProvinceForm', {modal:'add-province', prov: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}
+
+{% component 'Modal:Modal' with {
+    title: 'Agregar Municipio',
+    id: 'add-municipality'
+} %}
+    {% block body %}
+        {{ component('MunicipalityForm', {modal:'add-municipality', mun: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}

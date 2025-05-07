@@ -1,11 +1,34 @@
-{% extends 'base.html.twig' %}
+{#{% extends 'base.html.twig' %}#}
 
-{% block title %}New EnterpriseClient{% endblock %}
+{#{% block title %}New EnterpriseClient{% endblock %}#}
 
-{% block body %}
-    <h1>Create new EnterpriseClient</h1>
+{#{% block body %}#}
+{#    <h1>Create new EnterpriseClient</h1>#}
 
-    {{ include('enterprise_client/_form.html.twig') }}
+{#    {{ include('enterprise_client/_form.html.twig') }}#}
 
-    <a href="{{ path('app_enterprise_client_index') }}">back to list</a>
+{#    <a href="{{ path('app_enterprise_client_index') }}">back to list</a>#}
+{#{% endblock %}#}
+
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Nuevo cliente empresarial{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Clientes', 'fa:user') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Clientes empresariales', href: path('app_enterprise_client_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar cliente empresarial</h2>
+
+    {{ include('enterprise_client/_form.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

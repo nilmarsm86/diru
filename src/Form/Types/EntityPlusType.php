@@ -22,6 +22,7 @@ class EntityPlusType extends AbstractType
             ->setDefault('icon', 'bi:plus-lg')
             ->setDefault('modal_id', '')
             ->setDefault('path', '')
+            ->setDefault('placeholder', '-Seleccionar-')
         ;
 
         $resolver->setAllowedTypes('icon', 'string');

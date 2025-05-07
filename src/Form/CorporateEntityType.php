@@ -34,24 +34,33 @@ class CorporateEntityType extends AbstractType
             ->add('type', CorporateEntityTypeEnumType::class, [
                 'label' => 'Tipo de entidad:',
             ])
-            ->add('organism', EntityPlusType::class, [
-                'class' => Organism::class,
-                'choice_label' => 'name',
-                'label' => 'Organismo:',
-                'placeholder' => '-Seleccione-',
-                'modal_id' => '#add-organism',
-                'attr' => [
-//                    'data-model' => 'norender|organism',
-                ],
-                'path' => 'app_organism_options'
-            ])
             ->add('address', AddressType::class, [
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
-                'live_form' => $options['live_form']
-            ])
-        ;
+                'live_form' => $options['live_form'],
+                'modal' => $options['modal']
+            ]);
+
+        $organismAttr = [
+            'class' => Organism::class,
+            'choice_label' => 'name',
+            'label' => 'Organismo:',
+            'placeholder' => '-Seleccione-',
+            'attr' => [
+//                    'data-model' => 'norender|organism',
+            ]
+        ];
+
+        if (is_null($options['modal'])) {
+            $builder
+                ->add('organism', EntityPlusType::class, [
+                    'modal_id' => '#add-organism',
+                    'path' => 'app_organism_options'
+                ]+$organismAttr);
+        } else {
+            $builder->add('organism', EntityType::class, []+$organismAttr);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -66,11 +75,13 @@ class CorporateEntityType extends AbstractType
             'error_mapping' => [
                 'enumType' => 'type',
             ],
-            'live_form' => false
+            'live_form' => false,
+            'modal' => null
         ]);
 
         $resolver->setAllowedTypes('province', 'int');
         $resolver->setAllowedTypes('municipality', 'int');
         $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 }

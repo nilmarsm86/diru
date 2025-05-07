@@ -31,29 +31,49 @@ class AddressType extends AbstractType
         $province = $this->provinceRepository->find($options['province']);
         $municipality = $this->municipalityRepository->find($options['municipality']);
 
-        $builder
-            ->add('province', EntityPlusType::class, [
-                'class' => Province::class,
-                'placeholder' => $options['province'] ? null : '-Seleccione-',
-                'label' => 'Provincia:',
-                'mapped' => false,
-                'constraints' => $this->getProvinceConstraints($options),
-                'data' => $province,
-                'query_builder' => $this->getProvinceQueryBuilder($options),
+        $provinceAttr = [
+            'class' => Province::class,
+            'placeholder' => $options['province'] ? null : '-Seleccione-',
+            'label' => 'Provincia:',
+            'mapped' => false,
+            'constraints' => $this->getProvinceConstraints($options),
+//            'attr' => [
+//                'data-model' => 'province'
+//            ],
+            'data' => $province,
+            'query_builder' => $this->getProvinceQueryBuilder($options),
+        ];
+
+        if (is_null($options['modal'])) {
+            $builder->add('province', EntityPlusType::class, [
                 'modal_id' => '#add-province',
                 'path' => 'app_province_options'
-            ])
-            ->add('municipality', EntityPlusType::class, [
-                'class' => Municipality::class,
-                'placeholder' => $options['municipality'] ? null : '-Seleccione una provincia-',
-                'query_builder' => $this->getMunicipalityQueryBuilder($options),
-//                'disabled' => $options['province'] ? false : true,
-                'label' => 'Municipio:',
-                'constraints' => $this->getMunicipalityConstraints($options),
-                'data' => $municipality,
+            ]+$provinceAttr);
+        } else {
+            $builder->add('province', EntityType::class, []+$provinceAttr);
+        }
+
+        $municipalityAttr = [
+            'class' => Municipality::class,
+            'placeholder' => $options['municipality'] ? null : '-Seleccione una provincia-',
+            'label' => 'Municipio:',
+//            'mapped' => false,
+            'constraints' => $this->getMunicipalityConstraints($options),
+//            'attr' => [
+//                'data-model' => 'province'
+//            ],
+            'data' => $municipality,
+            'query_builder' => $this->getMunicipalityQueryBuilder($options),
+        ];
+
+        if (is_null($options['modal'])) {
+            $builder->add('municipality', EntityPlusType::class, [
                 'modal_id' => '#add-municipality',
                 'path' => 'app_municipality_options'
-            ]);
+            ]+$municipalityAttr);
+        } else {
+            $builder->add('municipality', EntityType::class, []+$municipalityAttr);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -63,7 +83,8 @@ class AddressType extends AbstractType
             'municipality' => 0,
             'row' => false,
             'col' => true,
-            'live_form' => false
+            'live_form' => false,
+            'modal' => null
         ]);
 
         $resolver->setAllowedTypes('province', ['int']);
@@ -71,6 +92,7 @@ class AddressType extends AbstractType
         $resolver->setAllowedTypes('row', 'bool');
         $resolver->setAllowedTypes('col', 'bool');
         $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
     /**
@@ -139,11 +161,11 @@ class AddressType extends AbstractType
      */
     private function getMunicipalityQueryBuilder(array $options): Closure
     {
-        if($options['municipality']){
+        if ($options['municipality']) {
             return function (EntityRepository $er) use ($options): QueryBuilder|array {
-                return $er->createQueryBuilder('m')->where('m.id = '.$options['municipality']);
+                return $er->createQueryBuilder('m')->where('m.id = ' . $options['municipality']);
             };
-        }else{
+        } else {
             return function (EntityRepository $er) use ($options): QueryBuilder|array {
                 return $er->createQueryBuilder('m')->where('m.province = ' . $options['province']);
             };

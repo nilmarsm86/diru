@@ -159,7 +159,8 @@ final class CorporateEntityForm extends AbstractController
         return $this->createForm(CorporateEntityType::class, $this->ce, [
             'province' => $province ?? 0,
             'municipality' => $municipality ?? 0,
-            'live_form' => ($this->getDataModelValue() === 'on(change)|*')
+            'live_form' => ($this->getDataModelValue() === 'on(change)|*'),
+            'modal' => $this->modal
         ]);
     }
 

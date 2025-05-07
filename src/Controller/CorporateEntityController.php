@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
@@ -96,5 +97,18 @@ final class CorporateEntityController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la entidad.';
         return $crudActionService->deleteAction($request, $corporateEntityRepository, $corporateEntity, $successMsg, 'app_corporate_entity_index');
+    }
+
+    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('partials/_select_options.html.twig', [
+                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
+                'selected' => $corporateEntity->getId()
+            ]);
+        }
+
+        throw new BadRequestHttpException('Ajax request');
     }
 }

@@ -26,29 +26,30 @@ final class EnterpriseClientController extends AbstractController
     #[Route(name: 'app_enterprise_client_index', methods: ['GET'])]
     public function index(Request $request, EnterpriseClientRepository $enterpriseClientRepository, CrudActionService $crudActionService): Response
     {
-//        return $this->render('enterprise_client/index.html.twig', [
-//            'enterprise_clients' => $enterpriseClientRepository->findAll(),
-//        ]);
         return $crudActionService->indexAction($request, $enterpriseClientRepository, 'findEnterprises', 'enterprise_client');
     }
 
     #[Route('/new', name: 'app_enterprise_client_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $enterpriseClient = new EnterpriseClient();
-        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($enterpriseClient);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('enterprise_client/new.html.twig', [
-            'enterprise_client' => $enterpriseClient,
-            'form' => $form,
+//        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->persist($enterpriseClient);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->render('enterprise_client/new.html.twig', [
+//            'enterprise_client' => $enterpriseClient,
+//            'form' => $form,
+//        ]);
+        return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
+            'title' => 'Nuevo cliente empresarial',
+            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

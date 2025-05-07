@@ -77,7 +77,10 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="">Cliente empresa</a>
+                            <a class="dropdown-item {{ activeLink('app_enterprise_client_index') }}" href="{{ path('app_enterprise_client_index') }}">
+                                {{ ux_icon('fa:users', {class:'bi'}) }}
+                                Cliente empresa
+                            </a>
                         </li>
                     </ul>
                 </li>

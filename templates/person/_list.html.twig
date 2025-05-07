@@ -1,0 +1,61 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de representantes',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_person_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo representante', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_person_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Número de indentificación</th>
+                    <th>Pasaporte</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for person in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.identificationNumber }}</td>
+                        <td>{{ person.passport }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_person_show', {'id': person.id}), 'bi:eye', '', 'Detalle del representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_person_show', {'id': person.id})})) }}
+                            {{ tableActionButton3(path('app_person_edit', {'id': person.id}), 'fa:edit', '', 'Editar representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_person_edit', {'id': person.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_person_delete', {'id': person.id}),
+                                confirm: 'Está seguro que desea eliminar el representante?',
+                                token: 'delete' ~ person.id,
+                                title: 'Eliminar representante',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No se encontraron representantes.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

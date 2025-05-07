@@ -2,19 +2,27 @@
 
 namespace App\Form;
 
+use App\Entity\CorporateEntity;
 use App\Entity\IndividualClient;
 use App\Entity\Municipality;
 use App\Entity\Person;
 use App\Form\Types\AddressType;
+use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class IndividualClientType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -24,7 +32,20 @@ class IndividualClientType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Correo:'
             ])
-            ->add('person', PersonType::class)
+//            ->add('person', PersonType::class)
+            ->add('person', EntityPlusType::class, [
+                'class' => Person::class,
+                'placeholder' => '-Seleccione-',
+                'label' => 'Representantes:',
+//                'query_builder' => $this->getProvinceQueryBuilder($options),
+                'modal_id' => '#add-person',
+                'path' => $this->router->generate('app_person_options', ['id' => 0]),
+                'detail' => true,
+                'detail_title' => 'Detalle de los representantes',
+                'detail_id' => 'detail_person',
+                'detail_loading' => 'Cargando detalles de los representantes...',
+                'detail_url' => $this->router->generate('app_person_show', ['id' => 0])
+            ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],

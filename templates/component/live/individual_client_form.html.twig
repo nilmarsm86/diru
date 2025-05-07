@@ -7,16 +7,18 @@
         }
     }) }}
 
-    {{ form_row(form.person.name) }}
+{#    {{ form_row(form.person.name) }}#}
 
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.person.identificationNumber, {label_attr:{'class':'col-sm-4'}}) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.person.passport, {label_attr:{'class':'col-sm-4'}}) }}
-        </div>
-    </div>
+{#    <div class="mb-0 row">#}
+{#        <div class="col">#}
+{#            {{ form_row(form.person.identificationNumber, {label_attr:{'class':'col-sm-4'}}) }}#}
+{#        </div>#}
+{#        <div class="col">#}
+{#            {{ form_row(form.person.passport, {label_attr:{'class':'col-sm-4'}}) }}#}
+{#        </div>#}
+{#    </div>#}
+
+    {{ form_row(form.person) }}
 
     <div class="mb-0 row">
         <div class="col">

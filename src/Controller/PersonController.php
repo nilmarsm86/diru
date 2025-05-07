@@ -2,82 +2,97 @@
 
 namespace App\Controller;
 
+use App\Entity\Organism;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
+use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route('/person')]
 #[IsGranted('ROLE_ADMIN')]
 final class PersonController extends AbstractController
 {
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route(name: 'app_person_index', methods: ['GET'])]
-    public function index(PersonRepository $personRepository): Response
+    public function index(Request $request, PersonRepository $personRepository, CrudActionService $crudActionService): Response
     {
-        return $this->render('person/index.html.twig', [
-            'people' => $personRepository->findAll(),
-        ]);
+        return $crudActionService->indexAction($request, $personRepository, 'findPersons', 'person');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_person_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $person = new Person();
-        $form = $this->createForm(PersonType::class, $person);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($person);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('person/new.html.twig', [
-            'person' => $person,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $person, 'person', [
+            'title' => 'Nuevo representante',
+            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_person_show', methods: ['GET'])]
-    public function show(Person $person): Response
+    public function show(Request $request, Person $person, CrudActionService $crudActionService): Response
     {
-        return $this->render('person/show.html.twig', [
-            'person' => $person,
-        ]);
+        return $crudActionService->showAction($request, $person, 'person', 'person', 'Detalles del representante');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_person_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Person $person, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Person $person, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(PersonType::class, $person);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('person/edit.html.twig', [
-            'person' => $person,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $person, 'person', [
+            'title' => 'Modificar representante',
+            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
     #[Route('/{id}', name: 'app_person_delete', methods: ['POST'])]
     public function delete(Request $request, Person $person, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $person->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($person);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function options(Request $request, Person $person, PersonRepository $personRepository): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('partials/_select_options.html.twig', [
+                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
+                'selected' => $person->getId()
+            ]);
+        }
+
+        throw new BadRequestHttpException('Ajax request');
     }
 }

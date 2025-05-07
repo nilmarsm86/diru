@@ -1,8 +1,8 @@
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
-    extra: '',
+    extra: 'id="person_detail_' ~ person.id,
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: title
+    title: title,
 } %}
 
     {% block header %}
@@ -11,25 +11,44 @@
             label: 'Nuevo',
             title: 'Nuevo representante',
             entity: person,
-            state: 'form',
+            state: 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}
 
     {% block body %}
-        {{ component('PersonForm', {modal:null, per: person, ajax: ajax}) }}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ person.name }}</td>
+                </tr>
+                <tr>
+                    <th>Número de identificación:</th>
+                    <td>{{ person.name }}</td>
+                </tr>
+                <tr>
+                    <th>Pasaporte:</th>
+                    <td>{{ person.passport }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     {% endblock %}
 
     {% block footer %}
         {{ include('partials/_card_footer.html.twig', {
             list: {href: 'app_person_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_person_edit', label: 'Editar', title:'Editar representante'},
             delete: {href: 'app_person_delete', label: 'Eliminar', title:'Eliminar representante'},
             id: person.id,
             message: 'Está seguro que desea eliminar el representante?',
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: person
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}
 
 {% endcomponent %}
+
+

@@ -7,6 +7,7 @@ use App\Entity\IndividualClient;
 use App\Form\IndividualClientType;
 use App\Repository\IndividualClientRepository;
 use App\Repository\MunicipalityRepository;
+use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,6 +49,9 @@ final class IndividualClientForm extends AbstractController
     #[LiveProp(writable: true)]
     public int $municipality = 0;
 
+    #[LiveProp(writable: true)]
+    public int $person = 0;
+
     public function __construct(protected readonly ProvinceRepository $provinceRepository, protected readonly MunicipalityRepository $municipalityRepository)
     {
 
@@ -84,6 +88,11 @@ final class IndividualClientForm extends AbstractController
      */
     public function preValue(): void
     {
+        if ($this->person !== 0) {
+            $this->formValues['person'] = (string)$this->person;
+            $this->person = 0;
+        }
+
         if ($this->street !== '') {
             $this->formValues['streetAddress']['street'] = (string)$this->street;
             $this->street = '';
@@ -148,7 +157,7 @@ final class IndividualClientForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(IndividualClientRepository $individualClientRepository, MunicipalityRepository $municipalityRepository): ?Response
+    public function save(IndividualClientRepository $individualClientRepository, MunicipalityRepository $municipalityRepository, PersonRepository $personRepository): ?Response
     {
         $this->preValue();
 
@@ -159,6 +168,9 @@ final class IndividualClientForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var IndividualClient $ic */
             $ic = $this->getForm()->getData();
+
+            $person = $personRepository->find((int)$this->formValues['person']);
+            $ic->setPerson($person);
 
             $ic->setStreet($this->formValues['streetAddress']['street']);
 

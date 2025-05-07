@@ -8,6 +8,8 @@ use App\Entity\Organism;
 use App\Form\Types\AddressType;
 use App\Form\Types\CorporateEntityTypeEnumType;
 use App\Form\Types\EntityPlusType;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -49,7 +51,8 @@ class CorporateEntityType extends AbstractType
             'placeholder' => '-Seleccione-',
             'attr' => [
 //                    'data-model' => 'norender|organism',
-            ]
+            ],
+            'query_builder' => $this->getOrganismQueryBuilder($options),
         ];
 
         if (is_null($options['modal'])) {
@@ -83,5 +86,16 @@ class CorporateEntityType extends AbstractType
         $resolver->setAllowedTypes('municipality', 'int');
         $resolver->setAllowedTypes('live_form', 'bool');
         $resolver->setAllowedTypes('modal', ['null', 'string']);
+    }
+
+    /**
+     * @param array $options
+     * @return Closure
+     */
+    private function getOrganismQueryBuilder(array $options): \Closure
+    {
+        return function (EntityRepository $er) use ($options): QueryBuilder|array {
+            return $er->createQueryBuilder('o')->orderBy('o.name');
+        };
     }
 }

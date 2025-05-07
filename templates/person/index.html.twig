@@ -1,49 +1,25 @@
 {% extends 'content.html.twig' %}
 
-{% block title %}Person index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Provincias{% endblock %}
 
 {% block content %}
-    {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+    <div class="row">
+        {{ h1('Representantes') }}
 
-    <h1>Personas</h1>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Representantes'},
+        ]) }}
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-{#                <th>Id</th>#}
-                <th>Nombre</th>
-                <th>Carne</th>
-                <th>Pasaporte</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for person in people %}
-            <tr>
-                <td>{{ person.name }}</td>
-                <td>{{ person.identificationNumber }}</td>
-                <td>{{ person.passport }}</td>
-                <td>
-{#                    <a class="btn btn-sm btn-primary" href="{{ path('app_person_show', {'id': person.id}) }}">show</a>#}
-                    {{ tableActionButton3(path('app_person_show', {'id': person.id}), 'bi:eye', '', 'Detalle de la persona', stimulusAction('twig/table/table', 'detailElement:prevent', null, {url:path('app_person_show', {'id': person.id})})) }}
-{#                    <a class="btn btn-sm btn-primary" href="{{ path('app_person_edit', {'id': person.id}) }}">edit</a>#}
-                    {{ tableActionButton3(path('app_person_edit', {'id': person.id}), 'fa:edit', '', 'Editar persona', stimulusAction('twig/table/table', 'editElement:prevent', null, {url:path('app_person_edit', {'id': person.id})})) }}
-                    {{ component('DeleteForm', {
-                        path: path('app_person_delete', {'id': person.id}),
-                        confirm: 'Está seguro que desea eliminar la persona?',
-                        token: 'delete' ~ person.id,
-                        title: 'Eliminar persona',
-                        icon: 'bi:trash'
-                    }) }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">No se encontraron personas</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <h2 class="mb-4">Gestión de representantes</h2>
 
-    <a href="{{ path('app_person_new') }}">Nueva persona</a>
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('person/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

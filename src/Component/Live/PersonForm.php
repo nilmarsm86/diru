@@ -5,8 +5,11 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
 use App\Entity\Organism;
+use App\Entity\Person;
 use App\Form\OrganismType;
+use App\Form\PersonType;
 use App\Repository\OrganismRepository;
+use App\Repository\PersonRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -18,8 +21,8 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/organism_form.html.twig')]
-final class OrganismForm extends AbstractController
+#[AsLiveComponent(template: 'component/live/person_form.html.twig')]
+final class PersonForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -30,7 +33,7 @@ final class OrganismForm extends AbstractController
      * The initial data used to create the form.
      */
     #[LiveProp]
-    public ?Organism $org = null;
+    public ?Person $per = null;
 
     #[LiveProp]
     public ?string $modal = null;
@@ -38,26 +41,26 @@ final class OrganismForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
-    public function mount(?Organism $org = null): void
+    public function mount(?Person $per = null): void
     {
-        $this->org = (is_null($org)) ? new Organism() : $org;
+        $this->per = (is_null($per)) ? new Person() : $per;
     }
 
     /**
      * @param Organism $organism
      * @return void
      */
-    private function modalManage(Organism $organism): void
+    private function modalManage(Person $person): void
     {
         $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
+            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
             'type' => 'text-bg-primary',
-            'message' => 'Seleccione el nuevo organismo agregado.'
+            'message' => 'Selecione el representante agregado.'
         ]);
 
         $this->dispatchBrowserEvent('type--entity-plus:update', [
             'data' => [
-                'organism' => $organism->getId()
+                'person' => $person->getId()
             ],
             'modal' => $this->modal,
             'response' => $template
@@ -65,7 +68,7 @@ final class OrganismForm extends AbstractController
 
         $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
 
-        $this->org = new Organism();
+        $this->per = new Person();
         $this->resetForm();//establecer un objeto provincia nuevo
     }
 
@@ -76,12 +79,12 @@ final class OrganismForm extends AbstractController
     private function ajaxManage(string $successMsg): void
     {
         $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
+            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
             'type' => 'text-bg-success',
             'message' => $successMsg
         ]);
 
-        $this->org = new Organism();
+        $this->per = new Person();
         $this->emitSuccess([
             'response' => $template
         ]);
@@ -89,27 +92,27 @@ final class OrganismForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(OrganismType::class, $this->org);
+        return $this->createForm(PersonType::class, $this->per);
     }
 
     /**
      * @throws Exception
      */
     #[LiveAction]
-    public function save(OrganismRepository $organismRepository): ?Response
+    public function save(PersonRepository $personRepository): ?Response
     {
-        $successMsg = (is_null($this->org->getId())) ? 'Se ha agregado el organismo.' : 'Se ha modificado el organismo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->per->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var Organism $organism */
-            $organism = $this->getForm()->getData();
+            /** @var Person $person */
+            $person = $this->getForm()->getData();
 
-            $organismRepository->save($organism, true);
+            $personRepository->save($person, true);
 
             if (!is_null($this->modal)) {
-                $this->modalManage($organism);
+                $this->modalManage($person);
                 return null;
             }
 
@@ -119,7 +122,7 @@ final class OrganismForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_organism_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return null;

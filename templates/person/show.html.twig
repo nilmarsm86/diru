@@ -1,35 +1,22 @@
 {% extends 'content.html.twig' %}
 
-{% block title %}Person{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Representante: {{ person.name }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
 
 {% block content %}
-    <h1>Persona</h1>
+    <div class="row">
+        {{ h1('Representantes') }}
 
-    <table class="table">
-        <tbody>
-        {#            <tr> #}
-        {#                <th>Id</th> #}
-        {#                <td>{{ person.id }}</td> #}
-        {#            </tr> #}
-        <tr>
-            <th>Nombre</th>
-            <td>{{ person.name }}</td>
-        </tr>
-        <tr>
-            <th>Carne</th>
-            <td>{{ person.identificationNumber }}</td>
-        </tr>
-        <tr>
-            <th>Pasaporte</th>
-            <td>{{ person.passport }}</td>
-        </tr>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Representantes', href: path('app_person_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
 
-        </tbody>
-    </table>
+    <h2 class="mb-4">Representante: {{ person.name }}</h2>
 
-    <a class="btn btn-sm btn-primary" href="{{ path('app_person_index') }}">Listado</a>
-
-    <a class="btn btn-sm btn-primary" href="{{ path('app_person_edit', {'id': person.id}) }}">Modificar</a>
-
-    {{ include('person/_delete_form.html.twig') }}
+    {{ include('person/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

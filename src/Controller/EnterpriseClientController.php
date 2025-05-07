@@ -33,49 +33,47 @@ final class EnterpriseClientController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $enterpriseClient = new EnterpriseClient();
-//        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($enterpriseClient);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('enterprise_client/new.html.twig', [
-//            'enterprise_client' => $enterpriseClient,
-//            'form' => $form,
-//        ]);
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Nuevo cliente empresarial',
             'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_enterprise_client_show', methods: ['GET'])]
-    public function show(EnterpriseClient $enterpriseClient): Response
+    public function show(Request $request, EnterpriseClient $enterpriseClient, CrudActionService $crudActionService): Response
     {
-        return $this->render('enterprise_client/show.html.twig', [
-            'enterprise_client' => $enterpriseClient,
-        ]);
+        return $crudActionService->showAction($request, $enterpriseClient, 'enterprise_client', 'enterprise_client', 'Detalles del cliente');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_enterprise_client_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EnterpriseClient $enterpriseClient, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EnterpriseClient $enterpriseClient, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('enterprise_client/edit.html.twig', [
-            'enterprise_client' => $enterpriseClient,
-            'form' => $form,
+//        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->render('enterprise_client/edit.html.twig', [
+//            'enterprise_client' => $enterpriseClient,
+//            'form' => $form,
+//        ]);
+        return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
+            'title' => 'Modificar cliente empresarial',
+            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

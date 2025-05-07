@@ -13,9 +13,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class EnterpriseClientType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -37,14 +43,16 @@ class EnterpriseClientType extends AbstractType
                 'class' => CorporateEntity::class,
                 'placeholder' => $options['province'] ? null : '-Seleccione-',
                 'label' => 'Entidades:',
-//                'mapped' => false,
-//                'constraints' => $this->getProvinceConstraints($options),
-//                'data' => $province,
 //                'query_builder' => $this->getProvinceQueryBuilder($options),
                 'modal_id' => '#add-entity',
-                'path' => 'app_corporate_entity_options'
-            ])
-        ;
+                'path' => $this->router->generate('app_corporate_entity_options', ['id' => 0]),
+                'detail' => true,
+                'detail_title' => 'Detalle de la entidad',
+                'detail_id' => 'detail_corporate_entity',
+                'detail_loading' => 'Cargando detalles de la entidad...',
+                'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0])
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

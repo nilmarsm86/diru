@@ -43,6 +43,7 @@ class CorporateEntity
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     #[Assert\NotBlank(message: 'Seleccione el organismo al cual pertenece la entidad.')]
     private ?Organism $organism = null;
 

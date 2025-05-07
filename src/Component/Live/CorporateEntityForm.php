@@ -3,6 +3,7 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
+use App\Component\Twig\Modal\Modal;
 use App\Entity\CorporateEntity;
 use App\Form\CorporateEntityType;
 use App\Repository\CorporateEntityRepository;
@@ -62,28 +63,31 @@ final class CorporateEntityForm extends AbstractController
         }
     }
 
-//    /**
-//     * @param CorporateEntity $ce
-//     * @return void
-//     */
-//    public function modalManage(CorporateEntity $ce): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->ce::class) . '_' . $this->ce->getId(),
-//            'type' => 'text-bg-primary',
-//            'message' => 'Seleccione el nuevo organismo agregado.'
-//        ]);
-//
-//        $this->dispatchBrowserEvent('update-list', [
-//            'corporate_entity' => $ce->getId(),
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->ce = new CorporateEntity();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
+    /**
+     * @param CorporateEntity $ce
+     * @return void
+     */
+    public function modalManage(CorporateEntity $ce): void
+    {
+        $template = $this->renderView("partials/_form_success.html.twig", [
+            'id' => 'new_' . $this->getClassName($this->ce::class) . '_' . $this->ce->getId(),
+            'type' => 'text-bg-primary',
+            'message' => 'Seleccione la nueva entidad corporativa agregada.'
+        ]);
+
+        $this->dispatchBrowserEvent('type--entity-plus:update', [
+            'data' => [
+                'corporateEntity' => $this->ce->getId()
+            ],
+            'modal' => $this->modal,
+            'response' => $template
+        ]);
+
+        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+
+        $this->ce = new CorporateEntity();
+        $this->resetForm();//establecer un objeto nuevo
+    }
 
     /**
      * @param string $successMsg
@@ -168,7 +172,7 @@ final class CorporateEntityForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(CorporateEntityRepository $corporateEntityRepository, OrganismRepository $organismRepository, MunicipalityRepository $municipalityRepository): ?Response
+    public function save(CorporateEntityRepository $corporateEntityRepository, OrganismRepository $organismRepository): ?Response
     {
         $this->preValue();
 
@@ -183,15 +187,15 @@ final class CorporateEntityForm extends AbstractController
             $organism = $organismRepository->find((int)$this->formValues['organism']);
             $ce->setOrganism($organism);
 
-            $municipality = $municipalityRepository->find((int)$this->formValues['address']['municipality']);
+            $municipality = $this->municipalityRepository->find((int)$this->formValues['address']['municipality']);
             $ce->setMunicipality($municipality);
 
             $corporateEntityRepository->save($ce, true);
 
-//            if ($this->modal) {
-//                $this->modalManage($ce);
-//                return null;
-//            }
+            if ($this->modal) {
+                $this->modalManage($ce);
+                return null;
+            }
 
             if ($this->ajax) {
                 $this->ajaxManage($successMsg);

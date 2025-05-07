@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\AddressTrait;
 use App\Repository\EnterpriseClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnterpriseClientRepository::class)]
 class EnterpriseClient extends Client
@@ -13,6 +14,8 @@ class EnterpriseClient extends Client
 
     #[ORM\ManyToOne(inversedBy: 'enterpriseClients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione la entidad a la cual pertenece el cliente.')]
     private ?CorporateEntity $corporateEntity = null;
 
     public function getCorporateEntity(): ?CorporateEntity

@@ -55,7 +55,7 @@ export const useContentLoader = (controller, options) => {
             const responseText = await response.text();
             this.addChildsNodes(responseText, container);
             container.style.opacity = "1";
-            this.dispatch(options.eventLoadedName || "loaded", {detail:{container, responseText}});
+            this.dispatch(event.detail?.eventLoadedName || options.eventLoadedName || "loaded", {detail:{container, responseText}});
         }
     });
 };

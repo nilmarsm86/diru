@@ -55,7 +55,11 @@ final class EnterpriseClientForm extends AbstractController
     #[LiveProp(writable: true)]
     public int $corporateEntity = 0;
 
-    public function __construct(protected readonly ProvinceRepository $provinceRepository, protected readonly MunicipalityRepository $municipalityRepository, protected readonly CorporateEntityRepository $corporateEntityRepository)
+    public function __construct(
+        protected readonly ProvinceRepository        $provinceRepository,
+        protected readonly MunicipalityRepository    $municipalityRepository,
+        protected readonly CorporateEntityRepository $corporateEntityRepository
+    )
     {
 
     }

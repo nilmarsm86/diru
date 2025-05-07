@@ -1,13 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Edit EnterpriseClient{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Edit EnterpriseClient</h1>
+{% block title %}Editar cliente empresarial{% endblock %}
 
-    {{ include('enterprise_client/_form.html.twig', {'button_label': 'Update'}) }}
+{% block content %}
+    <div class="row">
+        {{ h1('Clientes', 'fa:user') }}
 
-    <a href="{{ path('app_enterprise_client_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Clientes empresariales', href: path('app_individual_client_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
 
-    {{ include('enterprise_client/_delete_form.html.twig') }}
+    <h2 class="mb-4">Modificar cliente empresarial</h2>
+
+    {{ include('enterprise_client/_form.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}
+

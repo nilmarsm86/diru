@@ -214,6 +214,11 @@ form div.help-text {
     border-bottom-right-radius: var(--bs-border-radius) !important;
 }
 
+.btn.is-invalid.btn_detail {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
 .bg-register-image, .bg-login-image{
     background-repeat: no-repeat;
     background-position: center;

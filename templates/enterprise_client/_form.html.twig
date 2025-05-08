@@ -35,6 +35,16 @@
 {% endcomponent %}
 
 {% component 'Modal:Modal' with {
+    title: 'Agregar Representante',
+    id: 'add-person'
+} %}
+    {% block body %}
+        {{ component('PersonForm', {modal:'add-person', per: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}
+
+
+{% component 'Modal:Modal' with {
     title: 'Agregar Entidad',
     id: 'add-entity'
 } %}

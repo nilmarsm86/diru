@@ -1,0 +1,35 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_location_zone_new',
+            label: 'Nueva',
+            title: 'Nueva zona de ubicación',
+            entity: location_zone,
+            state: 'form',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+{#        {{ component('ProvinceForm', {modal:null, prov: province, ajax: ajax}) }}#}
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_location_zone_index', label: 'Listado', title:'Volver al listado'},
+            delete: {href: 'app_location_zone_delete', label: 'Eliminar', title:'Eliminar zona de ubicación'},
+            id: location_zone.id,
+            message: 'Está seguro que desea eliminar la zona de ubicación?',
+            state: 'form',
+            showButton: (showButton is defined and showButton == true) ? true : false,
+            entity: location_zone
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}

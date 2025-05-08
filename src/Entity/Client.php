@@ -22,14 +22,14 @@ class Client
     protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El telefono no debe estar vacio.')]
+    #[Assert\NotBlank(message: 'El telefono esta vacío.')]
     protected ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El correo no debe estar vacio.')]
+    #[Assert\NotBlank(message: 'El correo esta vacio.')]
     protected ?string $email = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     protected ?Person $person = null;

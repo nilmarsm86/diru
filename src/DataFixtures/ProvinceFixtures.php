@@ -21,7 +21,7 @@ class ProvinceFixtures extends Fixture
                     'La Habana' => $this->addProvinceMunicipality($manager, $provinceName, ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa']),
                     'Artemisa' => $this->addProvinceMunicipality($manager, $provinceName, ['Artemisa']),
                     'Mayabeque' => $this->addProvinceMunicipality($manager, $provinceName, ['San Antonio']),
-                    'Matanzas' => $this->addProvinceMunicipality($manager, $provinceName, ['Varadero', 'Cárdens']),
+                    'Matanzas' => $this->addProvinceMunicipality($manager, $provinceName, ['Varadero', 'Cárdenas']),
                     'Cienfuegos' => $this->addProvinceMunicipality($manager, $provinceName, ['Cienfuegos']),
                     'Villa Clara' => $this->addProvinceMunicipality($manager, $provinceName, ['Santa Clara']),
                     'Sancti Spíritus' => $this->addProvinceMunicipality($manager, $provinceName, ['Sancti Spíritus']),

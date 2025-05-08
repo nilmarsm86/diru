@@ -12,6 +12,8 @@
             {{ tableActionButton(path(goTo), 'bi:plus-lg', label, title) }}
         {% endif %}
     {% else %}
-        {{ tableActionButton3('#', 'mdi:close', '', 'Cerrar', stimulusAction('twig/card/card', 'close:prevent'), 'btn-link') }}
+        {% if state != 'modal' %}
+            {{ tableActionButton3('#', 'mdi:close', '', 'Cerrar', stimulusAction('twig/card/card', 'close:prevent'), 'btn-link') }}
+        {% endif%}
     {% endif %}
 </div>

@@ -102,6 +102,35 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                            data-bs-toggle="collapse" data-bs-target="#location-collapse"
+                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_location_zone_index'] %}true{% else %}false{% endif %}"
+                            style="width:100%;text-align:left">
+                        <span class="d-inline-flex align-items-center">Localizaciones</span>
+                    </button>
+                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_location_zone_index'] %}show{% else %}hide{% endif %}" id="location-collapse">
+                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
+                            data-bs-theme="light"
+                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_location_zone_index') }}"
+                                   href="{{ path('app_location_zone_index') }}"
+                                >
+{#                                    {{ ux_icon('bi:list-check', {class:'bi'}) }}#}
+                                    Zona de ubicación
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_corporate_entity_index') }}"
+                                   href="{{ path('app_corporate_entity_index') }}">
+{#                                    {{ ux_icon('bi:building', {class:'bi'}) }}#}
+                                    Ubicación geográfica
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     <li>
                         <a href="{{ path('user_list') }}" class="nav-link link-body-emphasis {{ activeLink('user_list') }}">

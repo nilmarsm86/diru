@@ -1,0 +1,60 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}LocationZone index{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>LocationZone index</h1>#}
+
+{#    <table class="table">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>Id</th>#}
+{#                <th>Name</th>#}
+{#                <th>actions</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for location_zone in location_zones %}#}
+{#            <tr>#}
+{#                <td>{{ location_zone.id }}</td>#}
+{#                <td>{{ location_zone.name }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('app_location_zone_show', {'id': location_zone.id}) }}">show</a>#}
+{#                    <a href="{{ path('app_location_zone_edit', {'id': location_zone.id}) }}">edit</a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="3">no records found</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+
+{#    <a href="{{ path('app_location_zone_new') }}">Create new</a>#}
+{#{% endblock %}#}
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Zonas de ubicación{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Zonas de ubicación') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Zonas'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de zonas de ubicación</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('location_zone/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

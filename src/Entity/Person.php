@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\PersonRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,11 +24,14 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El número de identificación no debe estar vacio.')]
+    #[Assert\NotBlank(message: 'El número de identificación esta vacío.')]
     private ?string $identificationNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $passport = null;
+
+    #[ORM\OneToOne(targetEntity: Client::class, mappedBy: 'person')]
+    private Client $client;
 
     public function getId(): ?int
     {
@@ -54,6 +58,28 @@ class Person
     public function setPassport(?string $passport): static
     {
         $this->passport = $passport;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        $data = $this->getName().' ('.$this->getIdentificationNumber().')';
+        if($this->getPassport()){
+             $data .= '['.$this->getPassport().']';
+        }
+
+        return $data;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }

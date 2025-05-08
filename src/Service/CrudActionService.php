@@ -160,15 +160,26 @@ readonly class CrudActionService
     {
         if ($this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
             $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entity->getId();
-            $repository->remove($entity, true);
+            try {
+                $repository->remove($entity, true);
 
-            if ($request->isXmlHttpRequest()) {
-                $template = $this->environment->render("partials/_form_success.html.twig", [
-                    'id' => $id,
-                    'type' => 'text-bg-success',
-                    'message' => $successMsg
-                ]);
-                return new Response($template);
+                if ($request->isXmlHttpRequest()) {
+                    $template = $this->environment->render("partials/_form_success.html.twig", [
+                        'id' => $id,
+                        'type' => 'text-bg-success',
+                        'message' => $successMsg
+                    ]);
+                    return new Response($template);
+                }
+            } catch (\Exception $exception) {
+                if ($request->isXmlHttpRequest()) {
+                    $template = $this->environment->render("partials/_form_success.html.twig", [
+                        'id' => $id,
+                        'type' => 'text-bg-danger',
+                        'message' => $exception->getMessage()
+                    ]);
+                    return new Response($template);
+                }
             }
         }
 
@@ -303,11 +314,11 @@ readonly class CrudActionService
      * @throws SyntaxError
      */
     public function formLiveComponentAction(
-        Request                 $request,
-        object                  $entity,
-        string                  $templateDir,
-        array                   $vars = [],
-        bool                    $modal = false
+        Request $request,
+        object  $entity,
+        string  $templateDir,
+        array   $vars = [],
+        bool    $modal = false
     ): Response
     {
         $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : ($entity->getid() ? 'edit.html.twig' : 'new.html.twig'));//comportamiento por controlador
@@ -320,7 +331,7 @@ readonly class CrudActionService
      * @param $classname
      * @return false|int|string
      */
-    private function getClassName($classname): false|int|string
+    public function getClassName($classname): false|int|string
     {
         if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
         return $pos;

@@ -38,11 +38,17 @@ final class CorporateEntityController extends AbstractController
 
         $data = $corporateEntityRepository->findEntities($filter, $amountPerPage, $pageNumber, $type);
 
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->from() > $paginator->getTotal()) {
+            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
+            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+        }
+
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
 
         return $this->render("corporate_entity/$template", [
             'filter' => $filter,
-            'paginator' => new Paginator($data, $amountPerPage, $pageNumber),
+            'paginator' => $paginator,
             'types' => \App\Entity\Enums\CorporateEntityType::cases()
         ]);
     }

@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Province>
@@ -74,5 +75,24 @@ class ProvinceRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('p.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove($entity, bool $flush = false): void
+    {
+        if($entity->getMunicipalities()->count()){
+            throw new Exception('La provincia aun tiene municipios asociados.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }

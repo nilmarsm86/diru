@@ -22,7 +22,7 @@ class Province
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'province', targetEntity: Municipality::class, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Municipality::class, mappedBy: 'province', cascade: ['persist'])]
 //    #[Assert\Count(
 //        min: 1,
 //        minMessage: 'Debe establecer al menos 1 municipio para esta provincia.',

@@ -54,8 +54,8 @@ class EnterpriseClientRepository extends ServiceEntityRepository
             $predicate = "p.name LIKE :filter ";
             $predicate .= "OR p.identificationNumber LIKE :filter ";
             $predicate .= "OR p.passport LIKE :filter ";
-            $predicate .= "OR ic.phone LIKE :filter ";
-            $predicate .= "OR ic.email LIKE :filter ";
+            $predicate .= "OR ec.phone LIKE :filter ";
+            $predicate .= "OR ec.email LIKE :filter ";
             if ($place) {
                 $predicate .= "OR mun.name LIKE :filter ";
                 $predicate .= "OR pro.name LIKE :filter ";

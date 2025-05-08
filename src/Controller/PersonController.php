@@ -72,15 +72,16 @@ final class PersonController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_person_delete', methods: ['POST'])]
-    public function delete(Request $request, Person $person, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Person $person, PersonRepository $personRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $person->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($person);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado el representante.';
+        return $crudActionService->deleteAction($request, $personRepository, $person, $successMsg, 'app_person_index');
     }
 
     #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]

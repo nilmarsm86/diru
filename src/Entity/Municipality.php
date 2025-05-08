@@ -25,6 +25,7 @@ class Municipality
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Ignore]
+    #[Assert\NotBlank(message: 'Seleccione la provincia a la cual pertenece el municipio.')]
     private ?Province $province=null;
 
     public function __construct()

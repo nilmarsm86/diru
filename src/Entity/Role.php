@@ -31,6 +31,7 @@ class Role
 
     /**
      * @param string $name
+     * @param int $importance
      */
     public function __construct(string $name, int $importance)
     {

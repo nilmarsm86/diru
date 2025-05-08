@@ -58,33 +58,21 @@ final class EnterpriseClientController extends AbstractController
     #[Route('/{id}/edit', name: 'app_enterprise_client_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EnterpriseClient $enterpriseClient, CrudActionService $crudActionService): Response
     {
-//        $form = $this->createForm(EnterpriseClientType::class, $enterpriseClient);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('enterprise_client/edit.html.twig', [
-//            'enterprise_client' => $enterpriseClient,
-//            'form' => $form,
-//        ]);
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Modificar cliente empresarial',
             'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_enterprise_client_delete', methods: ['POST'])]
-    public function delete(Request $request, EnterpriseClient $enterpriseClient, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, EnterpriseClient $enterpriseClient, EnterpriseClientRepository $enterpriseClientRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$enterpriseClient->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($enterpriseClient);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_enterprise_client_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado el cliente empresarial.';
+        return $crudActionService->deleteAction($request, $enterpriseClientRepository, $enterpriseClient, $successMsg, 'app_enterprise_client_index');
     }
 }

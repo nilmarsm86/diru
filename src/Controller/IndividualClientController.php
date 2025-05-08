@@ -74,13 +74,9 @@ final class IndividualClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_individual_client_delete', methods: ['POST'])]
-    public function delete(Request $request, IndividualClient $individualClient, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, IndividualClient $individualClient, IndividualClientRepository $individualClientRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$individualClient->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($individualClient);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_individual_client_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado el cliente empresarial.';
+        return $crudActionService->deleteAction($request, $individualClientRepository, $individualClient, $successMsg, 'app_enterprise_client_index');
     }
 }

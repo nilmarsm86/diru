@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250505150930 extends AbstractMigration
+final class Version20250507184852 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,6 +24,7 @@ final class Version20250505150930 extends AbstractMigration
         $this->addSql('CREATE TABLE corporate_entity (id INT AUTO_INCREMENT NOT NULL, municipality_id INT NOT NULL, organism_id INT NOT NULL, code VARCHAR(255) NOT NULL, nit VARCHAR(255) DEFAULT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_C6EFC8A4AE6F181C (municipality_id), INDEX IDX_C6EFC8A464180A36 (organism_id), UNIQUE INDEX corporate_entity_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE enterprise_client (id INT NOT NULL, corporate_entity_id INT NOT NULL, INDEX IDX_54598E4C8BA692E5 (corporate_entity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE individual_client (id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE location_zone (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE municipality (id INT AUTO_INCREMENT NOT NULL, province_id INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_C6F56628E946114A (province_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE organism (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX organism_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE person (id INT AUTO_INCREMENT NOT NULL, identification_number VARCHAR(255) NOT NULL, passport VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX person_identification_number (identification_number), UNIQUE INDEX person_passport (passport), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -60,6 +61,7 @@ final class Version20250505150930 extends AbstractMigration
         $this->addSql('DROP TABLE corporate_entity');
         $this->addSql('DROP TABLE enterprise_client');
         $this->addSql('DROP TABLE individual_client');
+        $this->addSql('DROP TABLE location_zone');
         $this->addSql('DROP TABLE municipality');
         $this->addSql('DROP TABLE organism');
         $this->addSql('DROP TABLE person');

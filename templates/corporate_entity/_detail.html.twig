@@ -11,7 +11,7 @@
             label: 'Nueva',
             title: 'Nueva entidad corporativa',
             entity: corporate_entity,
-            state: 'detail',
+            state: app.request.query.get('state') ? app.request.query.get('state') : 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}

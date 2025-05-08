@@ -28,13 +28,13 @@ class CorporateEntity
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El código de empresa no debe estar vacio.')]
+    #[Assert\NotBlank(message: 'El código de empresa esta vacío.')]
 //    #[Assert\NotNull(message: 'El codigo de empresa no debe ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     private ?string $code = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message: 'El NIT no debe estar vacio.')]
+    #[Assert\NotBlank(message: 'El NIT esta vacío.')]
     private ?string $nit = null;
 
     #[ORM\ManyToOne]
@@ -177,5 +177,10 @@ class CorporateEntity
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName().' ('.$this->getOrganism()->getName().')';
     }
 }

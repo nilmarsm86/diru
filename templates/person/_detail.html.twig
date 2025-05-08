@@ -11,7 +11,7 @@
             label: 'Nuevo',
             title: 'Nuevo representante',
             entity: person,
-            state: 'detail',
+            state: app.request.query.get('state') ? app.request.query.get('state') : 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}
@@ -44,7 +44,7 @@
             delete: {href: 'app_person_delete', label: 'Eliminar', title:'Eliminar representante'},
             id: person.id,
             message: 'Está seguro que desea eliminar el representante?',
-            state: 'detail',
+            state: app.request.query.get('state') ? app.request.query.get('state') : 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}

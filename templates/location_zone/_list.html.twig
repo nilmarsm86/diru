@@ -1,0 +1,57 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de zonas de ubicación',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_location_zone_new'), 'bi:plus-lg', 'Nueva', 'Nueva zona de ubicación', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_location_zone_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for location in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ location.name }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_location_zone_show', {'id': location_zone.id}), 'bi:eye', '', 'Detalle de la zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}
+                            {{ tableActionButton3(path('app_location_zone_edit', {'id': location_zone.id}), 'fa:edit', '', 'Editar zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_location_zone_delete', {'id': location_zone.id}),
+                                confirm: 'Está seguro que desea eliminar la zona?',
+                                token: 'delete' ~ location_zone.id,
+                                title: 'Eliminar zona',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron zonas de ubicación.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

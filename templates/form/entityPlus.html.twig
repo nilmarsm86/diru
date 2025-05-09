@@ -7,7 +7,6 @@
     {% set is_form_floating = is_form_floating|default('form-floating' in row_class) %}
     {% set is_input_group = is_input_group|default('input-group' in row_class) %}
     {% set row_class = row_class|replace({'form-floating': '', 'input-group': ''}) %}
-{#    {% set detailUrl = (detail_url == '') ? '' : path(detail_url, {id:0}) %}#}
     <div{% with {attr: row_attr|merge({class: (row_class ~ ' row' ~ ((not compound or force_error|default(false)) and not valid ? ' is-invalid'))|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulusController('type/entity-plus', {url:path, detailUrl: detail_url, detailLoading: detail_loading}) }}>
         {{ form_label(form) }}
         <div

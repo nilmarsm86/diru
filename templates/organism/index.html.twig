@@ -17,10 +17,6 @@
 
     <h2 class="mb-4">Gestión de organismos</h2>
 
-{#    {{ include('partials/_index_container.html.twig', {#}
-{#        list: 'organism/_list.html.twig',#}
-{#        rest_data_action: 'page:onChangeState->content-loader#refreshContent'#}
-{#    }) }}#}
     {% component ManagePage %}
         {% block list %}
             {{ include('organism/_list.html.twig') }}

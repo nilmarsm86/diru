@@ -52,7 +52,11 @@ final class IndividualClientForm extends AbstractController
     #[LiveProp(writable: true)]
     public int $person = 0;
 
-    public function __construct(protected readonly ProvinceRepository $provinceRepository, protected readonly MunicipalityRepository $municipalityRepository)
+    public function __construct(
+        protected readonly ProvinceRepository $provinceRepository,
+        protected readonly MunicipalityRepository $municipalityRepository,
+        protected readonly PersonRepository $personRepository
+    )
     {
 
     }

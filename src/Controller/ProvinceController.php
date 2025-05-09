@@ -95,16 +95,22 @@ final class ProvinceController extends AbstractController
         throw new BadRequestHttpException('Ajax request');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/options/{id}', name: 'app_province_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function options(Request $request, Province $province, ProvinceRepository $provinceRepository): Response
+    public function options(Request $request, Province $province, ProvinceRepository $provinceRepository, CrudActionService $crudActionService): Response
     {
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('partials/_select_options.html.twig', [
-                'entities' => $provinceRepository->findBy([], ['name' => 'ASC']),
-                'selected' => $province->getId()
-            ]);
-        }
-
+//        if ($request->isXmlHttpRequest()) {
+//            return $this->render('partials/_select_options.html.twig', [
+//                'entities' => $provinceRepository->findBy([], ['name' => 'ASC']),
+//                'selected' => $province->getId()
+//            ]);
+//        }
+//
         throw new BadRequestHttpException('Ajax request');
+//        return $crudActionService->options($request, $province, $provinceRepository->findBy([], ['name' => 'DESC']));
     }
 }

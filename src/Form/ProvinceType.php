@@ -13,7 +13,10 @@ class ProvinceType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'label' => 'Nombre:'
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre de la provincia'
+                ]
             ])
         ;
     }

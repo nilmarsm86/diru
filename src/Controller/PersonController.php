@@ -85,12 +85,12 @@ final class PersonController extends AbstractController
     #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function options(Request $request, Person $person, PersonRepository $personRepository): Response
     {
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('partials/_select_options.html.twig', [
-                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
-                'selected' => $person->getId()
-            ]);
-        }
+//        if ($request->isXmlHttpRequest()) {
+//            return $this->render('partials/_select_options.html.twig', [
+//                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
+//                'selected' => $person->getId()
+//            ]);
+//        }
 
         throw new BadRequestHttpException('Ajax request');
     }

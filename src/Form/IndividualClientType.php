@@ -30,10 +30,16 @@ class IndividualClientType extends AbstractType
     {
         $builder
             ->add('phone', null, [
-                'label' => 'Teléfono:'
+                'label' => 'Teléfono:',
+                'attr' => [
+                    'placeholder' => 'Teléfono del cliente'
+                ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Correo:'
+                'label' => 'Correo:',
+                'attr' => [
+                    'placeholder' => 'Correo del cliente'
+                ]
             ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],

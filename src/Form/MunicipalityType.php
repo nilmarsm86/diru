@@ -22,7 +22,7 @@ class MunicipalityType extends AbstractType
             'choice_label' => 'name',
             'label' => 'Provincia:',
             'attr' => [
-                'data-model' => 'province'
+                'data-model' => 'province',
             ],
             'query_builder' => $this->getProvinceQueryBuilder(),
         ];
@@ -30,6 +30,9 @@ class MunicipalityType extends AbstractType
         $builder
             ->add('name', null, [
                 'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del municipio'
+                ]
             ]);
 
         if (is_null($options['modal'])) {

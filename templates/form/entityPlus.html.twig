@@ -1,18 +1,74 @@
-{% block entity_plus_row %}
-    {% set widget_attr = {attr: {'class': 'form-control-sm', 'data-type--entity-plus-target' : "select"}} %}
-    {% if help is not empty %}
-        {% set widget_attr = {attr: {'aria-describedby': id ~"_help"}} %}
-    {% endif %}
-    {% set row_class = row_class|default(row_attr.class|default('mb-3')) %}
-    {% set is_form_floating = is_form_floating|default('form-floating' in row_class) %}
-    {% set is_input_group = is_input_group|default('input-group' in row_class) %}
-    {% set row_class = row_class|replace({'form-floating': '', 'input-group': ''}) %}
-    <div{% with {attr: row_attr|merge({class: (row_class ~ ' row' ~ ((not compound or force_error|default(false)) and not valid ? ' is-invalid'))|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulusController('type/entity-plus', {url:path, detailUrl: detail_url, detailLoading: detail_loading}) }}>
-        {{ form_label(form) }}
-        <div
-                class="input-group {% if label_attr.class is defined and label_attr.class == 'col-sm-4' %}col-sm-8{% else %}{{ block('form_group_class') }}{% endif %}"
-                style="width:{% if label_attr.class is defined and label_attr.class == 'col-sm-4' %}66.66666667%{% else %}83.33333333%{% endif %}"
-        >
+{# DISEÑO HORIZONTAL #}
+
+{# {% block entity_plus_row %} #}
+{#    {% set widget_attr = {attr: {'class': 'form-control-sm', 'data-type--entity-plus-target' : "select"}} %} #}
+{#    {% if help is not empty %} #}
+{#        {% set widget_attr = {attr: {'aria-describedby': id ~"_help"}} %} #}
+{#    {% endif %} #}
+{#    {% set row_class = row_class|default(row_attr.class|default('mb-3')) %} #}
+{#    {% set is_form_floating = is_form_floating|default('form-floating' in row_class) %} #}
+{#    {% set is_input_group = is_input_group|default('input-group' in row_class) %} #}
+{#    {% set row_class = row_class|replace({'form-floating': '', 'input-group': ''}) %} #}
+{#    <div{% with {attr: row_attr|merge({class: (row_class ~ ' row' ~ ((not compound or force_error|default(false)) and not valid ? ' is-invalid'))|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulusController('type/entity-plus', {url:path, detailUrl: detail_url, detailLoading: detail_loading}) }}> #}
+{#        {{ form_label(form) }} #}
+{#        <div #}
+{#                class="input-group {% if label_attr.class is defined and label_attr.class == 'col-sm-4' %}col-sm-8{% else %}{{ block('form_group_class') }}{% endif %}" #}
+{#                style="width:{% if label_attr.class is defined and label_attr.class == 'col-sm-4' %}66.66666667%{% else %}83.33333333%{% endif %}" #}
+{#        > #}
+{#            {{ form_widget(form, widget_attr) }} #}
+{#            {% if detail == true %} #}
+{#                <button #}
+{#                        class="btn btn_detail btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}" #}
+{#                        type="button" #}
+{#                        {{ stimulusTarget('type/entity-plus', 'detail') }} #}
+{#                > #}
+{#                    {{ ux_icon(detail_icon, {class:'bi', style:'color:white'}) }} #}
+{#                </button> #}
+{#            {% endif %} #}
+{#            <button #}
+{#                    class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}" #}
+{#                    type="button" #}
+{#                    data-bs-toggle="modal" #}
+{#                    data-bs-target="{{ modal_id }}" #}
+{#                    {{ stimulusTarget('type/entity-plus', 'button') }} #}
+{#            > #}
+{#                {{ ux_icon(icon, {class:'bi', style:'color:white'}) }} #}
+{#            </button> #}
+{#            {{ form_help(form) }} #}
+{#            {{ form_errors(form) }} #}
+{#        </div> #}
+
+{#        {% component 'Modal:Modal' with { #}
+{#            title: detail_title, #}
+{#            id: detail_id #}
+{#        } %} #}
+{#            {% block body %} #}
+{#                {{ detail_loading }} #}
+{#            {% endblock %} #}
+{#        {% endcomponent %} #}
+{#    </div> #}
+
+{# {% endblock %} #}
+
+{# DISEÑO VERRTICAL #}
+
+{%- block entity_plus_row -%}
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {attr:{'data-type--entity-plus-target' : "select"}} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    {%- set row_class = row_class|default(row_attr.class|default('mb-3')|trim) -%}
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %} {{ stimulusController('type/entity-plus', {url:path, detailUrl: detail_url, detailLoading: detail_loading}) }}>
+    {%- if 'form-floating' in row_class -%}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_label(form) -}}
+    {%- else -%}
+        {{- form_label(form) -}}
+{#        {{- form_widget(form, widget_attr) -}}#}
+        <div class="input-group">
             {{ form_widget(form, widget_attr) }}
             {% if detail == true %}
                 <button
@@ -32,18 +88,20 @@
             >
                 {{ ux_icon(icon, {class:'bi', style:'color:white'}) }}
             </button>
-            {{ form_help(form) }}
-            {{ form_errors(form) }}
         </div>
 
-        {% component 'Modal:Modal' with {
-            title: detail_title,
-            id: detail_id
-        } %}
-            {% block body %}
-                {{ detail_loading }}
-            {% endblock %}
-        {% endcomponent %}
-    </div>
+    {%- endif -%}
+    {{- form_help(form) -}}
+    {{- form_errors(form) -}}
 
-{% endblock %}
+    {% component 'Modal:Modal' with {
+        title: detail_title,
+        id: detail_id
+    } %}
+        {% block body %}
+            {{ detail_loading }}
+        {% endblock %}
+    {% endcomponent %}
+
+    </{{ element|default('div') }}>
+{%- endblock entity_plus_row %}

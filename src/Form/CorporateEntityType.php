@@ -21,10 +21,16 @@ class CorporateEntityType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'label' => 'Nombre:'
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre de la entidad corporativa'
+                ]
             ])
             ->add('code', null, [
-                'label' => 'Código de empresa:'
+                'label' => 'Código de empresa:',
+                'attr' => [
+                    'placeholder' => 'Código de empresa'
+                ]
             ])
             ->add('nit', null, [
                 'label' => 'NIT:',

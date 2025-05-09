@@ -19,6 +19,9 @@ class StreetAddressType extends AbstractType
                 'data' => $options['street'],
                 'constraints' => $this->getStreetConstraints($options),
 //                'property_path' => '[address]'
+                'attr' => [
+                    'placeholder' => 'Escriba la dirección'
+                ]
             ])
             ->add('address', AddressType::class, [
                 'province' => $options['province'],

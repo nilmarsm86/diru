@@ -105,12 +105,12 @@ final class CorporateEntityController extends AbstractController
     #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
     {
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('partials/_select_options.html.twig', [
-                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
-                'selected' => $corporateEntity->getId()
-            ]);
-        }
+//        if ($request->isXmlHttpRequest()) {
+//            return $this->render('partials/_select_options.html.twig', [
+//                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
+//                'selected' => $corporateEntity->getId()
+//            ]);
+//        }
 
         throw new BadRequestHttpException('Ajax request');
     }

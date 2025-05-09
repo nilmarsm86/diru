@@ -21,7 +21,8 @@ class ProfilePasswordType extends AbstractType
                     'class' => 'form-label col-sm-12'
                 ],
                 'attr' => [
-                    'class' => 'form-control no-border-left'
+                    'class' => 'form-control no-border-left',
+                    'placeholder' => 'Constraseña actual'
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
@@ -30,6 +31,7 @@ class ProfilePasswordType extends AbstractType
                     'attr' => [
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
+                        'placeholder' => 'Nueva contraseña'
                     ],
                     'label_html' => true,
                     'label' => '<strong>Nueva contraseña:</strong>',
@@ -41,6 +43,7 @@ class ProfilePasswordType extends AbstractType
                     'attr' => [
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
+                        'placeholder' => 'Repetir contraseña'
                     ],
                     'label_html' => true,
                     'label' => '<strong>Repetir contraseña:</strong>',

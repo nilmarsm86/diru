@@ -13,7 +13,10 @@ class OrganismType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'label' => 'Nombre:'
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del organismo'
+                ]
             ])
         ;
     }

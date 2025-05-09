@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -284,6 +285,23 @@ readonly class CrudActionService
         return new Response($this->environment->render("$templateDir/$template", [
                 $templateDir => $entity,
             ] + $vars));
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function options(Request $request, object $entity, array $entities): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            return new Response($this->environment->render('partials/_select_options.html.twig', [
+                'entities' => $entities,
+                'selected' => $entity->getId()
+            ]));
+        }
+
+        throw new BadRequestHttpException('Ajax request');
     }
 
     /**

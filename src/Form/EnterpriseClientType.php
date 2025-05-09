@@ -31,10 +31,16 @@ class EnterpriseClientType extends AbstractType
     {
         $builder
             ->add('phone', null, [
-                'label' => 'Teléfono:'
+                'label' => 'Teléfono:',
+                'attr' => [
+                    'placeholder' => 'Teléfono de la empresa'
+                ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Correo:'
+                'label' => 'Correo:',
+                'attr' => [
+                    'placeholder' => 'Correo de la empresa'
+                ]
             ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],

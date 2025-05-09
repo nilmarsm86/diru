@@ -1,7 +1,8 @@
 twig:
     file_name_pattern: '*.twig'
     form_themes:
-        - 'form/bootstrap_5_horizontal_layout_sm.html.twig'
+#        - 'form/bootstrap_5_horizontal_layout_sm.html.twig'
+        - 'form/bootstrap_5_layout_sm.html.twig'
         - 'form/address.html.twig'
         - 'form/streetAddress.html.twig'
         - 'form/entityPlus.html.twig'

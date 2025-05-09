@@ -86,12 +86,12 @@ final class OrganismController extends AbstractController
     #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
     {
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('partials/_select_options.html.twig', [
-                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
-                'selected' => $organism->getId()
-            ]);
-        }
+//        if ($request->isXmlHttpRequest()) {
+//            return $this->render('partials/_select_options.html.twig', [
+//                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
+//                'selected' => $organism->getId()
+//            ]);
+//        }
 
         throw new BadRequestHttpException('Ajax request');
     }

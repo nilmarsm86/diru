@@ -4,10 +4,12 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\EnterpriseClient;
+use App\Entity\Person;
 use App\Form\EnterpriseClientType;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\MunicipalityRepository;
+use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,10 +54,14 @@ final class EnterpriseClientForm extends AbstractController
     #[LiveProp(writable: true)]
     public int $corporateEntity = 0;
 
+    #[LiveProp(writable: true)]
+    public int $person = 0;
+
     public function __construct(
         protected readonly ProvinceRepository        $provinceRepository,
         protected readonly MunicipalityRepository    $municipalityRepository,
-        protected readonly CorporateEntityRepository $corporateEntityRepository
+        protected readonly CorporateEntityRepository $corporateEntityRepository,
+        protected readonly PersonRepository $personRepository
     )
     {
 
@@ -95,6 +101,11 @@ final class EnterpriseClientForm extends AbstractController
         if ($this->corporateEntity !== 0) {
             $this->formValues['corporateEntity'] = (string)$this->corporateEntity;
             $this->corporateEntity = 0;
+        }
+
+        if ($this->person !== 0) {
+            $this->formValues['person'] = (string)$this->person;
+            $this->person = 0;
         }
 
         if ($this->street !== '') {
@@ -180,6 +191,9 @@ final class EnterpriseClientForm extends AbstractController
 
             $corporateEntity = $this->corporateEntityRepository->find((int)$this->formValues['corporateEntity']);
             $ec->setCorporateEntity($corporateEntity);
+
+            $personEntity = $this->personRepository->find((int)$this->formValues['person']);
+            $ec->setPerson($personEntity);
 
             $enterpriseClientRepository->save($ec, true);
 

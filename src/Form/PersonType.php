@@ -13,13 +13,22 @@ class PersonType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'label' => 'Nombre:'
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del representante'
+                ]
             ])
             ->add('identificationNumber', null, [
-                'label' => 'Carnet de identidad:'
+                'label' => 'Carnet de identidad:',
+                'attr' => [
+                    'placeholder' => 'Carnet de identidad del representante'
+                ]
             ])
             ->add('passport', null,[
-                'label' => 'Pasaporte:'
+                'label' => 'Pasaporte:',
+                'attr' => [
+                    'placeholder' => 'Número de pasaporte del representante'
+                ]
             ])
         ;
     }

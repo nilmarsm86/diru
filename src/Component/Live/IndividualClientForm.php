@@ -103,23 +103,28 @@ final class IndividualClientForm extends AbstractController
             $this->province = 0;
         }
 
-        if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
-            if (isset($this->formValues['streetAddress']['address']['province'])) {
-                if ($this->formValues['streetAddress']['address']['municipality']) {
-                    $mun = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
-                    if ((string)$mun->getProvince()->getId() !== $this->formValues['streetAddress']['address']['province']) {
+        if ($this->municipality !== 0) {
+            $this->formValues['streetAddress']['address']['municipality'] = (string)$this->municipality;
+            $this->municipality = 0;
+        } else {
+            if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
+                if (isset($this->formValues['streetAddress']['address']['province'])) {
+                    if ($this->formValues['streetAddress']['address']['municipality']) {
+                        $mun = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
+                        if ((string)$mun->getProvince()->getId() !== $this->formValues['streetAddress']['address']['province']) {
+                            $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
+                            if (!is_null($prov)) {
+                                $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count())
+                                    ? (string)$prov->getMunicipalities()->first()->getId()
+                                    : '';
+                            }
+                        }
+                    } else {
                         $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
-                            $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count())
-                                ? (string)$prov->getMunicipalities()->first()->getId()
-                                : '';
-                        }
-                    }
-                } else {
-                    $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
-                    if (!is_null($prov)) {
-                        if ($prov->getMunicipalities()->count()) {
-                            $this->formValues['streetAddress']['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
+                            if ($prov->getMunicipalities()->count()) {
+                                $this->formValues['streetAddress']['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
+                            }
                         }
                     }
                 }
@@ -137,6 +142,7 @@ final class IndividualClientForm extends AbstractController
                 $municipality = (int)$this->formValues['streetAddress']['address']['municipality'];
             }
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['street'])) {
+//            if (isset($this->formValues['streetAddress']['street'])) {
                 $street = $this->formValues['streetAddress']['street'];
             }
         } else {

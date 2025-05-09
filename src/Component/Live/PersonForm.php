@@ -4,11 +4,8 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
-use App\Entity\Organism;
 use App\Entity\Person;
-use App\Form\OrganismType;
 use App\Form\PersonType;
-use App\Repository\OrganismRepository;
 use App\Repository\PersonRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,7 +44,7 @@ final class PersonForm extends AbstractController
     }
 
     /**
-     * @param Organism $organism
+     * @param Person $person
      * @return void
      */
     private function modalManage(Person $person): void

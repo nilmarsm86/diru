@@ -31,7 +31,10 @@ class CorporateEntityType extends AbstractType
             ])
             ->add('nit', null, [
                 'label' => 'NIT:',
-                'help' => 'Número de Identificación Tributaria'
+//                'help' => 'Número de Identificación Tributaria',
+                'attr' => [
+                    'placeholder' => 'Número de Identificación Tributaria',
+                ]
             ])
             ->add('type', CorporateEntityTypeEnumType::class, [
                 'label' => 'Tipo de entidad:',

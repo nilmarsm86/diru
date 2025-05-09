@@ -7,6 +7,7 @@ use App\DTO\Paginator;
 use App\Entity\Role;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use App\Service\CrudActionService;
 use App\Service\UserService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,29 +16,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/', name: 'user_list')]
     #[IsGranted(Role::ROLE_ADMIN)]
-    public function index(Request $request, UserRepository $userRepository, RoleRepository $roleRepository): Response
+    public function index(Request $request, UserRepository $userRepository, RoleRepository $roleRepository, CrudActionService $crudActionService): Response
     {
-        $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
-
-        $data = $userRepository->findUsers($filter, $amountPerPage, $pageNumber);
-
-        return $this->render('user/index.html.twig', [
-            'filter' => $filter,
+        return $crudActionService->indexAction($request, $userRepository, 'findUsers', 'user', [
             'roles' => $roleRepository->findBy([], ['importance' => 'ASC']),
-            'paginator' => new Paginator($data, $amountPerPage, $pageNumber)
         ]);
     }
 
     #[Route('/add_role', name: 'add_role', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Role::ROLE_ADMIN)]
     public function addRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
@@ -57,7 +58,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/remove_role', name: 'remove_role', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Role::ROLE_ADMIN)]
     public function removeRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
@@ -91,7 +92,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/state', name: 'user_state', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Role::ROLE_ADMIN)]
     public function state(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){

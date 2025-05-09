@@ -2,9 +2,6 @@
 
 namespace App\Component\Live\Traits;
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\UX\LiveComponent\Attribute\LiveProp;
-
 trait ComponentForm
 {
     /**

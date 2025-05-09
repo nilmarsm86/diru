@@ -64,10 +64,10 @@ final class CorporateEntityForm extends AbstractController
     }
 
     /**
-     * @param CorporateEntity $ce
+     * @param CorporateEntity $corporateEntity
      * @return void
      */
-    public function modalManage(CorporateEntity $ce): void
+    public function modalManage(CorporateEntity $corporateEntity): void
     {
         $template = $this->renderView("partials/_form_success.html.twig", [
             'id' => 'new_' . $this->getClassName($this->ce::class) . '_' . $this->ce->getId(),
@@ -77,7 +77,7 @@ final class CorporateEntityForm extends AbstractController
 
         $this->dispatchBrowserEvent('type--entity-plus:update', [
             'data' => [
-                'corporateEntity' => $this->ce->getId()
+                'corporateEntity' => $corporateEntity->getId()
             ],
             'modal' => $this->modal,
             'response' => $template
@@ -122,23 +122,28 @@ final class CorporateEntityForm extends AbstractController
             $this->province = 0;
         }
 
-        if (isset($this->formValues['address'])) {
-            if (isset($this->formValues['address']['province'])) {
-                if ($this->formValues['address']['municipality']) {
-                    $mun = $this->municipalityRepository->find((int)$this->formValues['address']['municipality']);
-                    if ((string)$mun->getProvince()->getId() !== $this->formValues['address']['province']) {
+        if ($this->municipality !== 0) {
+            $this->formValues['address']['municipality'] = (string)$this->municipality;
+            $this->municipality = 0;
+        } else {
+            if (isset($this->formValues['address'])) {
+                if (isset($this->formValues['address']['province'])) {
+                    if ($this->formValues['address']['municipality']) {
+                        $mun = $this->municipalityRepository->find((int)$this->formValues['address']['municipality']);
+                        if ((string)$mun->getProvince()->getId() !== $this->formValues['address']['province']) {
+                            $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
+                            if (!is_null($prov)) {
+                                $this->formValues['address']['municipality'] = ($prov->getMunicipalities()->count())
+                                    ? (string)$prov->getMunicipalities()->first()->getId()
+                                    : '';
+                            }
+                        }
+                    } else {
                         $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
                         if (!is_null($prov)) {
-                            $this->formValues['address']['municipality'] = ($prov->getMunicipalities()->count())
-                                ? (string)$prov->getMunicipalities()->first()->getId()
-                                : '';
-                        }
-                    }
-                } else {
-                    $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
-                    if (!is_null($prov)) {
-                        if ($prov->getMunicipalities()->count()) {
-                            $this->formValues['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
+                            if ($prov->getMunicipalities()->count()) {
+                                $this->formValues['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
+                            }
                         }
                     }
                 }

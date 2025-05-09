@@ -4,12 +4,9 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\EnterpriseClient;
-use App\Entity\IndividualClient;
 use App\Form\EnterpriseClientType;
-use App\Form\IndividualClientType;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\EnterpriseClientRepository;
-use App\Repository\IndividualClientRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProvinceRepository;
 use Exception;

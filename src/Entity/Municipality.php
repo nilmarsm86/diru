@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MunicipalityRepository::class)]
 //#[ORM\UniqueConstraint(name: 'municipality_name', columns: ['name'])]
-//#[DoctrineAssert\UniqueEntity('name', message: 'El municipio debe ser único.')]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'province'], message: 'Ya existe en la provincia este municipio.', errorPath: 'name')]
 class Municipality
 {
     use NameToStringTrait;

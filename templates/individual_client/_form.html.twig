@@ -34,30 +34,7 @@
 
 {% endcomponent %}
 
-{% component 'Modal:Modal' with {
-    title: 'Agregar Representante',
-    id: 'add-person'
-} %}
-    {% block body %}
-        {{ component('PersonForm', {modal:'add-person', per: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}
+{{ include('partials/_modal_add_person.html.twig') }}
 
-
-{% component 'Modal:Modal' with {
-    title: 'Agregar Provincia',
-    id: 'add-province'
-} %}
-    {% block body %}
-        {{ component('ProvinceForm', {modal:'add-province', prov: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}
-
-{% component 'Modal:Modal' with {
-    title: 'Agregar Municipio',
-    id: 'add-municipality'
-} %}
-    {% block body %}
-        {{ component('MunicipalityForm', {modal:'add-municipality', mun: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}
+{{ include('partials/_modal_add_province.html.twig') }}
+{{ include('partials/_modal_add_municipality.html.twig') }}

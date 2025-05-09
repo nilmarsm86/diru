@@ -1,0 +1,8 @@
+{% component 'Modal:Modal' with {
+    title: 'Agregar Organismo',
+    id: 'add-organism'
+} %}
+    {% block body %}
+        {{ component('OrganismForm', {modal:'add-organism', org: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}

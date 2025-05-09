@@ -34,11 +34,4 @@
 
 {% endcomponent %}
 
-{% component 'Modal:Modal' with {
-    title: 'Agregar Provincia',
-    id: 'add-province'
-} %}
-    {% block body %}
-        {{ component('ProvinceForm', {modal:'add-province', prov: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}
+{{ include('partials/_modal_add_province.html.twig') }}

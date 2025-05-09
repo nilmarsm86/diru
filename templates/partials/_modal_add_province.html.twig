@@ -1,0 +1,8 @@
+{% component 'Modal:Modal' with {
+    title: 'Agregar Provincia',
+    id: 'add-province'
+} %}
+    {% block body %}
+        {{ component('ProvinceForm', {modal:'add-province', prov: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}

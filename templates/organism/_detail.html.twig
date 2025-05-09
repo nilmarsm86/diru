@@ -11,7 +11,7 @@
             label: 'Nuevo',
             title: 'Nuevo organism',
             entity: organism,
-            state: app.request.query.get('state') ? app.request.query.get('state') : 'detail',
+            state: 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}

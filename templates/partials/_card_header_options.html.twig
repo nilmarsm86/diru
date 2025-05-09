@@ -1,5 +1,9 @@
 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton,tableActionButton2, tableActionButton3 %}
 
+{% if state == 'detail' %}
+    {% set state = app.request.query.get('state') ?? 'detail' %}
+{% endif %}
+
 <div>
     {% if showButton is defined and showButton == true %}
         {% if state == 'form' %}

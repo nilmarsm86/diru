@@ -2,10 +2,6 @@
 
 namespace App\Entity\Traits;
 
-use App\Entity\Enums\State as StateEnum;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 trait AddressTrait
  {
     /**

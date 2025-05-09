@@ -50,8 +50,6 @@ readonly class UserService
         }catch (Exception $exception){
             return [$user, $role, 'text-bg-danger', $exception->getMessage(), new Response('', Response::HTTP_UNPROCESSABLE_ENTITY)];
         }
-
-
     }
 
     /**

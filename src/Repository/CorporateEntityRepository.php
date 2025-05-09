@@ -67,7 +67,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
         }
     }
 
-    private function addType(QueryBuilder $builder, $type)
+    private function addType(QueryBuilder $builder, $type): void
     {
         if ($type !== '') {
             $type = CorporateEntityType::from($type);
@@ -82,7 +82,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
      * @param string $type
      * @return Paginator Returns an array of User objects
      */
-    public function findEntities(string $filter = '', int $amountPerPage = 10, int $page = 1, $type = ''): Paginator
+    public function findEntities(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = ''): Paginator
     {
         $builder = $this->createQueryBuilder('ce')->select(['ce', 'mun', 'pro', 'o'])
             ->innerJoin('ce.municipality', 'mun')

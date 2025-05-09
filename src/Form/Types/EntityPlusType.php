@@ -2,15 +2,10 @@
 
 namespace App\Form\Types;
 
-use App\Entity\Enums\CorporateEntityType;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityPlusType extends AbstractType

@@ -48,10 +48,7 @@ class PersonRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    /**
-     * @inheritDoc
-     */
-    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    public function addFilter(QueryBuilder $builder, string $filter): void
     {
         if($filter){
             $predicate = "p.name LIKE :filter ";
@@ -71,7 +68,7 @@ class PersonRepository extends ServiceEntityRepository
     public function findPersons(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('p');
-        $this->addFilter($builder, $filter, false);
+        $this->addFilter($builder, $filter);
         $query = $builder->orderBy('p.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }

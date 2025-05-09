@@ -6,7 +6,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Entity\Enums\State;
 use App\Entity\Role;
 use App\Entity\User;
 

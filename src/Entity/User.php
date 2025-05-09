@@ -14,7 +14,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Traits\StateTrait as StateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
-use App\Entity\Enums\State;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]

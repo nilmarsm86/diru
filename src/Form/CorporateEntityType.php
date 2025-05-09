@@ -3,20 +3,17 @@
 namespace App\Form;
 
 use App\Entity\CorporateEntity;
-use App\Entity\Municipality;
 use App\Entity\Organism;
 use App\Form\Types\AddressType;
 use App\Form\Types\CorporateEntityTypeEnumType;
 use App\Form\Types\EntityPlusType;
+use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CorporateEntityType extends AbstractType
 {
@@ -95,7 +92,7 @@ class CorporateEntityType extends AbstractType
      * @param array $options
      * @return Closure
      */
-    private function getOrganismQueryBuilder(array $options): \Closure
+    private function getOrganismQueryBuilder(array $options): Closure
     {
         return function (EntityRepository $er) use ($options): QueryBuilder|array {
             return $er->createQueryBuilder('o')->orderBy('o.name');

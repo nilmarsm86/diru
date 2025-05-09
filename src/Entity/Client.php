@@ -38,7 +38,7 @@ class Client
     #[ORM\JoinColumn(nullable: false)]
     protected ?Municipality $municipality = null;
 
-    #[ORM\Column(type: Types::TEXT, name: 'address')]
+    #[ORM\Column(name: 'address', type: Types::TEXT)]
 //    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
     private ?string $street = null;
 

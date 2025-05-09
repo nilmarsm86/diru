@@ -3,16 +3,12 @@
 namespace App\Service;
 
 use App\DTO\Paginator;
-use App\Entity\Enums\State;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -60,11 +56,6 @@ readonly class CrudActionService
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->from() > $paginator->getTotal()) {
-//            if($pageNumber === 1){
-//                return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => 1]), Response::HTTP_SEE_OTHER);
-//            }else{
-//                return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => ($pageNumber - 1)]), Response::HTTP_SEE_OTHER);
-//            }
             $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
             return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
         }
@@ -106,38 +97,6 @@ readonly class CrudActionService
             ] + $vars);
         return new Response($parseTemplate);
     }
-
-//    /**
-//     * @param Request $request
-//     * @param ServiceEntityRepository $repository
-//     * @param string $deactivateMessage
-//     * @param string $activateMessage
-//     * @return string
-//     * @throws LoaderError
-//     * @throws RuntimeError
-//     * @throws SyntaxError
-//     */
-//    public function stateAction(Request $request, ServiceEntityRepository $repository, string $deactivateMessage, string $activateMessage): string
-//    {
-//        if ($request->isXmlHttpRequest()) {
-//            $id = $request->request->get('id');
-//            $entity = $repository->find($id);
-//
-//            $stateId = $request->request->get('state');
-//            $state = State::from($stateId);
-//
-//            ($state->name === State::Active->name) ? $entity->activate() : $entity->deactivate();
-//
-//            $repository->save($entity, true);
-//            return $this->environment->render("partials/_form_success.html.twig", [
-//                'id' => 'state_' . $stateId . '-' . $entity->getId(),
-//                'type' => 'text-bg-success',
-//                'message' => ($stateId === "0") ? $deactivateMessage : $activateMessage
-//            ]);
-//        }
-//
-//        throw new BadRequestHttpException('Ajax request');
-//    }
 
     /**
      * @param Request $request
@@ -331,7 +290,7 @@ readonly class CrudActionService
      * @param $classname
      * @return false|int|string
      */
-    public function getClassName($classname): false|int|string
+    private function getClassName($classname): false|int|string
     {
         if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
         return $pos;

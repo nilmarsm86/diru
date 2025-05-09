@@ -6,7 +6,6 @@
     <div class="card-body">
         {% block body %}{% endblock %}
     </div>
-{#    {{ this.footer|raw }}#}
     {% block footer %}{% endblock %}
     {{ component('Backdrop:Backdrop', {id: constant('BACKDROP_DATA_ID', this), attr:"data-twig--card--card-target=backdrop"}) }}
 </div>

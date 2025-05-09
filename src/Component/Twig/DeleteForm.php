@@ -8,7 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class DeleteForm
 {
     public string $path;
-    public string $confirm = 'Esta seguro que desea borrarlo?';
+    public string $confirm = 'Está seguro que desea borrarlo?';
     public string $token;
     public string $title;
     public string $icon;

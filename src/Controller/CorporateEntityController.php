@@ -5,11 +5,8 @@ namespace App\Controller;
 use App\Controller\Traits\MunicipalityTrait;
 use App\DTO\Paginator;
 use App\Entity\CorporateEntity;
-use App\Entity\Municipality;
-use App\Form\CorporateEntityType;
 use App\Repository\CorporateEntityRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,7 +82,7 @@ final class CorporateEntityController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/{id}/edit', name: 'app_corporate_entity_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService): Response
     {
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Editar entidad corporativa',

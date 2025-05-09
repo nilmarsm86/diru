@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Controller\Traits\MunicipalityTrait;
 use App\Entity\IndividualClient;
-use App\Form\IndividualClientType;
 use App\Repository\IndividualClientRepository;
-use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,6 +70,11 @@ final class IndividualClientController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_individual_client_delete', methods: ['POST'])]
     public function delete(Request $request, IndividualClient $individualClient, IndividualClientRepository $individualClientRepository, CrudActionService $crudActionService): Response
     {

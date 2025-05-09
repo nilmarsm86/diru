@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Organism;
-use App\Form\OrganismType;
 use App\Repository\OrganismRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,7 +62,7 @@ final class OrganismController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/{id}/edit', name: 'app_organism_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Request $request, Organism $organism, OrganismRepository $organismRepository, CrudActionService $crudActionService): Response
+    public function edit(Request $request, Organism $organism, CrudActionService $crudActionService): Response
     {
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Editar organismo',

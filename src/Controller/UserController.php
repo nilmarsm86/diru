@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\DTO\Paginator;
-
 use App\Entity\Role;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\CrudActionService;
 use App\Service\UserService;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

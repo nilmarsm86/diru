@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\EnterpriseClient;
-use App\Form\EnterpriseClientType;
 use App\Repository\EnterpriseClientRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +27,11 @@ final class EnterpriseClientController extends AbstractController
         return $crudActionService->indexAction($request, $enterpriseClientRepository, 'findEnterprises', 'enterprise_client');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_enterprise_client_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {

@@ -51,7 +51,7 @@ class EnterpriseClientType extends AbstractType
             ])
             ->add('corporateEntity', EntityPlusType::class, [
                 'class' => CorporateEntity::class,
-                'placeholder' => $options['province'] ? null : '-Seleccione-',
+                'placeholder' => '-Seleccione-',
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
                 'modal_id' => '#add-entity',
@@ -115,17 +115,6 @@ class EnterpriseClientType extends AbstractType
         return function (EntityRepository $er): QueryBuilder|array {
             return $er->createQueryBuilder('ce')
                 ->orderBy('ce.name', 'ASC');
-//            if (!$client->getId()) {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL');
-//            } else {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL')
-//                    ->orWhere('c.id = :id')
-//                    ->setParameter(':id', $client->getId());
-//            }
-
-//            return $qb->orderBy('ce.name', 'ASC');
         };
     }
 

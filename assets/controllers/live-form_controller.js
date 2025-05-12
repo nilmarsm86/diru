@@ -55,25 +55,27 @@ export default class extends AbstractController {
 
             //if an entity-plus has double same option, deleted
             const selects = this.element.querySelectorAll('select[data-type--entity-plus-target=select]');
-            selects.forEach((select) => {
-                if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
-                    for (let i = 0; i < select.options.length; i++) {
-                        if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
-                            select.options.remove(i);
-                        }
-                    }
-
-                    let ind = null;
-                    for (let i = 0; i < select.options.length; i++) {
-                        if(select.options[i].attributes.selected){
-                            ind = i;
-                        }
-                    }
-
-                    select.selectedIndex = ind;
-                }
-            });
+            selects.forEach(this.removeDoubleSameOption.bind(this));
         });
+    }
+
+    removeDoubleSameOption(select){
+        if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
+            for (let i = 0; i < select.options.length; i++) {
+                if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
+                    select.options.remove(i);
+                }
+            }
+
+            let ind = null;
+            for (let i = 0; i < select.options.length; i++) {
+                if(select.options[i].attributes.selected){
+                    ind = i;
+                }
+            }
+
+            select.selectedIndex = ind;
+        }
     }
 
 }

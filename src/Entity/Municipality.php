@@ -43,7 +43,7 @@ class Municipality
         return $this->province;
     }
 
-    public function setProvince(Province $province): static
+    public function setProvince(?Province $province): static
     {
         $this->province = $province;
 

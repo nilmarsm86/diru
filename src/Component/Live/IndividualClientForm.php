@@ -145,6 +145,7 @@ final class IndividualClientForm extends AbstractController
                 $province = (int)$this->formValues['streetAddress']['address']['province'];
                 $municipality = (int)$this->formValues['streetAddress']['address']['municipality'];
             }
+
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['street'])) {
 //            if (isset($this->formValues['streetAddress']['street'])) {
                 $street = $this->formValues['streetAddress']['street'];

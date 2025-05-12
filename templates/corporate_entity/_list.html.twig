@@ -45,12 +45,12 @@
                     <th>Nombre</th>
                     <th>Código</th>
                     <th>NIT</th>
-                    <th>Organismo</th>
+                    <th>Organismo {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     {% if app.request.query.get('entity') == '' %}
                         <th>Tipo</th>
                     {% endif %}
-                    <th>Provincia</th>
-                    <th>Municipio</th>
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
             {% endblock %}

@@ -24,8 +24,8 @@
                     <th>Pasaporte</th>
                     <th>Teléfono</th>
                     <th>Correo</th>
-                    <th>Provincia</th>
-                    <th>Municipio</th>
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -39,8 +39,10 @@
                         <td>{{ client.person.name }}</td>
                         <td>{{ client.person.identificationNumber }}</td>
                         <td>{{ client.person.passport }}</td>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.email }}</td>
+                        <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
+                        <td>
+                            <a href="mailto:{{ client.email }}">{{ client.email }}</a>
+                        </td>
                         <td>
                             <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
                                 {{ client.getProvinceName() }}

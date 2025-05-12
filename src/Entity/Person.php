@@ -23,7 +23,7 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El número de identificación esta vacío.')]
+    #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
     private ?string $identificationNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]

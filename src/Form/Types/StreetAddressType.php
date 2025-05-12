@@ -59,7 +59,7 @@ class StreetAddressType extends AbstractType
 
         if ($options['street'] === '') {
             $constraints = [
-                new NotBlank(message: 'La dirección esta vacía.')
+                new NotBlank(message: 'La dirección está vacía.')
             ];
         }
 

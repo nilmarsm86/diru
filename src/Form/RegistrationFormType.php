@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\DTO\RegistrationForm;
+use App\Form\Types\PasswordToggleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -59,12 +60,13 @@ class RegistrationFormType extends AbstractType
             ])
 
             ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
+                'type' => PasswordToggleType::class,
                 'first_options' => [
                     'attr' => [
                         'placeholder' => 'Contraseña*',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
                     ],
                 ],
                 'second_options' => [
@@ -72,6 +74,7 @@ class RegistrationFormType extends AbstractType
                         'placeholder' => 'Repetir Contraseña*',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
                     ],
                 ],
                 'invalid_message' => 'Las contraseñas no coinciden.'

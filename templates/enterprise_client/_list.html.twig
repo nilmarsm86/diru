@@ -19,12 +19,12 @@
 
             {% block tableHead %}
                 <tr>
-                    <th>Representante</th>
+                    <th>Representante {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
                     <th>Teléfono</th>
                     <th>Correo</th>
-                    <th>Entidad</th>
-                    <th>Provincia</th>
-                    <th>Municipio</th>
+                    <th>Entidad {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -35,10 +35,28 @@
 
                 {% for client in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ client.person.name }} ({{ client.email }})</td>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.email }}</td>
-                        <td>{{ client.corporateEntity }}</td>
+                        <td>
+                            <a data-bs-toggle="modal" data-bs-target="#detail_person"
+                               href="#" {{ stimulusController('detail-link-modal', {
+                                url: path('app_person_show', {id:client.person.id, state:'modal'}),
+                                container: '#detail_person .modal-body'
+                            }) }}
+                            >
+                                {{ client.person.name }}
+                            </a>
+                        </td>
+                        <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
+                        <td><a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
+                        <td>
+                            <a data-bs-toggle="modal" data-bs-target="#detail_entity"
+                               href="#" {{ stimulusController('detail-link-modal', {
+                                url: path('app_corporate_entity_show', {id:client.corporateEntity.id, state:'modal'}),
+                                container: '#detail_entity .modal-body'
+                            }) }}
+                            >
+                                {{ client.corporateEntity }}
+                            </a>
+                        </td>
                         <td>
                             <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
                                 {{ client.getProvinceName() }}
@@ -71,6 +89,24 @@
 
         {% endcomponent %}
 
-    {% endblock %}
+        {% component 'Modal:Modal' with {
+            title: 'Detalle del representante',
+            id: 'detail_person',
 
+        } %}
+            {% block body %}
+                Cargando datos del representante...
+            {% endblock %}
+        {% endcomponent %}
+
+        {% component 'Modal:Modal' with {
+            title: 'Detalle de la entidad',
+            id: 'detail_entity',
+        } %}
+            {% block body %}
+                Cargando datos de la entidad corporativa...
+            {% endblock %}
+        {% endcomponent %}
+
+    {% endblock %}
 {% endcomponent %}

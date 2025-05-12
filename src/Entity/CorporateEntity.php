@@ -28,13 +28,13 @@ class CorporateEntity
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El código de empresa esta vacío.')]
+    #[Assert\NotBlank(message: 'El código de empresa está vacío.')]
 //    #[Assert\NotNull(message: 'El codigo de empresa no debe ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     private ?string $code = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message: 'El NIT esta vacío.')]
+    #[Assert\NotBlank(message: 'El NIT está vacío.')]
     private ?string $nit = null;
 
     #[ORM\ManyToOne]

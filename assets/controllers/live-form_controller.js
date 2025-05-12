@@ -1,6 +1,7 @@
 import {getComponent} from '@symfony/ux-live-component';
 import {useCsrfToken} from "../behaviors/use-csrf-token.js";
 import AbstractController from "./AbstractController.js";
+
 export const SUCCESS = "App\\Component\\Twig\\ProvinceForm_form_success";
 
 /*
@@ -19,15 +20,26 @@ export default class extends AbstractController {
         useCsrfToken(this);
 
         this.element.querySelector('form').addEventListener('submit', (event) => {
-            this.dispatch('submit', {detail:{form:event.currentTarget}});
+            this.dispatch('submit', {detail: {form: event.currentTarget}});
         });
 
         window.addEventListener('type--entity-plus:update', (event) => {
-            if(this.modalValue === '' || (event.detail.modal === 'add-province' && this.modalValue === 'add-municipality')){
-                for(let item in event.detail.data){
-                    try{
+            if (this.modalValue === '' || (event.detail.modal === 'add-province' && this.modalValue === 'add-municipality')) {
+                for (let item in event.detail.data) {
+                    try {
                         this.component.set((item), event.detail.data[item]);
-                    }catch (e) {}
+                    } catch (e) {
+                    }
+                }
+                this.component.render();
+            }
+        });
+
+        window.addEventListener('type--address:loaded', (event) => {
+            if (this.modalValue === 'add-municipality') {
+                try {
+                    this.component.set('province', event.target.querySelectorAll('select')[0].value);
+                } catch (e) {
                 }
                 this.component.render();
             }
@@ -39,19 +51,26 @@ export default class extends AbstractController {
         this.processCsrfToken();
 
         this.component.on('render:finished', (component) => {
-            this.dispatch('submitEnd', {detail:{form:this.element.querySelector('form')}});
+            this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
 
             //if an entity-plus has double same option, deleted
             const selects = this.element.querySelectorAll('select[data-type--entity-plus-target=select]');
             selects.forEach((select) => {
-                const firstOption = select.options[0];
-                for (let i = 0; i < select.options.length; i++) {
-                    let item = select.options[i];
-                    if(firstOption !== item){
-                        if(firstOption.value === item.value){
-                            select.options.remove(0);
+                if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
+                    for (let i = 0; i < select.options.length; i++) {
+                        if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
+                            select.options.remove(i);
                         }
                     }
+
+                    let ind = null;
+                    for (let i = 0; i < select.options.length; i++) {
+                        if(select.options[i].attributes.selected){
+                            ind = i;
+                        }
+                    }
+
+                    select.selectedIndex = ind;
                 }
             });
         });

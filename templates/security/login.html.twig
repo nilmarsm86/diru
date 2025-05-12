@@ -38,7 +38,7 @@
                 {% endif %}
 
                 <br><br>
-                <div class="mb-3 input-group">
+                <div class="mb-4 input-group">
                     <span class="input-group-text login-text-icon" id="basic-addon1">
                         {{ ux_icon('bi:people-circle', {class:'bi'}) }}
                     </span>
@@ -54,26 +54,35 @@
                     </span>
                     <input class="form-control form-control-user no-border-left" type="password"
                            id="exampleInputPassword" placeholder="Contraseña" name="_password"
-                           autocomplete="current-password" required>
+                           style="border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;"
+                           autocomplete="current-password"
+                           required
+                            {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', {
+                                visibleLabel: '',
+                                hiddenLabel: '',
+                                buttonClasses: ['toggle-password-button']
+                            }) }}>
                 </div>
-{#                <div class="mb-3">#}
-{#                    <div class="custom-control custom-checkbox small">#}
-{#                        <div class="form-check">#}
-{#                            <input class="form-check-input custom-control-input"#}
-{#                                   type="checkbox" id="formCheck-1" name="_remember_me">#}
-{#                            <label class="form-check-label custom-control-label" for="formCheck-1">Recordarme</label>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
+                {#                <div class="mb-3"> #}
+                {#                    <div class="custom-control custom-checkbox small"> #}
+                {#                        <div class="form-check"> #}
+                {#                            <input class="form-check-input custom-control-input" #}
+                {#                                   type="checkbox" id="formCheck-1" name="_remember_me"> #}
+                {#                            <label class="form-check-label custom-control-label" for="formCheck-1">Recordarme</label> #}
+                {#                        </div> #}
+                {#                    </div> #}
+                {#                </div> #}
                 <button class="btn btn-primary d-block btn-user w-100" type="submit">
                     {{ ux_icon('bi:arrow-right-circle', {class:'bi'}) }} Autenticarse
                 </button>
                 <br><br>
                 <hr>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" data-controller="csrf-protection">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"
+                       data-controller="csrf-protection">
             </form>
             <div class="text-center">
-                <a class="btn btn-primary d-block btn-user w-100 btn-google link-button" href="{{ path('app_register') }}">
+                <a class="btn btn-primary d-block btn-user w-100 btn-google link-button"
+                   href="{{ path('app_register') }}">
                     {{ ux_icon('mdi:user-key', {class:'bi'}) }} Crear una cuenta!
                 </a>
             </div>

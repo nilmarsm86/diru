@@ -64,7 +64,7 @@ class MunicipalityType extends AbstractType
     private function getProvinceQueryBuilder(): Closure
     {
         return function (EntityRepository $er): QueryBuilder|array {
-            return $er->createQueryBuilder('p')->orderBy('p.name');
+            return $er->createQueryBuilder('p')->orderBy('p.name', 'ASC');
         };
     }
 }

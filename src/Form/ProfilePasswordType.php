@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\DTO\ProfilePasswordForm;
+use App\Form\Types\PasswordToggleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -14,7 +15,7 @@ class ProfilePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('oldPassword', PasswordType::class, [
+            ->add('oldPassword', PasswordToggleType::class, [
                 'label_html' => true,
                 'label' => '<strong>Contraseña actual: </strong>',
                 'label_attr' => [
@@ -22,16 +23,18 @@ class ProfilePasswordType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',
-                    'placeholder' => 'Constraseña actual'
+                    'placeholder' => 'Constraseña actual',
+                    'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
+                'type' => PasswordToggleType::class,
                 'first_options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
-                        'placeholder' => 'Nueva contraseña'
+                        'placeholder' => 'Nueva contraseña',
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
                     ],
                     'label_html' => true,
                     'label' => '<strong>Nueva contraseña:</strong>',
@@ -43,7 +46,8 @@ class ProfilePasswordType extends AbstractType
                     'attr' => [
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
-                        'placeholder' => 'Repetir contraseña'
+                        'placeholder' => 'Repetir contraseña',
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
                     ],
                     'label_html' => true,
                     'label' => '<strong>Repetir contraseña:</strong>',
@@ -61,6 +65,7 @@ class ProfilePasswordType extends AbstractType
             'data_class' => ProfilePasswordForm::class,
             'attr' => [
                 'class' => 'profile',
+                'novalidate' => 'novalidate'
             ]
         ]);
     }

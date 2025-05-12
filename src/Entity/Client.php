@@ -22,20 +22,22 @@ class Client
     protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El telefono esta vacío.')]
+    #[Assert\NotBlank(message: 'El teléfono está vacío.')]
     protected ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El correo esta vacio.')]
+    #[Assert\NotBlank(message: 'El correo está vacío.')]
     protected ?string $email = null;
 
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione o cree el representante.')]
     protected ?Person $person = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     protected ?Municipality $municipality = null;
 
     #[ORM\Column(name: 'address', type: Types::TEXT)]
@@ -76,7 +78,7 @@ class Client
         return $this->person;
     }
 
-    public function setPerson(Person $person): static
+    public function setPerson(?Person $person): static
     {
         $this->person = $person;
 

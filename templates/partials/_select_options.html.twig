@@ -1,10 +1,11 @@
 {% for entity in entities %}
     {% if selected is defined and selected == entity.id %}
-        <option value="{{ entity.id }}" selected="selected">
+        <option value="{{ entity.id }}" selected="selected" data-ajax>
     {% else %}
-        <option value="{{ entity.id }}">
+        <option value="{{ entity.id }}" data-ajax>
     {% endif %}
-
         {{ entity.name }}
     </option>
+{% else %}
+    <option value="" selected="selected">{{ empty }}</option>
 {% endfor %}

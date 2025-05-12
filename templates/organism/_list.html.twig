@@ -31,7 +31,7 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ organism.name }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }}
+{#                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }}#}
                             {{ tableActionButton3(path('app_organism_edit', {'id': organism.id}), 'fa:edit', '', 'Editar provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_edit', {'id': organism.id})})) }}
 
                             {{ component('DeleteForm', {

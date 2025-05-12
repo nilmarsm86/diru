@@ -20,7 +20,7 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Provincia</th>
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -40,7 +40,7 @@
                             </a>
                         </td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }}
+{#                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }}#}
                             {{ tableActionButton3(path('app_municipality_edit', {'id': municipality.id}), 'fa:edit', '', 'Editar municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_edit', {'id': municipality.id})})) }}
 
                             {{ component('DeleteForm', {

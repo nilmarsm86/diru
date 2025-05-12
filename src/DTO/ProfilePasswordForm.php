@@ -13,7 +13,7 @@ final class ProfilePasswordForm
     public string $oldPassword;
 
     #[Assert\NotBlank(message: 'Establezca la nueva contraseña.')]
-    #[Assert\NotNull(message: 'La nueva contraseña no puede ser nula.')]
+//    #[Assert\NotNull(message: 'La nueva contraseña no puede ser nula.')]
     #[Password]
     public string $plainPassword;
 

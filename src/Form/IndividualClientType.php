@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class IndividualClientType extends AbstractType
 {
@@ -92,7 +93,7 @@ class IndividualClientType extends AbstractType
                     ->setParameter(':id', $client->getId());
             }
 
-            return $qb->orderBy('p.name');
+            return $qb->orderBy('p.name', 'ASC');
         };
     }
 
@@ -117,7 +118,10 @@ class IndividualClientType extends AbstractType
             'detail_id' => 'detail_person',
             'detail_loading' => 'Cargando detalles de los representantes...',
             'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
-            'constraints' => [new NotBlank(message: 'Seleccione o cree el representante.')],
+//            'constraints' => [
+//                new NotBlank(message: 'Seleccione o cree el representante.'),
+////                new NotNull(message: 'Seleccione el representante.')
+//            ],
         ]);
     }
 }

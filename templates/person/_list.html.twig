@@ -20,7 +20,7 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Número de indentificación</th>
+                    <th>Carnet de identidad</th>
                     <th>Pasaporte</th>
                     <th></th>
                 </tr>
@@ -35,7 +35,7 @@
                         <td>{{ person.identificationNumber }}</td>
                         <td>{{ person.passport }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_person_show', {'id': person.id}), 'bi:eye', '', 'Detalle del representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_person_show', {'id': person.id})})) }}
+{#                            {{ tableActionButton3(path('app_person_show', {'id': person.id}), 'bi:eye', '', 'Detalle del representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_person_show', {'id': person.id})})) }}#}
                             {{ tableActionButton3(path('app_person_edit', {'id': person.id}), 'fa:edit', '', 'Editar representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_person_edit', {'id': person.id})})) }}
 
                             {{ component('DeleteForm', {

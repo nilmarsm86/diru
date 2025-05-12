@@ -53,7 +53,7 @@ class EnterpriseClientType extends AbstractType
                 'class' => CorporateEntity::class,
                 'placeholder' => $options['province'] ? null : '-Seleccione-',
                 'label' => 'Entidad corporativa:',
-//                'query_builder' => $this->getProvinceQueryBuilder($options),
+                'query_builder' => $this->getEntityQueryBuilder(),
                 'modal_id' => '#add-entity',
                 'path' => $this->router->generate('app_corporate_entity_options', ['id' => 0]),
                 'detail' => true,
@@ -102,7 +102,30 @@ class EnterpriseClientType extends AbstractType
                     ->setParameter(':id', $client->getId());
             }
 
-            return $qb->orderBy('p.name');
+            return $qb->orderBy('p.name', 'ASC');
+        };
+    }
+
+    /**
+     * @param Client $client
+     * @return Closure
+     */
+    private function getEntityQueryBuilder(): Closure
+    {
+        return function (EntityRepository $er): QueryBuilder|array {
+            return $er->createQueryBuilder('ce')
+                ->orderBy('ce.name', 'ASC');
+//            if (!$client->getId()) {
+//                $qb->leftJoin('p.client', 'c')
+//                    ->where('c.person IS NULL');
+//            } else {
+//                $qb->leftJoin('p.client', 'c')
+//                    ->where('c.person IS NULL')
+//                    ->orWhere('c.id = :id')
+//                    ->setParameter(':id', $client->getId());
+//            }
+
+//            return $qb->orderBy('ce.name', 'ASC');
         };
     }
 
@@ -127,7 +150,7 @@ class EnterpriseClientType extends AbstractType
             'detail_id' => 'detail_person',
             'detail_loading' => 'Cargando detalles de los representantes...',
             'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
-            'constraints' => [new NotBlank(message: 'Seleccione o cree el representante.')],
+//            'constraints' => [new NotBlank(message: 'Seleccione o cree el representante.')],
         ]);
     }
 }

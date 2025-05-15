@@ -27,12 +27,12 @@
             {% block tableBody %}
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
-                {% for location in paginator.getData() %}
+                {% for location_zone in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ location.name }}</td>
+                        <td>{{ location_zone.name }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_location_zone_show', {'id': location_zone.id}), 'bi:eye', '', 'Detalle de la zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}
-                            {{ tableActionButton3(path('app_location_zone_edit', {'id': location_zone.id}), 'fa:edit', '', 'Editar zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}
+{#                            {{ tableActionButton3(path('app_location_zone_show', {'id': location_zone.id}), 'bi:eye', '', 'Detalle de la zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}#}
+                            {{ tableActionButton3(path('app_location_zone_edit', {'id': location_zone.id}), 'fa:edit', '', 'Editar zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_edit', {'id': location_zone.id})})) }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_location_zone_delete', {'id': location_zone.id}),

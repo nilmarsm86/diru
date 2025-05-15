@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: EnterpriseClientRepository::class)]
 class EnterpriseClient extends Client
 {
-    use AddressTrait;
+//    use AddressTrait;
 
     #[ORM\ManyToOne(inversedBy: 'enterpriseClients')]
     #[ORM\JoinColumn(nullable: false)]

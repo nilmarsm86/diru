@@ -38,56 +38,46 @@ final class LocationZoneController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $locationZone = new LocationZone();
-//        $form = $this->createForm(LocationZoneType::class, $locationZone);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($locationZone);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_location_zone_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('location_zone/new.html.twig', [
-//            'location_zone' => $locationZone,
-//            'form' => $form,
-//        ]);
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Nueva zona de ubicación',
             'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_location_zone_show', methods: ['GET'])]
-    public function show(LocationZone $locationZone): Response
+    public function show(Request $request, LocationZone $locationZone, CrudActionService $crudActionService): Response
     {
-        return $this->render('location_zone/show.html.twig', [
-            'location_zone' => $locationZone,
-        ]);
+        return $crudActionService->showAction($request, $locationZone, 'location_zone', 'location_zone', 'Detalles del zona de ubicación');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_location_zone_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, LocationZone $locationZone, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, LocationZone $locationZone, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(LocationZoneType::class, $locationZone);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_location_zone_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('location_zone/edit.html.twig', [
-            'location_zone' => $locationZone,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
+            'title' => 'Editar zona de ubicación',
+            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_location_zone_delete', methods: ['POST'])]
     public function delete(Request $request, LocationZone $locationZone, LocationZoneRepository $locationZoneRepository, CrudActionService $crudActionService): Response
     {
-        $successMsg = 'Se ha eliminado la entidad.';
-        return $crudActionService->deleteAction($request, $locationZoneRepository, $crudActionService, $successMsg, 'app_corporate_entity_index');
+        $successMsg = 'Se ha eliminado la zona de ubicación.';
+        return $crudActionService->deleteAction($request, $locationZoneRepository, $locationZone, $successMsg, 'app_location_zone_index');
     }
 }

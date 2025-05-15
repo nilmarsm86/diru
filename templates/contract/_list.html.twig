@@ -1,0 +1,59 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de contratos',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_contract_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo contrato', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_contract_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Código</th>
+                    <th>Año</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for contract in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ contract.code }}</td>
+                        <td>{{ contract.year }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_contract_show', {'id': contract.id}), 'bi:eye', '', 'Detalle del contrato', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_contract_show', {'id': contract.id})})) }}#}
+                            {{ tableActionButton3(path('app_contract_edit', {'id': contract.id}), 'fa:edit', '', 'Editar contrato', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_contract_edit', {'id': contract.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_contract_delete', {'id': contract.id}),
+                                confirm: 'Está seguro que desea eliminar el contrato?',
+                                token: 'delete' ~ contract.id,
+                                title: 'Eliminar contrato',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron contratos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

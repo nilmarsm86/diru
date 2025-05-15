@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Contrato: {{ contract.code }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Contratos') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Contratos', href: path('app_contract_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Contrato: {{ contract.code }}</h2>
+
+    {{ include('contract/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

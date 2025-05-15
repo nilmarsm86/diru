@@ -2,26 +2,26 @@
 <div class="row">
     <div class="col">
         <div class="mb-3">
-            {{ form_label(formName.name) }}
+            {{ form_label(formName.person.name) }}
             <div class="col-sm-6 mb-3 mb-sm-0 input-group">
                 <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
                     {{ ux_icon('fa:edit', {class:'bi'}) }}
                 </span>
-                {{ form_widget(formName.name) }}
+                {{ form_widget(formName.person.name) }}
             </div>
-            {{ form_errors(formName.name) }}
+            {{ form_errors(formName.person.name) }}
         </div>
     </div>
     <div class="col">
         <div class="mb-3">
-            {{ form_label(formName.lastname) }}
+            {{ form_label(formName.person.lastname) }}
             <div class="col-sm-6 mb-3 mb-sm-0 input-group">
                 <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
                     {{ ux_icon('fa:edit', {class:'bi'}) }}
                 </span>
-                {{ form_widget(formName.lastname) }}
+                {{ form_widget(formName.person.lastname) }}
             </div>
-            {{ form_errors(formName.lastname) }}
+            {{ form_errors(formName.person.lastname) }}
         </div>
     </div>
 </div>
@@ -29,14 +29,14 @@
 <div class="row">
     <div class="col">
         <div class="mb-3">
-            {{ form_label(formName.identificationNumber) }}
+            {{ form_label(formName.person.identificationNumber) }}
             <div class="col-sm-6 mb-3 mb-sm-0 input-group">
                 <span class="input-group-text" id="basic-addon1" style="background-color: transparent">
                     {{ ux_icon('fa:edit', {class:'bi'}) }}
                 </span>
-                {{ form_widget(formName.identificationNumber) }}
+                {{ form_widget(formName.person.identificationNumber) }}
             </div>
-            {{ form_errors(formName.identificationNumber) }}
+            {{ form_errors(formName.person.identificationNumber) }}
         </div>
     </div>
     <div class="col">
@@ -76,4 +76,4 @@
         Salvar
     </button>
 </div>
-{{ form_end(formName) }}
+{{ form_end(formName, {render_rest:false}) }}

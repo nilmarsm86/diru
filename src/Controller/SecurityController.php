@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\DTO\RegistrationForm;
 use App\Entity\Role;
 use App\Form\RegistrationFormType;
+use App\Repository\PersonRepository;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Exception;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -47,9 +49,9 @@ class SecurityController extends AbstractController
      * @throws Exception
      */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository, RoleRepository $rolRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository, RoleRepository $rolRepository, PersonRepository $personRepository): Response
     {
-        if(!is_null($this->getUser())){
+        if (!is_null($this->getUser())) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -59,23 +61,35 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $roleUser = $rolRepository->findOneBy(['name' => Role::ROLE_CLIENT]);
-
+        if ($form->isSubmitted()) {
             /** @var RegistrationForm $dto */
             $dto = $form->getData();
-            $user = $dto->toEntity();
-            $user->register($userPasswordHasher, $roleUser);
+            $identificationNumber = $dto->identificationNumber;
+            $person = $personRepository->findOneBy(['identificationNumber' => $identificationNumber]);
+            if (!is_null($person)) {
+                $errorMessage = new FormError('Ya existe una persona con este número de identificación.');
+                $form->get('identificationNumber')->addError($errorMessage);
+                $form->addError($errorMessage);
+            }
 
-            try {
-                $userRepository->save($user, true);
-                // do anything else you need here, like send an email
-                $this->addFlash('success', 'Se a registrado correctamente en el sistema. Espere que le activen el usuario para autenticarse.');
+            if ($form->isValid()) {
+                $roleUser = $rolRepository->findOneBy(['name' => Role::ROLE_CLIENT]);
 
-                return $this->redirectToRoute('app_login');
-            }catch (Exception $exception){
-                $error = true;
-                $message = 'Ha ocurrido un error al registrar al usuario. Revise bien los datos.';
+                $user = $dto->toEntity();
+                $user->register($userPasswordHasher, $roleUser);
+
+                try {
+                    $userRepository->save($user, true);
+                    // do anything else you need here, like send an email
+                    $this->addFlash('success', 'Se a registrado correctamente en el sistema.');
+                    $this->addFlash('info', 'Espere que le activen el usuario para autenticarse.');
+
+                    return $this->redirectToRoute('app_login');
+                } catch (Exception $exception) {
+                    $error = true;
+                    $message = 'Ha ocurrido un error al registrar al usuario. Revise bien los datos.';
+                }
+
             }
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\PhoneAndEmailTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -23,35 +24,36 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use StateTrait;
+    use PhoneAndEmailTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'El nombre del usuario no puede estar vacío.')]
-    #[Assert\NotNull(message: 'El nombre del usaurio no puede ser nulo.')]
-    #[Assert\NoSuspiciousCharacters]
-    #[Assert\Regex(
-        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-        message: 'El nombre del usuario debe contener solo letras.',
-    )]
-    private ?string $name = null;
+//    #[ORM\Column]
+//    #[Assert\NotBlank(message: 'El nombre del usuario no puede estar vacío.')]
+//    #[Assert\NotNull(message: 'El nombre del usaurio no puede ser nulo.')]
+//    #[Assert\NoSuspiciousCharacters]
+//    #[Assert\Regex(
+//        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
+//        message: 'El nombre del usuario debe contener solo letras.',
+//    )]
+//    private ?string $name = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'Los apellidos del usuario no pueden estar vacío.')]
-    #[Assert\NotNull(message: 'Los apellidos del usaurio no pueden ser nulos.')]
-    #[Assert\NoSuspiciousCharacters]
-    #[Assert\Regex(
-        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-        message: 'Los apellidos del usuario deben contener solo letras.',
-    )]
-    private ?string $lastname = null;
+//    #[ORM\Column]
+//    #[Assert\NotBlank(message: 'Los apellidos del usuario no pueden estar vacío.')]
+//    #[Assert\NotNull(message: 'Los apellidos del usaurio no pueden ser nulos.')]
+//    #[Assert\NoSuspiciousCharacters]
+//    #[Assert\Regex(
+//        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
+//        message: 'Los apellidos del usuario deben contener solo letras.',
+//    )]
+//    private ?string $lastname = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Establezca el nombre de usuario.')]
-    #[Assert\NotNull(message: 'El nombre de usuario no puede ser nulo.')]
+//    #[Assert\NotNull(message: 'El nombre de usuario no puede ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     #[Username]
     private ?string $username = null;
@@ -68,27 +70,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Establezca la contraseña.')]
-    #[Assert\NotNull(message: 'La contraseña no puede ser nula.')]
+//    #[Assert\NotNull(message: 'La contraseña no puede ser nula.')]
     private ?string $password = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'Escriba su carne de identidad.')]
-    private ?string $identificationNumber = null;
+//    #[ORM\Column]
+//    #[Assert\NotBlank(message: 'Escriba su carne de identidad.')]
+//    private ?string $identificationNumber = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $phone = null;
+//    #[ORM\Column(length: 255, nullable: true)]
+//    private ?string $phone = null;
+//
+//    #[ORM\Column(length: 255, nullable: true)]
+//    private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $email = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
+    protected ?Person $person = null;
 
-    public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber)
+    public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email)
     {
-        $this->name = $name;
-        $this->lastname = $lastname;
+        $this->person = new Person();
+        $this->person->setName($name);
+        $this->person->setLastname($lastname);
+        $this->person->setIdentificationNumber($identificationNumber);
         $this->username = $username;
         $this->password = $password;
+        $this->phone = $phone;
+        $this->email = $email;
         $this->roles = new ArrayCollection();
-        $this->identificationNumber = $identificationNumber;
         $this->deactivate();
     }
 
@@ -97,26 +108,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+//    public function getName(): ?string
+//    {
+//        return $this->name;
+//    }
+//
+//    public function setName(?string $name): static
+//    {
+//        $this->name = $name;
+//
+//        return $this;
+//    }
+
+//    public function getLastname(): ?string
+//    {
+//        return $this->lastname;
+//    }
+//
+//    public function setLastname(?string $lastname): static
+//    {
+//        $this->lastname = $lastname;
+//
+//        return $this;
+//    }
+
+    public function getPerson(): ?Person
     {
-        return $this->name;
+        return $this->person;
     }
 
-    public function setName(?string $name): static
+    public function setPerson(?Person $person): static
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(?string $lastname): static
-    {
-        $this->lastname = $lastname;
+        $this->person = $person;
 
         return $this;
     }
@@ -246,11 +269,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFullName(): string
-    {
-        return $this->getName().' '.$this->getLastname();
-    }
-
     public function __toString(): string
     {
         return $this->getUsername();
@@ -315,39 +333,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array(Role::ROLE_INVESTOR, $this->getRoles());
     }
 
-    public function getIdentificationNumber(): ?string
-    {
-        return $this->identificationNumber;
-    }
+//    public function getIdentificationNumber(): ?string
+//    {
+//        return $this->identificationNumber;
+//    }
+//
+//    public function setIdentificationNumber(string $identificationNumber): static
+//    {
+//        $this->identificationNumber = $identificationNumber;
+//
+//        return $this;
+//    }
 
-    public function setIdentificationNumber(string $identificationNumber): static
-    {
-        $this->identificationNumber = $identificationNumber;
+//    public function getPhone(): ?string
+//    {
+//        return $this->phone;
+//    }
+//
+//    public function setPhone(?string $phone): static
+//    {
+//        $this->phone = $phone;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
+//    public function getEmail(): ?string
+//    {
+//        return $this->email;
+//    }
+//
+//    public function setEmail(?string $email): static
+//    {
+//        $this->email = $email;
+//
+//        return $this;
+//    }
 }

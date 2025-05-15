@@ -39,12 +39,8 @@ class CorporateEntity
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Municipality $municipality = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione el organismo al cual pertenece la entidad.')]
+    #[Assert\NotBlank(message: 'Seleccione o cree el organismo al cual pertenece la entidad.')]
     private ?Organism $organism = null;
 
     #[ORM\Column(length: 255)]
@@ -92,18 +88,6 @@ class CorporateEntity
     public function setNit(?string $nit): static
     {
         $this->nit = $nit;
-
-        return $this;
-    }
-
-    public function getMunicipality(): ?Municipality
-    {
-        return $this->municipality;
-    }
-
-    public function setMunicipality(?Municipality $municipality): static
-    {
-        $this->municipality = $municipality;
 
         return $this;
     }

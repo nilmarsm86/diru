@@ -28,11 +28,6 @@ class Municipality
     #[Assert\NotBlank(message: 'Seleccione la provincia a la cual pertenece el municipio.')]
     private ?Province $province=null;
 
-    public function __construct()
-    {
-        //$this->name = $name;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -49,14 +44,5 @@ class Municipality
 
         return $this;
     }
-
-    /*public function __serialize(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-        ];
-    }*/
-
 
 }

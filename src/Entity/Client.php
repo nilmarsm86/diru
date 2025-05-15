@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\AddressTrait;
+use App\Entity\Traits\PhoneAndEmailTrait;
 use App\Repository\ClientRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,29 +18,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 ])]
 class Client
 {
+    use AddressTrait;
+    use PhoneAndEmailTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     protected ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El teléfono está vacío.')]
-    protected ?string $phone = null;
-
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El correo está vacío.')]
-    protected ?string $email = null;
-
-    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'client')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Seleccione o cree el representante.')]
     protected ?Person $person = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
-    protected ?Municipality $municipality = null;
 
     #[ORM\Column(name: 'address', type: Types::TEXT)]
 //    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
@@ -47,30 +39,6 @@ class Client
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     public function getPerson(): ?Person
@@ -85,18 +53,6 @@ class Client
         return $this;
     }
 
-    public function getMunicipality(): ?Municipality
-    {
-        return $this->municipality;
-    }
-
-    public function setMunicipality(?Municipality $municipality): static
-    {
-        $this->municipality = $municipality;
-
-        return $this;
-    }
-
     public function getStreet(): ?string
     {
         return $this->street;
@@ -105,6 +61,30 @@ class Client
     public function setStreet(string $street): static
     {
         $this->street = $street;
+
+        return $this;
+    }
+
+    public function getIdentificationNumber(): ?string
+    {
+        return $this->identificationNumber;
+    }
+
+    public function setIdentificationNumber(string $identificationNumber): static
+    {
+        $this->identificationNumber = $identificationNumber;
+
+        return $this;
+    }
+
+    public function getPassport(): ?string
+    {
+        return $this->passport;
+    }
+
+    public function setPassport(?string $passport): static
+    {
+        $this->passport = $passport;
 
         return $this;
     }

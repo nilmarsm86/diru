@@ -12,6 +12,10 @@
             {% set icon = 'lets-icons:check-fill' %}
         {% endif %}
 
+        {% if type == 'info' %}
+            {% set icon = 'lets-icons:info-fill' %}
+        {% endif %}
+
         {% if icon %}
             {{ ux_icon(icon, {class:'bi', style:'width:24px;height:24px'}) }}
         {% endif %}

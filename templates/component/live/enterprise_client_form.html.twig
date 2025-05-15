@@ -17,6 +17,16 @@
 {#            {{ form_row(form.person.passport, {label_attr:{'class':'col-sm-4'}}) }}#}
 {#        </div>#}
 {#    </div>#}
+    {{ form_row(form.name) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.identificationNumber) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.passport) }}
+        </div>
+    </div>
 
     {{ form_row(form.person) }}
 

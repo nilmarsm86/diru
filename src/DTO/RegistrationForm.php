@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class RegistrationForm
 {
-    #[Assert\NotBlank(message: 'El nombre del usuario no puede estar vacío.')]
+    #[Assert\NotBlank(message: 'El nombre está vacío.')]
     #[Assert\NoSuspiciousCharacters]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
@@ -17,7 +17,7 @@ final class RegistrationForm
     )]
     public string $name;
 
-    #[Assert\NotBlank(message: 'Los apellidos del usuario no pueden estar vacío.')]
+    #[Assert\NotBlank(message: 'Los apellidos estan vacíos.')]
     #[Assert\NoSuspiciousCharacters]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
@@ -30,17 +30,20 @@ final class RegistrationForm
     #[Username]
     public string $username;
 
-    #[Assert\IsTrue(message: 'Debe aprobar los términos.')]
+    #[Assert\IsTrue(message: 'Debe aprobar los términos y condiciones.')]
     public string $agreeTerms;
 
-    #[Assert\NotBlank(message: 'Escriba la contraseña.')]
+    #[Assert\NotBlank(message: 'La contraseña está vacía.')]
     #[Password]
     public string $plainPassword;
 
-    #[Assert\NotBlank(message: 'Escriba su carne de identidad.')]
-    public string $identificationNumber;
+    #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
+    public ?string $identificationNumber = null;
 
+    #[Assert\NotBlank(message: 'El correo está vacío.')]
     public ?string $email = null;
+
+    #[Assert\NotBlank(message: 'El teléfono está vacío.')]
     public ?string $phone = null;
 
     /**
@@ -50,9 +53,9 @@ final class RegistrationForm
     public function toEntity(?User $user = null): User
     {
         if(is_null($user)){
-            $user =  new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber);
-            $user->setEmail($this->email);
-            $user->setPhone($this->phone);
+            $user =  new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber, $this->phone, $this->email);
+//            $user->setEmail($this->email);
+//            $user->setPhone($this->phone);
         }
 
         return $user;

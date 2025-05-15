@@ -1,5 +1,6 @@
 {% from 'macros/flashes.html.twig' import flashes, flash %}
 {% from 'macros/link.html.twig' import activeLink %}
+{% from 'macros/toast.html.twig' import toasts %}
 
 <nav class="navbar navbar-expand-lg sticky-top flex-md-nowrap py-10 shadow bg-dark" data-bs-theme="dark">
     <div class="container-fluid" style="padding-left:0">
@@ -112,7 +113,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('user_profile') }}">
                         {{ ux_icon('bi:person-circle', {class:'bi'}) }}
-                        <span class="d-md-invisible">{{ app.user.fullName }}</span>
+                        <span class="d-md-invisible">{{ app.user.person.fullName }}</span>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -20,38 +20,38 @@ class RegistrationFormType extends AbstractType
             ->add('name', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Nombres*',
+                    'placeholder' => 'Nombres *',
                     'autofocus' => true
                 ]
             ])
             ->add('lastname', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Apellidos*'
+                    'placeholder' => 'Apellidos *'
                 ]
             ])
             ->add('identificationNumber', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Carne de identidad*'
+                    'placeholder' => 'Carnet de identidad *'
                 ]
             ])
             ->add('phone', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Teléfono'
+                    'placeholder' => 'Teléfono *'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Correo'
+                    'placeholder' => 'Correo *'
                 ]
             ])
             ->add('username', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Usuario*',
+                    'placeholder' => 'Usuario *',
                     'aria-describedby' => 'usernameHelp'
                 ]
             ])
@@ -63,7 +63,7 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordToggleType::class,
                 'first_options' => [
                     'attr' => [
-                        'placeholder' => 'Contraseña*',
+                        'placeholder' => 'Contraseña *',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
                         'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
@@ -71,7 +71,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'second_options' => [
                     'attr' => [
-                        'placeholder' => 'Repetir Contraseña*',
+                        'placeholder' => 'Repetir Contraseña *',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
                         'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'

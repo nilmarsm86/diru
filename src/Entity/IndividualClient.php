@@ -10,18 +10,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: IndividualClientRepository::class)]
 class IndividualClient extends Client
 {
-//    use AddressTrait;
-    use NameToStringTrait;
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    protected ?Person $person = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Los apellidos estan vacío.')]
-    #[Assert\NoSuspiciousCharacters]
-    private ?string $lastname = null;
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
-    private ?string $identificationNumber = null;
+    public function setPerson(?Person $person): static
+    {
+        $this->person = $person;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $passport = null;
+        return $this;
+    }
 }

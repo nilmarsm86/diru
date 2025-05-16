@@ -21,7 +21,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Carnet</th>
-                    <th>Pasaporte</th>
+                    {#                    <th>Pasaporte</th> #}
                     <th>Teléfono</th>
                     <th>Correo</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
@@ -36,9 +36,9 @@
 
                 {% for client in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ client.person.name }}</td>
+                        <td>{{ client.person.getFullName() }}</td>
                         <td>{{ client.person.identificationNumber }}</td>
-                        <td>{{ client.person.passport }}</td>
+                        {#                        <td>{{ client.person.passport }}</td> #}
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
                         <td>
                             <a href="mailto:{{ client.email }}">{{ client.email }}</a>

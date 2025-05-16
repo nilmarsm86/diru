@@ -14,35 +14,35 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
 {
     public function load(ObjectManager $manager): void
     {
-//        $corporateEntities = ['Entidad corporativa 1', 'Entidad corporativa 2', 'Entidad corporativa 3'];
-//        foreach ($corporateEntities as $corporateEntity){
-//            $corporate = $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => $corporateEntity]);
-//            if(is_null($corporate)){
-//                $corporate = new CorporateEntity();
-//                $corporate->setName($corporateEntity);
-//                $corporate->setCode('123456789');
-//                $corporate->setNit('ABC123');
-//                //buscar municipio por nombre y agregarlo
-//                $corporate->setMunicipality($this->findMunicipality($manager));
-//                //buscar organismo por nombre y agregarlo
-//                $corporate->setOrganism($this->findOrganism($manager));
-//                if($corporateEntity === 'Entidad corporativa 1'){
-//                    $corporate->setType(CorporateEntityType::Client);
-//                }
-//
-//                if($corporateEntity === 'Entidad corporativa 2'){
-//                    $corporate->setType(CorporateEntityType::Constructor);
-//                }
-//
-//                if($corporateEntity === 'Entidad corporativa 3'){
-//                    $corporate->setType(CorporateEntityType::ClientAndConstructor);
-//                }
-//
-//                $manager->persist($corporate);
-//            }
-//        }
-//
-//        $manager->flush();
+        $corporateEntities = ['Entidad corporativa 1', 'Entidad corporativa 2', 'Entidad corporativa 3'];
+        foreach ($corporateEntities as $corporateEntity){
+            $corporate = $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => $corporateEntity]);
+            if(is_null($corporate)){
+                $corporate = new CorporateEntity();
+                $corporate->setName($corporateEntity);
+                $corporate->setCode('123456789');
+                $corporate->setNit('ABC123');
+                //buscar municipio por nombre y agregarlo
+                $corporate->setMunicipality($this->findMunicipality($manager));
+                //buscar organismo por nombre y agregarlo
+                $corporate->setOrganism($this->findOrganism($manager));
+                if($corporateEntity === 'Entidad corporativa 1'){
+                    $corporate->setType(CorporateEntityType::Client);
+                }
+
+                if($corporateEntity === 'Entidad corporativa 2'){
+                    $corporate->setType(CorporateEntityType::Constructor);
+                }
+
+                if($corporateEntity === 'Entidad corporativa 3'){
+                    $corporate->setType(CorporateEntityType::ClientAndConstructor);
+                }
+
+                $manager->persist($corporate);
+            }
+        }
+
+        $manager->flush();
     }
 
     private function findMunicipality(ObjectManager $manager): ?Municipality

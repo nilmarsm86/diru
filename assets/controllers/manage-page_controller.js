@@ -119,6 +119,7 @@ export default class extends AbstractController {
     async deleteFormSuccess(event) {
         await this.processResponseToast(event.detail.response);//show toast
         this.refreshListContent(event);
+        this.onCardClose(event);
     }
 
     refreshListContent(event) {

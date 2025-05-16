@@ -19,7 +19,7 @@
 
             {% block tableHead %}
                 <tr>
-                    <th>Nombre</th>
+                    <th>Nombre y Apellidos</th>
                     <th>Carnet de identidad</th>
                     <th>Pasaporte</th>
                     <th></th>
@@ -31,7 +31,7 @@
 
                 {% for person in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ person.name }}</td>
+                        <td>{{ person.getFullName() }}</td>
                         <td>{{ person.identificationNumber }}</td>
                         <td>{{ person.passport }}</td>
                         <td class="text-end">

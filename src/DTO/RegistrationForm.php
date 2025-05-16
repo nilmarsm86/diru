@@ -13,15 +13,15 @@ final class RegistrationForm
     #[Assert\NoSuspiciousCharacters]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-        message: 'El nombre del usuario debe contener solo letras.',
+        message: 'El nombre debe contener solo letras.',
     )]
     public string $name;
 
-    #[Assert\NotBlank(message: 'Los apellidos estan vacíos.')]
+    #[Assert\NotBlank(message: 'Los apellidos están vacíos.')]
     #[Assert\NoSuspiciousCharacters]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-        message: 'Los apellidos del usuario deben contener solo letras.',
+        message: 'Los apellidos deben contener solo letras.',
     )]
     public string $lastname;
 

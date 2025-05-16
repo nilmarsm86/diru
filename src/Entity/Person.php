@@ -25,7 +25,7 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Los apellidos estan vacío.')]
+    #[Assert\NotBlank(message: 'Los apellidos están vacíos.')]
     #[Assert\NoSuspiciousCharacters]
     private ?string $lastname = null;
 

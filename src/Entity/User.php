@@ -31,26 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-//    #[ORM\Column]
-//    #[Assert\NotBlank(message: 'El nombre del usuario no puede estar vacío.')]
-//    #[Assert\NotNull(message: 'El nombre del usaurio no puede ser nulo.')]
-//    #[Assert\NoSuspiciousCharacters]
-//    #[Assert\Regex(
-//        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-//        message: 'El nombre del usuario debe contener solo letras.',
-//    )]
-//    private ?string $name = null;
-
-//    #[ORM\Column]
-//    #[Assert\NotBlank(message: 'Los apellidos del usuario no pueden estar vacío.')]
-//    #[Assert\NotNull(message: 'Los apellidos del usaurio no pueden ser nulos.')]
-//    #[Assert\NoSuspiciousCharacters]
-//    #[Assert\Regex(
-//        pattern: '/^[a-zA-Z,á,é,í,ó,ú,Á,É,Í,Ó,Ú,ñ,Ñ, ]+$/',
-//        message: 'Los apellidos del usuario deben contener solo letras.',
-//    )]
-//    private ?string $lastname = null;
-
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Establezca el nombre de usuario.')]
 //    #[Assert\NotNull(message: 'El nombre de usuario no puede ser nulo.')]
@@ -72,16 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Establezca la contraseña.')]
 //    #[Assert\NotNull(message: 'La contraseña no puede ser nula.')]
     private ?string $password = null;
-
-//    #[ORM\Column]
-//    #[Assert\NotBlank(message: 'Escriba su carne de identidad.')]
-//    private ?string $identificationNumber = null;
-
-//    #[ORM\Column(length: 255, nullable: true)]
-//    private ?string $phone = null;
-//
-//    #[ORM\Column(length: 255, nullable: true)]
-//    private ?string $email = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]

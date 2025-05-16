@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\IndividualClient;
+use App\Entity\Person;
 use App\Form\IndividualClientType;
 use App\Repository\IndividualClientRepository;
 use App\Repository\MunicipalityRepository;
@@ -50,12 +51,12 @@ final class IndividualClientForm extends AbstractController
     public int $municipality = 0;
 
     #[LiveProp(writable: true)]
-    public int $person = 0;
+    public int $representative = 0;
 
     public function __construct(
-        protected readonly ProvinceRepository $provinceRepository,
+        protected readonly ProvinceRepository     $provinceRepository,
         protected readonly MunicipalityRepository $municipalityRepository,
-        protected readonly PersonRepository $personRepository
+        protected readonly PersonRepository       $personRepository
     )
     {
 
@@ -88,13 +89,30 @@ final class IndividualClientForm extends AbstractController
     }
 
     /**
+     * @param IndividualClient $individualClient
+     * @return Person
+     */
+    public function createPerson(IndividualClient $individualClient): Person
+    {
+        if (!$person = $individualClient->getPerson()) {
+            $person = new Person();
+        }
+        $person->setName($this->formValues['person']['name']);
+        $person->setLastname($this->formValues['person']['lastname']);
+        $person->setIdentificationNumber($this->formValues['person']['identificationNumber']);
+        $person->setPassport(empty($this->formValues['person']['passport']) ? null : $this->formValues['person']['passport']);
+
+        return $person;
+    }
+
+    /**
      * @return void
      */
     public function preValue(): void
     {
-        if ($this->person !== 0) {
-            $this->formValues['person'] = (string)$this->person;
-            $this->person = 0;
+        if ($this->representative !== 0) {
+            $this->formValues['representative'] = (string)$this->representative;
+            $this->representative = 0;
         }
 
         if ($this->street !== '') {
@@ -180,8 +198,11 @@ final class IndividualClientForm extends AbstractController
             /** @var IndividualClient $ic */
             $ic = $this->getForm()->getData();
 
-            $person = $personRepository->find((int)$this->formValues['person']);
+            $person = $this->createPerson($ic);
             $ic->setPerson($person);
+
+            $representative = $personRepository->find((int)$this->formValues['representative']);
+            $ic->setRepresentative($representative);
 
             $ic->setStreet($this->formValues['streetAddress']['street']);
 

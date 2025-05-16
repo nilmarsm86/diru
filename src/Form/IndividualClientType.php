@@ -11,6 +11,7 @@ use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -30,24 +31,7 @@ class IndividualClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, [
-                'label' => 'Nombre:',
-                'attr' => [
-                    'placeholder' => 'Nombre del representante'
-                ]
-            ])
-            ->add('identificationNumber', null, [
-                'label' => 'Carnet de identidad:',
-                'attr' => [
-                    'placeholder' => 'Carnet de identidad del representante'
-                ]
-            ])
-            ->add('passport', null,[
-                'label' => 'Pasaporte:',
-                'attr' => [
-                    'placeholder' => 'Número de pasaporte del representante'
-                ]
-            ])
+            ->add('person', PersonType::class)
             ->add('phone', null, [
                 'label' => 'Teléfono:',
                 'attr' => [
@@ -121,14 +105,16 @@ class IndividualClientType extends AbstractType
      */
     private function onPreSetData(FormEvent $event): void
     {
-        $ec = $event->getData();
+        /** @var IndividualClient $ic */
+        $ic = $event->getData();
         $form = $event->getForm();
 
-        $form->add('person', EntityPlusType::class, [
+        $form->add('representative', EntityPlusType::class, [
             'class' => Person::class,
+            'required' => false,
             'placeholder' => '-Seleccione-',
             'label' => 'Representante:',
-            'query_builder' => $this->getPersonQueryBuilder($ec),
+//            'query_builder' => $this->getPersonQueryBuilder($ec),
             'modal_id' => '#add-person',
             'path' => $this->router->generate('app_person_options', ['id' => 0]),
             'detail' => true,
@@ -136,10 +122,16 @@ class IndividualClientType extends AbstractType
             'detail_id' => 'detail_person',
             'detail_loading' => 'Cargando detalles de los representantes...',
             'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
-//            'constraints' => [
-//                new NotBlank(message: 'Seleccione o cree el representante.'),
-////                new NotNull(message: 'Seleccione el representante.')
-//            ],
+        ]);
+
+        $form->add('hasRepresentative', CheckboxType::class, [
+            'label' => 'Tiene representante',
+            'mapped' => false,
+            'required' => false,
+            'attr' => [
+                'data-action' => 'change->visibility#toggle'//show or hide representative field
+            ],
+            'data' => (bool)$ic->getRepresentative()
         ]);
     }
 }

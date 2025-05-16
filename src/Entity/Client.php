@@ -26,11 +26,11 @@ class Client
     #[ORM\Column]
     protected ?int $id = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'client')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione o cree el representante.')]
-    protected ?Person $person = null;
+//    #[Assert\NotBlank(message: 'Llene los datos de la persona.')]
+    protected ?Person $representative = null;
 
     #[ORM\Column(name: 'address', type: Types::TEXT)]
 //    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
@@ -41,14 +41,14 @@ class Client
         return $this->id;
     }
 
-    public function getPerson(): ?Person
+    public function getRepresentative(): ?Person
     {
-        return $this->person;
+        return $this->representative;
     }
 
-    public function setPerson(?Person $person): static
+    public function setRepresentative(?Person $representative): static
     {
-        $this->person = $person;
+        $this->representative = $representative;
 
         return $this;
     }
@@ -65,27 +65,4 @@ class Client
         return $this;
     }
 
-    public function getIdentificationNumber(): ?string
-    {
-        return $this->identificationNumber;
-    }
-
-    public function setIdentificationNumber(string $identificationNumber): static
-    {
-        $this->identificationNumber = $identificationNumber;
-
-        return $this;
-    }
-
-    public function getPassport(): ?string
-    {
-        return $this->passport;
-    }
-
-    public function setPassport(?string $passport): static
-    {
-        $this->passport = $passport;
-
-        return $this;
-    }
 }

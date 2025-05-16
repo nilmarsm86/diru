@@ -15,25 +15,25 @@ class PersonType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-//                    'placeholder' => 'Nombre del representante'
+                    'placeholder' => 'Nombre'
                 ]
             ])
             ->add('lastname', null, [
                 'label' => 'Apellidos:',
                 'attr' => [
-//                    'placeholder' => 'Nombre del representante'
+                    'placeholder' => 'Apellidos'
                 ]
             ])
             ->add('identificationNumber', null, [
                 'label' => 'Carnet de identidad:',
                 'attr' => [
-//                    'placeholder' => 'Carnet de identidad del representante'
+                    'placeholder' => 'Carnet de identidad'
                 ]
             ])
             ->add('passport', null,[
                 'label' => 'Pasaporte:',
                 'attr' => [
-//                    'placeholder' => 'Número de pasaporte del representante'
+                    'placeholder' => 'Pasaporte'
                 ]
             ])
         ;

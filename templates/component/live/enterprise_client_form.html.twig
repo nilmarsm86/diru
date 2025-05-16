@@ -7,29 +7,6 @@
         }
     }) }}
 
-{#    {{ form_row(form.person.name) }}#}
-
-{#    <div class="mb-0 row">#}
-{#        <div class="col">#}
-{#            {{ form_row(form.person.identificationNumber, {label_attr:{'class':'col-sm-4'}}) }}#}
-{#        </div>#}
-{#        <div class="col">#}
-{#            {{ form_row(form.person.passport, {label_attr:{'class':'col-sm-4'}}) }}#}
-{#        </div>#}
-{#    </div>#}
-    {{ form_row(form.name) }}
-
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.identificationNumber) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.passport) }}
-        </div>
-    </div>
-
-    {{ form_row(form.person) }}
-
     <div class="mb-0 row">
         <div class="col">
             {{ form_row(form.phone, {label_attr:{'class':'col-sm-4'}}) }}
@@ -42,6 +19,14 @@
     {{ form_row(form.streetAddress) }}
 
     {{ form_row(form.corporateEntity) }}
+
+    <div {{ stimulusController('visibility') }}>
+        {{ form_row(form.hasRepresentative) }}
+
+        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ec.representative %}show{% else %}none{% endif %}">
+            {{ form_row(form.representative) }}
+        </div>
+    </div>
 
     <div class="row mb-3">
         <div class="col-sm-12">

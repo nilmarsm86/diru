@@ -55,7 +55,7 @@ final class EnterpriseClientForm extends AbstractController
     public int $corporateEntity = 0;
 
     #[LiveProp(writable: true)]
-    public int $person = 0;
+    public int $representative = 0;
 
     public function __construct(
         protected readonly ProvinceRepository        $provinceRepository,
@@ -103,9 +103,9 @@ final class EnterpriseClientForm extends AbstractController
             $this->corporateEntity = 0;
         }
 
-        if ($this->person !== 0) {
-            $this->formValues['person'] = (string)$this->person;
-            $this->person = 0;
+        if ($this->representative !== 0) {
+            $this->formValues['representative'] = (string)$this->representative;
+            $this->representative = 0;
         }
 
         if ($this->street !== '') {
@@ -192,8 +192,8 @@ final class EnterpriseClientForm extends AbstractController
             $corporateEntity = $this->corporateEntityRepository->find((int)$this->formValues['corporateEntity']);
             $ec->setCorporateEntity($corporateEntity);
 
-            $personEntity = $this->personRepository->find((int)$this->formValues['person']);
-            $ec->setPerson($personEntity);
+            $representative = $this->personRepository->find((int)$this->formValues['representative']);
+            $ec->setRepresentative($representative);
 
             $enterpriseClientRepository->save($ec, true);
 

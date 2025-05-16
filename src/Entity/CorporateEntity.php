@@ -16,6 +16,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Entity(repositoryClass: CorporateEntityRepository::class)]
 #[ORM\UniqueConstraint(name: 'corporate_entity_name', columns: ['name'])]
 #[DoctrineAssert\UniqueEntity(fields: ['name'], message: 'Ya existe una entidad con este nombre.')]
+#[DoctrineAssert\UniqueEntity(fields: ['code'], message: 'Ya existe una entidad con este código.')]
+#[DoctrineAssert\UniqueEntity(fields: ['nit'], message: 'Ya existe una entidad con este NIT.')]
 #[ORM\HasLifecycleCallbacks]
 class CorporateEntity
 {

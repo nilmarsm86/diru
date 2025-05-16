@@ -42,7 +42,7 @@
                                 container: '#detail_person .modal-body'
                             }) }}
                             >
-                                {{ client.person.name }}
+                                {{ client.representative.getFullName() }}
                             </a>
                         </td>
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
@@ -73,7 +73,7 @@
 
                             {{ component('DeleteForm', {
                                 path: path('app_enterprise_client_delete', {'id': client.id}),
-                                confirm: 'Está seguro que desea eliminar el cliente?',
+                                confirm: 'Está seguro que desea eliminar el cliente empresarial?',
                                 token: 'delete' ~ client.id,
                                 title: 'Eliminar cliente',
                                 icon: 'bi:trash'

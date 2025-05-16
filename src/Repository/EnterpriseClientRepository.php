@@ -51,9 +51,10 @@ class EnterpriseClientRepository extends ServiceEntityRepository
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "p.name LIKE :filter ";
-            $predicate .= "OR p.identificationNumber LIKE :filter ";
-            $predicate .= "OR p.passport LIKE :filter ";
+            $predicate = "r.name LIKE :filter ";
+            $predicate .= "OR r.lastname LIKE :filter ";
+            $predicate .= "OR r.identificationNumber LIKE :filter ";
+            $predicate .= "OR r.passport LIKE :filter ";
             $predicate .= "OR ec.phone LIKE :filter ";
             $predicate .= "OR ec.email LIKE :filter ";
             if ($place) {
@@ -74,10 +75,10 @@ class EnterpriseClientRepository extends ServiceEntityRepository
      */
     public function findEnterprises(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('ec')->select(['ec', 'mun', 'pro', 'p', 'ce'])
+        $builder = $this->createQueryBuilder('ec')->select(['ec', 'mun', 'pro', 'r', 'ce'])
             ->innerJoin('ec.municipality', 'mun')
             ->leftJoin('mun.province', 'pro')
-            ->leftJoin('ec.person', 'p')
+            ->leftJoin('ec.representative', 'r')
             ->leftJoin('ec.corporateEntity', 'ce');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ec.id', 'ASC')->getQuery();

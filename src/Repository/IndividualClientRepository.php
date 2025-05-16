@@ -52,6 +52,7 @@ class IndividualClientRepository extends ServiceEntityRepository
     {
         if ($filter) {
             $predicate = "p.name LIKE :filter ";
+            $predicate .= "OR p.lastname LIKE :filter ";
             $predicate .= "OR p.identificationNumber LIKE :filter ";
             $predicate .= "OR p.passport LIKE :filter ";
             $predicate .= "OR ic.phone LIKE :filter ";

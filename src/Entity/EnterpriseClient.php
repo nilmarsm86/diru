@@ -15,7 +15,7 @@ class EnterpriseClient extends Client
     #[ORM\ManyToOne(inversedBy: 'enterpriseClients')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione la entidad a la cual pertenece el cliente.')]
+    #[Assert\NotBlank(message: 'Seleccione o cree la entidad a la cual pertenece el cliente.')]
     private ?CorporateEntity $corporateEntity = null;
 
     public function getCorporateEntity(): ?CorporateEntity

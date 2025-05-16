@@ -186,7 +186,7 @@ final class IndividualClientForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(IndividualClientRepository $individualClientRepository, MunicipalityRepository $municipalityRepository, PersonRepository $personRepository): ?Response
+    public function save(IndividualClientRepository $individualClientRepository): ?Response
     {
         $this->preValue();
 
@@ -201,12 +201,12 @@ final class IndividualClientForm extends AbstractController
             $person = $this->createPerson($ic);
             $ic->setPerson($person);
 
-            $representative = $personRepository->find((int)$this->formValues['representative']);
+            $representative = $this->personRepository->find((int)$this->formValues['representative']);
             $ic->setRepresentative($representative);
 
             $ic->setStreet($this->formValues['streetAddress']['street']);
 
-            $municipality = $municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
+            $municipality = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
             $ic->setMunicipality($municipality);
 
             $individualClientRepository->save($ic, true);

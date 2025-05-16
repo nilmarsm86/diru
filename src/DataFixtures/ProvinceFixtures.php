@@ -16,7 +16,7 @@ class ProvinceFixtures extends Fixture
             $province = $manager->getRepository(Province::class)->findOneBy(['name' => $provinceName]);
             if(is_null($province)){
                 $result = match ($provinceName) {
-                    'Sin provincia' => $this->addProvinceMunicipality($manager, $provinceName, ['Sin municipio']),
+//                    'Sin provincia' => $this->addProvinceMunicipality($manager, $provinceName, ['Sin municipio']),
                     'Pinar del Río' => $this->addProvinceMunicipality($manager, $provinceName, ['Candelaria']),
                     'La Habana' => $this->addProvinceMunicipality($manager, $provinceName, ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa']),
                     'Artemisa' => $this->addProvinceMunicipality($manager, $provinceName, ['Artemisa']),

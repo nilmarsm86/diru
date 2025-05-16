@@ -77,27 +77,27 @@ class IndividualClientType extends AbstractType
         $resolver->setAllowedTypes('live_form', 'bool');
     }
 
-    /**
-     * @param Client $client
-     * @return Closure
-     */
-    private function getPersonQueryBuilder(Client $client): Closure
-    {
-        return function (EntityRepository $er) use ($client): QueryBuilder|array {
-            $qb = $er->createQueryBuilder('p');
-            if (!$client->getId()) {
-                $qb->leftJoin('p.client', 'c')
-                    ->where('c.person IS NULL');
-            } else {
-                $qb->leftJoin('p.client', 'c')
-                    ->where('c.person IS NULL')
-                    ->orWhere('c.id = :id')
-                    ->setParameter(':id', $client->getId());
-            }
-
-            return $qb->orderBy('p.name', 'ASC');
-        };
-    }
+//    /**
+//     * @param Client $client
+//     * @return Closure
+//     */
+//    private function getPersonQueryBuilder(Client $client): Closure
+//    {
+//        return function (EntityRepository $er) use ($client): QueryBuilder|array {
+//            $qb = $er->createQueryBuilder('p');
+//            if (!$client->getId()) {
+//                $qb->leftJoin('p.client', 'c')
+//                    ->where('c.person IS NULL');
+//            } else {
+//                $qb->leftJoin('p.client', 'c')
+//                    ->where('c.person IS NULL')
+//                    ->orWhere('c.id = :id')
+//                    ->setParameter(':id', $client->getId());
+//            }
+//
+//            return $qb->orderBy('p.name', 'ASC');
+//        };
+//    }
 
     /**
      * @param FormEvent $event

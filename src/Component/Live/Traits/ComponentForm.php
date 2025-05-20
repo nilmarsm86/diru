@@ -2,6 +2,8 @@
 
 namespace App\Component\Live\Traits;
 
+use App\Component\Twig\Modal\Modal;
+
 trait ComponentForm
 {
     /**
@@ -13,6 +15,7 @@ trait ComponentForm
     }
 
 //    abstract protected function getSuccessFormEventName(): string;
+
     /**
      * Get form success event name
      * @return string
@@ -29,10 +32,10 @@ trait ComponentForm
 
     /**
      * Emit success event for all
-     * @param $eventData
+     * @param array $eventData
      * @return void
      */
-    protected function emitSuccess($eventData): void
+    protected function emitSuccess(array $eventData): void
     {
         $this->dispatchBrowserEvent($this->getSuccessFormEventName(), $eventData);
         $this->resetForm();
@@ -46,5 +49,56 @@ trait ComponentForm
     {
         if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
         return $pos;
+    }
+
+    /**
+     * @param object $entity
+     * @param string $message
+     * @return string
+     */
+    private function getSuccessTemplate(object $entity, string $message, string $type='text-bg-success'): string
+    {
+        return $this->renderView("partials/_form_success.html.twig", [
+            'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
+            'type' => $type,
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * @param object $entity
+     * @param string $message
+     * @param array $updateEventData
+     * @return void
+     */
+    public function modalManage(object $entity, string $message, array $updateEventData): void
+    {
+        $template = $this->getSuccessTemplate($entity, $message, 'text-bg-primary');
+
+        $eventData = [
+            'response' => $template,
+            'modal' => $this->modal,
+            'data' => $updateEventData
+        ];
+        $this->dispatchBrowserEvent('type--entity-plus:update', $eventData);
+        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+
+        $this->resetForm();
+    }
+
+    /**
+     * @param object $entity
+     * @param string $message
+     * @return void
+     */
+    public function ajaxManage(object $entity, string $message = ''): void
+    {
+        $template = $this->getSuccessTemplate($entity, $message);
+
+        $this->dispatchBrowserEvent($this->getSuccessFormEventName(), [
+            'response' => $template
+        ]);
+
+        $this->resetForm();
     }
 }

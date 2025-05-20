@@ -45,50 +45,6 @@ final class ProvinceForm extends AbstractController
         $this->prov = (is_null($prov)) ? new Province() : $prov;
     }
 
-    /**
-     * @param Province $province
-     * @return void
-     */
-    public function modalManage(Province $province): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->prov::class) . '_' . $this->prov->getId(),
-            'type' => 'text-bg-primary',
-            'message' => 'Seleccione la nueva provincia agregada.'
-        ]);
-
-        $this->dispatchBrowserEvent('type--entity-plus:update', [
-            'data' => [
-                'province' => $province->getId()
-            ],
-            'modal' => $this->modal,
-            'response' => $template
-        ]);
-
-        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-
-        $this->prov = new Province();
-        $this->resetForm();//establecer un objeto provincia nuevo
-    }
-
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    public function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->prov::class) . '_' . $this->prov->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->prov = new Province();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ProvinceType::class, $this->prov);
@@ -110,13 +66,16 @@ final class ProvinceForm extends AbstractController
 
             $provinceRepository->save($province, true);
 
+            $this->prov = new Province();
             if (!is_null($this->modal)) {
-                $this->modalManage($province);
+                $this->modalManage($province, 'Seleccione la nueva provincia agregada.', [
+                    'province' => $province->getId()
+                ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+                $this->ajaxManage($province, $successMsg);
                 return null;
             }
 

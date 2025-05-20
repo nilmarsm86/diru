@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\AddressTrait;
 use App\Repository\EnterpriseClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: EnterpriseClientRepository::class)]
+#[DoctrineAssert\UniqueEntity(fields: ['email'], message: 'Ya existe un cliente con este correo.')]
 class EnterpriseClient extends Client
 {
-//    use AddressTrait;
-
     #[ORM\ManyToOne(inversedBy: 'enterpriseClients')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]

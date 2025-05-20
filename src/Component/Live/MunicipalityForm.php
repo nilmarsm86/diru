@@ -44,49 +44,46 @@ final class MunicipalityForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $province = null;
 
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    public function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->mun::class) . '_' . $this->mun->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->mun = new Municipality();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
-
-    /**
-     * @param Municipality $municipality
-     * @return void
-     */
-    public function modalManage(Municipality $municipality): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->mun::class) . '_' . $this->mun->getId(),
-            'type' => 'text-bg-primary',
-            'message' => 'Seleccione el nuevo municipio agregado.'
-        ]);
-
-        $this->dispatchBrowserEvent('type--entity-plus:update', [
-            'data' => [
-                'municipality' => $municipality->getId()
-            ],
-            'modal' => $this->modal,
-            'response' => $template
-        ]);
-
-        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-
-        $this->mun = new Municipality();
-        $this->resetForm();//establecer un objeto provincia nuevo
-    }
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    public function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->mun::class) . '_' . $this->mun->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->mun = new Municipality();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
+//
+//    /**
+//     * @param Municipality $municipality
+//     * @param string $message
+//     * @return void
+//     */
+//    public function modalManage(Municipality $municipality, string $message=''): void
+//    {
+//        $template = $this->getSuccessTemplate($municipality, empty($message) ? 'Seleccione el nuevo municipio agregado.' : $message);
+//
+//        $this->dispatchBrowserEvent('type--entity-plus:update', [
+//            'data' => [
+//                'municipality' => $municipality->getId()
+//            ],
+//            'modal' => $this->modal,
+//            'response' => $template
+//        ]);
+//
+//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+//
+//        $this->mun = new Municipality();
+//        $this->resetForm();//establecer un objeto provincia nuevo
+//    }
 
     protected function instantiateForm(): FormInterface
     {
@@ -129,13 +126,18 @@ final class MunicipalityForm extends AbstractController
 
             $municipalityRepository->save($municipality, true);
 
+            $this->mun = new Municipality();
             if (!is_null($this->modal)) {
-                $this->modalManage($municipality);
+//                $this->modalManage($municipality);
+                $this->modalManage($municipality, 'Seleccione el nuevo municipio agregado.', [
+                    'municipality' => $municipality->getId()
+                ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($municipality, $successMsg);
                 return null;
             }
 

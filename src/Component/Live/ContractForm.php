@@ -46,49 +46,46 @@ final class ContractForm extends AbstractController
         $this->con = (is_null($con)) ? new Contract() : $con;
     }
 
-    /**
-     * @param Organism $organism
-     * @return void
-     */
-    private function modalManage(Contract $con): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->con::class) . '_' . $this->con->getId(),
-            'type' => 'text-bg-primary',
-            'message' => 'Seleccione el nuevo contrato.'
-        ]);
-
-        $this->dispatchBrowserEvent('type--entity-plus:update', [
-            'data' => [
-                'contract' => $con->getId()
-            ],
-            'modal' => $this->modal,
-            'response' => $template
-        ]);
-
-        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-
-        $this->con = new Contract();
-        $this->resetForm();//establecer un objeto provincia nuevo
-    }
-
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    private function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->con::class) . '_' . $this->con->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->con = new Contract();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
+//    /**
+//     * @param Contract $con
+//     * @param string $message
+//     * @return void
+//     */
+//    private function modalManage(Contract $con, string $message=''): void
+//    {
+//        $template = $this->getSuccessTemplate($con, empty($message) ? 'Seleccione el nuevo contrato agregado.' : $message);
+//
+//        $this->dispatchBrowserEvent('type--entity-plus:update', [
+//            'data' => [
+//                'contract' => $con->getId()
+//            ],
+//            'modal' => $this->modal,
+//            'response' => $template
+//        ]);
+//
+//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+//
+//        $this->con = new Contract();
+//        $this->resetForm();//establecer un objeto provincia nuevo
+//    }
+//
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    private function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->con::class) . '_' . $this->con->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->con = new Contract();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
 
     protected function instantiateForm(): FormInterface
     {
@@ -111,13 +108,18 @@ final class ContractForm extends AbstractController
 
             $contractRepository->save($contract, true);
 
+            $this->con = new Contract();
             if (!is_null($this->modal)) {
-                $this->modalManage($contract);
+//                $this->modalManage($contract);
+                $this->modalManage($contract, 'Seleccione el nuevo contrato agregado.', [
+                    'contract' => $contract->getId()
+                ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($contract, $successMsg);
                 return null;
             }
 

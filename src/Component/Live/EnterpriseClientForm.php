@@ -75,23 +75,23 @@ final class EnterpriseClientForm extends AbstractController
         }
     }
 
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    public function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->ec::class) . '_' . $this->ec->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->ec = new EnterpriseClient();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    public function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->ec::class) . '_' . $this->ec->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->ec = new EnterpriseClient();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
 
     /**
      * @return void
@@ -197,13 +197,15 @@ final class EnterpriseClientForm extends AbstractController
 
             $enterpriseClientRepository->save($ec, true);
 
+            $this->ec = new EnterpriseClient();
 //            if ($this->modal) {
 //                $this->modalManage($ce);
 //                return null;
 //            }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($ec, $successMsg);
                 return null;
             }
 

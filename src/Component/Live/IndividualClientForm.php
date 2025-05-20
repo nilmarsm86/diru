@@ -70,23 +70,23 @@ final class IndividualClientForm extends AbstractController
         }
     }
 
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    public function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->ic::class) . '_' . $this->ic->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->ic = new IndividualClient();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    public function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->ic::class) . '_' . $this->ic->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->ic = new IndividualClient();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
 
     /**
      * @param IndividualClient $individualClient
@@ -211,13 +211,15 @@ final class IndividualClientForm extends AbstractController
 
             $individualClientRepository->save($ic, true);
 
+            $this->ic = new IndividualClient();
 //            if ($this->modal) {
 //                $this->modalManage($ce);
 //                return null;
 //            }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($ic, $successMsg);
                 return null;
             }
 

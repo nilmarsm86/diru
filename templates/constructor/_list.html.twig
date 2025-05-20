@@ -1,0 +1,63 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de constructoras',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_constructor_new'), 'bi:plus-lg', 'Nueva', 'Nueva constructora', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_constructor_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>País</th>
+                    <th>Logo</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for constructor in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ constructor.name }}</td>
+                        <td>{{ constructor.code }}</td>
+                        <td>{{ constructor.country }}</td>
+                        <td>{{ constructor.logo }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_constructor_show', {'id': constructor.id}), 'bi:eye', '', 'Detalle de la constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_show', {'id': constructor.id})})) }}
+                            {{ tableActionButton3(path('app_constructor_edit', {'id': constructor.id}), 'fa:edit', '', 'Editar constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_edit', {'id': constructor.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_constructor_delete', {'id': constructor.id}),
+                                confirm: 'Está seguro que desea eliminar la constructora?',
+                                token: 'delete' ~ constructor.id,
+                                title: 'Eliminar constructora',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">No se encontraron constructoras.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

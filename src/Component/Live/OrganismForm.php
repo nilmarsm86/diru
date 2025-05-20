@@ -43,49 +43,46 @@ final class OrganismForm extends AbstractController
         $this->org = (is_null($org)) ? new Organism() : $org;
     }
 
-    /**
-     * @param Organism $organism
-     * @return void
-     */
-    private function modalManage(Organism $organism): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
-            'type' => 'text-bg-primary',
-            'message' => 'Seleccione el nuevo organismo agregado.'
-        ]);
-
-        $this->dispatchBrowserEvent('type--entity-plus:update', [
-            'data' => [
-                'organism' => $organism->getId()
-            ],
-            'modal' => $this->modal,
-            'response' => $template
-        ]);
-
-        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-
-        $this->org = new Organism();
-        $this->resetForm();//establecer un objeto provincia nuevo
-    }
-
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    private function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->org = new Organism();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
+//    /**
+//     * @param Organism $organism
+//     * @param string $message
+//     * @return void
+//     */
+//    private function modalManage(Organism $organism, string $message=''): void
+//    {
+//        $template = $this->getSuccessTemplate($organism, empty($message) ? 'Seleccione el nuevo organismo agregado.' : $message);
+//
+//        $this->dispatchBrowserEvent('type--entity-plus:update', [
+//            'data' => [
+//                'organism' => $organism->getId()
+//            ],
+//            'modal' => $this->modal,
+//            'response' => $template
+//        ]);
+//
+//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+//
+//        $this->org = new Organism();
+//        $this->resetForm();//establecer un objeto provincia nuevo
+//    }
+//
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    private function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->org = new Organism();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
 
     protected function instantiateForm(): FormInterface
     {
@@ -109,12 +106,16 @@ final class OrganismForm extends AbstractController
             $organismRepository->save($organism, true);
 
             if (!is_null($this->modal)) {
-                $this->modalManage($organism);
+//                $this->modalManage($organism);
+                $this->modalManage($organism, 'Seleccione el nuevo organismo agregado.', [
+                    'organism' => $organism->getId()
+                ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($organism, $successMsg);
                 return null;
             }
 

@@ -36,14 +36,18 @@
                 {% for client in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
-                            <a data-bs-toggle="modal" data-bs-target="#detail_person"
-                               href="#" {{ stimulusController('detail-link-modal', {
-                                url: path('app_person_show', {id:client.person.id, state:'modal'}),
-                                container: '#detail_person .modal-body'
-                            }) }}
-                            >
-                                {{ client.representative.getFullName() }}
-                            </a>
+                            {% if client.representative %}
+                                <a data-bs-toggle="modal" data-bs-target="#detail_person"
+                                   href="#" {{ stimulusController('detail-link-modal', {
+                                    url: path('app_person_show', {id:client.representative.id, state:'modal'}),
+                                    container: '#detail_person .modal-body'
+                                }) }}
+                                >
+                                    {{ client.representative.getFullName() }}
+                                </a>
+                            {% else%}
+                                <span class="text-danger">Sin representante</span>
+                            {% endif %}
                         </td>
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
                         <td><a href="mailto:{{ client.email }}">{{ client.email }}</a></td>

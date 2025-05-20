@@ -20,8 +20,8 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
             if(is_null($corporate)){
                 $corporate = new CorporateEntity();
                 $corporate->setName($corporateEntity);
-                $corporate->setCode('123456789');
-                $corporate->setNit('ABC123');
+                $corporate->setCode(strtoupper(substr(base64_encode($corporateEntity), 0, 5)));
+                $corporate->setNit(strtolower(base64_encode($corporateEntity)));
                 //buscar municipio por nombre y agregarlo
                 $corporate->setMunicipality($this->findMunicipality($manager));
                 //buscar organismo por nombre y agregarlo

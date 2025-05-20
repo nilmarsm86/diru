@@ -71,11 +71,11 @@
                 <li class="nav-item">
                     <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                             data-bs-toggle="collapse" data-bs-target="#places-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index'] %}true{% else %}false{% endif %}"
+                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}true{% else %}false{% endif %}"
                             style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Organizaciones</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index'] %}show{% else %}hide{% endif %}" id="places-collapse">
+                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}show{% else %}hide{% endif %}" id="places-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -94,6 +94,13 @@
                                     Entidades
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_constructor_index') }}"
+                                   href="{{ path('app_constructor_index') }}">
+                                    {{ ux_icon('uil:constructor', {class:'bi'}) }}
+                                    Constructoras
+                                </a>
+                            </li>
                             {#                            <li> #}
                             {#                                <a class="dropdown-item d-flex gap-2 align-items-center" href="#"> #}
                             {#                                    Constructora #}
@@ -105,11 +112,11 @@
                 <li class="nav-item">
                     <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                             data-bs-toggle="collapse" data-bs-target="#location-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_location_zone_index'] %}true{% else %}false{% endif %}"
+                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
                             style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Ubicación</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_location_zone_index'] %}show{% else %}hide{% endif %}" id="location-collapse">
+                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}" id="location-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -122,8 +129,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_corporate_entity_index') }}"
-                                   href="{{ path('app_corporate_entity_index') }}">
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_geographic_location_index') }}"
+                                   href="{{ path('app_geographic_location_index') }}">
 {#                                    {{ ux_icon('bi:building', {class:'bi'}) }}#}
                                     Ubicación geográfica
                                 </a>

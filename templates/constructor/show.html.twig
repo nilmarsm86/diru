@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Constructora: {{ constructor.name }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Constructoras') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Constructoras', href: path('app_constructor_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Constructora: {{ constructor.name }}</h2>
+
+    {{ include('constructor/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

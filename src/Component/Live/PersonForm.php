@@ -43,49 +43,46 @@ final class PersonForm extends AbstractController
         $this->per = (is_null($per)) ? new Person() : $per;
     }
 
-    /**
-     * @param Person $person
-     * @return void
-     */
-    private function modalManage(Person $person): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
-            'type' => 'text-bg-primary',
-            'message' => 'Selecione el representante agregado.'
-        ]);
-
-        $this->dispatchBrowserEvent('type--entity-plus:update', [
-            'data' => [
-                'person' => $person->getId()
-            ],
-            'modal' => $this->modal,
-            'response' => $template
-        ]);
-
-        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-
-        $this->per = new Person();
-        $this->resetForm();//establecer un objeto provincia nuevo
-    }
-
-    /**
-     * @param string $successMsg
-     * @return void
-     */
-    private function ajaxManage(string $successMsg): void
-    {
-        $template = $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
-            'type' => 'text-bg-success',
-            'message' => $successMsg
-        ]);
-
-        $this->per = new Person();
-        $this->emitSuccess([
-            'response' => $template
-        ]);
-    }
+//    /**
+//     * @param Person $person
+//     * @param string $message
+//     * @return void
+//     */
+//    private function modalManage(Person $person, string $message=''): void
+//    {
+//        $template = $this->getSuccessTemplate($person, empty($message) ? 'Selecione el representante agregado.' : $message);
+//
+//        $this->dispatchBrowserEvent('type--entity-plus:update', [
+//            'data' => [
+//                'person' => $person->getId()
+//            ],
+//            'modal' => $this->modal,
+//            'response' => $template
+//        ]);
+//
+//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
+//
+//        $this->per = new Person();
+//        $this->resetForm();//establecer un objeto provincia nuevo
+//    }
+//
+//    /**
+//     * @param string $successMsg
+//     * @return void
+//     */
+//    private function ajaxManage(string $successMsg): void
+//    {
+//        $template = $this->renderView("partials/_form_success.html.twig", [
+//            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
+//            'type' => 'text-bg-success',
+//            'message' => $successMsg
+//        ]);
+//
+//        $this->per = new Person();
+//        $this->emitSuccess([
+//            'response' => $template
+//        ]);
+//    }
 
     protected function instantiateForm(): FormInterface
     {
@@ -109,12 +106,16 @@ final class PersonForm extends AbstractController
             $personRepository->save($person, true);
 
             if (!is_null($this->modal)) {
-                $this->modalManage($person);
+//                $this->modalManage($person);
+                $this->modalManage($person, 'Selecione el representante agregado.', [
+                    'person' => $person->getId()
+                ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($successMsg);
+//                $this->ajaxManage($successMsg);
+                $this->ajaxManage($person, $successMsg);
                 return null;
             }
 

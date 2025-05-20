@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
 
  {% from 'macros/toast.html.twig' import toasts %}
- {% from 'macros/flashes.html.twig' import flashes, flash %}
+{# {% from 'macros/flashes.html.twig' import flashes, flash %}#}
 
 {% block body %}
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <!-- Position it: -->
+        <!-- - `.toast-container` for spacing between toasts -->
+        <!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
+        <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+        <div class="toast-container position-fixed end-0 p-3 mt-5">
+            <!-- Then put toasts within -->
+            {{ toasts() }}
+        </div>
+    </div>
     {{ include('layout/header.html.twig') }}
 
     <div class="container-fluid">
@@ -12,16 +22,6 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="pt-3 pb-2 mb-3 container-fluid">
-                    <div aria-live="polite" aria-atomic="true" class="position-relative">
-                        <!-- Position it: -->
-                        <!-- - `.toast-container` for spacing between toasts -->
-                        <!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
-                        <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-                        <div class="toast-container top-50 end-0 p-3" style="top: 23px !important">
-                            <!-- Then put toasts within -->
-                            {{ toasts() }}
-                        </div>
-                    </div>
                     {% block content %}{% endblock %}
                 </div>
             </main>

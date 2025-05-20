@@ -1,0 +1,57 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de ubicaciones geograficas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_geographic_location_new'), 'bi:plus-lg', 'Nueva', 'Nueva ubicación geográfica', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_geographic_location_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for geographic_location in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ geographic_location.name }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_geographic_location_show', {'id': geographic_location.id}), 'bi:eye', '', 'Detalle de la ubicación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_geographic_location_show', {'id': geographic_location.id})})) }}#}
+                            {{ tableActionButton3(path('app_geographic_location_edit', {'id': geographic_location.id}), 'fa:edit', '', 'Editar ubicación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_geographic_location_edit', {'id': geographic_location.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_geographic_location_delete', {'id': geographic_location.id}),
+                                confirm: 'Está seguro que desea eliminar la ubicación geográfica?',
+                                token: 'delete' ~ geographic_location.id,
+                                title: 'Eliminar ubicación',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron ubicaciones geográficas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

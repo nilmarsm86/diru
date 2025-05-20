@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[DoctrineAssert\UniqueEntity(fields: ['username'], message: 'Ya existe un usuario con este nombre de usuario.')]
+#[DoctrineAssert\UniqueEntity(fields: ['email'], message: 'Ya existe un usuario con este correo.')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -65,6 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->person->setName($name);
         $this->person->setLastname($lastname);
         $this->person->setIdentificationNumber($identificationNumber);
+
         $this->username = $username;
         $this->password = $password;
         $this->phone = $phone;

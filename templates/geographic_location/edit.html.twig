@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Editar Ubicación{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Ubicaciones geográficas') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Ubicaciones', href: path('app_geographic_location_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Editar Ubicación geográfica</h2>
+
+    {{ include('geographic_location/_form.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

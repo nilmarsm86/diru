@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\LocationZone;
-use App\Form\LocationZoneType;
 use App\Repository\LocationZoneRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +50,7 @@ final class LocationZoneController extends AbstractController
     #[Route('/{id}', name: 'app_location_zone_show', methods: ['GET'])]
     public function show(Request $request, LocationZone $locationZone, CrudActionService $crudActionService): Response
     {
-        return $crudActionService->showAction($request, $locationZone, 'location_zone', 'location_zone', 'Detalles del zona de ubicación');
+        return $crudActionService->showAction($request, $locationZone, 'location_zone', 'location_zone', 'Detalles de la zona de ubicación');
     }
 
     /**

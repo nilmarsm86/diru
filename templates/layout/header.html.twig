@@ -1,6 +1,6 @@
-{% from 'macros/flashes.html.twig' import flashes, flash %}
+{#{% from 'macros/flashes.html.twig' import flashes, flash %}#}
 {% from 'macros/link.html.twig' import activeLink %}
-{% from 'macros/toast.html.twig' import toasts %}
+{#{% from 'macros/toast.html.twig' import toasts %}#}
 
 <nav class="navbar navbar-expand-lg sticky-top flex-md-nowrap py-10 shadow bg-dark" data-bs-theme="dark">
     <div class="container-fluid" style="padding-left:0">
@@ -28,9 +28,9 @@
                 </div>
             </form>
 
-            <div id="flash-container" data-turbo-cache="false">
-                {{ flashes() }}
-            </div>
+{#            <div id="flash-container" data-turbo-cache="false">#}
+{#                {{ flashes() }}#}
+{#            </div>#}
 
             <ul class="nav">
                 <li class="nav-item">
@@ -88,6 +88,12 @@
                             <a class="dropdown-item {{ activeLink('app_person_index') }}" href="{{ path('app_person_index') }}">
                                 {{ ux_icon('bi:person-vcard-fill', {class:'bi'}) }}
                                 Representantes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ activeLink('app_contract_index') }}" href="{{ path('app_contract_index') }}">
+                                {{ ux_icon('solar:document-add-linear', {class:'bi'}) }}
+                                Contratos
                             </a>
                         </li>
                     </ul>

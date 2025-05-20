@@ -10,12 +10,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: ConstructorRepository::class)]
 #[ORM\UniqueConstraint(name: 'constructor_name', columns: ['name'])]
-#[DoctrineAssert\UniqueEntity('name', message: 'El código de la constructora debe ser único.')]
+#[DoctrineAssert\UniqueEntity('name', message: 'El nombre de la constructora debe ser único.')]
+#[DoctrineAssert\UniqueEntity('code', message: 'El código de la constructora debe ser único.')]
 
 class Constructor
 {
     use NameToStringTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

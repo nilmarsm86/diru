@@ -20,7 +20,7 @@ class LocationZoneType extends AbstractType
             ->add('name', IntegerType::class, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Número del zona de ubicación',
+                    'placeholder' => 'Número de la zona de ubicación',
                     'min' => $this->min,
                     'max' => $this->max
                 ],

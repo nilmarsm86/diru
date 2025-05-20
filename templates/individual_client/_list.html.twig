@@ -36,7 +36,17 @@
 
                 {% for client in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ client.person.getFullName() }}</td>
+                        <td>
+                            {% if client.representative %}
+                                <button type="button" class="btn btn-link position-relative" style="text-decoration: none;color: #fff;cursor: text">
+                                    {{ client.person.getFullName() }}
+                                    <span class="position-absolute top-0 start-100 p-1 bg-danger border border-light rounded-circle">
+                                    </span>
+                                </button>
+                            {% else %}
+                                {{ client.person.getFullName() }}
+                            {% endif %}
+                        </td>
                         <td>{{ client.person.identificationNumber }}</td>
                         {#                        <td>{{ client.person.passport }}</td> #}
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>

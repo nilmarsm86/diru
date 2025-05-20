@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Contract;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,6 +12,8 @@ class ContractType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $yearList = range(((int)date('Y') - 5), ((int)date('Y') + 5));
+        $years = array_combine($yearList, $yearList);
         $builder
             ->add('code', null, [
                 'label' => 'Código:',
@@ -18,14 +21,10 @@ class ContractType extends AbstractType
                     'placeholder' => 'Código del contrato'
                 ]
             ])
-            //ponerlo como un select
-            ->add('year', null, [
+            ->add('year', ChoiceType::class, [
                 'label' => 'Año:',
-                'attr' => [
-                    'placeholder' => 'Año del contrato',
-                    'min' => ((int)date('Y') - 5),
-                    'max' => ((int)date('Y') + 5),
-                ]
+                'placeholder' => 'Año del contrato',
+                'choices' => $years,
             ])
         ;
     }

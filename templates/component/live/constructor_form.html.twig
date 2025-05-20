@@ -1,0 +1,33 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+{#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %}#}
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {{ form_row(form.name) }}
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.code) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.country) }}
+        </div>
+    </div>
+    {{ form_row(form.logo) }}
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: (this.cons.id is null) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.cons.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

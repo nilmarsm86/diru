@@ -57,7 +57,7 @@ class CorporateEntity
     /**
      * @var Collection<int, EnterpriseClient>
      */
-    #[ORM\OneToMany(targetEntity: EnterpriseClient::class, mappedBy: 'corporateEntity', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: EnterpriseClient::class, mappedBy: 'corporateEntity')]
     private Collection $enterpriseClients;
 
     public function __construct()

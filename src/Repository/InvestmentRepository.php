@@ -2,22 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\InvestmentData;
+use App\Entity\Investment;
+use App\Repository\Traits\PaginateTrait;
+use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<InvestmentData>
+ * @extends ServiceEntityRepository<Investment>
  */
 class InvestmentRepository extends ServiceEntityRepository
 {
+
+    use SaveData;
+    use PaginateTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InvestmentData::class);
+        parent::__construct($registry, Investment::class);
     }
 
     //    /**
-    //     * @return InvestmentData[] Returns an array of InvestmentData objects
+    //     * @return Investment[] Returns an array of Investment objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +39,7 @@ class InvestmentRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?InvestmentData
+    //    public function findOneBySomeField($value): ?Investment
     //    {
     //        return $this->createQueryBuilder('i')
     //            ->andWhere('i.exampleField = :val')
@@ -40,4 +48,37 @@ class InvestmentRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        if ($filter) {
+            $predicate = "i.workName LIKE :filter ";
+            $predicate .= "OR i.investmentName LIKE :filter ";
+            $predicate .= "OR i.betweenStreets LIKE :filter ";
+            $predicate .= "OR i.town LIKE :filter ";
+            $predicate .= "OR i.popularCouncil LIKE :filter ";
+            $predicate .= "OR i.district LIKE :filter ";
+            $predicate .= "OR i.street LIKE :filter ";
+            $predicate .= "OR c.name LIKE :filter ";
+            $builder->andWhere($predicate)
+                ->setParameter(':filter', '%' . $filter . '%');
+        }
+    }
+
+    /**
+     * @param string $filter
+     * @param int $amountPerPage
+     * @param int $page
+     * @return Paginator Returns an array of User objects
+     */
+    public function findInvestments(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('i')->select(['i', 'mun', 'pro', 'c'])
+            ->innerJoin('i.municipality', 'mun')
+            ->leftJoin('mun.province', 'pro')
+            ->leftJoin('i.constructor', 'c');
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('i.workName', 'ASC')->getQuery();
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

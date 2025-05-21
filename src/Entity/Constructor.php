@@ -35,14 +35,14 @@ class Constructor
     private ?string $logo = null;
 
     /**
-     * @var Collection<int, Investment>
+     * @var Collection<int, Building>
      */
-    #[ORM\OneToMany(targetEntity: Investment::class, mappedBy: 'constructor')]
-    private Collection $investments;
+    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
+    private Collection $buildings;
 
     public function __construct()
     {
-        $this->investments = new ArrayCollection();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,29 +87,29 @@ class Constructor
     }
 
     /**
-     * @return Collection<int, Investment>
+     * @return Collection<int, Building>
      */
-    public function getInvestments(): Collection
+    public function getBuildings(): Collection
     {
-        return $this->investments;
+        return $this->buildings;
     }
 
-    public function addInvestment(Investment $investment): static
+    public function addBuilding(Building $building): static
     {
-        if (!$this->investments->contains($investment)) {
-            $this->investments->add($investment);
-            $investment->setConstructor($this);
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setConstructor($this);
         }
 
         return $this;
     }
 
-    public function removeInvestment(Investment $investment): static
+    public function removeBuilding(Building $building): static
     {
-        if ($this->investments->removeElement($investment)) {
+        if ($this->buildings->removeElement($building)) {
             // set the owning side to null (unless already changed)
-            if ($investment->getConstructor() === $this) {
-                $investment->setConstructor(null);
+            if ($building->getConstructor() === $this) {
+                $building->setConstructor(null);
             }
         }
 

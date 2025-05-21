@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Nuevo Inversión{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Inversiones') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Inversiones', href: path('app_investment_index')},
+            {label: 'Nueva'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar inversión</h2>
+
+    {{ include('investment/_form.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

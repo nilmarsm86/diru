@@ -80,7 +80,6 @@ class EnterpriseClientType extends AbstractType
                 'detail_id' => 'detail_corporate_entity',
                 'detail_loading' => 'Cargando detalles de la entidad...',
                 'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal'])
-
             ])
 
         ;
@@ -100,8 +99,15 @@ class EnterpriseClientType extends AbstractType
             'province' => 0,
             'municipality' => 0,
             'street' => '',
-            'live_form' => false
+            'live_form' => false,
+            'modal' => null
         ]);
+
+        $resolver->setAllowedTypes('province', 'int');
+        $resolver->setAllowedTypes('municipality', 'int');
+        $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
+        $resolver->setAllowedTypes('street', 'string');
     }
 
 //    /**

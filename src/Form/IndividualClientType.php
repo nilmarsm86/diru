@@ -68,13 +68,15 @@ class IndividualClientType extends AbstractType
             'province' => 0,
             'municipality' => 0,
             'street' => '',
-            'live_form' => false
+            'live_form' => false,
+            'modal' => null
         ]);
 
         $resolver->setAllowedTypes('province', 'int');
         $resolver->setAllowedTypes('municipality', 'int');
         $resolver->setAllowedTypes('street', 'string');
         $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
 //    /**

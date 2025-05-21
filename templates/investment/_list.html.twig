@@ -1,0 +1,108 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de inversiones',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_investment_new'), 'bi:plus-lg', 'Nueva', 'Nueva inversión', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_investment_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre de obra</th>
+                    <th>Nombre de inversión</th>
+                    <th>Constructora</th>
+{#                    <th>EstimatedValueConstruction</th>#}
+{#                    <th>EstimatedValueEquipment</th>#}
+{#                    <th>EstimatedValueOther</th>#}
+                    <th>Total Estimado</th>
+{#                    <th>ApprovedValueConstruction</th>#}
+{#                    <th>ApprovedValueEquipment</th>#}
+{#                    <th>ApprovedValueOther</th>#}
+                    <th>Total Aprobado</th>
+{#                    <th>BetweenStreets</th>#}
+{#                    <th>Town</th>#}
+{#                    <th>PopularCouncil</th>#}
+{#                    <th>Block</th>#}
+{#                    <th>District</th>#}
+{#                    <th>Street</th>#}
+{#                    <th>AddressNumber</th>#}
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for investment in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ investment.workName }}</td>
+                        <td>{{ investment.investmentName }}</td>
+                        <td>{{ investment.constructor.getName() }}</td>
+{#                        <td>{{ investment.estimatedValueConstruction }}</td>#}
+{#                        <td>{{ investment.estimatedValueEquipment }}</td>#}
+{#                        <td>{{ investment.estimatedValueOther }}</td>#}
+                        <td>{{ investment.getTotalEstimatedValue() }}</td>
+{#                        <td>{{ investment.approvedValueConstruction }}</td>#}
+{#                        <td>{{ investment.approvedValueEquipment }}</td>#}
+{#                        <td>{{ investment.approvedValueOther }}</td>#}
+                        <td>{{ investment.getTotalApprovedValue }}</td>
+{#                        <td>{{ investment.betweenStreets }}</td>#}
+{#                        <td>{{ investment.town }}</td>#}
+{#                        <td>{{ investment.popularCouncil }}</td>#}
+{#                        <td>{{ investment.block }}</td>#}
+{#                        <td>{{ investment.district }}</td>#}
+{#                        <td>{{ investment.street }}</td>#}
+{#                        <td>{{ investment.addressNumber }}</td>#}
+                        <td>
+                            <a href="{{ filterLink(investment.getProvinceName()) }}"
+                               class="text-decoration-none"
+                            >
+                                {{ investment.getProvinceName() }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ filterLink(investment.getMunicipalityName()) }}"
+                               class="text-decoration-none"
+                            >
+                                {{ investment.getMunicipalityName() }}
+                            </a>
+                        </td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_investment_show', {'id': investment.id}), 'bi:eye', '', 'Detalle de la inversión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_show', {'id': investment.id})})) }}
+                            {{ tableActionButton3(path('app_investment_edit', {'id': investment.id}), 'fa:edit', '', 'Editar inveersión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_edit', {'id': investment.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_investment_delete', {'id': investment.id}),
+                                confirm: 'Está seguro que desea eliminar la inversión?',
+                                token: 'delete' ~ investment.id,
+                                title: 'Eliminar inersión',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">No se encontraron inversiones.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

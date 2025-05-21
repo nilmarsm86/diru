@@ -1,0 +1,92 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.workName) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.investmentName) }}
+        </div>
+    </div>
+
+    {{ form_row(form.hasSameName) }}
+
+    {{ form_row(form.constructor) }}
+
+    <hr>
+    <fieldset>
+        <legend>Direccion</legend>
+        {{ form_row(form.betweenStreets) }}
+        {{ form_row(form.addressNumber) }}
+        {{ form_row(form.town) }}
+        {{ form_row(form.popularCouncil) }}
+        {{ form_row(form.locationZone) }}
+        {{ form_row(form.block) }}
+        {{ form_row(form.district) }}
+        {{ form_row(form.streetAddress) }}
+    </fieldset>
+
+    <hr>
+    <fieldset>
+        <legend>Valores aprobados</legend>
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.approvedValueConstruction) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.approvedValueEquipment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.approvedValueOther) }}
+            </div>
+            <div class="col">
+                Total: $ 10000000
+            </div>
+        </div>
+    </fieldset>
+
+    <hr>
+    <fieldset>
+        <legend>Valores estimados</legend>
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.estimatedValueConstruction) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.estimatedValueEquipment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.estimatedValueOther) }}
+            </div>
+            <div class="col">
+                Total: $ 10000000
+            </div>
+        </div>
+    </fieldset>
+
+{#    <div {{ stimulusController('visibility') }}>#}
+{#        {{ form_row(form.hasRepresentative) }}#}
+
+{#        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ec.representative %}show{% else %}none{% endif %}">#}
+{#            {{ form_row(form.representative) }}#}
+{#        </div>#}
+{#    </div>#}
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: (this.inv.id is null) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.inv.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

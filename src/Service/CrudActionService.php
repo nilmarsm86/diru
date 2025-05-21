@@ -284,6 +284,7 @@ readonly class CrudActionService
         $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : ($entity->getid() ? 'edit.html.twig' : 'new.html.twig'));//comportamiento por controlador
         return new Response($this->environment->render("$templateDir/$template", [
                 $templateDir => $entity,
+                'ajax' => $request->isXmlHttpRequest()
             ] + $vars));
     }
 

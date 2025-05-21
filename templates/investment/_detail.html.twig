@@ -1,0 +1,130 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="corporate_entity_detail_' ~ corporate_entity.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_investment_new',
+            label: 'Nueva',
+            title: 'Nueva inversión',
+            entity: investment,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+{#                <tr>#}
+{#                    <th>Id</th>#}
+{#                    <td>{{ investment.id }}</td>#}
+{#                </tr>#}
+                <tr>
+                    <th>WorkName</th>
+                    <td>{{ investment.workName }}</td>
+                </tr>
+                <tr>
+                    <th>InvestmentName</th>
+                    <td>{{ investment.investmentName }}</td>
+                </tr>
+                <tr>
+                    <th>Constructora:</th>
+                    <td>
+                        <a href="{{ path('app_constructor_show', {'id': investment.constructor.id }) }}">
+                            {{ investment.constructor.name }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>EstimatedValueConstruction</th>
+                    <td>{{ investment.estimatedValueConstruction }}</td>
+                </tr>
+                <tr>
+                    <th>EstimatedValueEquipment</th>
+                    <td>{{ investment.estimatedValueEquipment }}</td>
+                </tr>
+                <tr>
+                    <th>EstimatedValueOther</th>
+                    <td>{{ investment.estimatedValueOther }}</td>
+                </tr>
+                <tr>
+                    <th>ApprovedValueConstruction</th>
+                    <td>{{ investment.approvedValueConstruction }}</td>
+                </tr>
+                <tr>
+                    <th>ApprovedValueEquipment</th>
+                    <td>{{ investment.approvedValueEquipment }}</td>
+                </tr>
+                <tr>
+                    <th>ApprovedValueOther</th>
+                    <td>{{ investment.approvedValueOther }}</td>
+                </tr>
+                <tr>
+                    <th>BetweenStreets</th>
+                    <td>{{ investment.betweenStreets }}</td>
+                </tr>
+                <tr>
+                    <th>Town</th>
+                    <td>{{ investment.town }}</td>
+                </tr>
+                <tr>
+                    <th>PopularCouncil</th>
+                    <td>{{ investment.popularCouncil }}</td>
+                </tr>
+                <tr>
+                    <th>Block</th>
+                    <td>{{ investment.block }}</td>
+                </tr>
+                <tr>
+                    <th>District</th>
+                    <td>{{ investment.district }}</td>
+                </tr>
+                <tr>
+                    <th>Street</th>
+                    <td>{{ investment.street }}</td>
+                </tr>
+                <tr>
+                    <th>AddressNumber</th>
+                    <td>{{ investment.addressNumber }}</td>
+                </tr>
+                <tr>
+                    <th>Provincia:</th>
+                    <td>
+                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}">
+                            {{ investment.getProvinceName() }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Municipio:</th>
+                    <td>
+                        <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}">
+                            {{ investment.getMunicipalityName() }}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_investment_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_investment_edit', label: 'Editar', title:'Editar inversión'},
+            delete: {href: 'app_investment_delete', label: 'Eliminar', title:'Eliminar inversión'},
+            id: investment.id,
+            message: 'Está seguro que desea eliminar la inversión?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

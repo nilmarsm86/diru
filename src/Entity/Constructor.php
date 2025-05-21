@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\ConstructorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
@@ -31,6 +33,17 @@ class Constructor
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
+
+    /**
+     * @var Collection<int, Investment>
+     */
+    #[ORM\OneToMany(targetEntity: Investment::class, mappedBy: 'constructor')]
+    private Collection $investments;
+
+    public function __construct()
+    {
+        $this->investments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +82,36 @@ class Constructor
     public function setLogo(?string $logo): static
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Investment>
+     */
+    public function getInvestments(): Collection
+    {
+        return $this->investments;
+    }
+
+    public function addInvestment(Investment $investment): static
+    {
+        if (!$this->investments->contains($investment)) {
+            $this->investments->add($investment);
+            $investment->setConstructor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvestment(Investment $investment): static
+    {
+        if ($this->investments->removeElement($investment)) {
+            // set the owning side to null (unless already changed)
+            if ($investment->getConstructor() === $this) {
+                $investment->setConstructor(null);
+            }
+        }
 
         return $this;
     }

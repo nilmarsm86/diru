@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250519025744 extends AbstractMigration
+final class Version20250521030024 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,6 +27,7 @@ final class Version20250519025744 extends AbstractMigration
         $this->addSql('CREATE TABLE enterprise_client (id INT NOT NULL, corporate_entity_id INT NOT NULL, INDEX IDX_54598E4C8BA692E5 (corporate_entity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geographic_location (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE individual_client (id INT NOT NULL, person_id INT NOT NULL, INDEX IDX_18764BB6217BBB47 (person_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE investment (id INT AUTO_INCREMENT NOT NULL, constructor_id INT NOT NULL, location_zone_id INT NOT NULL, municipality_id INT NOT NULL, work_name VARCHAR(255) NOT NULL, investment_name VARCHAR(255) NOT NULL, estimated_value_construction BIGINT NOT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT DEFAULT NULL, approved_value_equipment BIGINT DEFAULT NULL, approved_value_other BIGINT DEFAULT NULL, between_streets LONGTEXT DEFAULT NULL, town VARCHAR(255) DEFAULT NULL, popular_council VARCHAR(255) DEFAULT NULL, block VARCHAR(255) DEFAULT NULL, district VARCHAR(255) DEFAULT NULL, street VARCHAR(255) NOT NULL, address_number VARCHAR(255) DEFAULT NULL, INDEX IDX_43CA0AD62D98BF9 (constructor_id), INDEX IDX_43CA0AD671692C0F (location_zone_id), INDEX IDX_43CA0AD6AE6F181C (municipality_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE location_zone (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE municipality (id INT AUTO_INCREMENT NOT NULL, province_id INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_C6F56628E946114A (province_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE organism (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX organism_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -43,6 +44,9 @@ final class Version20250519025744 extends AbstractMigration
         $this->addSql('ALTER TABLE enterprise_client ADD CONSTRAINT FK_54598E4CBF396750 FOREIGN KEY (id) REFERENCES client (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE individual_client ADD CONSTRAINT FK_18764BB6217BBB47 FOREIGN KEY (person_id) REFERENCES person (id)');
         $this->addSql('ALTER TABLE individual_client ADD CONSTRAINT FK_18764BB6BF396750 FOREIGN KEY (id) REFERENCES client (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE investment ADD CONSTRAINT FK_43CA0AD62D98BF9 FOREIGN KEY (constructor_id) REFERENCES constructor (id)');
+        $this->addSql('ALTER TABLE investment ADD CONSTRAINT FK_43CA0AD671692C0F FOREIGN KEY (location_zone_id) REFERENCES location_zone (id)');
+        $this->addSql('ALTER TABLE investment ADD CONSTRAINT FK_43CA0AD6AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id)');
         $this->addSql('ALTER TABLE municipality ADD CONSTRAINT FK_C6F56628E946114A FOREIGN KEY (province_id) REFERENCES province (id)');
         $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649217BBB47 FOREIGN KEY (person_id) REFERENCES person (id)');
         $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE');
@@ -60,6 +64,9 @@ final class Version20250519025744 extends AbstractMigration
         $this->addSql('ALTER TABLE enterprise_client DROP FOREIGN KEY FK_54598E4CBF396750');
         $this->addSql('ALTER TABLE individual_client DROP FOREIGN KEY FK_18764BB6217BBB47');
         $this->addSql('ALTER TABLE individual_client DROP FOREIGN KEY FK_18764BB6BF396750');
+        $this->addSql('ALTER TABLE investment DROP FOREIGN KEY FK_43CA0AD62D98BF9');
+        $this->addSql('ALTER TABLE investment DROP FOREIGN KEY FK_43CA0AD671692C0F');
+        $this->addSql('ALTER TABLE investment DROP FOREIGN KEY FK_43CA0AD6AE6F181C');
         $this->addSql('ALTER TABLE municipality DROP FOREIGN KEY FK_C6F56628E946114A');
         $this->addSql('ALTER TABLE `user` DROP FOREIGN KEY FK_8D93D649217BBB47');
         $this->addSql('ALTER TABLE user_role DROP FOREIGN KEY FK_2DE8C6A3A76ED395');
@@ -71,6 +78,7 @@ final class Version20250519025744 extends AbstractMigration
         $this->addSql('DROP TABLE enterprise_client');
         $this->addSql('DROP TABLE geographic_location');
         $this->addSql('DROP TABLE individual_client');
+        $this->addSql('DROP TABLE investment');
         $this->addSql('DROP TABLE location_zone');
         $this->addSql('DROP TABLE municipality');
         $this->addSql('DROP TABLE organism');

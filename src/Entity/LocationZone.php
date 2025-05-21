@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\LocationZoneRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
@@ -18,8 +20,49 @@ class LocationZone
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, Investment>
+     */
+    #[ORM\OneToMany(targetEntity: Investment::class, mappedBy: 'locationZone')]
+    private Collection $investments;
+
+    public function __construct()
+    {
+        $this->investments = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Investment>
+     */
+    public function getInvestments(): Collection
+    {
+        return $this->investments;
+    }
+
+    public function addInvestment(Investment $investment): static
+    {
+        if (!$this->investments->contains($investment)) {
+            $this->investments->add($investment);
+            $investment->setLocationZone($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvestment(Investment $investment): static
+    {
+        if ($this->investments->removeElement($investment)) {
+            // set the owning side to null (unless already changed)
+            if ($investment->getLocationZone() === $this) {
+                $investment->setLocationZone(null);
+            }
+        }
+
+        return $this;
     }
 }

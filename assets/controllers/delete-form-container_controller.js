@@ -3,7 +3,7 @@ import AbstractController from "./AbstractController.js";
 
 export const SUCCESS = 'delete-form-container:success';
 export const FAILURE = 'delete-form-container:failure';
-export const START = 'delete-form-container:success';
+export const START = 'delete-form-container:startSubmit';
 
 /*
 * The following line makes this controller "lazy": it won't be downloaded until needed
@@ -24,6 +24,7 @@ export default class extends AbstractController {
 
     remove(event){
         if(event.returnValue){
+            //disparar evento de mosrtar el spinner
             this.submit(event);
         }
     }

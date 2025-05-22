@@ -29,4 +29,31 @@ class EnterpriseClient extends Client
         return $this;
     }
 
+    public function getRepresentativeName()
+    {
+        if(!is_null($this->getRepresentative())){
+            return $this->getRepresentative()->getName();
+        }
+
+        return "";
+    }
+
+    public function getRepresentativeIdentificationNumber()
+    {
+        if(!is_null($this->getRepresentative())){
+            return $this->getRepresentative()->getIdentificationNumber();
+        }
+
+        return "";
+    }
+
+    public function getRepresentativePassport()
+    {
+        if(!is_null($this->getRepresentative())){
+            return $this->getRepresentative()->getPassport();
+        }
+
+        return "";
+    }
+
 }

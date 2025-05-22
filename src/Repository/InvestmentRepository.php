@@ -52,14 +52,16 @@ class InvestmentRepository extends ServiceEntityRepository
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "i.workName LIKE :filter ";
-            $predicate .= "OR i.investmentName LIKE :filter ";
+            $predicate = "i.name LIKE :filter ";
             $predicate .= "OR i.betweenStreets LIKE :filter ";
             $predicate .= "OR i.town LIKE :filter ";
             $predicate .= "OR i.popularCouncil LIKE :filter ";
             $predicate .= "OR i.district LIKE :filter ";
             $predicate .= "OR i.street LIKE :filter ";
-            $predicate .= "OR c.name LIKE :filter ";
+            if ($place) {
+                $predicate .= "OR mun.name LIKE :filter ";
+                $predicate .= "OR pro.name LIKE :filter ";
+            }
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%' . $filter . '%');
         }
@@ -73,12 +75,11 @@ class InvestmentRepository extends ServiceEntityRepository
      */
     public function findInvestments(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('i')->select(['i', 'mun', 'pro', 'c'])
+        $builder = $this->createQueryBuilder('i')->select(['i', 'mun', 'pro'])
             ->innerJoin('i.municipality', 'mun')
-            ->leftJoin('mun.province', 'pro')
-            ->leftJoin('i.constructor', 'c');
-        $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('i.workName', 'ASC')->getQuery();
+            ->leftJoin('mun.province', 'pro');
+        $this->addFilter($builder, $filter);
+        $query = $builder->orderBy('i.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

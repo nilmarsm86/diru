@@ -11,6 +11,7 @@ use App\Form\InvestmentType;
 use App\Repository\ConstructorRepository;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\InvestmentRepository;
+use App\Repository\LocationZoneRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\OrganismRepository;
 use App\Repository\ProvinceRepository;
@@ -46,7 +47,7 @@ final class InvestmentForm extends AbstractController
     public bool $ajax = false;
 
     #[LiveProp(writable: true)]
-    public ?int $constructor = 0;
+    public ?int $locationZone = 0;
 
     #[LiveProp(writable: true)]
     public ?string $street = '';
@@ -78,9 +79,9 @@ final class InvestmentForm extends AbstractController
      */
     public function preValue(): void
     {
-        if ($this->constructor !== 0) {
-            $this->formValues['constructor'] = (string)$this->constructor;
-            $this->constructor = 0;
+        if ($this->locationZone !== 0) {
+            $this->formValues['location_zone'] = (string)$this->locationZone;
+            $this->locationZone = 0;
         }
 
         if ($this->street !== '') {
@@ -153,24 +154,23 @@ final class InvestmentForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(InvestmentRepository $investmentRepository, ConstructorRepository $constructorRepository): ?Response
+    public function save(InvestmentRepository $investmentRepository, LocationZoneRepository $locationZoneRepository): ?Response
     {
         $this->preValue();
 
         $successMsg = (is_null($this->inv->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.';//TODO: personalizar los mensajes
 
         $this->submitForm();
-
         if ($this->isSubmitAndValid()) {
             /** @var Investment $inv */
             $inv = $this->getForm()->getData();
 
             $inv->setStreet($this->formValues['streetAddress']['street']);
 
-            $constructor = $constructorRepository->find((int)$this->formValues['constructor']);
-            $inv->setConstructor($constructor);
+            $locationZone = $locationZoneRepository->find((int)$this->formValues['locationZone']);
+            $inv->setLocationZone($locationZone);
 
-            $municipality = $this->municipalityRepository->find((int)$this->formValues['address']['municipality']);
+            $municipality = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
             $inv->setMunicipality($municipality);
 
             $investmentRepository->save($inv, true);
@@ -178,7 +178,7 @@ final class InvestmentForm extends AbstractController
             $this->inv = new Investment();
             if (!is_null($this->modal)) {
                 $this->modalManage($inv, 'Seleccione la nueva inversión agregada.', [
-                    'corporateEntity' => $inv->getId()
+                    'investment' => $inv->getId()
                 ]);
                 return null;
             }

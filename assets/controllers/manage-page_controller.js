@@ -13,7 +13,7 @@ import {
     REFRESH as TABLE_REFRESH,
     SELECT as TABLE_SELECT
 } from "./twig/table/table_controller.js";
-import {SUCCESS as DELETE_FORM_SUCCESS} from "./delete-form-container_controller.js";
+import {SUCCESS as DELETE_FORM_SUCCESS, START as START_REMOVE_ITEM} from "./delete-form-container_controller.js";
 
 /*
  * This is an example Stimulus controller!
@@ -70,6 +70,7 @@ export default class extends AbstractController {
         //procesar una respuesta de una accion de un formulario bien enviado
         this.element.addEventListener(FORM_SUCCESS, this.onManagePageProcessResponse.bind(this));
         this.element.addEventListener(DELETE_FORM_SUCCESS, this.deleteFormSuccess.bind(this));
+        // window.addEventListener(START_REMOVE_ITEM, this.startRemoveItem.bind(this));
     }
 
     backdrop(backdropElement, action) {
@@ -120,6 +121,11 @@ export default class extends AbstractController {
         await this.processResponseToast(event.detail.response);//show toast
         this.refreshListContent(event);
         this.onCardClose(event);
+    }
+
+    startRemoveItem(event){
+        // const listBackdrop = this.listContainerTarget.querySelector('[data-id=card-backdrop]');
+        // this.backdrop(listBackdrop, BACKDROP_SHOW);
     }
 
     refreshListContent(event) {

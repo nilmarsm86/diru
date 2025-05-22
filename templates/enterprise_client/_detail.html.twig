@@ -20,18 +20,31 @@
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
             <table class="table table-hover">
                 <tbody>
-                <tr>
-                    <th>Nombre del Representante:</th>
-                    <td>{{ enterprise_client.person.name }}</td>
-                </tr>
-                <tr>
-                    <th>Carnet del Representante:</th>
-                    <td>{{ enterprise_client.person.identificationNumber }}</td>
-                </tr>
-                <tr>
-                    <th>Pasaporte del Representante:</th>
-                    <td>{{ enterprise_client.person.passport }}</td>
-                </tr>
+                {% if enterprise_client.representative %}
+                    <tr>
+                        <th>Representante:</th>
+                        <td>
+                            <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>Nombre y Apellidos:</th>
+                                        <td>{{ enterprise_client.representative.getFullName() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Carnet de identidad:</th>
+                                        <td>{{ enterprise_client.representative.identificationNumber }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pasaporte:</th>
+                                        <td>{{ enterprise_client.representative.passport }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>Teléfono:</th>
                     <td>
@@ -61,6 +74,7 @@
                 <tr>
                     <th>
                         NIT de la entidad corporativa
+                        <br>
                         <em class="small" style="font-weight: lighter">(Número de Identificación Tributaria)</em>:
                     </th>
                     <td>

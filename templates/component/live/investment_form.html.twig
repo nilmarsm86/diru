@@ -7,77 +7,39 @@
         }
     }) }}
 
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.workName) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.investmentName) }}
-        </div>
-    </div>
+    {{ form_row(form.name) }}
 
-    {{ form_row(form.hasSameName) }}
+    {{ form_row(form.streetAddress) }}
+    <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);" {% if (this.inv.id is not null) %}open{% endif %}>
+        <summary class="mb-3 mt-0" style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
+            Otros datos de la dirección
+        </summary>
 
-    {{ form_row(form.constructor) }}
-
-    <hr>
-    <fieldset>
-        <legend>Direccion</legend>
         {{ form_row(form.betweenStreets) }}
-        {{ form_row(form.addressNumber) }}
-        {{ form_row(form.town) }}
-        {{ form_row(form.popularCouncil) }}
-        {{ form_row(form.locationZone) }}
-        {{ form_row(form.block) }}
-        {{ form_row(form.district) }}
-        {{ form_row(form.streetAddress) }}
-    </fieldset>
-
-    <hr>
-    <fieldset>
-        <legend>Valores aprobados</legend>
         <div class="mb-0 row">
             <div class="col">
-                {{ form_row(form.approvedValueConstruction) }}
+                {{ form_row(form.town) }}
             </div>
             <div class="col">
-                {{ form_row(form.approvedValueEquipment) }}
+                {{ form_row(form.popularCouncil) }}
             </div>
             <div class="col">
-                {{ form_row(form.approvedValueOther) }}
-            </div>
-            <div class="col">
-                Total: $ 10000000
+                {{ form_row(form.district) }}
             </div>
         </div>
-    </fieldset>
-
-    <hr>
-    <fieldset>
-        <legend>Valores estimados</legend>
         <div class="mb-0 row">
             <div class="col">
-                {{ form_row(form.estimatedValueConstruction) }}
+                {{ form_row(form.locationZone) }}
             </div>
             <div class="col">
-                {{ form_row(form.estimatedValueEquipment) }}
+                {{ form_row(form.block) }}
             </div>
             <div class="col">
-                {{ form_row(form.estimatedValueOther) }}
-            </div>
-            <div class="col">
-                Total: $ 10000000
+                {{ form_row(form.addressNumber) }}
             </div>
         </div>
-    </fieldset>
 
-{#    <div {{ stimulusController('visibility') }}>#}
-{#        {{ form_row(form.hasRepresentative) }}#}
-
-{#        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ec.representative %}show{% else %}none{% endif %}">#}
-{#            {{ form_row(form.representative) }}#}
-{#        </div>#}
-{#    </div>#}
+    </details>
 
     <div class="row mb-3">
         <div class="col-sm-12">

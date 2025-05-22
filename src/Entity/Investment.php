@@ -29,7 +29,7 @@ class Investment
     private ?string $popularCouncil = null;
 
     #[ORM\ManyToOne(inversedBy: 'investments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?LocationZone $locationZone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -149,16 +149,13 @@ class Investment
         return $this;
     }
 
-    public function getMunicipality(): ?Municipality
+    public function getLocationZoneName(): string
     {
-        return $this->municipality;
-    }
+        if(!is_null($this->getLocationZone())){
+            return $this->getLocationZone()->getName();
+        }
 
-    public function setMunicipality(?Municipality $municipality): static
-    {
-        $this->municipality = $municipality;
-
-        return $this;
+        return "";
     }
 
 }

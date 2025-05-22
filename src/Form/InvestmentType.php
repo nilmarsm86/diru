@@ -10,6 +10,7 @@ use App\Form\Types\StreetAddressType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,53 +19,54 @@ class InvestmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('workName', null, [
-                'label' => 'Nombre de la obra:',
-                'attr' => [
-                    'placeholder' => 'Nombre de la obra'
-                ]
-            ])
-            ->add('investmentName', null, [
+            ->add('name', null, [
                 'label' => 'Nombre de la inversión:',
                 'attr' => [
                     'placeholder' => 'Nombre de la inversión'
                 ]
             ])
-            ->add('hasSameName', CheckboxType::class, [
-                'label' => 'Mismo nombre de inversión',
-                'mapped' => false,
-                'required' => false,
-//                'attr' => [
-//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-//                ],
-//                'data' => (bool)$ec->getRepresentative()
-            ])
-            ->add('constructor', EntityType::class, [
-                'class' => Constructor::class,
-                'choice_label' => 'name',
-            ])
-            ->add('estimatedValueConstruction')
-            ->add('estimatedValueEquipment')
-            ->add('estimatedValueOther')
-            ->add('approvedValueConstruction')
-            ->add('approvedValueEquipment')
-            ->add('approvedValueOther')
-            ->add('betweenStreets')
-            ->add('town')
-            ->add('popularCouncil')
-            ->add('block')
-            ->add('district')
-//            ->add('street')
-            ->add('addressNumber')
-
             ->add('locationZone', EntityType::class, [
                 'class' => LocationZone::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'required' => false,
+                'label' => 'Zona de ubicación:',
             ])
-//            ->add('municipality', EntityType::class, [
-//                'class' => Municipality::class,
-//                'choice_label' => 'id',
-//            ])
+            ->add('betweenStreets', null, [
+                'label' => 'Entre calles:',
+                'attr' => [
+                    'placeholder' => 'Entre calles'
+                ]
+            ])
+            ->add('town', null, [
+                'label' => 'Reparto/Pueblo:',
+                'attr' => [
+                    'placeholder' => 'Nombre del reparto o pueblo'
+                ]
+            ])
+            ->add('popularCouncil', null, [
+                'label' => 'Consejo popular:',
+                'attr' => [
+                    'placeholder' => 'Consejo popular'
+                ]
+            ])
+            ->add('block', null, [
+                'label' => 'Manzana:',
+                'attr' => [
+                    'placeholder' => 'Manzana'
+                ]
+            ])
+            ->add('district', null, [
+                'label' => 'Circunscripción:',
+                'attr' => [
+                    'placeholder' => 'Circunscripción'
+                ]
+            ])
+            ->add('addressNumber', null, [
+                'label' => 'Número:',
+                'attr' => [
+                    'placeholder' => 'Número'
+                ]
+            ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],

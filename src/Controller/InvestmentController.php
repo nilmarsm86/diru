@@ -40,7 +40,6 @@ final class InvestmentController extends AbstractController
         $investment = new Investment();
         return $crudActionService->formLiveComponentAction($request, $investment, 'investment', [
             'title' => 'Nuevo inversión',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

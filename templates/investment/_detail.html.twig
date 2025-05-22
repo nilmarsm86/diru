@@ -1,6 +1,6 @@
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
-    extra: 'id="corporate_entity_detail_' ~ corporate_entity.id,
+    extra: 'id="investment_detail_' ~ investment.id,
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: title,
 } %}
@@ -20,91 +20,55 @@
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
             <table class="table table-hover">
                 <tbody>
-{#                <tr>#}
-{#                    <th>Id</th>#}
-{#                    <td>{{ investment.id }}</td>#}
-{#                </tr>#}
                 <tr>
-                    <th>WorkName</th>
-                    <td>{{ investment.workName }}</td>
+                    <th>Nombre:</th>
+                    <td>{{ investment.name }}</td>
                 </tr>
                 <tr>
-                    <th>InvestmentName</th>
-                    <td>{{ investment.investmentName }}</td>
-                </tr>
-                <tr>
-                    <th>Constructora:</th>
-                    <td>
-                        <a href="{{ path('app_constructor_show', {'id': investment.constructor.id }) }}">
-                            {{ investment.constructor.name }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>EstimatedValueConstruction</th>
-                    <td>{{ investment.estimatedValueConstruction }}</td>
-                </tr>
-                <tr>
-                    <th>EstimatedValueEquipment</th>
-                    <td>{{ investment.estimatedValueEquipment }}</td>
-                </tr>
-                <tr>
-                    <th>EstimatedValueOther</th>
-                    <td>{{ investment.estimatedValueOther }}</td>
-                </tr>
-                <tr>
-                    <th>ApprovedValueConstruction</th>
-                    <td>{{ investment.approvedValueConstruction }}</td>
-                </tr>
-                <tr>
-                    <th>ApprovedValueEquipment</th>
-                    <td>{{ investment.approvedValueEquipment }}</td>
-                </tr>
-                <tr>
-                    <th>ApprovedValueOther</th>
-                    <td>{{ investment.approvedValueOther }}</td>
-                </tr>
-                <tr>
-                    <th>BetweenStreets</th>
-                    <td>{{ investment.betweenStreets }}</td>
-                </tr>
-                <tr>
-                    <th>Town</th>
-                    <td>{{ investment.town }}</td>
-                </tr>
-                <tr>
-                    <th>PopularCouncil</th>
-                    <td>{{ investment.popularCouncil }}</td>
-                </tr>
-                <tr>
-                    <th>Block</th>
-                    <td>{{ investment.block }}</td>
-                </tr>
-                <tr>
-                    <th>District</th>
-                    <td>{{ investment.district }}</td>
-                </tr>
-                <tr>
-                    <th>Street</th>
+                    <th>Calle:</th>
                     <td>{{ investment.street }}</td>
                 </tr>
                 <tr>
-                    <th>AddressNumber</th>
+                    <th>Número:</th>
                     <td>{{ investment.addressNumber }}</td>
                 </tr>
                 <tr>
-                    <th>Provincia:</th>
-                    <td>
-                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}">
-                            {{ investment.getProvinceName() }}
-                        </a>
-                    </td>
+                    <th>Entre calles:</th>
+                    <td>{{ investment.betweenStreets }}</td>
+                </tr>
+                <tr>
+                    <th>Consejo popular:</th>
+                    <td>{{ investment.popularCouncil }}</td>
+                </tr>
+                <tr>
+                    <th>Reparto/Pueblo:</th>
+                    <td>{{ investment.town }}</td>
+                </tr>
+                <tr>
+                    <th>Manzana:</th>
+                    <td>{{ investment.block }}</td>
+                </tr>
+                <tr>
+                    <th>Zona de ubicación:</th>
+                    <td>{{ investment.getLocationZoneName() }}</td>
+                </tr>
+                <tr>
+                    <th>Circunscripción:</th>
+                    <td>{{ investment.district }}</td>
                 </tr>
                 <tr>
                     <th>Municipio:</th>
                     <td>
                         <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}">
                             {{ investment.getMunicipalityName() }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Provincia:</th>
+                    <td>
+                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}">
+                            {{ investment.getProvinceName() }}
                         </a>
                     </td>
                 </tr>

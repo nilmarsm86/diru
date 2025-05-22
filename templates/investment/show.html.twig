@@ -3,7 +3,7 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Inversión: {{ investment.workName }}{% endblock %}
+{% block title %}Inversión: {{ investment.name }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -16,7 +16,7 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Inversión: {{ investment.workName }}</h2>
+    <h2 class="mb-4">Inversión: {{ investment.name }}</h2>
 
     {{ include('investment/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

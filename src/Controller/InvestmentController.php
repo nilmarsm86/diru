@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Investment;
+use App\Entity\Role;
 use App\Form\InvestmentType;
 use App\Repository\InvestmentRepository;
 use App\Service\CrudActionService;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -23,6 +25,7 @@ final class InvestmentController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_investment_index', methods: ['GET'])]
     public function index(Request $request, InvestmentRepository $investmentRepository, CrudActionService $crudActionService): Response
     {
@@ -34,6 +37,7 @@ final class InvestmentController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_investment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -48,6 +52,7 @@ final class InvestmentController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_investment_show', methods: ['GET'])]
     public function show(Request $request, Investment $investment, CrudActionService $crudActionService): Response
     {
@@ -59,6 +64,7 @@ final class InvestmentController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_investment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Investment $investment, CrudActionService $crudActionService): Response
     {
@@ -72,6 +78,7 @@ final class InvestmentController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_investment_delete', methods: ['POST'])]
     public function delete(Request $request, Investment $investment, InvestmentRepository $investmentRepository, CrudActionService $crudActionService): Response
     {

@@ -43,7 +43,7 @@ export default class extends AbstractController {
                 event.preventDefault();
 
                 if (!this.selectTarget.value) {
-                    alert('Debe seleccionar al menos un valor para el detalle del mismo.');
+                    alert('Debe seleccionar al menos un valor para el detalle del mismo.');//TODO: dar la posibilidad de personalizar
                     return;
                 }
 
@@ -70,18 +70,20 @@ export default class extends AbstractController {
      */
     async updateList(event) {
         if (this.buttonTarget.dataset.bsTarget.replace('#', '') === event.detail.modal) {
-            // this.selectTarget.disabled = true;
-            // this.addChildsNodes("<option>Cargando...</option>", this.selectTarget);
-            //
-            // this.message = event.detail.response;
-            // for(let item in event.detail.data){
-            //     event.detail.url = this.urlValue.replace('0', event.detail.data[item]);
-            // }
-            // this.refreshContent(event);
-            // setTimeout(()=>{
-            //     this.selectTarget.selectedIndex = (this.selectTarget.options.length - 1);
-            //     console.log('updateList');
-            // }, 3000);
+            if(this.urlValue.length > 0){
+                // this.selectTarget.disabled = true;
+                // this.addChildsNodes("<option>Cargando...</option>", this.selectTarget);
+                //
+                // this.message = event.detail.response;
+                // for(let item in event.detail.data){
+                //     event.detail.url = this.urlValue.replace('0', event.detail.data[item]);
+                // }
+                // this.refreshContent(event);
+                // setTimeout(()=>{
+                //     this.selectTarget.selectedIndex = (this.selectTarget.options.length - 1);
+                //     // console.log('updateList');
+                // }, 3000);
+            }
 
             await this.processResponseToast(event.detail.response);
         }

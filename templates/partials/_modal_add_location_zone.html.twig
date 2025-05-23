@@ -1,0 +1,8 @@
+{% component 'Modal:Modal' with {
+    title: 'Agregar Zona de ubicación',
+    id: 'add-location-zone'
+} %}
+    {% block body %}
+        {{ component('LocationZoneForm', {modal:'add-location-zone', lz: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}

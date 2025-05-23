@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\LocationZone;
+use App\Entity\Role;
 use App\Repository\LocationZoneRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -21,6 +23,7 @@ final class LocationZoneController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_location_zone_index', methods: ['GET'])]
     public function index(Request $request, LocationZoneRepository $locationZoneRepository, CrudActionService $crudActionService): Response
     {
@@ -32,6 +35,7 @@ final class LocationZoneController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_location_zone_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -47,6 +51,7 @@ final class LocationZoneController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_location_zone_show', methods: ['GET'])]
     public function show(Request $request, LocationZone $locationZone, CrudActionService $crudActionService): Response
     {
@@ -58,6 +63,7 @@ final class LocationZoneController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_location_zone_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, LocationZone $locationZone, CrudActionService $crudActionService): Response
     {
@@ -72,6 +78,7 @@ final class LocationZoneController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_location_zone_delete', methods: ['POST'])]
     public function delete(Request $request, LocationZone $locationZone, LocationZoneRepository $locationZoneRepository, CrudActionService $crudActionService): Response
     {

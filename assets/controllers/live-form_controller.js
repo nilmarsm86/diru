@@ -28,6 +28,7 @@ export default class extends AbstractController {
                 for (let item in event.detail.data) {
                     try {
                         this.component.set((item), event.detail.data[item]);
+                        // console.log(item+': '+event.detail.data[item]);
                     } catch (e) {
                     }
                 }

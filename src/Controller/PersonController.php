@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Entity\Role;
 use App\Repository\PersonRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,6 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[Route('/person')]
-#[IsGranted('ROLE_ADMIN')]
 final class PersonController extends AbstractController
 {
     /**
@@ -24,6 +24,7 @@ final class PersonController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_person_index', methods: ['GET'])]
     public function index(Request $request, PersonRepository $personRepository, CrudActionService $crudActionService): Response
     {
@@ -35,6 +36,7 @@ final class PersonController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_person_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -50,6 +52,7 @@ final class PersonController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted('ROLE_DRAFTSMAN')]
     #[Route('/{id}', name: 'app_person_show', methods: ['GET'])]
     public function show(Request $request, Person $person, CrudActionService $crudActionService): Response
     {
@@ -61,6 +64,7 @@ final class PersonController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_person_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Person $person, CrudActionService $crudActionService): Response
     {
@@ -75,6 +79,7 @@ final class PersonController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_person_delete', methods: ['POST'])]
     public function delete(Request $request, Person $person, PersonRepository $personRepository, CrudActionService $crudActionService): Response
     {
@@ -82,16 +87,16 @@ final class PersonController extends AbstractController
         return $crudActionService->deleteAction($request, $personRepository, $person, $successMsg, 'app_person_index');
     }
 
-    #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function options(Request $request, Person $person, PersonRepository $personRepository): Response
-    {
-//        if ($request->isXmlHttpRequest()) {
-//            return $this->render('partials/_select_options.html.twig', [
-//                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
-//                'selected' => $person->getId()
-//            ]);
-//        }
-
-        throw new BadRequestHttpException('Ajax request');
-    }
+//    #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+//    public function options(Request $request, Person $person, PersonRepository $personRepository): Response
+//    {
+////        if ($request->isXmlHttpRequest()) {
+////            return $this->render('partials/_select_options.html.twig', [
+////                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
+////                'selected' => $person->getId()
+////            ]);
+////        }
+//
+//        throw new BadRequestHttpException('Ajax request');
+//    }
 }

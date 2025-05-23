@@ -65,7 +65,7 @@ class CorporateEntityType extends AbstractType
             $builder
                 ->add('organism', EntityPlusType::class, [
                     'modal_id' => '#add-organism',
-                    'path' => 'app_organism_options'
+                    'path' => ''//esta vacio pq el form esta dentro de un live-component
                 ]+$organismAttr);
         } else {
             $builder->add('organism', EntityType::class, []+$organismAttr);

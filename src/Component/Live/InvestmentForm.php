@@ -80,7 +80,7 @@ final class InvestmentForm extends AbstractController
     public function preValue(): void
     {
         if ($this->locationZone !== 0) {
-            $this->formValues['location_zone'] = (string)$this->locationZone;
+            $this->formValues['locationZone'] = (string)$this->locationZone;
             $this->locationZone = 0;
         }
 

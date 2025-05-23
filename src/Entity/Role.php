@@ -20,6 +20,7 @@ class Role
     const string ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
     const string ROLE_ADMIN = 'ROLE_ADMIN';
     const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const string IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

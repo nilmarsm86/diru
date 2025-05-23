@@ -31,24 +31,6 @@ class EnterpriseClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('name', null, [
-//                'label' => 'Nombre:',
-//                'attr' => [
-//                    'placeholder' => 'Nombre del representante'
-//                ]
-//            ])
-//            ->add('identificationNumber', null, [
-//                'label' => 'Carnet de identidad:',
-//                'attr' => [
-//                    'placeholder' => 'Carnet de identidad del representante'
-//                ]
-//            ])
-//            ->add('passport', null,[
-//                'label' => 'Pasaporte:',
-//                'attr' => [
-//                    'placeholder' => 'Número de pasaporte del representante'
-//                ]
-//            ])
             ->add('phone', null, [
                 'label' => 'Teléfono:',
                 'attr' => [
@@ -74,7 +56,8 @@ class EnterpriseClientType extends AbstractType
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
                 'modal_id' => '#add-entity',
-                'path' => $this->router->generate('app_corporate_entity_options', ['id' => 0]),
+//                'path' => $this->router->generate('app_corporate_entity_options', ['id' => 0]),
+                'path' => '',
                 'detail' => true,
                 'detail_title' => 'Detalle de la entidad',
                 'detail_id' => 'detail_corporate_entity',
@@ -160,7 +143,8 @@ class EnterpriseClientType extends AbstractType
             'label' => 'Representante:',
 //            'query_builder' => $this->getPersonQueryBuilder($ec),
             'modal_id' => '#add-person',
-            'path' => $this->router->generate('app_person_options', ['id' => 0]),
+//            'path' => $this->router->generate('app_person_options', ['id' => 0]),
+            'path' => '',//esta en un formulario de live-component
             'detail' => true,
             'detail_title' => 'Detalle de los representantes',
             'detail_id' => 'detail_person',

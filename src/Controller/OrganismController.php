@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Organism;
+use App\Entity\Role;
 use App\Repository\OrganismRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,6 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[Route('/organism')]
-#[IsGranted('ROLE_DRAFTSMAN')]
 final class OrganismController extends AbstractController
 {
     /**
@@ -24,6 +24,7 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_organism_index', methods: ['GET'])]
     public function index(Request $request, OrganismRepository $organismRepository, CrudActionService $crudActionService): Response
     {
@@ -35,6 +36,7 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_organism_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -50,6 +52,7 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_organism_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Request $request, Organism $organism, CrudActionService $crudActionService): Response
     {
@@ -61,6 +64,7 @@ final class OrganismController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_organism_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Organism $organism, CrudActionService $crudActionService): Response
     {
@@ -75,6 +79,7 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_organism_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Organism $organism, OrganismRepository $organismRepository, CrudActionService $crudActionService): Response
@@ -83,16 +88,16 @@ final class OrganismController extends AbstractController
         return $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');
     }
 
-    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
-    {
-//        if ($request->isXmlHttpRequest()) {
-//            return $this->render('partials/_select_options.html.twig', [
-//                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
-//                'selected' => $organism->getId()
-//            ]);
-//        }
-
-        throw new BadRequestHttpException('Ajax request');
-    }
+//    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+//    public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
+//    {
+////        if ($request->isXmlHttpRequest()) {
+////            return $this->render('partials/_select_options.html.twig', [
+////                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
+////                'selected' => $organism->getId()
+////            ]);
+////        }
+//
+//        throw new BadRequestHttpException('Ajax request');
+//    }
 }

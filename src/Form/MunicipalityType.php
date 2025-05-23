@@ -38,7 +38,7 @@ class MunicipalityType extends AbstractType
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
                 'modal_id' => '#add-province',
-                'path' => 'app_province_options',
+                'path' => '',//como el formulario es live-component cuando se agregar el dato se recarga y trae el dato nuevo por eso se puede dejar vacio
             ]+$provinceAttr);
         } else {
             $builder->add('province', EntityType::class, []+$provinceAttr);

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Municipality;
+use App\Entity\Role;
 use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[Route('/municipality')]
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted(Role::ROLE_ADMIN)]
 final class MunicipalityController extends AbstractController
 {
     /**
@@ -82,16 +83,16 @@ final class MunicipalityController extends AbstractController
         return $crudActionService->deleteAction($request, $municipalityRepository, $municipality, $successMsg, 'app_municipality_index');
     }
 
-    #[Route('/options/{id}', name: 'app_municipality_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function options(Request $request, Municipality $municipality, MunicipalityRepository $municipalityRepository): Response
-    {
-//        if ($request->isXmlHttpRequest()) {
-//            return $this->render('partials/_select_options.html.twig', [
-//                'entities' => $municipalityRepository->findBy([], ['name' => 'ASC']),
-//                'selected' => $municipality->getId()
-//            ]);
-//        }
-
-        throw new BadRequestHttpException('Ajax request');
-    }
+//    #[Route('/options/{id}', name: 'app_municipality_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+//    public function options(Request $request, Municipality $municipality, MunicipalityRepository $municipalityRepository): Response
+//    {
+////        if ($request->isXmlHttpRequest()) {
+////            return $this->render('partials/_select_options.html.twig', [
+////                'entities' => $municipalityRepository->findBy([], ['name' => 'ASC']),
+////                'selected' => $municipality->getId()
+////            ]);
+////        }
+//
+//        throw new BadRequestHttpException('Ajax request');
+//    }
 }

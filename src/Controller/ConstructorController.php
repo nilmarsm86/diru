@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Constructor;
+use App\Entity\Role;
 use App\Form\ConstructorType;
 use App\Repository\ConstructorRepository;
 use App\Service\CrudActionService;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -23,6 +25,7 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_constructor_index', methods: ['GET'])]
     public function index(Request $request, ConstructorRepository $constructorRepository, CrudActionService $crudActionService): Response
     {
@@ -34,6 +37,7 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_constructor_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -49,6 +53,7 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_constructor_show', methods: ['GET'])]
     public function show(Request $request, Constructor $constructor, CrudActionService $crudActionService): Response
     {
@@ -60,6 +65,7 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_constructor_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Constructor $constructor, CrudActionService $crudActionService): Response
     {
@@ -74,6 +80,7 @@ final class ConstructorController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_constructor_delete', methods: ['POST'])]
     public function delete(Request $request, Constructor $constructor, ConstructorRepository $constructorRepository, CrudActionService $crudActionService): Response
     {

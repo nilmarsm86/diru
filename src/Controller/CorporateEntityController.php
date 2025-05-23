@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\Traits\MunicipalityTrait;
 use App\DTO\Paginator;
 use App\Entity\CorporateEntity;
+use App\Entity\Role;
 use App\Repository\CorporateEntityRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +20,11 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[Route('/corporate/entity')]
-#[IsGranted('ROLE_DRAFTSMAN')]
 final class CorporateEntityController extends AbstractController
 {
     use MunicipalityTrait;
 
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_corporate_entity_index', methods: ['GET'])]
     public function index(Request $request, CorporateEntityRepository $corporateEntityRepository): Response
     {
@@ -55,6 +56,7 @@ final class CorporateEntityController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_corporate_entity_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -70,6 +72,7 @@ final class CorporateEntityController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_corporate_entity_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService): Response
     {
@@ -81,6 +84,7 @@ final class CorporateEntityController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_corporate_entity_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService): Response
     {
@@ -95,6 +99,7 @@ final class CorporateEntityController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_corporate_entity_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository, CrudActionService $crudActionService): Response
     {
@@ -102,16 +107,16 @@ final class CorporateEntityController extends AbstractController
         return $crudActionService->deleteAction($request, $corporateEntityRepository, $corporateEntity, $successMsg, 'app_corporate_entity_index');
     }
 
-    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
-    {
-//        if ($request->isXmlHttpRequest()) {
-//            return $this->render('partials/_select_options.html.twig', [
-//                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
-//                'selected' => $corporateEntity->getId()
-//            ]);
-//        }
-
-        throw new BadRequestHttpException('Ajax request');
-    }
+//    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+//    public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
+//    {
+////        if ($request->isXmlHttpRequest()) {
+////            return $this->render('partials/_select_options.html.twig', [
+////                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
+////                'selected' => $corporateEntity->getId()
+////            ]);
+////        }
+//
+//        throw new BadRequestHttpException('Ajax request');
+//    }
 }

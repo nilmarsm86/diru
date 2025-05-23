@@ -118,7 +118,8 @@ class IndividualClientType extends AbstractType
             'label' => 'Representante:',
 //            'query_builder' => $this->getPersonQueryBuilder($ec),
             'modal_id' => '#add-person',
-            'path' => $this->router->generate('app_person_options', ['id' => 0]),
+//            'path' => $this->router->generate('app_person_options', ['id' => 0]),
+            'path' => '',//esta en un form en un live-compoentn
             'detail' => true,
             'detail_title' => 'Detalle de los representantes',
             'detail_id' => 'detail_person',

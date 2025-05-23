@@ -112,7 +112,7 @@ final class LocationZoneForm extends AbstractController
             if (!is_null($this->modal)) {
 //                $this->modalManage($lz);
                 $this->modalManage($lz, 'Seleccione la nueva zona de ubicación.', [
-                    'location_zone' => $lz->getId()
+                    'locationZone' => $lz->getId()
                 ]);
                 return null;
             }

@@ -17,6 +17,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/investment')]
 final class InvestmentController extends AbstractController
 {
@@ -25,7 +26,6 @@ final class InvestmentController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_investment_index', methods: ['GET'])]
     public function index(Request $request, InvestmentRepository $investmentRepository, CrudActionService $crudActionService): Response
     {
@@ -37,7 +37,6 @@ final class InvestmentController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_investment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -52,7 +51,6 @@ final class InvestmentController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_investment_show', methods: ['GET'])]
     public function show(Request $request, Investment $investment, CrudActionService $crudActionService): Response
     {
@@ -64,7 +62,6 @@ final class InvestmentController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_investment_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Investment $investment, CrudActionService $crudActionService): Response
     {

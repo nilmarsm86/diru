@@ -17,6 +17,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/geographic/location')]
 final class GeographicLocationController extends AbstractController
 {
@@ -25,7 +26,6 @@ final class GeographicLocationController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_geographic_location_index', methods: ['GET'])]
     public function index(Request $request, GeographicLocationRepository $geographicLocationRepository, CrudActionService $crudActionService): Response
     {
@@ -37,7 +37,6 @@ final class GeographicLocationController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_geographic_location_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -53,7 +52,6 @@ final class GeographicLocationController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_geographic_location_show', methods: ['GET'])]
     public function show(Request $request, GeographicLocation $geographicLocation, CrudActionService $crudActionService): Response
     {
@@ -65,7 +63,6 @@ final class GeographicLocationController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_geographic_location_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, GeographicLocation $geographicLocation, CrudActionService $crudActionService): Response
     {

@@ -16,6 +16,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/organism')]
 final class OrganismController extends AbstractController
 {
@@ -24,7 +25,6 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_organism_index', methods: ['GET'])]
     public function index(Request $request, OrganismRepository $organismRepository, CrudActionService $crudActionService): Response
     {
@@ -36,7 +36,6 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_organism_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -52,7 +51,6 @@ final class OrganismController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_organism_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Request $request, Organism $organism, CrudActionService $crudActionService): Response
     {
@@ -64,7 +62,6 @@ final class OrganismController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_organism_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Organism $organism, CrudActionService $crudActionService): Response
     {

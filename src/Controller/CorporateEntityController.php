@@ -19,12 +19,12 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/corporate/entity')]
 final class CorporateEntityController extends AbstractController
 {
     use MunicipalityTrait;
 
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_corporate_entity_index', methods: ['GET'])]
     public function index(Request $request, CorporateEntityRepository $corporateEntityRepository): Response
     {
@@ -56,7 +56,6 @@ final class CorporateEntityController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_corporate_entity_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -72,7 +71,6 @@ final class CorporateEntityController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_corporate_entity_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService): Response
     {
@@ -84,7 +82,6 @@ final class CorporateEntityController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_corporate_entity_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, CorporateEntity $corporateEntity, CrudActionService $crudActionService): Response
     {

@@ -17,6 +17,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_ADMIN)]
 #[Route('/user')]
 class UserController extends AbstractController
 {
@@ -26,7 +27,6 @@ class UserController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/', name: 'user_list')]
-    #[IsGranted(Role::ROLE_ADMIN)]
     public function index(Request $request, UserRepository $userRepository, RoleRepository $roleRepository, CrudActionService $crudActionService): Response
     {
         return $crudActionService->indexAction($request, $userRepository, 'findUsers', 'user', [
@@ -35,7 +35,6 @@ class UserController extends AbstractController
     }
 
     #[Route('/add_role', name: 'add_role', methods: ['POST'])]
-    #[IsGranted(Role::ROLE_ADMIN)]
     public function addRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
@@ -55,7 +54,6 @@ class UserController extends AbstractController
     }
 
     #[Route('/remove_role', name: 'remove_role', methods: ['POST'])]
-    #[IsGranted(Role::ROLE_ADMIN)]
     public function removeRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
@@ -89,7 +87,6 @@ class UserController extends AbstractController
     }
 
     #[Route('/state', name: 'user_state', methods: ['POST'])]
-    #[IsGranted(Role::ROLE_ADMIN)]
     public function state(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){

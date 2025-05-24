@@ -3,7 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Building;
+use App\Repository\Traits\PaginateTrait;
+use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,6 +15,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BuildingRepository extends ServiceEntityRepository
 {
+    use SaveData;
+    use PaginateTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Building::class);
@@ -40,4 +47,31 @@ class BuildingRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        if($filter){
+            $predicate = "b.name LIKE :filter ";
+            $predicate .= "OR c.name LIKE :filter ";
+//            $predicate .= "OR c.code LIKE :filter ";
+//            $predicate .= "OR c.country LIKE :filter ";
+            $builder->andWhere($predicate)
+                ->setParameter(':filter','%'.$filter.'%');
+        }
+    }
+
+    /**
+     * @param string $filter
+     * @param int $amountPerPage
+     * @param int $page
+     * @return Paginator Returns an array of User objects
+     */
+    public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('b')->select(['b', 'c'])
+            ->innerJoin('b.constructor', 'c');
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

@@ -15,6 +15,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/contract')]
 final class ContractController extends AbstractController
 {
@@ -23,7 +24,6 @@ final class ContractController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_contract_index', methods: ['GET'])]
     public function index(Request $request, ContractRepository $contractRepository, CrudActionService $crudActionService): Response
     {
@@ -35,7 +35,6 @@ final class ContractController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_contract_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -51,7 +50,6 @@ final class ContractController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_contract_show', methods: ['GET'])]
     public function show(Request $request, Contract $contract, CrudActionService $crudActionService): Response
     {
@@ -63,7 +61,6 @@ final class ContractController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}/edit', name: 'app_contract_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Contract $contract, CrudActionService $crudActionService): Response
     {

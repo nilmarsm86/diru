@@ -11,7 +11,6 @@ use Doctrine\DBAL\Types\Types;
 class Building
 {
     use NameToStringTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -17,6 +17,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/constructor')]
 final class ConstructorController extends AbstractController
 {
@@ -25,7 +26,6 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route(name: 'app_constructor_index', methods: ['GET'])]
     public function index(Request $request, ConstructorRepository $constructorRepository, CrudActionService $crudActionService): Response
     {
@@ -37,7 +37,6 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/new', name: 'app_constructor_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
@@ -53,7 +52,6 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
     #[Route('/{id}', name: 'app_constructor_show', methods: ['GET'])]
     public function show(Request $request, Constructor $constructor, CrudActionService $crudActionService): Response
     {
@@ -65,7 +63,7 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[IsGranted(Role::ROLE_DRAFTSMAN)]
+
     #[Route('/{id}/edit', name: 'app_constructor_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Constructor $constructor, CrudActionService $crudActionService): Response
     {

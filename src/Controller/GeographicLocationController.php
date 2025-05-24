@@ -43,7 +43,7 @@ final class GeographicLocationController extends AbstractController
         $geographicLocation = new GeographicLocation();
         return $crudActionService->formLiveComponentAction($request, $geographicLocation, 'geographic_location', [
             'title' => 'Nueva ubicación geográfica',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -68,7 +68,7 @@ final class GeographicLocationController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $geographicLocation, 'geographic_location', [
             'title' => 'Editar ubicación geográfica',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

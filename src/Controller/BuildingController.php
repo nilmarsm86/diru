@@ -3,42 +3,47 @@
 namespace App\Controller;
 
 use App\Entity\Building;
+use App\Entity\Role;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
+use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/building')]
 final class BuildingController extends AbstractController
 {
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route(name: 'app_building_index', methods: ['GET'])]
-    public function index(BuildingRepository $buildingRepository): Response
+    public function index(Request $request, BuildingRepository $buildingRepository, CrudActionService $crudActionService): Response
     {
-        return $this->render('building/index.html.twig', [
-            'buildings' => $buildingRepository->findAll(),
-        ]);
+        return $crudActionService->indexAction($request, $buildingRepository, 'findBuildings', 'building');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_building_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $building = new Building();
-        $form = $this->createForm(BuildingType::class, $building);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($building);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_building_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('building/new.html.twig', [
-            'building' => $building,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $building, 'building', [
+            'title' => 'Nueva Obra',
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -68,6 +73,7 @@ final class BuildingController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_building_delete', methods: ['POST'])]
     public function delete(Request $request, Building $building, EntityManagerInterface $entityManager): Response
     {

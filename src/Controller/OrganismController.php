@@ -42,7 +42,7 @@ final class OrganismController extends AbstractController
         $organism = new Organism();
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Nuevo organismo',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -67,7 +67,7 @@ final class OrganismController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Editar organismo',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

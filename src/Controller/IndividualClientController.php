@@ -44,7 +44,7 @@ final class IndividualClientController extends AbstractController
         $individualClient = new IndividualClient();
         return $crudActionService->formLiveComponentAction($request, $individualClient, 'individual_client', [
             'title' => 'Nueva persona natural',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -69,7 +69,7 @@ final class IndividualClientController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $individualClient, 'individual_client', [
             'title' => 'Editar persona individual',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

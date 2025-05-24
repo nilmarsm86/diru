@@ -43,7 +43,7 @@ final class PersonController extends AbstractController
         $person = new Person();
         return $crudActionService->formLiveComponentAction($request, $person, 'person', [
             'title' => 'Nuevo representante',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -70,7 +70,7 @@ final class PersonController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $person, 'person', [
             'title' => 'Modificar representante',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

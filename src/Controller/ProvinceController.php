@@ -42,7 +42,7 @@ final class ProvinceController extends AbstractController
         $province = new Province();
         return $crudActionService->formLiveComponentAction($request, $province, 'province', [
             'title' => 'Nueva provincia',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -67,7 +67,7 @@ final class ProvinceController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $province, 'province', [
             'title' => 'Editar provincia',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

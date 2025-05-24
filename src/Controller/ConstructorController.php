@@ -43,7 +43,7 @@ final class ConstructorController extends AbstractController
         $constructor = new Constructor();
         return $crudActionService->formLiveComponentAction($request, $constructor, 'constructor', [
             'title' => 'Nueva constructora',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -69,7 +69,7 @@ final class ConstructorController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $constructor, 'constructor', [
             'title' => 'Editar constructora',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

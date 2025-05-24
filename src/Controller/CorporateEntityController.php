@@ -62,7 +62,7 @@ final class CorporateEntityController extends AbstractController
         $corporateEntity = new CorporateEntity();
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Nueva entidad corporativa',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -87,7 +87,7 @@ final class CorporateEntityController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Editar entidad corporativa',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

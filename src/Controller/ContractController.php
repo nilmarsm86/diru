@@ -41,7 +41,7 @@ final class ContractController extends AbstractController
         $contract = new Contract();
         return $crudActionService->formLiveComponentAction($request, $contract, 'contract', [
             'title' => 'Nuevo contrato',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,7 @@ final class ContractController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $contract, 'contract', [
             'title' => 'Editar contrato',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

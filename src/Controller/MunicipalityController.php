@@ -42,7 +42,7 @@ final class MunicipalityController extends AbstractController
         $municipality = new Municipality();
         return $crudActionService->formLiveComponentAction($request, $municipality, 'municipality', [
             'title' => 'Nuevo municipio',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -67,7 +67,7 @@ final class MunicipalityController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $municipality, 'municipality', [
             'title' => 'Editar municipio',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

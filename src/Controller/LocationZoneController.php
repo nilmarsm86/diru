@@ -41,7 +41,7 @@ final class LocationZoneController extends AbstractController
         $locationZone = new LocationZone();
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Nueva zona de ubicación',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,7 @@ final class LocationZoneController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Editar zona de ubicación',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

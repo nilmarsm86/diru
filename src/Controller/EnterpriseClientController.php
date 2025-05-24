@@ -41,7 +41,7 @@ final class EnterpriseClientController extends AbstractController
         $enterpriseClient = new EnterpriseClient();
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Nuevo cliente empresarial',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,7 @@ final class EnterpriseClientController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Modificar cliente empresarial',
-            'ajax' => $request->isXmlHttpRequest()
+//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 

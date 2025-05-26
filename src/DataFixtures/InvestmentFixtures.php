@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\Investment;
 use App\Entity\LocationZone;
@@ -29,6 +30,17 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface
                 $investmentEntity->setLocationZone($this->findLocationZone($manager));
                 $investmentEntity->setPopularCouncil('concejo popular');
                 $investmentEntity->setTown('reparto_publo');
+                if($investment === 'Inversion1'){
+                    $investmentEntity->addBuilding($this->findBuilding($manager, 'Obra1'));
+                }
+
+                if($investment === 'Inversion2'){
+                    $investmentEntity->addBuilding($this->findBuilding($manager, 'Obra2'));
+                }
+
+                if($investment === 'Inversion3'){
+                    $investmentEntity->addBuilding($this->findBuilding($manager, 'Obra3'));
+                }
 
                 $manager->persist($investmentEntity);
             }
@@ -47,11 +59,17 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface
         return $manager->getRepository(LocationZone::class)->findOneBy(['name' => '1']);
     }
 
+    private function findBuilding(ObjectManager $manager, string $building): ?Building
+    {
+        return $manager->getRepository(Building::class)->findOneBy(['name' => $building]);
+    }
+
     public function getDependencies(): array
     {
         return [
             LocationZoneFixtures::class,
-            ProvinceFixtures::class
+            ProvinceFixtures::class,
+            BuildingFixtures::class
         ];
     }
 }

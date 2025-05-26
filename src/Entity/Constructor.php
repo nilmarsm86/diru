@@ -115,4 +115,9 @@ class Constructor
 
         return $this;
     }
+
+    public function getBuildingsAmount(): int
+    {
+        return $this->getBuildings()->count();
+    }
 }

@@ -1,0 +1,81 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de obras',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_building_new'), 'bi:plus-lg', 'Nueva', 'Nueva obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_building_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Valor aprobado total</th>
+                    <th>Valor estimado total</th>
+                    <th>Constructora {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for building in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ building.name }}</td>
+                        <td>{{ building.getTotalApprovedValue() }}</td>
+                        <td>{{ building.getTotalEstimatedValue() }}</td>
+                        <td>
+                            <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
+                               href="#" {{ stimulusController('detail-link-modal', {
+                                url: path('app_constructor_show', {id:building.constructor.id, state:'modal'}),
+                                container: '#detail-constructor .modal-body'
+                            }) }}
+                            >
+                                {{ building.constructor.name }}
+                            </a>
+                        </td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})})) }}
+                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_building_delete', {'id': building.id}),
+                                confirm: 'Está seguro que desea eliminar la obra?',
+                                token: 'delete' ~ building.id,
+                                title: 'Eliminar obra',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">No se encontraron obras.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+        {% component 'Modal:Modal' with {
+            title: 'Detalle de la constructora',
+            id: 'detail-constructor',
+        } %}
+            {% block body %}
+                Cargando datos de la constructora...
+            {% endblock %}
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

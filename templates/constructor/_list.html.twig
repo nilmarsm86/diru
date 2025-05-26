@@ -22,7 +22,7 @@
                     <th>Nombre</th>
                     <th>Código</th>
                     <th>País</th>
-                    <th>Logo</th>
+{#                    <th>Logo</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -32,10 +32,16 @@
 
                 {% for constructor in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ constructor.name }}</td>
+                        <td>
+                            {{ constructor.name }}
+                            <span class="badge rounded-pill bg-danger" title="Obas que lleva a cabo">
+                                {{ constructor.getBuildingsAmount() }}
+                                <span class="visually-hidden">Obras</span>
+                            </span>
+                        </td>
                         <td>{{ constructor.code }}</td>
                         <td>{{ constructor.country }}</td>
-                        <td>{{ constructor.logo }}</td>
+{#                        <td>{{ constructor.logo }}</td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_constructor_show', {'id': constructor.id}), 'bi:eye', '', 'Detalle de la constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_show', {'id': constructor.id})})) }}
                             {{ tableActionButton3(path('app_constructor_edit', {'id': constructor.id}), 'fa:edit', '', 'Editar constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_edit', {'id': constructor.id})})) }}

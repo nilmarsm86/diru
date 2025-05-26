@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\InvestmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,17 @@ class Investment
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Municipality $municipality = null;
+
+    /**
+     * @var Collection<int, Building>
+     */
+    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'investment')]
+    private Collection $buildings;
+
+    public function __construct()
+    {
+        $this->buildings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -156,6 +169,41 @@ class Investment
         }
 
         return "";
+    }
+
+    /**
+     * @return Collection<int, Building>
+     */
+    public function getBuildings(): Collection
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Building $building): static
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setInvestment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuilding(Building $building): static
+    {
+        if ($this->buildings->removeElement($building)) {
+            // set the owning side to null (unless already changed)
+            if ($building->getInvestment() === $this) {
+                $building->setInvestment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBuildingsAmount(): int
+    {
+        return $this->getBuildings()->count();
     }
 
 }

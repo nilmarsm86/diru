@@ -36,6 +36,7 @@
                     <th>Logo:</th>
                     <td>{{ constructor.logo }}</td>
                 </tr>
+                {{ include('building/_buildings.html.twig', {'entity': constructor}) }}
                 </tbody>
             </table>
         </div>

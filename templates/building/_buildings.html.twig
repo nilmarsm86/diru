@@ -1,0 +1,16 @@
+<tr>
+    <th>Obras:</th>
+    <td>
+        <ul class="px-0 list-unstyled">
+            {% for building in entity.buildings %}
+                <li>
+                    <a href="{{ path('app_building_show', {'id': building.id}) }}">
+                        {{ building.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="text-danger">No tiene obras asociadas.</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>

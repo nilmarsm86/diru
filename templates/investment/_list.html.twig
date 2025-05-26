@@ -16,7 +16,6 @@
         {% component 'Table:Table' with {
             paginator: paginator,
         } %}
-
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
@@ -34,7 +33,13 @@
 
                 {% for investment in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ investment.name }}</td>
+                        <td>
+                            {{ investment.name }}
+                            <span class="badge rounded-pill bg-danger" title="Obas de la inversión">
+                                {{ investment.getBuildingsAmount() }}
+                                <span class="visually-hidden">Obras</span>
+                            </span>
+                        </td>
                         <td>{{ investment.getLocationZoneName() }}</td>
                         <td>
                             <a href="{{ filterLink(investment.getProvinceName()) }}"

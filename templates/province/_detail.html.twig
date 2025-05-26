@@ -30,7 +30,9 @@
                         <ul class="px-0 list-unstyled">
                             {% for municipality in province.municipalities %}
                                 <li>
-                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}">{{ municipality.name }}</a>
+                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}">
+                                        {{ municipality.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                                    </a>
                                 </li>
                             {% else %}
                                 <li class="text-danger">No tiene municipios asociados</li>

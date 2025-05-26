@@ -1,47 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Building index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Building index</h1>
+{% block title %}Obras{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>EstimatedValueConstruction</th>
-                <th>EstimatedValueEquipment</th>
-                <th>EstimatedValueOther</th>
-                <th>ApprovedValueConstruction</th>
-                <th>ApprovedValueEquipment</th>
-                <th>ApprovedValueOther</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for building in buildings %}
-            <tr>
-                <td>{{ building.id }}</td>
-                <td>{{ building.estimatedValueConstruction }}</td>
-                <td>{{ building.estimatedValueEquipment }}</td>
-                <td>{{ building.estimatedValueOther }}</td>
-                <td>{{ building.approvedValueConstruction }}</td>
-                <td>{{ building.approvedValueEquipment }}</td>
-                <td>{{ building.approvedValueOther }}</td>
-                <td>{{ building.name }}</td>
-                <td>
-                    <a href="{{ path('app_building_show', {'id': building.id}) }}">show</a>
-                    <a href="{{ path('app_building_edit', {'id': building.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Obras') }}
 
-    <a href="{{ path('app_building_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Obras'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de Obras</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('building/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

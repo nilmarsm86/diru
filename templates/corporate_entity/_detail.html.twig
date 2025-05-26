@@ -43,7 +43,7 @@
                     <th>Organismo:</th>
                     <td>
                         <a href="{{ path('app_organism_show', {'id': corporate_entity.organism.id }) }}">
-                            {{ corporate_entity.organism }}
+                            {{ corporate_entity.organism }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -57,7 +57,7 @@
                     <th>Provincia:</th>
                     <td>
                         <a href="{{ path('app_province_show', {'id': corporate_entity.municipality.province.id }) }}">
-                            {{ corporate_entity.getProvinceName() }}
+                            {{ corporate_entity.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
                     <th>Municipio:</th>
                     <td>
                         <a href="{{ path('app_municipality_show', {'id': corporate_entity.municipality.id }) }}">
-                            {{ corporate_entity.getMunicipalityName() }}
+                            {{ corporate_entity.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>

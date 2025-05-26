@@ -16,7 +16,7 @@ class Building
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'investments')]
+    #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Constructor $constructor = null;
 
@@ -37,6 +37,10 @@ class Building
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $approvedValueOther = null;
+
+    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Investment $investment = null;
 
 
     public function getId(): ?int
@@ -139,6 +143,18 @@ class Building
     }
 
     //debo convertir el dinero en centavos, valores estimados y valores aprobados
+
+    public function getInvestment(): ?Investment
+    {
+        return $this->investment;
+    }
+
+    public function setInvestment(?Investment $investment): static
+    {
+        $this->investment = $investment;
+
+        return $this;
+    }
 
 
 }

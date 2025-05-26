@@ -43,45 +43,43 @@ final class BuildingController extends AbstractController
         $building = new Building();
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Nueva Obra',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_building_show', methods: ['GET'])]
-    public function show(Building $building): Response
+    public function show(Request $request, Building $building, CrudActionService $crudActionService): Response
     {
-        return $this->render('building/show.html.twig', [
-            'building' => $building,
-        ]);
+        return $crudActionService->showAction($request, $building, 'building', 'building', 'Detalles de la Obra');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Building $building, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Building $building, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(BuildingType::class, $building);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_building_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('building/edit.html.twig', [
-            'building' => $building,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $building, 'building', [
+            'title' => 'Editar Obra',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_building_delete', methods: ['POST'])]
-    public function delete(Request $request, Building $building, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Building $building, BuildingRepository $buildingRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$building->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($building);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_building_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado la obra.';
+        return $crudActionService->deleteAction($request, $buildingRepository, $building, $successMsg, 'app_building_index');
     }
 }

@@ -60,7 +60,7 @@
                     <th>Municipio:</th>
                     <td>
                         <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}">
-                            {{ investment.getMunicipalityName() }}
+                            {{ investment.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -68,10 +68,25 @@
                     <th>Provincia:</th>
                     <td>
                         <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}">
-                            {{ investment.getProvinceName() }}
+                            {{ investment.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
+{#                <tr>#}
+{#                    <th>Obras:</th>#}
+{#                    <td>#}
+{#                        <ul class="px-0 list-unstyled">#}
+{#                            {% for building in investment.buildings %}#}
+{#                                <li>#}
+{#                                    <a href="{{ path('app_building_show', {'id': building.id}) }}">{{ building.name }}</a>#}
+{#                                </li>#}
+{#                            {% else %}#}
+{#                                <li class="text-danger">No tiene obras asociadas.</li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </td>#}
+{#                </tr>#}
+                {{ include('building/_buildings.html.twig', {'entity': investment}) }}
                 </tbody>
             </table>
         </div>

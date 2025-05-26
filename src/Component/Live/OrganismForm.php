@@ -38,7 +38,8 @@ final class OrganismForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
-    private object $entity;
+    #[LiveProp]
+    public Organism $entity;
 
     public function mount(?Organism $org = null): void
     {

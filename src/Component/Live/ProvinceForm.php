@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
+use App\Entity\Organism;
 use App\Entity\Province;
 use App\Form\ProvinceType;
 use App\Repository\ProvinceRepository;
@@ -18,7 +19,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/province_form.html.twig')]
+#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
 final class ProvinceForm extends AbstractController
 {
     use DefaultActionTrait;
@@ -40,9 +41,13 @@ final class ProvinceForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
+    #[LiveProp]
+    public Province $entity;
+
     public function mount(?Province $prov = null): void
     {
         $this->prov = (is_null($prov)) ? new Province() : $prov;
+        $this->entity = $this->prov;
     }
 
     protected function instantiateForm(): FormInterface
@@ -67,6 +72,7 @@ final class ProvinceForm extends AbstractController
             $provinceRepository->save($province, true);
 
             $this->prov = new Province();
+            $this->entity = $this->prov;
             if (!is_null($this->modal)) {
                 $this->modalManage($province, 'Seleccione la nueva provincia agregada.', [
                     'province' => $province->getId()

@@ -7,6 +7,7 @@ use App\Component\Twig\Modal\Modal;
 use App\Entity\GeographicLocation;
 use App\Entity\LocationZone;
 use App\Entity\Organism;
+use App\Entity\Province;
 use App\Form\GeographicLocationType;
 use App\Form\LocationZoneType;
 use App\Form\OrganismType;
@@ -24,7 +25,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/geographic_location_form.html.twig')]
+#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
 final class GeographicLocationForm extends AbstractController
 {
     use DefaultActionTrait;
@@ -44,9 +45,13 @@ final class GeographicLocationForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
+    #[LiveProp]
+    public GeographicLocation $entity;
+
     public function mount(?GeographicLocation $gl = null): void
     {
         $this->gl = (is_null($gl)) ? new GeographicLocation() : $gl;
+        $this->entity = $this->gl;
     }
 
 //    /**
@@ -111,6 +116,8 @@ final class GeographicLocationForm extends AbstractController
 
             $geographicLocationRepository->save($gl, true);
 
+            $this->gl = new GeographicLocation();
+            $this->entity = $this->gl;
             if (!is_null($this->modal)) {
 //                $this->modalManage($lz);
                 $this->modalManage($gl, 'Seleccione la nueva ubicación geográfica agregada.', [

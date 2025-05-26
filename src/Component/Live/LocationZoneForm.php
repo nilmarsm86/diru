@@ -21,7 +21,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/location_zone_form.html.twig')]
+#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
 final class LocationZoneForm extends AbstractController
 {
     use DefaultActionTrait;
@@ -41,9 +41,13 @@ final class LocationZoneForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
+    #[LiveProp]
+    public LocationZone $entity;
+
     public function mount(?LocationZone $lz = null): void
     {
         $this->lz = (is_null($lz)) ? new LocationZone() : $lz;
+        $this->entity = $this->lz;
     }
 
 //    /**
@@ -109,6 +113,7 @@ final class LocationZoneForm extends AbstractController
             $locationZoneRepository->save($lz, true);
 
             $this->lz = new LocationZone();
+            $this->entity = $this->lz;
             if (!is_null($this->modal)) {
 //                $this->modalManage($lz);
                 $this->modalManage($lz, 'Seleccione la nueva zona de ubicación.', [

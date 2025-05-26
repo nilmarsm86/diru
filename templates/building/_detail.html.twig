@@ -1,0 +1,94 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="building_detail_' ~ building.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_building_new',
+            label: 'Nueva',
+            title: 'Nueva obra',
+            entity: building,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ building.name }}</td>
+                </tr>
+                <tr>
+                    <th>Valor estimado de construcción:</th>
+                    <td>{{ building.estimatedValueConstruction }}</td>
+                </tr>
+                <tr>
+                    <th>Valor estimado de equipos:</th>
+                    <td>{{ building.estimatedValueEquipment }}</td>
+                </tr>
+                <tr>
+                    <th>Otros valores estimados:</th>
+                    <td>{{ building.estimatedValueOther }}</td>
+                </tr>
+                <tr>
+                    <th>Total valores estimados:</th>
+                    <td>{{ building.getTotalEstimatedValue() }}</td>
+                </tr>
+                <tr>
+                    <th>Valor aprobado de construcción:</th>
+                    <td>{{ building.approvedValueConstruction }}</td>
+                </tr>
+                <tr>
+                    <th>Valor aprobado de equipos:</th>
+                    <td>{{ building.approvedValueEquipment }}</td>
+                </tr>
+                <tr>
+                    <th>Otros valores aprobados:</th>
+                    <td>{{ building.approvedValueOther }}</td>
+                </tr>
+                <tr>
+                    <th>Total valores aprobados:</th>
+                    <td>{{ building.getTotalApprovedValue() }}</td>
+                </tr>
+                <tr>
+                    <th>Constructora:</th>
+                    <td>
+                        <a href="{{ path('app_constructor_show', {'id': building.constructor.id }) }}">
+                            {{ building.constructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Inversión:</th>
+                    <td>
+                        <a href="{{ path('app_investment_show', {'id': building.investment.id }) }}">
+                            {{ building.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_building_edit', label: 'Editar', title:'Editar obra'},
+            delete: {href: 'app_building_delete', label: 'Eliminar', title:'Eliminar obra'},
+            id: building.id,
+            message: 'Está seguro que desea eliminar la obra?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

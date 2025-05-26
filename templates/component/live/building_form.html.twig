@@ -1,0 +1,73 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {{ form_row(form.name) }}
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.constructor) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.investment) }}
+        </div>
+    </div>
+    <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);"
+             {% if (this.bui.id is not null) %}open{% endif %}>
+        <summary class="mb-3 mt-0" style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
+            Valores aprobados
+        </summary>
+
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.approvedValueConstruction) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.approvedValueEquipment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.approvedValueOther) }}
+            </div>
+            <div class="col">
+                Total $
+            </div>
+        </div>
+    </details>
+
+    <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);"
+             {% if (this.bui.id is not null) %}open{% endif %}>
+        <summary class="mb-3 mt-0" style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
+            Valores estimados
+        </summary>
+
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.estimatedValueConstruction) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.estimatedValueEquipment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.estimatedValueOther) }}
+            </div>
+            <div class="col">
+                Total $
+            </div>
+        </div>
+    </details>
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: (this.bui.id is null) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.bui.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

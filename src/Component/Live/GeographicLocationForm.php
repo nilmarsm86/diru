@@ -132,4 +132,9 @@ final class GeographicLocationForm extends AbstractController
         return null;
     }
 
+    private function getDataModelValue(): ?string
+    {
+        return 'norender|*';
+    }
+
 }

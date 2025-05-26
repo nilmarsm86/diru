@@ -1,50 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Building{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 
-{% block body %}
-    <h1>Building</h1>
+{% block title %}Obra: {{ building.name }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ building.id }}</td>
-            </tr>
-            <tr>
-                <th>EstimatedValueConstruction</th>
-                <td>{{ building.estimatedValueConstruction }}</td>
-            </tr>
-            <tr>
-                <th>EstimatedValueEquipment</th>
-                <td>{{ building.estimatedValueEquipment }}</td>
-            </tr>
-            <tr>
-                <th>EstimatedValueOther</th>
-                <td>{{ building.estimatedValueOther }}</td>
-            </tr>
-            <tr>
-                <th>ApprovedValueConstruction</th>
-                <td>{{ building.approvedValueConstruction }}</td>
-            </tr>
-            <tr>
-                <th>ApprovedValueEquipment</th>
-                <td>{{ building.approvedValueEquipment }}</td>
-            </tr>
-            <tr>
-                <th>ApprovedValueOther</th>
-                <td>{{ building.approvedValueOther }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ building.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Obras') }}
 
-    <a href="{{ path('app_building_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Obras', href: path('app_building_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
 
-    <a href="{{ path('app_building_edit', {'id': building.id}) }}">edit</a>
+    <h2 class="mb-4">Obra: {{ building.name }}</h2>
 
-    {{ include('building/_delete_form.html.twig') }}
+    {{ include('building/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

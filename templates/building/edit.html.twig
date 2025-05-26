@@ -1,13 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Edit Building{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Edit Building</h1>
+{% block title %}Editar Obra{% endblock %}
 
-    {{ include('building/_form.html.twig', {'button_label': 'Update'}) }}
+{% block content %}
+    <div class="row">
+        {{ h1('Obras') }}
 
-    <a href="{{ path('app_building_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Obras', href: path('app_building_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
 
-    {{ include('building/_delete_form.html.twig') }}
+    <h2 class="mb-4">Editar Obra</h2>
+
+    {{ include('building/_form.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

@@ -25,6 +25,7 @@ class ContractType extends AbstractType
                 'label' => 'Año:',
                 'placeholder' => 'Año del contrato',
                 'choices' => $years,
+                'data' => date('Y')
             ])
         ;
     }

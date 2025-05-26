@@ -31,7 +31,8 @@ class ConstructorType extends AbstractType
                 'placeholder' => '-Seleccione-',
                 'choices' => [
                     'Cuba' => 'CU'
-                ]
+                ],
+                'data' => 'CU'
             ])
             ->add('logo')
 

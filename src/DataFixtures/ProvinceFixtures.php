@@ -11,7 +11,7 @@ class ProvinceFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $provinces = ['Sin provincia', 'Pinar del Río', 'La Habana', 'Artemisa', 'Mayabeque', 'Matanzas', 'Cienfuegos', 'Villa Clara', 'Sancti Spíritus', 'Ciego de Ávila', 'Camagüey', 'Las Tunas', 'Granma', 'Holguín', 'Santiago de Cuba', 'Guantánamo', 'Isla de la Juventud'];
+        $provinces = [/*'Sin provincia', */'Pinar del Río', 'La Habana', 'Artemisa', 'Mayabeque', 'Matanzas', 'Cienfuegos', 'Villa Clara', 'Sancti Spíritus', 'Ciego de Ávila', 'Camagüey', 'Las Tunas', 'Granma', 'Holguín', 'Santiago de Cuba', 'Guantánamo', 'Isla de la Juventud'];
         foreach ($provinces  as $provinceName){
             $province = $manager->getRepository(Province::class)->findOneBy(['name' => $provinceName]);
             if(is_null($province)){

@@ -6,6 +6,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 class Building
@@ -18,29 +19,50 @@ class Building
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
     private ?Constructor $constructor = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $estimatedValueConstruction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $estimatedValueEquipment = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $estimatedValueOther = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueConstruction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueEquipment = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueOther = null;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual perteneec la obra.')]
     private ?Investment $investment = null;
+
+    public function __construct()
+    {
+        $this->estimatedValueConstruction = 0;
+        $this->estimatedValueEquipment = 0;
+        $this->estimatedValueOther = 0;
+
+        $this->approvedValueConstruction = 0;
+        $this->approvedValueEquipment = 0;
+        $this->approvedValueOther = 0;
+    }
 
 
     public function getId(): ?int

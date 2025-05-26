@@ -8,6 +8,7 @@ use App\Entity\Investment;
 use App\Form\Types\EntityPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,47 +29,53 @@ class BuildingType extends AbstractType
                     'placeholder' => 'Nombre de la obra'
                 ]
             ])
-            ->add('estimatedValueConstruction', null, [
+            ->add('estimatedValueConstruction', IntegerType::class, [
                 'label' => 'Valor estimado de construcción:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0,
             ])
-            ->add('estimatedValueEquipment', null, [
+            ->add('estimatedValueEquipment', IntegerType::class, [
                 'label' => 'Valor estimado en equipos:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0
             ])
-            ->add('estimatedValueOther', null, [
+            ->add('estimatedValueOther', IntegerType::class, [
                 'label' => 'Otros valores estimados:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0
             ])
-            ->add('approvedValueConstruction', null, [
+            ->add('approvedValueConstruction', IntegerType::class, [
                 'label' => 'Valor aprobado de construcción:',
                 'attr' => [
                     'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0
             ])
-            ->add('approvedValueEquipment', null, [
+            ->add('approvedValueEquipment', IntegerType::class, [
                 'label' => 'Valor aprobado en equipos:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0
             ])
-            ->add('approvedValueOther', null, [
+            ->add('approvedValueOther', IntegerType::class, [
                 'label' => 'Otros valores aprobados:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
+                    'min' => 0
                 ],
-                'data' => 0
+//                'data' => 0
             ])
             ->add('constructor', EntityPlusType::class, [
                 'class' => Constructor::class,

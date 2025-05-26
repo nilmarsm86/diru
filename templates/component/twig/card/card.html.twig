@@ -1,11 +1,15 @@
 <div class="card {{ cssClass }}" {{ extra }} {{ stimulusController('twig/card/card') }}>
-    <div class="card-header {{ headerCssClass }}">
-        <p class="text-primary m-0 fw-bold">{{ title|raw }}</p>
-        {% block header %}{% endblock %}
-    </div>
+    {% if app.request.query.get('state') is not same as 'modal' %}
+        <div class="card-header {{ headerCssClass }}">
+            <p class="text-primary m-0 fw-bold">{{ title|raw }}</p>
+            {% block header %}{% endblock %}
+        </div>
+    {% endif %}
     <div class="card-body">
         {% block body %}{% endblock %}
     </div>
-    {% block footer %}{% endblock %}
+    {% if app.request.query.get('state') is not same as 'modal' %}
+        {% block footer %}{% endblock %}
+    {% endif %}
     {{ component('Backdrop:Backdrop', {id: constant('BACKDROP_DATA_ID', this), attr:"data-twig--card--card-target=backdrop"}) }}
 </div>

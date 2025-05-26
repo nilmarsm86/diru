@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250522130138 extends AbstractMigration
+final class Version20250526014806 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20250522130138 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE building (id INT AUTO_INCREMENT NOT NULL, constructor_id INT NOT NULL, estimated_value_construction BIGINT NOT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT DEFAULT NULL, approved_value_equipment BIGINT DEFAULT NULL, approved_value_other BIGINT DEFAULT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_E16F61D42D98BF9 (constructor_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE building (id INT AUTO_INCREMENT NOT NULL, constructor_id INT NOT NULL, investment_id INT DEFAULT NULL, estimated_value_construction BIGINT NOT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT DEFAULT NULL, approved_value_equipment BIGINT DEFAULT NULL, approved_value_other BIGINT DEFAULT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_E16F61D42D98BF9 (constructor_id), INDEX IDX_E16F61D46E1B4FD5 (investment_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, representative_id INT DEFAULT NULL, municipality_id INT NOT NULL, address LONGTEXT NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, discr VARCHAR(255) NOT NULL, INDEX IDX_C7440455FC3FF006 (representative_id), INDEX IDX_C7440455AE6F181C (municipality_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE constructor (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX constructor_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE contract (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, year INT NOT NULL, UNIQUE INDEX contract_code (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -38,6 +38,7 @@ final class Version20250522130138 extends AbstractMigration
         $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, person_id INT NOT NULL, username VARCHAR(180) NOT NULL, password VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_8D93D649217BBB47 (person_id), UNIQUE INDEX UNIQ_IDENTIFIER_USERNAME (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user_role (user_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_2DE8C6A3A76ED395 (user_id), INDEX IDX_2DE8C6A3D60322AC (role_id), PRIMARY KEY(user_id, role_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE building ADD CONSTRAINT FK_E16F61D42D98BF9 FOREIGN KEY (constructor_id) REFERENCES constructor (id)');
+        $this->addSql('ALTER TABLE building ADD CONSTRAINT FK_E16F61D46E1B4FD5 FOREIGN KEY (investment_id) REFERENCES investment (id)');
         $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C7440455FC3FF006 FOREIGN KEY (representative_id) REFERENCES person (id)');
         $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C7440455AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id)');
         $this->addSql('ALTER TABLE corporate_entity ADD CONSTRAINT FK_C6EFC8A464180A36 FOREIGN KEY (organism_id) REFERENCES organism (id)');
@@ -58,6 +59,7 @@ final class Version20250522130138 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE building DROP FOREIGN KEY FK_E16F61D42D98BF9');
+        $this->addSql('ALTER TABLE building DROP FOREIGN KEY FK_E16F61D46E1B4FD5');
         $this->addSql('ALTER TABLE client DROP FOREIGN KEY FK_C7440455FC3FF006');
         $this->addSql('ALTER TABLE client DROP FOREIGN KEY FK_C7440455AE6F181C');
         $this->addSql('ALTER TABLE corporate_entity DROP FOREIGN KEY FK_C6EFC8A464180A36');

@@ -21,22 +21,22 @@ class Building
     private ?Constructor $constructor = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    private ?string $estimatedValueConstruction = null;
+    private ?int $estimatedValueConstruction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    private ?string $estimatedValueEquipment = null;
+    private ?int $estimatedValueEquipment = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    private ?string $estimatedValueOther = null;
+    private ?int $estimatedValueOther = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?string $approvedValueConstruction = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?int $approvedValueConstruction = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?string $approvedValueEquipment = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?int $approvedValueEquipment = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?string $approvedValueOther = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?int $approvedValueOther = null;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
@@ -60,12 +60,12 @@ class Building
         return $this;
     }
 
-    public function getEstimatedValueConstruction(): ?string
+    public function getEstimatedValueConstruction(): ?int
     {
         return $this->estimatedValueConstruction;
     }
 
-    public function setEstimatedValueConstruction(string $estimatedValueConstruction): static
+    public function setEstimatedValueConstruction(int $estimatedValueConstruction): static
     {
         $this->estimatedValueConstruction = $estimatedValueConstruction;
 
@@ -77,55 +77,55 @@ class Building
         return $this->estimatedValueEquipment;
     }
 
-    public function setEstimatedValueEquipment(string $estimatedValueEquipment): static
+    public function setEstimatedValueEquipment(int $estimatedValueEquipment): static
     {
         $this->estimatedValueEquipment = $estimatedValueEquipment;
 
         return $this;
     }
 
-    public function getEstimatedValueOther(): ?string
+    public function getEstimatedValueOther(): ?int
     {
         return $this->estimatedValueOther;
     }
 
-    public function setEstimatedValueOther(string $estimatedValueOther): static
+    public function setEstimatedValueOther(int $estimatedValueOther): static
     {
         $this->estimatedValueOther = $estimatedValueOther;
 
         return $this;
     }
 
-    public function getApprovedValueConstruction(): ?string
+    public function getApprovedValueConstruction(): ?int
     {
         return $this->approvedValueConstruction;
     }
 
-    public function setApprovedValueConstruction(string $approvedValueConstruction): static
+    public function setApprovedValueConstruction(int $approvedValueConstruction): static
     {
         $this->approvedValueConstruction = $approvedValueConstruction;
 
         return $this;
     }
 
-    public function getApprovedValueEquipment(): ?string
+    public function getApprovedValueEquipment(): ?int
     {
         return $this->approvedValueEquipment;
     }
 
-    public function setApprovedValueEquipment(?string $approvedValueEquipment): static
+    public function setApprovedValueEquipment(?int $approvedValueEquipment): static
     {
         $this->approvedValueEquipment = $approvedValueEquipment;
 
         return $this;
     }
 
-    public function getApprovedValueOther(): ?string
+    public function getApprovedValueOther(): ?int
     {
         return $this->approvedValueOther;
     }
 
-    public function setApprovedValueOther(?string $approvedValueOther): static
+    public function setApprovedValueOther(?int $approvedValueOther): static
     {
         $this->approvedValueOther = $approvedValueOther;
 

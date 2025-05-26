@@ -18,7 +18,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/organism_form.html.twig')]
+#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
 final class OrganismForm extends AbstractController
 {
     use DefaultActionTrait;
@@ -38,9 +38,12 @@ final class OrganismForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
+    private object $entity;
+
     public function mount(?Organism $org = null): void
     {
         $this->org = (is_null($org)) ? new Organism() : $org;
+        $this->entity = $this->org;
     }
 
 //    /**
@@ -105,6 +108,8 @@ final class OrganismForm extends AbstractController
 
             $organismRepository->save($organism, true);
 
+            $this->org = new Organism();
+            $this->entity = $this->org;
             if (!is_null($this->modal)) {
 //                $this->modalManage($organism);
                 $this->modalManage($organism, 'Seleccione el nuevo organismo agregado.', [

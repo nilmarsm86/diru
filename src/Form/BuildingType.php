@@ -52,7 +52,7 @@ class BuildingType extends AbstractType
             ->add('approvedValueConstruction', null, [
                 'label' => 'Valor aprobado de construcción:',
                 'attr' => [
-                    'placeholder' => '0'
+                    'placeholder' => '0',
                 ],
                 'data' => 0
             ])
@@ -103,6 +103,9 @@ class BuildingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Building::class,
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ]
         ]);
     }
 }

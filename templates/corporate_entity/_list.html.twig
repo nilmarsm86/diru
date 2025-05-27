@@ -32,11 +32,11 @@
             {% block message %}
                 {% if app.request.query.get('entity') != '' %}
                     <span class="text-primary">
-                        Entidades corporativas de tipo <span class="badge text-bg-primary">
-                        {% if app.request.query.get('entity') == '0' %}Cliente{% endif %}
-                            {% if app.request.query.get('entity') == '1' %}Constructora{% endif %}
-                            {% if app.request.query.get('entity') == '2' %}Cliente y Constructora{% endif %}
-                    </span></span>
+                        Entidades corporativas de tipo
+                        <span class="badge text-bg-primary">
+                            {{ get_label_from('App\\Entity\\Enums\\CorporateEntityType', app.request.query.get('entity')) }}
+                        </span>
+                    </span>
                 {% endif %}
             {% endblock %}
 

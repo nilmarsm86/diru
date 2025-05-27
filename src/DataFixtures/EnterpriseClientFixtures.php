@@ -7,6 +7,7 @@ use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
 use App\Entity\Municipality;
 use App\Entity\Person;
+use App\Entity\Representative;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -24,7 +25,7 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
                 $enterpriseClient->setStreet('direccion de la calle de la empresa');
                 $enterpriseClient->setCorporateEntity($this->findEntity($manager));
                 if($representative === end($representatives)){
-                    $enterpriseClient->setRepresentative($this->findPerson($manager, $representatives[0]));
+                    $enterpriseClient->setRepresentative($this->findRepresentative($manager, $representatives[0]));
                 }
 
                 $manager->persist($enterpriseClient);
@@ -32,9 +33,9 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    private function findPerson(ObjectManager $manager, $name): ?Person
+    private function findRepresentative(ObjectManager $manager, $name): ?Person
     {
-        return $manager->getRepository(Person::class)->findOneBy(['name' => $name]);
+        return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }
 
     private function findMunicipality(ObjectManager $manager): ?Municipality

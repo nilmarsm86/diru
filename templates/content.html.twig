@@ -29,4 +29,13 @@
 
         {{ include('layout/footer.html.twig') }}
     </div>
+
+    {% component 'Modal:Modal' with {
+        title: 'Crear nuevo proyecto',
+        id: 'add-project'
+    } %}
+        {% block body %}
+{#            {{ component('CorporateEntityForm', {modal:'add-entity', ce: null, ajax: ajax}) }}#}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

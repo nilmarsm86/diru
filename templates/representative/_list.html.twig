@@ -1,0 +1,61 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de representantes',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_representative_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo representante', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_representative_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre y Apellidos</th>
+                    <th>Carnet de identidad</th>
+                    <th>Pasaporte</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for representative in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ representative.getFullName() }}</td>
+                        <td>{{ representative.identificationNumber }}</td>
+                        <td>{{ representative.passport }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_representative_show', {'id': representative.id}), 'bi:eye', '', 'Detalle del representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_representative_show', {'id': representative.id})})) }}#}
+                            {{ tableActionButton3(path('app_representative_edit', {'id': representative.id}), 'fa:edit', '', 'Editar representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_representative_edit', {'id': representative.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_representative_delete', {'id': representative.id}),
+                                confirm: 'Está seguro que desea eliminar el representante?',
+                                token: 'delete' ~ representative.id,
+                                title: 'Eliminar representante',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No se encontraron representantes.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

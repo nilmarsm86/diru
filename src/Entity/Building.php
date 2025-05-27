@@ -64,7 +64,6 @@ class Building
         $this->approvedValueOther = 0;
     }
 
-
     public function getId(): ?int
     {
         return $this->id;

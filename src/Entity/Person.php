@@ -4,13 +4,18 @@ namespace App\Entity;
 
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\PersonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string', options: ['default' => 'other'])]
+#[ORM\DiscriminatorMap([
+    'representative' => 'Representative',
+    'draftsman' => 'Draftsman',
+    'user' => 'Person'
+])]
 #[ORM\UniqueConstraint(name: 'person_identification_number', columns: ['identification_number'])]
 #[ORM\UniqueConstraint(name: 'person_passport', columns: ['passport'])]
 #[DoctrineAssert\UniqueEntity(fields: ['passport'], message: 'Ya existe una persona con este número de pasaporte.')]
@@ -22,19 +27,30 @@ class Person
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Los apellidos están vacíos.')]
     #[Assert\NoSuspiciousCharacters]
-    private ?string $lastname = null;
+    protected ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
-    private ?string $identificationNumber = null;
+    protected ?string $identificationNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $passport = null;
+    protected ?string $passport = null;
+
+//    /**
+//     * @var Collection<int, Project>
+//     */
+//    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'draftsmans')]
+//    private Collection $projects;
+
+    public function __construct()
+    {
+//        $this->projects = new ArrayCollection();
+    }
 
 //    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'person')]
 //    private Collection $clients;
@@ -95,9 +111,9 @@ class Person
 
     public function __toString()
     {
-        $data = $this->getName().' ('.$this->getIdentificationNumber().')';
-        if($this->getPassport()){
-             $data .= '['.$this->getPassport().']';
+        $data = $this->getName() . ' (' . $this->getIdentificationNumber() . ')';
+        if ($this->getPassport()) {
+            $data .= '[' . $this->getPassport() . ']';
         }
 
         return $data;
@@ -135,6 +151,33 @@ class Person
 
     public function getFullName(): string
     {
-        return $this->getName().' '.$this->getLastname();
+        return $this->getName() . ' ' . $this->getLastname();
     }
+
+//    /**
+//     * @return Collection<int, Project>
+//     */
+//    public function getProjects(): Collection
+//    {
+//        return $this->projects;
+//    }
+//
+//    public function addProject(Project $project): static
+//    {
+//        if (!$this->projects->contains($project)) {
+//            $this->projects->add($project);
+//            $project->addDraftsman($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeProject(Project $project): static
+//    {
+//        if ($this->projects->removeElement($project)) {
+//            $project->removeDraftsman($this);
+//        }
+//
+//        return $this;
+//    }
 }

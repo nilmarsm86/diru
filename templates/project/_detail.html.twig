@@ -1,0 +1,147 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="project_detail_' ~ project.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_project_new',
+            label: 'Nuevo',
+            title: 'Nuevo proyecto',
+            entity: project,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ project.name }}</td>
+                </tr>
+                <tr>
+                    <th>Cliente:</th>
+                    <td>
+                        {% if project.isFromIndividualClient() %}
+                            {{ project.client.person.name }}{# TODO: refactorizar #}
+                        {% endif %}
+
+                        {% if project.isFromEnterpriseClient() %}
+                            {{ project.client.representative ? project.client.representative.name : '' }}{# TODO: refactorizar #}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tipo:</th>
+                    <td>{{ project.type.getLabelFrom(project.type) }}</td>
+                </tr>
+                <tr>
+                    <th>Estado:</th>
+                    <td>{{ project.state.getLabelFrom(project.state) }}</td>
+                </tr>
+                {% if project.state.getLabelFrom(project.state) is same as get_label_from('App\\Entity\\Enums\\ProjectState', constant('App\\Entity\\Enums\\ProjectState::Stopped')) %}
+                    <tr>
+                        <th>Razon de detenimiento:</th>
+                        <td>{{ project.stopReason }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Tiene área ocupada:</th>
+                    <td>{{ project.hasOccupiedArea }}</td>
+                </tr>
+                <tr>
+                    <th>Registrado:</th>
+                    <td>{{ project.registerAt is not null ? project.registerAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Iniciado:</th>
+                    <td>{{ project.initiatedAt is not null ? project.initiatedAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Diagnóstico de terreno:</th>
+                    <td>{{ project.terrainDiagnosisAt is not null ? project.terrainDiagnosisAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Regulación urbana:</th>
+                    <td>{{ project.urbanRregulationAt is not null ? project.urbanRregulationAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Diseño:</th>
+                    <td>{{ project.designAt is not null ? project.designAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Parado:</th>
+                    <td>{{ project.stoppedAt is not null ? project.stoppedAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Cancelado:</th>
+                    <td>{{ project.canceledAt is not null ? project.canceledAt|date('D, d M Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Inversión:</th>
+                    <td>
+                        <a href="{{ path('app_investment_show', {'id': project.investment.id }) }}">
+                            {{ project.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contrato:</th>
+                    <td>
+                        {% if project.contract %}
+                            <a href="{{ path('app_contract_show', {'id': project.contract.id }) }}">
+                                {{ project.contract.code }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                            </a>
+                        {% else %}
+                            <p class="text-danger">No tiene contrato asociado</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if project.comment %}
+                    <tr>
+                        <th>Comentario:</th>
+                        <td>{{ project.comment }}</td>
+                    </tr>
+                {% endif %}
+                {# TODO: refactorizar #}
+                <tr>
+                    <th>Proyectistas:</th>
+                    <td>
+                        <ul class="px-0 list-unstyled">
+                            {% for draftsmanProject in project.draftsmans %}
+                                <li>
+                                    <a href="{{ path('app_person_show', {'id': draftsmanProject.draftsman.id}) }}">
+                                        {{ draftsmanProject.draftsman.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="text-danger">No tiene proyectistas asociado.</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_project_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_project_edit', label: 'Editar', title:'Editar proyecto'},
+            delete: {href: 'app_project_delete', label: 'Eliminar', title:'Eliminar proyecto'},
+            id: project.id,
+            message: 'Está seguro que desea eliminar el proyecto?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

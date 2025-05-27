@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Building;
-use App\Entity\Constructor;
 use App\Entity\Investment;
 use App\Entity\LocationZone;
 use App\Entity\Municipality;

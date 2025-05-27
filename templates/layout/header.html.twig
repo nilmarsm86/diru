@@ -53,7 +53,11 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="">{{ ux_icon('lucide:land-plot', {class:'bi'}) }} Inversión por Parcela</a>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#add-project">{{ ux_icon('bi:plus-lg', {class:'bi'}) }} Nuevo Proyecto</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_project_index') }}">{{ ux_icon('lucide:land-plot', {class:'bi'}) }} Inversión por Parcela</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="">{{ ux_icon('mdi:city', {class:'bi'}) }} Ciudad</a>
@@ -92,7 +96,7 @@
                         </li>
                         <li class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item {{ activeLink('app_person_index') }}" href="{{ path('app_person_index') }}">
+                            <a class="dropdown-item {{ activeLink('app_person_index') }}" href="{{ path('app_representative_index') }}">
                                 {{ ux_icon('bi:person-vcard-fill', {class:'bi'}) }}
                                 Representantes
                             </a>

@@ -131,4 +131,13 @@ class Paginator
         return $this->page;
     }
 
+    /**
+     * If not a valid page number
+     * @return bool
+     */
+    public function isFromGreaterThanTotal(): bool
+    {
+        return $this->from() > $this->getTotal();
+    }
+
 }

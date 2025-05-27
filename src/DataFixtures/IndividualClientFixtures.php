@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\IndividualClient;
 use App\Entity\Municipality;
 use App\Entity\Person;
+use App\Entity\Representative;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -22,7 +23,7 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
                 $individualClient->setEmail($naturalPerson.'@gmail.com');
                 $individualClient->setPhone(rand(55555555, 66666666));
                 if($naturalPerson === end($naturalPersons)){
-                    $individualClient->setRepresentative($this->findPerson($manager, $naturalPersons[0]));
+                    $individualClient->setRepresentative($this->findRepresentative($manager, $naturalPersons[0]));
                 }
 
                 $manager->persist($individualClient);
@@ -33,6 +34,11 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
     private function findPerson(ObjectManager $manager, $name): ?Person
     {
         return $manager->getRepository(Person::class)->findOneBy(['name' => $name]);
+    }
+
+    private function findRepresentative(ObjectManager $manager, $name): ?Person
+    {
+        return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }
 
     private function findMunicipality(ObjectManager $manager): ?Municipality

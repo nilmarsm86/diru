@@ -58,11 +58,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
-    protected ?Person $person = null;
+    private ?Person $person = null;
 
-    public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email)
+//    private $isDraftsman = false;
+
+    public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email, bool $isDraftsman = false)
     {
-        $this->person = new Person();
+        if($isDraftsman){
+            $this->person = new Draftsman();
+        }else{
+            $this->person = new Person();
+        }
+
         $this->person->setName($name);
         $this->person->setLastname($lastname);
         $this->person->setIdentificationNumber($identificationNumber);
@@ -135,13 +142,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -174,16 +181,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function removeRole(Role $role, bool $secure = true): static
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('No puede eliminar rol de un usuario inactivo.', 1);
         }
 
-        if($role->getName() === Role::ROLE_CLIENT){
+        if ($role->getName() === Role::ROLE_CLIENT) {
             throw new Exception('No puede ser eliminado el rol de cliente.');
         }
 
-        if($secure){
-            if(in_array(Role::ROLE_ADMIN, $this->getRoles())){
+        if ($secure) {
+            if (in_array(Role::ROLE_ADMIN, $this->getRoles())) {
                 throw new Exception('No pueden ser eliminados los roles del administrador.');
             }
         }
@@ -227,7 +234,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function changePassword(UserPasswordHasherInterface $userPasswordHasher): static
     {
-        $encodePassword = $userPasswordHasher->hashPassword($this,$this->password);
+        $encodePassword = $userPasswordHasher->hashPassword($this, $this->password);
         $this->setPassword($encodePassword);
         return $this;
     }
@@ -339,5 +346,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //        $this->email = $email;
 //
 //        return $this;
+//    }
+
+//    public function setDraftsman()
+//    {
+//        $this->isDraftsman = true;
 //    }
 }

@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Role;
 use App\Entity\User;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher)
     {
@@ -129,7 +130,7 @@ class UserFixtures extends Fixture
                        $role->getName() !== Role::ROLE_DIRECTOR;
             });
 
-            $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', rand(11111111111, 99999999999), 4, 'draftsman@diru.com');
+            $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', rand(11111111111, 99999999999), 4, 'draftsman@diru.com', true);
             $this->save($manager, $planner, array_values($roles));
         }
     }
@@ -190,5 +191,12 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
         }
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            RoleFixtures::class,
+        ];
     }
 }

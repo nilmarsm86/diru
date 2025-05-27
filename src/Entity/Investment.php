@@ -56,6 +56,9 @@ class Investment
     #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'investment')]
     private Collection $buildings;
 
+    #[ORM\OneToOne(mappedBy: 'investment', cascade: ['persist', 'remove'])]
+    private ?Project $project = null;
+
     public function __construct()
     {
         $this->buildings = new ArrayCollection();
@@ -204,6 +207,28 @@ class Investment
     public function getBuildingsAmount(): int
     {
         return $this->getBuildings()->count();
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($project === null && $this->project !== null) {
+            $this->project->setInvestment(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($project !== null && $project->getInvestment() !== $this) {
+            $project->setInvestment($this);
+        }
+
+        $this->project = $project;
+
+        return $this;
     }
 
 }

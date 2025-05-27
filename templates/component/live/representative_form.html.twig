@@ -1,0 +1,38 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.lastname) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.identificationNumber) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.passport) }}
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: (this.per.id is null) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.per.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

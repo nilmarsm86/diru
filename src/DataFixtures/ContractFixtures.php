@@ -11,7 +11,7 @@ class ContractFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $contracts = ['abc123', 'zyx987', 'qaz753',];
+        $contracts = ['abc123', 'zyx987', 'qaz753'];
         foreach ($contracts as $contract) {
             $contractEntity = $manager->getRepository(Contract::class)->findOneBy(['code' => $contract]);
             if (is_null($contractEntity)) {

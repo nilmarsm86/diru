@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\Traits\MunicipalityTrait;
 use App\DTO\Paginator;
 use App\Entity\CorporateEntity;
+use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Role;
 use App\Repository\CorporateEntityRepository;
 use App\Service\CrudActionService;
@@ -37,7 +38,7 @@ final class CorporateEntityController extends AbstractController
         $data = $corporateEntityRepository->findEntities($filter, $amountPerPage, $pageNumber, $type);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
-        if ($paginator->from() > $paginator->getTotal()) {
+        if ($paginator->isFromGreaterThanTotal()) {
             $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
             return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
         }
@@ -47,7 +48,7 @@ final class CorporateEntityController extends AbstractController
         return $this->render("corporate_entity/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'types' => \App\Entity\Enums\CorporateEntityType::cases()
+            'types' => CorporateEntityType::cases()
         ]);
     }
 

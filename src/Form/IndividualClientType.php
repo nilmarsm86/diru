@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Client;
 use App\Entity\IndividualClient;
 use App\Entity\Person;
+use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
 use Closure;
@@ -112,7 +113,7 @@ class IndividualClientType extends AbstractType
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [
-            'class' => Person::class,
+            'class' => Representative::class,
             'required' => false,
             'placeholder' => '-Seleccione-',
             'label' => 'Representante:',

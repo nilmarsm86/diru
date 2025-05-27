@@ -1,0 +1,127 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de proyectos',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ component('Card:Refresh', {
+                path: path('app_project_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_project_index',
+                label:'Tipos de proyecto',
+                queryName: 'type',
+                options:types
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_project_index',
+                label:'Estados de proyecto',
+                queryName: 'state',
+                options:states
+            }) }}
+
+            {{ tableActionButton3(path('app_project_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+            {% block message %}
+                {% if app.request.query.get('type') != '' %}
+                    <span class="text-primary">
+                        Proyectos de tipo
+                        <span class="badge text-bg-primary">
+                            {{ get_label_from('App\\Entity\\Enums\\ProjectType', app.request.query.get('type')) }}
+                        </span>
+                    </span>
+                {% endif %}
+
+                {% if app.request.query.get('state') != '' %}
+                    <span class="text-primary">
+                        Proyectos en estado
+                        <span class="badge text-bg-primary">
+                            {{ get_label_from('App\\Entity\\Enums\\ProjectState', app.request.query.get('state')) }}
+                        </span>
+                    </span>
+                {% endif %}
+            {% endblock %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    {% if app.request.query.get('type') == '' %}
+                        <th>Tipo</th>
+                    {% endif %}
+                    {% if app.request.query.get('state') == '' %}
+                        <th>Estado</th>
+                    {% endif %}
+                    <th>Area ocupada</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for project in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ project.name }}</td>
+                        {% if app.request.query.get('type') == '' %}
+                            <td>{{ project.type.getLabelFrom(project.type) }}</td>
+                        {% endif %}
+                        {% if app.request.query.get('state') == '' %}
+                            <td>{{ project.state.getLabelFrom(project.state) }}</td>
+                        {% endif %}
+                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})})) }}
+                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_project_delete', {'id': project.id}),
+                                confirm: 'Está seguro que desea eliminar el proyecto?',
+                                token: 'delete' ~ project.id,
+                                title: 'Eliminar proyecto',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">No se encontraron proyectos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+        {% component 'Modal:Modal' with {
+            title: 'Detalle de la constructora',
+            id: 'detail-constructor',
+        } %}
+            {% block body %}
+                Cargando datos de la constructora...
+            {% endblock %}
+        {% endcomponent %}
+
+        {% component 'Modal:Modal' with {
+            title: 'Detalle de la inversión',
+            id: 'detail-investment',
+        } %}
+            {% block body %}
+                Cargando datos de la inversión...
+            {% endblock %}
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

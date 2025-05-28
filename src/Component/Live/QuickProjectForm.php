@@ -6,16 +6,21 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\DraftsmanProyect;
+use App\Entity\Enums\ProjectType;
+use App\Entity\Investment;
 use App\Entity\Project;
 use App\Entity\Province;
 use App\Form\BuildingType;
 use App\Form\ConstructorType;
-use App\Form\ProjectType;
 use App\Form\ProvinceType;
+use App\Form\QuickProjectType;
 use App\Repository\BuildingRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ConstructorRepository;
+use App\Repository\DraftsmanRepository;
 use App\Repository\InvestmentRepository;
+use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
@@ -79,14 +84,14 @@ final class QuickProjectForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
-        return $this->createForm(ProjectType::class, $this->pro);
+        return $this->createForm(QuickProjectType::class, $this->pro);
     }
 
     /**
      * @throws Exception
      */
     #[LiveAction]
-    public function save(ProjectRepository $projectRepository, ClientRepository $clientRepository, InvestmentRepository $investmentRepository): ?Response
+    public function save(ProjectRepository $projectRepository, ClientRepository $clientRepository, MunicipalityRepository $municipalityRepository, DraftsmanRepository $draftsmanRepository): ?Response
     {
         $this->preValue();
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
@@ -97,11 +102,40 @@ final class QuickProjectForm extends AbstractController
             /** @var Project $project */
             $project = $this->getForm()->getData();
 
-            $investment = $investmentRepository->find((int)$this->formValues['investment']);
-            $project->setInvestment($investment);
+//            $investment = $investmentRepository->find((int)$this->formValues['investment']);
+//            $project->setInvestment($investment);
+
+            if($this->formValues['individualClient']){
+                $client = $clientRepository->find((int)$this->formValues['individualClient']);
+                $this->formValues['client'] = (int)$this->formValues['individualClient'];
+            }
+
+            if($this->formValues['enterpriseClient']){
+                $client = $clientRepository->find((int)$this->formValues['enterpriseClient']);
+                $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
+            }
 
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);
+
+            $project->setType(\App\Entity\Enums\ProjectType::Parcel);
+
+            $municipality = $municipalityRepository->findOneBy(['name'=>'Sin municipio']);
+
+            $investment = new Investment();
+            $investment->setName($project->getName());
+            $investment->setStreet('direccion');
+            $investment->setMunicipality($municipality);
+
+            $project->setInvestment($investment);
+
+            $draftsman = $draftsmanRepository->findOneBy(['name'=>'Draftsman']);
+
+            $draftsmanProject = new DraftsmanProyect();
+            $draftsmanProject->setProject($project);
+            $draftsmanProject->setDraftsman($draftsman);
+
+            $project->addDraftsman($draftsmanProject);
 
             $projectRepository->save($project, true);
 

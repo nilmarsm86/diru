@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-class ProjectType extends AbstractType
+class QuickProjectType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
@@ -36,30 +36,30 @@ class ProjectType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
             ])
-            ->add('type', ProjectTypeEnumType::class, [
-                'label' => 'Tipo de proyecto:',
+//            ->add('type', ProjectTypeEnumType::class, [
+//                'label' => 'Tipo de proyecto:',
 //                'data' => \App\Entity\Enums\ProjectType::Parcel
-            ])
+//            ])
             //solo para modificar(cambiar el estado)
 //            ->add('state', ProjectStateEnumType::class, [
 //                'label' => 'Estado del proyecto:',
 //            ])
-            ->add('isStopped', CheckboxType::class, [
-                'label' => 'Esta detenido:',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-                ],
-                'data' => false
-            ])
+//            ->add('isStopped', CheckboxType::class, [
+//                'label' => 'Esta detenido:',
+//                'mapped' => false,
+//                'required' => false,
+//                'attr' => [
+//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+//                ],
+//                'data' => false
+//            ])
             //solo se muestra si el estado que se selecciona es el del parado
-            ->add('stopReason', null, [
-                'label' => 'Razón de parar el proyecto:',
-            ])
-            ->add('hasOccupiedArea', null, [
-                'label' => 'Tiene área ocupada:',
-            ])
+//            ->add('stopReason', null, [
+//                'label' => 'Razón de parar el proyecto:',
+//            ])
+//            ->add('hasOccupiedArea', null, [
+//                'label' => 'Tiene área ocupada:',
+//            ])
 //            ->add('registerAt', null, [
 //                'widget' => 'single_text',
 //            ])
@@ -81,9 +81,9 @@ class ProjectType extends AbstractType
 //            ->add('designAt', null, [
 //                'widget' => 'single_text',
 //            ])
-            ->add('comment', null, [
-                'label' => 'Comentar:',
-            ])
+//            ->add('comment', null, [
+//                'label' => 'Comentar:',
+//            ])
 //            ->add('draftsmans', EntityType::class, [
 //                'class' => Draftsman::class,
 //                'choice_label' => 'name',
@@ -124,19 +124,19 @@ class ProjectType extends AbstractType
                 'label' => 'Cliente empresarial',
                 'placeholder' => '-Seleccione-'
             ])
-            ->add('investment', EntityPlusType::class, [
-                'class' => Investment::class,
-                'choice_label' => 'name',
-                'label' => 'Inversión:',
-                'placeholder' => '-Seleccione-',
-                'modal_id' => '#add-investment',
-                'detail' => true,
-                'detail_title' => 'Detalle de la Inversión',
-                'detail_id' => 'detail_investment_entity',
-                'detail_loading' => 'Cargando detalles de la inversión...',
-                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
-                'query_builder' => $this->getInvestmentQueryBuilder($options),
-            ])
+//            ->add('investment', EntityPlusType::class, [
+//                'class' => Investment::class,
+//                'choice_label' => 'name',
+//                'label' => 'Inversión:',
+//                'placeholder' => '-Seleccione-',
+//                'modal_id' => '#add-investment',
+//                'detail' => true,
+//                'detail_title' => 'Detalle de la Inversión',
+//                'detail_id' => 'detail_investment_entity',
+//                'detail_loading' => 'Cargando detalles de la inversión...',
+//                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
+//                'query_builder' => $this->getInvestmentQueryBuilder($options),
+//            ])
         ;
     }
 
@@ -150,17 +150,17 @@ class ProjectType extends AbstractType
         ]);
     }
 
-    /**
-     * @param array $options
-     * @return Closure
-     */
-    private function getInvestmentQueryBuilder(array $options): \Closure
-    {
-        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-            return $er->createQueryBuilder('i')
-                ->join('i.project', 'p')
-//                ->where('i.project is null')
-                ->orderBy('i.name');
-        };
-    }
+//    /**
+//     * @param array $options
+//     * @return Closure
+//     */
+//    private function getInvestmentQueryBuilder(array $options): \Closure
+//    {
+//        return function (EntityRepository $er) use ($options): QueryBuilder|array {
+//            return $er->createQueryBuilder('i')
+//                ->join('i.project', 'p')
+////                ->where('i.project is null')
+//                ->orderBy('i.name');
+//        };
+//    }
 }

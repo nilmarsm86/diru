@@ -11,12 +11,12 @@ class ProvinceFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $provinces = [/*'Sin provincia', */'Pinar del Río', 'La Habana', 'Artemisa', 'Mayabeque', 'Matanzas', 'Cienfuegos', 'Villa Clara', 'Sancti Spíritus', 'Ciego de Ávila', 'Camagüey', 'Las Tunas', 'Granma', 'Holguín', 'Santiago de Cuba', 'Guantánamo', 'Isla de la Juventud'];
+        $provinces = ['Sin provincia', 'Pinar del Río', 'La Habana', 'Artemisa', 'Mayabeque', 'Matanzas', 'Cienfuegos', 'Villa Clara', 'Sancti Spíritus', 'Ciego de Ávila', 'Camagüey', 'Las Tunas', 'Granma', 'Holguín', 'Santiago de Cuba', 'Guantánamo', 'Isla de la Juventud'];
         foreach ($provinces  as $provinceName){
             $province = $manager->getRepository(Province::class)->findOneBy(['name' => $provinceName]);
             if(is_null($province)){
                 $result = match ($provinceName) {
-//                    'Sin provincia' => $this->addProvinceMunicipality($manager, $provinceName, ['Sin municipio']),
+                    'Sin provincia' => $this->addProvinceMunicipality($manager, $provinceName, ['Sin municipio']),
                     'Pinar del Río' => $this->addProvinceMunicipality($manager, $provinceName, ['Candelaria']),
                     'La Habana' => $this->addProvinceMunicipality($manager, $provinceName, ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa']),
                     'Artemisa' => $this->addProvinceMunicipality($manager, $provinceName, ['Artemisa']),

@@ -1,0 +1,70 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {{ form_row(form.name) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+{#            {{ form_row(form.type) }}#}
+        </div>
+        <div class="col">
+{#            {{ form_row(form.state) }}#}
+{#            {{ form_row(form.investment) }}#}
+        </div>
+    </div>
+
+{#    <div class="mb-0 row">#}
+{#        <div class="col">#}
+{#            <div {{ stimulusController('visibility') }}>#}
+{#                {{ form_row(form.isStopped) }}#}
+
+{#                <div {{ stimulusTarget('visibility', 'target') }} style="display: none">#}
+{#                    {{ form_row(form.stopReason) }}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col">#}
+{#            {{ form_row(form.hasOccupiedArea) }}#}
+{#        </div>#}
+{#    </div>#}
+
+    <div class="mb-0 row" {{ stimulusController('visibility') }}>
+        <div class="col">
+            {{ form_row(form.clientType) }}
+        </div>
+        <div class="col">
+            <div {{ stimulusTarget('visibility', 'target') }} style="display: block">
+                {{ form_row(form.individualClient) }}
+            </div>
+            <div {{ stimulusTarget('visibility', 'target') }} style="display: none">
+                {{ form_row(form.enterpriseClient) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.pro.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

@@ -27,6 +27,11 @@ class DraftsmanProyect
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $finishedAt = null;
 
+    public function __construct()
+    {
+        $this->startedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

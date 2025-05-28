@@ -17,7 +17,7 @@
     {% endblock %}
 
     {% block body %}
-{#        {{ component('BuildingForm', {modal:null, bui: building, ajax: ajax}) }}#}
+        {{ component('ProjectForm', {modal:null, pro: project, ajax: ajax}) }}
     {% endblock %}
 
     {% block footer %}
@@ -35,4 +35,4 @@
 {% endcomponent %}
 
 {#{{ include('partials/modal/_modal_add_constructor.html.twig') }}#}
-{#{{ include('partials/modal/_modal_add_investment.html.twig') }}#}
+{{ include('partials/modal/_modal_add_investment.html.twig') }}

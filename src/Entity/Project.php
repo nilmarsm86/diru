@@ -119,6 +119,13 @@ class Project
     {
         $this->type = $this->getType()->value;
         $this->state = $this->getState()->value;
+
+//        //crear la inversion automaticamente
+//        if(is_null($this->getId())){
+//            $investment = new Investment();
+//            $investment->setName($this->getName());
+//            $investment->setProject($this);
+//        }
     }
 
     /**

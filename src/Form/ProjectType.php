@@ -3,59 +3,118 @@
 namespace App\Form;
 
 use App\Entity\Client;
+use App\Entity\Draftsman;
+use App\Entity\EnterpriseClient;
+use App\Entity\IndividualClient;
 use App\Entity\Investment;
 use App\Entity\Person;
 use App\Entity\Project;
+use App\Form\Types\EntityPlusType;
+use App\Form\Types\ProjectStateEnumType;
+use App\Form\Types\ProjectTypeEnumType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class ProjectType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('type')
-            ->add('state')
-            ->add('stopReason')
-            ->add('hasOccupiedArea')
-            ->add('registerAt', null, [
-                'widget' => 'single_text',
+            ->add('type', ProjectTypeEnumType::class, [
+                'label' => 'Tipo de proyecto:',
             ])
-            ->add('stoppedAt', null, [
-                'widget' => 'single_text',
+            //solo para modificar(cambiar el estado)
+            ->add('state', ProjectStateEnumType::class, [
+                'label' => 'Estado del proyecto:',
             ])
-            ->add('canceledAt', null, [
-                'widget' => 'single_text',
+            //solo se muestra si el estado que se selecciona es el del parado
+            ->add('stopReason', null, [
+                'label' => 'Razón de parar el proyecto:',
             ])
-            ->add('initiatedAt', null, [
-                'widget' => 'single_text',
+            ->add('hasOccupiedArea', null, [
+                'label' => 'Tiene área ocupada:',
             ])
-            ->add('completedDiagnosticStatusAt', null, [
-                'widget' => 'single_text',
+//            ->add('registerAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('stoppedAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('canceledAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('initiatedAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('completedDiagnosticStatusAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('urbanRregulationAt', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('designAt', null, [
+//                'widget' => 'single_text',
+//            ])
+            ->add('comment', null, [
+                'label' => 'Comentar:',
             ])
-            ->add('urbanRregulationAt', null, [
-                'widget' => 'single_text',
+//            ->add('draftsmans', EntityType::class, [
+//                'class' => Draftsman::class,
+//                'choice_label' => 'name',
+////                'multiple' => true,
+//            ])
+            ->add('clientType', ChoiceType::class, [
+                'label' => 'Tipo cliente:',
+//                'placeholder' => '-Seleccione-',
+                'choices' => [
+                    'Persona natural' => 'individual_client',
+                    'Cliente Empresarial' => 'enterprise_client',
+                ],
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'required' => false,
+                'data' => 'individual_client'
             ])
-            ->add('designAt', null, [
-                'widget' => 'single_text',
+            //hacer la iteracion por los clientes
+            ->add('client', HiddenType::class, [
+//                'class' => Client::class,
+//                'choice_label' => 'id',
             ])
-            ->add('comment')
-            ->add('draftsmans', EntityType::class, [
-                'class' => Person::class,
+            ->add('individualClient', EntityType::class, [
+                'class' => IndividualClient::class,
                 'choice_label' => 'id',
-                'multiple' => true,
+                'mapped' => false,
+                'label' => 'Persona natural'
             ])
-            ->add('client', EntityType::class, [
-                'class' => Client::class,
-                'choice_label' => 'id',
+            ->add('enterpriseClient', EntityType::class, [
+                'class' => EnterpriseClient::class,
+                'choice_label' => 'representative',
+                'mapped' => false,
+                'label' => 'Cliente empresarial'
             ])
-            ->add('investment', EntityType::class, [
+            ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,
-                'choice_label' => 'id',
-            ])
+                'choice_label' => 'name',
+                'label' => 'Inversión:',
+                'placeholder' => '-Seleccione-',
+                'modal_id' => '#add-investment',
+                'detail' => true,
+                'detail_title' => 'Detalle de la Inversión',
+                'detail_id' => 'detail_investment_entity',
+                'detail_loading' => 'Cargando detalles de la inversión...',
+                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal'])            ])
         ;
     }
 

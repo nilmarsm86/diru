@@ -14,6 +14,7 @@ use App\Form\Types\ProjectStateEnumType;
 use App\Form\Types\ProjectTypeEnumType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,13 +31,24 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nombre:',
+            ])
             ->add('type', ProjectTypeEnumType::class, [
                 'label' => 'Tipo de proyecto:',
             ])
             //solo para modificar(cambiar el estado)
-            ->add('state', ProjectStateEnumType::class, [
-                'label' => 'Estado del proyecto:',
+//            ->add('state', ProjectStateEnumType::class, [
+//                'label' => 'Estado del proyecto:',
+//            ])
+            ->add('isStopped', CheckboxType::class, [
+                'label' => 'Esta detenido:',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+                ],
+                'data' => false
             ])
             //solo se muestra si el estado que se selecciona es el del parado
             ->add('stopReason', null, [
@@ -84,8 +96,11 @@ class ProjectType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => false,
-                'required' => false,
-                'data' => 'individual_client'
+//                'required' => false,
+                'data' => 'individual_client',
+                'attr' => [
+                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+                ],
             ])
             //hacer la iteracion por los clientes
             ->add('client', HiddenType::class, [
@@ -96,13 +111,15 @@ class ProjectType extends AbstractType
                 'class' => IndividualClient::class,
                 'choice_label' => 'id',
                 'mapped' => false,
-                'label' => 'Persona natural'
+                'label' => 'Persona natural',
+                'placeholder' => '-Seleccione-'
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
                 'choice_label' => 'representative',
                 'mapped' => false,
-                'label' => 'Cliente empresarial'
+                'label' => 'Cliente empresarial',
+                'placeholder' => '-Seleccione-'
             ])
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,

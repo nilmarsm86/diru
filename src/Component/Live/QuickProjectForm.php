@@ -29,8 +29,8 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/project_form.html.twig')]
-final class ProjectForm extends AbstractController
+#[AsLiveComponent(template: 'component/live/quick_project_form.html.twig')]
+final class QuickProjectForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -99,16 +99,6 @@ final class ProjectForm extends AbstractController
 
             $investment = $investmentRepository->find((int)$this->formValues['investment']);
             $project->setInvestment($investment);
-
-            if($this->formValues['individualClient']){
-                $client = $clientRepository->find((int)$this->formValues['individualClient']);
-                $this->formValues['client'] = (int)$this->formValues['individualClient'];
-            }
-
-            if($this->formValues['enterpriseClient']){
-                $client = $clientRepository->find((int)$this->formValues['enterpriseClient']);
-                $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
-            }
 
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);

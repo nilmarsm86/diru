@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectType extends AbstractType
 {
@@ -39,6 +40,9 @@ class ProjectType extends AbstractType
             ->add('type', ProjectTypeEnumType::class, [
                 'label' => 'Tipo de proyecto:',
 //                'data' => \App\Entity\Enums\ProjectType::Parcel
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Seleccione el tipo de proyecto.'),
+                ]
             ])
             //solo para modificar(cambiar el estado)
 //            ->add('state', ProjectStateEnumType::class, [

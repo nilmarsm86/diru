@@ -141,10 +141,10 @@ final class QuickProjectForm extends AbstractController
 
             $this->pro = new Project();
             if (!is_null($this->modal)) {
-                $this->modalManage($project, 'Seleccione el nuevo proyecto agregada.', [
+                $this->modalManage($project, $successMsg, [
                     'project' => $project->getId()
                 ]);
-                return null;
+                return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
             }
 
             if ($this->ajax) {

@@ -1,9 +1,11 @@
+{% set name = 'enviar' %}
 <button
         type="submit"
         class="btn btn-success btn-sm
         {% if component %}
             {# component.hasValidationErrors ? 'disabled' : '' #}
         {% endif %}"
+        name="enviar"
 >
     {{ ux_icon(icon, {class:'bi'}) }}
     {{ label }}

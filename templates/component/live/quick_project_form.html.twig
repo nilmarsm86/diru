@@ -62,13 +62,15 @@
             {{ component('button:submit', {
                 icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
                 label: (this.pro.id is null) ? 'Llenar más datos' : 'Modificar',
-                component: this
+                component: this,
+                name: 'more_data'
             }) }}
 
             {{ component('button:submit', {
                 icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
                 label: (this.pro.id is null) ? 'Datos genrales del terreno' : 'Modificar',
-                component: this
+                component: this,
+                name: 'land_data'
             }) }}
         </div>
     </div>

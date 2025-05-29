@@ -64,38 +64,11 @@ class ProjectType extends AbstractType
             ->add('hasOccupiedArea', null, [
                 'label' => 'Tiene área ocupada:',
             ])
-//            ->add('registerAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('stoppedAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('canceledAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('initiatedAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('completedDiagnosticStatusAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('urbanRregulationAt', null, [
-//                'widget' => 'single_text',
-//            ])
-//            ->add('designAt', null, [
-//                'widget' => 'single_text',
-//            ])
             ->add('comment', null, [
                 'label' => 'Comentar:',
             ])
-//            ->add('draftsmans', EntityType::class, [
-//                'class' => Draftsman::class,
-//                'choice_label' => 'name',
-////                'multiple' => true,
-//            ])
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
-//                'placeholder' => '-Seleccione-',
                 'choices' => [
                     'Persona natural' => 'individual_client',
                     'Cliente Empresarial' => 'enterprise_client',
@@ -103,7 +76,6 @@ class ProjectType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => false,
-//                'required' => false,
                 'data' => 'individual_client',
                 'attr' => [
                     'data-action' => 'change->visibility#toggle'//show or hide representative field

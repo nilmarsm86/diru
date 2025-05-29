@@ -144,7 +144,9 @@ final class QuickProjectForm extends AbstractController
                 $this->modalManage($project, $successMsg, [
                     'project' => $project->getId()
                 ]);
-                return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+//                if(){}
+//                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+                return null;
             }
 
             if ($this->ajax) {

@@ -89,6 +89,7 @@ final class ProjectForm extends AbstractController
     public function save(ProjectRepository $projectRepository, ClientRepository $clientRepository, InvestmentRepository $investmentRepository): ?Response
     {
         $this->preValue();
+//        dd($this->formValues);
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();

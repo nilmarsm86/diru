@@ -15,7 +15,7 @@
             </div>
 
             <div class="modal-body">
-                {% block body %}{% endblock %}
+                <div class="modal-body-content">{% block body %}{% endblock %}</div>
                 {{ component('Backdrop:Backdrop', {id: constant('BACKDROP_DATA_ID', this), attr:"data-twig--modal--modal-target=backdrop"}) }}
             </div>
             <div class="modal-footer"></div>

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProvinceRepository::class)]
 #[ORM\UniqueConstraint(name: 'province_name', columns: ['name'])]
@@ -21,11 +22,12 @@ class Province
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(targetEntity: Municipality::class, mappedBy: 'province', cascade: ['persist'])]
-//    #[Assert\Count(
-//        min: 1,
-//        minMessage: 'Debe establecer al menos 1 municipio para esta provincia.',
-//    )]
+    #[ORM\OneToMany(targetEntity: Municipality::class, mappedBy: 'province', cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Count(
+        min: 1,
+        minMessage: 'Debe establecer al menos 1 municipio para esta provincia.',
+    )]
+    #[Assert\Valid]
     #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $municipalities;
 
@@ -57,7 +59,7 @@ class Province
         return $this;
     }
 
-    /*public function removeMunicipality(Municipality $municipality): static
+    public function removeMunicipality(Municipality $municipality): static
     {
         if ($this->municipalities->removeElement($municipality)) {
             // set the owning side to null (unless already changed)
@@ -67,6 +69,6 @@ class Province
         }
 
         return $this;
-    }*/
+    }
 
 }

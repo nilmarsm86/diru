@@ -13,6 +13,7 @@ use App\Form\ProvinceType;
 use App\Repository\BuildingRepository;
 use App\Repository\ConstructorRepository;
 use App\Repository\InvestmentRepository;
+use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,7 +50,7 @@ final class BuildingForm extends AbstractController
     public ?int $constructor = 0;
 
     #[LiveProp(writable: true)]
-    public ?int $investment = 0;
+    public ?int $project = 0;
 
     public function mount(?Building $bui = null): void
     {
@@ -66,9 +67,9 @@ final class BuildingForm extends AbstractController
             $this->constructor = 0;
         }
 
-        if ($this->investment !== 0) {
-            $this->formValues['investment'] = (string)$this->investment;
-            $this->investment = 0;
+        if ($this->project !== 0) {
+            $this->formValues['project'] = (string)$this->project;
+            $this->project = 0;
         }
     }
 
@@ -82,7 +83,7 @@ final class BuildingForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(BuildingRepository $buildingRepository, ConstructorRepository $constructorRepository, InvestmentRepository $investmentRepository): ?Response
+    public function save(BuildingRepository $buildingRepository, ConstructorRepository $constructorRepository, ProjectRepository $projectRepository): ?Response
     {
         $this->preValue();
         $successMsg = (is_null($this->bui->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
@@ -96,15 +97,15 @@ final class BuildingForm extends AbstractController
             $constructor = $constructorRepository->find((int)$this->formValues['constructor']);
             $building->setConstructor($constructor);
 
-            $investment = $investmentRepository->find((int)$this->formValues['investment']);
-            $building->setInvestment($investment);
+            $project = $projectRepository->find((int)$this->formValues['project']);
+            $building->setProject($project);
 
             $buildingRepository->save($building, true);
 
             $this->bui = new Building();
             if (!is_null($this->modal)) {
                 $this->modalManage($building, 'Seleccione la nueva obra agregada.', [
-                    'constructor' => $building->getId()
+                    'building' => $building->getId()
                 ]);
                 return null;
             }

@@ -87,4 +87,9 @@ final class ConstructorForm extends AbstractController
         return null;
     }
 
+    private function getDataModelValue(): ?string
+    {
+        return 'norender|*';
+    }
+
 }

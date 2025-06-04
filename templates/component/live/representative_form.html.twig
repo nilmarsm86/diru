@@ -25,6 +25,15 @@
         </div>
     </div>
 
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.phone) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+
     <div class="row mb-3">
         <div class="col-sm-12">
             {{ component('button:submit', {

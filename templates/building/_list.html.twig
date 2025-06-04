@@ -23,7 +23,8 @@
                     <th>Valor aprobado total</th>
                     <th>Valor estimado total</th>
                     <th>Constructora {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
-                    <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
+                    <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
+{#                    <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -49,13 +50,23 @@
                         <td>
                             <a data-bs-toggle="modal" data-bs-target="#detail-investment"
                                href="#" {{ stimulusController('detail-link-modal', {
-                                url: path('app_investment_show', {id:building.investment.id, state:'modal'}),
+                                url: path('app_project_show', {id:building.project.id, state:'modal'}),
                                 container: '#detail-investment .modal-body'
                             }) }}
                             >
-                                {{ building.investment.name }}
+                                {{ building.project.name }}
                             </a>
                         </td>
+{#                        <td>#}
+{#                            <a data-bs-toggle="modal" data-bs-target="#detail-investment"#}
+{#                               href="#" {{ stimulusController('detail-link-modal', {#}
+{#                                url: path('app_project_show', {id:building.investment.project.id, state:'modal'}),#}
+{#                                container: '#detail-investment .modal-body'#}
+{#                            }) }}#}
+{#                            >#}
+{#                                {{ building.investment.project.name }}#}
+{#                            </a>#}
+{#                        </td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})})) }}
                             {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CorporateEntity;
+use App\Entity\EnterpriseClient;
 use App\Entity\Enums\CorporateEntityType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -10,6 +11,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<CorporateEntity>
@@ -92,5 +94,24 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ce.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param CorporateEntity $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(CorporateEntity $entity, bool $flush = false): void
+    {
+        if($entity->getEnterpriseClients()->count()){
+            throw new Exception('Esta entidad corporativa aun tiene clientes empresariales asociados.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

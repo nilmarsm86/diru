@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\Investment;
+use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -81,26 +82,35 @@ class BuildingType extends AbstractType
                 'class' => Constructor::class,
                 'choice_label' => 'name',
                 'label' => 'Constructora:',
-                'placeholder' => '-Seleccionar-',
 //                'query_builder' => $this->getOrganismQueryBuilder($options),
-                'modal_id' => '#add-constructor',
+
                 'detail' => true,
                 'detail_title' => 'Detalle de la constructora',
-                'detail_id' => 'detail_constructor_entity',
-                'detail_loading' => 'Cargando detalles de la constructora...',
-                'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal'])
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar Constructora',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load']),
+
+                'required' => false
             ])
-            ->add('investment', EntityPlusType::class, [
-                'class' => Investment::class,
+            ->add('project', EntityPlusType::class, [
+                'class' => Project::class,
                 'choice_label' => 'name',
-                'label' => 'Inversión:',
+                'label' => 'Proyecto:',
                 'placeholder' => '-Seleccionar-',
-                'modal_id' => '#add-investment',
+
                 'detail' => true,
-                'detail_title' => 'Detalle de la Inversión',
-                'detail_id' => 'detail_investment_entity',
-                'detail_loading' => 'Cargando detalles de la inversión...',
-                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal'])
+                'detail_title' => 'Detalle del Proyecto',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_project_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar Proyecto',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_project_new', ['modal' => 'modal-load']),
             ])
 
         ;

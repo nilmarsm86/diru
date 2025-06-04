@@ -154,6 +154,9 @@ final class MunicipalityForm extends AbstractController
 //        return self::FORM_SUCCESS;
 //    }
 
-
+    private function getDataModelValue(): ?string
+    {
+        return 'norender|*';
+    }
 
 }

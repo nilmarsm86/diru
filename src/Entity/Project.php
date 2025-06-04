@@ -45,9 +45,6 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stopReason = null;
 
-    #[ORM\Column]
-    private bool $hasOccupiedArea;
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $registerAt = null;
 
@@ -78,21 +75,30 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.')]
     private ?Investment $investment = null;
 
     /**
-     * @var Collection<int, DraftsmanProyect>
+     * @var Collection<int, DraftsmanProject>
      */
-    #[ORM\OneToMany(targetEntity: DraftsmanProyect::class, mappedBy: 'project', cascade: ['persist'])]
-    private Collection $draftsmans;
+    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'project', cascade: ['persist'])]
+    private Collection $draftsmansProjects;
+
+    /**
+     * @var Collection<int, Building>
+     */
+    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'project', cascade: ['persist'])]
+    private Collection $buildings;
 
     public function __construct()
     {
-        $this->draftsmans = new ArrayCollection();
+        $this->draftsmansProjects = new ArrayCollection();
         $this->setState(ProjectState::Registered);
-        $this->hasOccupiedArea = false;
         $this->registerAt = new \DateTimeImmutable();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,37 +170,62 @@ class Project
     }
 
     /**
-     * @return Collection<int, DraftsmanProyect>
+     * @return Collection<int, Draftsman>
      */
     public function getDraftsmans(): Collection
     {
-        return $this->draftsmans;
+        $draftsman = new ArrayCollection();
+        foreach ($this->getDraftsmansProjects() as $draftsmansProjects){
+            $draftsman->add($draftsmansProjects->getDraftsman());
+        }
+        return $draftsman;
     }
 
-    public function addDraftsman(DraftsmanProyect $draftsmanProyect): static
+    public function addDraftsman(Draftsman $draftsman): static
     {
-        if (!$this->draftsmans->contains($draftsmanProyect)) {
-            $this->draftsmans->add($draftsmanProyect);
+        $draftsmanProject = new DraftsmanProject();
+        $draftsmanProject->setProject($this);
+        $draftsmanProject->setDraftsman($draftsman);
+        $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+
+        $this->addDraftsmanProject($draftsmanProject);
+
+        return $this;
+    }
+
+    public function removeDraftsman(Draftsman $draftsman): static
+    {
+        $draftsmansProjects = $draftsman->getDraftsmansProjects();
+        foreach ($draftsmansProjects as $draftsmanProject){
+            if($draftsmanProject->hasProject($this)){
+                $this->removeDraftsmansProjects($draftsmanProject);
+                return $this;
+            }
         }
 
         return $this;
     }
 
-    public function removeDraftsman(DraftsmanProyect $draftsmanProyect): static
+    /**
+     * @return Collection<int, DraftsmanProject>
+     */
+    public function getDraftsmansProjects(): Collection
     {
-        $this->draftsmans->removeElement($draftsmanProyect);
+        return $this->draftsmansProjects;
+    }
+
+    public function addDraftsmanProject(DraftsmanProject $draftsmanProject): static
+    {
+        if (!$this->draftsmansProjects->contains($draftsmanProject)) {
+            $this->draftsmansProjects->add($draftsmanProject);
+        }
 
         return $this;
     }
 
-    public function hasOccupiedArea(): ?bool
+    public function removeDraftsmansProjects(DraftsmanProject $draftsmanProject): static
     {
-        return $this->hasOccupiedArea;
-    }
-
-    public function setHasOccupiedArea(bool $hasOccupiedArea): static
-    {
-        $this->hasOccupiedArea = $hasOccupiedArea;
+        $this->draftsmansProjects->removeElement($draftsmanProject);
 
         return $this;
     }
@@ -339,5 +370,40 @@ class Project
     public function isFromIndividualClient(): bool
     {
         return $this->getClient() instanceof IndividualClient;
+    }
+
+    /**
+     * @return Collection<int, Building>
+     */
+    public function getBuildings(): Collection
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Building $building): static
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuilding(Building $building): static
+    {
+        if ($this->buildings->removeElement($building)) {
+            // set the owning side to null (unless already changed)
+            if ($building->getProject() === $this) {
+                $building->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBuildingsAmount(): int
+    {
+        return $this->getBuildings()->count();
     }
 }

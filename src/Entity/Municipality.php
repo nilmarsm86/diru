@@ -25,8 +25,8 @@ class Municipality
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Ignore]
-    #[Assert\NotBlank(message: 'Seleccione la provincia a la cual pertenece el municipio.')]
-    private ?Province $province=null;
+    #[Assert\NotBlank(message: 'Seleccione o cree la provincia a la cual pertenece el municipio.')]
+    private ?Province $province = null;
 
     public function getId(): ?int
     {

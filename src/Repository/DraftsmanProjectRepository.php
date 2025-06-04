@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\DraftsmanProyect;
+use App\Entity\DraftsmanProject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<DraftsmanProyect>
+ * @extends ServiceEntityRepository<DraftsmanProject>
  */
-class DraftsmanProyectRepository extends ServiceEntityRepository
+class DraftsmanProjectRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DraftsmanProyect::class);
+        parent::__construct($registry, DraftsmanProject::class);
     }
 
     //    /**
-    //     * @return DraftsmanProyect[] Returns an array of DraftsmanProyect objects
+    //     * @return DraftsmanProject[] Returns an array of DraftsmanProject objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class DraftsmanProyectRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?DraftsmanProyect
+    //    public function findOneBySomeField($value): ?DraftsmanProject
     //    {
     //        return $this->createQueryBuilder('d')
     //            ->andWhere('d.exampleField = :val')

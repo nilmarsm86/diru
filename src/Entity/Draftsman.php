@@ -11,41 +11,72 @@ use Doctrine\ORM\Mapping as ORM;
 class Draftsman extends Person
 {
     /**
-     * @var Collection<int, DraftsmanProyect>
+     * @var Collection<int, DraftsmanProject>
      */
-    #[ORM\OneToMany(targetEntity: DraftsmanProyect::class, mappedBy: 'draftsman', cascade: ['persist'])]
-    private Collection $projects;
+    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'draftsman', cascade: ['persist'])]
+    private Collection $draftsmansProjects;
 
     public function __construct()
     {
         parent::__construct();
-        $this->projects = new ArrayCollection();
+        $this->draftsmansProjects = new ArrayCollection();
     }
 
     /**
-     * @return Collection<int, DraftsmanProyect>
+     * @return Collection<int, DraftsmanProject>
      */
-    public function getProjects(): Collection
+    public function getDraftsmansProjects(): Collection
     {
-        return $this->projects;
+        return $this->draftsmansProjects;
     }
 
-    public function addProject(DraftsmanProyect $project): static
+    public function addDraftsmanProject(DraftsmanProject $draftsmanProject): static
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->setDratfsman($this);
+        if (!$this->draftsmansProjects->contains($draftsmanProject)) {
+            $this->draftsmansProjects->add($draftsmanProject);
         }
 
         return $this;
     }
 
-    public function removeProject(DraftsmanProyect $project): static
+    public function removeDraftsmansProjects(DraftsmanProject $draftsmanProject): static
     {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getDratfsman() === $this) {
-                $project->setDratfsman(null);
+        $this->draftsmansProjects->removeElement($draftsmanProject);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        $projects = new ArrayCollection();
+        foreach ($this->getDraftsmansProjects() as $draftsmansProjects){
+            $projects->add($draftsmansProjects->getProject());
+        }
+        return $projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        $draftsmanProject = new DraftsmanProject();
+        $draftsmanProject->setProject($project);
+        $draftsmanProject->setDraftsman($this);
+        $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+
+        $this->addDraftsmanProject($draftsmanProject);
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $draftsmansProjects = $project->getDraftsmansProjects();
+        foreach ($draftsmansProjects as $draftsmanProject){
+            if($draftsmanProject->hasDraftsman($this)){
+                $this->removeDraftsmansProjects($draftsmanProject);
+                return $this;
             }
         }
 

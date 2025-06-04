@@ -25,7 +25,7 @@ class Contract
     #[Assert\NotBlank(message: 'El año está vacío.')]
     private ?int $year = null;
 
-    #[ORM\OneToOne(mappedBy: 'contract', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'contract', cascade: ['persist'])]
     private ?Project $project = null;
 
     public function getId(): ?int

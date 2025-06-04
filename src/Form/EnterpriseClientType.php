@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EnterpriseClientType extends AbstractType
 {
@@ -139,7 +140,6 @@ class EnterpriseClientType extends AbstractType
 
         $form->add('representative', EntityPlusType::class, [
             'class' => Representative::class,
-            'required' => false,
             'placeholder' => '-Seleccione-',
             'label' => 'Representante:',
 //            'query_builder' => $this->getPersonQueryBuilder($ec),
@@ -151,16 +151,9 @@ class EnterpriseClientType extends AbstractType
             'detail_id' => 'detail_person',
             'detail_loading' => 'Cargando detalles de los representantes...',
             'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
-        ]);
-
-        $form->add('hasRepresentative', CheckboxType::class, [
-            'label' => 'Tiene representante',
-            'mapped' => false,
-            'required' => false,
-            'attr' => [
-                'data-action' => 'change->visibility#toggle'//show or hide representative field
+            'constraints' => [
+                new Assert\NotBlank(message: 'Seleccione o cree un nuevo representante.'),
             ],
-            'data' => (bool)$ec->getRepresentative()
         ]);
     }
 }

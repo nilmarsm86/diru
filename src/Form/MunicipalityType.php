@@ -12,9 +12,15 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class MunicipalityType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $provinceAttr = [
@@ -37,8 +43,13 @@ class MunicipalityType extends AbstractType
 
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
-                'modal_id' => '#add-province',
-                'path' => '',//como el formulario es live-component cuando se agregar el dato se recarga y trae el dato nuevo por eso se puede dejar vacio
+//                'modal_id' => '#add-province',
+//                'path' => '',//como el formulario es live-component cuando se agregar el dato se recarga y trae el dato nuevo por eso se puede dejar vacio
+
+                    'add' => true,
+                    'add_title' => 'Agregar Provincia',
+                    'add_id' => 'modal-load',
+                    'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
             ]+$provinceAttr);
         } else {
             $builder->add('province', EntityType::class, []+$provinceAttr);

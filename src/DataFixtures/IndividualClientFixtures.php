@@ -14,16 +14,18 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
 {
     public function load(ObjectManager $manager): void
     {
-        $naturalPersons = ['Person 1', 'Person 2'];
-        foreach ($naturalPersons as $naturalPerson){
+        $clients = ['Cliente Individual 1', 'Cliente Individual 2'];
+        $persons = ['Person 1', 'Person 2', 'Person 3', 'Person 4'];
+        $representatives = ['Representante 1', 'Representante 2', 'Representante 3', 'Representante 4'];
+        foreach ($clients as $key => $client){
                 $individualClient = new IndividualClient();
-                $individualClient->setPerson($this->findPerson($manager, $naturalPerson));
+                $individualClient->setPerson($this->findPerson($manager, $persons[$key]));
                 $individualClient->setStreet('direccion de la calle');
                 $individualClient->setMunicipality($this->findMunicipality($manager));
-                $individualClient->setEmail($naturalPerson.'@gmail.com');
+                $individualClient->setEmail($client.'@gmail.com');
                 $individualClient->setPhone(rand(55555555, 66666666));
-                if($naturalPerson === end($naturalPersons)){
-                    $individualClient->setRepresentative($this->findRepresentative($manager, $naturalPersons[0]));
+                if($client === end($clients)){
+                    $individualClient->setRepresentative($this->findRepresentative($manager, $representatives[$key]));
                 }
 
                 $manager->persist($individualClient);
@@ -50,6 +52,7 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
     {
         return [
             PersonFixtures::class,
+            RepresentativeFixtures::class,
             ProvinceFixtures::class
         ];
     }

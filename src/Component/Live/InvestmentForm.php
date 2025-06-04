@@ -25,14 +25,16 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
 #[AsLiveComponent(template: 'component/live/investment_form.html.twig')]
 final class InvestmentForm extends AbstractController
 {
     use DefaultActionTrait;
-    use ComponentWithFormTrait;
+//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
+    use LiveCollectionTrait;
 
     /**
      * The initial data used to create the form.

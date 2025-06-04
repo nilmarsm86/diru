@@ -29,7 +29,7 @@ class EnterpriseClient extends Client
         return $this;
     }
 
-    public function getRepresentativeName()
+    public function getRepresentativeName(): ?string
     {
         if(!is_null($this->getRepresentative())){
             return $this->getRepresentative()->getName();
@@ -38,7 +38,7 @@ class EnterpriseClient extends Client
         return "";
     }
 
-    public function getRepresentativeIdentificationNumber()
+    public function getRepresentativeIdentificationNumber(): ?string
     {
         if(!is_null($this->getRepresentative())){
             return $this->getRepresentative()->getIdentificationNumber();
@@ -47,7 +47,7 @@ class EnterpriseClient extends Client
         return "";
     }
 
-    public function getRepresentativePassport()
+    public function getRepresentativePassport(): ?string
     {
         if(!is_null($this->getRepresentative())){
             return $this->getRepresentative()->getPassport();

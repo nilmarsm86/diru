@@ -6,7 +6,7 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
 use App\Entity\Building;
 use App\Entity\Constructor;
-use App\Entity\DraftsmanProyect;
+use App\Entity\DraftsmanProject;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Investment;
 use App\Entity\Project;
@@ -131,7 +131,7 @@ final class QuickProjectForm extends AbstractController
 
             $draftsman = $draftsmanRepository->findOneBy(['name'=>'Draftsman']);
 
-            $draftsmanProject = new DraftsmanProyect();
+            $draftsmanProject = new DraftsmanProject();
             $draftsmanProject->setProject($project);
             $draftsmanProject->setDraftsman($draftsman);
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Representative;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,6 +35,28 @@ class RepresentativeType extends AbstractType
                 'label' => 'Pasaporte:',
                 'attr' => [
                     'placeholder' => 'Pasaporte'
+                ]
+            ])
+            ->add('phone', null, [
+//                'label_html' => true,
+                'label' => 'Teléfono:',
+//                'label_attr' => [
+//                    'class' => 'form-label col-sm-12'
+//                ],
+                'attr' => [
+//                    'class' => 'form-control no-border-left',
+                    'placeholder' => 'Teléfono del representante'
+                ]
+            ])
+            ->add('email', EmailType::class, [
+//                'label_html' => true,
+                'label' => 'Correo:',
+//                'label_attr' => [
+//                    'class' => 'form-label col-sm-12'
+//                ],
+                'attr' => [
+//                    'class' => 'form-control no-border-left',
+                    'placeholder' => 'Correo del representante'
                 ]
             ])
         ;

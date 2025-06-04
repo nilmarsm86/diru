@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 class ProjectType extends AbstractType
 {
@@ -61,9 +62,9 @@ class ProjectType extends AbstractType
             ->add('stopReason', null, [
                 'label' => 'Razón de parar el proyecto:',
             ])
-            ->add('hasOccupiedArea', null, [
-                'label' => 'Tiene área ocupada:',
-            ])
+//            ->add('hasOccupiedArea', null, [
+//                'label' => 'Tiene área ocupada:',
+//            ])
             ->add('comment', null, [
                 'label' => 'Comentar:',
             ])
@@ -111,8 +112,15 @@ class ProjectType extends AbstractType
                 'detail_id' => 'detail_investment_entity',
                 'detail_loading' => 'Cargando detalles de la inversión...',
                 'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
-                'query_builder' => $this->getInvestmentQueryBuilder($options),
+//                'query_builder' => $this->getInvestmentQueryBuilder($options),
             ])
+            ->add('building', LiveCollectionType::class, [
+                'entry_type' => BuildingType::class,
+                'button_delete_options' => [
+                    'label_html' => true
+                ],
+                'mapped' => false
+            ]);
         ;
     }
 

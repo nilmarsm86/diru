@@ -1,35 +1,40 @@
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: title
-} %}
+{% if app.request.query.get('modal') %}
+    {{ component('ProvinceForm', {modal:app.request.query.get('modal'), prov: province, ajax: ajax}) }}
+{% else %}
 
-    {% block header %}
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_province_new',
-            label: 'Nueva',
-            title: 'Nueva provincia',
-            entity: province,
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
-    {% endblock %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
 
-    {% block body %}
-        {{ component('ProvinceForm', {modal:null, prov: province, ajax: ajax}) }}
-    {% endblock %}
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_province_new',
+                label: 'Nueva',
+                title: 'Nueva provincia',
+                entity: province,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
 
-    {% block footer %}
-        {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_province_index', label: 'Listado', title:'Volver al listado'},
-            delete: {href: 'app_province_delete', label: 'Eliminar', title:'Eliminar provincia'},
-            id: province.id,
-            message: 'Está seguro que desea eliminar la provincia?',
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: province
-        }) }}
-    {% endblock %}
+        {% block body %}
+            {{ component('ProvinceForm', {modal:null, prov: province, ajax: ajax}) }}
+        {% endblock %}
 
-{% endcomponent %}
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_province_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_province_delete', label: 'Eliminar', title:'Eliminar provincia'},
+                id: province.id,
+                message: 'Está seguro que desea eliminar la provincia?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: province
+            }) }}
+        {% endblock %}
+
+    {% endcomponent %}
+{% endif %}

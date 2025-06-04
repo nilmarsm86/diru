@@ -71,7 +71,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         if(is_null($adminUser)){
             $roles = $manager->getRepository(Role::class)->findAll();
 
-            $admin = new User('SuperAdmin', 'User', 'superadmin', 'superadmin', rand(11111111111, 99999999999), 7, 'superadmin@diru.com');
+            $admin = new User('SuperAdmin', 'User', 'superadmin', 'superadmin', rand(11111111111, 99999999999), rand(50000000, 69999999), 'superadmin@diru.com');
             $this->save($manager, $admin, $roles);
         }
     }
@@ -90,7 +90,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 return $role->getName() !== Role::ROLE_SUPER_ADMIN;
             });
 
-            $admin = new User('Admin', 'User', 'admin', 'admin', rand(11111111111, 99999999999),6, 'admin@diru.com');
+            $admin = new User('Admin', 'User', 'admin', 'admin', rand(11111111111, 99999999999),rand(50000000, 69999999), 'admin@diru.com');
             $this->save($manager, $admin, $roles);
         }
     }
@@ -109,7 +109,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 return $role->getName() !== Role::ROLE_SUPER_ADMIN && $role->getName() !== Role::ROLE_ADMIN;
             });
 
-            $boss = new User('Director', 'User', 'director', 'director', rand(11111111111, 99999999999),5, 'director@diru.com');
+            $boss = new User('Director', 'User', 'director', 'director', rand(11111111111, 99999999999),rand(50000000, 69999999), 'director@diru.com');
             $this->save($manager, $boss, array_values($roles));
         }
     }
@@ -130,7 +130,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                        $role->getName() !== Role::ROLE_DIRECTOR;
             });
 
-            $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', rand(11111111111, 99999999999), 4, 'draftsman@diru.com', true);
+            $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', rand(11111111111, 99999999999), rand(50000000, 69999999), 'draftsman@diru.com', true);
             $this->save($manager, $planner, array_values($roles));
         }
     }
@@ -152,7 +152,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                        $role->getName() !== Role::ROLE_DRAFTSMAN;
             });
 
-            $planner = new User('Investor', 'User', 'investor', 'investor', rand(11111111111, 99999999999), 3, 'investor@diru.com');
+            $planner = new User('Investor', 'User', 'investor', 'investor', rand(11111111111, 99999999999), rand(50000000, 69999999), 'investor@diru.com');
             $this->save($manager, $planner, array_values($roles));
         }
     }
@@ -168,7 +168,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         if(is_null($clientUser)){
             $role = $manager->getRepository(Role::class)->findOneBy(['name'=>Role::ROLE_CLIENT]);
 
-            $user = new User('Client', 'User', 'client', 'client', rand(11111111111, 99999999999), 2, 'client@diru.com');
+            $user = new User('Client', 'User', 'client', 'client', rand(11111111111, 99999999999), rand(50000000, 69999999), 'client@diru.com');
             $this->save($manager, $user, [$role]);
         }
     }
@@ -184,7 +184,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         if(is_null($inactiveUser)){
             $role = $manager->getRepository(Role::class)->findOneBy(['name'=>Role::ROLE_CLIENT]);
 
-            $user = new User('Inactive', 'User', 'inactive', 'inactive', rand(11111111111, 99999999999), 1, 'inactive@diru.com');
+            $user = new User('Inactive', 'User', 'inactive', 'inactive', rand(11111111111, 99999999999), rand(50000000, 69999999), 'inactive@diru.com');
             $this->register($this->userPasswordHasher, $user, $role);
             $user->addRole($role);
             $user->deactivate();

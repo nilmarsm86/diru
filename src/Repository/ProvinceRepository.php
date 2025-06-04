@@ -78,12 +78,12 @@ class ProvinceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $entity
+     * @param Province $entity
      * @param bool $flush
      * @return void
      * @throws Exception
      */
-    public function remove($entity, bool $flush = false): void
+    public function remove(Province $entity, bool $flush = false): void
     {
         if($entity->getMunicipalities()->count()){
             throw new Exception('La provincia aun tiene municipios asociados.', 1);
@@ -92,7 +92,7 @@ class ProvinceRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
     }
 }

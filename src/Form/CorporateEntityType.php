@@ -14,9 +14,15 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class CorporateEntityType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -64,11 +70,15 @@ class CorporateEntityType extends AbstractType
         if (is_null($options['modal'])) {
             $builder
                 ->add('organism', EntityPlusType::class, [
-                    'modal_id' => '#add-organism',
-                    'path' => ''//esta vacio pq el form esta dentro de un live-component
-                ]+$organismAttr);
+//                    'modal_id' => '#add-organism',
+//                    'path' => ''//esta vacio pq el form esta dentro de un live-component
+                        'add' => true,
+                        'add_title' => 'Agregar Organismo',
+                        'add_id' => 'modal-load',
+                        'add_url' => $this->router->generate('app_organism_new', ['modal' => 'modal-load']),
+                    ] + $organismAttr);
         } else {
-            $builder->add('organism', EntityType::class, []+$organismAttr);
+            $builder->add('organism', EntityType::class, [] + $organismAttr);
         }
     }
 

@@ -14,18 +14,21 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
+#[AsLiveComponent(template: 'component/live/province_form.html.twig')]
 final class ProvinceForm extends AbstractController
 {
     use DefaultActionTrait;
-    use ComponentWithFormTrait;
+//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
+    use LiveCollectionTrait;
 
 //    const FORM_SUCCESS = self::class . '_form_success';
 
@@ -92,10 +95,8 @@ final class ProvinceForm extends AbstractController
         return null;
     }
 
-//    protected function getSuccessFormEventName(): string
-//    {
-//        return self::FORM_SUCCESS;
-//    }
-
-
+    private function getDataModelValue(): ?string
+    {
+        return 'norender|*';
+    }
 }

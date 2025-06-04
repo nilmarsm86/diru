@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\EnterpriseClient;
+use App\Entity\IndividualClient;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<EnterpriseClient>
@@ -83,5 +85,28 @@ class EnterpriseClientRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ec.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param EnterpriseClient $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(EnterpriseClient $entity, bool $flush = false): void
+    {
+        if($entity->getProjects()->count()){
+            throw new Exception('Este cliente empresarial aun tiene proyectos asociados.', 1);
+        }
+
+        if(!is_null($entity->getCorporateEntity())){
+            throw new Exception('Este cliente empresarial tiene una entidad corporativa asociada.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

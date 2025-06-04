@@ -1,37 +1,41 @@
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: title
-} %}
+{% if app.request.query.get('modal') %}
+    {{ component('MunicipalityForm', {modal:app.request.query.get('modal'), mun: municipality, ajax: ajax}) }}
+{% else %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
 
-    {% block header %}
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_municipality_new',
-            label: 'Nuevo',
-            title: 'Nuevo municipio',
-            entity: municipality,
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
-    {% endblock %}
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_municipality_new',
+                label: 'Nuevo',
+                title: 'Nuevo municipio',
+                entity: municipality,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
 
-    {% block body %}
-        {{ component('MunicipalityForm', {modal:null, mun: municipality, ajax: ajax}) }}
-    {% endblock %}
+        {% block body %}
+            {{ component('MunicipalityForm', {modal:null, mun: municipality, ajax: ajax}) }}
+        {% endblock %}
 
-    {% block footer %}
-        {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_municipality_index', label: 'Listado', title:'Volver al listado'},
-            delete: {href: 'app_municipality_delete', label: 'Eliminar', title:'Eliminar municipio'},
-            id: municipality.id,
-            message: 'Está seguro que desea eliminar el municipio?',
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: municipality
-        }) }}
-    {% endblock %}
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_municipality_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_municipality_delete', label: 'Eliminar', title:'Eliminar municipio'},
+                id: municipality.id,
+                message: 'Está seguro que desea eliminar el municipio?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: municipality
+            }) }}
+        {% endblock %}
 
-{% endcomponent %}
+    {% endcomponent %}
+{% endif %}
 
-{{ include('partials/_modal_add_province.html.twig') }}
+{{ include('partials/modal/_modal_load.html.twig') }}

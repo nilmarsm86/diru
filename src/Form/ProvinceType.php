@@ -2,10 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Municipality;
 use App\Entity\Province;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 class ProvinceType extends AbstractType
 {
@@ -18,6 +21,12 @@ class ProvinceType extends AbstractType
                     'placeholder' => 'Nombre de la provincia'
                 ]
             ])
+            ->add('municipalities', LiveCollectionType::class, [
+                'entry_type' => MunicipalityType::class,
+                'button_delete_options' => [
+                    'label_html' => true
+                ]
+            ]);
         ;
     }
 

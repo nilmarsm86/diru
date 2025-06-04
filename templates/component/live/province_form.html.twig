@@ -1,0 +1,56 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %}
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {{ form_row(form.name) }}
+
+    {#    <details open class="mb-3 mt-0 not-summary" style="padding: 0 0.3rem"> #}
+    <details open class="mb-3 mt-0 offset-sm-2 not-summary" style="padding: 0 0.3rem">
+        <summary class="mb-3 mt-0 btn btn-primary"
+                 style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
+            Municipios
+        </summary>
+        <div class="row mb-3">
+            <div class="col-12">
+                {{ form_widget(form.municipalities.vars.button_add, { label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar municipio', attr: { class: 'btn btn-outline-nav-link btn-sm' } }) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+
+        {% for key, municipality in form.municipalities %}
+            <div class="mb-3 row">
+                {{ form_label(municipality.name) }}
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        {{ form_widget(municipality.name) }}
+                        {{ form_help(municipality.name) }}
+                        {{ form_errors(municipality.name) }}
+                        {{ form_widget(municipality.vars.button_delete, { label: ux_icon('bi:trash', {class:'bi'}), attr: { class: 'btn btn-outline-danger' } }) }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {# avoid an extra label for this field #}
+        {#        {% do form.municipalities.setRendered %} #}
+    </details>
+
+    <div class="row mb-3">
+        <div class="col-sm-10 offset-sm-2">
+            {{ component('button:submit', {
+                icon: (entity.id is null) ? 'bi:save' : 'fa:edit',
+                label: (entity.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_row(form._token) }}
+    {{ form_end(form, {render_rest:false}) }}
+</div>

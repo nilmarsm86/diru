@@ -18,12 +18,12 @@
 
     {{ form_row(form.streetAddress) }}
 
-    {{ form_row(form.corporateEntity) }}
 
-    <div {{ stimulusController('visibility') }}>
-        {{ form_row(form.hasRepresentative) }}
-
-        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ec.representative %}show{% else %}none{% endif %}">
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.corporateEntity) }}
+        </div>
+        <div class="col">
             {{ form_row(form.representative) }}
         </div>
     </div>

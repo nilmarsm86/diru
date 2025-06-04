@@ -32,7 +32,7 @@
                         {% endif %}
 
                         {% if project.isFromEnterpriseClient() %}
-                            {{ project.client.representative ? project.client.representative.name : '' }}{# TODO: refactorizar #}
+                            {{ project.client.corporateEntity.name }}{# TODO: refactorizar #}
                         {% endif %}
                     </td>
                 </tr>
@@ -46,14 +46,14 @@
                 </tr>
                 {% if project.state.getLabelFrom(project.state) is same as get_label_from('App\\Entity\\Enums\\ProjectState', constant('App\\Entity\\Enums\\ProjectState::Stopped')) %}
                     <tr>
-                        <th>Razon de detenimiento:</th>
+                        <th>Razón de detenimiento:</th>
                         <td>{{ project.stopReason }}</td>
                     </tr>
                 {% endif %}
-                <tr>
-                    <th>Tiene área ocupada:</th>
-                    <td>{{ project.hasOccupiedArea }}</td>
-                </tr>
+{#                <tr>#}
+{#                    <th>Tiene área ocupada:</th>#}
+{#                    <td>{{ project.hasOccupiedArea }}</td>#}
+{#                </tr>#}
                 <tr>
                     <th>Registrado:</th>
                     <td>{{ project.registerAt is not null ? project.registerAt|date('D, d M Y H:i:s') : '' }}</td>

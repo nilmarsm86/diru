@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Investment>
@@ -81,5 +82,24 @@ class InvestmentRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('i.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Investment $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Investment $entity, bool $flush = false): void
+    {
+        if($entity->getProjects()->count()){
+            throw new Exception('La inversión aun tiene proyectos asociados.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

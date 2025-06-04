@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Constructor;
+use App\Entity\EnterpriseClient;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Constructor>
@@ -71,5 +73,24 @@ class ConstructorRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('c.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Constructor $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Constructor $entity, bool $flush = false): void
+    {
+        if($entity->getBuildings()->count()){
+            throw new Exception('Esta constructora aun tiene obras asociados.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

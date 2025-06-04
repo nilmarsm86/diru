@@ -24,6 +24,7 @@
                     {#                    <th>Pasaporte</th> #}
                     <th>Teléfono</th>
                     <th>Correo</th>
+                    <th>Inversión</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     <th></th>
@@ -38,7 +39,7 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {% if client.representative %}
-                                <button type="button" class="btn btn-link position-relative" style="text-decoration: none;color: #fff;cursor: text">
+                                <button type="button" class="btn btn-link position-relative p-0" style="text-decoration: none;color: #fff;cursor: text">
                                     {{ client.person.getFullName() }}
                                     <span class="position-absolute top-0 start-100 p-1 bg-danger border border-light rounded-circle">
                                     </span>
@@ -53,6 +54,7 @@
                         <td>
                             <a href="mailto:{{ client.email }}">{{ client.email }}</a>
                         </td>
+                        <td>{{ client.projects|length }}</td>
                         <td>
                             <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
                                 {{ client.getProvinceName() }}

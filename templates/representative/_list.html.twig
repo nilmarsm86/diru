@@ -22,6 +22,8 @@
                     <th>Nombre y Apellidos</th>
                     <th>Carnet de identidad</th>
                     <th>Pasaporte</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -34,6 +36,8 @@
                         <td>{{ representative.getFullName() }}</td>
                         <td>{{ representative.identificationNumber }}</td>
                         <td>{{ representative.passport }}</td>
+                        <td>{{ representative.phone }}</td>
+                        <td>{{ representative.email }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_representative_show', {'id': representative.id}), 'bi:eye', '', 'Detalle del representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_representative_show', {'id': representative.id})})) }}#}
                             {{ tableActionButton3(path('app_representative_edit', {'id': representative.id}), 'fa:edit', '', 'Editar representante', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_representative_edit', {'id': representative.id})})) }}

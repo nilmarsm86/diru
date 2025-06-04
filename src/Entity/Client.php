@@ -28,7 +28,7 @@ class Client
     #[ORM\Column]
     protected ?int $id = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
 //    #[Assert\NotBlank(message: 'Llene los datos del representante.')]
@@ -36,13 +36,13 @@ class Client
 
     #[ORM\Column(name: 'address', type: Types::TEXT)]
 //    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
-    private ?string $street = null;
+    protected ?string $street = null;
 
     /**
      * @var Collection<int, Project>
      */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'client')]
-    private Collection $projects;
+    protected Collection $projects;
 
     public function __construct()
     {

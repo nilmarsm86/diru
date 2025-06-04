@@ -61,13 +61,22 @@
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
     {%- set row_class = row_class|default(row_attr.class|default('mb-3')|trim) -%}
-    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %} {{ stimulusController('type/entity-plus', {url:path, detailUrl: detail_url, detailLoading: detail_loading}) }}>
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}{{ stimulusController('type/entity-plus', {
+        addUrl:add_url,
+        addId: add_id,
+        addPlaceholder: add_placeholder,
+        addTitle: add_title,
+        detailUrl: detail_url,
+        detailId: detail_id,
+        detailPlaceholder: detail_placeholder,
+        detailTitle: detail_title,
+    }) }}
+    >
     {%- if 'form-floating' in row_class -%}
         {{- form_widget(form, widget_attr) -}}
         {{- form_label(form) -}}
     {%- else -%}
         {{- form_label(form) -}}
-{#        {{- form_widget(form, widget_attr) -}}#}
         <div class="input-group">
             {{ form_widget(form, widget_attr) }}
             {% if detail == true %}
@@ -79,29 +88,21 @@
                     {{ ux_icon(detail_icon, {class:'bi', style:'color:white'}) }}
                 </button>
             {% endif %}
-            <button
-                    class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                    type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="{{ modal_id }}"
-                    {{ stimulusTarget('type/entity-plus', 'button') }}
-            >
-                {{ ux_icon(icon, {class:'bi', style:'color:white'}) }}
-            </button>
+
+            {% if add == true %}
+                <button
+                        class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
+                        type="button"
+                        {{ stimulusTarget('type/entity-plus', 'add') }}
+                >
+                    {{ ux_icon(add_icon, {class:'bi', style:'color:white'}) }}
+                </button>
+            {% endif %}
         </div>
 
     {%- endif -%}
     {{- form_help(form) -}}
     {{- form_errors(form) -}}
-
-    {% component 'Modal:Modal' with {
-        title: detail_title,
-        id: detail_id
-    } %}
-        {% block body %}
-            {{ detail_loading }}
-        {% endblock %}
-    {% endcomponent %}
 
     </{{ element|default('div') }}>
 {%- endblock entity_plus_row %}

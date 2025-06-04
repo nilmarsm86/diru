@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Building;
+use App\Entity\Investment;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Building>
@@ -53,8 +55,8 @@ class BuildingRepository extends ServiceEntityRepository
         if($filter){
             $predicate = "b.name LIKE :filter ";
             $predicate .= "OR c.name LIKE :filter ";
-//            $predicate .= "OR c.code LIKE :filter ";
-//            $predicate .= "OR c.country LIKE :filter ";
+            $predicate .= "OR c.code LIKE :filter ";
+            $predicate .= "OR p.name LIKE :filter ";
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
         }
@@ -68,10 +70,34 @@ class BuildingRepository extends ServiceEntityRepository
      */
     public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('b')->select(['b', 'c'])
-            ->innerJoin('b.constructor', 'c');
+        $builder = $this->createQueryBuilder('b')->select(['b', 'c', 'p'])
+            ->leftJoin('b.constructor', 'c')
+            ->leftJoin('b.project', 'p');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Building $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Building $entity, bool $flush = false): void
+    {
+        if(!is_null($entity->getProject())){
+            throw new Exception('La obra aun esta asignada a un proyecto.', 1);
+        }
+
+        if(!is_null($entity->getConstructor())){
+            throw new Exception('La obra aun tiene una constructora a cargo.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

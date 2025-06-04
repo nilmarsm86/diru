@@ -16,7 +16,7 @@ class PersonFixtures extends Fixture
         foreach ($persons as $person){
             $personEntity = $manager->getRepository(Representative::class)->findOneBy(['name' => $person]);
             if(is_null($personEntity)){
-                $personEntity = new Representative();
+                $personEntity = new Person();
                 $personEntity->setName($person);
                 $personEntity->setLastname("Apellido1 Apellido2");
                 $personEntity->setIdentificationNumber(rand(11111111111, 99999999999));

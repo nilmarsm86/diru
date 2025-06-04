@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Contract;
+use App\Entity\EnterpriseClient;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Contract>
@@ -70,5 +72,24 @@ class ContractRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('c.year', 'DESC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Contract $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Contract $entity, bool $flush = false): void
+    {
+        if(!is_null($entity->getProject())){
+            throw new Exception('Este contrato está asociado a un proyecto.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

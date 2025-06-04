@@ -18,9 +18,9 @@ class Building
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
+//    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
     private ?Constructor $constructor = null;
 
     #[ORM\Column(type: Types::BIGINT)]
@@ -50,8 +50,8 @@ class Building
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual perteneec la obra.')]
-    private ?Investment $investment = null;
+    #[Assert\NotBlank(message: 'Seleccione o cree el proyecto a la cual pertenece la obra.')]
+    private ?Project $project = null;
 
     public function __construct()
     {
@@ -165,14 +165,14 @@ class Building
 
     //debo convertir el dinero en centavos, valores estimados y valores aprobados
 
-    public function getInvestment(): ?Investment
+    public function getProject(): ?Project
     {
-        return $this->investment;
+        return $this->project;
     }
 
-    public function setInvestment(?Investment $investment): static
+    public function setProject(?Project $project): static
     {
-        $this->investment = $investment;
+        $this->project = $project;
 
         return $this;
     }

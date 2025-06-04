@@ -105,9 +105,10 @@ final class PersonForm extends AbstractController
 
             $personRepository->save($person, true);
 
+            $this->per = new Person();
             if (!is_null($this->modal)) {
 //                $this->modalManage($person);
-                $this->modalManage($person, 'Selecione el representante agregado.', [
+                $this->modalManage($person, 'Selecione la persona agregada.', [
                     'person' => $person->getId()
                 ]);
                 return null;

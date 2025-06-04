@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DraftsmanProyectRepository;
+use App\Repository\DraftsmanProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DraftsmanProyectRepository::class)]
-class DraftsmanProyect
+#[ORM\Entity(repositoryClass: DraftsmanProjectRepository::class)]
+class DraftsmanProject
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,7 +17,7 @@ class DraftsmanProyect
     #[ORM\JoinColumn(nullable: false)]
     private ?Draftsman $draftsman = null;
 
-    #[ORM\ManyToOne(inversedBy: 'draftsmans')]
+    #[ORM\ManyToOne(inversedBy: 'draftsmansProyects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
@@ -83,5 +83,15 @@ class DraftsmanProyect
         $this->finishedAt = $finishedAt;
 
         return $this;
+    }
+
+    public function hasProject(Project $project): bool
+    {
+        return $this->getProject()->getId() === $project->getId();
+    }
+
+    public function hasDraftsman(Draftsman $draftsman): bool
+    {
+        return $this->getDraftsman()->getId() === $draftsman->getId();
     }
 }

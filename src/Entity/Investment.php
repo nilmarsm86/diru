@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\InvestmentRepository;
@@ -50,18 +51,12 @@ class Investment
     #[ORM\JoinColumn(nullable: false)]
     private ?Municipality $municipality = null;
 
-    /**
-     * @var Collection<int, Building>
-     */
-    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'investment')]
-    private Collection $buildings;
-
-    #[ORM\OneToOne(mappedBy: 'investment', cascade: ['persist', 'remove'])]
-    private ?Project $project = null;
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]
+    private Collection $projects;
 
     public function __construct()
     {
-        $this->buildings = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,29 +170,29 @@ class Investment
     }
 
     /**
-     * @return Collection<int, Building>
+     * @return Collection<int, Project>
      */
-    public function getBuildings(): Collection
+    public function getProjects(): Collection
     {
-        return $this->buildings;
+        return $this->projects;
     }
 
-    public function addBuilding(Building $building): static
+    public function addProject(Project $project): static
     {
-        if (!$this->buildings->contains($building)) {
-            $this->buildings->add($building);
-            $building->setInvestment($this);
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setInvestment($this);
         }
 
         return $this;
     }
 
-    public function removeBuilding(Building $building): static
+    public function removeProject(Project $project): static
     {
-        if ($this->buildings->removeElement($building)) {
+        if ($this->projects->removeElement($project)) {
             // set the owning side to null (unless already changed)
-            if ($building->getInvestment() === $this) {
-                $building->setInvestment(null);
+            if ($project->getInvestment() === $this) {
+                $project->setInvestment(null);
             }
         }
 
@@ -206,29 +201,11 @@ class Investment
 
     public function getBuildingsAmount(): int
     {
-        return $this->getBuildings()->count();
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($project === null && $this->project !== null) {
-            $this->project->setInvestment(null);
+        $totalBuildingsAmount = 0;
+        foreach ($this->getProjects() as $project){
+            $totalBuildingsAmount += $project->getBuildingsAmount();
         }
-
-        // set the owning side of the relation if necessary
-        if ($project !== null && $project->getInvestment() !== $this) {
-            $project->setInvestment($this);
-        }
-
-        $this->project = $project;
-
-        return $this;
+        return $totalBuildingsAmount;
     }
 
 }

@@ -8,11 +8,17 @@ import {Modal} from "bootstrap";
 * See https://github.com/symfony/stimulus-bridge#lazy-controllers
 */
 export default class extends AbstractController {
-    static targets = ['select', 'button', 'detail'];
+    static targets = ['select', 'detail', 'add'];
     static values = {
-        url: {type: String, default: ''},
+        addUrl: {type: String, default: ''},
+        addId: {type: String, default: ''},
+        addPlaceholder: {type: String, default: ''},
+        addTitle: {type: String, default: ''},
+
         detailUrl: {type: String, default: ''},
-        detailLoading: {type: String, default: ''},
+        detailPlaceholder: {type: String, default: ''},
+        detailId: {type: String, default: ''},
+        detailTitle: {type: String, default: ''},
     };
     message = '';
 
@@ -47,21 +53,45 @@ export default class extends AbstractController {
                     return;
                 }
 
-                this.addChildsNodes(this.detailLoadingValue, this.element.querySelector('.modal-body'));
+                const modalBody = document.querySelector('#'+this.detailIdValue+' .modal-body-content');
+                this.addChildsNodes(this.detailPlaceholderValue, modalBody);
 
-                const modal = Modal.getOrCreateInstance(this.element.querySelector('.modal'));
-                modal.show();
+                this.addChildsNodes(this.detailTitleValue, document.querySelector('#'+this.detailIdValue+' .modal-title'));
+                Modal.getOrCreateInstance(document.querySelector('#'+this.detailIdValue)).show();
 
                 const eventDetail = new CustomEvent('eventDetail', {
                     detail: {
                         url: this.detailUrlValue.replace('0', this.selectTarget.value),
-                        container: this.element.querySelector('.modal-body'),
+                        container: modalBody,
                         eventLoadedName: 'loadDetail',
                     }
                 });
                 this.refreshContent(eventDetail);
             });
         }
+
+        if (this.hasAddTarget) {
+            this.addTarget.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const modalBody = document.querySelector('#'+this.addIdValue+' .modal-body-content');
+                this.addChildsNodes(this.addPlaceholderValue, modalBody);
+
+                this.addChildsNodes(this.addTitleValue, document.querySelector('#'+this.addIdValue+' .modal-title'));
+                Modal.getOrCreateInstance(document.querySelector('#'+this.addIdValue)).show();
+
+                const eventDetail = new CustomEvent('eventDetail', {
+                    detail: {
+                        url: this.addUrlValue,
+                        container: modalBody,
+                        eventLoadedName: 'loadDetail',
+                    }
+                });
+                this.refreshContent(eventDetail);
+            });
+        }
+
+
     }
 
     /**
@@ -69,8 +99,8 @@ export default class extends AbstractController {
      * @param event
      */
     async updateList(event) {
-        if (this.buttonTarget.dataset.bsTarget.replace('#', '') === event.detail.modal) {
-            if(this.urlValue.length > 0){
+        if (this.addIdValue === event.detail.modal) {
+            if (this.addUrlValue.length > 0) {
                 // this.selectTarget.disabled = true;
                 // this.addChildsNodes("<option>Cargando...</option>", this.selectTarget);
                 //

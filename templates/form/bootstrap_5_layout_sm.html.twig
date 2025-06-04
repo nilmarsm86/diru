@@ -329,10 +329,30 @@
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
     {%- set row_class = row_class|default(row_attr.class|default('mb-3')|trim) -%}
+    {%- set row_key = row_key|default(row_attr['data-key']|default('')) -%}
+    {%- set is_input_collection = is_input_collection|default('input-collection' in row_class) -%}
+    {% if is_input_collection %}
+        {%- set row_class = row_class ~ ' offset-sm-2' -%}
+{#    {% endif %}#}
+    {% endif %}
     <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
     {%- if 'form-floating' in row_class -%}
         {{- form_widget(form, widget_attr) -}}
         {{- form_label(form) -}}
+    {%- elseif ('input-collection' in row_class) -%}
+        {{- form_label(form) -}}
+        <div class="input-group">
+            {{- form_widget(form, widget_attr) -}}
+            <button
+                    class="btn btn_detail btn-outline-secondary"
+                    type="button"
+                    data-action="live#action"
+                    data-live-action-param="removeItem"
+                    data-live-index-param="{{ row_key }}"
+            >
+                {{ ux_icon('bi:trash', {class:'bi', style:'color:white'}) }}
+            </button>
+        </div>
     {%- else -%}
         {{- form_label(form) -}}
         {{- form_widget(form, widget_attr) -}}

@@ -25,6 +25,7 @@ use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -91,7 +92,13 @@ final class QuickProjectForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(ProjectRepository $projectRepository, ClientRepository $clientRepository, MunicipalityRepository $municipalityRepository, DraftsmanRepository $draftsmanRepository): ?Response
+    public function save(
+        ProjectRepository $projectRepository,
+        ClientRepository $clientRepository,
+        MunicipalityRepository $municipalityRepository,
+        DraftsmanRepository $draftsmanRepository,
+        Security             $security,
+    ): ?Response
     {
         $this->preValue();
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
@@ -118,24 +125,32 @@ final class QuickProjectForm extends AbstractController
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);
 
+            $draftsman = $draftsmanRepository->find($security->getUser()->getPerson()->getId());
+            $project->addDraftsman($draftsman);
+
             $project->setType(\App\Entity\Enums\ProjectType::Parcel);
 
             $municipality = $municipalityRepository->findOneBy(['name'=>'Sin municipio']);
 
             $investment = new Investment();
-            $investment->setName($project->getName());
-            $investment->setStreet('direccion');
+            $investment->setName('Inversión del proyecto '.$project->getName());
+            $investment->setStreet('Direccion de la inversión');
             $investment->setMunicipality($municipality);
 
             $project->setInvestment($investment);
 
-            $draftsman = $draftsmanRepository->findOneBy(['name'=>'Draftsman']);
+//            $draftsman = $draftsmanRepository->findOneBy(['name'=>'Draftsman']);
 
-            $draftsmanProject = new DraftsmanProject();
-            $draftsmanProject->setProject($project);
-            $draftsmanProject->setDraftsman($draftsman);
+//            $draftsmanProject = new DraftsmanProject();
+//            $draftsmanProject->setProject($project);
+//            $draftsmanProject->setDraftsman($draftsman);
 
-            $project->addDraftsman($draftsmanProject);
+//            $project->addDraftsman($draftsmanProject);
+
+            $building = new Building();
+            $building->setName('Obra del proyecto '.$project->getName());
+
+            $project->addBuilding($building);
 
             $projectRepository->save($project, true);
 
@@ -145,8 +160,8 @@ final class QuickProjectForm extends AbstractController
                     'project' => $project->getId()
                 ]);
 //                if(){}
-//                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
-                return null;
+                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+//                return null;
             }
 
             if ($this->ajax) {

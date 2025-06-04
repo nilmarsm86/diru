@@ -59,16 +59,26 @@
                 <tr>
                     <th>Constructora:</th>
                     <td>
+                        {% if building.constructor %}
                         <a href="{{ path('app_constructor_show', {'id': building.constructor.id }) }}">
                             {{ building.constructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Proyecto:</th>
+                    <td>
+                        <a href="{{ path('app_project_show', {'id': building.project.id }) }}" target="_blank">
+                            {{ building.project.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <th>Inversión:</th>
                     <td>
-                        <a href="{{ path('app_investment_show', {'id': building.investment.id }) }}">
-                            {{ building.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        <a href="{{ path('app_investment_show', {'id': building.project.investment.id }) }}" target="_blank">
+                            {{ building.project.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>

@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -91,7 +92,6 @@ class QuickProjectType extends AbstractType
 //            ])
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
-//                'placeholder' => '-Seleccione-',
                 'choices' => [
                     'Persona natural' => 'individual_client',
                     'Cliente Empresarial' => 'enterprise_client',
@@ -99,30 +99,26 @@ class QuickProjectType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => false,
-//                'required' => false,
                 'data' => 'individual_client',
                 'attr' => [
                     'data-action' => 'change->visibility#toggle'//show or hide representative field
                 ],
             ])
-            //hacer la iteracion por los clientes
-            ->add('client', HiddenType::class, [
-//                'class' => Client::class,
-//                'choice_label' => 'id',
-            ])
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
-                'choice_label' => 'id',
+                'choice_label' => function (IndividualClient $individualClient) {
+                    return $individualClient->getPerson()->getFullName();
+                },
                 'mapped' => false,
                 'label' => 'Persona natural',
-                'placeholder' => '-Seleccione-'
+//                'placeholder' => '-Seleccione-'
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
                 'choice_label' => 'representative',
                 'mapped' => false,
                 'label' => 'Cliente empresarial',
-                'placeholder' => '-Seleccione-'
+//                'placeholder' => '-Seleccione-'
             ])
 //            ->add('investment', EntityPlusType::class, [
 //                'class' => Investment::class,
@@ -137,7 +133,12 @@ class QuickProjectType extends AbstractType
 //                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
 //                'query_builder' => $this->getInvestmentQueryBuilder($options),
 //            ])
-        ;
+            ->add('moreData', SubmitType::class, [
+                'label' => 'Llenar mas datos',
+            ])
+            ->add('landingData', SubmitType::class, [
+                'label' => 'Datos del terreno'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -146,7 +147,10 @@ class QuickProjectType extends AbstractType
             'data_class' => Project::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
+            'error_mapping' => [
+                'enumType' => 'type',
+            ],
         ]);
     }
 

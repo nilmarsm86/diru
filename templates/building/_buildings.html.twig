@@ -1,10 +1,10 @@
 <tr>
-    <th>Obras:</th>
+    <th>Obras{% if projectName is defined %}{{ ' '~projectName }}{% endif %}:</th>
     <td>
         <ul class="px-0 list-unstyled">
             {% for building in entity.buildings %}
                 <li>
-                    <a href="{{ path('app_building_show', {'id': building.id}) }}">
+                    <a href="{{ path('app_building_show', {'id': building.id}) }}" target="_blank">
                         {{ building.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                     </a>
                 </li>

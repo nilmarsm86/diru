@@ -37,6 +37,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0,
+                'required' => false
             ])
             ->add('estimatedValueEquipment', IntegerType::class, [
                 'label' => 'Valor estimado en equipos:',
@@ -45,6 +46,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0
+                'required' => false
             ])
             ->add('estimatedValueOther', IntegerType::class, [
                 'label' => 'Otros valores estimados:',
@@ -53,6 +55,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0
+                'required' => false
             ])
             ->add('approvedValueConstruction', IntegerType::class, [
                 'label' => 'Valor aprobado de construcción:',
@@ -61,6 +64,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0
+                'required' => false
             ])
             ->add('approvedValueEquipment', IntegerType::class, [
                 'label' => 'Valor aprobado en equipos:',
@@ -69,6 +73,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0
+                'required' => false
             ])
             ->add('approvedValueOther', IntegerType::class, [
                 'label' => 'Otros valores aprobados:',
@@ -77,6 +82,7 @@ class BuildingType extends AbstractType
                     'min' => 0
                 ],
 //                'data' => 0
+                'required' => false
             ])
             ->add('constructor', EntityPlusType::class, [
                 'class' => Constructor::class,
@@ -111,9 +117,7 @@ class BuildingType extends AbstractType
                 'add_title' => 'Agregar Proyecto',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_project_new', ['modal' => 'modal-load']),
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

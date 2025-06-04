@@ -59,19 +59,21 @@
 
     <div class="row mb-3">
         <div class="col-sm-12">
-            {{ component('button:submit', {
-                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
-                label: (this.pro.id is null) ? 'Llenar más datos' : 'Modificar',
-                component: this,
-                name: 'more_data'
-            }) }}
+{#            {{ component('button:submit', {#}
+{#                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',#}
+{#                label: (this.pro.id is null) ? 'Llenar más datos' : 'Modificar',#}
+{#                component: this,#}
+{#                name: 'more_data'#}
+{#            }) }}#}
+            {{ form_widget(form.moreData, attr:{label:'Llenar más datos'}) }}
 
-            {{ component('button:submit', {
-                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
-                label: (this.pro.id is null) ? 'Datos genrales del terreno' : 'Modificar',
-                component: this,
-                name: 'land_data'
-            }) }}
+{#            {{ component('button:submit', {#}
+{#                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',#}
+{#                label: (this.pro.id is null) ? 'Datos genrales del terreno' : 'Modificar',#}
+{#                component: this,#}
+{#                name: 'land_data'#}
+{#            }) }}#}
+            {{ form_widget(form.landingData, attr:{label:'Datos genrales del terreno'}) }}
         </div>
     </div>
     {{ form_end(form) }}

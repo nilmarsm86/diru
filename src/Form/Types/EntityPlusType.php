@@ -18,7 +18,7 @@ class EntityPlusType extends AbstractType
             ->setDefault('placeholder', '-Seleccionar-')
 
             ->setDefault('add', false)
-            ->setDefault('add_title', false)
+            ->setDefault('add_title', 'Agregar')
             ->setDefault('add_id', '')
             ->setDefault('add_placeholder', 'Cargando...')
             ->setDefault('add_url', '')

@@ -64,8 +64,8 @@
                     {% if app.request.query.get('state') == '' %}
                         <th>Estado</th>
                     {% endif %}
-                    <th>Area ocupada</th>
-                    <th>Inversión</th>
+{#                    <th>Area ocupada</th>#}
+                    <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -75,15 +75,30 @@
 
                 {% for project in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ project.name }}</td>
+                        <td>
+                            {{ project.name }}
+                            <span class="badge rounded-pill bg-danger" title="Obras del proyecto">
+                                {{ project.getBuildingsAmount() }}
+                                <span class="visually-hidden">Obras</span>
+                            </span>
+                        </td>
                         {% if app.request.query.get('type') == '' %}
                             <td>{{ project.type.getLabelFrom(project.type) }}</td>
                         {% endif %}
                         {% if app.request.query.get('state') == '' %}
                             <td>{{ project.state.getLabelFrom(project.state) }}</td>
                         {% endif %}
-                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td>
-                        <td>{{ project.investment }}</td>
+{#                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td>#}
+                        <td>
+                            <a data-bs-toggle="modal" data-bs-target="#detail-investment"
+                               href="#" {{ stimulusController('detail-link-modal', {
+                                url: path('app_investment_show', {id:project.investment.id, state:'modal'}),
+                                container: '#detail-investment .modal-body'
+                            }) }}
+                            >
+                                {{ project.investment }}
+                            </a>
+                        </td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})})) }}
                             {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }}
@@ -106,14 +121,14 @@
 
         {% endcomponent %}
 
-        {% component 'Modal:Modal' with {
-            title: 'Detalle de la constructora',
-            id: 'detail-constructor',
-        } %}
-            {% block body %}
-                Cargando datos de la constructora...
-            {% endblock %}
-        {% endcomponent %}
+{#        {% component 'Modal:Modal' with {#}
+{#            title: 'Detalle de la constructora',#}
+{#            id: 'detail-constructor',#}
+{#        } %}#}
+{#            {% block body %}#}
+{#                Cargando datos de la constructora...#}
+{#            {% endblock %}#}
+{#        {% endcomponent %}#}
 
         {% component 'Modal:Modal' with {
             title: 'Detalle de la inversión',

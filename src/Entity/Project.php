@@ -67,6 +67,8 @@ class Project
     private ?\DateTimeImmutable $designAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[Assert\Valid]
+//    #[Assert\NotBlank(message: 'Seleccione o cree un cliente para el proyecto.')]
     private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
@@ -75,10 +77,9 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.')]
     private ?Investment $investment = null;
 
     /**
@@ -91,6 +92,8 @@ class Project
      * @var Collection<int, Building>
      */
     #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'project', cascade: ['persist'])]
+    #[Assert\Valid]
+    #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $buildings;
 
     public function __construct()

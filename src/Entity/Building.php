@@ -86,7 +86,7 @@ class Building
         return $this->estimatedValueConstruction;
     }
 
-    public function setEstimatedValueConstruction(int $estimatedValueConstruction): static
+    public function setEstimatedValueConstruction(?int $estimatedValueConstruction): static
     {
         $this->estimatedValueConstruction = $estimatedValueConstruction;
 
@@ -98,7 +98,7 @@ class Building
         return $this->estimatedValueEquipment;
     }
 
-    public function setEstimatedValueEquipment(int $estimatedValueEquipment): static
+    public function setEstimatedValueEquipment(?int $estimatedValueEquipment): static
     {
         $this->estimatedValueEquipment = $estimatedValueEquipment;
 
@@ -110,7 +110,7 @@ class Building
         return $this->estimatedValueOther;
     }
 
-    public function setEstimatedValueOther(int $estimatedValueOther): static
+    public function setEstimatedValueOther(?int $estimatedValueOther): static
     {
         $this->estimatedValueOther = $estimatedValueOther;
 
@@ -122,7 +122,7 @@ class Building
         return $this->approvedValueConstruction;
     }
 
-    public function setApprovedValueConstruction(int $approvedValueConstruction): static
+    public function setApprovedValueConstruction(?int $approvedValueConstruction): static
     {
         $this->approvedValueConstruction = $approvedValueConstruction;
 

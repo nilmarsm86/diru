@@ -111,73 +111,19 @@ class Person
 
     public function __toString()
     {
-        $data = $this->getName() . ' (' . $this->getIdentificationNumber() . ')';
-        if ($this->getPassport()) {
-            $data .= '[' . $this->getPassport() . ']';
-        }
-
-        return $data;
+//        $data = $this->getName() . ' (' . $this->getIdentificationNumber() . ')';
+//        if ($this->getPassport()) {
+//            $data .= '[' . $this->getPassport() . ']';
+//        }
+//
+//        return $data;
+        return $this->getFullName();
     }
-
-//    /**
-//     * @return Collection<int, Client>
-//     */
-//    public function getClients(): Collection
-//    {
-//        return $this->clients;
-//    }
-//
-//    public function addClient(Client $client): static
-//    {
-//        if (!$this->clients->contains($client)) {
-//            $this->clients->add($client);
-//            $client->setPerson($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeClient(Client $client): static
-//    {
-//        if ($this->clients->removeElement($client)) {
-//            // set the owning side to null (unless already changed)
-//            if ($client->getPerson() === $this) {
-//                $client->setPerson(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
     public function getFullName(): string
     {
         return $this->getName() . ' ' . $this->getLastname();
     }
 
-//    /**
-//     * @return Collection<int, Project>
-//     */
-//    public function getProjects(): Collection
-//    {
-//        return $this->projects;
-//    }
-//
-//    public function addProject(Project $project): static
-//    {
-//        if (!$this->projects->contains($project)) {
-//            $this->projects->add($project);
-//            $project->addDraftsman($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeProject(Project $project): static
-//    {
-//        if ($this->projects->removeElement($project)) {
-//            $project->removeDraftsman($this);
-//        }
-//
-//        return $this;
-//    }
+
 }

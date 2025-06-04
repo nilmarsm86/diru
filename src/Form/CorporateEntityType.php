@@ -95,7 +95,7 @@ class CorporateEntityType extends AbstractType
                 'enumType' => 'type',
             ],
             'live_form' => false,
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('province', 'int');

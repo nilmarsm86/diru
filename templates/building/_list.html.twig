@@ -38,6 +38,7 @@
                         <td>{{ building.getTotalApprovedValue() }}</td>
                         <td>{{ building.getTotalEstimatedValue() }}</td>
                         <td>
+                            {% if building.constructor %}
                             <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
                                href="#" {{ stimulusController('detail-link-modal', {
                                 url: path('app_constructor_show', {id:building.constructor.id, state:'modal'}),
@@ -46,6 +47,7 @@
                             >
                                 {{ building.constructor.name }}
                             </a>
+                            {% endif %}
                         </td>
                         <td>
                             <a data-bs-toggle="modal" data-bs-target="#detail-investment"

@@ -67,6 +67,7 @@ final class RepresentativeForm extends AbstractController
 
             $representativeRepository->save($representative, true);
 
+            $this->per = new Representative();
             if (!is_null($this->modal)) {
 //                $this->modalManage($representative);
                 $this->modalManage($representative, 'Selecione el representante agregado.', [

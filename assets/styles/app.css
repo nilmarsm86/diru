@@ -225,9 +225,9 @@ form div.help-text {
     background-size: cover;
 }
 
-details.not-summary summary{
-    display: none;
-}
+/*details.not-summary summary{*/
+/*    display: none;*/
+/*}*/
 
 .btn-outline-nav-link{
     --bs-btn-color: #6ea8fe;

@@ -15,11 +15,13 @@ use App\Form\ProvinceType;
 use App\Repository\BuildingRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ConstructorRepository;
+use App\Repository\DraftsmanRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -34,6 +36,7 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 final class ProjectForm extends AbstractController
 {
     use DefaultActionTrait;
+
 //    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
@@ -88,7 +91,13 @@ final class ProjectForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(ProjectRepository $projectRepository, ClientRepository $clientRepository, InvestmentRepository $investmentRepository): ?Response
+    public function save(
+        ProjectRepository    $projectRepository,
+        ClientRepository     $clientRepository,
+        InvestmentRepository $investmentRepository,
+        Security             $security,
+        DraftsmanRepository  $draftsmanRepository
+    ): ?Response
     {
         $this->preValue();
 //        dd($this->formValues);
@@ -103,18 +112,21 @@ final class ProjectForm extends AbstractController
             $investment = $investmentRepository->find((int)$this->formValues['investment']);
             $project->setInvestment($investment);
 
-            if($this->formValues['individualClient']){
+            if ($this->formValues['individualClient']) {
                 $client = $clientRepository->find((int)$this->formValues['individualClient']);
                 $this->formValues['client'] = (int)$this->formValues['individualClient'];
             }
 
-            if($this->formValues['enterpriseClient']){
+            if ($this->formValues['enterpriseClient']) {
                 $client = $clientRepository->find((int)$this->formValues['enterpriseClient']);
                 $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
             }
 
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);
+
+            $draftsman = $draftsmanRepository->find($security->getUser()->getPerson()->getId());
+            $project->addDraftsman($draftsman);
 
             $projectRepository->save($project, true);
 

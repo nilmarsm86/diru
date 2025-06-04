@@ -12,6 +12,7 @@ use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
 use App\Form\Types\ProjectTypeEnumType;
+use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -83,45 +84,56 @@ class ProjectType extends AbstractType
                 ],
             ])
             //hacer la iteracion por los clientes
-            ->add('client', HiddenType::class, [
-//                'class' => Client::class,
-//                'choice_label' => 'id',
-            ])
+//            ->add('client', HiddenType::class, [
+////                'class' => Client::class,
+////                'choice_label' => 'id',
+//            ])
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
-                'choice_label' => 'id',
+                'choice_label' => function (IndividualClient $individualClient) {
+                    return $individualClient->getPerson()->getFullName();
+                },
                 'mapped' => false,
                 'label' => 'Persona natural',
-                'placeholder' => '-Seleccione-'
+//                'placeholder' => '-Seleccione-'
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
                 'choice_label' => 'representative',
                 'mapped' => false,
                 'label' => 'Cliente empresarial',
-                'placeholder' => '-Seleccione-'
+//                'placeholder' => '-Seleccione-'
             ])
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,
                 'choice_label' => 'name',
                 'label' => 'Inversión:',
-                'placeholder' => '-Seleccione-',
-                'modal_id' => '#add-investment',
                 'detail' => true,
                 'detail_title' => 'Detalle de la Inversión',
                 'detail_id' => 'detail_investment_entity',
-                'detail_loading' => 'Cargando detalles de la inversión...',
                 'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar Inversión',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_investment_new', ['modal' => 'modal-load']),
 //                'query_builder' => $this->getInvestmentQueryBuilder($options),
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.')
+                ]
             ])
-            ->add('building', LiveCollectionType::class, [
+            ->add('buildings', LiveCollectionType::class, [
                 'entry_type' => BuildingType::class,
                 'button_delete_options' => [
                     'label_html' => true
                 ],
-                'mapped' => false
-            ]);
-        ;
+                'constraints' => [
+                    new Assert\Count(
+                        min: 1,
+                        minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
+                    )
+                ]
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -130,7 +142,12 @@ class ProjectType extends AbstractType
             'data_class' => Project::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
+            'error_mapping' => [
+                'enumType' => 'type',
+//                'client' => 'individualClient',
+                //'client' => 'enterpriseClient',
+            ],
         ]);
     }
 
@@ -138,7 +155,7 @@ class ProjectType extends AbstractType
      * @param array $options
      * @return Closure
      */
-    private function getInvestmentQueryBuilder(array $options): \Closure
+    private function getInvestmentQueryBuilder(array $options): Closure
     {
         return function (EntityRepository $er) use ($options): QueryBuilder|array {
             return $er->createQueryBuilder('i')

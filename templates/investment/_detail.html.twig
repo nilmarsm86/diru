@@ -72,21 +72,10 @@
                         </a>
                     </td>
                 </tr>
-{#                <tr>#}
-{#                    <th>Obras:</th>#}
-{#                    <td>#}
-{#                        <ul class="px-0 list-unstyled">#}
-{#                            {% for building in investment.buildings %}#}
-{#                                <li>#}
-{#                                    <a href="{{ path('app_building_show', {'id': building.id}) }}">{{ building.name }}</a>#}
-{#                                </li>#}
-{#                            {% else %}#}
-{#                                <li class="text-danger">No tiene obras asociadas.</li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    </td>#}
-{#                </tr>#}
-                {{ include('building/_buildings.html.twig', {'entity': investment}) }}
+                {% for project in investment.projects %}
+                    {{ include('building/_buildings.html.twig', {'entity': project, projectName:project.name}) }}
+                {% endfor %}
+
                 </tbody>
             </table>
         </div>

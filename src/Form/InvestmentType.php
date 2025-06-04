@@ -14,9 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class InvestmentType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -31,8 +37,12 @@ class InvestmentType extends AbstractType
                 'choice_label' => 'name',
                 'required' => false,
                 'label' => 'Zona de ubicación:',
-                'modal_id' => '#add-location-zone',
-                'path' => ''
+//                'modal_id' => '#add-location-zone',
+//                'path' => ''
+                'add' => true,
+                'add_title' => 'Agregar Zona de ubicación',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_location_zone_new', ['modal' => 'modal-load']),
             ])
             ->add('betweenStreets', null, [
                 'label' => 'Entre calles:',

@@ -133,12 +133,13 @@ class QuickProjectType extends AbstractType
 //                'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
 //                'query_builder' => $this->getInvestmentQueryBuilder($options),
 //            ])
-            ->add('moreData', SubmitType::class, [
-                'label' => 'Llenar mas datos',
-            ])
-            ->add('landingData', SubmitType::class, [
-                'label' => 'Datos del terreno'
-            ]);
+//            ->add('moreData', SubmitType::class, [
+//                'label' => 'Llenar mas datos',
+//            ])
+//            ->add('landingData', SubmitType::class, [
+//                'label' => 'Datos del terreno'
+//            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

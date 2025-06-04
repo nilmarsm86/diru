@@ -6,6 +6,7 @@ use App\Entity\Building;
 use App\Entity\Client;
 use App\Entity\Constructor;
 use App\Entity\Contract;
+use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\DraftsmanProject;
 use App\Entity\EnterpriseClient;
@@ -70,11 +71,18 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
                     $projectEntity->addBuilding($this->findBuilding($manager, 'Obra3'));
                 }
 
+                $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
+
                 $manager->persist($projectEntity);
             }
         }
 
         $manager->flush();
+    }
+
+    private function findCurrency(ObjectManager $manager, string $code): ?Currency
+    {
+        return $manager->getRepository(Currency::class)->findOneBy(['code' => $code]);
     }
 
     private function findInvestment(ObjectManager $manager, string $investment): ?Investment
@@ -115,7 +123,8 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             IndividualClientFixtures::class,
             ContractFixtures::class,
             UserFixtures::class,
-            BuildingFixtures::class
+            BuildingFixtures::class,
+            CurrencyFixtures::class
         ];
     }
 }

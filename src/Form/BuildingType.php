@@ -36,7 +36,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0,
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('estimatedValueEquipment', IntegerType::class, [
@@ -45,7 +45,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('estimatedValueOther', IntegerType::class, [
@@ -54,7 +54,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('approvedValueConstruction', IntegerType::class, [
@@ -63,7 +63,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('approvedValueEquipment', IntegerType::class, [
@@ -72,7 +72,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('approvedValueOther', IntegerType::class, [
@@ -81,7 +81,7 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0
                 ],
-//                'data' => 0
+                'empty_data' => 0,
                 'required' => false
             ])
             ->add('constructor', EntityPlusType::class, [

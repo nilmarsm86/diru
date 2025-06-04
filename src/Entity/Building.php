@@ -25,27 +25,27 @@ class Building
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $estimatedValueConstruction = null;
+    private ?int $estimatedValueConstruction = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $estimatedValueEquipment = null;
+    private ?int $estimatedValueEquipment = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $estimatedValueOther = null;
+    private ?int $estimatedValueOther = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $approvedValueConstruction = null;
+    private ?int $approvedValueConstruction = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $approvedValueEquipment = null;
+    private ?int $approvedValueEquipment = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $approvedValueOther = null;
+    private ?int $approvedValueOther = 0;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]

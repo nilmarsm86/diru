@@ -44,7 +44,7 @@
                     <th>Estado:</th>
                     <td>{{ project.state.getLabelFrom(project.state) }}</td>
                 </tr>
-                {% if project.state.getLabelFrom(project.state) is same as get_label_from('App\\Entity\\Enums\\ProjectState', constant('App\\Entity\\Enums\\ProjectState::Stopped')) %}
+                {% if project.isStopped() %}
                     <tr>
                         <th>Razón de detenimiento:</th>
                         <td>{{ project.stopReason }}</td>
@@ -93,7 +93,7 @@
                 <tr>
                     <th>Contrato:</th>
                     <td>
-                        {% if project.contract %}
+                        {% if project.contract is not null %}
                             <a href="{{ path('app_contract_show', {'id': project.contract.id }) }}" target="_blank">
                                 {{ project.contract.code }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>

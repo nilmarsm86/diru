@@ -72,6 +72,7 @@ class Project
     private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Contract $contract = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -95,6 +96,13 @@ class Project
     #[Assert\Valid]
     #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $buildings;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OrderBy(["name" => "ASC"])]
+    #[Assert\Valid]
+//    #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
+    private ?Currency $currency = null;
 
     public function __construct()
     {
@@ -128,13 +136,6 @@ class Project
     {
         $this->type = $this->getType()->value;
         $this->state = $this->getState()->value;
-
-//        //crear la inversion automaticamente
-//        if(is_null($this->getId())){
-//            $investment = new Investment();
-//            $investment->setName($this->getName());
-//            $investment->setProject($this);
-//        }
     }
 
     /**
@@ -160,6 +161,11 @@ class Project
         return $this;
     }
 
+    public function isStopped(): bool
+    {
+        return $this->getState() === ProjectState::Stopped;
+    }
+
     public function getStopReason(): ?string
     {
         return $this->stopReason;
@@ -178,7 +184,7 @@ class Project
     public function getDraftsmans(): Collection
     {
         $draftsman = new ArrayCollection();
-        foreach ($this->getDraftsmansProjects() as $draftsmansProjects){
+        foreach ($this->getDraftsmansProjects() as $draftsmansProjects) {
             $draftsman->add($draftsmansProjects->getDraftsman());
         }
         return $draftsman;
@@ -199,8 +205,8 @@ class Project
     public function removeDraftsman(Draftsman $draftsman): static
     {
         $draftsmansProjects = $draftsman->getDraftsmansProjects();
-        foreach ($draftsmansProjects as $draftsmanProject){
-            if($draftsmanProject->hasProject($this)){
+        foreach ($draftsmansProjects as $draftsmanProject) {
+            if ($draftsmanProject->hasProject($this)) {
                 $this->removeDraftsmansProjects($draftsmanProject);
                 return $this;
             }
@@ -341,6 +347,11 @@ class Project
         return $this;
     }
 
+    public function hasContract(): bool
+    {
+        return !is_null($this->getContract());
+    }
+
     public function getComment(): ?string
     {
         return $this->comment;
@@ -351,6 +362,11 @@ class Project
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function hasComment(): bool
+    {
+        return !is_null($this->getComment());
     }
 
     public function getInvestment(): ?Investment
@@ -409,4 +425,39 @@ class Project
     {
         return $this->getBuildings()->count();
     }
+
+    public function getCurrency(): ?Currency
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?Currency $currency): static
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function createAutomaticInvestment(Municipality $municipality): static
+    {
+        $investment = new Investment();
+        $investment->setName('Inversión del proyecto '.$this->getName());
+        $investment->setStreet('Direccion de la inversión');
+        $investment->setMunicipality($municipality);
+
+        $this->setInvestment($investment);
+
+        return $this;
+    }
+
+    public function createAutomaticBuilding(): static
+    {
+        $building = new Building();
+        $building->setName('Obra del proyecto '.$this->getName());
+        $this->addBuilding($building);
+
+        return $this;
+    }
+
+
 }

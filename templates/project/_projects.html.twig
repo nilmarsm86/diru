@@ -1,0 +1,20 @@
+<tr>
+    <th>Proyectos:</th>
+    <td>
+        <ul class="px-0 list-unstyled">
+            {% for project in entity.projects %}
+                <li>
+                    <a href="{{ path('app_project_show', {'id': project.id}) }}" target="_blank">
+                        {{ project.name }} {{- ux_icon('bx:link-external', {class:'bi'}) -}}
+                    </a>
+                    -
+                    <a href="{{ path('app_investment_show', {'id': project.investment.id}) }}" target="_blank">
+                        {{ project.investment.name }} {{- ux_icon('bx:link-external', {class:'bi'}) -}}
+                    </a>
+                </li>
+            {% else %}
+                <li class="text-danger">No tiene proyectos asociadas.</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>

@@ -3,12 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Client;
+use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
+use App\Entity\Enums\ProjectState;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
 use App\Entity\Person;
 use App\Entity\Project;
+use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
 use App\Form\Types\ProjectTypeEnumType;
@@ -19,8 +22,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,28 +52,11 @@ class ProjectType extends AbstractType
                 ]
             ])
             //solo para modificar(cambiar el estado)
-//            ->add('state', ProjectStateEnumType::class, [
-//                'label' => 'Estado del proyecto:',
-//            ])
-            ->add('isStopped', CheckboxType::class, [
-                'label' => 'Esta detenido:',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-                ],
-                'data' => false
-            ])
-            //solo se muestra si el estado que se selecciona es el del parado
-            ->add('stopReason', null, [
-                'label' => 'Razón de parar el proyecto:',
-            ])
+
 //            ->add('hasOccupiedArea', null, [
 //                'label' => 'Tiene área ocupada:',
 //            ])
-            ->add('comment', null, [
-                'label' => 'Comentar:',
-            ])
+
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
                 'choices' => [
@@ -83,11 +71,6 @@ class ProjectType extends AbstractType
                     'data-action' => 'change->visibility#toggle'//show or hide representative field
                 ],
             ])
-            //hacer la iteracion por los clientes
-//            ->add('client', HiddenType::class, [
-////                'class' => Client::class,
-////                'choice_label' => 'id',
-//            ])
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
                 'choice_label' => function (IndividualClient $individualClient) {
@@ -133,7 +116,23 @@ class ProjectType extends AbstractType
                         minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
                     )
                 ]
-            ]);;
+            ])
+            ->add('currency', EntityPlusType::class, [
+                'class' => Currency::class,
+                'label' => 'Moneda:',
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
+                ]
+            ])
+            ->add('contract', ContractType::class, [
+                'required' => false
+            ])
+
+        ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+            $this->onPreSetData($event);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -145,23 +144,65 @@ class ProjectType extends AbstractType
             ],
             'error_mapping' => [
                 'enumType' => 'type',
-//                'client' => 'individualClient',
-                //'client' => 'enterpriseClient',
             ],
         ]);
     }
 
+//    /**
+//     * @param array $options
+//     * @return Closure
+//     */
+//    private function getInvestmentQueryBuilder(array $options): Closure
+//    {
+//        return function (EntityRepository $er) use ($options): QueryBuilder|array {
+//            return $er->createQueryBuilder('i')
+//                ->join('i.project', 'p')
+//                ->orderBy('i.name');
+//        };
+//    }
+
     /**
-     * @param array $options
-     * @return Closure
+     * @param FormEvent $event
+     * @return void
      */
-    private function getInvestmentQueryBuilder(array $options): Closure
+    private function onPreSetData(FormEvent $event): void
     {
-        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-            return $er->createQueryBuilder('i')
-                ->join('i.project', 'p')
-//                ->where('i.project is null')
-                ->orderBy('i.name');
-        };
+        /** @var Project $project */
+        $project = $event->getData();
+        $form = $event->getForm();
+
+        if ($project->getId()) {
+            $form->add('isStopped', CheckboxType::class, [
+                'label' => 'Esta detenido:',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+                ],
+                'data' => $project->isStopped()
+            ]);
+            //solo se muestra si el estado que se selecciona es el del parado
+            $form->add('stopReason', null, [
+                'label' => 'Razón de parar el proyecto:',
+            ]);
+            $form->add('state', ProjectStateEnumType::class, [
+                'label' => 'Estado del proyecto:',
+            ]);
+
+            $form->add('hasComment', CheckboxType::class, [
+                'label' => 'Comentar:',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+                ],
+                'data' => $project->hasComment()
+            ]);
+            $form->add('comment', null, [
+                'label' => 'Comentar:',
+            ]);
+
+        }
+
     }
 }

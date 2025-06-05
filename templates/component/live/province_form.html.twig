@@ -11,36 +11,41 @@
 
     {{ form_row(form.name) }}
 
-    {#    <details open class="mb-3 mt-0 not-summary" style="padding: 0 0.3rem"> #}
-    <details open class="mb-3 mt-0 offset-sm-2 not-summary" style="padding: 0 0.3rem">
-        <summary class="mb-3 mt-0 btn btn-primary"
-                 style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
-            Municipios
-        </summary>
-        <div class="row mb-3">
-            <div class="col-12">
-                {{ form_widget(form.municipalities.vars.button_add, { label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar municipio', attr: { class: 'btn btn-outline-nav-link btn-sm' } }) }}
-                {{ form_errors(form) }}
+    {{ form_row(form.municipalities.vars.button_add, {
+        label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar municipio',
+        attr: { class: 'btn btn-outline-nav-link btn-sm' }
+    }) }}
+
+    {% if form_errors(form.municipalities) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-2 col-form-label-sm fw-bold"></div>
+            <div class="col-sm-10">
+                {{ form_errors(form.municipalities) }}
             </div>
         </div>
+    {% endif %}
 
-        {% for key, municipality in form.municipalities %}
-            <div class="mb-3 row">
-                {{ form_label(municipality.name) }}
-                <div class="col-sm-10">
-                    <div class="input-group">
-                        {{ form_widget(municipality.name) }}
-                        {{ form_widget(municipality.vars.button_delete, { label: ux_icon('bi:trash', {class:'bi'}), attr: { class: 'btn btn-outline-danger' } }) }}
-                        {{ form_help(municipality.name) }}
-                        {{ form_errors(municipality.name) }}
+    {% for key, municipality in form.municipalities %}
+        <details class="offset-sm-2 collection" {% if form_errors(municipality.name) or this.prov.id is not null %}open{% endif %}>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">Municipio:</div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        <button class="btn btn-primary btn-sm" type="button">Button</button>
+                        {{ form_widget(municipality.vars.button_delete, {
+                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                            attr: { class: 'btn btn-outline-danger btn-sm' }
+                        }) }}
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            </summary>
+            {{ form_row(municipality.name) }}
+        </details>
+    {% endfor %}
 
-        {# avoid an extra label for this field #}
-        {#        {% do form.municipalities.setRendered %} #}
-    </details>
+    {# avoid an extra label for this field #}
+    {#        {% do form.municipalities.setRendered %} #}
+
 
     <div class="row mb-3">
         <div class="col-sm-10 offset-sm-2">

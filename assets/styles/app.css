@@ -246,3 +246,32 @@ form div.help-text {
     --bs-gradient: none;
     /*font-size: 16px;*/
 }
+
+details.collection{
+    border: var(--bs-border-width) solid var(--bs-border-color-translucent);
+    background-color: rgba(var(--bs-body-color-rgb), 0.03);
+    margin-bottom: 1rem !important;
+    min-height: calc(1.5em + .5rem + calc(var(--bs-border-width) * 2));
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    border-radius: var(--bs-border-radius-sm);
+}
+
+.summary-btn-lis{
+    margin-top: -1.20rem;
+    margin-left: 0;
+}
+
+summary.collection{
+    padding-top: 0.5rem;
+    padding-bottom: 0;
+}
+
+summary.collection::marker{
+    margin-top: 100px;
+}
+
+.summary-btn-bar{
+    margin-top: -3px;
+    margin-bottom: 5px;
+}

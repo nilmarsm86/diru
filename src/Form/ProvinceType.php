@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Municipality;
 use App\Entity\Province;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
@@ -25,7 +23,8 @@ class ProvinceType extends AbstractType
                 'entry_type' => MunicipalityType::class,
                 'button_delete_options' => [
                     'label_html' => true
-                ]
+                ],
+                'error_bubbling' => false
             ]);
         ;
     }
@@ -36,7 +35,7 @@ class ProvinceType extends AbstractType
             'data_class' => Province::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
         ]);
     }
 }

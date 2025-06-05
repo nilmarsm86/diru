@@ -115,19 +115,7 @@ class IndividualClientType extends AbstractType
         $form->add('representative', EntityPlusType::class, [
             'class' => Representative::class,
             'required' => false,
-//            'placeholder' => '-Seleccione-',
-            'label' => 'Representante:',
-//            'query_builder' => $this->getPersonQueryBuilder($ec),
-//            'modal_id' => '#add-person',
-//            'path' => $this->router->generate('app_person_options', ['id' => 0]),
-//            'path' => '',//esta en un form en un live-compoentn
-
-//            'detail' => true,
-//            'detail_title' => 'Detalle de los representantes',
-//            'detail_id' => 'detail_person',
-//            'detail_loading' => 'Cargando detalles de los representantes...',
-//            'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
-
+            'label' => false,
             'detail' => true,
             'detail_title' => 'Detalle del representante',
             'detail_id' => 'modal-load',
@@ -139,14 +127,14 @@ class IndividualClientType extends AbstractType
             'add_url' => $this->router->generate('app_representative_new', ['modal' => 'modal-load']),
         ]);
 
-        $form->add('hasRepresentative', CheckboxType::class, [
-            'label' => 'Tiene representante',
-            'mapped' => false,
-            'required' => false,
-            'attr' => [
-                'data-action' => 'change->visibility#toggle'//show or hide representative field
-            ],
-            'data' => (bool)$ic->getRepresentative()
-        ]);
+//        $form->add('hasRepresentative', CheckboxType::class, [
+//            'label' => 'Tiene representante',
+//            'mapped' => false,
+//            'required' => false,
+//            'attr' => [
+//                'data-action' => 'change->visibility#toggle'//show or hide representative field
+//            ],
+//            'data' => (bool)$ic->getRepresentative()
+//        ]);
     }
 }

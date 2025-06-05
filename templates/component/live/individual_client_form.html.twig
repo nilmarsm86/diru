@@ -36,13 +36,26 @@
 
     {{ form_row(form.streetAddress) }}
 
-    <div {{ stimulusController('visibility') }}>
-        {{ form_row(form.hasRepresentative) }}
+{#    <div {{ stimulusController('visibility') }}>#}
+{#        {{ form_row(form.hasRepresentative) }}#}
 
-        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ic.representative %}show{% else %}none{% endif %}">
-            {{ form_row(form.representative) }}
-        </div>
-    </div>
+{#        <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if ic.representative %}show{% else %}none{% endif %}">#}
+{#            {{ form_row(form.representative) }}#}
+{#        </div>#}
+{#    </div>#}
+
+    <details class="collection" {% if this.ic.getRepresentative() %}open{% endif %}>
+        <summary class="collection">
+            <div class="row summary-btn-lis">
+                <div class="col">Representante:</div>
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                </div>
+            </div>
+        </summary>
+        <br>
+        {{ form_row(form.representative) }}
+    </details>
 
     <div class="row mb-3">
         <div class="col-sm-12">

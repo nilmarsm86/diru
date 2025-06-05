@@ -9,6 +9,7 @@
         <select name="twig--table--amount"
                 class="d-inline-block form-select form-select-sm"
                 {{ stimulusTarget('twig/table/amount', 'select') }}
+                style="width: 50%"
         >
             {% for item in this.options %}
                 <option value="{{ item }}" {% if this.amount == item %}selected{% endif %}>

@@ -18,59 +18,7 @@
 
     {% block body %}
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-            <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <th>Nombre:</th>
-                    <td>{{ corporate_entity.name }}</td>
-                </tr>
-                <tr>
-                    <th>Código de empresa:</th>
-                    <td>
-                        {{ corporate_entity.code }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        NIT
-                        <em class="small" style="font-weight: lighter">(Número de Identificación Tributaria)</em>:
-                    </th>
-                    <td>
-                        {{ corporate_entity.nit }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Organismo:</th>
-                    <td>
-                        <a href="{{ path('app_organism_show', {'id': corporate_entity.organism.id }) }}">
-                            {{ corporate_entity.organism }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Tipo de entidad:</th>
-                    <td>
-                        {{ corporate_entity.type.getLabelFrom(corporate_entity.type) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Provincia:</th>
-                    <td>
-                        <a href="{{ path('app_province_show', {'id': corporate_entity.municipality.province.id }) }}">
-                            {{ corporate_entity.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Municipio:</th>
-                    <td>
-                        <a href="{{ path('app_municipality_show', {'id': corporate_entity.municipality.id }) }}">
-                            {{ corporate_entity.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            {{ include('corporate_entity/_inner_corporate_entity.html.twig', {entity:corporate_entity}) }}
         </div>
     {% endblock %}
 

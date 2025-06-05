@@ -251,10 +251,11 @@ details.collection{
     border: var(--bs-border-width) solid var(--bs-border-color-translucent);
     background-color: rgba(var(--bs-body-color-rgb), 0.03);
     margin-bottom: 1rem !important;
-    min-height: calc(1.5em + .5rem + calc(var(--bs-border-width) * 2));
+    /*min-height: calc(1.5em + .5rem + calc(var(--bs-border-width) * 2));*/
     padding: .25rem .5rem;
     font-size: .875rem;
     border-radius: var(--bs-border-radius-sm);
+    min-height: 50px;
 }
 
 .summary-btn-lis{

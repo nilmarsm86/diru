@@ -20,36 +20,28 @@
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
             <table class="table table-hover">
                 <tbody>
-                {% if enterprise_client.representative %}
-                    <tr>
-                        <th>Representante:</th>
-                        <td>
-                            <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                <table class="table table-hover">
-                                    <tbody>
-                                    <tr>
-                                        <th>Nombre y Apellidos:</th>
-                                        <td>{{ enterprise_client.representative.getFullName() }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Carnet de identidad:</th>
-                                        <td>{{ enterprise_client.representative.identificationNumber }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pasaporte:</th>
-                                        <td>{{ enterprise_client.representative.passport }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                {% endif %}
+                <tr>
+                    <th>Representante:</th>
+                    <td>
+                        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                            {{ include('representative/_inner_detail.html.twig', {entity:enterprise_client.representative}) }}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Entidad corporativa:</th>
+                    <td>
+                        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                            {{ include('corporate_entity/_inner_corporate_entity.html.twig', {entity:enterprise_client.corporateEntity}) }}
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <th>Teléfono:</th>
                     <td>
                         <a href="phone:{{ enterprise_client.email }}">
-                            {{ enterprise_client.phone }}
+                            {{ enterprise_client.phone }} {{ ux_icon('bi:telephone', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -57,57 +49,25 @@
                     <th>Correo:</th>
                     <td>
                         <a href="mailto:{{ enterprise_client.email }}">
-                            {{ enterprise_client.email }}
+                            {{ enterprise_client.email }} {{ ux_icon('bi:envelope', {class:'bi'}) }}
                         </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Nombre de la entidad corporativa:</th>
-                    <td>{{ enterprise_client.corporateEntity.name }}</td>
-                </tr>
-                <tr>
-                    <th>Código de empresa de la entidad corporativa:</th>
-                    <td>
-                        {{ enterprise_client.corporateEntity.code }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        NIT de la entidad corporativa
-                        <br>
-                        <em class="small" style="font-weight: lighter">(Número de Identificación Tributaria)</em>:
-                    </th>
-                    <td>
-                        {{ enterprise_client.corporateEntity.nit }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Organismo de la entidad corporativa:</th>
-                    <td>
-                        <a href="{{ path('app_organism_show', {'id': enterprise_client.corporateEntity.organism.id }) }}">
-                            {{ enterprise_client.corporateEntity.organism }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Tipo de entidad corporativa:</th>
-                    <td>
-                        {{ enterprise_client.corporateEntity.type.getLabelFrom(enterprise_client.corporateEntity.type) }}
                     </td>
                 </tr>
                 <tr>
                     <th>Provincia:</th>
                     <td>
-                        <a href="{{ path('app_province_show', {'id': enterprise_client.municipality.province.id }) }}">
-                            {{ enterprise_client.getProvinceName() }}
+                        <a href="{{ path('app_province_show', {'id': enterprise_client.municipality.province.id }) }}"
+                           target="_blank">
+                            {{ enterprise_client.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <th>Municipio:</th>
                     <td>
-                        <a href="{{ path('app_municipality_show', {'id': enterprise_client.municipality.id }) }}">
-                            {{ enterprise_client.getMunicipalityName() }}
+                        <a href="{{ path('app_municipality_show', {'id': enterprise_client.municipality.id }) }}"
+                           target="_blank">
+                            {{ enterprise_client.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>

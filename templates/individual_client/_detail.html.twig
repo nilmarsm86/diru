@@ -36,7 +36,7 @@
                     <th>Teléfono:</th>
                     <td>
                         <a href="phone:{{ individual_client.email }}">
-                            {{ individual_client.phone }}
+                            {{ individual_client.phone }} {{ ux_icon('bi:telephone', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -45,7 +45,7 @@
                     <th>Correo:</th>
                     <td>
                         <a href="mailto:{{ individual_client.email }}">
-                            {{ individual_client.email }}
+                            {{ individual_client.email }} {{ ux_icon('bi:envelope', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -55,16 +55,16 @@
                 <tr>
                     <th>Provincia:</th>
                     <td>
-                        <a href="{{ path('app_province_show', {'id': individual_client.municipality.province.id }) }}">
-                            {{ individual_client.getProvinceName() }}
+                        <a href="{{ path('app_province_show', {'id': individual_client.municipality.province.id }) }}" target="_blank">
+                            {{ individual_client.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <th>Municipio:</th>
                     <td>
-                        <a href="{{ path('app_municipality_show', {'id': individual_client.municipality.id }) }}">
-                            {{ individual_client.getMunicipalityName() }}
+                        <a href="{{ path('app_municipality_show', {'id': individual_client.municipality.id }) }}" target="_blank">
+                            {{ individual_client.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
                 </tr>
@@ -77,25 +77,11 @@
                         <th>Representante:</th>
                         <td>
                             <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                <table class="table table-hover">
-                                    <tbody>
-                                    <tr>
-                                        <th>Nombre y Apellidos:</th>
-                                        <td>{{ individual_client.representative.getFullName() }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Carnet de identidad:</th>
-                                        <td>{{ individual_client.representative.identificationNumber }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pasaporte:</th>
-                                        <td>{{ individual_client.representative.passport }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                {{ include('representative/_inner_detail.html.twig', {entity:individual_client.representative}) }}
                             </div>
                         </td>
                     </tr>
+
                 {% endif %}
                 </tbody>
             </table>

@@ -5,15 +5,21 @@
 >
     <form method="get">
         <label class="form-label">
-            <input
-                    type="search"
-                    class="form-control form-control-sm"
-                    aria-controls="dataTable"
-                    placeholder="{{ this.placeholder }}"
-                    name="filter"
-                    value="{{ this.filter }}"
-                    {{ stimulusTarget('twig/table/filter', 'input') }}
-            >
+            <div class="input-group input-group-sm me-2">
+                <span class="input-group-text" style="background-color: var(--bs-body-bg);border-right: none">
+                    {{ ux_icon('bi:search', {class:'bi'}) }}
+                </span>
+                <input
+                        type="search"
+                        class="form-control form-control-sm"
+                        aria-controls="dataTable"
+                        placeholder="{{ this.placeholder }}"
+                        name="filter"
+                        value="{{ this.filter }}"
+                        {{ stimulusTarget('twig/table/filter', 'input') }}
+                        style="border-left: none"
+                >
+            </div>
         </label>
     </form>
 </div>

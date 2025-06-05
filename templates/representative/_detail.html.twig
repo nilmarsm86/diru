@@ -18,30 +18,7 @@
 
     {% block body %}
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-            <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <th>Nombre y Apellidos:</th>
-                    <td>{{ representative.getFullName() }}</td>
-                </tr>
-                <tr>
-                    <th>Carnet de identidad:</th>
-                    <td>{{ representative.identificationNumber }}</td>
-                </tr>
-                <tr>
-                    <th>Pasaporte:</th>
-                    <td>{{ representative.passport }}</td>
-                </tr>
-                <tr>
-                    <th>Teléfono:</th>
-                    <td>{{ representative.phone }}</td>
-                </tr>
-                <tr>
-                    <th>Correo:</th>
-                    <td>{{ representative.email }}</td>
-                </tr>
-                </tbody>
-            </table>
+            {{ include('representative/_inner_detail.html.twig', {entity:representative}) }}
         </div>
     {% endblock %}
 

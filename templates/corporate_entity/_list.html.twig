@@ -50,7 +50,7 @@
                         <th>Tipo</th>
                     {% endif %}
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+{#                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -81,13 +81,13 @@
                                 {{ corporateEntity.getProvinceName() }}
                             </a>
                         </td>
-                        <td>
-                            <a href="{{ filterLink(corporateEntity.getMunicipalityName()) }}"
-                               class="text-decoration-none"
-                            >
-                                {{ corporateEntity.getMunicipalityName() }}
-                            </a>
-                        </td>
+{#                        <td>#}
+{#                            <a href="{{ filterLink(corporateEntity.getMunicipalityName()) }}"#}
+{#                               class="text-decoration-none"#}
+{#                            >#}
+{#                                {{ corporateEntity.getMunicipalityName() }}#}
+{#                            </a>#}
+{#                        </td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_corporate_entity_show', {'id': corporateEntity.id}), 'bi:eye', '', 'Detalle de la entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_show', {'id': corporateEntity.id})})) }}
                             {{ tableActionButton3(path('app_corporate_entity_edit', {'id': corporateEntity.id}), 'fa:edit', '', 'Editar entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_edit', {'id': corporateEntity.id})})) }}

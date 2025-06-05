@@ -1,0 +1,53 @@
+<table class="table table-hover">
+    <tbody>
+    <tr>
+        <th>Nombre:</th>
+        <td>{{ entity.name }}</td>
+    </tr>
+    <tr>
+        <th>Código de empresa:</th>
+        <td>
+            {{ entity.code }}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            NIT
+            <em class="small" style="font-weight: lighter">(Número de Identificación Tributaria)</em>:
+        </th>
+        <td>
+            {{ entity.nit }}
+        </td>
+    </tr>
+    <tr>
+        <th>Organismo:</th>
+        <td>
+            {{ entity.organism }}
+        </td>
+    </tr>
+    <tr>
+        <th>Tipo de entidad:</th>
+        <td>
+            {{ entity.type.getLabelFrom(entity.type) }}
+        </td>
+    </tr>
+    <tr>
+        <th>Provincia:</th>
+        <td>
+            {# TODO: refactoraizar #}
+            <a href="{{ path('app_province_show', {'id': entity.municipality.province.id }) }}">
+                {{ entity.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <th>Municipio:</th>
+        <td>
+            {# TODO: refactoraizar #}
+            <a href="{{ path('app_municipality_show', {'id': entity.municipality.id }) }}">
+                {{ entity.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>

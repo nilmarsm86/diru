@@ -19,7 +19,7 @@ final class Refresh
     public function showRefresh(): bool
     {
         foreach ($this->queryNames as $q) {
-            if ($this->requestStack->getCurrentRequest()->query->has($q)) {
+            if ($this->requestStack->getCurrentRequest()->query->has($q) && !empty($this->requestStack->getCurrentRequest()->query->get($q))) {
                 return true;
             }
         }

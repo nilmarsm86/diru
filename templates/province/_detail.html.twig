@@ -30,7 +30,7 @@
                         <ul class="px-0 list-unstyled">
                             {% for municipality in province.municipalities %}
                                 <li>
-                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}">
+                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}" target="_blank">
                                         {{ municipality.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                                     </a>
                                 </li>

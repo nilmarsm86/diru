@@ -7,16 +7,7 @@
         }
     }) }}
 
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.name) }}
-        </div>
-        {% if form.state is defined %}
-            <div class="col">
-                {{ form_row(form.state) }}
-            </div>
-        {% endif %}
-    </div>
+    {{ form_row(form.name) }}
 
     <div class="mb-0 row">
         <div class="col">
@@ -43,168 +34,215 @@
 
     {{ form_row(form.currency) }}
 
-    <details class="collection" {% if this.pro.hasContract() %}open{% endif %}>
-        <summary class="collection">
-            <div class="row summary-btn-lis">
-                <div class="col">Contrato:</div>
-                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+    {% if this.pro.id is null %}
+        <div class="mb-0 row" {{ stimulusController('visibility') }}>
+            <div class="col">
+                <details class="collection" {% if this.pro.hasContract() %}open{% endif %}>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Contrato:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
-                </div>
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    <div class="mb-0 row">
+                        <div class="col">
+                            {{ form_row(form.contract.code) }}
+                        </div>
+                        <div class="col">
+                            {{ form_row(form.contract.year) }}
+                        </div>
+                    </div>
+                </details>
             </div>
-        </summary>
-        <br>
-        <div class="mb-0 row">
             <div class="col">
-                {{ form_row(form.contract.code) }}
-            </div>
-            <div class="col">
-                {{ form_row(form.contract.year) }}
+                <details class="collection" {% if this.pro.hasComment() %}open{% endif %}>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Comentario:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    {% if form.comment is defined %}
+                        {{ form_row(form.comment) }}
+                    {% endif %}
+                </details>
             </div>
         </div>
-    </details>
+    {% else %}
+        <details class="collection" {% if this.pro.hasContract() %}open{% endif %}>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">Contrato:</div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
-    {% if form.isStopped is defined %}
-        <div class="mb-0 row">
-            <div class="col">
-                <div {{ stimulusController('visibility') }}>
-                    {{ form_row(form.isStopped) }}
-
-                    <div {{ stimulusTarget('visibility', 'target') }}
-                            style="display: {% if this.pro.isStopped() %}block{% else %}none{% endif %}">
-                        {{ form_row(form.stopReason) }}
                     </div>
+                </div>
+            </summary>
+            <br>
+            <div class="mb-0 row">
+                <div class="col">
+                    {{ form_row(form.contract.code) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.contract.year) }}
                 </div>
             </div>
-            <div class="col">
-                <div {{ stimulusController('visibility') }}>
-                    {{ form_row(form.hasComment) }}
+        </details>
+    {% endif %}
 
-                    <div {{ stimulusTarget('visibility', 'target') }}
-                            style="display: {% if this.pro.hasComment() %}block{% else %}none{% endif %}">
+
+    <div class="mb-0 row" {{ stimulusController('visibility-by-select', {openData:'0'}) }}>
+        <div class="col">
+            {% if form.state is defined %}
+                {{ form_row(form.state) }}
+            {% endif %}
+
+            {% if form.stopReason is defined %}
+                <details class="collection"
+                         {% if this.pro.hasComment() %}open{% endif %} {{ stimulusTarget('visibility-by-select', 'detail') }}>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Razon de parar:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    {% if form.comment is defined %}
+                        {{ form_row(form.stopReason) }}
+                    {% endif %}
+                </details>
+            {% endif %}
+        </div>
+        <div class="col">
+            {% if this.pro.id is not null %}
+                <details class="collection" open>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Comentario:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    {% if form.comment is defined %}
                         {{ form_row(form.comment) }}
-                    </div>
-                </div>
+                    {% endif %}
+                </details>
+            {% endif %}
+        </div>
+    </div>
+
+    {{ form_row(form.buildings.vars.button_add, {
+        label: 'Agregar obra',
+        attr: { class: 'btn btn-outline-nav-link btn-sm' }
+    }) }}
+
+    {% if form_errors(form.buildings) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-2 col-form-label-sm fw-bold"></div>
+            <div class="col-sm-10">
+                {{ form_errors(form.buildings) }}
             </div>
         </div>
     {% endif %}
 
-    <details open class="mb-3 mt-0 not-summary" style="padding: 0 0.3rem;">
-        <summary class="mb-3 mt-0 btn btn-primary"
-                 style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);display: none">
-            Obras
-        </summary>
-        <div class="row mb-3">
-            <div class="col-12">
-                {{ form_widget(form.buildings.vars.button_add, { label: 'Agregar obra', attr: { class: 'btn btn-outline-nav-link btn-sm' } }) }}
-                {{ form_errors(form) }}
-            </div>
-        </div>
-
-        {% for key, building in form.buildings %}
-            <details class="mb-3 mt-0"
-                     style="padding: 0 var(--bs-card-spacer-x);border: var(--bs-card-border-width) solid var(--bs-card-border-color);border-radius: var(--bs-border-radius);background-color: var(--bs-card-cap-bg);"
-                     {% if (this.pro.id is not null) %}open{% endif %}>
-                <summary class="mb-0 mt-0" style="font-weight: bold;">
-                    <div class="row">
-                        <div class="col"><span style="margin-right: 80%">Obra</span></div>
-                        <div class="col"><button class="btn btn-sm btn-primary">Gestionar obra</button></div>
-                        <div class="col">{{ form_widget(building.vars.button_delete, { label: 'Eliminar', attr: { class: 'btn btn-sm btn-outline-danger', style:'margin-top:5px;margin-bottom:5px' } }) }}</div>
+    {% for key, building in form.buildings %}
+        <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">Obra:</div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        <button class="btn btn-primary btn-sm" type="button">Reporte</button>
+                        {{ form_widget(building.vars.button_delete, {
+                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                            attr: { class: 'btn btn-outline-danger btn-sm' }
+                        }) }}
                     </div>
+                </div>
+            </summary>
 
+            {{ form_row(building.name) }}
+            {{ form_row(building.constructor) }}
 
+            <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+                <summary class="collection">
+                    <div class="row summary-btn-lis">
+                        <div class="col">Valores aprobados:</div>
+                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
+                        </div>
+                    </div>
                 </summary>
-
-                <div class="mb-3 row">
-                    <div class="col-sm-12">
-                        {{ form_label(building.name) }}
-                        {{ form_widget(building.name) }}
-                        {{ form_help(building.name) }}
-                        {{ form_errors(building.name) }}
+                <br>
+                <div class="mb-0 row" {{ stimulusController('summation-values') }}>
+                    <div class="col">
+                        {{ form_row(building.approvedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(building.approvedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(building.approvedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <p class="text-end">Total:</p>
+                            <h5 class="text-end">$
+                                <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
+                                        0
+                                    </span>
+                            </h5>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <div class="col-sm-12">
-                        {{ form_label(building.constructor) }}
-                        {{ form_widget(building.constructor) }}
-                        {{ form_help(building.constructor) }}
-                        {{ form_errors(building.constructor) }}
-                    </div>
-                </div>
-
-                <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);"
-                         {% if (this.pro.id is not null) %}open{% endif %}>
-                    <summary class="mb-3 mt-0"
-                             style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
-                        Valores aprobados
-                    </summary>
-
-                    <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-                        <div class="col">
-                            {{ form_label(building.approvedValueConstruction) }}
-                            {{ form_widget(building.approvedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
-                        </div>
-                        <div class="col">
-                            {{ form_label(building.approvedValueEquipment) }}
-                            {{ form_widget(building.approvedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
-                        </div>
-                        <div class="col">
-                            {{ form_label(building.approvedValueOther) }}
-                            {{ form_widget(building.approvedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
-
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <p class="text-end">Total:</p>
-                                <h5 class="text-end">$ <span
-                                            class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);"
-                         {% if (this.pro.id is not null) %}open{% endif %}>
-                    <summary class="mb-3 mt-0"
-                             style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
-                        Valores estimados
-                    </summary>
-
-                    <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-                        <div class="col">
-                            {{ form_label(building.estimatedValueConstruction) }}
-                            {{ form_widget(building.estimatedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
-
-                        </div>
-                        <div class="col">
-                            {{ form_label(building.estimatedValueEquipment) }}
-                            {{ form_widget(building.estimatedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
-
-                        </div>
-                        <div class="col">
-                            {{ form_label(building.estimatedValueOther) }}
-                            {{ form_widget(building.estimatedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
-
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <p class="text-end">Total:</p>
-                                <h5 class="text-end">$ <span
-                                            class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
             </details>
-        {% endfor %}
 
-        {# avoid an extra label for this field #}
-        {#        {% do form.municipalities.setRendered %} #}
-    </details>
+            <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+                <summary class="collection">
+                    <div class="row summary-btn-lis">
+                        <div class="col">Valores estimados:</div>
+                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                        </div>
+                    </div>
+                </summary>
+                <br>
+                <div class="mb-0 row" {{ stimulusController('summation-values') }}>
+                    <div class="col">
+                        {{ form_row(building.estimatedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(building.estimatedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(building.estimatedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <p class="text-end">Total:</p>
+                            <h5 class="text-end">$
+                                <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+        </details>
+    {% endfor %}
+
+    {# avoid an extra label for this field #}
+    {#        {% do form.municipalities.setRendered %} #}
+    {#    </details> #}
 
     <div class="row mb-3">
         <div class="col-sm-12">

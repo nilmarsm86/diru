@@ -44,19 +44,20 @@ class ProjectType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
             ])
-            ->add('type', ProjectTypeEnumType::class, [
+            ->add('type', ChoiceType::class, [
                 'label' => 'Tipo de proyecto:',
-//                'data' => \App\Entity\Enums\ProjectType::Parcel
-                'constraints' => [
-                    new Assert\NotBlank(message: 'Seleccione el tipo de proyecto.'),
+                'expanded' => true,
+                'multiple' => false,
+                'placeholder' => null,
+                'choices' => [
+                    \App\Entity\Enums\ProjectType::getLabelFrom(\App\Entity\Enums\ProjectType::Parcel) => \App\Entity\Enums\ProjectType::Parcel,
+                    \App\Entity\Enums\ProjectType::getLabelFrom(\App\Entity\Enums\ProjectType::City) => \App\Entity\Enums\ProjectType::City,
+                ],
+                'data' => \App\Entity\Enums\ProjectType::Parcel,
+                'label_attr' => [
+                    'class' => 'radio-inline'
                 ]
             ])
-            //solo para modificar(cambiar el estado)
-
-//            ->add('hasOccupiedArea', null, [
-//                'label' => 'Tiene área ocupada:',
-//            ])
-
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
                 'choices' => [
@@ -70,6 +71,9 @@ class ProjectType extends AbstractType
                 'attr' => [
                     'data-action' => 'change->visibility#toggle'//show or hide representative field
                 ],
+                'label_attr' => [
+                    'class' => 'radio-inline'
+                ]
             ])
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
@@ -115,7 +119,8 @@ class ProjectType extends AbstractType
                         min: 1,
                         minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
                     )
-                ]
+                ],
+                'error_bubbling' => false
             ])
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
@@ -126,6 +131,9 @@ class ProjectType extends AbstractType
             ])
             ->add('contract', ContractType::class, [
                 'required' => false
+            ])
+            ->add('comment', null, [
+                'label' => false,
             ])
 
         ;
@@ -172,35 +180,36 @@ class ProjectType extends AbstractType
         $form = $event->getForm();
 
         if ($project->getId()) {
-            $form->add('isStopped', CheckboxType::class, [
-                'label' => 'Esta detenido:',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-                ],
-                'data' => $project->isStopped()
-            ]);
+//            $form->add('isStopped', CheckboxType::class, [
+//                'label' => 'Esta detenido:',
+//                'mapped' => false,
+//                'required' => false,
+//                'attr' => [
+//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+//                ],
+//                'data' => $project->isStopped()
+//            ]);
             //solo se muestra si el estado que se selecciona es el del parado
             $form->add('stopReason', null, [
-                'label' => 'Razón de parar el proyecto:',
+                'label' => false,
             ]);
             $form->add('state', ProjectStateEnumType::class, [
                 'label' => 'Estado del proyecto:',
+                'attr' => [
+                    'data-visibility-by-select-target' => 'select'
+                ]
             ]);
 
-            $form->add('hasComment', CheckboxType::class, [
-                'label' => 'Comentar:',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-                ],
-                'data' => $project->hasComment()
-            ]);
-            $form->add('comment', null, [
-                'label' => 'Comentar:',
-            ]);
+//            $form->add('hasComment', CheckboxType::class, [
+//                'label' => 'Comentar:',
+//                'mapped' => false,
+//                'required' => false,
+//                'attr' => [
+//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+//                ],
+//                'data' => $project->hasComment()
+//            ]);
+
 
         }
 

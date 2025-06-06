@@ -6,6 +6,7 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Component\Twig\Modal\Modal;
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\Contract;
 use App\Entity\Project;
 use App\Entity\Province;
 use App\Form\BuildingType;
@@ -60,9 +61,13 @@ final class ProjectForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?int $client = 0;
 
+    #[LiveProp]
+    public ?Contract $contract = null;
+
     public function mount(?Project $pro = null): void
     {
         $this->pro = (is_null($pro)) ? new Project() : $pro;
+        $this->contract = $this->pro->getContract();
     }
 
     /**
@@ -113,26 +118,39 @@ final class ProjectForm extends AbstractController
             $project->setInvestment($investment);
 
             if ($this->formValues['individualClient']) {
-                $client = $clientRepository->find((int)$this->formValues['individualClient']);
                 $this->formValues['client'] = (int)$this->formValues['individualClient'];
             }
 
             if ($this->formValues['enterpriseClient']) {
-                $client = $clientRepository->find((int)$this->formValues['enterpriseClient']);
                 $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
             }
 
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);
 
-            $draftsman = $draftsmanRepository->find($security->getUser()->getPerson()->getId());
-            $project->addDraftsman($draftsman);
+            if(!empty($this->formValues['draftsman'])){
+                $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
+                $project->addDraftsman($draftsman);
+            }
+
+            if(is_null($this->pro->getId())){
+                if($this->formValues['contract'] && empty($this->formValues['contract']['code'])){
+                    $this->formValues['contract'] = null;
+                    $project->setContract(null);
+                }
+            }else{
+                if($this->formValues['contract'] && empty($this->formValues['contract']['code'])){
+                    $this->formValues['contract']['code'] = $this->pro->getContract()->getCode();
+                    $this->formValues['contract']['year'] = $this->pro->getContract()->getYear();
+                    $project->setContract($this->contract);
+                }
+            }
 
             $projectRepository->save($project, true);
 
             $this->pro = new Project();
             if (!is_null($this->modal)) {
-                $this->modalManage($project, 'Seleccione el nuevo proyecto agregada.', [
+                $this->modalManage($project, 'Seleccione el nuevo proyecto agregado.', [
                     'project' => $project->getId()
                 ]);
                 return null;

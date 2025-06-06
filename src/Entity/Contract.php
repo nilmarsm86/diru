@@ -38,7 +38,7 @@ class Contract
         return $this->code;
     }
 
-    public function setCode(string $code): static
+    public function setCode(?string $code): static
     {
         $this->code = $code;
 

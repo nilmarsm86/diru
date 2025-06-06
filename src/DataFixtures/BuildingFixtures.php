@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\Draftsman;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,6 +27,10 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
                 $buildingEntity->setEstimatedValueEquipment(1000000);
                 $buildingEntity->setEstimatedValueOther(1000000);
 
+                if($building === 'Obra1'){
+                    $buildingEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
+                }
+
                 $manager->persist($buildingEntity);
             }
         }
@@ -38,10 +43,16 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
         return $manager->getRepository(Constructor::class)->findOneBy(['name' => 'Constructora1']);
     }
 
+    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
+    {
+        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
+    }
+
     public function getDependencies(): array
     {
         return [
             ConstructorFixtures::class,
+            UserFixtures::class,
         ];
     }
 }

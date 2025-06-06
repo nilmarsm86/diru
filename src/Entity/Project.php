@@ -88,6 +88,7 @@ class Project
      * @var Collection<int, DraftsmanProject>
      */
     #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'project', cascade: ['persist'])]
+    #[ORM\OrderBy(["startedAt" => "ASC"])]
     private Collection $draftsmansProjects;
 
     /**
@@ -138,8 +139,10 @@ class Project
     {
         $this->type = $this->getType()->value;
         $this->state = $this->getState()->value;
-        if(is_null($this->getContract()) || is_null($this->getContract()->getCode())){
-            $this->setContract(null);
+        if(is_null($this->getId())){
+            if (is_null($this->getContract()) || is_null($this->getContract()->getCode())) {
+                $this->setContract(null);
+            }
         }
     }
 
@@ -195,14 +198,38 @@ class Project
         return $draftsman;
     }
 
+    public function getActiveDraftsman(): ?Draftsman
+    {
+        foreach ($this->getDraftsmansProjects() as $draftsmansProject) {
+            if (is_null($draftsmansProject->getFinishedAt())) {
+                return $draftsmansProject->getDraftsman();
+            }
+        }
+
+        return null;
+    }
+
     public function addDraftsman(Draftsman $draftsman): static
     {
-        $draftsmanProject = new DraftsmanProject();
-        $draftsmanProject->setProject($this);
-        $draftsmanProject->setDraftsman($draftsman);
-        $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+        $actualDraftsman = $this->getActiveDraftsman();
+        if (!is_null($actualDraftsman)) {
+            if ($actualDraftsman->getId() !== $draftsman->getId()) {
+                $actualDraftsmanProject = $actualDraftsman->getDraftsmanProjectByProject($this);
+                $actualDraftsmanProject->setFinishedAt(new \DateTimeImmutable());
 
-        $this->addDraftsmanProject($draftsmanProject);
+                $draftsmanProject = new DraftsmanProject();
+                $draftsmanProject->setProject($this);
+                $draftsmanProject->setDraftsman($draftsman);
+
+                $this->addDraftsmanProject($draftsmanProject);
+            }
+        } else {
+            $draftsmanProject = new DraftsmanProject();
+            $draftsmanProject->setProject($this);
+            $draftsmanProject->setDraftsman($draftsman);
+
+            $this->addDraftsmanProject($draftsmanProject);
+        }
 
         return $this;
     }
@@ -354,7 +381,7 @@ class Project
 
     public function hasContract(): bool
     {
-        if(!is_null($this->getContract()) && !is_null($this->getContract()->getId())){
+        if (!is_null($this->getContract()) && !is_null($this->getContract()->getId())) {
             return true;
         }
         return false;
@@ -449,7 +476,7 @@ class Project
     public function createAutomaticInvestment(Municipality $municipality): static
     {
         $investment = new Investment();
-        $investment->setName('Inversión del proyecto '.$this->getName());
+        $investment->setName('Inversión del proyecto ' . $this->getName());
         $investment->setStreet('Direccion de la inversión');
         $investment->setMunicipality($municipality);
 
@@ -461,7 +488,7 @@ class Project
     public function createAutomaticBuilding(): static
     {
         $building = new Building();
-        $building->setName('Obra del proyecto '.$this->getName());
+        $building->setName('Obra del proyecto ' . $this->getName());
         $this->addBuilding($building);
 
         return $this;

@@ -20,19 +20,12 @@
 
     <div class="mb-0 row" {{ stimulusController('visibility') }}>
         <div class="col">
-            {{ form_row(form.clientType) }}
+            {{ form_row(form.currency) }}
         </div>
         <div class="col">
-            <div {{ stimulusTarget('visibility', 'target') }} style="display: block">
-                {{ form_row(form.individualClient) }}
-            </div>
-            <div {{ stimulusTarget('visibility', 'target') }} style="display: none">
-                {{ form_row(form.enterpriseClient) }}
-            </div>
+            {{ form_row(form.draftsman) }}
         </div>
     </div>
-
-    {{ form_row(form.currency) }}
 
     {% if this.pro.id is null %}
         <div class="mb-0 row" {{ stimulusController('visibility') }}>
@@ -80,7 +73,7 @@
                 <div class="row summary-btn-lis">
                     <div class="col">Contrato:</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
+                        {{ form_errors(form.contract) }}
                     </div>
                 </div>
             </summary>
@@ -95,7 +88,6 @@
             </div>
         </details>
     {% endif %}
-
 
     <div class="mb-0 row" {{ stimulusController('visibility-by-select', {openData:'0'}) }}>
         <div class="col">
@@ -148,8 +140,8 @@
 
     {% if form_errors(form.buildings) %}
         <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
-            <div class="col-sm-2 col-form-label-sm fw-bold"></div>
-            <div class="col-sm-10">
+{#            <div class="col-sm-2 col-form-label-sm fw-bold"></div>#}
+            <div class="col-sm-12">
                 {{ form_errors(form.buildings) }}
             </div>
         </div>

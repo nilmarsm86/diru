@@ -16,10 +16,17 @@ class Draftsman extends Person
     #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'draftsman', cascade: ['persist'])]
     private Collection $draftsmansProjects;
 
+    /**
+     * @var Collection<int, DraftsmanBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: DraftsmanBuilding::class, mappedBy: 'draftsman', cascade: ['persist'])]
+    private Collection $draftsmansBuildings;
+
     public function __construct()
     {
         parent::__construct();
         $this->draftsmansProjects = new ArrayCollection();
+        $this->draftsmansBuildings = new ArrayCollection();
     }
 
     /**
@@ -28,6 +35,21 @@ class Draftsman extends Person
     public function getDraftsmansProjects(): Collection
     {
         return $this->draftsmansProjects;
+    }
+
+    /**
+     * @param Project $project
+     * @return DraftsmanProject|null
+     */
+    public function getDraftsmanProjectByProject(Project $project): ?DraftsmanProject
+    {
+        foreach ($this->getDraftsmansProjects() as $draftsmansProject){
+            if($draftsmansProject->getProject()->getId() === $project->getId()){
+                return $draftsmansProject;
+            }
+        }
+
+        return null;
     }
 
     public function addDraftsmanProject(DraftsmanProject $draftsmanProject): static
@@ -63,7 +85,7 @@ class Draftsman extends Person
         $draftsmanProject = new DraftsmanProject();
         $draftsmanProject->setProject($project);
         $draftsmanProject->setDraftsman($this);
-        $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+//        $draftsmanProject->setStartedAt(new \DateTimeImmutable());
 
         $this->addDraftsmanProject($draftsmanProject);
 
@@ -76,6 +98,81 @@ class Draftsman extends Person
         foreach ($draftsmansProjects as $draftsmanProject){
             if($draftsmanProject->hasDraftsman($this)){
                 $this->removeDraftsmansProjects($draftsmanProject);
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DraftsmanBuilding>
+     */
+    public function getDraftsmansBuildings(): Collection
+    {
+        return $this->draftsmansBuildings;
+    }
+
+    /**
+     * @param Building $building
+     * @return DraftsmanBuilding|null
+     */
+    public function getDraftsmanBuildingByBuilding(Building $building): ?DraftsmanBuilding
+    {
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding){
+            if($draftsmansBuilding->getBuilding()->getId() === $building->getId()){
+                return $draftsmansBuilding;
+            }
+        }
+
+        return null;
+    }
+
+    public function addDraftsmanBuilding(DraftsmanBuilding $draftsmanBuilding): static
+    {
+        if (!$this->draftsmansBuildings->contains($draftsmanBuilding)) {
+            $this->draftsmansBuildings->add($draftsmanBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftsmansBuilding(DraftsmanBuilding $draftsmanBuilding): static
+    {
+        $this->draftsmansBuildings->removeElement($draftsmanBuilding);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Building>
+     */
+    public function getBuildings(): Collection
+    {
+        $buildings = new ArrayCollection();
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding){
+            $buildings->add($draftsmansBuilding->getBuilding());
+        }
+        return $buildings;
+    }
+
+    public function addBuilding(Building $building): static
+    {
+        $draftsmanBuilding = new DraftsmanBuilding();
+        $draftsmanBuilding->setBuilding($building);
+        $draftsmanBuilding->setDraftsman($this);
+
+        $this->addDraftsmanBuilding($draftsmanBuilding);
+
+        return $this;
+    }
+
+    public function removeBuilding(Building $building): static
+    {
+        $draftsmansBuildings = $building->getDraftsmansBuildings();
+        foreach ($draftsmansBuildings as $draftsmansBuilding){
+            if($draftsmansBuilding->hasDraftsman($this)){
+                $this->removeDraftsmansBuilding($draftsmansBuilding);
                 return $this;
             }
         }

@@ -129,14 +129,9 @@ class ProjectType extends AbstractType
                     new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
                 ]
             ])
-            ->add('contract', ContractType::class, [
-                'required' => false
-            ])
             ->add('comment', null, [
                 'label' => false,
-            ])
-
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $this->onPreSetData($event);
@@ -180,16 +175,6 @@ class ProjectType extends AbstractType
         $form = $event->getForm();
 
         if ($project->getId()) {
-//            $form->add('isStopped', CheckboxType::class, [
-//                'label' => 'Esta detenido:',
-//                'mapped' => false,
-//                'required' => false,
-//                'attr' => [
-//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-//                ],
-//                'data' => $project->isStopped()
-//            ]);
-            //solo se muestra si el estado que se selecciona es el del parado
             $form->add('stopReason', null, [
                 'label' => false,
             ]);
@@ -200,18 +185,31 @@ class ProjectType extends AbstractType
                 ]
             ]);
 
-//            $form->add('hasComment', CheckboxType::class, [
-//                'label' => 'Comentar:',
-//                'mapped' => false,
-//                'required' => false,
-//                'attr' => [
-//                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-//                ],
-//                'data' => $project->hasComment()
-//            ]);
-
-
+            $moreAttrDraftsman = ['required' => !is_null($project->getContract()),'data' => $project->getActiveDraftsman(),];
+        } else {
+            $moreAttrDraftsman = ['required' => false];
         }
+
+        $form->add('draftsman', EntityType::class, [
+                'mapped' => false,
+                'class' => Draftsman::class,
+                'placeholder' => '-Seleccionar-',
+                'label' => 'Proyectista:'
+            ] + $moreAttrDraftsman);
+
+        $moreAttr = [];
+        if (!is_null($project->getContract())) {
+            $moreAttr = [
+                'constraints' => [
+                    new Assert\Valid()
+                ],
+                'error_bubbling' => false
+            ];
+        }
+        $form->add('contract', ContractType::class, [
+                'required' => !is_null($project->getContract()),
+            ] + $moreAttr);
+
 
     }
 }

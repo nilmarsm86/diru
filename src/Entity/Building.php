@@ -2,20 +2,40 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
+use App\Entity\Enums\ProjectState;
+use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Building
 {
     use NameToStringTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private string $state;
+
+    #[Assert\Choice(
+        choices: BuildingState::CHOICES,
+        message: 'Seleccione un estado de obra.'
+    )]
+    private BuildingState $enumState;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $stopReason = null;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
@@ -53,6 +73,12 @@ class Building
     #[Assert\NotBlank(message: 'Seleccione o cree el proyecto a la cual pertenece la obra.')]
     private ?Project $project = null;
 
+    /**
+     * @var Collection<int, DraftsmanBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: DraftsmanBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $draftsmansBuildings;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -62,11 +88,60 @@ class Building
         $this->approvedValueConstruction = 0;
         $this->approvedValueEquipment = 0;
         $this->approvedValueOther = 0;
+
+        $this->setState(BuildingState::Registered);
+        $this->draftsmansBuildings = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function onSave(): void
+    {
+        $this->state = $this->getState()->value;
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[ORM\PostLoad]
+    public function onLoad(): void
+    {
+        $this->setState(BuildingState::from($this->state));
+    }
+
+    public function getState(): BuildingState
+    {
+        return $this->enumState;
+    }
+
+    public function setState(BuildingState $enumState): static
+    {
+        $this->state = "";
+        $this->enumState = $enumState;
+
+        return $this;
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->getState() === BuildingState::Stopped;
+    }
+
+    public function getStopReason(): ?string
+    {
+        return $this->stopReason;
+    }
+
+    public function setStopReason(?string $stopReason): static
+    {
+        $this->stopReason = $stopReason;
+
+        return $this;
     }
 
     public function getConstructor(): ?Constructor
@@ -173,6 +248,91 @@ class Building
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Draftsman>
+     */
+    public function getDraftsmans(): Collection
+    {
+        $draftsman = new ArrayCollection();
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding) {
+            $draftsman->add($draftsmansBuilding->getDraftsman());
+        }
+        return $draftsman;
+    }
+
+    public function getActiveDraftsman(): ?Draftsman
+    {
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding) {
+            if (is_null($draftsmansBuilding->getFinishedAt())) {
+                return $draftsmansBuilding->getDraftsman();
+            }
+        }
+
+        return null;
+    }
+
+    public function addDraftsman(Draftsman $draftsman): static
+    {
+        $actualDraftsman = $this->getActiveDraftsman();
+        if (!is_null($actualDraftsman)) {
+            if ($actualDraftsman->getId() !== $draftsman->getId()) {
+                $actualDraftsmanBuilding = $actualDraftsman->getDraftsmanBuildingByBuilding($this);
+                $actualDraftsmanBuilding->setFinishedAt(new \DateTimeImmutable());
+
+                $draftsmanBuilding = new DraftsmanBuilding();
+                $draftsmanBuilding->setBuilding($this);
+                $draftsmanBuilding->setDraftsman($draftsman);
+
+                $this->addDraftsmanBuilding($draftsmanBuilding);
+            }
+        } else {
+            $draftsmanBuilding = new DraftsmanBuilding();
+            $draftsmanBuilding->setBuilding($this);
+            $draftsmanBuilding->setDraftsman($draftsman);
+
+            $this->addDraftsmanBuilding($draftsmanBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftsman(Draftsman $draftsman): static
+    {
+        $draftsmansBuildings = $draftsman->getDraftsmansBuildings();
+        foreach ($draftsmansBuildings as $draftsmanBuilding) {
+            if ($draftsmanBuilding->hasBuilding($this)) {
+                $this->removeDraftsmansBuildings($draftsmanBuilding);
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DraftsmanBuilding>
+     */
+    public function getDraftsmansBuildings(): Collection
+    {
+        return $this->draftsmansBuildings;
+    }
+
+    public function addDraftsmanBuilding(DraftsmanBuilding $draftsmanBuilding): static
+    {
+        if (!$this->draftsmansBuildings->contains($draftsmanBuilding)) {
+            $this->draftsmansBuildings->add($draftsmanBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftsmansBuilding(DraftsmanBuilding $draftsmanBuilding): static
+    {
+        $this->draftsmansBuildings->removeElement($draftsmanBuilding);
 
         return $this;
     }

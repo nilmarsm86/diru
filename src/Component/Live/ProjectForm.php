@@ -17,6 +17,8 @@ use App\Repository\BuildingRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ConstructorRepository;
 use App\Repository\DraftsmanRepository;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\IndividualClientRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
@@ -63,6 +65,14 @@ final class ProjectForm extends AbstractController
 
     #[LiveProp]
     public ?Contract $contract = null;
+
+    public function __construct(
+        private readonly IndividualClientRepository $individualClientRepository,
+        private readonly EnterpriseClientRepository $enterpriseClientRepository,
+    )
+    {
+
+    }
 
     public function mount(?Project $pro = null): void
     {
@@ -111,35 +121,36 @@ final class ProjectForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
+//            dd($this->formValues);
             /** @var Project $project */
             $project = $this->getForm()->getData();
 
             $investment = $investmentRepository->find((int)$this->formValues['investment']);
             $project->setInvestment($investment);
 
-            if ($this->formValues['individualClient']) {
-                $this->formValues['client'] = (int)$this->formValues['individualClient'];
+            if ($this->formValues['clientType'] === 'individual') {
+                $client = (int)$this->formValues['individualClient'];
             }
 
-            if ($this->formValues['enterpriseClient']) {
-                $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
+            if ($this->formValues['clientType'] === 'enterprise') {
+                $client = (int)$this->formValues['enterpriseClient'];
             }
 
-            $client = $clientRepository->find((int)$this->formValues['client']);
+            $client = $clientRepository->find((int)$client);
             $project->setClient($client);
 
-            if(!empty($this->formValues['draftsman'])){
+            if (!empty($this->formValues['draftsman'])) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
                 $project->addDraftsman($draftsman);
             }
 
-            if(is_null($this->pro->getId())){
-                if($this->formValues['contract'] && empty($this->formValues['contract']['code'])){
+            if (is_null($this->pro->getId())) {
+                if ($this->formValues['contract'] && empty($this->formValues['contract']['code'])) {
                     $this->formValues['contract'] = null;
                     $project->setContract(null);
                 }
-            }else{
-                if($this->formValues['contract'] && empty($this->formValues['contract']['code'])){
+            } else {
+                if ($this->formValues['contract'] && empty($this->formValues['contract']['code'])) {
                     $this->formValues['contract']['code'] = $this->pro->getContract()->getCode();
                     $this->formValues['contract']['year'] = $this->pro->getContract()->getYear();
                     $project->setContract($this->contract);
@@ -171,6 +182,16 @@ final class ProjectForm extends AbstractController
     private function getDataModelValue(): ?string
     {
         return 'norender|*';
+    }
+
+    public function isIndividualClient(): bool
+    {
+        return $this->pro->isIndividualClient($this->individualClientRepository);
+    }
+
+    public function isEnterpriseClient(): bool
+    {
+        return $this->pro->isEnterpriseClient($this->enterpriseClientRepository);
     }
 
 }

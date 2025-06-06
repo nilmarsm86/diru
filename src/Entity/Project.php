@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\NameToStringTrait;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\IndividualClientRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -165,6 +168,19 @@ class Project
     {
         $this->state = "";
         $this->enumState = $enumState;
+
+        if($enumState === ProjectState::Stopped){
+            $this->stopAllBuildings();
+        }
+
+        return $this;
+    }
+
+    private function stopAllBuildings(): static
+    {
+        foreach ($this->getBuildings() as $building){
+            $building->setState(BuildingState::Stopped);
+        }
 
         return $this;
     }
@@ -358,6 +374,52 @@ class Project
     public function getClient(): ?Client
     {
         return $this->client;
+    }
+
+    public function isIndividualClient(IndividualClientRepository $individualClientRepository): bool
+    {
+        if(is_null($this->getId())){
+            return true;
+        }
+
+        $client = $this->getClient();
+        if (!is_null($client)) {
+            $individual = $individualClientRepository->find($client->getId());
+            return !is_null($individual);
+        }
+
+        return false;
+    }
+
+    public function getIndividualClient(IndividualClientRepository $individualClientRepository): ?IndividualClient
+    {
+        $client = $this->getClient();
+        if (!is_null($client)) {
+            return $individualClientRepository->find($client->getId());
+        }
+
+        return null;
+    }
+
+    public function isEnterpriseClient(EnterpriseClientRepository $enterpriseClientRepository): bool
+    {
+        $client = $this->getClient();
+        if (!is_null($client)) {
+            $enterprise = $enterpriseClientRepository->find($client->getId());
+            return !is_null($enterprise);
+        }
+
+        return false;
+    }
+
+    public function getEnterpriseClient(EnterpriseClientRepository $enterpriseClientRepository): ?EnterpriseClient
+    {
+        $client = $this->getClient();
+        if (!is_null($client)) {
+            return $enterpriseClientRepository->find($client->getId());
+        }
+
+        return null;
     }
 
     public function setClient(?Client $client): static

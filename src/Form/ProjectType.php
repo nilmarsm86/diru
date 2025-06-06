@@ -15,6 +15,8 @@ use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
 use App\Form\Types\ProjectTypeEnumType;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\IndividualClientRepository;
 use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -33,7 +35,12 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 class ProjectType extends AbstractType
 {
-    public function __construct(private readonly RouterInterface $router)
+    public function __construct(
+        private readonly RouterInterface            $router,
+        private readonly IndividualClientRepository $individualClientRepository,
+        private readonly EnterpriseClientRepository $enterpriseClientRepository,
+
+    )
     {
 
     }
@@ -57,39 +64,6 @@ class ProjectType extends AbstractType
                 'label_attr' => [
                     'class' => 'radio-inline'
                 ]
-            ])
-            ->add('clientType', ChoiceType::class, [
-                'label' => 'Tipo cliente:',
-                'choices' => [
-                    'Persona natural' => 'individual_client',
-                    'Cliente Empresarial' => 'enterprise_client',
-                ],
-                'mapped' => false,
-                'expanded' => true,
-                'multiple' => false,
-                'data' => 'individual_client',
-                'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
-                ],
-                'label_attr' => [
-                    'class' => 'radio-inline'
-                ]
-            ])
-            ->add('individualClient', EntityType::class, [
-                'class' => IndividualClient::class,
-                'choice_label' => function (IndividualClient $individualClient) {
-                    return $individualClient->getPerson()->getFullName();
-                },
-                'mapped' => false,
-                'label' => 'Persona natural',
-//                'placeholder' => '-Seleccione-'
-            ])
-            ->add('enterpriseClient', EntityType::class, [
-                'class' => EnterpriseClient::class,
-                'choice_label' => 'representative',
-                'mapped' => false,
-                'label' => 'Cliente empresarial',
-//                'placeholder' => '-Seleccione-'
             ])
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,
@@ -185,7 +159,7 @@ class ProjectType extends AbstractType
                 ]
             ]);
 
-            $moreAttrDraftsman = ['required' => !is_null($project->getContract()),'data' => $project->getActiveDraftsman(),];
+            $moreAttrDraftsman = ['required' => !is_null($project->getContract()), 'data' => $project->getActiveDraftsman(),];
         } else {
             $moreAttrDraftsman = ['required' => false];
         }
@@ -210,6 +184,78 @@ class ProjectType extends AbstractType
                 'required' => !is_null($project->getContract()),
             ] + $moreAttr);
 
+        $form->add('clientType', ChoiceType::class, [
+            'label' => 'Tipo cliente:',
+            'choices' => [
+                'Persona natural' => 'individual',
+                'Cliente Empresarial' => 'enterprise',
+            ],
+            'mapped' => false,
+            'expanded' => true,
+            'multiple' => false,
+            'data' => (is_null($project->getClient())) ? 'individual' : ($project->isIndividualClient($this->individualClientRepository) ? 'individual' : 'enterprise'),
+            'attr' => [
+                'data-action' => 'change->visibility#toggle'//show or hide representative field
+            ],
+            'label_attr' => [
+                'class' => 'radio-inline'
+            ]
+        ]);
 
+        $form->add('individualClient', EntityType::class, [
+            'class' => IndividualClient::class,
+            'choice_label' => function (IndividualClient $individualClient) {
+                return $individualClient->getPerson()->getFullName();
+            },
+            'mapped' => false,
+            'label' => 'Persona natural',
+//                'placeholder' => '-Seleccione-',
+//            'data' => ($this->findClientType($project) === 'individual') ? $this->findIndividualClient($project) : null
+            'data' => $project->getIndividualClient($this->individualClientRepository)
+        ]);
+        $form->add('enterpriseClient', EntityType::class, [
+            'class' => EnterpriseClient::class,
+            'choice_label' => 'representative',
+            'mapped' => false,
+            'label' => 'Cliente empresarial',
+//                'placeholder' => '-Seleccione-',
+            'data' => $project->getEnterpriseClient($this->enterpriseClientRepository)
+        ]);
+    }
+
+    private function findClientType(Project $project): string
+    {
+        $client = $project->getClient();
+        if (!is_null($client)) {
+            $individual = $this->individualClientRepository->find($client->getId());
+            if (is_null($individual)) {
+                //$enterprise = $this->enterpriseClientRepository->find($client->getId());
+                return 'enterprise';
+            } else {
+                return 'individual';
+            }
+        }
+
+        return 'individual';
+    }
+
+    private function findIndividualClient(Project $project): ?IndividualClient
+    {
+        $client = $project->getClient();
+        if (!is_null($client)) {
+            return $this->individualClientRepository->find($client->getId());
+        }
+
+        return null;
+    }
+
+    private function findEnterpriseClient(Project $project): ?EnterpriseClient
+    {
+        $client = $project->getClient();
+        if (!is_null($client)) {
+            return $this->enterpriseClientRepository->find($client->getId());
+        }
+
+        return null;
     }
 }

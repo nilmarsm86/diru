@@ -20,6 +20,20 @@
 
     <div class="mb-0 row" {{ stimulusController('visibility') }}>
         <div class="col">
+            {{ form_row(form.clientType) }}
+        </div>
+        <div class="col">
+            <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
+                {{ form_row(form.individualClient) }}
+            </div>
+            <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
+                {{ form_row(form.enterpriseClient) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-0 row" {{ stimulusController('visibility') }}>
+        <div class="col">
             {{ form_row(form.currency) }}
         </div>
         <div class="col">

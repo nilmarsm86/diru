@@ -73,6 +73,7 @@ class Project
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
+//    #[Assert\Valid]
     private ?Contract $contract = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -110,6 +111,7 @@ class Project
         $this->setState(ProjectState::Registered);
         $this->registerAt = new \DateTimeImmutable();
         $this->buildings = new ArrayCollection();
+        $this->contract = null;
     }
 
     public function getId(): ?int
@@ -136,6 +138,9 @@ class Project
     {
         $this->type = $this->getType()->value;
         $this->state = $this->getState()->value;
+        if(is_null($this->getContract()) || is_null($this->getContract()->getCode())){
+            $this->setContract(null);
+        }
     }
 
     /**
@@ -349,7 +354,10 @@ class Project
 
     public function hasContract(): bool
     {
-        return !is_null($this->getContract());
+        if(!is_null($this->getContract()) && !is_null($this->getContract()->getId())){
+            return true;
+        }
+        return false;
     }
 
     public function getComment(): ?string

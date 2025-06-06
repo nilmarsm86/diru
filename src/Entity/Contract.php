@@ -17,11 +17,11 @@ class Contract
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El código está vacío.')]
     private ?string $code = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column()]
     #[Assert\NotBlank(message: 'El año está vacío.')]
     private ?int $year = null;
 

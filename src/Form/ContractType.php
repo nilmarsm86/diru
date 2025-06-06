@@ -23,7 +23,7 @@ class ContractType extends AbstractType
             ])
             ->add('year', ChoiceType::class, [
                 'label' => 'Año:',
-                'placeholder' => 'Año del contrato',
+                'placeholder' => '-Seleccione-',
                 'choices' => $years,
                 'data' => date('Y')
             ])

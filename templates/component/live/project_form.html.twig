@@ -23,10 +23,12 @@
             {{ form_row(form.clientType) }}
         </div>
         <div class="col">
-            <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
+            <div {{ stimulusTarget('visibility', 'target') }}
+                    style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
                 {{ form_row(form.individualClient) }}
             </div>
-            <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
+            <div {{ stimulusTarget('visibility', 'target') }}
+                    style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
                 {{ form_row(form.enterpriseClient) }}
             </div>
         </div>
@@ -41,7 +43,7 @@
         </div>
     </div>
 
-    {% if this.pro.id is null %}
+    {% if this.isNew() == true %}
         <div class="mb-0 row" {{ stimulusController('visibility') }}>
             <div class="col">
                 <details class="collection" {% if this.pro.hasContract() %}open{% endif %}>
@@ -114,7 +116,7 @@
                          {% if this.pro.hasComment() %}open{% endif %} {{ stimulusTarget('visibility-by-select', 'detail') }}>
                     <summary class="collection">
                         <div class="row summary-btn-lis">
-                            <div class="col">Razon de parar:</div>
+                            <div class="col">Razón de parar:</div>
                             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
                             </div>
@@ -128,7 +130,7 @@
             {% endif %}
         </div>
         <div class="col">
-            {% if this.pro.id is not null %}
+            {% if this.isNew() == false %}
                 <details class="collection" open>
                     <summary class="collection">
                         <div class="row summary-btn-lis">
@@ -154,7 +156,6 @@
 
     {% if form_errors(form.buildings) %}
         <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
-{#            <div class="col-sm-2 col-form-label-sm fw-bold"></div>#}
             <div class="col-sm-12">
                 {{ form_errors(form.buildings) }}
             </div>
@@ -162,16 +163,21 @@
     {% endif %}
 
     {% for key, building in form.buildings %}
-        <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+        <details class="collection" {% if this.isNew() == false %}open{% endif %}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
                     <div class="col">Obra:</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                         <button class="btn btn-primary btn-sm" type="button">Reporte</button>
-                        {{ form_widget(building.vars.button_delete, {
-                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
-                            attr: { class: 'btn btn-outline-danger btn-sm' }
-                        }) }}
+                        {#                        {{ form_widget(building.vars.button_delete, { #}
+                        {#                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar', #}
+                        {#                            attr: { class: 'btn btn-outline-danger btn-sm' } #}
+                        {#                        }) }} #}
+                        {% if this.pro.id is not null %}
+                            <a class="btn btn-outline-info btn-sm"
+                               href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">Información de la
+                                obra</a>
+                        {% endif %}
                     </div>
                 </div>
             </summary>
@@ -179,7 +185,7 @@
             {{ form_row(building.name) }}
             {{ form_row(building.constructor) }}
 
-            <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+            <details class="collection" {% if this.isNew() == false %}open{% endif %}>
                 <summary class="collection">
                     <div class="row summary-btn-lis">
                         <div class="col">Valores aprobados:</div>
@@ -212,7 +218,7 @@
                 </div>
             </details>
 
-            <details class="collection" {% if this.pro.id is not null %}open{% endif %}>
+            <details class="collection" {% if this.isNew() == false %}open{% endif %}>
                 <summary class="collection">
                     <div class="row summary-btn-lis">
                         <div class="col">Valores estimados:</div>
@@ -253,8 +259,8 @@
     <div class="row mb-3">
         <div class="col-sm-12">
             {{ component('button:submit', {
-                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',
-                label: (this.pro.id is null) ? 'Agregar' : 'Modificar',
+                icon: (this.isNew() == true) ? 'bi:plus-lg' : 'fa:edit',
+                label: (this.isNew() == true) ? 'Agregar' : 'Modificar',
                 component: this
             }) }}
         </div>

@@ -194,4 +194,9 @@ final class ProjectForm extends AbstractController
         return $this->pro->isEnterpriseClient($this->enterpriseClientRepository);
     }
 
+    public function isNew(): bool
+    {
+        return is_null($this->pro->getId());
+    }
+
 }

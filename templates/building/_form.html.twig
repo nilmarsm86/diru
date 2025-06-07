@@ -17,12 +17,12 @@
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
 
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Informe de la obra', 'Informe de la obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestionar inmueble construido', 'Gestionar inmueble construido', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestgionar inmueble nuevo', 'Gestgionar inmueble nuevo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Regulaciones urbanas', 'Regulaciones urbanas', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Analisis del valor de constrccion y montaje', 'Analisis del valor de constrccion y montaje', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+        {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+{#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Informe de la obra', 'Informe de la obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestionar inmueble construido', 'Gestionar inmueble construido', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestgionar inmueble nuevo', 'Gestgionar inmueble nuevo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Regulaciones urbanas', 'Regulaciones urbanas', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Analisis del valor de constrccion y montaje', 'Analisis del valor de constrccion y montaje', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}#}
     {% endblock %}
 
     {% block body %}
@@ -32,9 +32,9 @@
     {% block footer %}
         {{ include('partials/_card_footer.html.twig', {
             list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},
-            delete: {href: 'app_building_delete', label: 'Eliminar', title:'Eliminar obra'},
+            delete: null,
             id: building.id,
-            message: 'Está seguro que desea eliminar la obra?',
+            message: '',
             state: 'form',
             showButton: (showButton is defined and showButton == true) ? true : false,
             entity: building
@@ -44,5 +44,3 @@
 {% endcomponent %}
 
 {{ include('partials/modal/_modal_load.html.twig') }}
-{#{{ include('partials/modal/_modal_add_investment.html.twig') }}#}
-{#{{ include('partials/modal/_modal_add_project.html.twig') }}#}

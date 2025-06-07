@@ -6,14 +6,23 @@
 } %}
 
     {% block header %}
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_project_new',
-            label: 'Nuevo',
-            title: 'Nuevo proyecto',
-            entity: project,
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
+
+        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+            {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Opción 1', 'Opción 1', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+            {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Opción 2', 'Opción 2', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+            {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Opción 3', 'Opción 3', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_project_new',
+                label: 'Nuevo',
+                title: 'Nuevo proyecto',
+                entity: project,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        </div>
+
     {% endblock %}
 
     {% block body %}
@@ -34,5 +43,5 @@
 
 {% endcomponent %}
 
-{#{{ include('partials/modal/_modal_add_constructor.html.twig') }}#}
+{# {{ include('partials/modal/_modal_add_constructor.html.twig') }} #}
 {{ include('partials/modal/_modal_load.html.twig') }}

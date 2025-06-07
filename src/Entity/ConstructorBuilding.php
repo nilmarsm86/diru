@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Traits\StartedAndFinishedTrait;
-use App\Repository\DraftsmanBuildingRepository;
+use App\Repository\ConstructorBuildingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DraftsmanBuildingRepository::class)]
-class DraftsmanBuilding
+#[ORM\Entity(repositoryClass: ConstructorBuildingRepository::class)]
+class ConstructorBuilding
 {
     use StartedAndFinishedTrait;
 
@@ -18,9 +18,9 @@ class DraftsmanBuilding
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Draftsman $draftsman = null;
+    private ?Constructor $constructor = null;
 
-    #[ORM\ManyToOne(inversedBy: 'draftsmansBuildings')]
+    #[ORM\ManyToOne(inversedBy: 'constructorBuildings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Building $building = null;
 
@@ -34,14 +34,14 @@ class DraftsmanBuilding
         return $this->id;
     }
 
-    public function getDraftsman(): ?Draftsman
+    public function getConstructor(): ?Constructor
     {
-        return $this->draftsman;
+        return $this->constructor;
     }
 
-    public function setDraftsman(?Draftsman $draftsman): static
+    public function setConstructor(?Constructor $constructor): static
     {
-        $this->draftsman = $draftsman;
+        $this->constructor = $constructor;
 
         return $this;
     }
@@ -63,8 +63,8 @@ class DraftsmanBuilding
         return $this->getBuilding()->getId() === $building->getId();
     }
 
-    public function hasDraftsman(Draftsman $draftsman): bool
+    public function hasConstructor(Constructor $constructor): bool
     {
-        return $this->getDraftsman()->getId() === $draftsman->getId();
+        return $this->getConstructor()->getId() === $constructor->getId();
     }
 }

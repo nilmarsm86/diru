@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\StartedAndFinishedTrait;
 use App\Repository\DraftsmanProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DraftsmanProjectRepository::class)]
 class DraftsmanProject
 {
+    use StartedAndFinishedTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,12 +23,6 @@ class DraftsmanProject
     #[ORM\ManyToOne(inversedBy: 'draftsmansProyects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $startedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $finishedAt = null;
 
     public function __construct()
     {
@@ -57,30 +54,6 @@ class DraftsmanProject
     public function setProject(?Project $project): static
     {
         $this->project = $project;
-
-        return $this;
-    }
-
-    public function getStartedAt(): ?\DateTimeImmutable
-    {
-        return $this->startedAt;
-    }
-
-    public function setStartedAt(\DateTimeImmutable $startedAt): static
-    {
-        $this->startedAt = $startedAt;
-
-        return $this;
-    }
-
-    public function getFinishedAt(): ?\DateTimeImmutable
-    {
-        return $this->finishedAt;
-    }
-
-    public function setFinishedAt(?\DateTimeImmutable $finishedAt): static
-    {
-        $this->finishedAt = $finishedAt;
 
         return $this;
     }

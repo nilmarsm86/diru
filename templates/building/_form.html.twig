@@ -8,14 +8,14 @@
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_building_new',
-            label: 'Nueva',
-            title: 'Nueva obra',
-            entity: building,
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
+{#        {{ include('partials/_card_header_options.html.twig', {#}
+{#            goTo: 'app_building_new',#}
+{#            label: 'Nueva',#}
+{#            title: 'Nueva obra',#}
+{#            entity: building,#}
+{#            state: 'form',#}
+{#            showButton: (showButton is defined and showButton == true) ? true : false#}
+{#        }) }}#}
 
         {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
 {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Informe de la obra', 'Informe de la obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
@@ -31,7 +31,7 @@
 
     {% block footer %}
         {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},
+            list: {href: 'app_project_edit', data:{id: building.project.id}, label: 'Proyecto', title:'Volver al proyecto'},
             delete: null,
             id: building.id,
             message: '',

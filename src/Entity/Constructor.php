@@ -34,15 +34,21 @@ class Constructor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
+//    /**
+//     * @var Collection<int, Building>
+//     */
+//    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
+//    private Collection $buildings;
+
     /**
-     * @var Collection<int, Building>
+     * @var Collection<int, ConstructorBuilding>
      */
-    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
-    private Collection $buildings;
+    #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'constructor', cascade: ['persist'])]
+    private Collection $constructorBuildings;
 
     public function __construct()
     {
-        $this->buildings = new ArrayCollection();
+        $this->constructorBuildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,30 +92,106 @@ class Constructor
         return $this;
     }
 
+//    /**
+//     * @return Collection<int, Building>
+//     */
+//    public function getBuildings(): Collection
+//    {
+//        return $this->buildings;
+//    }
+//
+//    public function addBuilding(Building $building): static
+//    {
+//        if (!$this->buildings->contains($building)) {
+//            $this->buildings->add($building);
+//            $building->setConstructor($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeBuilding(Building $building): static
+//    {
+//        if ($this->buildings->removeElement($building)) {
+//            // set the owning side to null (unless already changed)
+//            if ($building->getConstructor() === $this) {
+//                $building->setConstructor(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
+
+    /**
+     * @return Collection<int, ConstructorBuilding>
+     */
+    public function getConstructorBuildings(): Collection
+    {
+        return $this->constructorBuildings;
+    }
+
+    /**
+     * @param Building $building
+     * @return ConstructorBuilding|null
+     */
+    public function getConstructorBuildingByBuilding(Building $building): ?ConstructorBuilding
+    {
+        foreach ($this->getConstructorBuildings() as $constructorBuilding){
+            if($constructorBuilding->getBuilding()->getId() === $building->getId()){
+                return $constructorBuilding;
+            }
+        }
+
+        return null;
+    }
+
+    public function addConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    {
+        if (!$this->constructorBuildings->contains($constructorBuilding)) {
+            $this->constructorBuildings->add($constructorBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    {
+        $this->constructorBuildings->removeElement($constructorBuilding);
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Building>
      */
     public function getBuildings(): Collection
     {
-        return $this->buildings;
+        $buildings = new ArrayCollection();
+        foreach ($this->getConstructorBuildings() as $constructorBuilding){
+            $buildings->add($constructorBuilding->getBuilding());
+        }
+        return $buildings;
     }
 
     public function addBuilding(Building $building): static
     {
-        if (!$this->buildings->contains($building)) {
-            $this->buildings->add($building);
-            $building->setConstructor($this);
-        }
+        $constructorBuilding = new ConstructorBuilding();
+        $constructorBuilding->setBuilding($building);
+        $constructorBuilding->setConstructor($this);
+
+        $this->addConstructorBuilding($constructorBuilding);
 
         return $this;
     }
 
     public function removeBuilding(Building $building): static
     {
-        if ($this->buildings->removeElement($building)) {
-            // set the owning side to null (unless already changed)
-            if ($building->getConstructor() === $this) {
-                $building->setConstructor(null);
+        $constructorBuildings = $building->getConstructorBuildings();
+        /** @var ConstructorBuilding $constructorBuilding */
+        foreach ($constructorBuildings as $constructorBuilding){
+            if($constructorBuilding->hasConstructor($this)){
+                $this->removeConstructorBuilding($constructorBuilding);
+                return $this;
             }
         }
 

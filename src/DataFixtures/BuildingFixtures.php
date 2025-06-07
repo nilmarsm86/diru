@@ -19,7 +19,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
             if (is_null($buildingEntity)) {
                 $buildingEntity = new Building();
                 $buildingEntity->setName($building);
-                $buildingEntity->setConstructor($this->findConstructor($manager));
+                $buildingEntity->addConstructor($this->findConstructor($manager));
                 $buildingEntity->setApprovedValueConstruction(1000000);
                 $buildingEntity->setApprovedValueEquipment(1000000);
                 $buildingEntity->setApprovedValueOther(1000000);

@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
-use App\Entity\Enums\ProjectState;
-use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,11 +35,11 @@ class Building
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stopReason = null;
 
-    #[ORM\ManyToOne(inversedBy: 'buildings')]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
-    private ?Constructor $constructor = null;
+//    #[ORM\ManyToOne(inversedBy: 'buildings')]
+//    #[ORM\JoinColumn(nullable: true)]
+//    #[Assert\Valid]
+////    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
+//    private ?Constructor $constructor = null;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
@@ -79,6 +77,12 @@ class Building
     #[ORM\OneToMany(targetEntity: DraftsmanBuilding::class, mappedBy: 'building', cascade: ['persist'])]
     private Collection $draftsmansBuildings;
 
+    /**
+     * @var Collection<int, DraftsmanBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $constructorBuildings;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -91,6 +95,7 @@ class Building
 
         $this->setState(BuildingState::Registered);
         $this->draftsmansBuildings = new ArrayCollection();
+        $this->constructorBuildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,17 +149,17 @@ class Building
         return $this;
     }
 
-    public function getConstructor(): ?Constructor
-    {
-        return $this->constructor;
-    }
-
-    public function setConstructor(?Constructor $constructor): static
-    {
-        $this->constructor = $constructor;
-
-        return $this;
-    }
+//    public function getConstructor(): ?Constructor
+//    {
+//        return $this->constructor;
+//    }
+//
+//    public function setConstructor(?Constructor $constructor): static
+//    {
+//        $this->constructor = $constructor;
+//
+//        return $this;
+//    }
 
     public function getEstimatedValueConstruction(): ?int
     {
@@ -337,5 +342,91 @@ class Building
         return $this;
     }
 
+    /**
+     * @return Collection<int, Constructor>
+     */
+    public function getConstructor(): Collection
+    {
+        $constrcutor = new ArrayCollection();
+        /** @var ConstructorBuilding $constructorBuilding */
+        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
+            $constrcutor->add($constructorBuilding->getConstructor());
+        }
+        return $constrcutor;
+    }
+
+    public function getActiveConstructor(): ?Constructor
+    {
+        /** @var ConstructorBuilding $constructorBuilding */
+        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
+            if (is_null($constructorBuilding->getFinishedAt())) {
+                return $constructorBuilding->getConstructor();
+            }
+        }
+
+        return null;
+    }
+
+    public function addConstructor(Constructor $constructor): static
+    {
+        $actualConstructor = $this->getActiveConstructor();
+        if (!is_null($actualConstructor)) {
+            if ($actualConstructor->getId() !== $constructor->getId()) {
+                $actualConstrcutorBuilding = $actualConstructor->getConstructorBuildingByBuilding($this);
+                $actualConstrcutorBuilding->setFinishedAt(new \DateTimeImmutable());
+
+                $constructorBuilding = new ConstructorBuilding();
+                $constructorBuilding->setBuilding($this);
+                $constructorBuilding->setConstructor($constructor);
+
+                $this->addConstructorBuilding($constructorBuilding);
+            }
+        } else {
+            $constructorBuilding = new ConstructorBuilding();
+            $constructorBuilding->setBuilding($this);
+            $constructorBuilding->setConstructor($constructor);
+
+            $this->addConstructorBuilding($constructorBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructor(Constructor $constructor): static
+    {
+        $constructorBuildings = $constructor->getConstructorBuildings();
+        foreach ($constructorBuildings as $constructorBuilding) {
+            if ($constructorBuilding->hasBuilding($this)) {
+                $this->removeConstructorBuildings($constructorBuilding);
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ConstructorBuilding>
+     */
+    public function getConstructorBuildings(): Collection
+    {
+        return $this->constructorBuildings;
+    }
+
+    public function addConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    {
+        if (!$this->constructorBuildings->contains($constructorBuilding)) {
+            $this->constructorBuildings->add($constructorBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    {
+        $this->constructorBuildings->removeElement($constructorBuilding);
+
+        return $this;
+    }
 
 }

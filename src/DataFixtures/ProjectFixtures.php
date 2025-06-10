@@ -47,7 +47,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
 //                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
 //                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
 
-                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
+//                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
 
                     $projectEntity->addBuilding($this->findBuilding($manager, 'Obra1'));
                 }
@@ -92,11 +92,8 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
 
     private function findClient(ObjectManager $manager, bool $enterprise = true): ?Client
     {
-        if ($enterprise) {
-            $clients = $manager->getRepository(EnterpriseClient::class)->findAll();
-        } else {
-            $clients = $manager->getRepository(IndividualClient::class)->findAll();
-        }
+        $entityClass = ($enterprise) ? EnterpriseClient::class : IndividualClient::class;
+        $clients = $manager->getRepository($entityClass)->findAll();
         return $clients[0];
     }
 

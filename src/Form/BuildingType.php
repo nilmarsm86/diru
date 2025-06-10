@@ -155,7 +155,7 @@ class BuildingType extends AbstractType
                 'class' => Draftsman::class,
                 'placeholder' => '-Seleccionar-',
                 'label' => 'Proyectista:',
-                'required' => true,
+                'required' => false,
                 'data' => $building->getActiveDraftsman()
             ]);
         }

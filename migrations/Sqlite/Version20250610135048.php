@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250607231545 extends AbstractMigration
+final class Version20250610135048 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -45,11 +45,6 @@ final class Version20250607231545 extends AbstractMigration
         , CONSTRAINT FK_F9CF0F7B40C866FD FOREIGN KEY (draftsman_id) REFERENCES draftsman (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_F9CF0F7B4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_F9CF0F7B40C866FD ON draftsman_building (draftsman_id)');
         $this->addSql('CREATE INDEX IDX_F9CF0F7B4D2A7E12 ON draftsman_building (building_id)');
-        $this->addSql('CREATE TABLE draftsman_project (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, draftsman_id INTEGER NOT NULL, project_id INTEGER NOT NULL, started_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
-        , finished_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , CONSTRAINT FK_389A083940C866FD FOREIGN KEY (draftsman_id) REFERENCES draftsman (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_389A0839166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_389A083940C866FD ON draftsman_project (draftsman_id)');
-        $this->addSql('CREATE INDEX IDX_389A0839166D1F9C ON draftsman_project (project_id)');
         $this->addSql('CREATE TABLE enterprise_client (id INTEGER NOT NULL, corporate_entity_id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_54598E4C8BA692E5 FOREIGN KEY (corporate_entity_id) REFERENCES corporate_entity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_54598E4CBF396750 FOREIGN KEY (id) REFERENCES client (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_54598E4C8BA692E5 ON enterprise_client (corporate_entity_id)');
         $this->addSql('CREATE TABLE geographic_location (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
@@ -103,7 +98,6 @@ final class Version20250607231545 extends AbstractMigration
         $this->addSql('DROP TABLE currency');
         $this->addSql('DROP TABLE draftsman');
         $this->addSql('DROP TABLE draftsman_building');
-        $this->addSql('DROP TABLE draftsman_project');
         $this->addSql('DROP TABLE enterprise_client');
         $this->addSql('DROP TABLE geographic_location');
         $this->addSql('DROP TABLE individual_client');

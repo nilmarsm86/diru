@@ -41,25 +41,6 @@ class Person
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $passport = null;
 
-//    /**
-//     * @var Collection<int, Project>
-//     */
-//    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'draftsmans')]
-//    private Collection $projects;
-
-    public function __construct()
-    {
-//        $this->projects = new ArrayCollection();
-    }
-
-//    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'person')]
-//    private Collection $clients;
-//
-//    public function __construct()
-//    {
-//        $this->clients = new ArrayCollection();
-//    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -111,12 +92,6 @@ class Person
 
     public function __toString()
     {
-//        $data = $this->getName() . ' (' . $this->getIdentificationNumber() . ')';
-//        if ($this->getPassport()) {
-//            $data .= '[' . $this->getPassport() . ']';
-//        }
-//
-//        return $data;
         return $this->getFullName();
     }
 
@@ -124,6 +99,5 @@ class Person
     {
         return $this->getName() . ' ' . $this->getLastname();
     }
-
 
 }

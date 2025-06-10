@@ -122,9 +122,6 @@ final class QuickProjectForm extends AbstractController
             $client = $clientRepository->find((int)$this->formValues['client']);
             $project->setClient($client);
 
-            $draftsman = $draftsmanRepository->find($security->getUser()->getPerson()->getId());
-            $project->addDraftsman($draftsman);
-
             $project->setType(\App\Entity\Enums\ProjectType::Parcel);
 
             $municipality = $municipalityRepository->findOneBy(['name'=>'Sin municipio']);

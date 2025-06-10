@@ -7,16 +7,16 @@
 
 {% block content %}
     <div class="row">
-        {{ h1('Representantes') }}
+        {{ h1('Personas') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Representantes', href: path('app_person_index')},
+            {label: 'Personas', href: path('app_person_index')},
             {label: 'Detalle'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Representante: {{ person.name }}</h2>
+    <h2 class="mb-4">Persona: {{ person.name }}</h2>
 
     {{ include('person/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

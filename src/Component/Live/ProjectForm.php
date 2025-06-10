@@ -141,7 +141,6 @@ final class ProjectForm extends AbstractController
 
             if (!empty($this->formValues['draftsman'])) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
-                $project->addDraftsman($draftsman);
 
                 if(is_null($project->getId())){
                     /** @var Building $building */

@@ -1,8 +1,0 @@
-{% component 'Modal:Modal' with {
-    title: 'Agregar Inversión',
-    id: 'add-investment'
-} %}
-    {% block body %}
-        {{ component('InvestmentForm', {modal:'add-investment', inv: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}

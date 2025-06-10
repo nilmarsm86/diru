@@ -2,29 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
 use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
-use App\Entity\Enums\ProjectState;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
-use App\Entity\Person;
 use App\Entity\Project;
-use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
-use App\Form\Types\ProjectTypeEnumType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
-use Closure;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -32,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+use App\Entity\Enums\ProjectType as EnumProjectType;
 
 class ProjectType extends AbstractType
 {
@@ -39,7 +30,6 @@ class ProjectType extends AbstractType
         private readonly RouterInterface            $router,
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
-
     )
     {
 
@@ -57,10 +47,10 @@ class ProjectType extends AbstractType
                 'multiple' => false,
                 'placeholder' => null,
                 'choices' => [
-                    \App\Entity\Enums\ProjectType::getLabelFrom(\App\Entity\Enums\ProjectType::Parcel) => \App\Entity\Enums\ProjectType::Parcel,
-                    \App\Entity\Enums\ProjectType::getLabelFrom(\App\Entity\Enums\ProjectType::City) => \App\Entity\Enums\ProjectType::City,
+                    EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
+                    EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
                 ],
-                'data' => \App\Entity\Enums\ProjectType::Parcel,
+                'data' => EnumProjectType::Parcel,
                 'label_attr' => [
                     'class' => 'radio-inline'
                 ]
@@ -158,12 +148,7 @@ class ProjectType extends AbstractType
                     'data-visibility-by-select-target' => 'select'
                 ]
             ]);
-
-            $moreAttrDraftsman = ['required' => !is_null($project->getContract()), 'data' => $project->getActiveDraftsman(),];
-
-
-        }
-        else {
+        } else {
             $moreAttrDraftsman = ['required' => false];
             $form->add('draftsman', EntityType::class, [
                     'mapped' => false,

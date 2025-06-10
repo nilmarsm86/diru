@@ -3,15 +3,15 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Editar Representante{% endblock %}
+{% block title %}Editar Persona{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Representantes') }}
+        {{ h1('Personas') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Representantes', href: path('app_person_index')},
+            {label: 'Personas', href: path('app_person_index')},
             {label: 'Editar'},
         ]) }}
     </div>

@@ -108,23 +108,7 @@
                         <td>{{ project.comment }}</td>
                     </tr>
                 {% endif %}
-                {# TODO: refactorizar #}
-                <tr>
-                    <th>Proyectistas:</th>
-                    <td>
-                        <ul class="px-0 list-unstyled">
-                            {% for draftsman in project.getDraftsmans() %}
-                                <li>
-                                    <a href="{{ path('app_person_show', {'id': draftsman.id}) }}" target="_blank">
-                                        {{ draftsman.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="text-danger">No tiene proyectistas asociado.</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
+
                 {{ include('building/_buildings.html.twig', {'entity': project}) }}
                 </tbody>
             </table>

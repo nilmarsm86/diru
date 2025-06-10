@@ -1,8 +1,0 @@
-{% component 'Modal:Modal' with {
-    title: 'Agregar Proyecto',
-    id: 'add-project'
-} %}
-    {% block body %}
-        {{ component('ProjectForm', {modal:'add-project', cons: null, ajax: ajax}) }}
-    {% endblock %}
-{% endcomponent %}

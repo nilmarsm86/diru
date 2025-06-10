@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MunicipalityRepository::class)]
 //#[ORM\UniqueConstraint(name: 'municipality_name', columns: ['name'])]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'province'], message: 'Ya existe en la provincia este municipio.', errorPath: 'name')]
+#[ORM\HasLifecycleCallbacks]
 class Municipality
 {
     use NameToStringTrait;
@@ -43,6 +44,13 @@ class Municipality
         $this->province = $province;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function onSave(): void
+    {
+        $this->name = ucwords($this->getName());
     }
 
 }

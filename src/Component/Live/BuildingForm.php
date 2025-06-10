@@ -12,6 +12,7 @@ use App\Form\ConstructorType;
 use App\Form\ProvinceType;
 use App\Repository\BuildingRepository;
 use App\Repository\ConstructorRepository;
+use App\Repository\DraftsmanRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\ProvinceRepository;
@@ -83,7 +84,12 @@ final class BuildingForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(BuildingRepository $buildingRepository, ConstructorRepository $constructorRepository, ProjectRepository $projectRepository): ?Response
+    public function save(
+        BuildingRepository $buildingRepository,
+        ConstructorRepository $constructorRepository,
+        ProjectRepository $projectRepository,
+        DraftsmanRepository  $draftsmanRepository
+    ): ?Response
     {
         $this->preValue();
         $successMsg = (is_null($this->bui->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
@@ -94,11 +100,17 @@ final class BuildingForm extends AbstractController
             /** @var Building $building */
             $building = $this->getForm()->getData();
 
-            $constructor = $constructorRepository->find((int)$this->formValues['constructor']);
-            $building->setConstructor($constructor);
+            if (!empty($this->formValues['constructor'])) {
+                $constructor = $constructorRepository->find((int)$this->formValues['constructor']);
+                $building->addConstructor($constructor);
+            }
 
-            $project = $projectRepository->find((int)$this->formValues['project']);
-            $building->setProject($project);
+//            $project = $projectRepository->find((int)$this->formValues['project']);
+//            $building->setProject($project);
+            if (!empty($this->formValues['draftsman'])) {
+                $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
+                $building->addDraftsman($draftsman);
+            }
 
             $buildingRepository->save($building, true);
 

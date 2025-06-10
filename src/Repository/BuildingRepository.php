@@ -54,8 +54,8 @@ class BuildingRepository extends ServiceEntityRepository
     {
         if($filter){
             $predicate = "b.name LIKE :filter ";
-            $predicate .= "OR c.name LIKE :filter ";
-            $predicate .= "OR c.code LIKE :filter ";
+//            $predicate .= "OR c.name LIKE :filter ";
+//            $predicate .= "OR c.code LIKE :filter ";
             $predicate .= "OR p.name LIKE :filter ";
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
@@ -70,8 +70,8 @@ class BuildingRepository extends ServiceEntityRepository
      */
     public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('b')->select(['b', 'c', 'p'])
-            ->leftJoin('b.constructor', 'c')
+        $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
+//            ->leftJoin('b.constructor', 'c')
             ->leftJoin('b.project', 'p');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();

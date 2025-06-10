@@ -34,14 +34,18 @@
         </div>
     </div>
 
-    <div class="mb-0 row" {{ stimulusController('visibility') }}>
-        <div class="col">
-            {{ form_row(form.currency) }}
+    {% if form.draftsman is defined %}
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.currency) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.draftsman) }}
+            </div>
         </div>
-        <div class="col">
-            {{ form_row(form.draftsman) }}
-        </div>
-    </div>
+    {% else %}
+        {{ form_row(form.currency) }}
+    {% endif %}
 
     {% if this.isNew() == true %}
         <div class="mb-0 row" {{ stimulusController('visibility') }}>
@@ -183,7 +187,19 @@
             </summary>
 
             {{ form_row(building.name) }}
-            {{ form_row(building.constructor) }}
+
+            {% if building.draftsman is defined %}
+                <div class="mb-0 row">
+                    <div class="col">
+                        {{ form_row(building.constructor) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(building.draftsman) }}
+                    </div>
+                </div>
+            {% else %}
+                {{ form_row(building.constructor) }}
+            {% endif %}
 
             <details class="collection" {% if this.isNew() == false %}open{% endif %}>
                 <summary class="collection">

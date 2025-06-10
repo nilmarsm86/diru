@@ -162,6 +162,12 @@ final class ProjectForm extends AbstractController
                     $this->formValues['contract']['year'] = $this->pro->getContract()->getYear();
                     $project->setContract($this->contract);
                 }
+
+                //Change draftmans
+                foreach ($this->getForm()->get('buildings')->getData() as $key => $building){
+                    $draftsman = $draftsmanRepository->find($this->formValues['buildings'][$key]['draftsman']);
+                    $building->addDraftsman($draftsman);
+                }
             }
 
             $projectRepository->save($project, true);

@@ -38,15 +38,17 @@
                         <td>{{ building.getTotalApprovedValue() }}</td>
                         <td>{{ building.getTotalEstimatedValue() }}</td>
                         <td>
-                            {% if building.constructor %}
-                            <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
-                               href="#" {{ stimulusController('detail-link-modal', {
-                                url: path('app_constructor_show', {id:building.constructor.id, state:'modal'}),
-                                container: '#detail-constructor .modal-body'
-                            }) }}
-                            >
-                                {{ building.constructor.name }}
-                            </a>
+                            {% if building.getActiveConstructor() %}
+                                <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
+                                   href="#" {{ stimulusController('detail-link-modal', {
+                                    url: path('app_constructor_show', {id:building.getActiveConstructor().id, state:'modal'}),
+                                    container: '#detail-constructor .modal-body'
+                                }) }}
+                                >
+                                    {{ building.getActiveConstructor().name }}
+                                </a>
+                            {% else %}
+                                <span class="text-danger">Sin constructora</span>
                             {% endif %}
                         </td>
                         <td>

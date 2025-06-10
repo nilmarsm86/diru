@@ -59,10 +59,12 @@
                 <tr>
                     <th>Constructora:</th>
                     <td>
-                        {% if building.constructor %}
-                        <a href="{{ path('app_constructor_show', {'id': building.constructor.id }) }}">
-                            {{ building.constructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                        </a>
+                        {% if building.getActiveConstructor() %}
+                            <a href="{{ path('app_constructor_show', {'id': building.getActiveConstructor.id }) }}">
+                                {{ building.getActiveConstructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                            </a>
+                        {% else%}
+                            <span class="text-danger">Sin constructora</span>
                         {% endif %}
                     </td>
                 </tr>

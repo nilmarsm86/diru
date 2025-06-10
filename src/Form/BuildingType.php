@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\Draftsman;
 use App\Entity\Investment;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
@@ -11,6 +12,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -88,6 +91,7 @@ class BuildingType extends AbstractType
                 'class' => Constructor::class,
                 'choice_label' => 'name',
                 'label' => 'Constructora:',
+                'mapped' => false,
 //                'query_builder' => $this->getOrganismQueryBuilder($options),
 
                 'detail' => true,
@@ -102,22 +106,27 @@ class BuildingType extends AbstractType
 
                 'required' => false
             ])
-            ->add('project', EntityPlusType::class, [
-                'class' => Project::class,
-                'choice_label' => 'name',
-                'label' => 'Proyecto:',
-                'placeholder' => '-Seleccionar-',
+//            ->add('project', EntityPlusType::class, [
+//                'class' => Project::class,
+//                'choice_label' => 'name',
+//                'label' => 'Proyecto:',
+//                'placeholder' => '-Seleccionar-',
+//
+//                'detail' => true,
+//                'detail_title' => 'Detalle del Proyecto',
+//                'detail_id' => 'modal-load',
+//                'detail_url' => $this->router->generate('app_project_show', ['id' => 0, 'state' => 'modal']),
+//
+//                'add' => true,
+//                'add_title' => 'Agregar Proyecto',
+//                'add_id' => 'modal-load',
+//                'add_url' => $this->router->generate('app_project_new', ['modal' => 'modal-load']),
+//            ])
+        ;
 
-                'detail' => true,
-                'detail_title' => 'Detalle del Proyecto',
-                'detail_id' => 'modal-load',
-                'detail_url' => $this->router->generate('app_project_show', ['id' => 0, 'state' => 'modal']),
-
-                'add' => true,
-                'add_title' => 'Agregar Proyecto',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_project_new', ['modal' => 'modal-load']),
-            ]);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+            $this->onPreSetData($event);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -128,5 +137,27 @@ class BuildingType extends AbstractType
                 'novalidate' => 'novalidate'
             ]
         ]);
+    }
+
+    /**
+     * @param FormEvent $event
+     * @return void
+     */
+    private function onPreSetData(FormEvent $event): void
+    {
+        /** @var Building $building */
+        $building = $event->getData();
+        $form = $event->getForm();
+
+        if (!is_null($building) && $building->getId()) {
+            $form->add('draftsman', EntityType::class, [
+                'mapped' => false,
+                'class' => Draftsman::class,
+                'placeholder' => '-Seleccionar-',
+                'label' => 'Proyectista:',
+                'required' => true,
+                'data' => $building->getActiveDraftsman()
+            ]);
+        }
     }
 }

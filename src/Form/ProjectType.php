@@ -160,16 +160,19 @@ class ProjectType extends AbstractType
             ]);
 
             $moreAttrDraftsman = ['required' => !is_null($project->getContract()), 'data' => $project->getActiveDraftsman(),];
-        } else {
+
+
+        }
+        else {
             $moreAttrDraftsman = ['required' => false];
+            $form->add('draftsman', EntityType::class, [
+                    'mapped' => false,
+                    'class' => Draftsman::class,
+                    'placeholder' => '-Seleccionar-',
+                    'label' => 'Proyectista:'
+                ] + $moreAttrDraftsman);
         }
 
-        $form->add('draftsman', EntityType::class, [
-                'mapped' => false,
-                'class' => Draftsman::class,
-                'placeholder' => '-Seleccionar-',
-                'label' => 'Proyectista:'
-            ] + $moreAttrDraftsman);
 
         $moreAttr = [];
         if (!is_null($project->getContract())) {
@@ -210,7 +213,6 @@ class ProjectType extends AbstractType
             'mapped' => false,
             'label' => 'Persona natural',
 //                'placeholder' => '-Seleccione-',
-//            'data' => ($this->findClientType($project) === 'individual') ? $this->findIndividualClient($project) : null
             'data' => $project->getIndividualClient($this->individualClientRepository)
         ]);
         $form->add('enterpriseClient', EntityType::class, [
@@ -221,41 +223,5 @@ class ProjectType extends AbstractType
 //                'placeholder' => '-Seleccione-',
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository)
         ]);
-    }
-
-    private function findClientType(Project $project): string
-    {
-        $client = $project->getClient();
-        if (!is_null($client)) {
-            $individual = $this->individualClientRepository->find($client->getId());
-            if (is_null($individual)) {
-                //$enterprise = $this->enterpriseClientRepository->find($client->getId());
-                return 'enterprise';
-            } else {
-                return 'individual';
-            }
-        }
-
-        return 'individual';
-    }
-
-    private function findIndividualClient(Project $project): ?IndividualClient
-    {
-        $client = $project->getClient();
-        if (!is_null($client)) {
-            return $this->individualClientRepository->find($client->getId());
-        }
-
-        return null;
-    }
-
-    private function findEnterpriseClient(Project $project): ?EnterpriseClient
-    {
-        $client = $project->getClient();
-        if (!is_null($client)) {
-            return $this->enterpriseClientRepository->find($client->getId());
-        }
-
-        return null;
     }
 }

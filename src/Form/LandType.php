@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Land;
 use App\Form\Types\UnitMeasurementType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -45,6 +46,16 @@ class LandType extends AbstractType
                     'label_html' => true
                 ],
                 'error_bubbling' => false,
+            ])
+            ->add('isOccupied', ChoiceType::class, [
+                'label' => 'Area ocupada:',
+                'mapped' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    '&nbsp;' => '1'
+                ],
+                'label_html' => true
             ])
         ;
     }

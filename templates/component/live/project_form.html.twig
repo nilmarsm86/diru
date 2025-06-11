@@ -170,7 +170,7 @@
         <details class="collection" {% if this.isNew() == false %}open{% endif %}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
-                    <div class="col">Obra:</div>
+                    <div class="col">Obra: {% if this.isNew == false %}{{ building.vars.data.name }}{% endif %}</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                         <button class="btn btn-primary btn-sm" type="button">Reporte</button>
                         {#                        {{ form_widget(building.vars.button_delete, { #}

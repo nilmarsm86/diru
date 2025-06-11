@@ -13,17 +13,22 @@
             {{ form_row(form.landArea) }}
         </div>
         <div class="col">
+
             <div class="mb-0 row">
-                <div class="col-sm-8">
+                <div class="col-sm-4">
+                    {{ form_row(form.isOccupied) }}
+                </div>
+                <div class="col-sm-5">
                     {{ form_row(form.occupiedArea) }}
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="mb-3">
                         <p class="text-end">COS (%):</p>
                         <h5 class="text-end"><span class="badge text-bg-info">0</span></h5>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

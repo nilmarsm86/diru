@@ -33,9 +33,11 @@ class LandType extends AbstractType
             ])
             ->add('photo', FileType::class, [
                 'label' => "Foto:",
+                'required' => false
             ])
             ->add('microlocalization', FileType::class, [
                 'label' => "Microlocalización:",
+                'required' => false
             ])
             ->add('floor', NumberType::class, [
                 'label' => "Plantas:"

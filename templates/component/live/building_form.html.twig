@@ -18,7 +18,7 @@
             {% endif %}
         </div>
     </div>
-    <details class="collection" {% if (this.bui.id is not null) %}open{% endif %}>
+    <details class="collection" {# {% if (this.bui.id is not null) %}open{% endif %} #}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Valores aprobados:</div>
@@ -47,7 +47,7 @@
         </div>
     </details>
 
-    <details class="collection" {% if (this.bui.id is not null) %}open{% endif %}>
+    <details class="collection" {# {% if (this.bui.id is not null) %}open{% endif %}  #}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Valores estimados:</div>

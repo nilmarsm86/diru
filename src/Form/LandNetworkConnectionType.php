@@ -15,7 +15,9 @@ class LandNetworkConnectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('explanation')
+            ->add('explanation', null, [
+                'label' => 'Explicación:'
+            ])
 //            ->add('land', EntityType::class, [
 //                'class' => Land::class,
 //                'choice_label' => 'id',
@@ -23,6 +25,7 @@ class LandNetworkConnectionType extends AbstractType
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
+                'label' => 'Conexión de red:'
             ])
         ;
     }

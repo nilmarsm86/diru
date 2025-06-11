@@ -106,7 +106,7 @@ final class QuickProjectForm extends AbstractController
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
-
+//        dd($this->formValues);
         if ($this->isSubmitAndValid()) {
             /** @var Project $project */
             $project = $this->getForm()->getData();
@@ -137,7 +137,12 @@ final class QuickProjectForm extends AbstractController
                 $this->modalManage($project, $successMsg, [
                     'project' => $project->getId()
                 ]);
-                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+
+                if($this->getForm()->get){
+                    return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+                }else{
+                    return $this->redirectToRoute('app_land_new', ['building'=>$project->getBuildings()->first()->getId()], Response::HTTP_SEE_OTHER);
+                }
             }
 
             if ($this->ajax) {

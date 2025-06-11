@@ -4,6 +4,8 @@ namespace App\Form\Types;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -16,6 +18,7 @@ class UnitMeasurementType extends AbstractType
     {
         $resolver
             ->setDefault('unit', '');
+
     }
 
     /**
@@ -28,6 +31,6 @@ class UnitMeasurementType extends AbstractType
 
     public function getParent(): string
     {
-        return TextType::class;
+        return IntegerType::class;
     }
 }

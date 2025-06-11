@@ -56,7 +56,7 @@
     {%- if compound is defined and compound -%}
         {%- set element = 'fieldset' -%}
     {%- endif -%}
-    {%- set widget_attr = {attr:{'data-type--entity-plus-target' : "select"}} -%}
+    {%- set widget_attr = {} -%}
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}

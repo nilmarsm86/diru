@@ -117,7 +117,7 @@
 
             {% if form.stopReason is defined %}
                 <details class="collection"
-                         {# {% if this.pro.hasComment() %}open{% endif %} {{ stimulusTarget('visibility-by-select', 'detail') }} #}>
+                         {% if this.pro.hasComment() %}open{% endif %} {{ stimulusTarget('visibility-by-select', 'detail') }}>
                     <summary class="collection">
                         <div class="row summary-btn-lis">
                             <div class="col">Razón de parar:</div>

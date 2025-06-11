@@ -128,7 +128,7 @@ final class BuildingForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_building_index', ['filter' => $building->getProject()->getName()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

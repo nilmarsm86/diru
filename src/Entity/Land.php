@@ -6,6 +6,7 @@ use App\Repository\LandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LandRepository::class)]
 class Land
@@ -16,12 +17,19 @@ class Land
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El área de terreno está vacía.')]
+    #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
     private ?int $landArea = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El área ocupada está vacía.')]
+    #[Assert\PositiveOrZero(message: 'El área ocupada debe ser positivo.')]
+//    #[Assert\Assert\LessThanOrEqual()]
     private ?int $occupiedArea = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El perímetro está vacía.')]
+    #[Assert\Positive(message: 'El perímetro debe ser un número positivo.')]
     private ?int $perimeter = null;
 
     #[ORM\Column(length: 255, nullable: true)]

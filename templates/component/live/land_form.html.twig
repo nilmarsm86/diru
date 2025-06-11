@@ -1,4 +1,4 @@
-<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+<div {{ attributes.defaults(stimulusController('live/land-form', {modal:modal})) }}>
 
     {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
 
@@ -8,23 +8,25 @@
             'data-live-action-param': 'save'
         }
     }) }}
+
     <div class="mb-0 row">
         <div class="col">
-            {{ form_row(form.landArea) }}
+            {{ form_row(form.landArea, {attr:{'data-live--land-form-target':'area'}}) }}
         </div>
         <div class="col">
-
-            <div class="mb-0 row">
+            <div class="mb-0 row" {{ stimulusController('visibility') }}>
                 <div class="col-sm-4">
                     {{ form_row(form.isOccupied) }}
                 </div>
                 <div class="col-sm-5">
-                    {{ form_row(form.occupiedArea) }}
+                    <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.l.occupiedArea > 0 %}block{% else %}none{% endif %}">
+                    {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
+                    </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="mb-3">
                         <p class="text-end">COS (%):</p>
-                        <h5 class="text-end"><span class="badge text-bg-info">0</span></h5>
+                        <h5 class="text-end"><span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span></h5>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,6 @@ export default class extends AbstractController {
     }
 
     showReason(event) {
-        console.log(this.selectTarget.value);
         this.detailTarget.open = this.selectTarget.value === String(this.openDataValue);
     }
 }

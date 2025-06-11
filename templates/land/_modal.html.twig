@@ -1,0 +1,8 @@
+{% component 'Modal:Modal' with {
+    title: 'Datos del terreno',
+    id: 'modal-land'
+} %}
+    {% block body %}
+        {{ component('LandForm', {modal:'modal-land', l: null, ajax: ajax}) }}
+    {% endblock %}
+{% endcomponent %}

@@ -80,11 +80,11 @@ export default class extends AbstractController {
                 this.addChildsNodes(this.addTitleValue, document.querySelector('#'+this.addIdValue+' .modal-title'));
                 Modal.getOrCreateInstance(document.querySelector('#'+this.addIdValue)).show();
 
-                const eventDetail = new CustomEvent('eventDetail', {
+                const eventDetail = new CustomEvent('eventAdd', {
                     detail: {
                         url: this.addUrlValue,
                         container: modalBody,
-                        eventLoadedName: 'loadDetail',
+                        eventLoadedName: 'loadAdd',
                     }
                 });
                 this.refreshContent(eventDetail);

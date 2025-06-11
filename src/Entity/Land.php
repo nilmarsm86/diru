@@ -33,12 +33,18 @@ class Land
     /**
      * @var Collection<int, LandNetworkConnection>
      */
-    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land')]
+    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist'])]
     private Collection $landNetworkConnections;
+
+    #[ORM\Column]
+    private ?int $floor = null;
 
     public function __construct()
     {
         $this->landNetworkConnections = new ArrayCollection();
+        $this->occupiedArea = 0;
+        $this->floor = 1;
+        $this->landArea = 1;
     }
 
     public function getId(): ?int
@@ -132,6 +138,18 @@ class Land
                 $landNetworkConnection->setLand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFloor(): ?int
+    {
+        return $this->floor;
+    }
+
+    public function setFloor(int $floor): static
+    {
+        $this->floor = $floor;
 
         return $this;
     }

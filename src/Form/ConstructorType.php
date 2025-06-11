@@ -6,6 +6,7 @@ use App\Entity\Constructor;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,7 +35,9 @@ class ConstructorType extends AbstractType
                 ],
                 'data' => 'CU'
             ])
-            ->add('logo')
+            ->add('logo', FileType::class, [
+                'label' => 'Logo:',
+            ])
 
         ;
     }

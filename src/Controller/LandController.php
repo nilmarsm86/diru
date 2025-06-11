@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Building;
 use App\Entity\Land;
 use App\Entity\NetworkConnection;
 use App\Form\LandType;
@@ -36,12 +37,13 @@ final class LandController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/new', name: 'app_land_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService): Response
+    #[Route('/new/{building}', name: 'app_land_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, Building $building): Response
     {
         $land = new Land();
         return $crudActionService->formLiveComponentAction($request, $land, 'land', [
             'title' => 'Nuevos datos generales del terreno',
+            'building' => $building
         ]);
     }
 
@@ -61,11 +63,12 @@ final class LandController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit', name: 'app_land_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Land $land, CrudActionService $crudActionService): Response
+    #[Route('/{id}/edit/{building}', name: 'app_land_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Land $land, CrudActionService $crudActionService, Building $building): Response
     {
         return $crudActionService->formLiveComponentAction($request, $land, 'land', [
             'title' => 'Editar datos generales del terreno',
+            'building' => $building
         ]);
     }
 

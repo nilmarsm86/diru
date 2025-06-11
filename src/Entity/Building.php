@@ -83,6 +83,9 @@ class Building
     #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'building', cascade: ['persist'])]
     private Collection $constructorBuildings;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Land $land = null;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -425,6 +428,18 @@ class Building
     public function removeConstructorBuilding(ConstructorBuilding $constructorBuilding): static
     {
         $this->constructorBuildings->removeElement($constructorBuilding);
+
+        return $this;
+    }
+
+    public function getLand(): ?Land
+    {
+        return $this->land;
+    }
+
+    public function setLand(?Land $land): static
+    {
+        $this->land = $land;
 
         return $this;
     }

@@ -1,0 +1,88 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.landArea) }}
+        </div>
+        <div class="col">
+            <div class="mb-0 row">
+                <div class="col-sm-8">
+                    {{ form_row(form.occupiedArea) }}
+                </div>
+                <div class="col-sm-4">
+                    <div class="mb-3">
+                        <p class="text-end">COS (%):</p>
+                        <h5 class="text-end"><span class="badge text-bg-info">0</span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.perimeter) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.floor) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.microlocalization) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.photo) }}
+        </div>
+    </div>
+
+    {{ form_row(form.landNetworkConnections.vars.button_add, {
+        label: 'Agregar conexion de red',
+        attr: { class: 'btn btn-outline-nav-link btn-sm' }
+    }) }}
+
+    {% if form_errors(form.landNetworkConnections) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-12">
+                {{ form_errors(form.networkConnection) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% for key, connection in form.landNetworkConnections %}
+        <details class="collection" {% if this.isNew() == false %}open{% endif %}>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">Conexión:</div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        <button class="btn btn-primary btn-sm" type="button">Opción 1</button>
+                    </div>
+                </div>
+            </summary>
+
+            {{ form_row(connection.networkConnection) }}
+            {{ form_row(connection.explanation) }}
+        </details>
+    {% endfor %}
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
+                label: this.isNew() ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_row(form._token) }}
+    {{ form_end(form, {render_rest:false}) }}
+</div>

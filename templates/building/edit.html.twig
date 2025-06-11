@@ -16,7 +16,7 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Editar Obra</h2>
+    <h2 class="mb-4">Editar: {{ building.name }} del proyecto {{ building.project.name }}</h2>
 
     {{ include('building/_form.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

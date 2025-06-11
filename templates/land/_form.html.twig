@@ -1,5 +1,5 @@
 {% if app.request.query.get('modal') %}
-{#    {{ component('NetworkConnectionForm', {modal:app.request.query.get('modal'), nc: network_connection, ajax: ajax}) }}#}
+    {{ component('LandForm', {modal:app.request.query.get('modal'), l: land, ajax: ajax, building: building}) }}
 {% else %}
     {% component 'Card:Card' with {
         cssClass: 'mb-4',
@@ -9,18 +9,19 @@
     } %}
 
         {% block header %}
-            {{ include('partials/_card_header_options.html.twig', {
-                goTo: 'app_land_new',
-                label: 'Nuevo',
-                title: 'Nuevos datos del terreno',
-                entity: land,
-                state: 'form',
-                showButton: (showButton is defined and showButton == true) ? true : false
-            }) }}
+{#            {{ include('partials/_card_header_options.html.twig', {#}
+{#                goTo: 'app_land_new',#}
+{#                label: 'Nuevo',#}
+{#                title: 'Nuevos datos del terreno',#}
+{#                entity: land,#}
+{#                state: 'form',#}
+{#                showButton: (showButton is defined and showButton == true) ? true : false#}
+{#            }) }}#}
+
         {% endblock %}
 
         {% block body %}
-{#            {{ component('NetworkConnectionForm', {modal:null, nc: network_connection, ajax: ajax}) }}#}
+            {{ component('LandForm', {modal:null, land: land, ajax: ajax}) }}
         {% endblock %}
 
         {% block footer %}

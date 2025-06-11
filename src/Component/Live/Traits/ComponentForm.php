@@ -71,9 +71,9 @@ trait ComponentForm
      * @param array $updateEventData
      * @return void
      */
-    public function modalManage(object $entity, string $message, array $updateEventData): void
+    public function modalManage(object $entity, string $message, array $updateEventData, string $mssageType = 'text-bg-primary'): void
     {
-        $template = $this->getSuccessTemplate($entity, $message, 'text-bg-primary');
+        $template = $this->getSuccessTemplate($entity, $message, $mssageType);
 
         $eventData = [
             'response' => $template,

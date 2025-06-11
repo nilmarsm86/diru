@@ -25,9 +25,6 @@ class LandNetworkConnection
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $explanation = null;
 
-    #[ORM\Column]
-    private ?int $floor = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -69,15 +66,4 @@ class LandNetworkConnection
         return $this;
     }
 
-    public function getFloor(): ?int
-    {
-        return $this->floor;
-    }
-
-    public function setFloor(int $floor): static
-    {
-        $this->floor = $floor;
-
-        return $this;
-    }
 }

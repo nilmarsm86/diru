@@ -55,11 +55,15 @@ export default class extends AbstractController {
                 this.areaTarget.value = Number(this.areaTarget.value) * -1;
             }
 
-            if(!this.checkTarget.checked){
-                this.cosTarget.innerText = 0;
-            }else{
-                this.cosTarget.innerText = Number(this.occupiedTarget.value) * 100 / Number(this.areaTarget.value);
+            if(Number(this.occupiedTarget.value) > Number(this.areaTarget.value)){
+                this.occupiedTarget.value = this.areaTarget.value;
             }
+
+            if(Number(document.querySelector('#land_perimeter').value) > Number(this.areaTarget.value)){
+                document.querySelector('#land_perimeter').value = this.areaTarget.value;
+            }
+
+            this.calcualteCos(event);
         });
 
         this.occupiedTarget.addEventListener('input', (event) => {
@@ -67,24 +71,30 @@ export default class extends AbstractController {
                 this.occupiedTarget.value = Number(this.occupiedTarget.value) * -1;
             }
 
+            if(Number(this.occupiedTarget.value) > Number(this.areaTarget.value)){
+                this.occupiedTarget.value = this.areaTarget.value;
+            }
+
             this.calcualteCos(event);
         });
 
-        this.checkTarget.addEventListener('change', (event) => {
-            if(!this.checkTarget.checked){
-            //     this.cosTarget.innerText = 0;
-                this.occupiedTarget.value = 0;
+        document.querySelector('#land_perimeter').addEventListener('input', (event) => {
+            if(Number(event.currentTarget.value) < 0){
+                event.currentTarget.value = Number(event.currentTarget.value) * -1;
             }
-            // else{
-            //     this.cosTarget.innerText = Number(this.occupiedTarget.value) * 100 / Number(this.areaTarget.value);
-            // }
-            this.calcualteCos(event);
+
+            if(Number(event.currentTarget.value) > Number(this.areaTarget.value)){
+                event.currentTarget.value = this.areaTarget.value;
+            }
         });
+
+        this.checkTarget.addEventListener('change', this.calcualteCos.bind(this));
     }
 
     calcualteCos(event){
         if(!this.checkTarget.checked){
             this.cosTarget.innerText = 0;
+            this.occupiedTarget.value = 0;
         }else{
             this.cosTarget.innerText = (Number(this.occupiedTarget.value) * 100 / Number(this.areaTarget.value)).toFixed(2);
         }

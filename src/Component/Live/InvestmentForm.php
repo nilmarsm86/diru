@@ -179,7 +179,7 @@ final class InvestmentForm extends AbstractController
 
             $this->inv = new Investment();
             if (!is_null($this->modal)) {
-                $this->modalManage($inv, 'Seleccione la nueva inversión agregada.', [
+                $this->modalManage($inv, 'Se ha seleccionado la nueva inversión agregada.', [
                     'investment' => $inv->getId()
                 ]);
                 return null;

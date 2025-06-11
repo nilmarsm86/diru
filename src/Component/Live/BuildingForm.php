@@ -116,7 +116,7 @@ final class BuildingForm extends AbstractController
 
             $this->bui = new Building();
             if (!is_null($this->modal)) {
-                $this->modalManage($building, 'Seleccione la nueva obra agregada.', [
+                $this->modalManage($building, 'Se ha seleccionado la nueva obra agregada.', [
                     'building' => $building->getId()
                 ]);
                 return null;

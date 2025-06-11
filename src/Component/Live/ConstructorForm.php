@@ -69,7 +69,7 @@ final class ConstructorForm extends AbstractController
 
             $this->cons = new Constructor();
             if (!is_null($this->modal)) {
-                $this->modalManage($constructor, 'Seleccione la nueva constructora agregada.', [
+                $this->modalManage($constructor, 'Se ha seleccionado la nueva constructora agregada.', [
                     'constructor' => $constructor->getId()
                 ]);
                 return null;

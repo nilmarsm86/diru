@@ -111,7 +111,7 @@ final class ContractForm extends AbstractController
             $this->con = new Contract();
             if (!is_null($this->modal)) {
 //                $this->modalManage($contract);
-                $this->modalManage($contract, 'Seleccione el nuevo contrato agregado.', [
+                $this->modalManage($contract, 'Se ha seleccionado el nuevo contrato agregado.', [
                     'contract' => $contract->getId()
                 ]);
                 return null;

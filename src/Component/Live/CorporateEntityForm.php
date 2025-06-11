@@ -197,7 +197,7 @@ final class CorporateEntityForm extends AbstractController
             $this->ce = new CorporateEntity();
             if (!is_null($this->modal)) {
 //                $this->modalManage($ce);
-                $this->modalManage($ce, 'Seleccione la nueva entidad corporativa agregada.', [
+                $this->modalManage($ce, 'Se ha seleccionado la nueva entidad corporativa agregada.', [
                     'corporateEntity' => $ce->getId()
                 ]);
                 return null;

@@ -77,7 +77,7 @@ final class NetworkConnectionForm extends AbstractController
             $this->nc = new NetworkConnection();
             $this->entity = $this->nc;
             if (!is_null($this->modal)) {
-                $this->modalManage($nc, 'Seleccione la nueva zona de ubicación.', [
+                $this->modalManage($nc, 'Se ha seleccionado la nueva conexión de red.', [
                     'locationZone' => $nc->getId()
                 ]);
                 return null;

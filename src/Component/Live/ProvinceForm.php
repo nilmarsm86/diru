@@ -77,7 +77,7 @@ final class ProvinceForm extends AbstractController
             $this->prov = new Province();
             $this->entity = $this->prov;
             if (!is_null($this->modal)) {
-                $this->modalManage($province, 'Seleccione la nueva provincia agregada.', [
+                $this->modalManage($province, 'Se ha seleccionado la nueva provincia agregada.', [
                     'province' => $province->getId()
                 ]);
                 return null;

@@ -138,11 +138,12 @@ final class QuickProjectForm extends AbstractController
                     'project' => $project->getId()
                 ]);
 
-                if($this->getForm()->get){
-                    return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
-                }else{
-                    return $this->redirectToRoute('app_land_new', ['building'=>$project->getBuildings()->first()->getId()], Response::HTTP_SEE_OTHER);
-                }
+//                if($this->getForm()->get){
+//                    return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+//                }else{
+//                    return $this->redirectToRoute('app_land_new', ['building'=>$project->getBuildings()->first()->getId()], Response::HTTP_SEE_OTHER);
+//                }
+                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
             }
 
             if ($this->ajax) {

@@ -175,7 +175,7 @@ final class ProjectForm extends AbstractController
 
             $this->pro = new Project();
             if (!is_null($this->modal)) {
-                $this->modalManage($project, 'Seleccione el nuevo proyecto agregado.', [
+                $this->modalManage($project, 'Se ha seleccionado el nuevo proyecto agregado.', [
                     'project' => $project->getId()
                 ]);
                 return null;

@@ -113,7 +113,7 @@ final class OrganismForm extends AbstractController
             $this->entity = $this->org;
             if (!is_null($this->modal)) {
 //                $this->modalManage($organism);
-                $this->modalManage($organism, 'Seleccione el nuevo organismo agregado.', [
+                $this->modalManage($organism, 'Se ha seleccionado el nuevo organismo agregado.', [
                     'organism' => $organism->getId()
                 ]);
                 return null;

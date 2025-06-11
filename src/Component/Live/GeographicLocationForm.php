@@ -54,47 +54,6 @@ final class GeographicLocationForm extends AbstractController
         $this->entity = $this->gl;
     }
 
-//    /**
-//     * @param GeographicLocation $gl
-//     * @param string $message
-//     * @return void
-//     */
-//    private function modalManage(GeographicLocation $gl, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($gl, empty($message) ? 'Seleccione la nueva ubicación geográfica agregada.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'geographic_location' => $gl->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->gl = new GeographicLocation();
-//        $this->resetForm();//establecer un objeto nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    private function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->lz::class) . '_' . $this->lz->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->lz = new LocationZone();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(GeographicLocationType::class, $this->gl);
@@ -120,7 +79,7 @@ final class GeographicLocationForm extends AbstractController
             $this->entity = $this->gl;
             if (!is_null($this->modal)) {
 //                $this->modalManage($lz);
-                $this->modalManage($gl, 'Seleccione la nueva ubicación geográfica agregada.', [
+                $this->modalManage($gl, 'Se ha seleccionado la nueva ubicación geográfica agregada.', [
                     'geographic_location' => $gl->getId()
                 ]);
                 return null;

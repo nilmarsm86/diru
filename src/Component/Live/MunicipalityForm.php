@@ -129,7 +129,7 @@ final class MunicipalityForm extends AbstractController
             $this->mun = new Municipality();
             if (!is_null($this->modal)) {
 //                $this->modalManage($municipality);
-                $this->modalManage($municipality, 'Seleccione el nuevo municipio agregado.', [
+                $this->modalManage($municipality, 'Se ha seleccionado el nuevo municipio agregado.', [
                     'municipality' => $municipality->getId()
                 ]);
                 return null;

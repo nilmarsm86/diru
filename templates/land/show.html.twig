@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Datos del terreno: {{ land.id }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Datos del terreno') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Terrenos', href: path('app_land_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Datos del terreno: {{ land.id }}</h2>
+
+    {{ include('land/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

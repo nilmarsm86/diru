@@ -18,7 +18,6 @@ class Draftsman extends Person
 
     public function __construct()
     {
-        parent::__construct();
         $this->draftsmansBuildings = new ArrayCollection();
     }
 

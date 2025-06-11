@@ -1,0 +1,57 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de conexiones de red',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_network_connection_new'), 'bi:plus-lg', 'Nueva', 'Nueva conexión de red', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_network_connection_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for network_connection in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ network_connection.name }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_network_connection_show', {'id': network_connection.id}), 'bi:eye', '', 'Detalle de la conexión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_network_connection_show', {'id': network_connection.id})})) }}#}
+                            {{ tableActionButton3(path('app_network_connection_edit', {'id': network_connection.id}), 'fa:edit', '', 'Editar conexión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_network_connection_edit', {'id': network_connection.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_network_connection_delete', {'id': network_connection.id}),
+                                confirm: 'Está seguro que desea eliminar la conexión?',
+                                token: 'delete' ~ network_connection.id,
+                                title: 'Eliminar conexión',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron conexiones de red.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

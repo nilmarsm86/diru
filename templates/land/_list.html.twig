@@ -1,0 +1,66 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de terrenos',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_land_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_land_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Área terreno (m<sup>2</sup>)</th>
+                    <th>Área ocupada (m<sup>2</sup>)</th>
+                    <th>Perímetro (m)</th>
+                    <th>Foto</th>
+                    <th>Microlocalización</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for network_connection in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                    <tr>
+                        <td>{{ land.landArea }}</td>
+                        <td>{{ land.occupiedArea }}</td>
+                        <td>{{ land.perimeter }}</td>
+                        <td>{{ land.photo }}</td>
+                        <td>{{ land.microlocalization }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_land_show', {'id': land.id}), 'bi:eye', '', 'Detalle del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_show', {'id': land.id})})) }}
+                            {{ tableActionButton3(path('app_land_edit', {'id': land.id}), 'fa:edit', '', 'Editar datos del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_edit', {'id': land.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_land_delete', {'id': land.id}),
+                                confirm: 'Está seguro que desea eliminar los datos del terreno?',
+                                token: 'delete' ~ land.id,
+                                title: 'Eliminar datos del terreno',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron datos del terreno.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

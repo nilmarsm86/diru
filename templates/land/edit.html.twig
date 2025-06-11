@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Editar datos del terreno{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Datos del terreno') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Terrenos', href: path('app_land_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Editar datos del terreno</h2>
+
+    {{ include('land/_form.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

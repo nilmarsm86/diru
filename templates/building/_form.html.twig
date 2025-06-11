@@ -8,21 +8,26 @@
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
-{#        {{ include('partials/_card_header_options.html.twig', {#}
-{#            goTo: 'app_building_new',#}
-{#            label: 'Nueva',#}
-{#            title: 'Nueva obra',#}
-{#            entity: building,#}
-{#            state: 'form',#}
-{#            showButton: (showButton is defined and showButton == true) ? true : false#}
-{#        }) }}#}
+        {#        {{ include('partials/_card_header_options.html.twig', { #}
+        {#            goTo: 'app_building_new', #}
+        {#            label: 'Nueva', #}
+        {#            title: 'Nueva obra', #}
+        {#            entity: building, #}
+        {#            state: 'form', #}
+        {#            showButton: (showButton is defined and showButton == true) ? true : false #}
+        {#        }) }} #}
 
-        {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-{#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Informe de la obra', 'Informe de la obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
+        {% if building.id is not null %}
+            {{ tableActionButton3(path('app_land_new'), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_land_new')})) }}
+        {% else %}
+            {{ tableActionButton3(path('app_land_edit', {id:0}), 'bi:plus-lg', 'Datos genrales del terreno', 'Datos del terreno', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_land_edit', {id:0})})) }}
+        {% endif %}
+
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Informe de la obra', 'Informe de la obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
         {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestionar inmueble construido', 'Gestionar inmueble construido', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
         {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Gestgionar inmueble nuevo', 'Gestgionar inmueble nuevo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
         {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Regulaciones urbanas', 'Regulaciones urbanas', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
-        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Analisis del valor de constrccion y montaje', 'Analisis del valor de constrccion y montaje', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}#}
+        {#    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Analisis del valor de constrccion y montaje', 'Analisis del valor de constrccion y montaje', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }} #}
     {% endblock %}
 
     {% block body %}

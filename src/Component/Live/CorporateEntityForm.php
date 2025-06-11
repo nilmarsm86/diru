@@ -3,7 +3,6 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\CorporateEntity;
 use App\Form\CorporateEntityType;
 use App\Repository\CorporateEntityRepository;
@@ -62,47 +61,6 @@ final class CorporateEntityForm extends AbstractController
             $this->ce = new CorporateEntity();
         }
     }
-
-//    /**
-//     * @param CorporateEntity $corporateEntity
-//     * @param string $message
-//     * @return void
-//     */
-//    public function modalManage(CorporateEntity $corporateEntity, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($corporateEntity, empty($message) ? 'Seleccione la nueva entidad corporativa agregada.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'corporateEntity' => $corporateEntity->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->ce = new CorporateEntity();
-//        $this->resetForm();//establecer un objeto nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    public function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->ce::class) . '_' . $this->ce->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->ce = new CorporateEntity();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
 
     /**
      * @return void
@@ -196,7 +154,6 @@ final class CorporateEntityForm extends AbstractController
 
             $this->ce = new CorporateEntity();
             if (!is_null($this->modal)) {
-//                $this->modalManage($ce);
                 $this->modalManage($ce, 'Se ha seleccionado la nueva entidad corporativa agregada.', [
                     'corporateEntity' => $ce->getId()
                 ]);
@@ -204,7 +161,6 @@ final class CorporateEntityForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($ce, $successMsg);
                 return null;
             }

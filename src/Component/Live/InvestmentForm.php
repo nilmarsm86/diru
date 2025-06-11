@@ -3,17 +3,11 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
-use App\Entity\CorporateEntity;
 use App\Entity\Investment;
-use App\Form\CorporateEntityType;
 use App\Form\InvestmentType;
-use App\Repository\ConstructorRepository;
-use App\Repository\CorporateEntityRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\LocationZoneRepository;
 use App\Repository\MunicipalityRepository;
-use App\Repository\OrganismRepository;
 use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +17,6 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
@@ -31,7 +24,6 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 final class InvestmentForm extends AbstractController
 {
     use DefaultActionTrait;
-//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
     use LiveCollectionTrait;

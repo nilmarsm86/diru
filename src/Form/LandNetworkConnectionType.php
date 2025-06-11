@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Land;
 use App\Entity\LandNetworkConnection;
 use App\Entity\NetworkConnection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,14 +17,10 @@ class LandNetworkConnectionType extends AbstractType
             ->add('explanation', null, [
                 'label' => 'Explicación:'
             ])
-//            ->add('land', EntityType::class, [
-//                'class' => Land::class,
-//                'choice_label' => 'id',
-//            ])
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
-                'label' => 'Conexión de red:'
+                'label' => 'Tipo:'
             ])
         ;
     }

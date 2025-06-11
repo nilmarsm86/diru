@@ -3,7 +3,6 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
@@ -43,47 +42,6 @@ final class PersonForm extends AbstractController
         $this->per = (is_null($per)) ? new Person() : $per;
     }
 
-//    /**
-//     * @param Person $person
-//     * @param string $message
-//     * @return void
-//     */
-//    private function modalManage(Person $person, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($person, empty($message) ? 'Selecione el representante agregado.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'person' => $person->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->per = new Person();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    private function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->per::class) . '_' . $this->per->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->per = new Person();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(PersonType::class, $this->per);
@@ -107,7 +65,6 @@ final class PersonForm extends AbstractController
 
             $this->per = new Person();
             if (!is_null($this->modal)) {
-//                $this->modalManage($person);
                 $this->modalManage($person, 'Se ha selecionado la persona agregada.', [
                     'person' => $person->getId()
                 ]);
@@ -115,7 +72,6 @@ final class PersonForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($person, $successMsg);
                 return null;
             }

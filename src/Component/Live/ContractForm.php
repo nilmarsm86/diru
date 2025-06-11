@@ -3,13 +3,9 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Contract;
-use App\Entity\Organism;
 use App\Form\ContractType;
-use App\Form\OrganismType;
 use App\Repository\ContractRepository;
-use App\Repository\OrganismRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -46,47 +42,6 @@ final class ContractForm extends AbstractController
         $this->con = (is_null($con)) ? new Contract() : $con;
     }
 
-//    /**
-//     * @param Contract $con
-//     * @param string $message
-//     * @return void
-//     */
-//    private function modalManage(Contract $con, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($con, empty($message) ? 'Seleccione el nuevo contrato agregado.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'contract' => $con->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->con = new Contract();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    private function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->con::class) . '_' . $this->con->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->con = new Contract();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ContractType::class, $this->con);
@@ -110,7 +65,6 @@ final class ContractForm extends AbstractController
 
             $this->con = new Contract();
             if (!is_null($this->modal)) {
-//                $this->modalManage($contract);
                 $this->modalManage($contract, 'Se ha seleccionado el nuevo contrato agregado.', [
                     'contract' => $contract->getId()
                 ]);
@@ -118,7 +72,6 @@ final class ContractForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($contract, $successMsg);
                 return null;
             }

@@ -2,16 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Constructor;
 use App\Entity\Investment;
 use App\Entity\LocationZone;
-use App\Entity\Municipality;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,8 +32,6 @@ class InvestmentType extends AbstractType
                 'choice_label' => 'name',
                 'required' => false,
                 'label' => 'Zona de ubicación:',
-//                'modal_id' => '#add-location-zone',
-//                'path' => ''
                 'add' => true,
                 'add_title' => 'Agregar Zona de ubicación',
                 'add_id' => 'modal-load',

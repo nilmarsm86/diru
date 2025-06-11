@@ -3,7 +3,6 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Organism;
 use App\Form\OrganismType;
 use App\Repository\OrganismRepository;
@@ -47,47 +46,6 @@ final class OrganismForm extends AbstractController
         $this->entity = $this->org;
     }
 
-//    /**
-//     * @param Organism $organism
-//     * @param string $message
-//     * @return void
-//     */
-//    private function modalManage(Organism $organism, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($organism, empty($message) ? 'Seleccione el nuevo organismo agregado.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'organism' => $organism->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->org = new Organism();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    private function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->org::class) . '_' . $this->org->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->org = new Organism();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(OrganismType::class, $this->org);
@@ -112,7 +70,6 @@ final class OrganismForm extends AbstractController
             $this->org = new Organism();
             $this->entity = $this->org;
             if (!is_null($this->modal)) {
-//                $this->modalManage($organism);
                 $this->modalManage($organism, 'Se ha seleccionado el nuevo organismo agregado.', [
                     'organism' => $organism->getId()
                 ]);
@@ -120,7 +77,6 @@ final class OrganismForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($organism, $successMsg);
                 return null;
             }

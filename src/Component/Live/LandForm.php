@@ -3,20 +3,10 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Building;
 use App\Entity\Land;
-use App\Entity\LocationZone;
-use App\Entity\NetworkConnection;
-use App\Entity\Organism;
 use App\Form\LandType;
-use App\Form\LocationZoneType;
-use App\Form\NetworkConnectionType;
-use App\Form\OrganismType;
 use App\Repository\LandRepository;
-use App\Repository\LocationZoneRepository;
-use App\Repository\NetworkConnectionRepository;
-use App\Repository\OrganismRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -25,7 +15,6 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
@@ -33,7 +22,6 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 final class LandForm extends AbstractController
 {
     use DefaultActionTrait;
-//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
     use LiveCollectionTrait;
@@ -75,7 +63,6 @@ final class LandForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-//            dd($this->formValues);
             /** @var Land $land */
             $land = $this->getForm()->getData();
 

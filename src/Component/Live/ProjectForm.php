@@ -3,25 +3,16 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Building;
-use App\Entity\Constructor;
 use App\Entity\Contract;
 use App\Entity\Project;
-use App\Entity\Province;
-use App\Form\BuildingType;
-use App\Form\ConstructorType;
 use App\Form\ProjectType;
-use App\Form\ProvinceType;
-use App\Repository\BuildingRepository;
 use App\Repository\ClientRepository;
-use App\Repository\ConstructorRepository;
 use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -31,7 +22,6 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
@@ -39,8 +29,6 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 final class ProjectForm extends AbstractController
 {
     use DefaultActionTrait;
-
-//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
     use LiveCollectionTrait;
@@ -115,13 +103,11 @@ final class ProjectForm extends AbstractController
     ): ?Response
     {
         $this->preValue();
-//        dd($this->formValues);
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-//            dd($this->formValues);
             /** @var Project $project */
             $project = $this->getForm()->getData();
 

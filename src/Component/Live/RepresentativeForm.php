@@ -3,12 +3,8 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
-use App\Entity\Person;
 use App\Entity\Representative;
-use App\Form\PersonType;
 use App\Form\RepresentativeType;
-use App\Repository\PersonRepository;
 use App\Repository\RepresentativeRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,7 +65,6 @@ final class RepresentativeForm extends AbstractController
 
             $this->per = new Representative();
             if (!is_null($this->modal)) {
-//                $this->modalManage($representative);
                 $this->modalManage($representative, 'Se ha selecionado el representante agregado.', [
                     'representative' => $representative->getId()
                 ]);
@@ -77,7 +72,6 @@ final class RepresentativeForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($representative, $successMsg);
                 return null;
             }

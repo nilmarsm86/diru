@@ -3,7 +3,6 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\Municipality;
 use App\Form\MunicipalityType;
 use App\Repository\MunicipalityRepository;
@@ -27,8 +26,6 @@ final class MunicipalityForm extends AbstractController
     use ComponentToolsTrait;
     use ComponentForm;
 
-//    const FORM_SUCCESS = self::class . '_form_success';
-
     /**
      * The initial data used to create the form.
      */
@@ -43,47 +40,6 @@ final class MunicipalityForm extends AbstractController
 
     #[LiveProp(writable: true)]
     public ?string $province = null;
-
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    public function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->mun::class) . '_' . $this->mun->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->mun = new Municipality();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-//
-//    /**
-//     * @param Municipality $municipality
-//     * @param string $message
-//     * @return void
-//     */
-//    public function modalManage(Municipality $municipality, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($municipality, empty($message) ? 'Seleccione el nuevo municipio agregado.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'municipality' => $municipality->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->mun = new Municipality();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
 
     protected function instantiateForm(): FormInterface
     {
@@ -128,7 +84,6 @@ final class MunicipalityForm extends AbstractController
 
             $this->mun = new Municipality();
             if (!is_null($this->modal)) {
-//                $this->modalManage($municipality);
                 $this->modalManage($municipality, 'Se ha seleccionado el nuevo municipio agregado.', [
                     'municipality' => $municipality->getId()
                 ]);
@@ -136,23 +91,16 @@ final class MunicipalityForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($municipality, $successMsg);
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
             return $this->redirectToRoute('app_municipality_index', [], Response::HTTP_SEE_OTHER);
-//            return null;
         }
 
         return null;
     }
-
-//    protected function getSuccessFormEventName(): string
-//    {
-//        return self::FORM_SUCCESS;
-//    }
 
     private function getDataModelValue(): ?string
     {

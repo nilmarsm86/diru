@@ -13,7 +13,6 @@ export default class extends AbstractController {
 
     static values = {
         modal: {type: String, default: ''},
-        // render: {type: Boolean, default: false},
     };
 
     static targets = ["area", "occupied", "cos", "check"];
@@ -25,28 +24,27 @@ export default class extends AbstractController {
             this.dispatch('submit', {detail: {form: event.currentTarget}});
         });
 
-        window.addEventListener('type--entity-plus:update', (event) => {
-            if (this.modalValue === '' || (event.detail.modal === 'add-province' && this.modalValue === 'add-municipality')) {
-                for (let item in event.detail.data) {
-                    try {
-                        this.component.set((item), event.detail.data[item]);
-                        // console.log(item+': '+event.detail.data[item]);
-                    } catch (e) {
-                    }
-                }
-                this.component.render();
-            }
-        });
+        // window.addEventListener('type--entity-plus:update', (event) => {
+        //     if (this.modalValue === '' || (event.detail.modal === 'add-province' && this.modalValue === 'add-municipality')) {
+        //         for (let item in event.detail.data) {
+        //             try {
+        //                 this.component.set((item), event.detail.data[item]);
+        //             } catch (e) {
+        //             }
+        //         }
+        //         this.component.render();
+        //     }
+        // });
 
-        window.addEventListener('type--address:loaded', (event) => {
-            if (this.modalValue === 'add-municipality') {
-                try {
-                    this.component.set('province', event.target.querySelectorAll('select')[0].value);
-                } catch (e) {
-                }
-                this.component.render();
-            }
-        });
+        // window.addEventListener('type--address:loaded', (event) => {
+        //     if (this.modalValue === 'add-municipality') {
+        //         try {
+        //             this.component.set('province', event.target.querySelectorAll('select')[0].value);
+        //         } catch (e) {
+        //         }
+        //         this.component.render();
+        //     }
+        // });
 
         this.calcualteCos();
 
@@ -103,36 +101,36 @@ export default class extends AbstractController {
         document.querySelector('#land_perimeter').max = this.areaTarget.value;
     }
 
-    async initialize() {
-        this.component = await getComponent(this.element);
-        this.processCsrfToken();
+    // async initialize() {
+    //     this.component = await getComponent(this.element);
+    //     this.processCsrfToken();
+    //
+    //     this.component.on('render:finished', (component) => {
+    //         this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
+    //
+    //         //if an entity-plus has double same option, deleted
+    //         const selects = this.element.querySelectorAll('select[data-type--entity-plus-target=select]');
+    //         selects.forEach(this.removeDoubleSameOption.bind(this));
+    //     });
+    // }
 
-        this.component.on('render:finished', (component) => {
-            this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
-
-            //if an entity-plus has double same option, deleted
-            const selects = this.element.querySelectorAll('select[data-type--entity-plus-target=select]');
-            selects.forEach(this.removeDoubleSameOption.bind(this));
-        });
-    }
-
-    removeDoubleSameOption(select){
-        if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
-            for (let i = 0; i < select.options.length; i++) {
-                if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
-                    select.options.remove(i);
-                }
-            }
-
-            let ind = null;
-            for (let i = 0; i < select.options.length; i++) {
-                if(select.options[i].attributes.selected){
-                    ind = i;
-                }
-            }
-
-            select.selectedIndex = ind;
-        }
-    }
+    // removeDoubleSameOption(select){
+    //     if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
+    //         for (let i = 0; i < select.options.length; i++) {
+    //             if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
+    //                 select.options.remove(i);
+    //             }
+    //         }
+    //
+    //         let ind = null;
+    //         for (let i = 0; i < select.options.length; i++) {
+    //             if(select.options[i].attributes.selected){
+    //                 ind = i;
+    //             }
+    //         }
+    //
+    //         select.selectedIndex = ind;
+    //     }
+    // }
 
 }

@@ -3,8 +3,6 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
-use App\Entity\Organism;
 use App\Entity\Province;
 use App\Form\ProvinceType;
 use App\Repository\ProvinceRepository;
@@ -14,10 +12,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
@@ -25,12 +21,9 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 final class ProvinceForm extends AbstractController
 {
     use DefaultActionTrait;
-//    use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
     use LiveCollectionTrait;
-
-//    const FORM_SUCCESS = self::class . '_form_success';
 
     /**
      * The initial data used to create the form.

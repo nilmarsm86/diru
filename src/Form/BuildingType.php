@@ -5,8 +5,6 @@ namespace App\Form;
 use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\Draftsman;
-use App\Entity\Investment;
-use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -106,22 +104,6 @@ class BuildingType extends AbstractType
 
                 'required' => false
             ])
-//            ->add('project', EntityPlusType::class, [
-//                'class' => Project::class,
-//                'choice_label' => 'name',
-//                'label' => 'Proyecto:',
-//                'placeholder' => '-Seleccionar-',
-//
-//                'detail' => true,
-//                'detail_title' => 'Detalle del Proyecto',
-//                'detail_id' => 'modal-load',
-//                'detail_url' => $this->router->generate('app_project_show', ['id' => 0, 'state' => 'modal']),
-//
-//                'add' => true,
-//                'add_title' => 'Agregar Proyecto',
-//                'add_id' => 'modal-load',
-//                'add_url' => $this->router->generate('app_project_new', ['modal' => 'modal-load']),
-//            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {

@@ -3,27 +3,13 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
-use App\Entity\Building;
-use App\Entity\Constructor;
-use App\Entity\DraftsmanProject;
-use App\Entity\Enums\ProjectType;
-use App\Entity\Investment;
 use App\Entity\Project;
-use App\Entity\Province;
-use App\Form\BuildingType;
-use App\Form\ConstructorType;
-use App\Form\ProvinceType;
 use App\Form\QuickProjectType;
-use App\Repository\BuildingRepository;
 use App\Repository\ClientRepository;
-use App\Repository\ConstructorRepository;
 use App\Repository\CurrencyRepository;
 use App\Repository\DraftsmanRepository;
-use App\Repository\InvestmentRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\ProvinceRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -106,7 +92,6 @@ final class QuickProjectForm extends AbstractController
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
-//        dd($this->formValues);
         if ($this->isSubmitAndValid()) {
             /** @var Project $project */
             $project = $this->getForm()->getData();
@@ -138,11 +123,6 @@ final class QuickProjectForm extends AbstractController
                     'project' => $project->getId()
                 ]);
 
-//                if($this->getForm()->get){
-//                    return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
-//                }else{
-//                    return $this->redirectToRoute('app_land_new', ['building'=>$project->getBuildings()->first()->getId()], Response::HTTP_SEE_OTHER);
-//                }
                 return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
             }
 

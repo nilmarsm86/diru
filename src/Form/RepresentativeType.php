@@ -38,24 +38,14 @@ class RepresentativeType extends AbstractType
                 ]
             ])
             ->add('phone', null, [
-//                'label_html' => true,
                 'label' => 'Teléfono:',
-//                'label_attr' => [
-//                    'class' => 'form-label col-sm-12'
-//                ],
                 'attr' => [
-//                    'class' => 'form-control no-border-left',
                     'placeholder' => 'Teléfono del representante'
                 ]
             ])
             ->add('email', EmailType::class, [
-//                'label_html' => true,
                 'label' => 'Correo:',
-//                'label_attr' => [
-//                    'class' => 'form-label col-sm-12'
-//                ],
                 'attr' => [
-//                    'class' => 'form-control no-border-left',
                     'placeholder' => 'Correo del representante'
                 ]
             ])

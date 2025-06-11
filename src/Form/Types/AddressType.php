@@ -39,17 +39,12 @@ class AddressType extends AbstractType
             'label' => 'Provincia:',
             'mapped' => false,
             'constraints' => $this->getProvinceConstraints($options),
-//            'attr' => [
-//                'data-model' => 'province'
-//            ],
             'data' => $province,
             'query_builder' => $this->getProvinceQueryBuilder($options),
         ];
 
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
-//                'modal_id' => '#add-province',
-//                'path' => '',//como el formulario es live-component cuando se agregar el dato se recarga y trae el dato nuevo por eso se puede dejar vacio
                     'add' => true,
                     'add_title' => 'Agregar Provincia',
                     'add_id' => 'modal-load',
@@ -63,19 +58,13 @@ class AddressType extends AbstractType
             'class' => Municipality::class,
             'placeholder' => $options['municipality'] ? null : '-Seleccione una provincia-',
             'label' => 'Municipio:',
-//            'mapped' => false,
             'constraints' => $this->getMunicipalityConstraints($options),
-//            'attr' => [
-//                'data-model' => 'province'
-//            ],
             'data' => $municipality,
             'query_builder' => $this->getMunicipalityQueryBuilder($options),
         ];
 
         if (is_null($options['modal'])) {
             $builder->add('municipality', EntityPlusType::class, [
-//                    'modal_id' => '#add-municipality',
-//                    'path' => ''//si esta vacio es que esta en un live-component-form que se recarga al agregar el nuevo elemento
                     'add' => true,
                     'add_title' => 'Agregar Municipio',
                     'add_id' => 'modal-load',
@@ -127,13 +116,6 @@ class AddressType extends AbstractType
                 new NotBlank(message: 'Seleccione un municipio.')
             ];
         }
-//        else {
-//            if ($options['province'] !== 0) {
-//                $municipalityConstraints = [
-//                    new NotBlank(message: 'Seleccione un municipio.')
-//                ];
-//            }
-//        }
 
         return $municipalityConstraints;
     }

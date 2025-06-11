@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
 use App\Entity\IndividualClient;
-use App\Entity\Person;
 use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
@@ -12,15 +10,12 @@ use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class IndividualClientType extends AbstractType
 {

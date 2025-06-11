@@ -3,16 +3,9 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
-use App\Entity\LocationZone;
 use App\Entity\NetworkConnection;
-use App\Entity\Organism;
-use App\Form\LocationZoneType;
 use App\Form\NetworkConnectionType;
-use App\Form\OrganismType;
-use App\Repository\LocationZoneRepository;
 use App\Repository\NetworkConnectionRepository;
-use App\Repository\OrganismRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -84,7 +77,6 @@ final class NetworkConnectionForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($nc, $successMsg);
                 return null;
             }

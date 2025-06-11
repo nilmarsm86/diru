@@ -70,24 +70,6 @@ final class IndividualClientForm extends AbstractController
         }
     }
 
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    public function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->ic::class) . '_' . $this->ic->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->ic = new IndividualClient();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     /**
      * @param IndividualClient $individualClient
      * @return Person
@@ -165,7 +147,6 @@ final class IndividualClientForm extends AbstractController
             }
 
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['street'])) {
-//            if (isset($this->formValues['streetAddress']['street'])) {
                 $street = $this->formValues['streetAddress']['street'];
             }
         } else {
@@ -218,7 +199,6 @@ final class IndividualClientForm extends AbstractController
 //            }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($ic, $successMsg);
                 return null;
             }

@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Client;
 use App\Entity\CorporateEntity;
 use App\Entity\EnterpriseClient;
-use App\Entity\Person;
 use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
@@ -13,14 +12,12 @@ use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EnterpriseClientType extends AbstractType
@@ -57,14 +54,6 @@ class EnterpriseClientType extends AbstractType
 //                'placeholder' => '-Seleccione-',
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
-//                'modal_id' => '#add-entity',
-//                'path' => $this->router->generate('app_corporate_entity_options', ['id' => 0]),
-//                'path' => '',
-//                'detail' => true,
-//                'detail_title' => 'Detalle de la entidad',
-//                'detail_id' => 'detail_corporate_entity',
-//                'detail_loading' => 'Cargando detalles de la entidad...',
-//                'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal'])
                 'detail' => true,
                 'detail_title' => 'Detalle de la entidad',
                 'detail_id' => 'modal-load',
@@ -127,7 +116,6 @@ class EnterpriseClientType extends AbstractType
 //    }
 
     /**
-     * @param Client $client
      * @return Closure
      */
     private function getEntityQueryBuilder(): Closure
@@ -151,15 +139,6 @@ class EnterpriseClientType extends AbstractType
             'class' => Representative::class,
 //            'placeholder' => '-Seleccione-',
             'label' => 'Representante:',
-//            'query_builder' => $this->getPersonQueryBuilder($ec),
-//            'modal_id' => '#add-person',
-//            'path' => $this->router->generate('app_person_options', ['id' => 0]),
-//            'path' => '',//esta en un formulario de live-component
-//            'detail' => true,
-//            'detail_title' => 'Detalle de los representantes',
-//            'detail_id' => 'detail_person',
-//            'detail_loading' => 'Cargando detalles de los representantes...',
-//            'detail_url' => $this->router->generate('app_person_show', ['id' => 0, 'state' => 'modal']),
             'detail' => true,
             'detail_title' => 'Detalle del representante',
             'detail_id' => 'modal-load',

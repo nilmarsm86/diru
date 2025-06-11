@@ -2,24 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
-use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
-use App\Entity\Investment;
-use App\Entity\Person;
 use App\Entity\Project;
-use App\Form\Types\EntityPlusType;
-use App\Form\Types\ProjectStateEnumType;
-use App\Form\Types\ProjectTypeEnumType;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;

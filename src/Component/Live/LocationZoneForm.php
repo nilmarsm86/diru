@@ -3,13 +3,9 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Component\Twig\Modal\Modal;
 use App\Entity\LocationZone;
-use App\Entity\Organism;
 use App\Form\LocationZoneType;
-use App\Form\OrganismType;
 use App\Repository\LocationZoneRepository;
-use App\Repository\OrganismRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -50,47 +46,6 @@ final class LocationZoneForm extends AbstractController
         $this->entity = $this->lz;
     }
 
-//    /**
-//     * @param LocationZone $lz
-//     * @param string $message
-//     * @return void
-//     */
-//    private function modalManage(LocationZone $lz, string $message=''): void
-//    {
-//        $template = $this->getSuccessTemplate($lz, empty($message) ? 'Seleccione la nueva zona de ubicación.' : $message);
-//
-//        $this->dispatchBrowserEvent('type--entity-plus:update', [
-//            'data' => [
-//                'location_zone' => $lz->getId()
-//            ],
-//            'modal' => $this->modal,
-//            'response' => $template
-//        ]);
-//
-//        $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
-//
-//        $this->lz = new LocationZone();
-//        $this->resetForm();//establecer un objeto provincia nuevo
-//    }
-//
-//    /**
-//     * @param string $successMsg
-//     * @return void
-//     */
-//    private function ajaxManage(string $successMsg): void
-//    {
-//        $template = $this->renderView("partials/_form_success.html.twig", [
-//            'id' => 'new_' . $this->getClassName($this->lz::class) . '_' . $this->lz->getId(),
-//            'type' => 'text-bg-success',
-//            'message' => $successMsg
-//        ]);
-//
-//        $this->lz = new LocationZone();
-//        $this->emitSuccess([
-//            'response' => $template
-//        ]);
-//    }
-
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(LocationZoneType::class, $this->lz);
@@ -115,7 +70,6 @@ final class LocationZoneForm extends AbstractController
             $this->lz = new LocationZone();
             $this->entity = $this->lz;
             if (!is_null($this->modal)) {
-//                $this->modalManage($lz);
                 $this->modalManage($lz, 'Se ha seleccionado la nueva zona de ubicación.', [
                     'locationZone' => $lz->getId()
                 ]);
@@ -123,7 +77,6 @@ final class LocationZoneForm extends AbstractController
             }
 
             if ($this->ajax) {
-//                $this->ajaxManage($successMsg);
                 $this->ajaxManage($lz, $successMsg);
                 return null;
             }

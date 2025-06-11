@@ -172,15 +172,42 @@
                 <div class="row summary-btn-lis">
                     <div class="col">Obra: {% if this.isNew == false %}{{ building.vars.data.name }}{% endif %}</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-                        <button class="btn btn-primary btn-sm" type="button">Reporte</button>
-                        {#                        {{ form_widget(building.vars.button_delete, { #}
-                        {#                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar', #}
-                        {#                            attr: { class: 'btn btn-outline-danger btn-sm' } #}
-                        {#                        }) }} #}
+{#                        <button class="btn btn-primary btn-sm" type="button">Reporte</button>#}
+
                         {% if this.pro.id is not null %}
-                            <a class="btn btn-outline-info btn-sm"
-                               href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">Información de la
-                                obra</a>
+                            {% if building.vars.data.id %}
+                                {% if building.vars.data.land is null %}
+                                    {% set urlPath = path('app_land_new', {'building': building.vars.data.id, 'modal' : 'modal-load'}) %}
+                                {% else %}
+                                    {% set urlPath = path('app_land_edit', {'building': building.vars.data.id, 'modal' : 'modal-load', 'id':building.vars.data.land.id}) %}
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-info"
+                                        title="Datos generales del terreno"
+                                        {{ stimulusTarget('modal-content-loader', 'button') }}
+                                        {{ stimulusController('modal-content-loader', {
+                                            url: urlPath,
+                                            id: 'modal-load',
+                                            placeholder: 'Cargando...',
+                                            title: 'Datos generales del terreno',
+                                        }) }}
+                                >
+                                    Datos generales del terreno
+                                </button>
+                                <a class="btn btn-outline-info btn-sm"
+                                   href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">
+                                    Información de la obra
+                                </a>
+                            {% else %}
+                                {{ form_widget(building.vars.button_delete, {
+                                    label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                                    attr: { class: 'btn btn-outline-danger btn-sm' }
+                                }) }}
+                            {% endif %}
+                        {% else %}
+                            {{ form_widget(building.vars.button_delete, {
+                                label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                                attr: { class: 'btn btn-outline-danger btn-sm' }
+                            }) }}
                         {% endif %}
                     </div>
                 </div>

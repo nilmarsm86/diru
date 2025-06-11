@@ -124,7 +124,7 @@ final class QuickProjectForm extends AbstractController
 
             $project->setType(\App\Entity\Enums\ProjectType::Parcel);
 
-            $municipality = $municipalityRepository->findOneBy(['name'=>'Sin Municipio']);
+            $municipality = $municipalityRepository->findOneBy(['name'=>ucfirst('Sin Municipio')]);
 
             $project->createAutomaticInvestment($municipality);
             $project->createAutomaticBuilding();

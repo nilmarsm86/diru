@@ -19,7 +19,7 @@ trait MunicipalityTrait
         if (!is_null($municipalityId)) {
             return $entityManager->getRepository(Municipality::class)->find($municipalityId);
         } else {
-            return $entityManager->getRepository(Municipality::class)->findOneBy(['name' => 'Sin municipio']);
+            return $entityManager->getRepository(Municipality::class)->findOneBy(['name' => ucfirst('Sin municipio')]);
         }
     }
 

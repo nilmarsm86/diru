@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -57,6 +58,7 @@ final class ProjectForm extends AbstractController
     public function __construct(
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
+        private readonly RouterInterface            $router
     )
     {
 
@@ -128,9 +130,9 @@ final class ProjectForm extends AbstractController
             if (!empty($this->formValues['draftsman'])) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
 
-                if(is_null($project->getId())){
+                if (is_null($project->getId())) {
                     /** @var Building $building */
-                    foreach ($this->getForm()->get('buildings')->getData() as $building){
+                    foreach ($this->getForm()->get('buildings')->getData() as $building) {
                         $building->addDraftsman($draftsman);
                     }
                 }
@@ -149,9 +151,9 @@ final class ProjectForm extends AbstractController
                 }
 
                 //Change draftmans
-                foreach ($this->getForm()->get('buildings')->getData() as $key => $building){
+                foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
                     $draftsman = $draftsmanRepository->find($this->formValues['buildings'][$key]['draftsman']);
-                    if($draftsman){
+                    if ($draftsman) {
                         $building->addDraftsman($draftsman);
                     }
                 }
@@ -197,6 +199,15 @@ final class ProjectForm extends AbstractController
     public function isNew(): bool
     {
         return is_null($this->pro->getId());
+    }
+
+    public function getUrl(Building $building): string
+    {
+        if (is_null($building->getLand())) {
+            return $this->router->generate('app_land_new', ['modal' => 'modal-load', 'building' => $building->getId()]);
+        } else {
+            return $this->router->generate('app_land_edit', ['modal' => 'modal-load', 'building' => $building->getId(), 'id' => $building->getLand()->getId()]);
+        }
     }
 
 }

@@ -70,13 +70,17 @@ final class LandForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
+
             /** @var Land $land */
             $land = $this->getForm()->getData();
 
             $this->building->setLand($land);
+            if (!$this->formValues['floor']) {
+                $land->setFloor(0);
+            }
 
             //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
-            if(is_null($land->getId())){
+            if (is_null($land->getId())) {
                 $this->addFloors($land, $floorRepository);
             }
 
@@ -89,12 +93,12 @@ final class LandForm extends AbstractController
                     'land' => $land->getId()
                 ], 'text-bg-success');
 
-//                if($this->route === 'app_building_edit'){
-//                    return null;
-//                }else{
+                if ($land->hasFloors()) {
                     $this->addFlash('success', 'Se han salvado los datos del terreno');
                     return $this->redirectToRoute('app_building_edit', ['id' => $this->building->getId()], Response::HTTP_SEE_OTHER);
-//                }
+                } else {
+                    return null;
+                }
             }
 
             if ($this->ajax) {
@@ -112,7 +116,7 @@ final class LandForm extends AbstractController
     private function addFloors(Land $land, FloorRepository $floorRepository): void
     {
         $floor = $land->getFloor();
-        if($floor === 1){
+        if ($floor === 1) {
             $f = new Floor();
             $f->setName('Planta Baja');
 //            $f->setBuilding($this->building);
@@ -121,7 +125,7 @@ final class LandForm extends AbstractController
             $floorRepository->save($f);
         }
 
-        if($floor > 1){
+        if ($floor > 1) {
             $f = new Floor();
             $f->setName('Planta Baja');
 //            $f->setBuilding($this->building);
@@ -129,9 +133,9 @@ final class LandForm extends AbstractController
 
             $floorRepository->save($f);
 
-            for($i=1;$i<=$floor;$i++){
+            for ($i = 1; $i <= $floor; $i++) {
                 $f = new Floor();
-                $f->setName('Planta '.$i);
+                $f->setName('Planta ' . $i);
 //                $f->setBuilding($this->building);
                 $this->building->addFloor($f);
 
@@ -149,7 +153,7 @@ final class LandForm extends AbstractController
 
     public function isNew(): bool
     {
-        if(!is_null($this->l)){
+        if (!is_null($this->l)) {
             return is_null($this->l->getId());
         }
 

@@ -52,6 +52,7 @@ class Land
         $this->occupiedArea = 0;
         $this->floor = 0;
         $this->landArea = 1;
+        $this->perimeter = 0;
     }
 
     public function getId(): ?int
@@ -154,10 +155,20 @@ class Land
         return $this->floor;
     }
 
-    public function setFloor(int $floor): static
+    public function setFloor(?int $floor): static
     {
         $this->floor = $floor;
 
         return $this;
+    }
+
+    public function hasOccupiedArea(): bool
+    {
+        return $this->occupiedArea > 0;
+    }
+
+    public function hasFloors()
+    {
+        return $this->getFloor() > 0;
     }
 }

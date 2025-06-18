@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <details class="collection" {{ stimulusTarget('live/land-form', 'details') }}>
+    <details class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área ocupada:</div>

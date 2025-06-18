@@ -21,14 +21,14 @@ class LandType extends AbstractType
         $builder
             ->add('landArea', UnitMeasurementType::class, [
                 'unit' => 'm<sup>2</sup>',
-                'label' => "Area de terreno:",
+                'label' => "Área de terreno:",
                 'attr' => [
                     'min' => 0
                 ]
             ])
             ->add('occupiedArea', UnitMeasurementType::class, [
                 'unit' => 'm<sup>2</sup>',
-                'label' => "Area ocupada:",
+                'label' => "Área ocupada:",
                 'attr' => [
                     'min' => 0
                 ],
@@ -40,6 +40,7 @@ class LandType extends AbstractType
                 'attr' => [
                     'min' => 0
                 ],
+//                'empty_data' => 0,
                 'required' => false
             ])
             ->add('photo', FileType::class, [
@@ -50,11 +51,10 @@ class LandType extends AbstractType
                 'label' => "Microlocalización:",
                 'required' => false
             ])
-            ->add('floor', IntegerType::class, [
+            ->add('floor', ChoiceType::class, [
                 'label' => "Plantas:",
-                'attr' => [
-                    'min' => 0
-                ],
+                'placeholder' => '-Seleccinar-',
+                'choices' => array_combine(range(1, 50), range(1, 50)),
                 'required' => false
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [

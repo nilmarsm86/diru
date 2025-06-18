@@ -176,16 +176,15 @@
 
                         {% if this.pro.id is not null %}
                             {% if building.vars.data.id %}
-                                {% if building.vars.data.land is null %}
-                                    {% set urlPath = path('app_land_new', {'building': building.vars.data.id, 'modal' : 'modal-load'}) %}
-                                {% else %}
-                                    {% set urlPath = path('app_land_edit', {'building': building.vars.data.id, 'modal' : 'modal-load', 'id':building.vars.data.land.id}) %}
-                                {% endif %}
+                                <a class="btn btn-outline-info btn-sm"
+                                   href="{{ path('app_floor_index', {building: building.id}) }}">
+                                    Gestionar plantas
+                                </a>
                                 <button class="btn btn-sm btn-outline-info"
                                         title="Datos generales del terreno"
                                         {{ stimulusTarget('modal-content-loader', 'button') }}
                                         {{ stimulusController('modal-content-loader', {
-                                            url: urlPath,
+                                            url: this.getUrl(building.vars.data),
                                             id: 'modal-load',
                                             placeholder: 'Cargando...',
                                             title: 'Datos generales del terreno',

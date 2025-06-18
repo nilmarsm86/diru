@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Floor index{% endblock %}
+
+{% block body %}
+    <h1>Floor index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for floor in floors %}
+            <tr>
+                <td>{{ floor.id }}</td>
+                <td>{{ floor.name }}</td>
+                <td>
+                    <a href="{{ path('app_floor_show', {'id': floor.id}) }}">show</a>
+                    <a href="{{ path('app_floor_edit', {'id': floor.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_floor_new') }}">Create new</a>
+{% endblock %}

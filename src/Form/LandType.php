@@ -7,7 +7,7 @@ use App\Form\Types\UnitMeasurementType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,14 +31,16 @@ class LandType extends AbstractType
                 'label' => "Area ocupada:",
                 'attr' => [
                     'min' => 0
-                ]
+                ],
+                'required' => false
             ])
             ->add('perimeter', UnitMeasurementType::class, [
                 'unit' => 'm',
                 'label' => "Perímetro:",
                 'attr' => [
                     'min' => 0
-                ]
+                ],
+                'required' => false
             ])
             ->add('photo', FileType::class, [
                 'label' => "Foto:",
@@ -48,8 +50,12 @@ class LandType extends AbstractType
                 'label' => "Microlocalización:",
                 'required' => false
             ])
-            ->add('floor', NumberType::class, [
-                'label' => "Plantas:"
+            ->add('floor', IntegerType::class, [
+                'label' => "Plantas:",
+                'attr' => [
+                    'min' => 0
+                ],
+                'required' => false
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [
                 'entry_type' => LandNetworkConnectionType::class,

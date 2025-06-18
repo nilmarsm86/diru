@@ -11,37 +11,51 @@
 
     <div class="mb-0 row">
         <div class="col">
-            {{ form_row(form.landArea, {attr:{'data-live--land-form-target':'area'}}) }}
-        </div>
-        <div class="col">
-            <div class="mb-0 row" {{ stimulusController('visibility') }}>
+            <div class="mb-0 row">
+                <div class="col-sm-8">
+                    {{ form_row(form.landArea, {attr:{'data-live--land-form-target':'area'}}) }}
+                </div>
                 <div class="col-sm-4">
-                    {{ form_row(form.isOccupied) }}
-                </div>
-                <div class="col-sm-5">
-                    <div {{ stimulusTarget('visibility', 'target') }} style="display: {% if this.l.occupiedArea > 0 %}block{% else %}none{% endif %}">
-                    {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
-                    </div>
-                </div>
-                <div class="col-sm-3">
                     <div class="mb-3">
-                        <p class="text-end">COS (%):</p>
-                        <h5 class="text-end"><span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span></h5>
+                        <p class="">Hectáreas (ha):</p>
+                        <h5 class="">
+                            <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'hectare') }}>0</span>
+                        </h5>
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="col">
+            {{ form_row(form.perimeter, {attr:{'data-live--land-form-target':'perimeter'}}) }}
         </div>
     </div>
 
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.perimeter) }}
+    <details class="collection" {{ stimulusTarget('live/land-form', 'details') }}>
+        <summary class="collection">
+            <div class="row summary-btn-lis">
+                <div class="col">Tiene área ocupada:</div>
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                </div>
+            </div>
+        </summary>
+        <br>
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
+            </div>
+            <div class="col-sm-2">
+                <div class="mb-3">
+                    <p class="" title="Coeficiente de Ocupación del Suelo">COS (%):</p>
+                    <h5 class="">
+                        <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                {{ form_row(form.floor, {attr:{'data-live--land-form-target':'floor'}}) }}
+            </div>
         </div>
-        <div class="col">
-            {{ form_row(form.floor) }}
-        </div>
-    </div>
+    </details>
 
     <div class="mb-0 row">
         <div class="col">
@@ -57,21 +71,24 @@
         attr: { class: 'btn btn-outline-nav-link btn-sm' }
     }) }}
 
-    {% if form_errors(form.landNetworkConnections) %}
-        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
-            <div class="col-sm-12">
-                {{ form_errors(form.networkConnection) }}
-            </div>
-        </div>
-    {% endif %}
+{#    {% if form_errors(form.landNetworkConnections) %}#}
+{#        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">#}
+{#            <div class="col-sm-12">#}
+{#                {{ form_errors(form.networkConnection) }}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
 
     {% for key, connection in form.landNetworkConnections %}
-        <details class="collection" {% if this.isNew() == false %}open{% endif %}>
+        <details class="collection" {# {% if this.isNew() == false %}open{% endif %} #}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
-                    <div class="col">Conexión de red:</div>
+                    <div class="col">Conexión de red: {% if connection.vars.data.id is not null %}{{ connection.vars.data.networkConnection.name }}{% endif %}</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-                        <button class="btn btn-primary btn-sm" type="button">Opción 1</button>
+                        {{ form_widget(connection.vars.button_delete, {
+                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                            attr: { class: 'btn btn-outline-danger btn-sm' }
+                        }) }}
                     </div>
                 </div>
             </summary>

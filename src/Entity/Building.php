@@ -86,6 +86,12 @@ class Building
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Land $land = null;
 
+    /**
+     * @var Collection<int, Floor>
+     */
+    #[ORM\OneToMany(targetEntity: Floor::class, mappedBy: 'building', cascade: ['persist', 'remove'])]
+    private Collection $floors;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -99,6 +105,7 @@ class Building
         $this->setState(BuildingState::Registered);
         $this->draftsmansBuildings = new ArrayCollection();
         $this->constructorBuildings = new ArrayCollection();
+        $this->floors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -442,6 +449,41 @@ class Building
         $this->land = $land;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Floor>
+     */
+    public function getFloors(): Collection
+    {
+        return $this->floors;
+    }
+
+    public function addFloor(Floor $floor): static
+    {
+        if (!$this->floors->contains($floor)) {
+            $this->floors->add($floor);
+            $floor->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFloor(Floor $floor): static
+    {
+        if ($this->floors->removeElement($floor)) {
+            // set the owning side to null (unless already changed)
+            if ($floor->getBuilding() === $this) {
+                $floor->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasFloors(): bool
+    {
+        return $this->floors->count() > 0;
     }
 
 }

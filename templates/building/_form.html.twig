@@ -24,6 +24,12 @@
         >
             Datos generales del terreno
         </button>
+
+        {% if building.hasFloors() %}
+            <a href="{{ path('app_floor_index') }}" class="btn btn-sm btn-primary" title="Gestionar plantas">
+                Gestionar plantas
+            </a>
+        {% endif %}
     {% endblock %}
 
     {% block body %}

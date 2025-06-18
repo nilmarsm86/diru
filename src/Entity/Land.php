@@ -27,8 +27,7 @@ class Land
 //    #[Assert\Assert\LessThanOrEqual()]
     private ?int $occupiedArea = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'El perímetro está vacía.')]
+    #[ORM\Column(nullable: true)]
     #[Assert\Positive(message: 'El perímetro debe ser un número positivo.')]
     private ?int $perimeter = null;
 
@@ -41,7 +40,7 @@ class Land
     /**
      * @var Collection<int, LandNetworkConnection>
      */
-    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $landNetworkConnections;
 
     #[ORM\Column]
@@ -51,7 +50,7 @@ class Land
     {
         $this->landNetworkConnections = new ArrayCollection();
         $this->occupiedArea = 0;
-        $this->floor = 1;
+        $this->floor = 0;
         $this->landArea = 1;
     }
 

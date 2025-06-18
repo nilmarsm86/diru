@@ -15,7 +15,7 @@ class LandNetworkConnection
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Land $land = null;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]

@@ -4,12 +4,16 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
+use App\Entity\Floor;
 use App\Entity\Land;
 use App\Form\LandType;
+use App\Repository\BuildingRepository;
+use App\Repository\FloorRepository;
 use App\Repository\LandRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -41,6 +45,9 @@ final class LandForm extends AbstractController
     #[LiveProp]
     public ?Building $building = null;
 
+    #[LiveProp]
+    public ?string $route = null;
+
     public function mount(?Land $land = null, Building $building = null): void
     {
         $this->l = (is_null($land)) ? new Land() : $land;
@@ -56,7 +63,7 @@ final class LandForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(LandRepository $landRepository): ?Response
+    public function save(Request $request, LandRepository $landRepository, FloorRepository $floorRepository): ?Response
     {
         $successMsg = (is_null($this->l->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.';//TODO: personalizar los mensajes
 
@@ -68,14 +75,26 @@ final class LandForm extends AbstractController
 
             $this->building->setLand($land);
 
+            //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
+            if(is_null($land->getId())){
+                $this->addFloors($land, $floorRepository);
+            }
+
             $landRepository->save($land, true);
+//            $buildingRepository->save($this->building, true);
 
             $this->l = new Land();
             if (!is_null($this->modal)) {
                 $this->modalManage($land, 'Se han salvado los datos del terreno', [
                     'land' => $land->getId()
                 ], 'text-bg-success');
-                return null;
+
+//                if($this->route === 'app_building_edit'){
+//                    return null;
+//                }else{
+                    $this->addFlash('success', 'Se han salvado los datos del terreno');
+                    return $this->redirectToRoute('app_building_edit', ['id' => $this->building->getId()], Response::HTTP_SEE_OTHER);
+//                }
             }
 
             if ($this->ajax) {
@@ -88,6 +107,39 @@ final class LandForm extends AbstractController
         }
 
         return null;
+    }
+
+    private function addFloors(Land $land, FloorRepository $floorRepository): void
+    {
+        $floor = $land->getFloor();
+        if($floor === 1){
+            $f = new Floor();
+            $f->setName('Planta Baja');
+//            $f->setBuilding($this->building);
+            $this->building->addFloor($f);
+
+            $floorRepository->save($f);
+        }
+
+        if($floor > 1){
+            $f = new Floor();
+            $f->setName('Planta Baja');
+//            $f->setBuilding($this->building);
+            $this->building->addFloor($f);
+
+            $floorRepository->save($f);
+
+            for($i=1;$i<=$floor;$i++){
+                $f = new Floor();
+                $f->setName('Planta '.$i);
+//                $f->setBuilding($this->building);
+                $this->building->addFloor($f);
+
+                $floorRepository->save($f);
+            }
+        }
+
+        $floorRepository->flush();
     }
 
     private function getDataModelValue(): ?string

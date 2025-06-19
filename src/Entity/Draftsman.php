@@ -6,6 +6,7 @@ use App\Repository\DraftsmanRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DraftsmanRepository::class)]
 class Draftsman extends Person
@@ -14,6 +15,7 @@ class Draftsman extends Person
      * @var Collection<int, DraftsmanBuilding>
      */
     #[ORM\OneToMany(targetEntity: DraftsmanBuilding::class, mappedBy: 'draftsman', cascade: ['persist'])]
+    #[Assert\Valid]
     private Collection $draftsmansBuildings;
 
     public function __construct()

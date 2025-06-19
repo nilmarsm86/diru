@@ -28,7 +28,7 @@ class Land
     private ?int $occupiedArea = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\Positive(message: 'El perímetro debe ser un número positivo.')]
+    #[Assert\PositiveOrZero(message: 'El perímetro debe ser un número positivo.')]
     private ?int $perimeter = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -41,6 +41,7 @@ class Land
      * @var Collection<int, LandNetworkConnection>
      */
     #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $landNetworkConnections;
 
     #[ORM\Column]

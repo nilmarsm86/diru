@@ -44,6 +44,7 @@ class Constructor
      * @var Collection<int, ConstructorBuilding>
      */
     #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'constructor', cascade: ['persist'])]
+    #[Assert\Valid]
     private Collection $constructorBuildings;
 
     public function __construct()

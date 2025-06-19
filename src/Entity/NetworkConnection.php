@@ -7,6 +7,7 @@ use App\Repository\NetworkConnectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NetworkConnectionRepository::class)]
 class NetworkConnection
@@ -22,6 +23,7 @@ class NetworkConnection
      * @var Collection<int, LandNetworkConnection>
      */
     #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'networkConnection')]
+    #[Assert\Valid]
     private Collection $landNetworkConnections;
 
     public function __construct()

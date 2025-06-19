@@ -89,9 +89,9 @@ class ProjectType extends AbstractType
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
                 'label' => 'Moneda:',
-                'constraints' => [
-                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
-                ]
+//                'constraints' => [
+//                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
+//                ]
             ])
             ->add('comment', null, [
                 'label' => false,

@@ -58,6 +58,7 @@ class CorporateEntity
      * @var Collection<int, EnterpriseClient>
      */
     #[ORM\OneToMany(targetEntity: EnterpriseClient::class, mappedBy: 'corporateEntity')]
+    #[Assert\Valid]
     private Collection $enterpriseClients;
 
     public function __construct()

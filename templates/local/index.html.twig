@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Local index{% endblock %}
+
+{% block body %}
+    <h1>Local index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>Area</th>
+                <th>Type</th>
+                <th>Height</th>
+                <th>TechnicalStatus</th>
+                <th>Type2</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for local in locals %}
+            <tr>
+                <td>{{ local.id }}</td>
+                <td>{{ local.number }}</td>
+                <td>{{ local.area }}</td>
+                <td>{{ local.type }}</td>
+                <td>{{ local.height }}</td>
+                <td>{{ local.technicalStatus }}</td>
+                <td>{{ local.type2 }}</td>
+                <td>{{ local.name }}</td>
+                <td>
+                    <a href="{{ path('app_local_show', {'id': local.id}) }}">show</a>
+                    <a href="{{ path('app_local_edit', {'id': local.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_local_new') }}">Create new</a>
+{% endblock %}

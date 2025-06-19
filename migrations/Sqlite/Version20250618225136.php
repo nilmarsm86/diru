@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250618133554 extends AbstractMigration
+final class Version20250618225136 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -57,7 +57,7 @@ final class Version20250618133554 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_43CA0AD671692C0F ON investment (location_zone_id)');
         $this->addSql('CREATE INDEX IDX_43CA0AD6AE6F181C ON investment (municipality_id)');
         $this->addSql('CREATE TABLE land (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_area INTEGER NOT NULL, occupied_area INTEGER NOT NULL, perimeter INTEGER DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, microlocalization VARCHAR(255) DEFAULT NULL, floor INTEGER NOT NULL)');
-        $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_id INTEGER DEFAULT NULL, network_connection_id INTEGER NOT NULL, explanation CLOB DEFAULT NULL, CONSTRAINT FK_7BF47B3B1994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, explanation CLOB DEFAULT NULL, CONSTRAINT FK_7BF47B3B1994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B1994904A ON land_network_connection (land_id)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4EDCA4BC ON land_network_connection (network_connection_id)');
         $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, number INTEGER NOT NULL, area INTEGER NOT NULL, type VARCHAR(255) NOT NULL, height INTEGER NOT NULL, technical_status VARCHAR(255) NOT NULL, type2 VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');

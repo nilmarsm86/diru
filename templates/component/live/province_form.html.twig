@@ -50,7 +50,7 @@
     <div class="row mb-3">
         <div class="col-sm-10 offset-sm-2">
             {{ component('button:submit', {
-                icon: (entity.id is null) ? 'bi:save' : 'fa:edit',
+                icon: (entity.id is null) ? 'fa:save' : 'fa:edit',
                 label: (entity.id is null) ? 'Agregar' : 'Modificar',
                 component: this
             }) }}

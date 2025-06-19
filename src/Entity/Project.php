@@ -99,7 +99,7 @@ class Project
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\OrderBy(["name" => "ASC"])]
     #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
+    #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
     private ?Currency $currency = null;
 
     public function __construct()

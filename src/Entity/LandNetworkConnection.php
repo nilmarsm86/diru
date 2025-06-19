@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LandNetworkConnectionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LandNetworkConnectionRepository::class)]
 class LandNetworkConnection
@@ -15,11 +16,15 @@ class LandNetworkConnection
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca el terreno')]
     private ?Land $land = null;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca el tipo de red')]
     private ?NetworkConnection $networkConnection = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

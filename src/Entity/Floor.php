@@ -8,6 +8,7 @@ use App\Repository\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
 class Floor
@@ -23,10 +24,13 @@ class Floor
      * @var Collection<int, Local>
      */
     #[ORM\OneToMany(targetEntity: Local::class, mappedBy: 'floor')]
+    #[Assert\Valid]
     private Collection $locals;
 
     #[ORM\ManyToOne(inversedBy: 'floors')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca la obra para la planta.')]
     private ?Building $building = null;
 
     public function __construct()

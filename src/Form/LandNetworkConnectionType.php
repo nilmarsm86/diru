@@ -20,7 +20,8 @@ class LandNetworkConnectionType extends AbstractType
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
-                'label' => 'Tipo:'
+                'label' => 'Tipo:',
+                'placeholder' => '-Seleccinar-',
             ])
         ;
     }

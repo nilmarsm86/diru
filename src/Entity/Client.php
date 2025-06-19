@@ -42,6 +42,7 @@ class Client
      * @var Collection<int, Project>
      */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'client')]
+    #[Assert\Valid]
     protected Collection $projects;
 
     public function __construct()

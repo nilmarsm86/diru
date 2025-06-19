@@ -35,12 +35,6 @@ class Building
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stopReason = null;
 
-//    #[ORM\ManyToOne(inversedBy: 'buildings')]
-//    #[ORM\JoinColumn(nullable: true)]
-//    #[Assert\Valid]
-////    #[Assert\NotBlank(message: 'Seleccione o cree la constructora que desarrolla la obra.')]
-//    private ?Constructor $constructor = null;
-
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $estimatedValueConstruction = 0;
@@ -75,15 +69,18 @@ class Building
      * @var Collection<int, DraftsmanBuilding>
      */
     #[ORM\OneToMany(targetEntity: DraftsmanBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    #[Assert\Valid]
     private Collection $draftsmansBuildings;
 
     /**
      * @var Collection<int, DraftsmanBuilding>
      */
     #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    #[Assert\Valid()]
     private Collection $constructorBuildings;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Land $land = null;
 
     /**
@@ -158,18 +155,6 @@ class Building
 
         return $this;
     }
-
-//    public function getConstructor(): ?Constructor
-//    {
-//        return $this->constructor;
-//    }
-//
-//    public function setConstructor(?Constructor $constructor): static
-//    {
-//        $this->constructor = $constructor;
-//
-//        return $this;
-//    }
 
     public function getEstimatedValueConstruction(): ?int
     {

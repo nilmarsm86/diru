@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\StartedAndFinishedTrait;
 use App\Repository\DraftsmanBuildingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DraftsmanBuildingRepository::class)]
 class DraftsmanBuilding
@@ -18,10 +19,14 @@ class DraftsmanBuilding
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca el proyectista.')]
     private ?Draftsman $draftsman = null;
 
     #[ORM\ManyToOne(inversedBy: 'draftsmansBuildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca la obra.')]
     private ?Building $building = null;
 
     public function __construct()

@@ -167,31 +167,31 @@
     {% endif %}
 
     {% for key, building in form.buildings %}
-        <details class="collection" {# {% if this.isNew() == false %}open{% endif %} #}>
+        <details class="collection" {% if form_errors(building.name) %}open{% endif %}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
                     <div class="col">Obra: {% if this.isNew == false %}{{ building.vars.data.name }}{% endif %}</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-{#                        <button class="btn btn-primary btn-sm" type="button">Reporte</button>#}
+                        {#                        <button class="btn btn-primary btn-sm" type="button">Reporte</button> #}
 
                         {% if this.pro.id is not null %}
                             {% if building.vars.data.id %}
-                                <a class="btn btn-outline-info btn-sm"
-                                   href="{{ path('app_floor_index', {building: building.id}) }}">
-                                    Gestionar plantas
-                                </a>
-                                <button class="btn btn-sm btn-outline-info"
-                                        title="Datos generales del terreno"
-                                        {{ stimulusTarget('modal-content-loader', 'button') }}
-                                        {{ stimulusController('modal-content-loader', {
-                                            url: this.getUrl(building.vars.data),
-                                            id: 'modal-load',
-                                            placeholder: 'Cargando...',
-                                            title: 'Datos generales del terreno',
-                                        }) }}
-                                >
-                                    Datos generales del terreno
-                                </button>
+{#                                <a class="btn btn-outline-info btn-sm"#}
+{#                                   href="{{ path('app_floor_index', {building: building.vars.data.id}) }}">#}
+{#                                    Gestionar plantas#}
+{#                                </a>#}
+{#                                <button class="btn btn-sm btn-outline-info"#}
+{#                                        title="Datos generales del terreno"#}
+{#                                        {{ stimulusTarget('modal-content-loader', 'button') }}#}
+{#                                        {{ stimulusController('modal-content-loader', {#}
+{#                                            url: this.getUrl(building.vars.data),#}
+{#                                            id: 'modal-load',#}
+{#                                            placeholder: 'Cargando...',#}
+{#                                            title: 'Datos generales del terreno',#}
+{#                                        }) }}#}
+{#                                >#}
+{#                                    Datos generales del terreno#}
+{#                                </button>#}
                                 <a class="btn btn-outline-info btn-sm"
                                    href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">
                                     Información de la obra

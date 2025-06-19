@@ -13,6 +13,28 @@
             {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Opción 2', 'Opción 2', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
             {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Opción 3', 'Opción 3', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
 
+            {% if project.id is not null %}
+                <div class="dropdown d-inline-block">
+                    <button type="button"
+                            class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        {#                    {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }} #}
+                        Obras
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for building in project.buildings %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_building_edit', {id: building.id}) }}">
+                                    {{ building.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             {{ include('partials/_card_header_options.html.twig', {
                 goTo: 'app_project_new',
                 label: 'Nuevo',

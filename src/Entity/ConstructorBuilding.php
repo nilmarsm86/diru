@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\StartedAndFinishedTrait;
 use App\Repository\ConstructorBuildingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConstructorBuildingRepository::class)]
 class ConstructorBuilding
@@ -18,10 +19,14 @@ class ConstructorBuilding
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca la constructora.')]
     private ?Constructor $constructor = null;
 
     #[ORM\ManyToOne(inversedBy: 'constructorBuildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca la obra.')]
     private ?Building $building = null;
 
     public function __construct()

@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
-use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\LocalRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,9 +21,11 @@ class Local
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El número del local esta vacío.')]
     private ?int $number = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El area esta vacía.')]
     private ?int $area = null;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +38,7 @@ class Local
     private LocalType $enumType;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'El area esta vacía.')]
     private ?int $height = null;
 
     #[ORM\Column(length: 255)]
@@ -53,6 +55,8 @@ class Local
 
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca la planta.')]
     private ?Floor $floor = null;
 
     public function getId(): ?int

@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvestmentRepository::class)]
 class Investment
@@ -33,6 +34,7 @@ class Investment
 
     #[ORM\ManyToOne(inversedBy: 'investments')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\Valid]
     private ?LocationZone $locationZone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,9 +51,12 @@ class Investment
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca el municipio.')]
     private ?Municipality $municipality = null;
 
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]
+    #[Assert\Valid]
     private Collection $projects;
 
     public function __construct()

@@ -26,6 +26,8 @@ class Contract
     private ?int $year = null;
 
     #[ORM\OneToOne(mappedBy: 'contract', cascade: ['persist'])]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: 'Establezca el proyecto')]
     private ?Project $project = null;
 
     public function getId(): ?int

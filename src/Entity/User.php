@@ -64,12 +64,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email, bool $isDraftsman = false)
     {
-        if($isDraftsman){
-            $this->person = new Draftsman();
-        }else{
-            $this->person = new Person();
-        }
-
+//        if($isDraftsman){
+//            $this->person = new Draftsman();
+//        }else{
+//            $this->person = new Person();
+//        }
+        $this->person = ($isDraftsman) ? new Draftsman() : new Person();
         $this->person->setName($name);
         $this->person->setLastname($lastname);
         $this->person->setIdentificationNumber($identificationNumber);
@@ -86,30 +86,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
-//    public function getName(): ?string
-//    {
-//        return $this->name;
-//    }
-//
-//    public function setName(?string $name): static
-//    {
-//        $this->name = $name;
-//
-//        return $this;
-//    }
-
-//    public function getLastname(): ?string
-//    {
-//        return $this->lastname;
-//    }
-//
-//    public function setLastname(?string $lastname): static
-//    {
-//        $this->lastname = $lastname;
-//
-//        return $this;
-//    }
 
     public function getPerson(): ?Person
     {
@@ -312,44 +288,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array(Role::ROLE_INVESTOR, $this->getRoles());
     }
 
-//    public function getIdentificationNumber(): ?string
-//    {
-//        return $this->identificationNumber;
-//    }
-//
-//    public function setIdentificationNumber(string $identificationNumber): static
-//    {
-//        $this->identificationNumber = $identificationNumber;
-//
-//        return $this;
-//    }
-
-//    public function getPhone(): ?string
-//    {
-//        return $this->phone;
-//    }
-//
-//    public function setPhone(?string $phone): static
-//    {
-//        $this->phone = $phone;
-//
-//        return $this;
-//    }
-
-//    public function getEmail(): ?string
-//    {
-//        return $this->email;
-//    }
-//
-//    public function setEmail(?string $email): static
-//    {
-//        $this->email = $email;
-//
-//        return $this;
-//    }
-
-//    public function setDraftsman()
-//    {
-//        $this->isDraftsman = true;
-//    }
 }

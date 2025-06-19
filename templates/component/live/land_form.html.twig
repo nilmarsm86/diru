@@ -71,16 +71,16 @@
         attr: { class: 'btn btn-outline-nav-link btn-sm' }
     }) }}
 
-{#    {% if form_errors(form.landNetworkConnections) %}#}
-{#        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">#}
-{#            <div class="col-sm-12">#}
-{#                {{ form_errors(form.networkConnection) }}#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endif %}#}
+    {% if form_errors(form.landNetworkConnections) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-12">
+                {{ form_errors(form.landNetworkConnections) }}
+            </div>
+        </div>
+    {% endif %}
 
     {% for key, connection in form.landNetworkConnections %}
-        <details class="collection" {# {% if this.isNew() == false %}open{% endif %} #}>
+        <details class="collection" {% if form_errors(connection.networkConnection) %}open{% endif %}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
                     <div class="col">Conexión de red: {% if connection.vars.data.id is not null %}{{ connection.vars.data.networkConnection.name }}{% endif %}</div>

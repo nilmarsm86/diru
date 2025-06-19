@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LocationZoneRepository::class)]
 #[DoctrineAssert\UniqueEntity(fields: ['name'], message: 'Ya existe una Zona de ubicación con este nombre.')]
@@ -24,6 +25,7 @@ class LocationZone
      * @var Collection<int, Investment>
      */
     #[ORM\OneToMany(targetEntity: Investment::class, mappedBy: 'locationZone')]
+    #[Assert\Valid]
     private Collection $investments;
 
     public function __construct()

@@ -17,7 +17,7 @@ class ConstructorBuilding
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    #[ORM\ManyToOne(inversedBy: 'constructorBuildings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca la constructora.')]

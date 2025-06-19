@@ -17,7 +17,7 @@ class DraftsmanBuilding
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    #[ORM\ManyToOne(inversedBy: 'draftsmansBuildings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca el proyectista.')]

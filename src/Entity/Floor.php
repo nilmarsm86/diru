@@ -33,9 +33,13 @@ class Floor
     #[Assert\NotBlank(message: 'Establezca la obra para la planta.')]
     private ?Building $building = null;
 
+    #[ORM\Column]
+    private ?bool $groundFloor = null;
+
     public function __construct()
     {
         $this->locals = new ArrayCollection();
+        $this->groundFloor = false;
     }
 
     public function getId(): ?int
@@ -142,6 +146,11 @@ class Floor
         return $maxHeight;
     }
 
+    public function getVolume()
+    {
+        return $this->getTotalFloorArea() * $this->getMaxHeight();
+    }
+
     public function getBuilding(): ?Building
     {
         return $this->building;
@@ -150,6 +159,18 @@ class Floor
     public function setBuilding(?Building $building): static
     {
         $this->building = $building;
+
+        return $this;
+    }
+
+    public function isGroundFloor(): ?bool
+    {
+        return $this->groundFloor;
+    }
+
+    public function setGroundFloor(bool $groundFloor): static
+    {
+        $this->groundFloor = $groundFloor;
 
         return $this;
     }

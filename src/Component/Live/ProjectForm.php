@@ -152,9 +152,11 @@ final class ProjectForm extends AbstractController
 
                 //Change draftmans
                 foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
-                    $draftsman = $draftsmanRepository->find($this->formValues['buildings'][$key]['draftsman']);
-                    if ($draftsman) {
-                        $building->addDraftsman($draftsman);
+                    if(isset($this->formValues['buildings'][$key]['draftsman'])){
+                        $draftsman = $draftsmanRepository->find($this->formValues['buildings'][$key]['draftsman']);
+                        if ($draftsman) {
+                            $building->addDraftsman($draftsman);
+                        }
                     }
                 }
             }

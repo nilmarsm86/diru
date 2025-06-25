@@ -1,0 +1,62 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de plantas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_building_edit', {id:building.id}), '', 'Ir a la obra', 'Ir a la obra') }}
+            <a></a>
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Área útil</th>
+                    <th>Área muro</th>
+                    <th>Área de vacío</th>
+                    <th>Área total</th>
+                    <th>Altura máxima</th>
+                    <th>Volumen</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for floor in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ floor.name }}</td>
+                        <td>{{ floor.getUsefulArea() }}</td>
+                        <td>{{ floor.getWallArea() }}</td>
+                        <td>{{ floor.getEmptyArea() }}</td>
+                        <td>{{ floor.getTotalFloorArea() }}</td>
+                        <td>{{ floor.getMaxHeight() }}</td>
+                        <td>{{ floor.getVolume() }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
+                            {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No se encontraron plantas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

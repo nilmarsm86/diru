@@ -75,7 +75,8 @@ final class LandForm extends AbstractController
             $land = $this->getForm()->getData();
 
             $this->building->setLand($land);
-            if (!$this->formValues['floor']) {
+
+            if (empty($this->formValues['floor'])) {
                 $land->setFloor(0);
             }
 
@@ -89,13 +90,14 @@ final class LandForm extends AbstractController
 
             $this->l = new Land();
             if (!is_null($this->modal)) {
-                $this->modalManage($land, 'Se han salvado los datos del terreno', [
+                $this->modalManage($land, 'Se han salvado los datos del terreno.', [
                     'land' => $land->getId()
                 ], 'text-bg-success');
 
                 if ($land->hasFloors()) {
-                    $this->addFlash('success', 'Se han salvado los datos del terreno');
-                    return $this->redirectToRoute('app_building_edit', ['id' => $this->building->getId()], Response::HTTP_SEE_OTHER);
+                    $this->addFlash('success', 'Se han salvado los datos del terreno.');
+                    $this->addFlash('info', 'Se han creado las plantas del inmueble.');
+                    return $this->redirectToRoute('app_floor_index', ['building' => $this->building->getId()], Response::HTTP_SEE_OTHER);
                 } else {
                     return null;
                 }
@@ -128,12 +130,13 @@ final class LandForm extends AbstractController
         if ($floor > 1) {
             $f = new Floor();
             $f->setName('Planta Baja');
+            $f->setGroundFloor(true);
 //            $f->setBuilding($this->building);
             $this->building->addFloor($f);
 
             $floorRepository->save($f);
 
-            for ($i = 1; $i <= $floor; $i++) {
+            for ($i = 1; $i < $floor; $i++) {
                 $f = new Floor();
                 $f->setName('Planta ' . $i);
 //                $f->setBuilding($this->building);

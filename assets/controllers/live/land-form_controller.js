@@ -1,5 +1,6 @@
 import {useCsrfToken} from "../../behaviors/use-csrf-token.js";
 import AbstractController from "../AbstractController.js";
+import {getComponent} from '@symfony/ux-live-component';
 
 /*
 * The following line makes this controller "lazy": it won't be downloaded until needed
@@ -81,6 +82,15 @@ export default class extends AbstractController {
 
     calculateHectare() {
         this.hectareTarget.innerText = (Number(this.areaTarget.value) / 10000).toFixed(2);
+    }
+
+    async initialize() {
+        this.component = await getComponent(this.element);
+        this.processCsrfToken();
+
+        this.component.on('render:finished', (component) => {
+            this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
+        });
     }
 
 }

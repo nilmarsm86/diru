@@ -1,13 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Edit Floor{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Edit Floor</h1>
+{% block title %}Editar Planta{% endblock %}
 
-    {{ include('floor/_form.html.twig', {'button_label': 'Update'}) }}
+{% block content %}
+    <div class="row">
+        {{ h1('Plantas') }}
 
-    <a href="{{ path('app_floor_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Plantas', href: path('app_building_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
 
-    {{ include('floor/_delete_form.html.twig') }}
+    <h2 class="mb-4">Editar planta: {{ building.name }}</h2>
+
+    {{ include('floor/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

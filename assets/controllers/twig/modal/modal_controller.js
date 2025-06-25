@@ -21,19 +21,11 @@ export default class extends AbstractController {
     connect() {
         useBackdrop(this);
 
-        this.element.addEventListener('live-form:submit', (event)=>{
-            const selector = `form[name='${event.detail.form.name}']`;
-            if(this.element.querySelector(selector)){
-                this.backdrop(this.backdropTarget, BACKDROP_SHOW);
-            }
-        });
+        this.element.addEventListener('live-form:submit', this.submitForm.bind(this));
+        this.element.addEventListener('live-form:submitEnd', this.submitEndForm.bind(this));
 
-        this.element.addEventListener('live-form:submitEnd', (event)=>{
-            const selector = `form[name='${event.detail.form.name}']`;
-            if(this.element.querySelector(selector)){
-                this.backdrop(this.backdropTarget, BACKDROP_HIDE);
-            }
-        });
+        this.element.addEventListener('live--land-form:submit', this.submitForm.bind(this));
+        this.element.addEventListener('live--land-form:submitEnd', this.submitEndForm.bind(this));
     }
 
     initialize() {
@@ -48,4 +40,19 @@ export default class extends AbstractController {
     // close() {
     //     this.element.querySelector('button[class=btn-close]').click();
     // }
+
+    submitForm(event){
+        const selector = `form[name='${event.detail.form.name}']`;
+        if(this.element.querySelector(selector)){
+            this.backdrop(this.backdropTarget, BACKDROP_SHOW);
+        }
+    }
+
+    submitEndForm(event){
+        const selector = `form[name='${event.detail.form.name}']`;
+        console.log(selector);
+        if(this.element.querySelector(selector)){
+            this.backdrop(this.backdropTarget, BACKDROP_HIDE);
+        }
+    }
 }

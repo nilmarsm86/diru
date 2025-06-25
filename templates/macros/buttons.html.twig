@@ -21,12 +21,14 @@
     </a>
 {% endmacro %}
 
-{% macro tableActionButton3(path, icon, label='', title='', action='', cssClass='btn-primary') %}
+{% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary') %}
     <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
        href="{{ path }}"
             {{ action|raw }}
     >
-        {{ ux_icon(icon, {class:'bi'}) }}
+        {% if icon %}
+            {{ ux_icon(icon, {class:'bi'}) }}
+        {% endif %}
         {{ label }}
     </a>
 {% endmacro %}
@@ -43,22 +45,22 @@
     </form>
 {% endmacro %}
 
-{#{% macro deleteFormButton2(path, icon, token, label='', title='', confirm='Esta seguro que desea borrarlo?') %}#}
+{# {% macro deleteFormButton2(path, icon, token, label='', title='', confirm='Esta seguro que desea borrarlo?') %} #}
 
-{#    <form#}
-{#            method="post"#}
-{#            action="{{ path }}"#}
-{#            onsubmit="return confirm('{{ confirm }}');"#}
-{#            style="display: inline"#}
-{#    >#}
-{#        <input type="hidden" name="_token" value="{{ csrf_token(token) }}">#}
-{#        <button class="btn btn-sm btn-danger" title="{{ title }}">#}
-{#            {{ ux_icon(icon, {class:'bi'}) }}#}
-{#            {{ label }}#}
-{#        </button>#}
-{#    </form>#}
+{#    <form #}
+{#            method="post" #}
+{#            action="{{ path }}" #}
+{#            onsubmit="return confirm('{{ confirm }}');" #}
+{#            style="display: inline" #}
+{#    > #}
+{#        <input type="hidden" name="_token" value="{{ csrf_token(token) }}"> #}
+{#        <button class="btn btn-sm btn-danger" title="{{ title }}"> #}
+{#            {{ ux_icon(icon, {class:'bi'}) }} #}
+{#            {{ label }} #}
+{#        </button> #}
+{#    </form> #}
 
-{#{% endmacro %}#}
+{# {% endmacro %} #}
 
 {% macro submitFormButton(icon='fa:save', label='Salvar', component=false) %}
     <button type="submit"
@@ -77,27 +79,27 @@
     </a>
 {% endmacro %}
 
-{#{% macro tableHeaderButtonDropdown(path, label, queryName, enumsOptions) %}#}
-{#    <div class="dropdown d-inline-block">#}
-{#        <button type="button"#}
-{#                class="btn {% if app.request.query.get((queryName)) != '' %}btn-dark{% else %}btn-link{% endif %} text-decoration-none btn-sm dropdown-toggle show dropdown-sm {% if app.request.query.get((queryName)) != '' %}active{% endif %}"#}
-{#                data-bs-toggle="dropdown" aria-expanded="false">#}
-{#            {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }}#}
-{#            {{ label }}#}
-{#        </button>#}
-{#        <ul class="dropdown-menu">#}
-{#            {% for option in enumsOptions %}#}
-{#                {% if option.value != '' %}#}
-{#                    <li>#}
-{#                        <a class="dropdown-item"#}
-{#                           href="{{ path(path, {(queryName): option.value} + app.request.query.all) }}">#}
-{#                            {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %}#}
-{#                            {{ ux_icon(icon, {class:'bi'}) }}#}
-{#                            {{ option.getLabelFrom(option) }}#}
-{#                        </a>#}
-{#                    </li>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#        </ul>#}
-{#    </div>#}
-{#{% endmacro %}#}
+{# {% macro tableHeaderButtonDropdown(path, label, queryName, enumsOptions) %} #}
+{#    <div class="dropdown d-inline-block"> #}
+{#        <button type="button" #}
+{#                class="btn {% if app.request.query.get((queryName)) != '' %}btn-dark{% else %}btn-link{% endif %} text-decoration-none btn-sm dropdown-toggle show dropdown-sm {% if app.request.query.get((queryName)) != '' %}active{% endif %}" #}
+{#                data-bs-toggle="dropdown" aria-expanded="false"> #}
+{#            {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }} #}
+{#            {{ label }} #}
+{#        </button> #}
+{#        <ul class="dropdown-menu"> #}
+{#            {% for option in enumsOptions %} #}
+{#                {% if option.value != '' %} #}
+{#                    <li> #}
+{#                        <a class="dropdown-item" #}
+{#                           href="{{ path(path, {(queryName): option.value} + app.request.query.all) }}"> #}
+{#                            {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %} #}
+{#                            {{ ux_icon(icon, {class:'bi'}) }} #}
+{#                            {{ option.getLabelFrom(option) }} #}
+{#                        </a> #}
+{#                    </li> #}
+{#                {% endif %} #}
+{#            {% endfor %} #}
+{#        </ul> #}
+{#    </div> #}
+{# {% endmacro %} #}

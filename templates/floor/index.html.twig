@@ -1,35 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Floor index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Floor index</h1>
+{% block title %}Plantas{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for floor in floors %}
-            <tr>
-                <td>{{ floor.id }}</td>
-                <td>{{ floor.name }}</td>
-                <td>
-                    <a href="{{ path('app_floor_show', {'id': floor.id}) }}">show</a>
-                    <a href="{{ path('app_floor_edit', {'id': floor.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Plantas') }}
 
-    <a href="{{ path('app_floor_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Plantas'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de Plantas: {{ building.name }}</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('floor/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

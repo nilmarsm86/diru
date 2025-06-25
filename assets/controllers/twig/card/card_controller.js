@@ -30,11 +30,11 @@ export default class extends AbstractController {
         this.element.addEventListener('live-form:submit', this.submit.bind(this));
         this.element.addEventListener('live-form:submitEnd', this.submitEnd.bind(this));
 
-        this.element.addEventListener('municipality-form:submit', this.submit.bind(this));
-        this.element.addEventListener('municipality-form:submitEnd', this.submitEnd.bind(this));
+        // this.element.addEventListener('municipality-form:submit', this.submit.bind(this));
+        // this.element.addEventListener('municipality-form:submitEnd', this.submitEnd.bind(this));
 
-        this.element.addEventListener('corporate-entity-form:submit', this.submit.bind(this));
-        this.element.addEventListener('corporate-entity-form:submitEnd', this.submitEnd.bind(this));
+        // this.element.addEventListener('corporate-entity-form:submit', this.submit.bind(this));
+        // this.element.addEventListener('corporate-entity-form:submitEnd', this.submitEnd.bind(this));
 
         this.addListener(this.element, FILTER_DROPDOWN, this.filter.bind(this), {}, 'twig/card/filter-drop-down');
         this.addListener(this.element, FILTER_REFRESH, this.filter.bind(this), {}, 'twig/card/refresh');
@@ -49,6 +49,7 @@ export default class extends AbstractController {
 
     submitEnd(event){
         const selector = `form[name='${event.detail.form.name}']`;
+        console.log(selector);
         if(this.element.querySelector(selector)){
             this.backdrop(this.backdropTarget, BACKDROP_HIDE);
         }

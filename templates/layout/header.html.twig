@@ -1,6 +1,6 @@
-{#{% from 'macros/flashes.html.twig' import flashes, flash %}#}
+{# {% from 'macros/flashes.html.twig' import flashes, flash %} #}
 {% from 'macros/link.html.twig' import activeLink %}
-{#{% from 'macros/toast.html.twig' import toasts %}#}
+{# {% from 'macros/toast.html.twig' import toasts %} #}
 
 <nav class="navbar navbar-expand-lg sticky-top flex-md-nowrap py-10 shadow bg-dark" data-bs-theme="dark">
     <div class="container-fluid" style="padding-left:0">
@@ -15,138 +15,151 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse container-fluid d-flex justify-content-between flex-wrap align-items-center collapse"
+        <div class="navbar-collapse container-fluid d-flex justify-content-between flex-wrap align-items-center collapse row"
              id="navbarSupportedContent">
-            <form class="d-flex" role="search">
-                <div class="input-group input-group-sm me-2">
-                    <input name="general_search" type="text" class="form-control form-control-sm" placeholder="Búsqueda general..."
-                           aria-label="Search" aria-describedby="button-addon1"
-                           style="padding: .25rem .5rem !important;">
-                    <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon1">
-                        {{ ux_icon('bi:search', {class:'bi'}) }}
-                    </button>
-                </div>
-            </form>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                <form class="" role="search">
+                    <div class="input-group input-group-sm me-2">
+                        <input name="general_search" type="text" class="form-control form-control-sm"
+                               placeholder="Búsqueda general..."
+                               aria-label="Search" aria-describedby="button-addon1"
+                               style="padding: .25rem .5rem !important;">
+                        <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon1">
+                            {{ ux_icon('bi:search', {class:'bi'}) }}
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-{#            <div id="flash-container" data-turbo-cache="false">#}
-{#                {{ flashes() }}#}
-{#            </div>#}
-
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ path('app_home') }}">
-                        {{ ux_icon('bi:house', {class:'bi'}) }}
-                        <span class="d-md-invisible">Inicio</span>
-                    </a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="#">#}
-{#                        {{ ux_icon('bi:table', {class:'bi'}) }}#}
-{#                        <span class="d-md-invisible">Proyectos</span>#}
-{#                    </a>#}
-{#                </li>#}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        {{ ux_icon('bi:table', {class:'bi'}) }}
-                        <span class="d-md-invisible">Proyectos</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#add-project">{{ ux_icon('bi:plus-lg', {class:'bi'}) }} Nuevo Proyecto</a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="{{ path('app_project_index') }}">{{ ux_icon('lucide:land-plot', {class:'bi'}) }} Inversión por Parcela</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="">{{ ux_icon('mdi:city', {class:'bi'}) }} Ciudad</a>
-                        </li>
-{#                        <li><hr class="dropdown-divider"></li>#}
-{#                        <li>#}
-{#                            <a class="dropdown-item" href="">{{ ux_icon('bi:upload', {class:'bi'}) }} Cargar proyecto</a>#}
-{#                        </li>#}
-{#                        <li><hr class="dropdown-divider"></li>#}
-{#                        <li>#}
-{#                            <a class="dropdown-item" href="{{ path('app_investment_index') }}">Inversiones</a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a class="dropdown-item" href="{{ path('app_building_index') }}">Obras</a>#}
-{#                        </li>#}
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        {{ ux_icon('fa:users', {class:'bi'}) }}
-                        <span class="d-md-invisible">Clientes</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item {{ activeLink('app_individual_client_index') }}" href="{{ path('app_individual_client_index') }}">
-                                {{ ux_icon('fa:user', {class:'bi'}) }}
-                                Persona natural
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ activeLink('app_enterprise_client_index') }}" href="{{ path('app_enterprise_client_index') }}">
-                                {{ ux_icon('fa:users', {class:'bi'}) }}
-                                Cliente empresa
-                            </a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item {{ activeLink('app_person_index') }}" href="{{ path('app_representative_index') }}">
-                                {{ ux_icon('bi:person-vcard-fill', {class:'bi'}) }}
-                                Representantes
-                            </a>
-                        </li>
-{#                        <li>#}
-{#                            <a class="dropdown-item {{ activeLink('app_contract_index') }}" href="{{ path('app_contract_index') }}">#}
-{#                                {{ ux_icon('solar:document-add-linear', {class:'bi'}) }}#}
-{#                                Contratos#}
-{#                            </a>#}
-{#                        </li>#}
-                    </ul>
-                </li>
-{#                <li class="nav-item dropdown">#}
-{#                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"#}
-{#                       aria-expanded="false">#}
-{#                        {{ ux_icon('bi:person-circle', {class:'bi'}) }}#}
-{#                        <span class="d-md-invisible">{% if app.user %}{{ app.user.fullName }}{% endif %}</span>#}
-{#                    </a>#}
-{#                    <ul class="dropdown-menu dropdown-menu-end">#}
-{#                        <li>#}
-{#                            <a class="dropdown-item" href="{{ path('user_profile') }}">{{ ux_icon('fa:user', {class:'bi'}) }} Perfil</a>#}
-{#                        </li>#}
-{#                        <li><hr class="dropdown-divider"></li>#}
-{#                        <li>#}
-{#                            <a class="dropdown-item" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')">#}
-{#                                {{ ux_icon('fa:sign-out', {class:'bi'}) }} {{ 'sign.out'|trans({}, 'security') }}#}
-{#                            </a>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </li>#}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('user_profile') }}">
-                        {{ ux_icon('bi:person-circle', {class:'bi'}) }}
-                        <span class="d-md-invisible">{{ app.user.person.fullName }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')">
-                        {{ ux_icon('fa:sign-out', {class:'bi'}) }}
-                        <span class="d-md-invisible">{{ 'sign.out'|trans({}, 'security') }}</span>
-                    </a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link disabled"#}
-{#                       aria-disabled="true">{{ ux_icon('bi:person-circle', {class:'bi'}) }}#}
-{#                        <span class="d-md-invisible">Disabled</span>#}
-{#                    </a>#}
-{#                </li>#}
-            </ul>
-
+            {#            <div id="flash-container" data-turbo-cache="false"> #}
+            {#                {{ flashes() }} #}
+            {#            </div> #}
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ path('app_home') }}">
+                            {{ ux_icon('bi:house', {class:'bi'}) }}
+                            <span class="d-md-invisible">Inicio</span>
+                        </a>
+                    </li>
+                    {#                <li class="nav-item"> #}
+                    {#                    <a class="nav-link" href="#"> #}
+                    {#                        {{ ux_icon('bi:table', {class:'bi'}) }} #}
+                    {#                        <span class="d-md-invisible">Proyectos</span> #}
+                    {#                    </a> #}
+                    {#                </li> #}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ ux_icon('bi:table', {class:'bi'}) }}
+                            <span class="d-md-invisible">Proyectos</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                   data-bs-target="#add-project">{{ ux_icon('bi:plus-lg', {class:'bi'}) }} Nuevo
+                                    Proyecto</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_project_index') }}">{{ ux_icon('lucide:land-plot', {class:'bi'}) }}
+                                    Inversión por Parcela</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="">{{ ux_icon('mdi:city', {class:'bi'}) }} Ciudad</a>
+                            </li>
+                            {#                        <li><hr class="dropdown-divider"></li> #}
+                            {#                        <li> #}
+                            {#                            <a class="dropdown-item" href="">{{ ux_icon('bi:upload', {class:'bi'}) }} Cargar proyecto</a> #}
+                            {#                        </li> #}
+                            {#                        <li><hr class="dropdown-divider"></li> #}
+                            {#                        <li> #}
+                            {#                            <a class="dropdown-item" href="{{ path('app_investment_index') }}">Inversiones</a> #}
+                            {#                        </li> #}
+                            {#                        <li> #}
+                            {#                            <a class="dropdown-item" href="{{ path('app_building_index') }}">Obras</a> #}
+                            {#                        </li> #}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ ux_icon('fa:users', {class:'bi'}) }}
+                            <span class="d-md-invisible">Clientes</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item {{ activeLink('app_individual_client_index') }}"
+                                   href="{{ path('app_individual_client_index') }}">
+                                    {{ ux_icon('fa:user', {class:'bi'}) }}
+                                    Persona natural
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ activeLink('app_enterprise_client_index') }}"
+                                   href="{{ path('app_enterprise_client_index') }}">
+                                    {{ ux_icon('fa:users', {class:'bi'}) }}
+                                    Cliente empresa
+                                </a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item {{ activeLink('app_person_index') }}"
+                                   href="{{ path('app_representative_index') }}">
+                                    {{ ux_icon('bi:person-vcard-fill', {class:'bi'}) }}
+                                    Representantes
+                                </a>
+                            </li>
+                            {#                        <li> #}
+                            {#                            <a class="dropdown-item {{ activeLink('app_contract_index') }}" href="{{ path('app_contract_index') }}"> #}
+                            {#                                {{ ux_icon('solar:document-add-linear', {class:'bi'}) }} #}
+                            {#                                Contratos #}
+                            {#                            </a> #}
+                            {#                        </li> #}
+                        </ul>
+                    </li>
+                    {#                <li class="nav-item dropdown"> #}
+                    {#                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" #}
+                    {#                       aria-expanded="false"> #}
+                    {#                        {{ ux_icon('bi:person-circle', {class:'bi'}) }} #}
+                    {#                        <span class="d-md-invisible">{% if app.user %}{{ app.user.fullName }}{% endif %}</span> #}
+                    {#                    </a> #}
+                    {#                    <ul class="dropdown-menu dropdown-menu-end"> #}
+                    {#                        <li> #}
+                    {#                            <a class="dropdown-item" href="{{ path('user_profile') }}">{{ ux_icon('fa:user', {class:'bi'}) }} Perfil</a> #}
+                    {#                        </li> #}
+                    {#                        <li><hr class="dropdown-divider"></li> #}
+                    {#                        <li> #}
+                    {#                            <a class="dropdown-item" href="{{ path('app_logout') }}" onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')"> #}
+                    {#                                {{ ux_icon('fa:sign-out', {class:'bi'}) }} {{ 'sign.out'|trans({}, 'security') }} #}
+                    {#                            </a> #}
+                    {#                        </li> #}
+                    {#                    </ul> #}
+                    {#                </li> #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('user_profile') }}">
+                            {{ ux_icon('bi:person-circle', {class:'bi'}) }}
+                            <span class="d-md-invisible">{{ app.user.person.fullName }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}"
+                           onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')">
+                            {{ ux_icon('fa:sign-out', {class:'bi'}) }}
+                            <span class="d-md-invisible">{{ 'sign.out'|trans({}, 'security') }}</span>
+                        </a>
+                    </li>
+                    {#                <li class="nav-item"> #}
+                    {#                    <a class="nav-link disabled" #}
+                    {#                       aria-disabled="true">{{ ux_icon('bi:person-circle', {class:'bi'}) }} #}
+                    {#                        <span class="d-md-invisible">Disabled</span> #}
+                    {#                    </a> #}
+                    {#                </li> #}
+                </ul>
+            </div>
         </div>
     </div>
 </nav>

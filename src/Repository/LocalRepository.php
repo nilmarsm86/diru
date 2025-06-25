@@ -2,8 +2,14 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
+use App\Entity\Floor;
 use App\Entity\Local;
+use App\Repository\Traits\PaginateTrait;
+use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,6 +17,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LocalRepository extends ServiceEntityRepository
 {
+    use SaveData;
+    use PaginateTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Local::class);
@@ -40,4 +49,32 @@ class LocalRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        if ($filter) {
+            $predicate = "l.name LIKE :filter ";
+            $builder->andWhere($predicate)
+                ->setParameter(':filter', '%' . $filter . '%');
+        }
+    }
+
+    /**
+     * @param Floor $floor
+     * @param string $filter
+     * @param int $amountPerPage
+     * @param int $page
+     * @return Paginator Returns an array of User objects
+     */
+    public function findFloorLocals(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('l')->select(['l', 'f'])
+            ->leftJoin('l.floor', 'f')
+            ->andWhere('f.id = :idFloor');
+        $builder->setParameter(':idFloor', $floor->getId());
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('l.name', 'ASC')
+            ->getQuery();
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

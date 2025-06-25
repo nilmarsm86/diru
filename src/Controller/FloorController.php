@@ -2,80 +2,96 @@
 
 namespace App\Controller;
 
+use App\DTO\Paginator;
+use App\Entity\Building;
 use App\Entity\Floor;
-use App\Form\FloorType;
 use App\Repository\FloorRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route('/floor')]
 final class FloorController extends AbstractController
 {
-    #[Route(name: 'app_floor_index', methods: ['GET'])]
-    public function index(FloorRepository $floorRepository): Response
+    #[Route('/{building}', name: 'app_floor_index', methods: ['GET'])]
+    public function index(Request $request, FloorRepository $floorRepository, Building $building): Response
     {
-        return $this->render('floor/index.html.twig', [
-            'floors' => $floorRepository->findAll(),
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = $request->query->get('amount', 10);
+        $pageNumber = $request->query->get('page', 1);
+
+        $data = $floorRepository->findBuildingFloors($building, $filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
+            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("floor/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'building' => $building
         ]);
     }
 
-    #[Route('/new', name: 'app_floor_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    #[Route('/new/{building}', name: 'app_floor_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, Building $building): Response
     {
         $floor = new Floor();
-        $form = $this->createForm(FloorType::class, $floor);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($floor);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_floor_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('floor/new.html.twig', [
-            'floor' => $floor,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $floor, 'floor', [
+            'title' => 'Nueva Planta',
+            'building' => $building
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_floor_show', methods: ['GET'])]
-    public function show(Floor $floor): Response
+    public function show(Request $request, Floor $floor, CrudActionService $crudActionService): Response
     {
-        return $this->render('floor/show.html.twig', [
-            'floor' => $floor,
+        return $crudActionService->showAction($request, $floor, 'floor', 'floor', 'Detalles de la planta');
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    #[Route('/{id}/edit/{building}', name: 'app_floor_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Floor $floor, CrudActionService $crudActionService, Building $building): Response
+    {
+        return $crudActionService->formLiveComponentAction($request, $floor, 'floor', [
+            'title' => 'Editar Planta',
+            'building' => $building
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_floor_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Floor $floor, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(FloorType::class, $floor);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_floor_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('floor/edit.html.twig', [
-            'floor' => $floor,
-            'form' => $form,
-        ]);
-    }
-
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_floor_delete', methods: ['POST'])]
-    public function delete(Request $request, Floor $floor, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Floor $floor, FloorRepository $floorRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$floor->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($floor);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_floor_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado la planta.';
+        return $crudActionService->deleteAction($request, $floorRepository, $floor, $successMsg, 'app_building_index');
     }
 }

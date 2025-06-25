@@ -2,6 +2,13 @@
 
     {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
 
+    {% if this.isNew() == true %}
+        <div class="alert alert-info alert-dismissible fade show align-items-center text-bg-info" role="alert">
+            {{ ux_icon('lets-icons:check-fill', {class:'bi', style:'width:24px;height:20px'}) }}
+            Una vez creada la informacion de los datos del terreno, la misma no podrá ser modificada.
+        </div>
+    {% endif %}
+
     {{ form_start(form, {
         attr: {
             'data-action': 'live#action:prevent',
@@ -30,7 +37,8 @@
         </div>
     </div>
 
-    <details class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
+    <details
+            class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área ocupada:</div>
@@ -66,10 +74,12 @@
         </div>
     </div>
 
-    {{ form_row(form.landNetworkConnections.vars.button_add, {
-        label: 'Agregar conexion de red',
-        attr: { class: 'btn btn-outline-nav-link btn-sm' }
-    }) }}
+    {% if this.isNew() == true %}
+        {{ form_row(form.landNetworkConnections.vars.button_add, {
+            label: 'Agregar conexion de red',
+            attr: { class: 'btn btn-outline-nav-link btn-sm' }
+        }) }}
+    {% endif %}
 
     {% if form_errors(form.landNetworkConnections) %}
         <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
@@ -83,12 +93,15 @@
         <details class="collection" {% if form_errors(connection.networkConnection) %}open{% endif %}>
             <summary class="collection">
                 <div class="row summary-btn-lis">
-                    <div class="col">Conexión de red: {% if connection.vars.data.id is not null %}{{ connection.vars.data.networkConnection.name }}{% endif %}</div>
+                    <div class="col">Conexión de
+                        red: {% if connection.vars.data.id is not null %}{{ connection.vars.data.networkConnection.name }}{% endif %}</div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-                        {{ form_widget(connection.vars.button_delete, {
-                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
-                            attr: { class: 'btn btn-outline-danger btn-sm' }
-                        }) }}
+                        {% if this.isNew() == true %}
+                            {{ form_widget(connection.vars.button_delete, {
+                                label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                                attr: { class: 'btn btn-outline-danger btn-sm' }
+                            }) }}
+                        {% endif %}
                     </div>
                 </div>
             </summary>
@@ -98,15 +111,17 @@
         </details>
     {% endfor %}
 
-    <div class="row mb-3">
-        <div class="col-sm-12">
-            {{ component('button:submit', {
-                icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
-                label: this.isNew() ? 'Agregar' : 'Modificar',
-                component: this
-            }) }}
+    {% if this.isNew() == true %}
+        <div class="row mb-3">
+            <div class="col-sm-12">
+                {{ component('button:submit', {
+                    icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
+                    label: this.isNew() ? 'Agregar' : 'Modificar',
+                    component: this
+                }) }}
+            </div>
         </div>
-    </div>
+    {% endif %}
     {{ form_row(form._token) }}
     {{ form_end(form, {render_rest:false}) }}
 </div>

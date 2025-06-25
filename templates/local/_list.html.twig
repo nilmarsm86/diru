@@ -1,0 +1,73 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de locales',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }}
+            <a></a>
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>Area</th>
+                    <th>Type</th>
+                    <th>Height</th>
+                    <th>TechnicalStatus</th>
+                    <th>Type2</th>
+
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for local in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ local.name }}</td>
+                        <td>{{ local.number }}</td>
+                        <td>{{ local.area }}</td>
+                        <td>{{ local.type }}</td>
+                        <td>{{ local.height }}</td>
+                        <td>{{ local.technicalStatus }}</td>
+                        <td>{{ local.type2 }}</td>
+
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
+                            {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'floor':floor.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'floor':floor.id})})) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No se encontraron locales.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+        {% component 'Card:Card' with {
+            cssClass: 'mb-4',
+            extra: '',
+            headerCssClass: 'd-flex justify-content-between align-items-center',
+            title: 'Detalles de la plantas',
+        } %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

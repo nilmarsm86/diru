@@ -46,6 +46,7 @@
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
+                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), '', 'Plantas', 'Plantas') }}
                         </td>
                     </tr>
                 {% else %}

@@ -7,6 +7,7 @@ use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Local;
 use App\Form\LocalType;
+use App\Repository\FloorRepository;
 use App\Repository\LocalRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -86,14 +87,15 @@ final class LocalController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_local_delete', methods: ['POST'])]
-    public function delete(Request $request, Local $local, EntityManagerInterface $entityManager): Response
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    #[Route('/{id}/{floor}', name: 'app_local_delete', methods: ['POST'])]
+    public function delete(Request $request, Local $local, LocalRepository $localRepository, CrudActionService $crudActionService, Floor $floor): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$local->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($local);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_local_index', [], Response::HTTP_SEE_OTHER);
+        $successMsg = 'Se ha eliminado el local.';
+        return $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', ['floor' => $floor->getId()]);
     }
 }

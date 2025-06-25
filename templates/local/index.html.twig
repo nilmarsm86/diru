@@ -1,47 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Local index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Local index</h1>
+{% block title %}locales{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Number</th>
-                <th>Area</th>
-                <th>Type</th>
-                <th>Height</th>
-                <th>TechnicalStatus</th>
-                <th>Type2</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for local in locals %}
-            <tr>
-                <td>{{ local.id }}</td>
-                <td>{{ local.number }}</td>
-                <td>{{ local.area }}</td>
-                <td>{{ local.type }}</td>
-                <td>{{ local.height }}</td>
-                <td>{{ local.technicalStatus }}</td>
-                <td>{{ local.type2 }}</td>
-                <td>{{ local.name }}</td>
-                <td>
-                    <a href="{{ path('app_local_show', {'id': local.id}) }}">show</a>
-                    <a href="{{ path('app_local_edit', {'id': local.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Locales') }}
 
-    <a href="{{ path('app_local_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'locales'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de locales: {{ floor.name }}</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('local/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

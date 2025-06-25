@@ -105,6 +105,7 @@ readonly class CrudActionService
      * @param object $entity
      * @param string $successMsg
      * @param string $gotTo
+     * @param array $goToParams
      * @return Response
      * @throws LoaderError
      * @throws RuntimeError
@@ -115,7 +116,8 @@ readonly class CrudActionService
         ServiceEntityRepository $repository,
         object                  $entity,
         string                  $successMsg,
-        string                  $gotTo
+        string                  $gotTo,
+        array                   $goToParams = []
     ): Response
     {
         if ($this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
@@ -144,7 +146,7 @@ readonly class CrudActionService
         }
 
         $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
-        return new RedirectResponse($this->router->generate($gotTo), Response::HTTP_SEE_OTHER);
+        return new RedirectResponse($this->router->generate($gotTo, $goToParams), Response::HTTP_SEE_OTHER);
     }
 
     /**

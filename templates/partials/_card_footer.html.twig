@@ -4,7 +4,9 @@
     <div class="card-footer text-body-secondary">
         <div class="row">
             <div class="col-6">
-                {{ tableActionButton(path(list.href, (list.data is defined) ? list.data : {}), 'bi:arrow-left-circle', list.label, list.title) }}
+                {% if list.href is defined %}
+                    {{ tableActionButton(path(list.href, (list.data is defined) ? list.data : {}), (list.icon is defined) ? list.icon : 'bi:arrow-left-circle', list.label, list.title) }}
+                {% endif %}
             </div>
             <div class="col-6 text-end">
                 {% if state == 'detail' %}

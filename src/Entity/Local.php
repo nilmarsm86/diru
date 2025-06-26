@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Traits\NameToStringTrait;
@@ -38,7 +39,7 @@ class Local
     private LocalType $enumType;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'El area esta vacía.')]
+    #[Assert\NotBlank(message: 'El área esta vacía.')]
     private ?int $height = null;
 
     #[ORM\Column(length: 255)]
@@ -48,15 +49,15 @@ class Local
         choices: LocalTechnicalStatus::CHOICES,
         message: 'Seleccione el estado técnico del local.'
     )]
-    private LocalType $enumTechnicalStatus;
+    private LocalTechnicalStatus $enumTechnicalStatus;
 
-    #[ORM\Column(enumType: LocalType::class)]
-    private ?LocalType $type2 = null;
+//    #[ORM\Column(enumType: LocalType::class)]
+//    private ?LocalType $type2 = null;
 
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca la planta.')]
+//    #[Assert\NotBlank(message: 'Establezca la planta.')]
     private ?Floor $floor = null;
 
     public function getId(): ?int
@@ -125,17 +126,17 @@ class Local
         return $this;
     }
 
-    public function getType2(): ?LocalType
-    {
-        return $this->type2;
-    }
-
-    public function setType2(LocalType $type2): static
-    {
-        $this->type2 = $type2;
-
-        return $this;
-    }
+//    public function getType2(): ?LocalType
+//    {
+//        return $this->type2;
+//    }
+//
+//    public function setType2(LocalType $type2): static
+//    {
+//        $this->type2 = $type2;
+//
+//        return $this;
+//    }
 
     public function getFloor(): ?Floor
     {
@@ -154,11 +155,18 @@ class Local
     public function onSave(): void
     {
         $this->type = $this->getType()->value;
-        $this->state = $this->getState()->value;
-        if(is_null($this->getId())){
-            if (is_null($this->getContract()) || is_null($this->getContract()->getCode())) {
-                $this->setContract(null);
-            }
-        }
+        $this->technicalStatus = $this->getTechnicalStatus()->value;
+    }
+
+    #[ORM\PostLoad]
+    public function onLoad(): void
+    {
+        $this->setType(LocalType::from($this->type));
+        $this->setTechnicalStatus(LocalTechnicalStatus::from($this->technicalStatus));
+    }
+
+    public function getVolume()
+    {
+        return $this->getArea() * $this->getHeight();
     }
 }

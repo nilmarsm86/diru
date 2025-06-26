@@ -20,6 +20,18 @@ export default class extends AbstractController {
             });
         });
 
+        //just for USD currency
+        this.element.parentElement.addEventListener('toggle', (event) => {
+            this.fieldTargets.forEach((field) => {
+                let inputGroupText = field.parentElement.querySelector('.input-group-text');
+                if(event.currentTarget.open){
+                    if(inputGroupText.innerText === 'US$'){
+                        inputGroupText.innerText = 'USD';
+                    }
+                }
+            });
+        });
+
         window.addEventListener('live-form:submitEnd', (event)=>{
             this.summation();
         });

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250625130130 extends AbstractMigration
+final class Version20250625175339 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -60,7 +60,7 @@ final class Version20250625130130 extends AbstractMigration
         $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, explanation CLOB DEFAULT NULL, CONSTRAINT FK_7BF47B3B1994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B1994904A ON land_network_connection (land_id)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4EDCA4BC ON land_network_connection (network_connection_id)');
-        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, number INTEGER NOT NULL, area INTEGER NOT NULL, type VARCHAR(255) NOT NULL, height INTEGER NOT NULL, technical_status VARCHAR(255) NOT NULL, type2 VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, number INTEGER NOT NULL, area INTEGER NOT NULL, type VARCHAR(255) NOT NULL, height INTEGER NOT NULL, technical_status VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8BD688E8854679E2 ON local (floor_id)');
         $this->addSql('CREATE TABLE location_zone (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE municipality (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, province_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_C6F56628E946114A FOREIGN KEY (province_id) REFERENCES province (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');

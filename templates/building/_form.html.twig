@@ -6,32 +6,7 @@
 } %}
 
     {% block header %}
-        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-            {% if building.hasFloors() %}
-                <a href="{{ path('app_floor_index', {building: building.id}) }}" class="btn btn-sm btn-primary" title="Gestionar plantas">
-                    Gestionar plantas
-                </a>
-            {% endif %}
-
-            {% if building.land is null %}
-                {% set urlPath = path('app_land_new', {'building': building.id, 'modal' : 'modal-load'}) %}
-            {% else %}
-                {% set urlPath = path('app_land_edit', {'building': building.id, 'modal' : 'modal-load', 'id':building.land.id}) %}
-            {% endif %}
-
-            <button class="btn btn-sm btn-primary"
-                    title="Datos generales del terreno"
-                    {{ stimulusTarget('modal-content-loader', 'button') }}
-                    {{ stimulusController('modal-content-loader', {
-                        url: urlPath,
-                        id: 'modal-load',
-                        placeholder: 'Cargando...',
-                        title: 'Datos generales del terreno',
-                    }) }}
-            >
-                Datos generales del terreno
-            </button>
-        </div>
+        {{ include('building/_buttons_header.html.twig') }}
     {% endblock %}
 
     {% block body %}
@@ -39,8 +14,14 @@
     {% endblock %}
 
     {% block footer %}
+        {% if building.project is not null %}
+            {% set list = {href: 'app_project_edit', data:{id: building.project.id}, label: 'Proyecto', title:'Volver al proyecto', icon: 'bi:table'} %}
+        {% else %}
+            {% set list = {href: 'app_project_index', data:{}, label: 'Proyectos', title:'Listado de proyectos', icon: 'bi:table'} %}
+        {% endif %}
+
         {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_project_edit', data:{id: building.project.id}, label: 'Proyecto', title:'Volver al proyecto'},
+            'list': list,
             delete: null,
             id: building.id,
             message: '',

@@ -15,6 +15,8 @@ use App\Repository\IndividualClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -89,6 +91,12 @@ class ProjectType extends AbstractType
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
                 'label' => 'Moneda:',
+                'choice_attr' => function ($choice, string $key, mixed $value) {
+                    return ['data-code' => $choice->getCode()];
+                },
+                'attr' => [
+                    'data-currency-target' => 'select'
+                ]
 //                'constraints' => [
 //                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
 //                ]

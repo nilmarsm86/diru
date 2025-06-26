@@ -38,7 +38,8 @@ final class Navigation
     public function getNumberPath(int $item): string
     {
         $this->queryStrings[$this->queryName] = $item;
-        return $this->router->generate($this->path, $this->queryStrings);
+        $routeParams = $this->requestStack->getMainRequest()->attributes->get('_route_params');
+        return $this->router->generate($this->path, $routeParams + $this->queryStrings);
     }
 
 }

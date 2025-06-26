@@ -6,14 +6,7 @@
 } %}
 
     {% block header %}
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_building_new',
-            label: 'Nueva',
-            title: 'Nueva obra',
-            entity: building,
-            state: 'detail',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
+        {{ include('building/_buttons_header.html.twig') }}
     {% endblock %}
 
     {% block body %}
@@ -60,7 +53,7 @@
                     <th>Constructora:</th>
                     <td>
                         {% if building.getActiveConstructor() %}
-                            <a href="{{ path('app_constructor_show', {'id': building.getActiveConstructor.id }) }}">
+                            <a href="{{ path('app_constructor_show', {'id': building.getActiveConstructor.id }) }}" target="_blank">
                                 {{ building.getActiveConstructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
                         {% else%}
@@ -96,7 +89,7 @@
                                     </a>
                                 </li>
                             {% else %}
-                                <li class="text-danger">No tiene proyectistas asociado.</li>
+                                <li class="text-danger">No tiene proyectistas asociados.</li>
                             {% endfor %}
                         </ul>
                     </td>
@@ -108,9 +101,9 @@
 
     {% block footer %}
         {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},
+            list: {href: 'app_project_index', label: 'Proyectos', title:'listado de proyectos'},
             edit: {href: 'app_building_edit', label: 'Editar', title:'Editar obra'},
-            delete: {href: 'app_building_delete', label: 'Eliminar', title:'Eliminar obra'},
+            delete: null,
             id: building.id,
             message: 'Está seguro que desea eliminar la obra?',
             state: 'detail',
@@ -119,5 +112,7 @@
     {% endblock %}
 
 {% endcomponent %}
+
+{{ include('partials/modal/_modal_load.html.twig') }}
 
 

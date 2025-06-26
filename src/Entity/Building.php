@@ -62,7 +62,7 @@ class Building
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Seleccione o cree el proyecto a la cual pertenece la obra.')]
+    #[Assert\NotBlank(message: 'Seleccione o cree el proyecto al cual pertenece la obra.')]
     private ?Project $project = null;
 
     /**
@@ -305,12 +305,17 @@ class Building
         $draftsmansBuildings = $draftsman->getDraftsmansBuildings();
         foreach ($draftsmansBuildings as $draftsmanBuilding) {
             if ($draftsmanBuilding->hasBuilding($this)) {
-                $this->removeDraftsmansBuildings($draftsmanBuilding);
+                $this->removeDraftsmansBuilding($draftsmanBuilding);
                 return $this;
             }
         }
 
         return $this;
+    }
+
+    public function hasDraftsman(): bool
+    {
+        return $this->getDraftsmans()->count() > 0;
     }
 
     /**
@@ -340,14 +345,14 @@ class Building
     /**
      * @return Collection<int, Constructor>
      */
-    public function getConstructor(): Collection
+    public function getConstructors(): Collection
     {
-        $constrcutor = new ArrayCollection();
+        $constrcutors = new ArrayCollection();
         /** @var ConstructorBuilding $constructorBuilding */
         foreach ($this->getConstructorBuildings() as $constructorBuilding) {
-            $constrcutor->add($constructorBuilding->getConstructor());
+            $constrcutors->add($constructorBuilding->getConstructor());
         }
-        return $constrcutor;
+        return $constrcutors;
     }
 
     public function getActiveConstructor(): ?Constructor
@@ -392,12 +397,17 @@ class Building
         $constructorBuildings = $constructor->getConstructorBuildings();
         foreach ($constructorBuildings as $constructorBuilding) {
             if ($constructorBuilding->hasBuilding($this)) {
-                $this->removeConstructorBuildings($constructorBuilding);
+                $this->removeConstructorBuilding($constructorBuilding);
                 return $this;
             }
         }
 
         return $this;
+    }
+
+    public function hasConstructor(): bool
+    {
+        return $this->getConstructors()->count() > 0;
     }
 
     /**
@@ -469,6 +479,11 @@ class Building
     public function hasFloors(): bool
     {
         return $this->floors->count() > 0;
+    }
+
+    public function cancel(): void
+    {
+        $this->setState(BuildingState::Canceled);
     }
 
 }

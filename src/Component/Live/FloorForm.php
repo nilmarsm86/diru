@@ -47,7 +47,7 @@ final class FloorForm extends AbstractController
 
     public function mount(?Floor $fl = null, Building $building = null): void
     {
-        $this->fl = (is_null($fl)) ? new Organism() : $fl;
+        $this->fl = (is_null($fl)) ? new Floor() : $fl;
         $this->entity = $this->fl;
         $this->building = $building;
     }

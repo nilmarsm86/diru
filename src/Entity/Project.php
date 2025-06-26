@@ -425,6 +425,11 @@ class Project
         return $this;
     }
 
+    public function hasBuildings(): bool
+    {
+        return $this->getBuildings()->count() > 0;
+    }
+
     public function getBuildingsAmount(): int
     {
         return $this->getBuildings()->count();
@@ -461,6 +466,14 @@ class Project
         $this->addBuilding($building);
 
         return $this;
+    }
+
+    public function cancel(): void
+    {
+        $this->setState(ProjectState::Canceled);
+        foreach ($this->getBuildings() as $building){
+            $building->cancel();
+        }
     }
 
 

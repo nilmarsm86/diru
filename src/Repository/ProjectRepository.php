@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
@@ -12,6 +13,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Project>
@@ -97,5 +99,30 @@ class ProjectRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('p.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Project $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Project $entity, bool $flush = false): void
+    {
+        $msg = 'Si desea podría cambiarle el estado al proyecto a: Cancelado.';
+
+        if(!is_null($entity->getClient())){
+            throw new Exception('El proyecto aun tiene un cliente asociado. '.$msg, 1);
+        }
+
+        if($entity->hasBuildings()){
+            throw new Exception('El proyecto tiene obras asociadas. '.$msg, 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

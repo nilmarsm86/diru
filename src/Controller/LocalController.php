@@ -56,7 +56,7 @@ final class LocalController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService, Floor $floor): Response
     {
         $local = new Local();
-        return $crudActionService->formLiveComponentAction($request, $floor, 'local', [
+        return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Nuevo Local',
             'floor' => $floor
         ]);

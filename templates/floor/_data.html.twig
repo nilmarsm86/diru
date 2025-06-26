@@ -1,0 +1,30 @@
+<tbody>
+<tr>
+    <th colspan="2">Nombre:</th>
+    <td colspan="2">{{ floor.name }}</td>
+</tr>
+<tr>
+    <th>Área útil (m<sup>2</sup>):</th>
+    <td>{{ floor.getUsefulArea() }}</td>
+
+    <th>Área muro (m<sup>2</sup>):</th>
+    <td>{{ floor.getWallArea() }}</td>
+</tr>
+
+<tr>
+    <th>Área de vacío (m<sup>2</sup>):</th>
+    <td>{{ floor.getEmptyArea() }}</td>
+
+    <th>Área total (m<sup>2</sup>):</th>
+    <td>{{ floor.getTotalFloorArea() }}</td>
+</tr>
+
+<tr>
+    <th>Altura máxima (m)</th>
+    <td>{{ floor.getMaxHeight() }}</td>
+
+    <th>Volumen (m<sup>3</sup>)</th>
+    <td>{{ floor.getVolume() }}</td>
+</tr>
+
+</tbody>

@@ -7,17 +7,27 @@
         }
     }) }}
 
+    {% if form_errors(form) %}
+        {{ component('message:alert', {
+            'icon': 'ix:error',
+            'type': 'danger',
+            'message': "Una obra esta asociada a un proyecto. Para crear una obra nueva, vaya al <a href=" ~ path('app_project_index') ~ ">listado de proyectos</a> y seleccione sobre cual desea crearla."
+        }) }}
+    {% endif %}
+
     {{ form_row(form.name) }}
+
     <div class="mb-0 row">
         <div class="col">
             {{ form_row(form.constructor) }}
         </div>
-        <div class="col">
-            {% if form.draftsman is defined %}
-            {{ form_row(form.draftsman) }}
-            {% endif %}
-        </div>
+        {% if form.draftsman is defined %}
+            <div class="col">
+                {{ form_row(form.draftsman) }}
+            </div>
+        {% endif %}
     </div>
+
     <details class="collection" {# {% if (this.bui.id is not null) %}open{% endif %} #}>
         <summary class="collection">
             <div class="row summary-btn-lis">
@@ -30,18 +40,20 @@
         <br>
         <div class="mb-0 row" {{ stimulusController('summation-values') }}>
             <div class="col">
-                {{ form_row(form.approvedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.approvedValueConstruction) }}
             </div>
             <div class="col">
-                {{ form_row(form.approvedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.approvedValueEquipment) }}
             </div>
             <div class="col">
-                {{ form_row(form.approvedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.approvedValueOther) }}
             </div>
             <div class="col">
                 <div class="mb-3">
                     <p class="text-end">Total:</p>
-                    <h5 class="text-end">$ <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span></h5>
+                    <h5 class="text-end">$ <span
+                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
+                    </h5>
                 </div>
             </div>
         </div>
@@ -59,18 +71,20 @@
         <br>
         <div class="mb-0 row" {{ stimulusController('summation-values') }}>
             <div class="col">
-                {{ form_row(form.estimatedValueConstruction, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.estimatedValueConstruction) }}
             </div>
             <div class="col">
-                {{ form_row(form.estimatedValueEquipment, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.estimatedValueEquipment) }}
             </div>
             <div class="col">
-                {{ form_row(form.estimatedValueOther, {attr:{'data-summation-values-target':'field'}}) }}
+                {{ form_row(form.estimatedValueOther) }}
             </div>
             <div class="col">
                 <div class="mb-3">
                     <p class="text-end">Total:</p>
-                    <h5 class="text-end">$ <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span></h5>
+                    <h5 class="text-end">$ <span
+                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
+                    </h5>
                 </div>
             </div>
         </div>

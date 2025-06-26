@@ -9,7 +9,7 @@
 
         <div>
             {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }}
-            <a></a>
+            {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
         </div>
     {% endblock %}
 
@@ -20,14 +20,14 @@
 
             {% block tableHead %}
                 <tr>
-                    <th>Name</th>
-                    <th>Number</th>
-                    <th>Area</th>
-                    <th>Type</th>
-                    <th>Height</th>
-                    <th>TechnicalStatus</th>
-                    <th>Type2</th>
-
+                    <th>Nombre</th>
+                    <th>Número</th>
+                    <th>Área (m<sup>2</sup>)</th>
+                    <th>Tipo</th>
+                    <th>Altura (m)</th>
+                    <th>Volumen (m<sup>3</sup>)</th>
+                    <th>Estado</th>
+                    {#                    <th>Tipo 2</th> #}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -40,13 +40,14 @@
                         <td>{{ local.name }}</td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>
-                        <td>{{ local.type }}</td>
+                        <td>{{ local.type.getLabelFrom(local.type) }}</td>
                         <td>{{ local.height }}</td>
-                        <td>{{ local.technicalStatus }}</td>
-                        <td>{{ local.type2 }}</td>
+                        <td>{{ local.getVolume() }}</td>
+                        <td>{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</td>
+                        {#                        <td>{{ local.type2 }}</td> #}
 
                         <td class="text-end">
-{#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
+                            {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
                             {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'floor':floor.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'floor':floor.id})})) }}
                         </td>
                     </tr>
@@ -59,15 +60,29 @@
 
         {% endcomponent %}
 
-        {% component 'Card:Card' with {
-            cssClass: 'mb-4',
-            extra: '',
-            headerCssClass: 'd-flex justify-content-between align-items-center',
-            title: 'Detalles de la plantas',
-        } %}
 
-        {% endcomponent %}
 
+    {% endblock %}
+
+    {#    {% block footer %} #}
+    {#        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %} #}
+    {#        <div> #}
+    {#        {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }} #}
+    {#        </div> #}
+    {#    {% endblock %} #}
+
+{% endcomponent %}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Detalles de la plantas',
+} %}
+    {% block body %}
+        <table class="table table-hover">
+            {{ include('floor/_data.html.twig') }}
+        </table>
     {% endblock %}
 
 {% endcomponent %}

@@ -1,4 +1,4 @@
-<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+<div {{ attributes.defaults(stimulusController('live-form currency', {modal:modal})) }}>
 
     {{ form_start(form, {
         attr: {
@@ -109,7 +109,7 @@
         </details>
     {% endif %}
 
-    <div class="mb-0 row" {{ stimulusController('visibility-by-select', {openData:'0'}) }}>
+    <div class="mb-0 row" {% if form.state is defined and form.stopReason is defined %}{{ stimulusController('visibility-by-select', {openData:'0'}) }}{% endif %}>
         <div class="col">
             {% if form.state is defined %}
                 {{ form_row(form.state) }}
@@ -194,6 +194,7 @@
 {#                                </button>#}
                                 <a class="btn btn-outline-info btn-sm"
                                    href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">
+                                    {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
                                     Información de la obra
                                 </a>
                             {% else %}

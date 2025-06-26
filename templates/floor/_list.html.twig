@@ -21,12 +21,12 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Área útil</th>
-                    <th>Área muro</th>
-                    <th>Área de vacío</th>
-                    <th>Área total</th>
-                    <th>Altura máxima</th>
-                    <th>Volumen</th>
+                    <th>Área útil (m<sup>2</sup>)</th>
+                    <th>Área muro (m<sup>2</sup>)</th>
+                    <th>Área de vacío (m<sup>2</sup>)</th>
+                    <th>Área total (m<sup>2</sup>)</th>
+                    <th>Altura máxima (m)</th>
+                    <th>Volumen (m<sup>3</sup>)</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -46,7 +46,7 @@
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
-                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), '', 'Plantas', 'Plantas') }}
+                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), '', 'Locales', 'Locales') }}
                         </td>
                     </tr>
                 {% else %}

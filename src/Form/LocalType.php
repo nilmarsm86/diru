@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Floor;
 use App\Entity\Local;
+use App\Form\Types\LocalTechnicalStatusEnumType;
+use App\Form\Types\LocalTypeEnumType;
+use App\Form\Types\UnitMeasurementType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -15,19 +18,42 @@ class LocalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('number')
-            ->add('area')
-            ->add('type')
-            ->add('height')
-            ->add('technicalStatus')
-            ->add('type2', EnumType::class, [
-                'class' => \App\Entity\Enums\LocalType::class,
+            ->add('name', null, [
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del local'
+                ]
             ])
-            ->add('name')
-            ->add('floor', EntityType::class, [
-                'class' => Floor::class,
-                'choice_label' => 'id',
+            ->add('number', null, [
+                'label' => 'Número:',
+                'attr' => [
+                    'placeholder' => 'Número del local'
+                ]
             ])
+            ->add('area', UnitMeasurementType::class, [
+                'unit' => 'm<sup>2</sup>',
+                'label' => "Área:",
+                'attr' => [
+                    'min' => 0,
+                    'max' => 10000
+                ]
+            ])
+            ->add('type', LocalTypeEnumType::class, [
+                'label' => 'Tipo de local:',
+            ])
+            ->add('height', null, [
+                'label' => 'Altura:',
+            ])
+            ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
+                'label' => 'Estado técnico:',
+            ])
+//            ->add('type2', EnumType::class, [
+//                'class' => \App\Entity\Enums\LocalType::class,
+//            ])
+//            ->add('floor', EntityType::class, [
+//                'class' => Floor::class,
+//                'choice_label' => 'id',
+//            ])
         ;
     }
 
@@ -35,6 +61,9 @@ class LocalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Local::class,
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ]
         ]);
     }
 }

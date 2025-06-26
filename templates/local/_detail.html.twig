@@ -19,7 +19,40 @@
     {% block body %}
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
             <table class="table table-hover">
-                {{ include('floor/_data.html.twig') }}
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ local.id }}</td>
+                </tr>
+                <tr>
+                    <th>Number</th>
+                    <td>{{ local.number }}</td>
+                </tr>
+                <tr>
+                    <th>Area</th>
+                    <td>{{ local.area }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ local.type }}</td>
+                </tr>
+                <tr>
+                    <th>Height</th>
+                    <td>{{ local.height }}</td>
+                </tr>
+                <tr>
+                    <th>TechnicalStatus</th>
+                    <td>{{ local.technicalStatus }}</td>
+                </tr>
+                <tr>
+                    <th>Type2</th>
+                    <td>{{ local.type2 }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ local.name }}</td>
+                </tr>
+                </tbody>
             </table>
         </div>
     {% endblock %}

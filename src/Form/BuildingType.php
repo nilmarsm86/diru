@@ -9,6 +9,7 @@ use App\Form\Types\EntityPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,60 +32,6 @@ class BuildingType extends AbstractType
                     'placeholder' => 'Nombre de la obra'
                 ]
             ])
-            ->add('estimatedValueConstruction', IntegerType::class, [
-                'label' => 'Valor estimado de construcción:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
-            ->add('estimatedValueEquipment', IntegerType::class, [
-                'label' => 'Valor estimado en equipos:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
-            ->add('estimatedValueOther', IntegerType::class, [
-                'label' => 'Otros valores estimados:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
-            ->add('approvedValueConstruction', IntegerType::class, [
-                'label' => 'Valor aprobado de construcción:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
-            ->add('approvedValueEquipment', IntegerType::class, [
-                'label' => 'Valor aprobado en equipos:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
-            ->add('approvedValueOther', IntegerType::class, [
-                'label' => 'Otros valores aprobados:',
-                'attr' => [
-                    'placeholder' => '0',
-                    'min' => 0
-                ],
-                'empty_data' => 0,
-                'required' => false
-            ])
             ->add('constructor', EntityPlusType::class, [
                 'class' => Constructor::class,
                 'choice_label' => 'name',
@@ -103,8 +50,7 @@ class BuildingType extends AbstractType
                 'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load']),
 
                 'required' => false
-            ])
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $this->onPreSetData($event);
@@ -130,7 +76,9 @@ class BuildingType extends AbstractType
         /** @var Building $building */
         $building = $event->getData();
         $form = $event->getForm();
+        $currency = 'CUP';
 
+        //TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
         if (!is_null($building) && $building->getId()) {
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
@@ -140,6 +88,93 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'data' => $building->getActiveDraftsman()
             ]);
+
+            $currency = $building->getProject()->getCurrency()->getCode();
         }
+
+        $form->add('estimatedValueConstruction', MoneyType::class, [
+            'label' => 'Valor estimado de construcción:',
+            'attr' => [
+                'placeholder' => '0',
+                'min' => 0,
+                'data-summation-values-target' => 'field',
+                'data-currency-target' => 'field'
+            ],
+            'empty_data' => 0,
+            'required' => false,
+            'currency' => $currency,
+            'html5' => true,
+            'input' => 'integer'
+        ])
+            ->add('estimatedValueEquipment', MoneyType::class, [
+                'label' => 'Valor estimado en equipos:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer'
+            ])
+            ->add('estimatedValueOther', MoneyType::class, [
+                'label' => 'Otros valores estimados:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer'
+            ])
+            ->add('approvedValueConstruction', MoneyType::class, [
+                'label' => 'Valor aprobado de construcción:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer'
+            ])
+            ->add('approvedValueEquipment', MoneyType::class, [
+                'label' => 'Valor aprobado en equipos:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer'
+            ])
+            ->add('approvedValueOther', MoneyType::class, [
+                'label' => 'Otros valores aprobados:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer'
+            ]);
     }
 }

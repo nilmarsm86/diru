@@ -23,7 +23,7 @@ class Floor
     /**
      * @var Collection<int, Local>
      */
-    #[ORM\OneToMany(targetEntity: Local::class, mappedBy: 'floor')]
+    #[ORM\OneToMany(targetEntity: Local::class, mappedBy: 'floor', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
     private Collection $locals;
 

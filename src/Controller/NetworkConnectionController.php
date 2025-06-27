@@ -15,7 +15,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[Route('/network_connection')]
+#[Route('/network/connection')]
 #[IsGranted(Role::ROLE_ADMIN)]
 final class NetworkConnectionController extends AbstractController
 {

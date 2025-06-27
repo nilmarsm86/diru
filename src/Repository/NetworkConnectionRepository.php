@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\NetworkConnection;
+use App\Entity\Project;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<NetworkConnection>
@@ -69,5 +71,24 @@ class NetworkConnectionRepository extends ServiceEntityRepository
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('nc.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param NetworkConnection $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(NetworkConnection $entity, bool $flush = false): void
+    {
+        if($entity->isOnLand()){
+            throw new Exception('La conexión de red esta asociada a una o varias obras.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

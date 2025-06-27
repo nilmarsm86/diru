@@ -13,6 +13,7 @@ use App\Repository\FloorRepository;
 use App\Repository\LocalRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -57,7 +58,9 @@ final class LocalForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(LocalType::class, $this->l);
+        return $this->createForm(LocalType::class, $this->l, [
+            'floor' => $this->floor
+        ]);
     }
 
     /**

@@ -172,4 +172,5 @@ class Land
     {
         return $this->getFloor() > 0;
     }
+
 }

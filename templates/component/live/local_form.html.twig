@@ -1,6 +1,6 @@
 <div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
 
-{#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %}#}
+    {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
 
     {{ form_start(form, {
         attr: {
@@ -9,12 +9,41 @@
         }
     }) }}
 
-    {{ form_row(form.name) }}
-    {{ form_row(form.number) }}
-    {{ form_row(form.area) }}
-    {{ form_row(form.type) }}
-    {{ form_row(form.height) }}
-    {{ form_row(form.technicalStatus) }}
+    {% if form_errors(form) %}
+        {{ form_errors(form) }}
+    {% endif %}
+
+    {% dump(form_errors(form.area)) %}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+
+        <div class="col">
+            {{ form_row(form.number) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.area) }}
+        </div>
+
+        <div class="col">
+            {{ form_row(form.height) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.type) }}
+        </div>
+
+        <div class="col">
+            {{ form_row(form.technicalStatus) }}
+        </div>
+    </div>
 
     <div class="row mb-3">
         <div class="col-sm-12">

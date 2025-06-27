@@ -82,11 +82,11 @@ final class LandForm extends AbstractController
 
             //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
-                $this->addFloors($land, $floorRepository);
+                $this->building->createFloors();
+
             }
 
             $landRepository->save($land, true);
-//            $buildingRepository->save($this->building, true);
 
             $this->l = new Land();
             if (!is_null($this->modal)) {
@@ -113,40 +113,6 @@ final class LandForm extends AbstractController
         }
 
         return null;
-    }
-
-    private function addFloors(Land $land, FloorRepository $floorRepository): void
-    {
-        $floor = $land->getFloor();
-        if ($floor === 1) {
-            $f = new Floor();
-            $f->setName('Planta Baja');
-//            $f->setBuilding($this->building);
-            $this->building->addFloor($f);
-
-            $floorRepository->save($f);
-        }
-
-        if ($floor > 1) {
-            $f = new Floor();
-            $f->setName('Planta Baja');
-            $f->setGroundFloor(true);
-//            $f->setBuilding($this->building);
-            $this->building->addFloor($f);
-
-            $floorRepository->save($f);
-
-            for ($i = 1; $i < $floor; $i++) {
-                $f = new Floor();
-                $f->setName('Planta ' . $i);
-//                $f->setBuilding($this->building);
-                $this->building->addFloor($f);
-
-                $floorRepository->save($f);
-            }
-        }
-
-        $floorRepository->flush();
     }
 
     private function getDataModelValue(): ?string

@@ -14,21 +14,21 @@
     {% endblock %}
 
     {% block footer %}
-        {% if building.project is not null %}
-            {% set list = {href: 'app_project_edit', data:{id: building.project.id}, label: 'Proyecto', title:'Volver al proyecto', icon: 'bi:table'} %}
-        {% else %}
-            {% set list = {href: 'app_project_index', data:{}, label: 'Proyectos', title:'Listado de proyectos', icon: 'bi:table'} %}
-        {% endif %}
+{#        {% if building.project is not null %}#}
+{#            {% set list = {href: 'app_project_edit', data:{id: building.project.id}, label: 'Proyecto', title:'Volver al proyecto', icon: 'bi:table'} %}#}
+{#        {% else %}#}
+{#            {% set list = {href: 'app_project_index', data:{}, label: 'Proyectos', title:'Listado de proyectos', icon: 'bi:table'} %}#}
+{#        {% endif %}#}
 
-        {{ include('partials/_card_footer.html.twig', {
-            'list': list,
-            delete: null,
-            id: building.id,
-            message: '',
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: building
-        }) }}
+{#        {{ include('partials/_card_footer.html.twig', {#}
+{#            'list': list,#}
+{#            delete: null,#}
+{#            id: building.id,#}
+{#            message: '',#}
+{#            state: 'form',#}
+{#            showButton: (showButton is defined and showButton == true) ? true : false,#}
+{#            entity: building#}
+{#        }) }}#}
     {% endblock %}
 
 {% endcomponent %}

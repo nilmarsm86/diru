@@ -481,9 +481,44 @@ class Building
         return $this->floors->count() > 0;
     }
 
-    public function cancel(): void
+    public function cancel(): static
     {
         $this->setState(BuildingState::Canceled);
+
+        return $this;
+    }
+
+    public function getLandArea(): ?int
+    {
+        return $this->getLand()->getLandArea();
+    }
+
+    /*
+     * Create the automatic the floors, based on land floors
+     */
+    public function createFloors(): static
+    {
+        $floor = $this->getLand()->getFloor();
+        if ($floor === 1) {
+            $f = new Floor();
+            $f->setName('Planta Baja');
+            $this->addFloor($f);
+        }
+
+        if ($floor > 1) {
+            $f = new Floor();
+            $f->setName('Planta Baja');
+            $f->setGroundFloor(true);
+            $this->addFloor($f);
+
+            for ($i = 1; $i < $floor; $i++) {
+                $f = new Floor();
+                $f->setName('Planta ' . $i);
+                $this->addFloor($f);
+            }
+        }
+
+        return $this;
     }
 
 }

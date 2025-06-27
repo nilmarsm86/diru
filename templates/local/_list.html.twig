@@ -9,7 +9,9 @@
 
         <div>
             {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }}
-            {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
+            {% if floor.building.landArea > floor.getTotalFloorArea() %}
+                {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
+            {% endif %}
         </div>
     {% endblock %}
 
@@ -17,6 +19,17 @@
         {% component 'Table:Table' with {
             paginator: paginator,
         } %}
+
+            {% block message %}
+                Área total de la obra: {{ floor.building.land.landArea }}m<sup>2</sup>
+                {% if floor.isFullyOccupied() %}
+                    , ocupados totalmente.
+                {% else %}
+                    , quedan {{ floor.building.landArea - floor.getTotalFloorArea() }}m<sup>2</sup> por ocupar.
+                    <br>
+                    <a href="">Convertir en área de muro</a>
+                {% endif %}
+            {% endblock %}
 
             {% block tableHead %}
                 <tr>

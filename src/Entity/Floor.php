@@ -174,4 +174,14 @@ class Floor
 
         return $this;
     }
+
+    public function isFullyOccupied(): bool
+    {
+        return $this->getBuilding()->getLandArea() <= $this->getTotalFloorArea();
+    }
+
+    public function getUnassignedArea(): ?int
+    {
+        return $this->getBuilding()->getLandArea() - $this->getTotalFloorArea();
+    }
 }

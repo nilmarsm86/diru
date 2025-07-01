@@ -26,6 +26,9 @@ export default class extends AbstractController {
 
         this.element.addEventListener('live--land-form:submit', this.submitForm.bind(this));
         this.element.addEventListener('live--land-form:submitEnd', this.submitEndForm.bind(this));
+
+        this.element.addEventListener('live--local-form:submit', this.submitForm.bind(this));
+        this.element.addEventListener('live--local-form:submitEnd', this.submitEndForm.bind(this));
     }
 
     initialize() {

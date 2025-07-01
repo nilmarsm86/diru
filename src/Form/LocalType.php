@@ -103,7 +103,7 @@ class LocalType extends AbstractType
             'unit' => 'm<sup>2</sup>',
             'label' => "Área:",
             'attr' => [
-                'min' => 0,
+                'min' => 1,
                 'max' => $leftArea,
                 'placeholder' => 'Área que ocupa el local'
             ],

@@ -276,3 +276,12 @@ summary.collection::marker{
     margin-top: -3px;
     margin-bottom: 5px;
 }
+
+details::details-content {
+    opacity: 0;
+    transition:opacity 600ms,content-visibility 600ms allow-discrete;
+}
+
+details[open]::details-content {
+    opacity: 1;
+}

@@ -8,7 +8,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }}
+            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
             {% if floor.building.landArea > floor.getTotalFloorArea() %}
                 {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
             {% endif %}
@@ -25,9 +25,13 @@
                 {% if floor.isFullyOccupied() %}
                     , ocupados totalmente.
                 {% else %}
-                    , quedan {{ floor.building.landArea - floor.getTotalFloorArea() }}m<sup>2</sup> por ocupar.
-                    <br>
-                    <a href="">Convertir en área de muro</a>
+                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar.
+                    {% if floor.hasLocalAndIsNotCompletlyEmptyArea() %}
+                        <br>
+                        <a href="{{ path('app_local_wall', {'floor': floor.id, 'area':floor.getUnassignedArea() }) }}">
+                            Convertir en área de muro
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endblock %}
 
@@ -40,7 +44,6 @@
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Estado</th>
-                    {#                    <th>Tipo 2</th> #}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -57,8 +60,6 @@
                         <td>{{ local.height }}</td>
                         <td>{{ local.getVolume() }}</td>
                         <td>{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</td>
-                        {#                        <td>{{ local.type2 }}</td> #}
-
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
                             {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'floor':floor.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'floor':floor.id})})) }}
@@ -66,7 +67,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6">No se encontraron locales.</td>
+                        <td colspan="8">No se encontraron locales.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

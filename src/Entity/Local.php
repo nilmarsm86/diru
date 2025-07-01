@@ -173,4 +173,17 @@ class Local
     {
         return $this->getArea() * $this->getHeight();
     }
+
+    public static function createAutomaticWall(int $area): self
+    {
+        $localWall = new Local();
+        $localWall->setName('Área de muro');
+        $localWall->setType(LocalType::WallArea);
+        $localWall->setArea($area);
+        $localWall->setHeight(0);
+        $localWall->setNumber(0);
+        $localWall->setTechnicalStatus(LocalTechnicalStatus::Undefined);
+
+        return $localWall;
+    }
 }

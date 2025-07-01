@@ -11,9 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'project'], message: 'Ya existe en el proyecto una obra con este nombre.', errorPath: 'name')]
 class Building
 {
     use NameToStringTrait;

@@ -146,7 +146,7 @@ class Floor
         return $maxHeight;
     }
 
-    public function getVolume()
+    public function getVolume(): float|int
     {
         return $this->getTotalFloorArea() * $this->getMaxHeight();
     }
@@ -183,5 +183,10 @@ class Floor
     public function getUnassignedArea(): ?int
     {
         return $this->getBuilding()->getLandArea() - $this->getTotalFloorArea();
+    }
+
+    public function hasLocalAndIsNotCompletlyEmptyArea(): bool
+    {
+        return ($this->getLocals()->count() > 0) && ($this->getUsefulArea() > 0);
     }
 }

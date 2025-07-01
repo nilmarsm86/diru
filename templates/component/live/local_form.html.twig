@@ -1,4 +1,4 @@
-<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+<div {{ attributes.defaults(stimulusController('live/local-form', {modal:modal})) }}>
 
     {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
 
@@ -13,8 +13,6 @@
         {{ form_errors(form) }}
     {% endif %}
 
-    {% dump(form_errors(form.area)) %}
-
     <div class="mb-0 row">
         <div class="col">
             {{ form_row(form.name) }}
@@ -27,7 +25,7 @@
 
     <div class="mb-0 row">
         <div class="col">
-            {{ form_row(form.area) }}
+            {{ form_row(form.area, {attr:{'data-live--local-form-target':'area'}}) }}
         </div>
 
         <div class="col">

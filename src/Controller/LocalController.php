@@ -98,4 +98,16 @@ final class LocalController extends AbstractController
         $successMsg = 'Se ha eliminado el local.';
         return $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', ['floor' => $floor->getId()]);
     }
+
+    #[Route('/wall/{floor}/{area}', name: 'app_local_wall', methods: ['GET'])]
+    public function wall(Request $request, LocalRepository $localRepository, Floor $floor, int $area): Response
+    {
+        $automaticWall = Local::createAutomaticWall($area);
+
+        $floor->addLocal($automaticWall);
+        $localRepository->save($floor, true);
+
+        $this->addFlash('success', 'Se a creado el área de muro del área restante.');
+        return new RedirectResponse($this->generateUrl('app_local_index', ['floor'=>$floor->getId()]), Response::HTTP_SEE_OTHER);
+    }
 }

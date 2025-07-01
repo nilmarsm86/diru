@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\LocalRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: LocalRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un local con este nombre.', errorPath: 'name')]
 class Local
 {
     use NameToStringTrait;

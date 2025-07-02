@@ -9,7 +9,7 @@
 
         <div>
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
-            <a></a>
+{#            {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}#}
         </div>
     {% endblock %}
 
@@ -50,7 +50,7 @@
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
-                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), '', 'Locales', 'Locales') }}
+                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales') }}
                         </td>
                     </tr>
                 {% else %}

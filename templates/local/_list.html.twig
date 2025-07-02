@@ -9,7 +9,7 @@
 
         <div>
             {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
-            {% if floor.building.landArea > floor.getTotalFloorArea() %}
+            {% if floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
             {% endif %}
         </div>

@@ -1,15 +1,19 @@
+{% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-    <a href="{{ path('app_project_edit', {'id':building.project.id}) }}" class="btn btn-sm btn-primary"
-       title="Gestionar plantas">
-        {{ ux_icon('bi:table', {'class':'bi'}) }}
-        Proyecto
-    </a>
+{#    <a href="{{ path('app_project_edit', {'id':building.project.id}) }}" class="btn btn-sm btn-primary"#}
+{#       title="Gestionar plantas">#}
+{#        {{ ux_icon('bi:table', {'class':'bi'}) }}#}
+{#        Proyecto#}
+{#    </a>#}
+    {{ tableActionButton3(path('app_project_edit', {'id':building.project.id}), 'bi:table', 'Proyecto', 'Proyecto') }}
 
     {% if building.hasFloors() %}
-        <a href="{{ path('app_floor_index', {building: building.id}) }}" class="btn btn-sm btn-primary"
-           title="Gestionar plantas">
-            Gestionar plantas
-        </a>
+{#        <a href="{{ path('app_floor_index', {building: building.id}) }}" class="btn btn-sm btn-primary"#}
+{#           title="Gestionar plantas">#}
+{#            Gestionar plantas#}
+{#        </a>#}
+        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Gestionar plantas', 'Gestionar plantas') }}
     {% endif %}
 
     {% if building.id is not null %}

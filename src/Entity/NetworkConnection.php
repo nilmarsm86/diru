@@ -68,6 +68,6 @@ class NetworkConnection
 
     public function isOnLand(): bool
     {
-        return ($this->landNetworkConnections->count() > 0);
+        return $this->getLandNetworkConnections()->count() > 0;
     }
 }

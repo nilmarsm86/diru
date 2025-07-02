@@ -213,4 +213,9 @@ class Investment
         return $totalBuildingsAmount;
     }
 
+    public function hasProjects(): bool
+    {
+        return $this->getProjects()->count() > 0;
+    }
+
 }

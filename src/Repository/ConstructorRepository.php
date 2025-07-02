@@ -83,7 +83,7 @@ class ConstructorRepository extends ServiceEntityRepository
      */
     public function remove(Constructor $entity, bool $flush = false): void
     {
-        if($entity->getBuildings()->count()){
+        if($entity->hasBuildings()){
             throw new Exception('Esta constructora aun tiene obras asociados.', 1);
         }
 

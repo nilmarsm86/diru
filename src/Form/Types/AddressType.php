@@ -142,8 +142,8 @@ class AddressType extends AbstractType
      */
     private function getProvinceQueryBuilder(array $options): Closure
     {
-        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-            return $er->createQueryBuilder('p')->orderBy('p.name');
+        return function (ProvinceRepository $provinceRepository) use ($options): QueryBuilder|array {
+            return $provinceRepository->findProvincesForForm();
         };
     }
 

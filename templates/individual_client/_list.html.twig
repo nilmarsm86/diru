@@ -39,7 +39,7 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {% if client.representative %}
-                                <button type="button" class="btn btn-link position-relative p-0" style="text-decoration: none;color: #fff;cursor: text">
+                                <button type="button" class="btn btn-link position-relative p-0" style="text-decoration: none;color: #fff;cursor: text" title="La persona tiene asociado un representante">
                                     {{ client.person.getFullName() }}
                                     <span class="position-absolute top-0 start-100 p-1 bg-danger border border-light rounded-circle">
                                     </span>
@@ -55,7 +55,7 @@
                             <a href="mailto:{{ client.email }}">{{ client.email }}</a>
                         </td>
                         <td>
-                            <span class="badge rounded-pill text-bg-success">
+                            <span class="badge rounded-pill text-bg-success" title="Inversiones relacionadas con el cliente">
                                 {{ client.projects|length }}
                             </span>
                         </td>

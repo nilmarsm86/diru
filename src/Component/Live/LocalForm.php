@@ -79,8 +79,6 @@ final class LocalForm extends AbstractController
 
 //            $this->floor->addLocal($local);
             $local->setFloor($this->floor);
-//            dump($this->formValues);
-//            die();
             $localRepository->save($local, true);
 
             $this->l = new Local();

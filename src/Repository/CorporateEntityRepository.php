@@ -104,7 +104,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
      */
     public function remove(CorporateEntity $entity, bool $flush = false): void
     {
-        if($entity->getEnterpriseClients()->count()){
+        if($entity->hasEnterpriseClients()){
             throw new Exception('Esta entidad corporativa aun tiene clientes empresariales asociados.', 1);
         }
 

@@ -85,7 +85,7 @@ class ProvinceRepository extends ServiceEntityRepository
      */
     public function remove(Province $entity, bool $flush = false): void
     {
-        if($entity->getMunicipalities()->count()){
+        if($entity->getMunicipalities()->count() > 0){
             throw new Exception('La provincia aun tiene municipios asociados.', 1);
         }
 
@@ -94,5 +94,12 @@ class ProvinceRepository extends ServiceEntityRepository
         if ($flush) {
             $this->flush();
         }
+    }
+
+    public function findProvincesForForm(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->where("p.name NOT LIKE '%provincia%'")
+            ->orderBy('p.name');
     }
 }

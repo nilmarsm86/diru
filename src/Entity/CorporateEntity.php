@@ -170,4 +170,9 @@ class CorporateEntity
     {
         return $this->getName().' ('.$this->getOrganism()->getName().')';
     }
+
+    public function hasEnterpriseClients(): bool
+    {
+        return $this->getEnterpriseClients()->count() > 0;
+    }
 }

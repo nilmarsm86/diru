@@ -23,11 +23,11 @@ class Local
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'El número del local esta vacío.')]
+    #[Assert\NotBlank(message: 'El número del local está vacío.')]
     private ?int $number = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'El área esta vacía.')]
+    #[Assert\NotBlank(message: 'El área está vacía.')]
 //    #[Assert\Expression(
 //        "this.getFloor().getBuilding().getLandArea() < value",
 //        message: 'No debe ser mayor que el area de la obra.',
@@ -44,7 +44,7 @@ class Local
     private LocalType $enumType;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'La altura esta vacía.')]
+    #[Assert\NotBlank(message: 'La altura está vacía.')]
     private ?int $height = null;
 
     #[ORM\Column(length: 255)]

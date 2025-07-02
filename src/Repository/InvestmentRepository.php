@@ -92,7 +92,7 @@ class InvestmentRepository extends ServiceEntityRepository
      */
     public function remove(Investment $entity, bool $flush = false): void
     {
-        if($entity->getProjects()->count()){
+        if($entity->hasProjects()){
             throw new Exception('La inversión aun tiene proyectos asociados.', 1);
         }
 

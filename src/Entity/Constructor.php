@@ -203,4 +203,9 @@ class Constructor
     {
         return $this->getBuildings()->count();
     }
+
+    public function hasBuildings(): bool
+    {
+        return $this->getBuildings()->count() > 0;
+    }
 }

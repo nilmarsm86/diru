@@ -59,6 +59,7 @@ class EnterpriseClientRepository extends ServiceEntityRepository
             $predicate .= "OR r.passport LIKE :filter ";
             $predicate .= "OR ec.phone LIKE :filter ";
             $predicate .= "OR ec.email LIKE :filter ";
+            $predicate .= "OR ce.name LIKE :filter ";
             if ($place) {
                 $predicate .= "OR mun.name LIKE :filter ";
                 $predicate .= "OR pro.name LIKE :filter ";
@@ -95,13 +96,14 @@ class EnterpriseClientRepository extends ServiceEntityRepository
      */
     public function remove(EnterpriseClient $entity, bool $flush = false): void
     {
-        if($entity->getProjects()->count()){
+        if($entity->hasProjects()){
             throw new Exception('Este cliente empresarial aun tiene proyectos asociados.', 1);
         }
 
-        if(!is_null($entity->getCorporateEntity())){
-            throw new Exception('Este cliente empresarial tiene una entidad corporativa asociada.', 1);
-        }
+        //Si el el cliente no tiene proyectos asociados puede ser eliminado
+//        if(!is_null($entity->getCorporateEntity())){
+//            throw new Exception('Este cliente empresarial tiene una entidad corporativa asociada.', 1);
+//        }
 
         $this->getEntityManager()->remove($entity);
 

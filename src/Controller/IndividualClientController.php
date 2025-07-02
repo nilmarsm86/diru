@@ -82,7 +82,7 @@ final class IndividualClientController extends AbstractController
     #[Route('/{id}', name: 'app_individual_client_delete', methods: ['POST'])]
     public function delete(Request $request, IndividualClient $individualClient, IndividualClientRepository $individualClientRepository, CrudActionService $crudActionService): Response
     {
-        $successMsg = 'Se ha eliminado el cliente empresarial.';
+        $successMsg = 'Se ha eliminado el cliente.';
         return $crudActionService->deleteAction($request, $individualClientRepository, $individualClient, $successMsg, 'app_enterprise_client_index');
     }
 }

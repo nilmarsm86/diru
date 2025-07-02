@@ -55,7 +55,8 @@ class ProjectType extends AbstractType
                 'data' => EnumProjectType::Parcel,
                 'label_attr' => [
                     'class' => 'radio-inline'
-                ]
+                ],
+                'required' => false
             ])
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,

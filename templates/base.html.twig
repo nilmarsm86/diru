@@ -16,21 +16,29 @@
     {% endblock %}
 </head>
 <body>
-{% block body %}{% endblock %}
-{% if app.environment == 'prod' %}
-    <script>
-        document.getElementsByTagName('body')[0].addEventListener('keydown', function (event) {
-            if (
-                event.key === 'F12' ||
-                (event.ctrlKey && event.key === 'r') ||
-                event.key === 'F5' ||
-                (event.ctrlKey && event.key === 's') ||
-                (event.ctrlKey && event.key === 'p') ||
-                (event.ctrlKey && event.key === 'u')) {
-                event.preventDefault();
-            }
-        });
-    </script>
-{% endif %}
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <a class="btn btn-bd-primary py-2 d-flex align-items-center"
+                id="bd-theme"
+                href="#top"
+                aria-label="Go up">
+            {{ ux_icon('gg:arrow-up-o', {'class':'bi'}) }}
+        </a>
+    </div>
+    {% block body %}{% endblock %}
+    {% if app.environment == 'prod' %}
+        <script>
+            document.getElementsByTagName('body')[0].addEventListener('keydown', function (event) {
+                if (
+                    event.key === 'F12' ||
+                    (event.ctrlKey && event.key === 'r') ||
+                    event.key === 'F5' ||
+                    (event.ctrlKey && event.key === 's') ||
+                    (event.ctrlKey && event.key === 'p') ||
+                    (event.ctrlKey && event.key === 'u')) {
+                    event.preventDefault();
+                }
+            });
+        </script>
+    {% endif %}
 </body>
 </html>

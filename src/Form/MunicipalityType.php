@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Municipality;
 use App\Entity\Province;
 use App\Form\Types\EntityPlusType;
+use App\Repository\ProvinceRepository;
 use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -71,8 +72,8 @@ class MunicipalityType extends AbstractType
      */
     private function getProvinceQueryBuilder(): Closure
     {
-        return function (EntityRepository $er): QueryBuilder|array {
-            return $er->createQueryBuilder('p')->orderBy('p.name', 'ASC');
+        return function (ProvinceRepository $provinceRepository): QueryBuilder|array {
+            return $provinceRepository->findProvincesForForm();
         };
     }
 }

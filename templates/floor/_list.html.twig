@@ -9,7 +9,10 @@
 
         <div>
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
-{#            {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}#}
+            {% if building.isNew() %}
+                {{ tableActionButton3(path('app_floor_new', {'building':building.id}), 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_floor_new', {'building':building.id})})) }}
+            {% endif %}
+            {{ tableActionButton3('', '', 'Salvar', 'Crear inmueble a modificar') }}
         </div>
     {% endblock %}
 
@@ -18,7 +21,13 @@
             paginator: paginator,
         } %}
 
-            {% block message %}Área total de la obra: {{ building.getLandArea() }}m<sup>2</sup>{% endblock %}
+            {% block message %}
+                {% if building.isNew() %}
+                    Área de terreno de la obra: {{ building.getLandArea() }}m<sup>2</sup>
+                {% else %}
+                    Área ocupada de la obra: {{ building.getOccupiedArea() }}m<sup>2</sup>
+                {% endif %}
+            {% endblock %}
 
             {% block tableHead %}
                 <tr>
@@ -39,7 +48,13 @@
 
                 {% for floor in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ floor.name }}</td>
+                        <td>
+                            {{ floor.name }}
+                            <span class="badge rounded-pill bg-danger" title="Locales de la planta" style="cursor: pointer">
+                                {{ floor.getLocalsAmount() }}
+                                <span class="visually-hidden">Locales</span>
+                            </span>
+                        </td>
                         <td>{{ floor.getUsefulArea() }}</td>
                         <td>{{ floor.getWallArea() }}</td>
                         <td>{{ floor.getEmptyArea() }}</td>
@@ -48,14 +63,23 @@
                         <td>{{ floor.getVolume() }}</td>
                         <td>{{ floor.getUnassignedArea() }}</td>
                         <td class="text-end">
-{#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }}#}
+                            {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
+                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
-                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales') }}
+                            {% if building.isNew() %}
+                                {{ component('DeleteForm', {
+                                    path: path('app_floor_delete', {'id': floor.id}),
+                                    confirm: 'Está seguro que desea eliminar la planta?',
+                                    token: 'delete' ~ floor.id,
+                                    title: 'Eliminar planta',
+                                    icon: 'bi:trash'
+                                }) }}
+                            {% endif %}
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6">No se encontraron plantas.</td>
+                        <td colspan="9">No se encontraron plantas.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

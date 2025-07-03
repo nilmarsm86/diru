@@ -50,6 +50,7 @@ final class FloorForm extends AbstractController
         $this->fl = (is_null($fl)) ? new Floor() : $fl;
         $this->entity = $this->fl;
         $this->building = $building;
+        $this->building->addFloor($this->fl);
     }
 
     protected function instantiateForm(): FormInterface
@@ -70,10 +71,11 @@ final class FloorForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var Floor $floor */
             $floor = $this->getForm()->getData();
-
+            $this->building->addFloor($floor);
             $floorRepository->save($floor, true);
 
             $this->fl = new Floor();
+
             $this->entity = $this->fl;
             if (!is_null($this->modal)) {
                 $this->modalManage($floor, 'Se ha seleccionado la nueva planta agregada.', [

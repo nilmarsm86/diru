@@ -64,7 +64,7 @@
                     {% if app.request.query.get('state') == '' %}
                         <th>Estado</th>
                     {% endif %}
-{#                    <th>Area ocupada</th>#}
+                    {#                    <th>Area ocupada</th> #}
                     <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th></th>
                 </tr>
@@ -77,7 +77,7 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {{ project.name }}
-                            <span class="badge rounded-pill bg-danger" title="Obras del proyecto">
+                            <span class="badge rounded-pill bg-danger" title="Obras del proyecto" style="cursor: pointer">
                                 {{ project.getBuildingsAmount() }}
                                 <span class="visually-hidden">Obras</span>
                             </span>
@@ -88,7 +88,7 @@
                         {% if app.request.query.get('state') == '' %}
                             <td>{{ project.state.getLabelFrom(project.state) }}</td>
                         {% endif %}
-{#                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td>#}
+                        {#                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td> #}
                         <td>
                             <a data-bs-toggle="modal" data-bs-target="#detail-investment"
                                href="#" {{ stimulusController('detail-link-modal', {
@@ -100,8 +100,28 @@
                             </a>
                         </td>
                         <td class="text-end">
+                            <div class="dropdown d-inline-block">
+                                <button type="button"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                >
+                                    {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% for building in project.buildings %}
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="{{ path('app_building_edit', {id: building.id}) }}">
+                                                {{ building.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})})) }}
-                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }}
+                            {#                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }} #}
+                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_project_delete', {'id': project.id}),
@@ -121,14 +141,14 @@
 
         {% endcomponent %}
 
-{#        {% component 'Modal:Modal' with {#}
-{#            title: 'Detalle de la constructora',#}
-{#            id: 'detail-constructor',#}
-{#        } %}#}
-{#            {% block body %}#}
-{#                Cargando datos de la constructora...#}
-{#            {% endblock %}#}
-{#        {% endcomponent %}#}
+        {#        {% component 'Modal:Modal' with { #}
+        {#            title: 'Detalle de la constructora', #}
+        {#            id: 'detail-constructor', #}
+        {#        } %} #}
+        {#            {% block body %} #}
+        {#                Cargando datos de la constructora... #}
+        {#            {% endblock %} #}
+        {#        {% endcomponent %} #}
 
         {% component 'Modal:Modal' with {
             title: 'Detalle de la inversión',

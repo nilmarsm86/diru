@@ -31,7 +31,8 @@ class LocalType extends AbstractType
             ->add('number', null, [
                 'label' => 'Número:',
                 'attr' => [
-                    'placeholder' => 'Número del local'
+                    'placeholder' => 'Número del local',
+                    'min' => 1,
                 ]
             ])
             ->add('type', LocalTypeEnumType::class, [
@@ -89,7 +90,7 @@ class LocalType extends AbstractType
         $local = $event->getData();
         $form = $event->getForm();
 
-        $landArea = $options['floor']->getBuilding()->getLandArea();
+        $landArea = $options['floor']->getBuilding()->getMaxArea();
         $totalLocalsArea = $options['floor']->getTotalFloorArea();
         $leftArea = $landArea - $totalLocalsArea;
         if($local && $local->getId()){

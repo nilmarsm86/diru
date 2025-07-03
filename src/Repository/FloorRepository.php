@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Floor>
@@ -76,5 +77,24 @@ class FloorRepository extends ServiceEntityRepository
             ->addOrderBy('f.name', 'ASC')
             ->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param Floor $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(Floor $entity, bool $flush = false): void
+    {
+        if($entity->hasLocals()){
+            throw new Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 }

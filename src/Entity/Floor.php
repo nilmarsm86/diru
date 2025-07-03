@@ -32,7 +32,7 @@ class Floor
     #[ORM\ManyToOne(inversedBy: 'floors')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca la obra para la planta.')]
+//    #[Assert\NotBlank(message: 'Establezca la obra para la planta.')]
     private ?Building $building = null;
 
     #[ORM\Column]
@@ -81,7 +81,7 @@ class Floor
 
     public function getUsefulArea(): int
     {
-        if($this->locals->count() === 0){
+        if($this->getLocalsAmount() === 0){
             return 0;
         }
 
@@ -97,7 +97,7 @@ class Floor
 
     public function getWallArea(): int
     {
-        if($this->locals->count() === 0){
+        if($this->getLocalsAmount() === 0){
             return 0;
         }
 
@@ -113,7 +113,7 @@ class Floor
 
     public function getEmptyArea(): int
     {
-        if($this->locals->count() === 0){
+        if($this->getLocalsAmount() === 0){
             return 0;
         }
 
@@ -134,7 +134,7 @@ class Floor
 
     public function getMaxHeight(): int
     {
-        if($this->locals->count() === 0){
+        if($this->getLocalsAmount() === 0){
             return 0;
         }
 
@@ -184,11 +184,25 @@ class Floor
 
     public function getUnassignedArea(): ?int
     {
-        return $this->getBuilding()->getLandArea() - $this->getTotalFloorArea();
+        if($this->getBuilding()->isNew()){
+            return $this->getBuilding()->getLandArea() - $this->getTotalFloorArea();
+        }else{
+            return $this->getBuilding()->getOccupiedArea() - $this->getTotalFloorArea();
+        }
     }
 
     public function hasLocalAndIsNotCompletlyEmptyArea(): bool
     {
-        return ($this->getLocals()->count() > 0) && ($this->getUsefulArea() > 0);
+        return $this->hasLocals() && ($this->getUsefulArea() > 0);
+    }
+
+    public function hasLocals(): bool
+    {
+        return $this->getLocalsAmount() > 0;
+    }
+
+    public function getLocalsAmount(): int
+    {
+        return $this->getLocals()->count();
     }
 }

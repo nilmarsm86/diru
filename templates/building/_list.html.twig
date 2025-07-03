@@ -22,6 +22,7 @@
                     <th>Nombre</th>
                     <th>Valor aprobado total</th>
                     <th>Valor estimado total</th>
+                    <th>Existente</th>
                     <th>Constructora {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
 {#                    <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>#}
@@ -37,6 +38,7 @@
                         <td>{{ building.name }}</td>
                         <td>{{ building.getTotalApprovedValue() }}</td>
                         <td>{{ building.getTotalEstimatedValue() }}</td>
+                        <td>{{ building.isNew ? 'NO' : 'SI' }}</td>
                         <td>
                             {% if building.getActiveConstructor() %}
                                 <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
@@ -73,7 +75,8 @@
 {#                        </td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})})) }}
-                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }}
+{#                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }}#}
+                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_building_delete', {'id': building.id}),

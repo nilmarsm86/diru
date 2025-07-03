@@ -26,7 +26,7 @@
     {% endif %}
 
     {% for key, municipality in form.municipalities %}
-        <details class="offset-sm-2 collection" {% if form_errors(municipality.name) or this.prov.id is not null %}open{% endif %}>
+        <details class="offset-sm-2 collection" open>
             <summary class="collection">
                 <div class="row summary-btn-lis">
                     <div class="col">Municipio:</div>

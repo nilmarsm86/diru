@@ -20,12 +20,33 @@
             paginator: paginator,
         } %}
 
+{#            {% block message %}#}
+{#                Área total de la obra: {{ floor.building.land.landArea }}m<sup>2</sup>#}
+{#                {% if floor.isFullyOccupied() %}#}
+{#                    , ocupados totalmente.#}
+{#                {% else %}#}
+{#                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar.#}
+{#                    {% if floor.hasLocalAndIsNotCompletlyEmptyArea() %}#}
+{#                        <br>#}
+{#                        <a href="{{ path('app_local_wall', {'floor': floor.id, 'area':floor.getUnassignedArea() }) }}">#}
+{#                            Convertir en área de muro#}
+{#                        </a>#}
+{#                    {% endif %}#}
+{#                {% endif %}#}
+{#            {% endblock %}#}
+
             {% block message %}
-                Área total de la obra: {{ floor.building.land.landArea }}m<sup>2</sup>
+                {% if floor.building.isNew() %}
+                    Área de terreno de la obra:
+                {% else %}
+                    Área ocupada de la obra:
+                {% endif %}
+                {{ floor.building.getMaxArea() }}m<sup>2</sup>
+
                 {% if floor.isFullyOccupied() %}
                     , ocupados totalmente.
                 {% else %}
-                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar.
+                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
                     {% if floor.hasLocalAndIsNotCompletlyEmptyArea() %}
                         <br>
                         <a href="{{ path('app_local_wall', {'floor': floor.id, 'area':floor.getUnassignedArea() }) }}">
@@ -53,7 +74,7 @@
 
                 {% for local in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ local.name }}</td>
+                        <td>{{ local.name }} </td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>
                         <td>{{ local.type.getLabelFrom(local.type) }}</td>

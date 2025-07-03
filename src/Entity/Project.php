@@ -105,6 +105,7 @@ class Project
     public function __construct()
     {
         $this->setState(ProjectState::Registered);
+        $this->setType(ProjectType::Parcel);
         $this->registerAt = new \DateTimeImmutable();
         $this->buildings = new ArrayCollection();
         $this->contract = null;

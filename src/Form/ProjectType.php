@@ -43,21 +43,6 @@ class ProjectType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
             ])
-            ->add('type', ChoiceType::class, [
-                'label' => 'Tipo de proyecto:',
-                'expanded' => true,
-                'multiple' => false,
-                'placeholder' => null,
-                'choices' => [
-                    EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
-                    EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
-                ],
-                'data' => EnumProjectType::Parcel,
-                'label_attr' => [
-                    'class' => 'radio-inline'
-                ],
-                'required' => false
-            ])
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,
                 'choice_label' => 'name',
@@ -216,6 +201,23 @@ class ProjectType extends AbstractType
             'label' => 'Cliente empresarial',
 //                'placeholder' => '-Seleccione-',
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository)
+        ]);
+
+        dump($project->getType());
+        $form->add('type', ChoiceType::class, [
+            'label' => 'Tipo de proyecto:',
+            'expanded' => true,
+            'multiple' => false,
+            'placeholder' => null,
+            'choices' => [
+                EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
+                EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
+            ],
+            'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
+            'label_attr' => [
+                'class' => 'radio-inline'
+            ],
+            'required' => false
         ]);
     }
 }

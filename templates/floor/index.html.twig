@@ -15,7 +15,9 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Gestión de Plantas: {{ building.name }}</h2>
+    <h2 class="mb-4">
+        Inmueble {% if building.isNew() %}nuevo{% else %}existente{% endif %}: {{ building.name }}
+    </h2>
 
     {% component ManagePage %}
         {% block list %}

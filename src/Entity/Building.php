@@ -91,6 +91,9 @@ class Building
     #[ORM\OneToMany(targetEntity: Floor::class, mappedBy: 'building', cascade: ['persist', 'remove'])]
     private Collection $floors;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isNew = null;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -105,6 +108,8 @@ class Building
         $this->draftsmansBuildings = new ArrayCollection();
         $this->constructorBuildings = new ArrayCollection();
         $this->floors = new ArrayCollection();
+
+//        $this->isNew = false;
     }
 
     public function getId(): ?int
@@ -483,6 +488,11 @@ class Building
         return $this->floors->count() > 0;
     }
 
+    public function isBuildingNew(): bool
+    {
+        return $this->hasFloors() === false;
+    }
+
     public function cancel(): static
     {
         $this->setState(BuildingState::Canceled);
@@ -495,32 +505,56 @@ class Building
         return $this->getLand()->getLandArea();
     }
 
+    public function getOccupiedArea(): ?int
+    {
+        return $this->getLand()->getOccupiedArea();
+    }
+
     /*
      * Create the automatic the floors, based on land floors
      */
     public function createFloors(): static
     {
         $floor = $this->getLand()->getFloor();
-        if ($floor === 1) {
-            $f = new Floor();
-            $f->setName('Planta Baja');
-            $this->addFloor($f);
-        }
+        $this->createFloor('Planta Baja', true);
 
         if ($floor > 1) {
-            $f = new Floor();
-            $f->setName('Planta Baja');
-            $f->setGroundFloor(true);
-            $this->addFloor($f);
-
             for ($i = 1; $i < $floor; $i++) {
-                $f = new Floor();
-                $f->setName('Planta ' . $i);
-                $this->addFloor($f);
+                $this->createFloor('Planta ' . $i);
             }
         }
 
         return $this;
+    }
+
+    private function createFloor(string $name, bool $isGroundFloor=false): void
+    {
+        $f = new Floor();
+        $f->setName($name);
+        $f->setGroundFloor($isGroundFloor);
+
+        $this->addFloor($f);
+    }
+
+    public function isNew(): ?bool
+    {
+        return $this->isNew;
+    }
+
+    public function setIsNew(bool $isNew): static
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    public function getMaxArea(): ?int
+    {
+        if($this->isNew){
+            return $this->getLandArea();
+        }else{
+            return $this->getOccupiedArea();
+        }
     }
 
 }

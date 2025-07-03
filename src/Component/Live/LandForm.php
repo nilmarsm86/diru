@@ -77,13 +77,15 @@ final class LandForm extends AbstractController
             $this->building->setLand($land);
 
             if (empty($this->formValues['floor'])) {
-                $land->setFloor(0);
+                $land->setFloor(1);
+                $this->building->setIsNew(true);
+            }else{
+                $this->building->setIsNew(false);
             }
 
             //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
                 $this->building->createFloors();
-
             }
 
             $landRepository->save($land, true);
@@ -94,13 +96,13 @@ final class LandForm extends AbstractController
                     'land' => $land->getId()
                 ], 'text-bg-success');
 
-                if ($land->hasFloors()) {
+//                if ($land->hasFloors()) {
                     $this->addFlash('success', 'Se han salvado los datos del terreno.');
                     $this->addFlash('info', 'Se han creado las plantas del inmueble.');
                     return $this->redirectToRoute('app_floor_index', ['building' => $this->building->getId()], Response::HTTP_SEE_OTHER);
-                } else {
-                    return null;
-                }
+//                } else {
+//                    return null;
+//                }
             }
 
             if ($this->ajax) {

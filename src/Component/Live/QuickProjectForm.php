@@ -3,6 +3,7 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
+use App\Entity\Currency;
 use App\Entity\Project;
 use App\Form\QuickProjectType;
 use App\Repository\ClientRepository;
@@ -10,6 +11,7 @@ use App\Repository\CurrencyRepository;
 use App\Repository\DraftsmanRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -48,9 +50,16 @@ final class QuickProjectForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?int $client = 0;
 
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+
+    }
+
     public function mount(?Project $pro = null): void
     {
         $this->pro = (is_null($pro)) ? new Project() : $pro;
+        $currency = $this->entityManager->getRepository(Currency::class)->findOneBy(['code' => 'CUP']);
+        $this->pro->setCurrency($currency);
     }
 
     /**

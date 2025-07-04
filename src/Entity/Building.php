@@ -557,4 +557,12 @@ class Building
         }
     }
 
+    public function shortName(): ?string
+    {
+        if(strlen($this->getName()) > 50){
+            return substr($this->getName(), 0, 50).'...';
+        }
+        return $this->getName();
+    }
+
 }

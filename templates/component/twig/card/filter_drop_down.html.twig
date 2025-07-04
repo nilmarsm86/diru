@@ -10,7 +10,7 @@
         {{ ux_icon((app.request.query.get((queryName)) != '') ? 'fa:check-square-o' : 'fa6-regular:square-full', {class:'bi', 'style': 'vertical-align: -.25em'}) }}
         {{ label }}
     </button>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu" data-bs-theme="light">
         {% for option in options %}
             {% if option.value != '' %}
                 <li>

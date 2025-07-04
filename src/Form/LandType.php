@@ -18,8 +18,8 @@ class LandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-            $this->onPreSetData($event);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+            $this->onPreSetData($event, $options);
         });
     }
 
@@ -30,6 +30,7 @@ class LandType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate'
             ],
+            'building' => null,
         ]);
     }
 
@@ -37,7 +38,7 @@ class LandType extends AbstractType
      * @param FormEvent $event
      * @return void
      */
-    private function onPreSetData(FormEvent $event): void
+    private function onPreSetData(FormEvent $event, array $options): void
     {
         /** @var Land $land */
         $land = $event->getData();
@@ -45,7 +46,7 @@ class LandType extends AbstractType
 
 //        $moreAttr = [];
         $disabled = [];
-        if (!is_null($land) && $land->getId()) {
+        if (!is_null($land) && $land->getId() && !$options['building']->isNew()) {
 //            $moreAttr = ['data' => $land->getOccupiedArea() > 0 ? ['1'] : ['0']];
             $disabled = ['disabled' => true, 'readonly' => true];
         }

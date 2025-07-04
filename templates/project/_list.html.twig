@@ -88,7 +88,6 @@
                         {% if app.request.query.get('state') == '' %}
                             <td>{{ project.state.getLabelFrom(project.state) }}</td>
                         {% endif %}
-                        {#                        <td>{{ project.hasOccupiedArea ? 'Yes' : 'No' }}</td> #}
                         <td>
                             <a data-bs-toggle="modal" data-bs-target="#detail-investment"
                                href="#" {{ stimulusController('detail-link-modal', {
@@ -102,18 +101,18 @@
                         <td class="text-end">
                             <div class="dropdown d-inline-block">
                                 <button type="button"
-                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                 >
                                     {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" data-bs-theme="light">
                                     {% for building in project.buildings %}
                                         <li>
                                             <a class="dropdown-item"
-                                               href="{{ path('app_building_edit', {id: building.id}) }}">
-                                                {{ building.name }}
+                                               href="{{ path('app_building_edit', {id: building.id}) }}" title="{{ building.name }}">
+                                                {{ building.shortName() }}
                                             </a>
                                         </li>
                                     {% endfor %}

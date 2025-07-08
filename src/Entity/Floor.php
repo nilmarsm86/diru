@@ -179,7 +179,11 @@ class Floor
 
     public function isFullyOccupied(): bool
     {
-        return $this->getBuilding()->getLandArea() <= $this->getTotalFloorArea();
+        if($this->getBuilding()->isNew()){
+            return $this->getBuilding()->getLandArea() <= $this->getTotalFloorArea();
+        }else{
+            return $this->getBuilding()->getOccupiedArea() <= $this->getTotalFloorArea();
+        }
     }
 
     public function getUnassignedArea(): ?int

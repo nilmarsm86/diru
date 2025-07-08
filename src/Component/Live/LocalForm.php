@@ -69,6 +69,7 @@ final class LocalForm extends AbstractController
     #[LiveAction]
     public function save(LocalRepository $localRepository): ?Response
     {
+        dump(is_null($this->l->getId()));
         $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : 'Se ha modificado el local.';//TODO: personalizar los mensajes
 
         $this->submitForm();

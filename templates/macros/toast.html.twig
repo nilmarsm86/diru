@@ -18,7 +18,7 @@
 {% macro toasts() %}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
-            {{ _self.toast('id', 'text-bg-'~label, message, 'show') }}
+            {{ _self.toast('now'|date('U'), 'text-bg-'~label, message, 'show') }}
         {% endfor %}
     {% endfor %}
 {% endmacro %}

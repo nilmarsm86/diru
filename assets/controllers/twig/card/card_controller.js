@@ -30,8 +30,8 @@ export default class extends AbstractController {
         this.element.addEventListener('live-form:submit', this.submit.bind(this));
         this.element.addEventListener('live-form:submitEnd', this.submitEnd.bind(this));
 
-        // this.element.addEventListener('municipality-form:submit', this.submit.bind(this));
-        // this.element.addEventListener('municipality-form:submitEnd', this.submitEnd.bind(this));
+        this.element.addEventListener('live--local-form:submit', this.submit.bind(this));
+        this.element.addEventListener('live--local-form:submitEnd', this.submitEnd.bind(this));
 
         // this.element.addEventListener('corporate-entity-form:submit', this.submit.bind(this));
         // this.element.addEventListener('corporate-entity-form:submitEnd', this.submitEnd.bind(this));

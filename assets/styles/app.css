@@ -285,3 +285,7 @@ details::details-content {
 details[open]::details-content {
     opacity: 1;
 }
+
+div#project_clientType label::after{
+    display: none;
+}

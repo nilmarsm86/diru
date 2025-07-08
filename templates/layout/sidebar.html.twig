@@ -33,12 +33,12 @@
                     <button
                             class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                             data-bs-toggle="collapse" data-bs-target="#locations-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index'] %}true{% else %}false{% endif %}"
+                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
                             style="width:100%;text-align:left"
                     >
-                        <span class="d-inline-flex align-items-center">Localizaciones</span>
+                        <span class="d-inline-flex align-items-center">Ubicaciones</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index'] %}show{% else %}hide{% endif %}"
+                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}"
                          id="locations-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
@@ -55,6 +55,21 @@
                                     <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_municipality_index') }}"
                                        href="{{ path('app_municipality_index') }}">
                                         {{ ux_icon('stash:pin-place', {class:'bi'}) }} Municipios
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_location_zone_index') }}"
+                                       href="{{ path('app_location_zone_index') }}"
+                                    >
+                                        {{ ux_icon('bi:pin-map', {class:'bi'}) }}
+                                        Zona de ubicación
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_geographic_location_index') }}"
+                                       href="{{ path('app_geographic_location_index') }}">
+                                        {{ ux_icon('bi:pin-map-fill', {class:'bi'}) }}
+                                        Ubicación geográfica
                                     </a>
                                 </li>
                             {% endif %}
@@ -101,40 +116,6 @@
                                     Constructoras
                                 </a>
                             </li>
-                            {#                            <li> #}
-                            {#                                <a class="dropdown-item d-flex gap-2 align-items-center" href="#"> #}
-                            {#                                    Constructora #}
-                            {#                                </a> #}
-                            {#                            </li> #}
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#location-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Ubicación</span>
-                    </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}" id="location-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_location_zone_index') }}"
-                                   href="{{ path('app_location_zone_index') }}"
-                                >
-                                    {{ ux_icon('bi:pin-map', {class:'bi'}) }}
-                                    Zona de ubicación
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_geographic_location_index') }}"
-                                   href="{{ path('app_geographic_location_index') }}">
-                                    {{ ux_icon('bi:pin-map-fill', {class:'bi'}) }}
-                                    Ubicación geográfica
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
@@ -153,7 +134,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_network_connection_index') }}"
                                    href="{{ path('app_network_connection_index') }}"
                                 >
-{#                                    {{ ux_icon('bi:pin-map', {class:'bi'}) }}#}
+                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}
                                     Conexiones de red
                                 </a>
                             </li>

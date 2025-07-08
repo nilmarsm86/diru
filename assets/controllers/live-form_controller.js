@@ -1,6 +1,7 @@
 import {getComponent} from '@symfony/ux-live-component';
 import {useCsrfToken} from "../behaviors/use-csrf-token.js";
 import AbstractController from "./AbstractController.js";
+import {Toast} from "bootstrap";
 
 export const SUCCESS = "App\\Component\\Twig\\ProvinceForm_form_success";
 
@@ -44,6 +45,12 @@ export default class extends AbstractController {
                 }
                 this.component.render();
             }
+        });
+
+        const toastElList = document.querySelectorAll('.toast')
+        const toastList = [...toastElList].map(toastEl => {
+            const toastBootstrap = Toast.getOrCreateInstance(toastEl);
+            toastBootstrap.show();
         });
     }
 

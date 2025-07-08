@@ -203,7 +203,6 @@ class ProjectType extends AbstractType
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository)
         ]);
 
-        dump($project->getType());
         $form->add('type', ChoiceType::class, [
             'label' => 'Tipo de proyecto:',
             'expanded' => true,

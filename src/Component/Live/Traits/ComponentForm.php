@@ -54,12 +54,13 @@ trait ComponentForm
     /**
      * @param object $entity
      * @param string $message
+     * @param string $type
      * @return string
      */
     private function getSuccessTemplate(object $entity, string $message, string $type='text-bg-success'): string
     {
         return $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
+            'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId().'_'.time(),
             'type' => $type,
             'message' => $message
         ]);
@@ -69,6 +70,7 @@ trait ComponentForm
      * @param object $entity
      * @param string $message
      * @param array $updateEventData
+     * @param string $mssageType
      * @return void
      */
     public function modalManage(object $entity, string $message, array $updateEventData, string $mssageType = 'text-bg-primary'): void

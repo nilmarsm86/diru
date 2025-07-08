@@ -32,25 +32,7 @@ class BuildingType extends AbstractType
                     'placeholder' => 'Nombre de la obra'
                 ]
             ])
-            ->add('constructor', EntityPlusType::class, [
-                'class' => Constructor::class,
-                'choice_label' => 'name',
-                'label' => 'Constructora:',
-                'mapped' => false,
-//                'query_builder' => $this->getOrganismQueryBuilder($options),
-
-                'detail' => true,
-                'detail_title' => 'Detalle de la constructora',
-                'detail_id' => 'modal-load',
-                'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
-
-                'add' => true,
-                'add_title' => 'Agregar Constructora',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load']),
-
-                'required' => false
-            ]);
+            ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $this->onPreSetData($event);
@@ -77,6 +59,7 @@ class BuildingType extends AbstractType
         $building = $event->getData();
         $form = $event->getForm();
         $currency = 'CUP';
+        $activeConstructor = null;
 
         //TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
         if (!is_null($building) && $building->getId()) {
@@ -90,7 +73,29 @@ class BuildingType extends AbstractType
             ]);
 
             $currency = $building->getProject()->getCurrency()->getCode();
+            $activeConstructor = $building->getActiveConstructor();
         }
+
+        $form->add('constructor', EntityPlusType::class, [
+            'class' => Constructor::class,
+            'choice_label' => 'name',
+            'label' => 'Constructora:',
+            'mapped' => false,
+//                'query_builder' => $this->getOrganismQueryBuilder($options),
+
+            'detail' => true,
+            'detail_title' => 'Detalle de la constructora',
+            'detail_id' => 'modal-load',
+            'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
+
+            'add' => true,
+            'add_title' => 'Agregar Constructora',
+            'add_id' => 'modal-load',
+            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load']),
+
+            'required' => false,
+            'data' => $activeConstructor
+        ]);
 
         $form->add('estimatedValueConstruction', MoneyType::class, [
             'label' => 'Valor estimado de construcción:',

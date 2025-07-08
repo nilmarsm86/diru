@@ -40,7 +40,7 @@ class Land
     /**
      * @var Collection<int, LandNetworkConnection>
      */
-    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist', 'remove'], orphanRemoval: true)]
+        #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $landNetworkConnections;
 

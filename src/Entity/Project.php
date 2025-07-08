@@ -64,7 +64,7 @@ class Project
     private ?\DateTimeImmutable $terrainDiagnosisAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $urbanRregulationAt = null;
+    private ?\DateTimeImmutable $urbanRegulationAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $designAt = null;
@@ -255,14 +255,14 @@ class Project
         return $this;
     }
 
-    public function getUrbanRregulationAt(): ?\DateTimeImmutable
+    public function getUrbanRegulationAt(): ?\DateTimeImmutable
     {
-        return $this->urbanRregulationAt;
+        return $this->urbanRegulationAt;
     }
 
-    public function setUrbanRregulationAt(?\DateTimeImmutable $urbanRregulationAt): static
+    public function setUrbanRegulationAt(?\DateTimeImmutable $urbanRegulationAt): static
     {
-        $this->urbanRregulationAt = $urbanRregulationAt;
+        $this->urbanRegulationAt = $urbanRegulationAt;
 
         return $this;
     }

@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Entity(repositoryClass: LocalRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'subSystem'], message: 'Ya existe en el sub sistema un local con este nombre.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['number', 'subSystem'], message: 'Ya existe en el sub sistema un local con este número.', errorPath: 'number')]
 class Local
 {
     use NameToStringTrait;

@@ -8,7 +8,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), '', 'Listado de sub sisemas', 'Listado de sub sisemas') }}
+            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), '', 'Listado de subsistemas', 'Listado de subsistemas') }}
             {% if sub_system.floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_local_new', {'subSystem': sub_system.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'subSystem': sub_system.id})})) }}
             {% endif %}
@@ -58,7 +58,6 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for local in paginator.getData() %}
-                    {% dump(local.isClassified()) %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ local.name }} </td>
                         <td>{{ local.number }}</td>

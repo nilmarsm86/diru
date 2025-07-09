@@ -22,12 +22,16 @@
 
             {% block message %}
                 {% if floor.building.isNew() %}
-                    Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>
+                    Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% else %}
-                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m<sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>.
+                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m<sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% endif %}
                 <br>
-                Quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                {% if floor.isFullyOccupied() %}
+                    ocupados totalmente.
+                {% else %}
+                    quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                {% endif %}
             {% endblock %}
 
             {% block tableHead %}
@@ -39,7 +43,7 @@
                     <th>Á. Total (m<sup>2</sup>)</th>
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
-                    <th>Clasificados</th>
+                    <th>Diagnosticados</th>
                     <th></th>
                 </tr>
             {% endblock %}

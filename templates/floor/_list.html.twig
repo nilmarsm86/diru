@@ -8,11 +8,11 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ tableActionButton3('', '', 'Salvar', 'Crear inmueble a modificar') }}
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
             {% if building.isNew() %}
                 {{ tableActionButton3(path('app_floor_new', {'building':building.id}), 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_floor_new', {'building':building.id})})) }}
             {% endif %}
-            {{ tableActionButton3('', '', 'Salvar', 'Crear inmueble a modificar') }}
         </div>
     {% endblock %}
 
@@ -64,7 +64,7 @@
                         <td>{{ floor.getUnassignedArea() }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), '', 'Sub sistemas', 'Sub sistemas', '', 'btn-info') }}
+                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}
 {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}#}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
                             {% if building.isNew() %}

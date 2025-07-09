@@ -135,7 +135,7 @@ class Floor
         $maxHeight = 0;
         foreach ($this->subSystems as $subSystem){
             if($subSystem->getMaxHeight() > $maxHeight){
-                $maxHeight = $subSystem->getHeight();
+                $maxHeight = $subSystem->getMaxHeight();
             }
         }
 

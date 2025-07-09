@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: LocalRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un local con este nombre.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'subSystem'], message: 'Ya existe en el sub sistema un local con este nombre.', errorPath: 'name')]
 class Local
 {
     use NameToStringTrait;
@@ -190,6 +190,6 @@ class Local
 
     public function isClassified(): bool
     {
-        return $this->technicalStatus !== LocalTechnicalStatus::Undefined;
+        return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
     }
 }

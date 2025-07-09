@@ -58,6 +58,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for local in paginator.getData() %}
+                    {% dump(local.isClassified()) %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ local.name }} </td>
                         <td>{{ local.number }}</td>

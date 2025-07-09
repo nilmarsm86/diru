@@ -76,7 +76,7 @@ class LocalType extends AbstractType
             ],
         ]);
 
-        $resolver->setAllowedTypes('floor', ['object']);
+        $resolver->setAllowedTypes('subSystem', ['object']);
     }
 
     /**

@@ -170,4 +170,19 @@ class SubSystem
     {
         return $this->getLocals()->count();
     }
+
+    public function allLocalsAreClassified(): bool
+    {
+        if($this->getLocalsAmount() == 0){
+            return false;
+        }
+
+        foreach ($this->locals as $local){
+            if(!$local->isClassified()){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

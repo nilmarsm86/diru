@@ -23,11 +23,11 @@ class Floor
     private ?int $id = null;
 
     /**
-     * @var Collection<int, Local>
+     * @var Collection<int, SubSystem>
      */
-    #[ORM\OneToMany(targetEntity: Local::class, mappedBy: 'floor', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: SubSystem::class, mappedBy: 'floor', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
-    private Collection $locals;
+    private Collection $subSystems;
 
     #[ORM\ManyToOne(inversedBy: 'floors')]
     #[ORM\JoinColumn(nullable: false)]
@@ -40,7 +40,7 @@ class Floor
 
     public function __construct()
     {
-        $this->locals = new ArrayCollection();
+        $this->subSystems = new ArrayCollection();
         $this->groundFloor = false;
     }
 
@@ -50,29 +50,29 @@ class Floor
     }
 
     /**
-     * @return Collection<int, Local>
+     * @return Collection<int, SubSystem>
      */
-    public function getLocals(): Collection
+    public function getSubSystems(): Collection
     {
-        return $this->locals;
+        return $this->subSystems;
     }
 
-    public function addLocal(Local $local): static
+    public function addSubSystem(SubSystem $subSystem): static
     {
-        if (!$this->locals->contains($local)) {
-            $this->locals->add($local);
-            $local->setFloor($this);
+        if (!$this->subSystems->contains($subSystem)) {
+            $this->subSystems->add($subSystem);
+            $subSystem->setFloor($this);
         }
 
         return $this;
     }
 
-    public function removeLocal(Local $local): static
+    public function removeSubSystem(SubSystem $subSystem): static
     {
-        if ($this->locals->removeElement($local)) {
+        if ($this->subSystems->removeElement($subSystem)) {
             // set the owning side to null (unless already changed)
-            if ($local->getFloor() === $this) {
-                $local->setFloor(null);
+            if ($subSystem->getFloor() === $this) {
+                $subSystem->setFloor(null);
             }
         }
 
@@ -81,15 +81,13 @@ class Floor
 
     public function getUsefulArea(): int
     {
-        if($this->getLocalsAmount() === 0){
+        if($this->getSubSystemAmount() === 0){
             return 0;
         }
 
         $usefulArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::Local){
-                $usefulArea += $local->getArea();
-            }
+        foreach ($this->subSystems as $subSystem){
+            $usefulArea += $subSystem->getUsefulArea();
         }
 
         return $usefulArea;
@@ -97,15 +95,13 @@ class Floor
 
     public function getWallArea(): int
     {
-        if($this->getLocalsAmount() === 0){
+        if($this->getSubSystemAmount() === 0){
             return 0;
         }
 
         $wallArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::WallArea){
-                $wallArea += $local->getArea();
-            }
+        foreach ($this->subSystems as $subSystem){
+            $wallArea += $subSystem->getWallArea();
         }
 
         return $wallArea;
@@ -113,15 +109,13 @@ class Floor
 
     public function getEmptyArea(): int
     {
-        if($this->getLocalsAmount() === 0){
+        if($this->getSubSystemAmount() === 0){
             return 0;
         }
 
         $emptyArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::EmptyArea){
-                $emptyArea += $local->getArea();
-            }
+        foreach ($this->subSystems as $subSystem){
+            $emptyArea += $subSystem->getEmptyArea();
         }
 
         return $emptyArea;
@@ -134,14 +128,14 @@ class Floor
 
     public function getMaxHeight(): int
     {
-        if($this->getLocalsAmount() === 0){
+        if($this->getSubSystemAmount() === 0){
             return 0;
         }
 
         $maxHeight = 0;
-        foreach ($this->locals as $local){
-            if($local->getHeight() > $maxHeight){
-                $maxHeight = $local->getHeight();
+        foreach ($this->subSystems as $subSystem){
+            if($subSystem->getMaxHeight() > $maxHeight){
+                $maxHeight = $subSystem->getHeight();
             }
         }
 
@@ -195,18 +189,18 @@ class Floor
         }
     }
 
-    public function hasLocalAndIsNotCompletlyEmptyArea(): bool
+    public function hasSubSystemAndIsNotCompletlyEmptyArea(): bool
     {
-        return $this->hasLocals() && ($this->getUsefulArea() > 0);
+        return $this->hasSubSystems() && ($this->getUsefulArea() > 0);
     }
 
-    public function hasLocals(): bool
+    public function hasSubSystems(): bool
     {
-        return $this->getLocalsAmount() > 0;
+        return $this->getSubSystemAmount() > 0;
     }
 
-    public function getLocalsAmount(): int
+    public function getSubSystemAmount(): int
     {
-        return $this->getLocals()->count();
+        return $this->getSubSystems()->count();
     }
 }

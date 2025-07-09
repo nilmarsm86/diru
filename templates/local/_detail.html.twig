@@ -1,16 +1,16 @@
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
-    extra: 'id="floor_detail_' ~ floor.id,
+    extra: 'id="local_detail_' ~ local.id,
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: title,
 } %}
 
     {% block header %}
 {#        {{ include('partials/_card_header_options.html.twig', {#}
-{#            goTo: 'app_building_new',#}
-{#            label: 'Nueva',#}
-{#            title: 'Nueva obra',#}
-{#            entity: building,#}
+{#            goTo: 'app_local_new',#}
+{#            label: 'Nuevo',#}
+{#            title: 'Nuevo local',#}
+{#            entity: local,#}
 {#            state: 'detail',#}
 {#            showButton: (showButton is defined and showButton == true) ? true : false#}
 {#        }) }}#}
@@ -23,6 +23,10 @@
                 <tr>
                     <th>Id</th>
                     <td>{{ local.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ local.name }}</td>
                 </tr>
                 <tr>
                     <th>Number</th>
@@ -44,14 +48,7 @@
                     <th>TechnicalStatus</th>
                     <td>{{ local.technicalStatus }}</td>
                 </tr>
-                <tr>
-                    <th>Type2</th>
-                    <td>{{ local.type2 }}</td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ local.name }}</td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
@@ -59,11 +56,11 @@
 
     {% block footer %}
 {#        {{ include('partials/_card_footer.html.twig', {#}
-{#            list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},#}
-{#            edit: {href: 'app_building_edit', label: 'Editar', title:'Editar obra'},#}
-{#            delete: {href: 'app_building_delete', label: 'Eliminar', title:'Eliminar obra'},#}
-{#            id: building.id,#}
-{#            message: 'Está seguro que desea eliminar la obra?',#}
+{#            list: {href: 'app_local_index', label: 'Listado', title:'Volver al listado'},#}
+{#            edit: {href: 'app_local_edit', label: 'Editar', title:'Editar local'},#}
+{#            delete: {href: 'app_local_delete', label: 'Eliminar', title:'Eliminar local'},#}
+{#            id: local.id,#}
+{#            message: 'Está seguro que desea eliminar el local?',#}
 {#            state: 'detail',#}
 {#            showButton: (showButton is defined and showButton == true) ? true : false#}
 {#        }) }}#}

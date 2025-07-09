@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Building;
 use App\Entity\Floor;
+use App\Entity\SubSystem;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -13,20 +14,20 @@ use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
 /**
- * @extends ServiceEntityRepository<Floor>
+ * @extends ServiceEntityRepository<SubSystem>
  */
-class FloorRepository extends ServiceEntityRepository
+class SubSystemRepository extends ServiceEntityRepository
 {
     use SaveData;
     use PaginateTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Floor::class);
+        parent::__construct($registry, SubSystem::class);
     }
 
 //    /**
-//     * @return Floor[] Returns an array of Floor objects
+//     * @return SubSystem[] Returns an array of SubSystem objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -53,28 +54,27 @@ class FloorRepository extends ServiceEntityRepository
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
-            $predicate = "f.name LIKE :filter ";
+            $predicate = "ss.name LIKE :filter ";
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
         }
     }
 
     /**
-     * @param Building $building
+     * @param Floor $floor
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
      * @return Paginator Returns an array of User objects
      */
-    public function findBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findSubsystemsFloor(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
-            ->leftJoin('f.building', 'b')
-            ->andWhere('b.id = :idBuilding');
-        $builder->setParameter(':idBuilding', $building->getId());
+        $builder = $this->createQueryBuilder('ss')->select(['ss', 'f'])
+            ->leftJoin('ss.floor', 'f')
+            ->andWhere('f.id = :idFloor');
+        $builder->setParameter(':idFloor', $floor->getId());
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('f.groundFloor', 'DESC')
-            ->addOrderBy('f.name', 'ASC')
+        $query = $builder->addOrderBy('ss.name', 'ASC')
             ->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -85,10 +85,10 @@ class FloorRepository extends ServiceEntityRepository
      * @return void
      * @throws Exception
      */
-    public function remove(Floor $entity, bool $flush = false): void
+    public function remove(SubSystem $entity, bool $flush = false): void
     {
         if($entity->hasSubSystems()){
-            throw new Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
+            throw new Exception('El subsistema aun tiene locales asociados. Elimine los mismos primero.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

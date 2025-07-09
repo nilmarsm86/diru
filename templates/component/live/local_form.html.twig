@@ -1,7 +1,5 @@
 <div {{ attributes.defaults(stimulusController('live/local-form', {modal:modal})) }}>
 
-    {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
-
     {{ form_start(form, {
         attr: {
             'data-action': 'live#action:prevent',

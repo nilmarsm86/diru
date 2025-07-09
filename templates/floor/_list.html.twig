@@ -25,7 +25,7 @@
                 {% if building.isNew() %}
                     Área de terreno de la obra: {{ building.getLandArea() }}m<sup>2</sup>
                 {% else %}
-                    Área ocupada de la obra: {{ building.getOccupiedArea() }}m<sup>2</sup>
+                    Área ocupada de la obra: {{ building.getOccupiedArea() }}m<sup>2</sup> de un área de terreno de {{ building.getLandArea() }}m<sup>2</sup>.
                 {% endif %}
             {% endblock %}
 
@@ -51,7 +51,7 @@
                         <td>
                             {{ floor.name }}
                             <span class="badge rounded-pill bg-danger" title="Locales de la planta" style="cursor: pointer">
-                                {{ floor.getLocalsAmount() }}
+                                {{ floor.getSubSystemAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
                         </td>
@@ -63,8 +63,9 @@
                         <td>{{ floor.getVolume() }}</td>
                         <td>{{ floor.getUnassignedArea() }}</td>
                         <td class="text-end">
-                            {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
+{#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
+                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), '', 'Sub sistemas', 'Sub sistemas', '', 'btn-info') }}
+{#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}#}
                             {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
                             {% if building.isNew() %}
                                 {{ component('DeleteForm', {

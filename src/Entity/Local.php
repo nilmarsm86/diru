@@ -62,8 +62,8 @@ class Local
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Establezca la planta.')]
-    private ?Floor $floor = null;
+//    #[Assert\NotBlank(message: 'Establezca el subsistema.')]
+    private ?SubSystem $subSystem = null;
 
     public function getId(): ?int
     {
@@ -143,14 +143,14 @@ class Local
 //        return $this;
 //    }
 
-    public function getFloor(): ?Floor
+    public function getSubSystem(): ?SubSystem
     {
-        return $this->floor;
+        return $this->subSystem;
     }
 
-    public function setFloor(?Floor $floor): static
+    public function setSubSystem(?SubSystem $subSystem): static
     {
-        $this->floor = $floor;
+        $this->subSystem = $subSystem;
 
         return $this;
     }
@@ -170,7 +170,7 @@ class Local
         $this->setTechnicalStatus(LocalTechnicalStatus::from($this->technicalStatus));
     }
 
-    public function getVolume()
+    public function getVolume(): float|int
     {
         return $this->getArea() * $this->getHeight();
     }
@@ -186,5 +186,10 @@ class Local
         $localWall->setTechnicalStatus(LocalTechnicalStatus::Undefined);
 
         return $localWall;
+    }
+
+    public function isClassified(): bool
+    {
+        return $this->technicalStatus !== LocalTechnicalStatus::Undefined;
     }
 }

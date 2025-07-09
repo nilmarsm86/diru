@@ -1,0 +1,30 @@
+<tbody>
+    <tr>
+        <th colspan="2">Nombre:</th>
+        <td colspan="2">{{ sub_system.name }}</td>
+    </tr>
+
+    <tr>
+        <th>Área útil (m<sup>2</sup>):</th>
+        <td>{{ sub_system.getUsefulArea() }}</td>
+
+        <th>Área muro (m<sup>2</sup>):</th>
+        <td>{{ sub_system.getWallArea() }}</td>
+    </tr>
+
+    <tr>
+        <th>Área de vacío (m<sup>2</sup>):</th>
+        <td>{{ sub_system.getEmptyArea() }}</td>
+
+        <th>Área total (m<sup>2</sup>):</th>
+        <td>{{ sub_system.getTotalSubSystemArea() }}</td>
+    </tr>
+
+    <tr>
+        <th>Altura máxima (m)</th>
+        <td>{{ sub_system.getMaxHeight() }}</td>
+
+        <th>Volumen (m<sup>3</sup>)</th>
+        <td>{{ sub_system.getVolume() }}</td>
+    </tr>
+</tbody>

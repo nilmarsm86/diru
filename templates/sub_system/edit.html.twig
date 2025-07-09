@@ -3,20 +3,20 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Editar Local{% endblock %}
+{% block title %}Editar Sub sistema{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Local', 'lucide-lab:floor-plan') }}
+        {{ h1('Sub sistemas') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Local', href: path('app_local_index', {'subSystem': subSystem.id})},
+            {label: 'Sub sistemas', href: path('app_sub_system_index', 'floor':floor.id)},
             {label: 'Editar'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Editar local en : {{ subSystem.name }}</h2>
+    <h2 class="mb-4">Editar sub sistema de la planta: {{ floor.name }}</h2>
 
-    {{ include('local/_form.html.twig', {'showButton': true, title: title}) }}
+    {{ include('sub_system/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

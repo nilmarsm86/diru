@@ -1,0 +1,106 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de sub sistemas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
+            {% if floor.isFullyOccupied() == false %}
+                {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo sub sistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
+            {% endif %}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block message %}
+                {% if floor.building.isNew() %}
+                    Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>
+                {% else %}
+                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m<sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>.
+                {% endif %}
+                <br>
+                Quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+            {% endblock %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Á. Util (m<sup>2</sup>)</th>
+                    <th>Á. Muro (m<sup>2</sup>)</th>
+                    <th>Á. Vacío (m<sup>2</sup>)</th>
+                    <th>Á. Total (m<sup>2</sup>)</th>
+                    <th>Altura (m)</th>
+                    <th>Volumen (m<sup>3</sup>)</th>
+{#                    <th>Sin asignar (m<sup>2</sup>)</th>#}
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for sub_system in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>
+                            {{ sub_system.name }}
+                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema" style="cursor: pointer">
+                                {{ sub_system.getLocalsAmount() }}
+                                <span class="visually-hidden">Locales</span>
+                            </span>
+                        </td>
+                        <td>{{ sub_system.getUsefulArea() }}</td>
+                        <td>{{ sub_system.getWallArea() }}</td>
+                        <td>{{ sub_system.getEmptyArea() }}</td>
+                        <td>{{ sub_system.getTotalSubSystemArea() }}</td>
+                        <td>{{ sub_system.getMaxHeight() }}</td>
+                        <td>{{ sub_system.getVolume() }}</td>
+{#                        <td>{{ sub_system.getUnassignedArea() }}</td>#}
+                        <td class="text-end">
+                            {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
+                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
+                            {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar sub sistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
+                            {% if floor.building.isNew() %}
+                                {{ component('DeleteForm', {
+                                    path: path('app_sub_system_delete', {'id': sub_system.id}),
+                                    confirm: 'Está seguro que desea eliminar el sub sistema?',
+                                    token: 'delete' ~ sub_system.id,
+                                    title: 'Eliminar sub sistema',
+                                    icon: 'bi:trash'
+                                }) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">No se encontraron sub sistemas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Detalles de la planta',
+} %}
+    {% block body %}
+        <table class="table table-hover">
+            {{ include('floor/_data.html.twig') }}
+        </table>
+    {% endblock %}
+
+{% endcomponent %}

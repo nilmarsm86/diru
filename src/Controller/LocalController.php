@@ -6,6 +6,7 @@ use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Local;
+use App\Entity\SubSystem;
 use App\Form\LocalType;
 use App\Repository\FloorRepository;
 use App\Repository\LocalRepository;
@@ -23,14 +24,14 @@ use Twig\Error\SyntaxError;
 #[Route('/local')]
 final class LocalController extends AbstractController
 {
-    #[Route('/{floor}', name: 'app_local_index', methods: ['GET'])]
-    public function index(Request $request, LocalRepository $localRepository, Floor $floor): Response
+    #[Route('/{subSystem}', name: 'app_local_index', methods: ['GET'])]
+    public function index(Request $request, LocalRepository $localRepository, SubSystem $subSystem): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = $request->query->get('amount', 10);
         $pageNumber = $request->query->get('page', 1);
 
-        $data = $localRepository->findFloorLocals($floor, $filter, $amountPerPage, $pageNumber);
+        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -43,7 +44,7 @@ final class LocalController extends AbstractController
         return $this->render("local/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'floor' => $floor
+            'sub_system' => $subSystem
         ]);
     }
 
@@ -52,13 +53,13 @@ final class LocalController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/new/{floor}', name: 'app_local_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Floor $floor): Response
+    #[Route('/new/{subSystem}', name: 'app_local_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, SubSystem $subSystem): Response
     {
         $local = new Local();
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Nuevo Local',
-            'floor' => $floor
+            'sub_system' => $subSystem
         ]);
     }
 
@@ -78,12 +79,12 @@ final class LocalController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit/{floor}', name: 'app_local_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Local $local, CrudActionService $crudActionService, Floor $floor): Response
+    #[Route('/{id}/edit/{subSystem}', name: 'app_local_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Local $local, CrudActionService $crudActionService, SubSystem $subSystem): Response
     {
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Editar Local',
-            'floor' => $floor
+            'sub_system' => $subSystem
         ]);
     }
 
@@ -92,22 +93,24 @@ final class LocalController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/{id}/{floor}', name: 'app_local_delete', methods: ['POST'])]
-    public function delete(Request $request, Local $local, LocalRepository $localRepository, CrudActionService $crudActionService, Floor $floor): Response
+    #[Route('/{id}/{subSystem}', name: 'app_local_delete', methods: ['POST'])]
+    public function delete(Request $request, Local $local, LocalRepository $localRepository, CrudActionService $crudActionService, SubSystem $subSystem): Response
     {
         $successMsg = 'Se ha eliminado el local.';
-        return $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', ['floor' => $floor->getId()]);
+        return $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', [
+            'subSystem' => $subSystem->getId()
+        ]);
     }
 
-    #[Route('/wall/{floor}/{area}', name: 'app_local_wall', methods: ['GET'])]
-    public function wall(Request $request, LocalRepository $localRepository, Floor $floor, int $area): Response
+    #[Route('/wall/{subSystem}/{area}', name: 'app_local_wall', methods: ['GET'])]
+    public function wall(Request $request, LocalRepository $localRepository, SubSystem $subSystem, int $area): Response
     {
         $automaticWall = Local::createAutomaticWall($area);
 
-        $floor->addLocal($automaticWall);
-        $localRepository->save($floor, true);
+        $subSystem->addLocal($automaticWall);
+        $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se a creado el área de muro del área restante.');
-        return new RedirectResponse($this->generateUrl('app_local_index', ['floor'=>$floor->getId()]), Response::HTTP_SEE_OTHER);
+        return new RedirectResponse($this->generateUrl('app_local_index', ['subSystem' => $subSystem->getId()]), Response::HTTP_SEE_OTHER);
     }
 }

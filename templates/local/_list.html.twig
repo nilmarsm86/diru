@@ -8,9 +8,9 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
-            {% if floor.isFullyOccupied() == false %}
-                {{ tableActionButton3(path('app_local_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'floor': floor.id})})) }}
+            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), '', 'Listado de sub sisemas', 'Listado de sub sisemas') }}
+            {% if sub_system.floor.isFullyOccupied() == false %}
+                {{ tableActionButton3(path('app_local_new', {'subSystem': sub_system.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'subSystem': sub_system.id})})) }}
             {% endif %}
         </div>
     {% endblock %}
@@ -20,36 +20,21 @@
             paginator: paginator,
         } %}
 
-{#            {% block message %}#}
-{#                Área total de la obra: {{ floor.building.land.landArea }}m<sup>2</sup>#}
-{#                {% if floor.isFullyOccupied() %}#}
-{#                    , ocupados totalmente.#}
-{#                {% else %}#}
-{#                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar.#}
-{#                    {% if floor.hasLocalAndIsNotCompletlyEmptyArea() %}#}
-{#                        <br>#}
-{#                        <a href="{{ path('app_local_wall', {'floor': floor.id, 'area':floor.getUnassignedArea() }) }}">#}
-{#                            Convertir en área de muro#}
-{#                        </a>#}
-{#                    {% endif %}#}
-{#                {% endif %}#}
-{#            {% endblock %}#}
-
             {% block message %}
-                {% if floor.building.isNew() %}
+                {% if sub_system.floor.building.isNew() %}
                     Área de terreno de la obra:
                 {% else %}
                     Área ocupada de la obra:
                 {% endif %}
-                {{ floor.building.getMaxArea() }}m<sup>2</sup>
+                {{ sub_system.floor.building.getMaxArea() }}m<sup>2</sup>
 
-                {% if floor.isFullyOccupied() %}
+                {% if sub_system.floor.isFullyOccupied() %}
                     , ocupados totalmente.
                 {% else %}
-                    , quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
-                    {% if floor.hasLocalAndIsNotCompletlyEmptyArea() %}
+                    , quedan {{ sub_system.floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                    {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
                         <br>
-                        <a href="{{ path('app_local_wall', {'floor': floor.id, 'area':floor.getUnassignedArea() }) }}">
+                        <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':sub_system.floor.getUnassignedArea() }) }}">
                             Convertir en área de muro
                         </a>
                     {% endif %}
@@ -83,7 +68,7 @@
                         <td>{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'floor':floor.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'floor':floor.id})})) }}
+                            {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id})})) }}
                         </td>
                     </tr>
                 {% else %}
@@ -112,11 +97,11 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Detalles de la planta',
+    title: 'Detalles del subsistema',
 } %}
     {% block body %}
         <table class="table table-hover">
-            {{ include('floor/_data.html.twig') }}
+            {{ include('sub_system/_data.html.twig') }}
         </table>
     {% endblock %}
 

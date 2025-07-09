@@ -5,16 +5,14 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\Floor;
-use App\Entity\Local;
 use App\Entity\Organism;
 use App\Entity\SubSystem;
 use App\Form\FloorType;
-use App\Form\LocalType;
+use App\Form\SubSystemType;
 use App\Repository\FloorRepository;
-use App\Repository\LocalRepository;
+use App\Repository\SubSystemRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -24,8 +22,8 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'component/live/local_form.html.twig')]
-final class LocalForm extends AbstractController
+#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
+final class SubSystemForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -36,7 +34,7 @@ final class LocalForm extends AbstractController
      * The initial data used to create the form.
      */
     #[LiveProp]
-    public ?Local $l = null;
+    public ?SubSystem $ss = null;
 
     #[LiveProp]
     public ?string $modal = null;
@@ -45,53 +43,57 @@ final class LocalForm extends AbstractController
     public bool $ajax = false;
 
     #[LiveProp]
-    public ?SubSystem $subSystem = null;
+    public SubSystem $entity;
 
-    public function mount(?Local $l = null, SubSystem $subSystem = null): void
+    #[LiveProp]
+    public ?Floor $floor = null;
+
+    public function mount(?SubSystem $ss = null, Floor $floor = null): void
     {
-        $this->l = (is_null($l)) ? new Local() : $l;
-        $this->subSystem = $subSystem;
+        $this->ss = (is_null($ss)) ? new SubSystem() : $ss;
+        $this->entity = $this->ss;
+        $this->floor = $floor;
+        $this->floor->addSubSystem($this->ss);
     }
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(LocalType::class, $this->l, [
-            'subSystem' => $this->subSystem
-        ]);
+        return $this->createForm(SubSystemType::class, $this->ss);
     }
 
     /**
      * @throws Exception
      */
     #[LiveAction]
-    public function save(LocalRepository $localRepository): ?Response
+    public function save(SubSystemRepository $subSystemRepository): ?Response
     {
-        $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : 'Se ha modificado el local.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ss->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var Local $local */
-            $local = $this->getForm()->getData();
+            /** @var SubSystem $subSystem */
+            $subSystem = $this->getForm()->getData();
+            $this->floor->addSubSystem($subSystem);
+            $subSystemRepository->save($subSystem, true);
 
-            $local->setSubSystem($this->subSystem);
-            $localRepository->save($local, true);
+            $this->ss = new SubSystem();
 
-            $this->l = new Local();
+            $this->entity = $this->ss;
             if (!is_null($this->modal)) {
-                $this->modalManage($local, 'Se ha seleccionado el nuevo local agregado.', [
-                    'local' => $local->getId()
+                $this->modalManage($subSystem, 'Se ha seleccionado el nuevo sub sistema agregado.', [
+                    'subSystem' => $subSystem->getId()
                 ]);
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($local, $successMsg);
+                $this->ajaxManage($subSystem, $successMsg);
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_local_index', ['subSystem' => $this->subSystem->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sub_system_index', ['floor' => $this->floor->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;
@@ -99,16 +101,11 @@ final class LocalForm extends AbstractController
 
     public function isNew(): bool
     {
-        if (!is_null($this->l)) {
-            return is_null($this->l->getId());
+        if (!is_null($this->ss)) {
+            return is_null($this->ss->getId());
         }
 
         return true;
-    }
-
-    private function getDataModelValue(): ?string
-    {
-        return 'norender|*';
     }
 
 }

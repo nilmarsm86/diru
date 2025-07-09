@@ -49,9 +49,10 @@ readonly class CrudActionService
         array                   $vars = []
     ): Response
     {
-        $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+//        $filter = $request->query->get('filter', '');
+//        $amountPerPage = $request->query->get('amount', 10);
+//        $pageNumber = $request->query->get('page', 1);
+        list($filter, $amountPerPage, $pageNumber) = $this->getManageQuerys($request);
 
         $data = call_user_func_array([$repository, $findMethod], [$filter, $amountPerPage, $pageNumber]);
 
@@ -68,6 +69,15 @@ readonly class CrudActionService
                 'paginator' => $paginator
             ] + $vars);
         return new Response($template);
+    }
+
+    public function getManageQuerys(Request $request): array
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = $request->query->get('amount', 10);
+        $pageNumber = $request->query->get('page', 1);
+
+        return [$filter, $amountPerPage, $pageNumber];
     }
 
     /**

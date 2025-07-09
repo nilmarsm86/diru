@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Local;
+use App\Entity\SubSystem;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -60,18 +61,18 @@ class LocalRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Floor $floor
+     * @param SubSystem $subSystem
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
      * @return Paginator Returns an array of User objects
      */
-    public function findFloorLocals(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('l')->select(['l', 'f'])
-            ->leftJoin('l.floor', 'f')
-            ->andWhere('f.id = :idFloor');
-        $builder->setParameter(':idFloor', $floor->getId());
+        $builder = $this->createQueryBuilder('l')->select(['l', 'ss'])
+            ->leftJoin('l.subSystem', 'ss')
+            ->andWhere('ss.id = :idSubSystem');
+        $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('l.name', 'ASC')
             ->getQuery();

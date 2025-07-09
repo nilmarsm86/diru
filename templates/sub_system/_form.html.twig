@@ -10,25 +10,25 @@
             goTo: '',
             label: '',
             title: '',
-            entity: local,
+            entity: sub_system,
             state: 'form',
             showButton: (showButton is defined and showButton == true) ? true : false
         }) }}
     {% endblock %}
 
     {% block body %}
-        {{ component('LocalForm', {modal:null, l: local, ajax: ajax, subSystem:subSystem}) }}
+        {{ component('SubSystemForm', {modal:null, ss: sub_system, ajax: ajax, floor:floor}) }}
     {% endblock %}
 
     {% block footer %}
         {{ include('partials/_card_footer.html.twig', {
             list: {},
             delete: {},
-            id: local.id,
-            message: 'Está seguro que desea eliminar el local?',
+            id: floor.id,
+            message: 'Está seguro que desea eliminar el sub sistema?',
             state: 'form',
             showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: local
+            entity: sub_system
         }) }}
     {% endblock %}
 

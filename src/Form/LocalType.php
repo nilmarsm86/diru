@@ -69,7 +69,7 @@ class LocalType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate'
             ],
-            'floor' => null,
+            'subSystem' => null,
             'error_mapping' => [
                 'enumType' => 'type',
                 'enumTechnicalStatus' => 'technicalStatus',
@@ -90,12 +90,13 @@ class LocalType extends AbstractType
         $local = $event->getData();
         $form = $event->getForm();
 
-        $landArea = $options['floor']->getBuilding()->getMaxArea();
-        $totalLocalsArea = $options['floor']->getTotalFloorArea();
+        $landArea = $options['subSystem']->getFloor()->getBuilding()->getMaxArea();
+        $totalLocalsArea = $options['subSystem']->getFloor()->getTotalFloorArea();
         $leftArea = $landArea - $totalLocalsArea;
-        if($local && $local->getId()){
+        if ($local && $local->getId()) {
             $leftArea = $local->getArea();
         }
+
         $constraints = [
             new Range(min: 1, max: $leftArea),
         ];

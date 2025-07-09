@@ -3,23 +3,25 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Locales{% endblock %}
+{% block title %}Sub sistemas{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Locales', 'lucide-lab:floor-plan') }}
+        {{ h1('Sub sistemas') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Locales'},
+            {label: 'Sub sistemas'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Gestión de locales del subsistema: {{ sub_system.name }}</h2>
+    <h2 class="mb-4">
+        Planta: {{ floor.name }}
+    </h2>
 
     {% component ManagePage %}
         {% block list %}
-            {{ include('local/_list.html.twig') }}
+            {{ include('sub_system/_list.html.twig') }}
         {% endblock %}
     {% endcomponent %}
 {% endblock %}

@@ -1,0 +1,33 @@
+<tbody>
+    <tr>
+        <th>Nombre:</th>
+        <td>{{ building.name }}</td>
+
+        <th>Sin asignar:</th>
+        <td>{{ building.getUnassignedArea() }}</td>
+    </tr>
+
+    <tr>
+        <th>Área útil (m<sup>2</sup>):</th>
+        <td>{{ building.getUsefulArea() }}</td>
+
+        <th>Área muro (m<sup>2</sup>):</th>
+        <td>{{ building.getWallArea() }}</td>
+    </tr>
+
+    <tr>
+        <th>Área de vacío (m<sup>2</sup>):</th>
+        <td>{{ building.getEmptyArea() }}</td>
+
+        <th>Área total (m<sup>2</sup>):</th>
+        <td>{{ building.getTotalArea() }}</td>
+    </tr>
+
+    <tr>
+        <th>Altura máxima (m)</th>
+        <td>{{ building.getMaxHeight() }}</td>
+
+        <th>Volumen (m<sup>3</sup>)</th>
+        <td>{{ building.getVolume() }}</td>
+    </tr>
+</tbody>

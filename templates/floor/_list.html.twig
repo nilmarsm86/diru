@@ -9,6 +9,38 @@
 
         <div>
             {{ tableActionButton3('', '', 'Salvar', 'Crear inmueble a modificar') }}
+            <div class="dropdown d-inline-block">
+                <button type="button"
+                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false" title="Obras del proyecto"
+                >
+                    Reportes
+                </button>
+                <ul class="dropdown-menu" data-bs-theme="light">
+                        <li>
+                            <a class="dropdown-item"
+                               href="" title="">
+                                Reporte por locales
+                            </a>
+                        </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="" title="">
+                            Reporte por metros cuadrados
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="" title="">
+                            Reporte descripcion por locales (PDF)
+                        </a>
+                    </li>
+                </ul>
+            </div>
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
             {% if building.isNew() %}
                 {{ tableActionButton3(path('app_floor_new', {'building':building.id}), 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_floor_new', {'building':building.id})})) }}
@@ -35,7 +67,7 @@
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th>Á. Muro (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
-                    <th>Á. Total (m<sup>2</sup>)</th>
+                    <th>Á.T.P (m<sup>2</sup>)</th>
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Sin asignar (m<sup>2</sup>)</th>
@@ -85,8 +117,36 @@
                 {% endfor %}
             {% endblock %}
 
+            {% block tableFooter %}
+                <tr>
+                    <th></th>
+                    <th>{{ building.getUsefulArea() }}</th>
+                    <th>{{ building.getWallArea() }}</th>
+                    <th>{{ building.getEmptyArea() }}</th>
+                    <th>{{ building.getTotalArea() }}</th>
+                    <th>{{ building.getMaxHeight() }}</th>
+                    <th>{{ building.getVolume() }}</th>
+                    <th>{{ building.getUnassignedArea() }}</th>
+                    <th>CUS: {{ building.getCus() }}</th>
+                </tr>
+            {% endblock %}
+
         {% endcomponent %}
 
     {% endblock %}
 
 {% endcomponent %}
+
+{#{% component 'Card:Card' with {#}
+{#    cssClass: 'mb-4',#}
+{#    extra: '',#}
+{#    headerCssClass: 'd-flex justify-content-between align-items-center',#}
+{#    title: 'Detalles del inmueble',#}
+{#} %}#}
+{#    {% block body %}#}
+{#        <table class="table table-hover">#}
+{#            {{ include('building/_data.html.twig') }}#}
+{#        </table>#}
+{#    {% endblock %}#}
+
+{#{% endcomponent %}#}

@@ -485,7 +485,7 @@ class Building
 
     public function hasFloors(): bool
     {
-        return $this->floors->count() > 0;
+        return $this->getFloorAmount() > 0;
     }
 
     public function isBuildingNew(): bool
@@ -563,6 +563,112 @@ class Building
             return substr($this->getName(), 0, 50).'...';
         }
         return $this->getName();
+    }
+
+    public function getUsefulArea(): int
+    {
+        if($this->getFloorAmount() === 0){
+            return 0;
+        }
+
+        $usefulArea = 0;
+        foreach ($this->floors as $floor){
+            $usefulArea += $floor->getUsefulArea();
+        }
+
+        return $usefulArea;
+    }
+
+    public function getWallArea(): int
+    {
+        if($this->getFloorAmount() === 0){
+            return 0;
+        }
+
+        $wallArea = 0;
+        foreach ($this->floors as $floor){
+            $wallArea += $floor->getWallArea();
+        }
+
+        return $wallArea;
+    }
+
+    public function getEmptyArea(): int
+    {
+        if($this->getFloorAmount() === 0){
+            return 0;
+        }
+
+        $emptyArea = 0;
+        foreach ($this->floors as $floor){
+            $emptyArea += $floor->getEmptyArea();
+        }
+
+        return $emptyArea;
+    }
+
+    public function getTotalArea(): int
+    {
+        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
+    }
+
+    public function getMaxHeight(): int
+    {
+        if($this->getFloorAmount() === 0){
+            return 0;
+        }
+
+        $maxHeight = 0;
+        foreach ($this->floors as $floor){
+            if($floor->getMaxHeight() > $maxHeight){
+                $maxHeight = $floor->getMaxHeight();
+            }
+        }
+
+        return $maxHeight;
+    }
+
+    public function getVolume(): float|int
+    {
+        return $this->getTotalArea() * $this->getMaxHeight();
+    }
+
+    public function isFullyOccupied(): bool
+    {
+        if($this->isNew()){
+            return $this->getLandArea() <= $this->getTotalArea();
+        }else{
+            return $this->getOccupiedArea() <= $this->getTotalArea();
+        }
+    }
+
+    public function getUnassignedArea(): ?int
+    {
+        if($this->getFloorAmount() === 0){
+            return 0;
+        }
+
+        $unassignedArea = 0;
+        foreach ($this->floors as $floor){
+            $unassignedArea += $floor->getUnassignedArea();
+        }
+
+        return $unassignedArea;
+    }
+
+    public function getFloorAmount(): int
+    {
+        return $this->getFloors()->count();
+    }
+
+    public function hasFloorAndIsNotCompletlyEmptyArea(): bool
+    {
+        return $this->hasFloors() && ($this->getUsefulArea() > 0);
+    }
+
+    public function getCus(): float|int
+    {
+        return $this->getTotalArea() / $this->getLandArea();
     }
 
 }

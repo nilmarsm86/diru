@@ -8,6 +8,38 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            <div class="dropdown d-inline-block">
+                <button type="button"
+                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false" title="Obras del proyecto"
+                >
+                    Reportes
+                </button>
+                <ul class="dropdown-menu" data-bs-theme="light">
+                    <li>
+                        <a class="dropdown-item"
+                           href="" title="">
+                            Reporte de estado técnico por locales
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="" title="">
+                            Reporte de estado técnico por metros cuadrados
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="" title="">
+                            Reporte de descripción por locales (PDF)
+                        </a>
+                    </li>
+                </ul>
+            </div>
             {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
             {% if floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo sub sistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
@@ -40,7 +72,7 @@
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th>Á. Muro (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
-                    <th>Á. Total (m<sup>2</sup>)</th>
+                    <th>Á.T.P (m<sup>2</sup>)</th>
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Diagnosticados</th>

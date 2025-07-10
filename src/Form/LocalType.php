@@ -7,6 +7,7 @@ use App\Entity\Floor;
 use App\Entity\Local;
 use App\Form\Types\LocalTechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
+use App\Form\Types\UnitMeasurementFloatType;
 use App\Form\Types\UnitMeasurementType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -38,7 +39,7 @@ class LocalType extends AbstractType
             ->add('type', LocalTypeEnumType::class, [
                 'label' => 'Tipo de local:',
             ])
-            ->add('height', UnitMeasurementType::class, [
+            ->add('height', UnitMeasurementFloatType::class, [
                 'label' => 'Altura:',
                 'unit' => 'm',
                 'attr' => [

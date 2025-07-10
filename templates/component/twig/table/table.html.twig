@@ -33,14 +33,14 @@
     </div>
 
     <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-        <table class="table table-hover my-0">
+        <table class="table table-hover my-1">
             <thead>
             {% block tableHead %}{% endblock %}
             </thead>
             <tbody class="table-group-divider">
             {% block tableBody %}{% endblock %}
             </tbody>
-            <tfoot>
+            <tfoot class="table-group-divider">
             {% block tableFooter %}{% endblock %}
             </tfoot>
         </table>

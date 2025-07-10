@@ -46,7 +46,7 @@ class Local
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'La altura está vacía.')]
-    private ?int $height = null;
+    private ?float $height = null;
 
     #[ORM\Column(length: 255)]
     private ?string $technicalStatus = null;
@@ -107,12 +107,12 @@ class Local
         return $this;
     }
 
-    public function getHeight(): ?int
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
-    public function setHeight(int $height): static
+    public function setHeight(float $height): static
     {
         $this->height = $height;
 

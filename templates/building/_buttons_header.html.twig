@@ -2,6 +2,38 @@
 
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
     {{ tableActionButton3(path('app_floor_index', {'building': building.id}), '', 'Inmueble a modificar', 'Inmueble a modificar') }}
+    <div class="dropdown d-inline-block">
+        <button type="button"
+                class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                data-bs-toggle="dropdown"
+                aria-expanded="false" title="Obras del proyecto"
+        >
+            Reportes
+        </button>
+        <ul class="dropdown-menu" data-bs-theme="light">
+            <li>
+                <a class="dropdown-item"
+                   href="" title="">
+                    Reporte de estado técnico por locales
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item"
+                   href="" title="">
+                    Reporte de estado técnico por metros cuadrados
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item"
+                   href="" title="">
+                    Reporte general de la obra (PDF)
+                </a>
+            </li>
+        </ul>
+    </div>
     {% if building.isNew() is not null %}
         {% if building.isNew() == false %}
             {% set labelAndTitle = 'Inmueble existente' %}

@@ -101,6 +101,38 @@
                         <td>{{ (sub_system.allLocalsAreClassified() == true) ? 'SI' : 'NO' }}</td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
+                            <div class="dropdown d-inline-block">
+                                <button type="button"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false" title="R"
+                                >
+                                    R
+                                </button>
+                                <ul class="dropdown-menu" data-bs-theme="light">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{{ path('app_sub_system_report_local', {'id': sub_system.id}) }}" title="">
+                                            Reporte de estado técnico
+                                        </a>
+                                    </li>
+{#                                    <li>#}
+{#                                        <a class="dropdown-item"#}
+{#                                           href="" title="">#}
+{#                                            Reporte de estado técnico por metros cuadrados#}
+{#                                        </a>#}
+{#                                    </li>#}
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="" title="">
+                                            Reporte de descripción por locales (PDF)
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                             {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
                             {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar sub sistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
                             {% if floor.building.isNew() %}

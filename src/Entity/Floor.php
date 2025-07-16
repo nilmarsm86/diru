@@ -38,6 +38,9 @@ class Floor
     #[ORM\Column]
     private ?bool $groundFloor = null;
 
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $original = null;
+
     public function __construct()
     {
         $this->subSystems = new ArrayCollection();
@@ -202,5 +205,25 @@ class Floor
     public function getSubSystemAmount(): int
     {
         return $this->getSubSystems()->count();
+    }
+
+    public function getOriginal(): ?self
+    {
+        return $this->original;
+    }
+
+    public function setOriginal(?self $original): static
+    {
+        $this->original = $original;
+
+        return $this;
+    }
+
+    public function reply(): Floor|static
+    {
+        $replica = clone $this;
+        $replica->setOriginal($this);
+
+        return $replica;
     }
 }

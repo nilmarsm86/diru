@@ -77,4 +77,15 @@ final class SubSystemController extends AbstractController
             'floor' => $floor->getId()
         ]);
     }
+
+    #[Route('/{id}/report/local', name: 'app_sub_system_report_local', methods: ['GET'])]
+    public function reportLocal(Request $request, SubSystem $subSystem): Response
+    {
+        return $this->render("sub_system/report.html.twig", [
+            'local_status' => $subSystem->getAmountLocalTechnicalStatus(),
+            'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
+            'title' => 'Estado tecnico de los locales del subsistema',
+            'sub_system' => $subSystem
+        ]);
+    }
 }

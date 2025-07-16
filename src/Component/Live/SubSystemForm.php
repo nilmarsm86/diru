@@ -53,7 +53,8 @@ final class SubSystemForm extends AbstractController
         $this->ss = (is_null($ss)) ? new SubSystem() : $ss;
         $this->entity = $this->ss;
         $this->floor = $floor;
-        $this->floor->addSubSystem($this->ss);
+//        $this->floor->addSubSystem($this->ss);
+        $this->ss->setFloor($this->floor);
     }
 
     protected function instantiateForm(): FormInterface
@@ -74,7 +75,8 @@ final class SubSystemForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var SubSystem $subSystem */
             $subSystem = $this->getForm()->getData();
-            $this->floor->addSubSystem($subSystem);
+//            $this->floor->addSubSystem($subSystem);
+            $this->ss->setFloor($this->floor);
             $subSystemRepository->save($subSystem, true);
 
             $this->ss = new SubSystem();

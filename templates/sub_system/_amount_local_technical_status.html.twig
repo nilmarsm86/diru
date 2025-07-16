@@ -1,0 +1,66 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de sub sistemas',
+} %}
+    {% block header %}
+    {% endblock %}
+
+    {% block body %}
+        <table class="table table-hover">
+            <tr>
+                <th>Bueno</th>
+                <th>Regular</th>
+                <th>Malo</th>
+                <th>Critico</th>
+                <th>Undefinido</th>
+                <th>Totales</th>
+            </tr>
+
+            <tr>
+                <td>{{ local_status.good }}</td>
+                <td>{{ local_status.regular }}</td>
+                <td>{{ local_status.bad }}</td>
+                <td>{{ local_status.critical }}</td>
+                <td>{{ local_status.undefined }}</td>
+                <td>{{ sub_system.getLocalsAmount() }}</td>
+            </tr>
+        </table>
+    {% endblock %}
+
+{% endcomponent %}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de sub sistemas',
+} %}
+    {% block header %}
+    {% endblock %}
+
+    {% block body %}
+        <table class="table table-hover">
+            <tr>
+                <th>Bueno</th>
+                <th>Regular</th>
+                <th>Malo</th>
+                <th>Critico</th>
+                <th>Undefinido</th>
+                <th>Totales</th>
+            </tr>
+
+            <tr>
+                <td>{{ meter_status.good }}</td>
+                <td>{{ meter_status.regular }}</td>
+                <td>{{ meter_status.bad }}</td>
+                <td>{{ meter_status.critical }}</td>
+                <td>{{ meter_status.undefined }}</td>
+                <td>{{ sub_system.getAmountMeters() }}</td>
+            </tr>
+        </table>
+    {% endblock %}
+
+{% endcomponent %}
+

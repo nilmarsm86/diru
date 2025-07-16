@@ -27,9 +27,9 @@ enum LocalType: string
         }
 
         return match ($enum) {
-            self::EmptyArea => 'Área de vacío',//translate
-            self::Local => 'Local (área útil)',//translate
+            self::Local => 'Área útil (local)',//translate
             self::WallArea => 'Área de muro',//translate
+            self::EmptyArea => 'Área de vacío',//translate
             default => '-Seleccione-'//translate
         };
     }

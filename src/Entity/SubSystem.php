@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\SubSystemRepository;
@@ -34,6 +35,9 @@ class SubSystem
     #[Assert\Valid]
 //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
+
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $original = null;
 
     public function __construct()
     {
@@ -184,5 +188,89 @@ class SubSystem
         }
 
         return true;
+    }
+
+    public function getAmountLocalTechnicalStatus(): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        foreach ($this->getLocals() as $local){
+            $states = match ($local->getTechnicalStatus()) {
+                LocalTechnicalStatus::Critical => $critital++,
+                LocalTechnicalStatus::Bad => $bad++,
+                LocalTechnicalStatus::Regular => $regular++,
+                LocalTechnicalStatus::Good => $good++,
+                default => $undefined++
+            };
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
+    }
+
+    public function getAmountMeterTechnicalStatus(): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        foreach ($this->getLocals() as $local){
+            $states = match ($local->getTechnicalStatus()) {
+                LocalTechnicalStatus::Critical => $critital += $local->getArea(),
+                LocalTechnicalStatus::Bad => $bad += $local->getArea(),
+                LocalTechnicalStatus::Regular => $regular += $local->getArea(),
+                LocalTechnicalStatus::Good => $good += $local->getArea(),
+                default => $undefined += $local->getArea()
+            };
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
+    }
+
+    public function getAmountMeters(): ?int
+    {
+        $total = 0;
+        foreach ($this->getLocals() as $local){
+            $total += $local->getArea();
+        }
+
+        return $total;
+    }
+
+    public function getOriginal(): ?self
+    {
+        return $this->original;
+    }
+
+    public function setOriginal(?self $original): static
+    {
+        $this->original = $original;
+
+        return $this;
+    }
+
+    public function reply(): Floor|static
+    {
+        $replica = clone $this;
+        $replica->setOriginal($this);
+
+        return $replica;
     }
 }

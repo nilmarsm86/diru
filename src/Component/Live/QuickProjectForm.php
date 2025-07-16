@@ -81,6 +81,8 @@ final class QuickProjectForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+        $currency = $this->entityManager->getRepository(Currency::class)->findOneBy(['code' => 'CUP']);
+        $this->pro->setCurrency($currency);
         return $this->createForm(QuickProjectType::class, $this->pro);
     }
 
@@ -101,6 +103,8 @@ final class QuickProjectForm extends AbstractController
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
+//        $project = $this->getForm()->getData();
+//        $project->setCurrency($currencyRepository->findOneBy(['code'=>'CUP']));
         if ($this->isSubmitAndValid()) {
             /** @var Project $project */
             $project = $this->getForm()->getData();

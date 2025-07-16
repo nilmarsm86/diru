@@ -47,9 +47,10 @@ class ProjectType extends AbstractType
                 'class' => Investment::class,
                 'choice_label' => 'name',
                 'label' => 'Inversión:',
+
                 'detail' => true,
                 'detail_title' => 'Detalle de la Inversión',
-                'detail_id' => 'detail_investment_entity',
+                'detail_id' => 'modal-load',//'detail_investment_entity',
                 'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
 
                 'add' => true,
@@ -184,7 +185,7 @@ class ProjectType extends AbstractType
             ]
         ]);
 
-        $form->add('individualClient', EntityType::class, [
+        $form->add('individualClient', EntityPlusType::class, [
             'class' => IndividualClient::class,
             'choice_label' => function (IndividualClient $individualClient) {
                 return $individualClient->getPerson()->getFullName();
@@ -192,9 +193,19 @@ class ProjectType extends AbstractType
             'mapped' => false,
             'label' => 'Persona natural',
 //                'placeholder' => '-Seleccione-',
-            'data' => $project->getIndividualClient($this->individualClientRepository)
+            'data' => $project->getIndividualClient($this->individualClientRepository),
+
+            'detail' => true,
+            'detail_title' => 'Detalle del cliente individual',
+            'detail_id' => 'modal-load',
+            'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
+
+            'add' => true,
+            'add_title' => 'Agregar cliente individual',
+            'add_id' => 'modal-load',
+            'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
         ]);
-        $form->add('enterpriseClient', EntityType::class, [
+        $form->add('enterpriseClient', EntityPlusType::class, [
             'class' => EnterpriseClient::class,
             'choice_label' => 'representative',
             'mapped' => false,

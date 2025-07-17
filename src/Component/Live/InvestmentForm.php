@@ -120,7 +120,6 @@ final class InvestmentForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
-
         if (!$this->inv->getId()) {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
                 $province = (int)$this->formValues['streetAddress']['address']['province'];
@@ -150,6 +149,7 @@ final class InvestmentForm extends AbstractController
     #[LiveAction]
     public function save(InvestmentRepository $investmentRepository, LocationZoneRepository $locationZoneRepository): ?Response
     {
+        dump($this->formValues);
         $this->preValue();
 
         $successMsg = (is_null($this->inv->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.';//TODO: personalizar los mensajes

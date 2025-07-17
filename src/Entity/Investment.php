@@ -52,7 +52,7 @@ class Investment
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca el municipio.')]
+//    #[Assert\NotBlank(message: 'Establezca el municipio.')]
     private ?Municipality $municipality = null;
 
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]

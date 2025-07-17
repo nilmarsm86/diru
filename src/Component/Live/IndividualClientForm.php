@@ -193,10 +193,12 @@ final class IndividualClientForm extends AbstractController
             $individualClientRepository->save($ic, true);
 
             $this->ic = new IndividualClient();
-//            if ($this->modal) {
-//                $this->modalManage($ce);
-//                return null;
-//            }
+            if (!is_null($this->modal)) {
+                $this->modalManage($ic, 'Se ha seleccionado el nuevo cliente agregado.', [
+                    'client' => $ic->getId()
+                ], 'text-bg-success');
+                return null;
+            }
 
             if ($this->ajax) {
                 $this->ajaxManage($ic, $successMsg);

@@ -24,4 +24,9 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
+###> locks ###
+composer.lock
+symfony.lock
+###< locks ###
+
 /.idea/

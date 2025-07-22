@@ -10,6 +10,8 @@ use App\Repository\ConstructorRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -36,11 +38,15 @@ final class ConstructorForm extends AbstractController
     public ?string $modal = null;
 
     #[LiveProp]
+    public ?string $screen = null;
+
+    #[LiveProp]
     public bool $ajax = false;
 
-    public function mount(?Constructor $cons = null): void
+    public function mount(?Constructor $cons = null, string $screen = 'project'): void
     {
         $this->cons = (is_null($cons)) ? new Constructor() : $cons;
+        $this->screen = $screen;
     }
 
     protected function instantiateForm(): FormInterface
@@ -52,7 +58,7 @@ final class ConstructorForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(ConstructorRepository $constructorRepository): ?Response
+    public function save(RequestStack $request, ConstructorRepository $constructorRepository): ?Response
     {
         $successMsg = (is_null($this->cons->getId())) ? 'Se ha agregado la constructora.' : 'Se ha modificado la constructora.';
 
@@ -66,9 +72,18 @@ final class ConstructorForm extends AbstractController
 
             $this->cons = new Constructor();
             if (!is_null($this->modal)) {
-                $this->modalManage($constructor, 'Se ha seleccionado la nueva constructora agregada.', [
-                    'constructor' => $constructor->getId()
-                ]);
+                if ($this->screen === 'building') {
+                    $this->modalManage($constructor, 'Se ha seleccionado la nueva constructora agregada.', [
+                        'constructor' => $constructor->getId()
+                    ]);
+                }
+
+                if ($this->screen === 'project') {
+                    $this->modalManage($constructor, 'Se ha agregado una nueva constructora, seleccionela.', [
+                        'constructor' => $constructor->getId()
+                    ], 'text-bg-success');
+                }
+
                 return null;
             }
 

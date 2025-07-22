@@ -1,5 +1,5 @@
 {% if app.request.query.get('modal') %}
-    {{ component('ConstructorForm', {modal:app.request.query.get('modal'), cons: constructor, ajax: ajax}) }}
+    {{ component('ConstructorForm', {modal:app.request.query.get('modal'), cons: constructor, ajax: ajax, screen: app.request.query.get('screen')}) }}
 {% else %}
     {% component 'Card:Card' with {
         cssClass: 'mb-4',

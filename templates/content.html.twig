@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {% block importmap %}{{ importmap(['app']) }}{% endblock %}
+{% endblock %}
+
+
  {% from 'macros/toast.html.twig' import toasts %}
 {# {% from 'macros/flashes.html.twig' import flashes, flash %}#}
 

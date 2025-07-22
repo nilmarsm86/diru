@@ -70,7 +70,9 @@ final class BuildingForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
-        return $this->createForm(BuildingType::class, $this->bui);
+        return $this->createForm(BuildingType::class, $this->bui, [
+            'screen' => 'building'
+        ]);
     }
 
     /**

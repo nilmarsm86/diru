@@ -31,11 +31,10 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre de la obra'
                 ]
-            ])
-            ;
+            ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-            $this->onPreSetData($event);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+            $this->onPreSetData($event, $options);
         });
     }
 
@@ -45,15 +44,17 @@ class BuildingType extends AbstractType
             'data_class' => Building::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
+            'screen' => 'project'//building || project
         ]);
     }
 
     /**
      * @param FormEvent $event
+     * @param array $options
      * @return void
      */
-    private function onPreSetData(FormEvent $event): void
+    private function onPreSetData(FormEvent $event, array $options): void
     {
         /** @var Building $building */
         $building = $event->getData();
@@ -91,7 +92,7 @@ class BuildingType extends AbstractType
             'add' => true,
             'add_title' => 'Agregar Constructora',
             'add_id' => 'modal-load',
-            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load']),
+            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
 
             'required' => false,
             'data' => $activeConstructor

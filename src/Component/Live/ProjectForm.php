@@ -8,6 +8,7 @@ use App\Entity\Contract;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ClientRepository;
+use App\Repository\ConstructorRepository;
 use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
@@ -101,7 +102,8 @@ final class ProjectForm extends AbstractController
         ClientRepository     $clientRepository,
         InvestmentRepository $investmentRepository,
         Security             $security,
-        DraftsmanRepository  $draftsmanRepository
+        DraftsmanRepository  $draftsmanRepository,
+        ConstructorRepository $constructorRepository
     ): ?Response
     {
         $this->preValue();
@@ -153,10 +155,20 @@ final class ProjectForm extends AbstractController
                 //Change draftmans
                 foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
                     if(isset($this->formValues['buildings'][$key]['draftsman'])){
-                        $draftsman = $draftsmanRepository->find($this->formValues['buildings'][$key]['draftsman']);
+                        $draftsman = $draftsmanRepository->find((int)$this->formValues['buildings'][$key]['draftsman']);
                         if ($draftsman) {
                             $building->addDraftsman($draftsman);
                         }
+                    }
+                }
+            }
+
+            //fix constructor
+            foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
+                if(isset($this->formValues['buildings'][$key]['constructor'])){
+                    $constructor = $constructorRepository->find((int)$this->formValues['buildings'][$key]['constructor']);
+                    if($constructor){
+                        $building->addConstructor($constructor);
                     }
                 }
             }

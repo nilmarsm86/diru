@@ -235,12 +235,12 @@ class Building
         return $this;
     }
 
-    public function getTotalEstimatedValue()
+    public function getTotalEstimatedValue(): int|string|null
     {
         return $this->getEstimatedValueConstruction() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther();
     }
 
-    public function getTotalApprovedValue()
+    public function getTotalApprovedValue(): ?int
     {
         return $this->getApprovedValueConstruction() + $this->getApprovedValueEquipment() + $this->getApprovedValueOther();
     }

@@ -13,6 +13,7 @@ import {useContentLoader} from "./use-content-loader.js";
  *
  * app.register('content-loader', ReloadContentController);
  */
+/* stimulusFetch: 'lazy' */
 export class ContentLoaderController extends Controller {
 
     /**

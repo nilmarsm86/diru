@@ -16,6 +16,10 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'login-register' => [
+        'path' => './assets/login-register.js',
+        'entrypoint' => true,
+    ],
     'bootstrap' => [
         'version' => '5.3.3',
     ],

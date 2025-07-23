@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'building'], message: 'Ya existe en la obra una planta con este nombre.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['position', 'building'], message: 'Ya existe en la obra una planta en esa posición.', errorPath: 'position')]
 class Floor
 {
     use NameToStringTrait;
@@ -40,6 +41,9 @@ class Floor
 
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $original = null;
+
+    #[ORM\Column]
+    private ?int $position = null;
 
     public function __construct()
     {
@@ -225,5 +229,59 @@ class Floor
         $replica->setOriginal($this);
 
         return $replica;
+    }
+
+    public function notWallArea(): bool
+    {
+        return $this->getWallArea() === 0;
+    }
+
+    public function getTotalArea(): int
+    {
+        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
+    }
+
+    public function hasVariableHeights(): bool
+    {
+        /*$maxHeight = $this->getMaxHeight();
+        foreach ($this->subSystems as $subSystem){
+            if($subSystem->getMaxHeight() < $maxHeight){
+                return true;
+            }
+        }*/
+
+        $totalHeight = 0;
+        foreach ($this->subSystems as $subSystem){
+            $totalHeight += $subSystem->getMaxHeight();
+        }
+
+        return ($totalHeight % $this->getSubSystemAmount()) > 0;
+    }
+
+    public function allLocalsAreClassified(): bool
+    {
+        if($this->getSubSystemAmount() == 0){
+            return false;
+        }
+
+        foreach ($this->getSubSystems() as $subSystem){
+            if(!$subSystem->allLocalsAreClassified()){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
     }
 }

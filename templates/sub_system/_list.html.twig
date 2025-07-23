@@ -1,8 +1,23 @@
+{% if floor.notWallArea() or floor.allLocalsAreClassified() == false %}
+    {% set card_icon = ux_icon('material-symbols:warning-rounded', {
+        'class':'bi text-warning',
+        'data-bs-toggle':"tooltip",
+        'data-bs-title':"Se deben corregir algunos errores.",
+        'data-bs-custom-class':"warning-tooltip"
+    }) %}
+{% else %}
+    {% set card_icon = ux_icon('ep:success-filled', {
+        'class':'bi text-success',
+    }) %}
+{% endif %}
+
+
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: 'Listado de sub sistemas',
+    icon: card_icon
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
@@ -40,7 +55,7 @@
                     </li>
                 </ul>
             </div>
-            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Listado de plantas', 'Listado de plantas') }}
+            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }}
             {% if floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo sub sistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
             {% endif %}
@@ -53,10 +68,12 @@
         } %}
 
             {% block message %}
+
                 {% if floor.building.isNew() %}
                     Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% else %}
-                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m<sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
+                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m
+                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% endif %}
                 <br>
                 {% if floor.isFullyOccupied() %}
@@ -64,6 +81,7 @@
                 {% else %}
                     quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
                 {% endif %}
+
             {% endblock %}
 
             {% block tableHead %}
@@ -87,18 +105,36 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {{ sub_system.name }}
-                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema" style="cursor: pointer">
+                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema"
+                                  style="cursor: pointer">
                                 {{ sub_system.getLocalsAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
                         </td>
                         <td>{{ sub_system.getUsefulArea() }}</td>
-                        <td>{{ sub_system.getWallArea() }}</td>
+                        <td>
+                            {% if sub_system.notWallArea() %}
+                                <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Sin área de muro."
+                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                    {{ sub_system.getWallArea() }}
+                                </span>
+                            {% else %}
+                                {{ sub_system.getWallArea() }}
+                            {% endif %}
+                        </td>
                         <td>{{ sub_system.getEmptyArea() }}</td>
                         <td>{{ sub_system.getTotalSubSystemArea() }}</td>
                         <td>{{ sub_system.getMaxHeight() }}</td>
                         <td>{{ sub_system.getVolume() }}</td>
-                        <td>{{ (sub_system.allLocalsAreClassified() == true) ? 'SI' : 'NO' }}</td>
+                        <td>
+                            {{ (sub_system.allLocalsAreClassified())
+                            ? ux_icon('bi:check-lg', {'class':'bi text-success'})
+                            : ux_icon('material-symbols:close-rounded', {
+                                'class':'bi text-danger', 'data-bs-toggle':"tooltip",
+                                'data-bs-title':"Faltan locales por diagnosticar.",
+                                'data-bs-custom-class':"danger-tooltip"
+                            }) }}
+                        </td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
                             <div class="dropdown d-inline-block">
@@ -112,16 +148,17 @@
                                 <ul class="dropdown-menu" data-bs-theme="light">
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{{ path('app_sub_system_report_local', {'id': sub_system.id}) }}" title="">
+                                           href="{{ path('app_sub_system_report_local', {'id': sub_system.id}) }}"
+                                           title="">
                                             Reporte de estado técnico
                                         </a>
                                     </li>
-{#                                    <li>#}
-{#                                        <a class="dropdown-item"#}
-{#                                           href="" title="">#}
-{#                                            Reporte de estado técnico por metros cuadrados#}
-{#                                        </a>#}
-{#                                    </li>#}
+                                    {#                                    <li> #}
+                                    {#                                        <a class="dropdown-item" #}
+                                    {#                                           href="" title=""> #}
+                                    {#                                            Reporte de estado técnico por metros cuadrados #}
+                                    {#                                        </a> #}
+                                    {#                                    </li> #}
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -151,6 +188,61 @@
                         <td colspan="9">No se encontraron sub sistemas.</td>
                     </tr>
                 {% endfor %}
+            {% endblock %}
+
+            {% block tableFooter %}
+                <tr>
+                    <th></th>
+                    <th>
+                        {% if floor.isFullyOccupied() %}
+                            {{ floor.getUsefulArea() }}
+                        {% else %}
+                            <span class="text-warning" data-bs-toggle="tooltip"
+                                  data-bs-title="Queda espacio sin aprovechar." data-bs-custom-class="warning-tooltip"
+                                  style="cursor: pointer">
+                                {{ floor.getUsefulArea() }}
+                            </span>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if floor.notWallArea() %}
+                            <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Debe tener área de muro."
+                                  data-bs-custom-class="danger-tooltip" style="cursor: pointer">
+                                {{ floor.getWallArea() }}
+                            </span>
+                        {% else %}
+                            {{ floor.getWallArea() }}
+                        {% endif %}
+                    </th>
+                    <th>{{ floor.getEmptyArea() }}</th>
+                    <th>{{ floor.getTotalArea() }}</th>
+                    <th>
+                        {{ floor.getMaxHeight() }}
+                        {#                        {% if floor.hasVariableHeights() %} #}
+                        {#                            <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Alturas variables. Queda áreas de vacio no definidas." data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
+                        {#                                {{ floor.getMaxHeight() }} #}
+                        {#                            </span> #}
+                        {#                        {% else %} #}
+                        {#                            {{ floor.getMaxHeight() }} #}
+                        {#                        {% endif %} #}
+                    </th>
+                    <th>{{ floor.getVolume() }}</th>
+                    <th>
+                        {% if floor.allLocalsAreClassified() %}
+                            {{ ux_icon('ep:success-filled', {
+                                'class':'bi text-success',
+                            }) }}
+                        {% else %}
+                            {{ ux_icon('material-symbols:dangerous', {
+                                'class':'bi text-danger',
+                                'data-bs-toggle':"tooltip",
+                                'data-bs-title':"Para poder realizar la réplica se debe diagnosticar el estado técnico de todos los locales.",
+                                'data-bs-custom-class':"danger-tooltip"
+                            }) }}
+                        {% endif %}
+                    </th>
+                    <th>CUS:</th>
+                </tr>
             {% endblock %}
 
         {% endcomponent %}

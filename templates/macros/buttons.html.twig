@@ -21,11 +21,15 @@
     </a>
 {% endmacro %}
 
-{% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary') %}
-    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
+{% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary', badge=false) %}
+    <a class="btn btn-sm position-relative {{ cssClass }}" title="{{ title }}"
        href="{{ path }}"
             {{ action|raw }}
     >
+        {% if badge %}
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+            </span>
+        {% endif %}
         {% if icon %}
             {{ ux_icon(icon, {class:'bi'}) }}
         {% endif %}

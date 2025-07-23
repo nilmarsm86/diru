@@ -74,6 +74,7 @@ class FloorRepository extends ServiceEntityRepository
         $builder->setParameter(':idBuilding', $building->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('f.groundFloor', 'DESC')
+            ->addOrderBy('f.position', 'ASC')
             ->addOrderBy('f.name', 'ASC')
             ->getQuery();
         return $this->paginate($query, $page, $amountPerPage);

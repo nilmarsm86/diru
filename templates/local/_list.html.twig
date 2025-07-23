@@ -1,14 +1,28 @@
+{% if sub_system.allLocalsAreClassified() == false %}
+    {% set card_icon = ux_icon('material-symbols:warning-rounded', {
+        'class':'bi text-warning',
+        'data-bs-toggle':"tooltip",
+        'data-bs-title':"Se deben corregir algunos errores.",
+        'data-bs-custom-class':"warning-tooltip"
+    }) %}
+{% else %}
+    {% set card_icon = ux_icon('ep:success-filled', {
+        'class':'bi text-success',
+    }) %}
+{% endif %}
+
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: 'Listado de locales',
+    icon: card_icon
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), '', 'Listado de subsistemas', 'Listado de subsistemas') }}
+            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), 'ix:building-block-filled', 'Subsistemas', 'Listado de subsistemas') }}
             {% if sub_system.floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_local_new', {'subSystem': sub_system.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'subSystem': sub_system.id})})) }}
             {% endif %}
@@ -65,7 +79,17 @@
                         <td>{{ local.type.getLabelFrom(local.type) }}</td>
                         <td>{{ local.height }}</td>
                         <td>{{ local.getVolume() }}</td>
-                        <td>{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</td>
+                        <td>
+                            {% if local.isClassified() %}
+                                {{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}
+                            {% else %}
+                                <span class="text-danger"
+                                      data-bs-toggle="tooltip"
+                                      data-bs-title="Para poder realizar la réplica se debe diagnosticar el estado técnico del local."
+                                      data-bs-custom-class="danger-tooltip"
+                                >{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</span>
+                            {% endif %}
+                        </td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
                             {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id})})) }}

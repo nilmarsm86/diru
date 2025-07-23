@@ -289,3 +289,15 @@ details[open]::details-content {
 div#project_clientType label::after{
     display: none;
 }
+
+.danger-tooltip {
+    --bs-tooltip-bg: var(--bs-danger);
+    --bs-tooltip-color: var(--bs-white);
+    opacity: 1 !important;
+}
+
+.warning-tooltip {
+    --bs-tooltip-bg: var(--bs-warning);
+    --bs-tooltip-color: var(--bs-black);
+    opacity: 1 !important;
+}

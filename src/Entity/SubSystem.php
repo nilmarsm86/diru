@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: SubSystemRepository::class)]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name', )]
 class SubSystem
 {
     use NameToStringTrait;
@@ -272,5 +272,10 @@ class SubSystem
         $replica->setOriginal($this);
 
         return $replica;
+    }
+
+    public function notWallArea(): bool
+    {
+        return $this->getWallArea() === 0;
     }
 }

@@ -12,7 +12,15 @@
         <td>{{ floor.getUsefulArea() }}</td>
 
         <th>Área muro (m<sup>2</sup>):</th>
-        <td>{{ floor.getWallArea() }}</td>
+        <td>
+            {% if floor.notWallArea() %}
+                <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Debe tener área de muro." data-bs-custom-class="danger-tooltip" style="cursor: pointer">
+                    {{ floor.getWallArea() }}
+                </span>
+            {% else %}
+                {{ floor.getWallArea() }}
+            {% endif %}
+        </td>
     </tr>
 
     <tr>

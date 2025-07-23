@@ -49,6 +49,12 @@ class FloorType extends AbstractType
                     'placeholder' => 'Nombre de la planta'
                 ]+$disabled
             ])
+            ->add('position', null, [
+                'label' => 'Position:',
+                'attr' => [
+                        'placeholder' => 'Posición'
+                    ]+$disabled
+            ])
         ;
     }
 }

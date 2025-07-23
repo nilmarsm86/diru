@@ -13,6 +13,7 @@ use App\Repository\FloorRepository;
 use App\Repository\SubSystemRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -53,12 +54,13 @@ final class SubSystemForm extends AbstractController
         $this->ss = (is_null($ss)) ? new SubSystem() : $ss;
         $this->entity = $this->ss;
         $this->floor = $floor;
-//        $this->floor->addSubSystem($this->ss);
+        $this->floor->addSubSystem($this->ss);
         $this->ss->setFloor($this->floor);
     }
 
     protected function instantiateForm(): FormInterface
     {
+        $this->floor->addSubSystem($this->ss);
         return $this->createForm(SubSystemType::class, $this->ss);
     }
 
@@ -69,6 +71,23 @@ final class SubSystemForm extends AbstractController
     public function save(SubSystemRepository $subSystemRepository): ?Response
     {
         $successMsg = (is_null($this->ss->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.';//TODO: personalizar los mensajes
+
+
+
+//        if(is_null($this->ss->getId())){
+//            $subSystem = $subSystemRepository->findBy([
+//                'name' => $this->formValues['name'],
+//                'floor' => $this->floor
+//            ]);
+//
+//            if(count($subSystem) > 0){
+////                dump("Error");
+//                $errorMessage = new FormError('Ya existe una subsistema con este nombre en esta planta.');
+//                $this->getForm()->get
+//            }
+//        }
+//
+//        //die();
 
         $this->submitForm();
 

@@ -1,7 +1,12 @@
 <div class="card {{ cssClass }}" {{ extra }} {{ stimulusController('twig/card/card') }}>
     {% if app.request.query.get('state') is not same as 'modal' %}
         <div class="card-header {{ headerCssClass }}">
-            <p class="text-primary m-0 fw-bold">{{ title|raw }}</p>
+            <p class="text-primary m-0 fw-bold">
+                {% if icon is not empty %}
+                    {{ icon|raw }}
+                {% endif %}
+                {{ title|raw }}
+            </p>
             {% block header %}{% endblock %}
         </div>
     {% endif %}

@@ -14,6 +14,7 @@ import {
     SELECT as TABLE_SELECT
 } from "./twig/table/table_controller.js";
 import {SUCCESS as DELETE_FORM_SUCCESS, START as START_REMOVE_ITEM} from "./delete-form-container_controller.js";
+import {Tooltip} from "bootstrap";
 
 /*
  * This is an example Stimulus controller!
@@ -43,7 +44,7 @@ export default class extends AbstractController {
             // eventShowName: this.eventShowNameValue || "show",
             // eventHideName: this.eventHideNameValue || "hide",
             // eventToggleName: this.eventToggleNameValue || "toggle",
-        })
+        });
 
         //agregar el formulario de nuevo elemento
         this.addListener(this.element, CARD_NEW, this.onFormContainerAction.bind(this), {}, 'twig/card/card');
@@ -71,6 +72,9 @@ export default class extends AbstractController {
         this.element.addEventListener(FORM_SUCCESS, this.onManagePageProcessResponse.bind(this));
         this.element.addEventListener(DELETE_FORM_SUCCESS, this.deleteFormSuccess.bind(this));
         // window.addEventListener(START_REMOVE_ITEM, this.startRemoveItem.bind(this));
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
     }
 
     backdrop(backdropElement, action) {

@@ -55,6 +55,7 @@ final class FloorForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
+        $this->building->addFloor($this->fl);
         return $this->createForm(FloorType::class, $this->fl);
     }
 
@@ -64,6 +65,7 @@ final class FloorForm extends AbstractController
     #[LiveAction]
     public function save(FloorRepository $floorRepository): ?Response
     {
+        dump($this->fl);
         $successMsg = (is_null($this->fl->getId())) ? 'Se ha agregado la planta.' : 'Se ha modificado la planta.';//TODO: personalizar los mensajes
 
         $this->submitForm();
@@ -103,6 +105,11 @@ final class FloorForm extends AbstractController
         }
 
         return true;
+    }
+
+    private function getDataModelValue(): ?string
+    {
+        return 'norender|*';
     }
 
 }

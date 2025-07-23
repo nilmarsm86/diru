@@ -520,16 +520,21 @@ class Building
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
-                $this->createFloor('Planta ' . $i);
+                $this->createFloor('Planta ' . $i, false, $i);
             }
         }
 
         return $this;
     }
 
-    private function createFloor(string $name, bool $isGroundFloor=false): void
+    private function createFloor(string $name, bool $isGroundFloor=false, int $position=0): void
     {
         $f = new Floor();
+        if($isGroundFloor){
+            $f->setPosition($position);
+        }else{
+            $f->setPosition($position);
+        }
         $f->setName($name);
         $f->setGroundFloor($isGroundFloor);
 
@@ -669,6 +674,17 @@ class Building
     public function getCus(): float|int
     {
         return $this->getTotalArea() / $this->getLandArea();
+    }
+
+    public function notWallArea(): bool
+    {
+        foreach ($this->getFloors() as $floor){
+            if($floor->notWallArea()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

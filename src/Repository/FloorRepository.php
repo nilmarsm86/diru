@@ -70,7 +70,8 @@ class FloorRepository extends ServiceEntityRepository
     {
         $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
             ->leftJoin('f.building', 'b')
-            ->andWhere('b.id = :idBuilding');
+            ->andWhere('b.id = :idBuilding')
+            ->andWhere('f.original IS NULL');
         $builder->setParameter(':idBuilding', $building->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('f.groundFloor', 'DESC')

@@ -7,6 +7,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
@@ -64,6 +65,18 @@ class Floor
         return $this->subSystems;
     }
 
+    public function getOriginalSubsystems(): array
+    {
+        $originalSubsystems = [];
+        foreach ($this->getSubSystems() as $subSystem){
+            if($subSystem->isOriginal()){
+                $originalSubsystems[] = $subSystem;
+            }
+        }
+
+        return $originalSubsystems;
+    }
+
     public function addSubSystem(SubSystem $subSystem): static
     {
         if (!$this->subSystems->contains($subSystem)) {
@@ -88,12 +101,12 @@ class Floor
 
     public function getUsefulArea(): int
     {
-        if($this->getSubSystemAmount() === 0){
+        if($this->getOriginalSubSystemAmount() === 0){
             return 0;
         }
 
         $usefulArea = 0;
-        foreach ($this->subSystems as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             $usefulArea += $subSystem->getUsefulArea();
         }
 
@@ -102,12 +115,12 @@ class Floor
 
     public function getWallArea(): int
     {
-        if($this->getSubSystemAmount() === 0){
+        if($this->getOriginalSubSystemAmount() === 0){
             return 0;
         }
 
         $wallArea = 0;
-        foreach ($this->subSystems as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             $wallArea += $subSystem->getWallArea();
         }
 
@@ -116,12 +129,12 @@ class Floor
 
     public function getEmptyArea(): int
     {
-        if($this->getSubSystemAmount() === 0){
+        if($this->getOriginalSubSystemAmount() === 0){
             return 0;
         }
 
         $emptyArea = 0;
-        foreach ($this->subSystems as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             $emptyArea += $subSystem->getEmptyArea();
         }
 
@@ -135,12 +148,12 @@ class Floor
 
     public function getMaxHeight(): int
     {
-        if($this->getSubSystemAmount() === 0){
+        if($this->getOriginalSubSystemAmount() === 0){
             return 0;
         }
 
         $maxHeight = 0;
-        foreach ($this->subSystems as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             if($subSystem->getMaxHeight() > $maxHeight){
                 $maxHeight = $subSystem->getMaxHeight();
             }
@@ -203,12 +216,17 @@ class Floor
 
     public function hasSubSystems(): bool
     {
-        return $this->getSubSystemAmount() > 0;
+        return $this->getOriginalSubSystemAmount() > 0;
     }
 
     public function getSubSystemAmount(): int
     {
         return $this->getSubSystems()->count();
+    }
+
+    public function getOriginalSubSystemAmount(): int
+    {
+        return count($this->getOriginalSubsystems());
     }
 
     public function getOriginal(): ?self
@@ -223,10 +241,16 @@ class Floor
         return $this;
     }
 
-    public function reply(): Floor|static
+    public function reply(EntityManagerInterface $entityManager): Floor|static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
+
+        $entityManager->persist($replica);
+
+        foreach ($this->getOriginalSubsystems() as $subSystem){
+            $subSystem->reply($entityManager);
+        }
 
         return $replica;
     }
@@ -251,20 +275,20 @@ class Floor
         }*/
 
         $totalHeight = 0;
-        foreach ($this->subSystems as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             $totalHeight += $subSystem->getMaxHeight();
         }
 
-        return ($totalHeight % $this->getSubSystemAmount()) > 0;
+        return ($totalHeight % $this->getOriginalSubSystemAmount()) > 0;
     }
 
     public function allLocalsAreClassified(): bool
     {
-        if($this->getSubSystemAmount() == 0){
+        if($this->getOriginalSubSystemAmount() == 0){
             return false;
         }
 
-        foreach ($this->getSubSystems() as $subSystem){
+        foreach ($this->getOriginalSubsystems() as $subSystem){
             if(!$subSystem->allLocalsAreClassified()){
                 return false;
             }

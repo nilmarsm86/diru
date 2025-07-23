@@ -71,7 +71,8 @@ class SubSystemRepository extends ServiceEntityRepository
     {
         $builder = $this->createQueryBuilder('ss')->select(['ss', 'f'])
             ->leftJoin('ss.floor', 'f')
-            ->andWhere('f.id = :idFloor');
+            ->andWhere('f.id = :idFloor')
+            ->andWhere('ss.original IS NULL');
         $builder->setParameter(':idFloor', $floor->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->addOrderBy('ss.name', 'ASC')

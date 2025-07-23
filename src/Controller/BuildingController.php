@@ -9,6 +9,7 @@ use App\Repository\BuildingRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -81,5 +82,18 @@ final class BuildingController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la obra.';
         return $crudActionService->deleteAction($request, $buildingRepository, $building, $successMsg, 'app_building_index');
+    }
+
+    #[Route('/reply/{id}', name: 'app_building_reply', methods: ['GET'])]
+    public function reply(Request $request, Building $building, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $building->reply($entityManager);
+            $this->addFlash('success', 'Se ha replicado la obra');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('app_floor_index', ['building' => $building->getId()]);
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\SubSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
@@ -266,10 +267,16 @@ class SubSystem
         return $this;
     }
 
-    public function reply(): Floor|static
+    public function reply(EntityManagerInterface $entityManager): Floor|static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
+
+        $entityManager->persist($replica);
+
+        foreach ($this->getLocals() as $local){
+            $local->reply($entityManager);
+        }
 
         return $replica;
     }
@@ -277,5 +284,10 @@ class SubSystem
     public function notWallArea(): bool
     {
         return $this->getWallArea() === 0;
+    }
+
+    public function isOriginal(): bool
+    {
+        return is_null($this->getOriginal());
     }
 }

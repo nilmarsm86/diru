@@ -6,6 +6,7 @@ use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\LocalRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
@@ -68,6 +69,14 @@ class Local
 
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $original = null;
+
+    #[ORM\Column]
+    private ?bool $impactHigherLevels = null;
+
+    public function __construct()
+    {
+        $this->impactHigherLevels = false;
+    }
 
     public function getId(): ?int
     {
@@ -165,6 +174,11 @@ class Local
     {
         $this->type = $this->getType()->value;
         $this->technicalStatus = $this->getTechnicalStatus()->value;
+
+        if($this->getType() == LocalType::WallArea){
+            $this->setName('Área de muro');
+            $this->setNumber(0);
+        }
     }
 
     #[ORM\PostLoad]
@@ -209,11 +223,25 @@ class Local
         return $this;
     }
 
-    public function reply(): Floor|static
+    public function reply(EntityManagerInterface $entityManager): Floor|static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
 
+        $entityManager->persist($replica);
+
         return $replica;
+    }
+
+    public function isImpactHigherLevels(): ?bool
+    {
+        return $this->impactHigherLevels;
+    }
+
+    public function setImpactHigherLevels(bool $impactHigherLevels): static
+    {
+        $this->impactHigherLevels = $impactHigherLevels;
+
+        return $this;
     }
 }

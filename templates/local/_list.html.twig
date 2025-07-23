@@ -1,4 +1,4 @@
-{% if sub_system.allLocalsAreClassified() == false %}
+{% if sub_system.allLocalsAreClassified() == false or sub_system.notWallArea() %}
     {% set card_icon = ux_icon('material-symbols:warning-rounded', {
         'class':'bi text-warning',
         'data-bs-toggle':"tooltip",
@@ -64,6 +64,7 @@
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Estado</th>
+                    <th>Impacta</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -88,6 +89,20 @@
                                       data-bs-title="Para poder realizar la réplica se debe diagnosticar el estado técnico del local."
                                       data-bs-custom-class="danger-tooltip"
                                 >{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if local.impactHigherLevels %}
+                                {{ ux_icon('ep:success-filled', {
+                                    'class':'bi text-success',
+                                    'data-bs-toggle':"tooltip",
+                                    'data-bs-title':"Para poder realizar la réplica se debe diagnosticar el estado técnico de todos los locales.",
+                                    'data-bs-custom-class':"danger-tooltip"
+                                }) }}
+                            {% else %}
+                                {{ ux_icon('lsicon:minus-filled', {
+                                    'class':'bi',
+                                }) }}
                             {% endif %}
                         </td>
                         <td class="text-end">

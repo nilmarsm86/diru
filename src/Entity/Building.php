@@ -7,6 +7,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Exception;
@@ -94,6 +95,9 @@ class Building
     #[ORM\Column(nullable: true)]
     private ?bool $isNew = null;
 
+    #[ORM\Column]
+    private ?bool $hasReply = null;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -110,6 +114,8 @@ class Building
         $this->floors = new ArrayCollection();
 
 //        $this->isNew = false;
+
+        $this->hasReply = false;
     }
 
     public function getId(): ?int
@@ -685,6 +691,37 @@ class Building
         }
 
         return false;
+    }
+
+    public function canReply(): bool
+    {
+        return (!$this->notWallArea() && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied() && !$this->hasReply());
+    }
+
+    public function reply(EntityManagerInterface $entityManager): Building|static
+    {
+        foreach ($this->getFloors() as $floor){
+            $floor->reply($entityManager);
+        }
+
+        $this->setHasReply(true);
+        $entityManager->persist($this);
+
+        $entityManager->flush();
+
+        return $this;
+    }
+
+    public function hasReply(): ?bool
+    {
+        return $this->hasReply;
+    }
+
+    public function setHasReply(bool $hasReply): static
+    {
+        $this->hasReply = $hasReply;
+
+        return $this;
     }
 
 }

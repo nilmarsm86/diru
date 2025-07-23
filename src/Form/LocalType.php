@@ -52,10 +52,9 @@ class LocalType extends AbstractType
 //            ->add('type2', EnumType::class, [
 //                'class' => \App\Entity\Enums\LocalType::class,
 //            ])
-//            ->add('floor', EntityType::class, [
-//                'class' => Floor::class,
-//                'choice_label' => 'id',
-//            ])
+            ->add('impactHigherLevels', null, [
+                'label' => 'Tiene impacto en niveles superiores:'
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {

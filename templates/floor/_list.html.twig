@@ -22,7 +22,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3('', '', 'Salvar', 'Crear inmueble a modificar') }}
+            {% if building.canReply() %}
+                {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
+            {% endif %}
+
             <div class="dropdown d-inline-block">
                 <button type="button"
                         class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -80,7 +83,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Á. Util (m<sup>2</sup>)</th>
-                    <th>Á. Muro (m<sup>2</sup>)</th>
+                    <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
                     <th title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
                     <th>Altura (m)</th>
@@ -99,7 +102,7 @@
                             {{ floor.name }}
                             <span class="badge rounded-pill bg-danger" title="Subsistemas de la planta"
                                   style="cursor: pointer">
-                                {{ floor.getSubSystemAmount() }}
+                                {{ floor.getOriginalSubSystemAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
                         </td>
@@ -164,7 +167,7 @@
 
             {% block tableFooter %}
                 <tr>
-                    <th></th>
+                    <th>Resumen del inmueble:</th>
                     <th>{{ building.getUsefulArea() }}</th>
                     <th>{{ building.getWallArea() }}</th>
                     <th>{{ building.getEmptyArea() }}</th>

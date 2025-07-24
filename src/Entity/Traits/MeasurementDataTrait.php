@@ -58,9 +58,9 @@ trait MeasurementDataTrait
         return $this->getTotalArea($original) * $this->getMaxHeight($original);
     }
 
-    public function notWallArea(): bool
+    public function notWallArea(bool $original = true): bool
     {
-        return $this->getWallArea() === 0;
+        return $this->getWallArea($original) === 0;
     }
 
     public function makeReply(EntityManagerInterface $entityManager, Collection $items): static

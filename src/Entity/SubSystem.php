@@ -113,7 +113,7 @@ class SubSystem implements MeasurementDataInterface
 
         $data = 0;
         foreach ($locals as $local) {
-            $data += call_user_func([$locals, $method], [$original]);
+            $data += call_user_func([$locals, $method], $original);
         }
 
         return $data;
@@ -130,7 +130,14 @@ class SubSystem implements MeasurementDataInterface
     public function getMaxHeight(bool $original = true): int
     {
         $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
-        return $this->calculateMaxHeight($locals, $original);
+        $maxHeight = 0;
+        foreach ($locals as $local){
+            if($local->getHeight() > $maxHeight){
+                $maxHeight = $local->getHeight();
+            }
+        }
+
+        return $maxHeight;
     }
 
     public function isFullyOccupied(bool $original = true): bool

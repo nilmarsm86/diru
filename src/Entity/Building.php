@@ -615,7 +615,7 @@ class Building implements MeasurementDataInterface
 
         $data = 0;
         foreach ($floors as $floor){
-            $data += call_user_func([$floor, $method], [$original]);
+            $data += call_user_func([$floor, $method], $original);
         }
 
         return $data;
@@ -665,7 +665,7 @@ class Building implements MeasurementDataInterface
         return (!$this->notWallArea($original) && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied($original) && !$this->hasReply());
     }
 
-    public function reply(EntityManagerInterface $entityManager): Building|static
+    public function reply(EntityManagerInterface $entityManager): static
     {
         foreach ($this->getOriginalFloors() as $floor){
             $floor->reply($entityManager);

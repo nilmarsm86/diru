@@ -122,7 +122,7 @@ class Floor implements MeasurementDataInterface
 
         $data = 0;
         foreach ($subsystems as $subsystem){
-            $data += call_user_func([$subsystem, $method], [$original]);
+            $data += call_user_func([$subsystem, $method], $original);
         }
 
         return $data;

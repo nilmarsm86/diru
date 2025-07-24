@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
+use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\NameToStringTrait;
+use App\Entity\Traits\OriginalTrait;
 use App\Repository\LocalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 class Local
 {
     use NameToStringTrait;
+    use OriginalTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -66,9 +69,6 @@ class Local
     #[Assert\Valid]
 //    #[Assert\NotBlank(message: 'Establezca el subsistema.')]
     private ?SubSystem $subSystem = null;
-
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $original = null;
 
     #[ORM\Column]
     private ?bool $impactHigherLevels = null;
@@ -144,18 +144,6 @@ class Local
         return $this;
     }
 
-//    public function getType2(): ?LocalType
-//    {
-//        return $this->type2;
-//    }
-//
-//    public function setType2(LocalType $type2): static
-//    {
-//        $this->type2 = $type2;
-//
-//        return $this;
-//    }
-
     public function getSubSystem(): ?SubSystem
     {
         return $this->subSystem;
@@ -209,18 +197,6 @@ class Local
     public function isClassified(): bool
     {
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
-    }
-
-    public function getOriginal(): ?self
-    {
-        return $this->original;
-    }
-
-    public function setOriginal(?self $original): static
-    {
-        $this->original = $original;
-
-        return $this;
     }
 
     public function reply(EntityManagerInterface $entityManager): Floor|static

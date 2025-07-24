@@ -4,7 +4,10 @@ namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
+use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
+use App\Entity\Traits\OriginalTrait;
 use App\Repository\SubSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,10 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: SubSystemRepository::class)]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name', )]
-class SubSystem
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name',)]
+class SubSystem implements MeasurementDataInterface
 {
     use NameToStringTrait;
+    use OriginalTrait;
+    use MeasurementDataTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,9 +42,6 @@ class SubSystem
 //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $original = null;
-
     public function __construct()
     {
         $this->locals = new ArrayCollection();
@@ -56,6 +58,16 @@ class SubSystem
     public function getLocals(): Collection
     {
         return $this->locals;
+    }
+
+    public function getOriginalLocals(): ArrayCollection
+    {
+        return $this->getItemsFilter($this->getLocals(), true);
+    }
+
+    public function getReplyLocals(): ArrayCollection
+    {
+        return $this->getItemsFilter($this->getLocals(), false);
     }
 
     public function addLocal(Local $local): static
@@ -80,15 +92,105 @@ class SubSystem
         return $this;
     }
 
-    public function getUsefulArea(): int
+    public function hasLocals(): bool
     {
-        if($this->getLocalsAmount() === 0){
+        return $this->getLocalsAmount() > 0;
+    }
+
+    public function hasOriginalLocals(): bool
+    {
+        return $this->getOriginalLocals() > 0;
+    }
+
+    public function hasReplyLocals(): bool
+    {
+        return $this->getReplyLocals() > 0;
+    }
+
+    public function getMeasurementData(string $method, bool $original = true): mixed
+    {
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        $data = 0;
+        foreach ($locals as $local) {
+            $data += call_user_func([$locals, $method], [$original]);
+        }
+
+        return $data;
+    }
+
+    public function getUnassignedArea(bool $original = true): ?int
+    {
+        $isNew = $this->getFloor()->getBuilding()->isNew();
+        $landArea = $this->getFloor()->getBuilding()->getLandArea();
+        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea($original);
+    }
+
+    public function getMaxHeight(bool $original = true): int
+    {
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        return $this->calculateMaxHeight($locals, $original);
+    }
+
+    public function isFullyOccupied(bool $original = true): bool
+    {
+        throw new \Exception("Not need");
+    }
+
+    public function getLocalsAmount(bool $original = true): int
+    {
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        return $locals->count();
+    }
+
+    public function reply(EntityManagerInterface $entityManager): static
+    {
+//        $replica = clone $this;
+//        $replica->setOriginal($this);
+//
+//        $entityManager->persist($replica);
+//
+//        foreach ($this->getLocals() as $local) {
+//            $local->reply($entityManager);
+//        }
+//
+//        return $replica;
+        return $this->makeReply($entityManager, $this->getLocals());
+    }
+
+    public function hasVariableHeights(bool $original = true): bool
+    {
+        $totalHeight = $this->getMeasurementData('getHeight', $original);
+        return ($totalHeight % $this->getLocalsAmount($original)) > 0;
+    }
+
+    public function allLocalsAreClassified(): bool
+    {
+        if ($this->getLocalsAmount(true) == 0) {
+            return false;
+        }
+
+        foreach ($this->getOriginalLocals() as $local) {
+            if (!$local->isClassified()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getUsefulArea(bool $original = true): int
+    {
+        if ($this->getLocalsAmount($original) === 0) {
             return 0;
         }
 
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
         $usefulArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::Local){
+        foreach ($locals as $local) {
+            if ($local->getType() === LocalType::Local) {
                 $usefulArea += $local->getArea();
             }
         }
@@ -96,15 +198,17 @@ class SubSystem
         return $usefulArea;
     }
 
-    public function getWallArea(): int
+    public function getWallArea(bool $original = true): int
     {
-        if($this->getLocalsAmount() === 0){
+        if ($this->getLocalsAmount($original) === 0) {
             return 0;
         }
 
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
         $wallArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::WallArea){
+        foreach ($locals as $local) {
+            if ($local->getType() === LocalType::WallArea) {
                 $wallArea += $local->getArea();
             }
         }
@@ -112,46 +216,22 @@ class SubSystem
         return $wallArea;
     }
 
-    public function getEmptyArea(): int
+    public function getEmptyArea(bool $original = true): int
     {
-        if($this->getLocalsAmount() === 0){
+        if ($this->getLocalsAmount() === 0) {
             return 0;
         }
 
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
         $emptyArea = 0;
-        foreach ($this->locals as $local){
-            if($local->getType() === LocalType::EmptyArea){
+        foreach ($locals as $local) {
+            if ($local->getType() === LocalType::EmptyArea) {
                 $emptyArea += $local->getArea();
             }
         }
 
         return $emptyArea;
-    }
-
-    public function getTotalSubSystemArea(): int
-    {
-        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
-    }
-
-    public function getMaxHeight(): int
-    {
-        if($this->getLocalsAmount() === 0){
-            return 0;
-        }
-
-        $maxHeight = 0;
-        foreach ($this->locals as $local){
-            if($local->getHeight() > $maxHeight){
-                $maxHeight = $local->getHeight();
-            }
-        }
-
-        return $maxHeight;
-    }
-
-    public function getVolume(): float|int
-    {
-        return $this->getTotalSubSystemArea() * $this->getMaxHeight();
     }
 
     public function getFloor(): ?Floor
@@ -166,32 +246,7 @@ class SubSystem
         return $this;
     }
 
-    public function hasLocals(): bool
-    {
-        return $this->getLocalsAmount() > 0;
-    }
-
-    public function getLocalsAmount(): int
-    {
-        return $this->getLocals()->count();
-    }
-
-    public function allLocalsAreClassified(): bool
-    {
-        if($this->getLocalsAmount() == 0){
-            return false;
-        }
-
-        foreach ($this->locals as $local){
-            if(!$local->isClassified()){
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function getAmountLocalTechnicalStatus(): array
+    public function getAmountLocalTechnicalStatus(bool $original = true): array
     {
         $undefined = 0;
         $critital = 0;
@@ -199,8 +254,10 @@ class SubSystem
         $regular = 0;
         $good = 0;
 
-        foreach ($this->getLocals() as $local){
-            $states = match ($local->getTechnicalStatus()) {
+        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        foreach ($locals as $local) {
+            match ($local->getTechnicalStatus()) {
                 LocalTechnicalStatus::Critical => $critital++,
                 LocalTechnicalStatus::Bad => $bad++,
                 LocalTechnicalStatus::Regular => $regular++,
@@ -226,8 +283,8 @@ class SubSystem
         $regular = 0;
         $good = 0;
 
-        foreach ($this->getLocals() as $local){
-            $states = match ($local->getTechnicalStatus()) {
+        foreach ($this->getLocals() as $local) {
+            match ($local->getTechnicalStatus()) {
                 LocalTechnicalStatus::Critical => $critital += $local->getArea(),
                 LocalTechnicalStatus::Bad => $bad += $local->getArea(),
                 LocalTechnicalStatus::Regular => $regular += $local->getArea(),
@@ -248,46 +305,11 @@ class SubSystem
     public function getAmountMeters(): ?int
     {
         $total = 0;
-        foreach ($this->getLocals() as $local){
+        foreach ($this->getLocals() as $local) {
             $total += $local->getArea();
         }
 
         return $total;
     }
 
-    public function getOriginal(): ?self
-    {
-        return $this->original;
-    }
-
-    public function setOriginal(?self $original): static
-    {
-        $this->original = $original;
-
-        return $this;
-    }
-
-    public function reply(EntityManagerInterface $entityManager): Floor|static
-    {
-        $replica = clone $this;
-        $replica->setOriginal($this);
-
-        $entityManager->persist($replica);
-
-        foreach ($this->getLocals() as $local){
-            $local->reply($entityManager);
-        }
-
-        return $replica;
-    }
-
-    public function notWallArea(): bool
-    {
-        return $this->getWallArea() === 0;
-    }
-
-    public function isOriginal(): bool
-    {
-        return is_null($this->getOriginal());
-    }
 }

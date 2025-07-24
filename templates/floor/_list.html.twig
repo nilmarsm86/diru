@@ -102,7 +102,7 @@
                             {{ floor.name }}
                             <span class="badge rounded-pill bg-danger" title="Subsistemas de la planta"
                                   style="cursor: pointer">
-                                {{ floor.getOriginalSubSystemAmount() }}
+                                {{ floor.getSubSystemAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
                         </td>
@@ -125,7 +125,7 @@
                             {% endif %}
                         </td>
                         <td>{{ floor.getEmptyArea() }}</td>
-                        <td>{{ floor.getTotalFloorArea() }}</td>
+                        <td>{{ floor.getTotalArea() }}</td>
                         <td>{{ floor.getMaxHeight() }}</td>
                         <td>{{ floor.getVolume() }}</td>
                         <td>

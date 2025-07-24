@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\LocalType;
+use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
+use App\Entity\Traits\OriginalTrait;
 use App\Repository\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,9 +18,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'building'], message: 'Ya existe en la obra una planta con este nombre.', errorPath: 'name')]
 #[DoctrineAssert\UniqueEntity(fields: ['position', 'building'], message: 'Ya existe en la obra una planta en esa posición.', errorPath: 'position')]
-class Floor
+class Floor implements MeasurementDataInterface
 {
     use NameToStringTrait;
+    use OriginalTrait;
+    use MeasurementDataTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,8 +45,7 @@ class Floor
     #[ORM\Column]
     private ?bool $groundFloor = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
-    private ?self $original = null;
+
 
     #[ORM\Column]
     private ?int $position = null;
@@ -65,16 +69,14 @@ class Floor
         return $this->subSystems;
     }
 
-    public function getOriginalSubsystems(): array
+    public function getOriginalSubsystems(): ArrayCollection
     {
-        $originalSubsystems = [];
-        foreach ($this->getSubSystems() as $subSystem){
-            if($subSystem->isOriginal()){
-                $originalSubsystems[] = $subSystem;
-            }
-        }
+        return $this->getItemsFilter($this->getSubSystems(), true);
+    }
 
-        return $originalSubsystems;
+    public function getReplySubsystems(): ArrayCollection
+    {
+        return $this->getItemsFilter($this->getSubSystems(), false);
     }
 
     public function addSubSystem(SubSystem $subSystem): static
@@ -99,72 +101,51 @@ class Floor
         return $this;
     }
 
-    public function getUsefulArea(): int
+    public function hasSubSystems(): bool
     {
-        if($this->getOriginalSubSystemAmount() === 0){
-            return 0;
-        }
-
-        $usefulArea = 0;
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            $usefulArea += $subSystem->getUsefulArea();
-        }
-
-        return $usefulArea;
+        return $this->getSubSystemAmount() > 0;
     }
 
-    public function getWallArea(): int
+    public function hasOriginalSubSystems(): bool
     {
-        if($this->getOriginalSubSystemAmount() === 0){
-            return 0;
-        }
-
-        $wallArea = 0;
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            $wallArea += $subSystem->getWallArea();
-        }
-
-        return $wallArea;
+        return $this->getSubSystemAmount(true) > 0;
     }
 
-    public function getEmptyArea(): int
+    public function hasReplySubSystems(): bool
     {
-        if($this->getOriginalSubSystemAmount() === 0){
-            return 0;
-        }
-
-        $emptyArea = 0;
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            $emptyArea += $subSystem->getEmptyArea();
-        }
-
-        return $emptyArea;
+        return $this->getSubSystemAmount(false) > 0;
     }
 
-    public function getTotalFloorArea(): int
+    public function getMeasurementData(string $method, bool $original = true): mixed
     {
-        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
-    }
+        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
-    public function getMaxHeight(): int
-    {
-        if($this->getOriginalSubSystemAmount() === 0){
-            return 0;
+        $data = 0;
+        foreach ($subsystems as $subsystem){
+            $data += call_user_func([$subsystem, $method], [$original]);
         }
 
-        $maxHeight = 0;
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            if($subSystem->getMaxHeight() > $maxHeight){
-                $maxHeight = $subSystem->getMaxHeight();
-            }
-        }
-
-        return $maxHeight;
+        return $data;
     }
 
-    public function getVolume(): float|int
+    public function getUnassignedArea(bool $original = true): ?int
     {
-        return $this->getTotalFloorArea() * $this->getMaxHeight();
+//        if($this->getBuilding()->isNew()){
+//            return $this->getBuilding()->getLandArea() - $this->getTotalArea();
+//        }else{
+//            return $this->getBuilding()->getOccupiedArea() - $this->getTotalArea();
+//        }
+
+        $isNew = $this->getBuilding()->isNew();
+        $landArea = $this->getBuilding()->getLandArea();
+        $occupiedArea = $this->getBuilding()->getOccupiedArea();
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea($original);
+    }
+
+    public function getMaxHeight(bool $original = true): int
+    {
+        $subSystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        return $this->calculateMaxHeight($subSystems, $original);
     }
 
     public function getBuilding(): ?Building
@@ -191,110 +172,51 @@ class Floor
         return $this;
     }
 
-    public function isFullyOccupied(): bool
+    public function isFullyOccupied(bool $original = true): bool
     {
-        if($this->getBuilding()->isNew()){
-            return $this->getBuilding()->getLandArea() <= $this->getTotalFloorArea();
-        }else{
-            return $this->getBuilding()->getOccupiedArea() <= $this->getTotalFloorArea();
-        }
+//        if($this->getBuilding()->isNew()){
+//            return $this->getBuilding()->getLandArea() <= $this->getTotalArea();
+//        }else{
+//            return $this->getBuilding()->getOccupiedArea() <= $this->getTotalArea();
+//        }
+        return $this->getTotalArea($original) >= (($this->getBuilding()->isNew()) ? $this->getBuilding()->getLandArea() : $this->getBuilding()->getOccupiedArea());
     }
 
-    public function getUnassignedArea(): ?int
+    public function getSubSystemAmount(bool $original = true): int
     {
-        if($this->getBuilding()->isNew()){
-            return $this->getBuilding()->getLandArea() - $this->getTotalFloorArea();
-        }else{
-            return $this->getBuilding()->getOccupiedArea() - $this->getTotalFloorArea();
-        }
+        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        return $subsystems->count();
     }
 
     public function hasSubSystemAndIsNotCompletlyEmptyArea(): bool
     {
-        return $this->hasSubSystems() && ($this->getUsefulArea() > 0);
+        return $this->hasOriginalSubSystems() && ($this->getUsefulArea(true) > 0);
     }
 
-    public function hasSubSystems(): bool
+    public function reply(EntityManagerInterface $entityManager): static
     {
-        return $this->getOriginalSubSystemAmount() > 0;
+//        $replica = clone $this;
+//        $replica->setOriginal($this);
+//
+//        $entityManager->persist($replica);
+//
+//        foreach ($this->getOriginalSubsystems() as $subSystem){
+//            $subSystem->reply($entityManager);
+//        }
+//
+//        return $replica;
+        return $this->makeReply($entityManager, $this->getOriginalSubsystems());
     }
 
-    public function getSubSystemAmount(): int
+    public function hasVariableHeights(bool $original = true): bool
     {
-        return $this->getSubSystems()->count();
-    }
-
-    public function getOriginalSubSystemAmount(): int
-    {
-        return count($this->getOriginalSubsystems());
-    }
-
-    public function getOriginal(): ?self
-    {
-        return $this->original;
-    }
-
-    public function setOriginal(?self $original): static
-    {
-        $this->original = $original;
-
-        return $this;
-    }
-
-    public function reply(EntityManagerInterface $entityManager): Floor|static
-    {
-        $replica = clone $this;
-        $replica->setOriginal($this);
-
-        $entityManager->persist($replica);
-
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            $subSystem->reply($entityManager);
-        }
-
-        return $replica;
-    }
-
-    public function notWallArea(): bool
-    {
-        return $this->getWallArea() === 0;
-    }
-
-    public function getTotalArea(): int
-    {
-        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
-    }
-
-    public function hasVariableHeights(): bool
-    {
-        /*$maxHeight = $this->getMaxHeight();
-        foreach ($this->subSystems as $subSystem){
-            if($subSystem->getMaxHeight() < $maxHeight){
-                return true;
-            }
-        }*/
-
-        $totalHeight = 0;
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            $totalHeight += $subSystem->getMaxHeight();
-        }
-
-        return ($totalHeight % $this->getOriginalSubSystemAmount()) > 0;
+        $totalHeight = $this->getMeasurementData('getMaxHeight', $original);
+        return ($totalHeight % $this->getSubSystemAmount($original)) > 0;
     }
 
     public function allLocalsAreClassified(): bool
     {
-        if($this->getOriginalSubSystemAmount() == 0){
-            return false;
-        }
-
-        foreach ($this->getOriginalSubsystems() as $subSystem){
-            if(!$subSystem->allLocalsAreClassified()){
-                return false;
-            }
-        }
-
-        return true;
+        return $this->calculateAllLocalsAreClassified($this->getOriginalSubsystems());
     }
 
     public function getPosition(): ?int
@@ -307,5 +229,64 @@ class Floor
         $this->position = $position;
 
         return $this;
+    }
+
+
+    public function getAmountLocalTechnicalStatus(bool $original = true): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        foreach ($subsystems as $subsystem) {
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountLocalTechnicalStatus($original);
+
+            $undefined += $undefinedState;
+            $critital += $crititalState;
+            $bad += $badState;
+            $regular += $regularState;
+            $good += $goodState;
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
+    }
+
+    public function getAmountMeterTechnicalStatus(bool $original = true): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        foreach ($subsystems as $subsystem) {
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountMeterTechnicalStatus($original);
+
+            $undefined += $undefinedState;
+            $critital += $crititalState;
+            $bad += $badState;
+            $regular += $regularState;
+            $good += $goodState;
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
     }
 }

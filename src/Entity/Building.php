@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
+use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,9 +19,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'project'], message: 'Ya existe en el proyecto una obra con este nombre.', errorPath: 'name')]
-class Building
+class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
+    use MeasurementDataTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -467,6 +470,30 @@ class Building
         return $this->floors;
     }
 
+    public function getOriginalFloors(): ArrayCollection
+    {
+        $originalFloors = new ArrayCollection();
+        foreach ($this->getFloors() as $floor){
+            if($floor->isOriginal()){
+                $originalFloors->add($floor);
+            }
+        }
+
+        return $originalFloors;
+    }
+
+    public function getReplyFloors(): ArrayCollection
+    {
+        $replyFloors = new ArrayCollection();
+        foreach ($this->getFloors() as $floor){
+            if(!$floor->isOriginal()){
+                $replyFloors->add($floor);
+            }
+        }
+
+        return $replyFloors;
+    }
+
     public function addFloor(Floor $floor): static
     {
         if (!$this->floors->contains($floor)) {
@@ -494,9 +521,19 @@ class Building
         return $this->getFloorAmount() > 0;
     }
 
+    public function hasOriginalFloors(): bool
+    {
+        return $this->getFloorAmount(true) > 0;
+    }
+
+    public function hasReplyFloors(): bool
+    {
+        return $this->getFloorAmount(false) > 0;
+    }
+
     public function isBuildingNew(): bool
     {
-        return $this->hasFloors() === false;
+        return $this->hasOriginalFloors() === false;
     }
 
     public function cancel(): static
@@ -561,11 +598,7 @@ class Building
 
     public function getMaxArea(): ?int
     {
-        if($this->isNew){
-            return $this->getLandArea();
-        }else{
-            return $this->getOccupiedArea();
-        }
+        return ($this->isNew) ? $this->getLandArea() : $this->getOccupiedArea();
     }
 
     public function shortName(): ?string
@@ -576,131 +609,65 @@ class Building
         return $this->getName();
     }
 
-    public function getUsefulArea(): int
+    public function getMeasurementData(string $method, bool $original = true): mixed
     {
-        if($this->getFloorAmount() === 0){
-            return 0;
+        $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        $data = 0;
+        foreach ($floors as $floor){
+            $data += call_user_func([$floor, $method], [$original]);
         }
 
-        $usefulArea = 0;
-        foreach ($this->floors as $floor){
-            $usefulArea += $floor->getUsefulArea();
-        }
-
-        return $usefulArea;
+        return $data;
     }
 
-    public function getWallArea(): int
+    public function getUnassignedArea(bool $original = true): ?int
     {
-        if($this->getFloorAmount() === 0){
-            return 0;
-        }
-
-        $wallArea = 0;
-        foreach ($this->floors as $floor){
-            $wallArea += $floor->getWallArea();
-        }
-
-        return $wallArea;
+        return $this->getMeasurementData('getUnassignedArea', $original);
     }
 
-    public function getEmptyArea(): int
+    public function getMaxHeight(bool $original = true): int
     {
-        if($this->getFloorAmount() === 0){
-            return 0;
-        }
-
-        $emptyArea = 0;
-        foreach ($this->floors as $floor){
-            $emptyArea += $floor->getEmptyArea();
-        }
-
-        return $emptyArea;
+        $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        return $this->calculateMaxHeight($floors, $original);
     }
 
-    public function getTotalArea(): int
+    public function isFullyOccupied(bool $original = true): bool
     {
-        return $this->getUsefulArea() + $this->getWallArea() + $this->getEmptyArea();
+//        if($this->isNew()){
+//            return $this->getLandArea() <= $this->getTotalArea($original);
+//        }else{
+//            return $this->getOccupiedArea() <= $this->getTotalArea($original);
+//        }
+
+        return $this->getTotalArea($original) >= (($this->isNew()) ? $this->getLandArea() : $this->getOccupiedArea());
     }
 
-    public function getMaxHeight(): int
+    private function getFloorAmount(bool $original = true): int
     {
-        if($this->getFloorAmount() === 0){
-            return 0;
-        }
-
-        $maxHeight = 0;
-        foreach ($this->floors as $floor){
-            if($floor->getMaxHeight() > $maxHeight){
-                $maxHeight = $floor->getMaxHeight();
-            }
-        }
-
-        return $maxHeight;
+        $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        return $floors->count();
     }
 
-    public function getVolume(): float|int
-    {
-        return $this->getTotalArea() * $this->getMaxHeight();
-    }
-
-    public function isFullyOccupied(): bool
-    {
-        if($this->isNew()){
-            return $this->getLandArea() <= $this->getTotalArea();
-        }else{
-            return $this->getOccupiedArea() <= $this->getTotalArea();
-        }
-    }
-
-    public function getUnassignedArea(): ?int
-    {
-        if($this->getFloorAmount() === 0){
-            return 0;
-        }
-
-        $unassignedArea = 0;
-        foreach ($this->floors as $floor){
-            $unassignedArea += $floor->getUnassignedArea();
-        }
-
-        return $unassignedArea;
-    }
-
-    public function getFloorAmount(): int
-    {
-        return $this->getFloors()->count();
-    }
-
+    //just for original
     public function hasFloorAndIsNotCompletlyEmptyArea(): bool
     {
-        return $this->hasFloors() && ($this->getUsefulArea() > 0);
+        return $this->hasOriginalFloors() && ($this->getUsefulArea(true) > 0);
     }
 
-    public function getCus(): float|int
+    public function getCus(bool $original = true): float|int
     {
-        return $this->getTotalArea() / $this->getLandArea();
+        return $this->getTotalArea($original) / $this->getLandArea();
     }
 
-    public function notWallArea(): bool
+    public function canReply(bool $original = true): bool
     {
-        foreach ($this->getFloors() as $floor){
-            if($floor->notWallArea()){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function canReply(): bool
-    {
-        return (!$this->notWallArea() && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied() && !$this->hasReply());
+        return (!$this->notWallArea($original) && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied($original) && !$this->hasReply());
     }
 
     public function reply(EntityManagerInterface $entityManager): Building|static
     {
-        foreach ($this->getFloors() as $floor){
+        foreach ($this->getOriginalFloors() as $floor){
             $floor->reply($entityManager);
         }
 
@@ -724,4 +691,66 @@ class Building
         return $this;
     }
 
+    public function allLocalsAreClassified(): bool
+    {
+        return $this->calculateAllLocalsAreClassified($this->getOriginalFloors());
+    }
+
+    public function getAmountLocalTechnicalStatus(bool $original = true): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        foreach ($floors as $floor) {
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountLocalTechnicalStatus($original);
+
+            $undefined += $undefinedState;
+            $critital += $crititalState;
+            $bad += $badState;
+            $regular += $regularState;
+            $good += $goodState;
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
+    }
+
+    public function getAmountMeterTechnicalStatus(bool $original = true): array
+    {
+        $undefined = 0;
+        $critital = 0;
+        $bad = 0;
+        $regular = 0;
+        $good = 0;
+
+        $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        foreach ($floors as $floor) {
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountMeterTechnicalStatus($original);
+
+            $undefined += $undefinedState;
+            $critital += $crititalState;
+            $bad += $badState;
+            $regular += $regularState;
+            $good += $goodState;
+        }
+
+        return [
+            'good' => $good,
+            'regular' => $regular,
+            'bad' => $bad,
+            'critical' => $critital,
+            'undefined' => $undefined
+        ];
+    }
 }

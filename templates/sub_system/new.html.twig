@@ -3,20 +3,20 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Nuevo Sub sistema{% endblock %}
+{% block title %}Nuevo Subsistema{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Sub sistema', 'ix:building-block-filled') }}
+        {{ h1('Subsistema', 'ix:building-block-filled') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Sub sistemas', href: path('app_sub_system_index', {'floor':floor.id})},
+            {label: 'Subsistemas', href: path('app_sub_system_index', {'floor':floor.id})},
             {label: 'Nuevo'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Agregar sub sistema: {{ floor.name }}</h2>
+    <h2 class="mb-4">Agregar subsistema: {{ floor.name }}</h2>
 
     {{ include('sub_system/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

@@ -49,7 +49,7 @@ final class SubSystemController extends AbstractController
     {
         $subSystem = new SubSystem();
         return $crudActionService->formLiveComponentAction($request, $subSystem, 'sub_system', [
-            'title' => 'Nuevo Sub Sistema',
+            'title' => 'Nuevo Subsistema',
             'floor' => $floor
         ]);
     }
@@ -57,14 +57,14 @@ final class SubSystemController extends AbstractController
     #[Route('/{id}', name: 'app_sub_system_show', methods: ['GET'])]
     public function show(Request $request, SubSystem $subSystem, CrudActionService $crudActionService): Response
     {
-        return $crudActionService->showAction($request, $subSystem, 'sub_system', 'subSystem', 'Detalles del sub sistema');
+        return $crudActionService->showAction($request, $subSystem, 'sub_system', 'subSystem', 'Detalles del subsistema');
     }
 
     #[Route('/{id}/edit/{floor}', name: 'app_sub_system_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, SubSystem $subSystem, CrudActionService $crudActionService, Floor $floor): Response
     {
         return $crudActionService->formLiveComponentAction($request, $subSystem, 'sub_system', [
-            'title' => 'Editar Sub sistema',
+            'title' => 'Editar Subsistema',
             'floor' => $floor
         ]);
     }
@@ -72,7 +72,7 @@ final class SubSystemController extends AbstractController
     #[Route('/{id}', name: 'app_sub_system_delete', methods: ['POST'])]
     public function delete(Request $request, SubSystem $subSystem, SubSystemRepository $subSystemRepository, CrudActionService $crudActionService, Floor $floor): Response
     {
-        $successMsg = 'Se ha eliminado el sub sistema.';
+        $successMsg = 'Se ha eliminado el subsistema.';
         return $crudActionService->deleteAction($request, $subSystemRepository, $subSystem, $successMsg, 'app_sub_system_index', [
             'floor' => $floor->getId()
         ]);
@@ -84,7 +84,7 @@ final class SubSystemController extends AbstractController
         return $this->render("sub_system/report.html.twig", [
             'local_status' => $subSystem->getAmountLocalTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
-            'title' => 'Estado tecnico de los locales del subsistema',
+            'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem
         ]);
     }

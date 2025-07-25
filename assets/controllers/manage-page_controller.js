@@ -75,6 +75,14 @@ export default class extends AbstractController {
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
+
+        const toastList = document.querySelectorAll('.toast');
+        [...toastList].map(toast => {
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        });
+
     }
 
     backdrop(backdropElement, action) {

@@ -2,7 +2,7 @@
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
-        'data-bs-title':"Se deben corregir algunos errores.",
+        'data-bs-title':"Revisar datos de las plantas.",
         'data-bs-custom-class':"danger-tooltip"
     }) %}
 {% else %}
@@ -83,6 +83,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th></th>
+                    <th>#</th>
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
@@ -113,6 +114,10 @@
                                 <span class="visually-hidden">Locales</span>
                             </span>
                         </td>
+                        <td>
+                            {{ floor.position }}
+                        </td>
+
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUsefulArea() }}

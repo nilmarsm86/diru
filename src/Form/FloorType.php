@@ -50,7 +50,7 @@ class FloorType extends AbstractType
                 ]+$disabled
             ])
             ->add('position', null, [
-                'label' => 'Position:',
+                'label' => 'Posición:',
                 'attr' => [
                         'placeholder' => 'Posición'
                     ]+$disabled

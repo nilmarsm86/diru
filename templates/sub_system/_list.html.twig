@@ -2,7 +2,7 @@
     {% set card_icon = ux_icon('material-symbols:warning-rounded', {
         'class':'bi text-warning',
         'data-bs-toggle':"tooltip",
-        'data-bs-title':"Se deben corregir algunos errores.",
+        'data-bs-title':"Revisar datos de los subsistemas.",
         'data-bs-custom-class':"warning-tooltip"
     }) %}
 {% else %}
@@ -16,7 +16,7 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de sub sistemas',
+    title: 'Listado de subsistemas',
     icon: card_icon
 } %}
     {% block header %}
@@ -55,10 +55,10 @@
                     </li>
                 </ul>
             </div>
-            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }}
             {% if floor.isFullyOccupied() == false %}
-                {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo sub sistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
+                {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo subsistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
             {% endif %}
+            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }}
         </div>
     {% endblock %}
 
@@ -115,7 +115,7 @@
                         <td>
                             <span
                                     class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
-                                    title="Locales del sub sistema"
+                                    title="Locales del subsistema"
                                     {% if sub_system.hasOriginalLocals() == false %}
                                         data-bs-toggle="tooltip" data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
                                     {% endif %}
@@ -184,13 +184,13 @@
                                 </ul>
                             </div>
                             {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
-                            {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar sub sistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
+                            {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
                             {% if floor.building.isNew() %}
                                 {{ component('DeleteForm', {
                                     path: path('app_sub_system_delete', {'id': sub_system.id}),
-                                    confirm: 'Está seguro que desea eliminar el sub sistema?',
+                                    confirm: 'Está seguro que desea eliminar el subsistema?',
                                     token: 'delete' ~ sub_system.id,
-                                    title: 'Eliminar sub sistema',
+                                    title: 'Eliminar subsistema',
                                     icon: 'bi:trash'
                                 }) }}
                             {% endif %}
@@ -198,7 +198,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="9">No se encontraron sub sistemas.</td>
+                        <td colspan="9">No se encontraron subsistemas.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

@@ -17,7 +17,7 @@ class SubSystemType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del sub sistema'
+                    'placeholder' => 'Nombre del subsistema'
                 ]
             ])
         ;

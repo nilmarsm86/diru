@@ -53,6 +53,12 @@ final class ProjectForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?int $client = 0;
 
+    #[LiveProp(writable: true)]
+    public ?int $individualClient = 0;
+
+    #[LiveProp(writable: true)]
+    public ?int $enterpriseClient = 0;
+
     #[LiveProp]
     public ?Contract $contract = null;
 
@@ -81,10 +87,50 @@ final class ProjectForm extends AbstractController
             $this->investment = 0;
         }
 
-        if ($this->client !== 0) {
-            $this->formValues['client'] = (string)$this->client;
-            $this->client = 0;
+        if(!is_null($this->pro->getId())){
+//            if ($this->individualClient !== 0) {
+//                $this->formValues['individualClient'] = (string)$this->individualClient;
+//                $this->individualClient = 0;
+//            }
+            if(!empty($this->formValues['individualClient'])){
+                $this->individualClient = $this->formValues['individualClient'];
+            }
+        }else{
+            if(!empty($this->formValues['individualClient'])){
+                if((int)$this->individualClient > (int)$this->formValues['individualClient']){
+                    $this->formValues['individualClient'] = (string)$this->individualClient;
+                }else{
+                    $this->individualClient = $this->formValues['individualClient'];
+                }
+            }
+
+            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
+                $this->formValues['individualClient'] = (string)$this->individualClient;
+            }
         }
+
+        if(!is_null($this->pro->getId())){
+            if(!empty($this->formValues['enterpriseClient'])){
+                $this->enterpriseClient = $this->formValues['enterpriseClient'];
+            }
+        }else{
+            if(!empty($this->formValues['enterpriseClient'])){
+                if((int)$this->enterpriseClient > (int)$this->formValues['enterpriseClient']){
+                    $this->formValues['enterpriseClient'] = (string)$this->enterpriseClient;
+                }else{
+                    $this->individualClient = $this->formValues['individualClient'];
+                }
+            }
+
+            if($this->enterpriseClient !== 0 && empty($this->formValues['enterpriseClient'])){
+                $this->formValues['enterpriseClient'] = (string)$this->enterpriseClient;
+            }
+        }
+
+//        if ($this->client !== 0) {
+//            $this->formValues['client'] = (string)$this->client;
+//            $this->client = 0;
+//        }
     }
 
     protected function instantiateForm(): FormInterface

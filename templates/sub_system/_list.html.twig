@@ -87,6 +87,7 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
+                    <th></th>
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
@@ -105,7 +106,19 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {{ sub_system.name }}
-                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema"
+{#                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema"#}
+{#                                  style="cursor: pointer">#}
+{#                                {{ sub_system.getLocalsAmount() }}#}
+{#                                <span class="visually-hidden">Locales</span>#}
+{#                            </span>#}
+                        </td>
+                        <td>
+                            <span
+                                    class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
+                                    title="Locales del sub sistema"
+                                    {% if sub_system.hasOriginalLocals() == false %}
+                                        data-bs-toggle="tooltip" data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
+                                    {% endif %}
                                   style="cursor: pointer">
                                 {{ sub_system.getLocalsAmount() }}
                                 <span class="visually-hidden">Locales</span>
@@ -127,11 +140,11 @@
                         <td>{{ sub_system.getMaxHeight() }}</td>
                         <td>{{ sub_system.getVolume() }}</td>
                         <td>
-                            {{ (sub_system.allLocalsAreClassified())
+                            {{ (sub_system.allLocalsAreClassified() and sub_system.hasOriginalLocals())
                             ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                             : ux_icon('material-symbols:close-rounded', {
                                 'class':'bi text-danger', 'data-bs-toggle':"tooltip",
-                                'data-bs-title':"Faltan locales por diagnosticar.",
+                                'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan locales por diagnosticar.",
                                 'data-bs-custom-class':"danger-tooltip"
                             }) }}
                         </td>
@@ -193,6 +206,7 @@
             {% block tableFooter %}
                 <tr>
                     <th>Resumen de la planta:</th>
+                    <th></th>
                     <th>
                         {% if floor.isFullyOccupied() %}
                             {{ floor.getUsefulArea() }}

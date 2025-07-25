@@ -1,45 +1,50 @@
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: title
-} %}
+{% if app.request.query.get('modal') %}
+    {{ component('EnterpriseClientForm', {modal:app.request.query.get('modal'), ec: enterprise_client, ajax: ajax}) }}
+{% else %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
 
-    {% block header %}
-        {{ include('partials/_card_header_options.html.twig', {
-            goTo: 'app_enterprise_client_new',
-            label: 'Nuevo',
-            title: 'Nuevo cliente empresarial',
-            entity: enterprise_client,
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
-    {% endblock %}
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_enterprise_client_new',
+                label: 'Nuevo',
+                title: 'Nuevo cliente empresarial',
+                entity: enterprise_client,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
 
-    {% block body %}
-        {{ component('EnterpriseClientForm', {modal:null, ec: enterprise_client, ajax: ajax}) }}
-    {% endblock %}
+        {% block body %}
+            {{ component('EnterpriseClientForm', {modal:null, ec: enterprise_client, ajax: ajax}) }}
+        {% endblock %}
 
-    {% block footer %}
-        {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_enterprise_client_index', label: 'Listado', title:'Volver al listado'},
-            delete: {href: 'app_enterprise_client_delete', label: 'Eliminar', title:'Eliminar cliente'},
-            id: enterprise_client.id,
-            message: 'Está seguro que desea eliminar el cliente?',
-            state: 'form',
-            showButton: (showButton is defined and showButton == true) ? true : false,
-            entity: enterprise_client
-        }) }}
-    {% endblock %}
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_enterprise_client_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_enterprise_client_delete', label: 'Eliminar', title:'Eliminar cliente'},
+                id: enterprise_client.id,
+                message: 'Está seguro que desea eliminar el cliente?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: enterprise_client
+            }) }}
+        {% endblock %}
 
-{% endcomponent %}
+    {% endcomponent %}
 
-{#{{ include('partials/_modal_add_person.html.twig') }}#}
+{% endif %}
 
-{#{{ include('partials/_modal_add_corporate_entity.html.twig') }}#}
+{# {{ include('partials/_modal_add_person.html.twig') }} #}
 
-{#{{ include('partials/_modal_add_province.html.twig') }}#}
-{#{{ include('partials/_modal_add_municipality.html.twig') }}#}
+{# {{ include('partials/_modal_add_corporate_entity.html.twig') }} #}
+
+{# {{ include('partials/_modal_add_province.html.twig') }} #}
+{# {{ include('partials/_modal_add_municipality.html.twig') }} #}
 
 {{ include('partials/modal/_modal_load.html.twig') }}
 

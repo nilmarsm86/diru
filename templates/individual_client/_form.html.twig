@@ -1,7 +1,6 @@
 {% if app.request.query.get('modal') %}
     {{ component('IndividualClientForm', {modal:app.request.query.get('modal'), ic: individual_client, ajax: ajax}) }}
 {% else %}
-
     {% component 'Card:Card' with {
         cssClass: 'mb-4',
         extra: '',

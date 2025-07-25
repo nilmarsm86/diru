@@ -53,7 +53,7 @@ class CorporateEntityType extends AbstractType
                 'municipality' => $options['municipality'],
                 'mapped' => false,
                 'live_form' => $options['live_form'],
-                'modal' => $options['modal']
+//                'modal' => $options['modal']
             ]);
 
         $organismAttr = [
@@ -67,7 +67,7 @@ class CorporateEntityType extends AbstractType
             'query_builder' => $this->getOrganismQueryBuilder($options),
         ];
 
-        if (is_null($options['modal'])) {
+        //if (is_null($options['modal'])) {
             $builder
                 ->add('organism', EntityPlusType::class, [
                         'add' => true,
@@ -75,9 +75,9 @@ class CorporateEntityType extends AbstractType
                         'add_id' => 'modal-load',
                         'add_url' => $this->router->generate('app_organism_new', ['modal' => 'modal-load']),
                     ] + $organismAttr);
-        } else {
-            $builder->add('organism', EntityType::class, [] + $organismAttr);
-        }
+//        } else {
+//            $builder->add('organism', EntityType::class, [] + $organismAttr);
+//        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

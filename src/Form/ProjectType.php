@@ -192,7 +192,6 @@ class ProjectType extends AbstractType
             },
             'mapped' => false,
             'label' => 'Persona natural',
-//                'placeholder' => '-Seleccione-',
             'data' => $project->getIndividualClient($this->individualClientRepository),
 
             'detail' => true,
@@ -207,11 +206,22 @@ class ProjectType extends AbstractType
         ]);
         $form->add('enterpriseClient', EntityPlusType::class, [
             'class' => EnterpriseClient::class,
-            'choice_label' => 'representative',
+            'choice_label' => function (EnterpriseClient $enterpriseClient) {
+                return $enterpriseClient->getRepresentative();
+            },
             'mapped' => false,
             'label' => 'Cliente empresarial',
-//                'placeholder' => '-Seleccione-',
-            'data' => $project->getEnterpriseClient($this->enterpriseClientRepository)
+            'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
+
+            'detail' => true,
+            'detail_title' => 'Detalle del cliente empresarial',
+            'detail_id' => 'modal-load',
+            'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
+
+            'add' => true,
+            'add_title' => 'Agregar cliente empresarial',
+            'add_id' => 'modal-load',
+            'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
         ]);
 
         $form->add('type', ChoiceType::class, [

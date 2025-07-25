@@ -289,4 +289,15 @@ class Floor implements MeasurementDataInterface
             'undefined' => $undefined
         ];
     }
+    public function hasOriginalLocals(): bool
+    {
+        /** @var SubSystem $subSystem */
+        foreach($this->getOriginalSubsystems() as $subSystem){
+            if(!$subSystem->hasOriginalLocals()){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

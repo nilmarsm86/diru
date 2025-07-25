@@ -99,12 +99,12 @@ class SubSystem implements MeasurementDataInterface
 
     public function hasOriginalLocals(): bool
     {
-        return $this->getOriginalLocals() > 0;
+        return $this->getLocalsAmount(true) > 0;
     }
 
     public function hasReplyLocals(): bool
     {
-        return $this->getReplyLocals() > 0;
+        return $this->getLocalsAmount(false) > 0;
     }
 
     public function getMeasurementData(string $method, bool $original = true): mixed
@@ -175,7 +175,7 @@ class SubSystem implements MeasurementDataInterface
     public function allLocalsAreClassified(): bool
     {
         if ($this->getLocalsAmount(true) == 0) {
-            return false;
+            return true;
         }
 
         foreach ($this->getOriginalLocals() as $local) {

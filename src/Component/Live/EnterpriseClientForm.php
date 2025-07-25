@@ -179,11 +179,12 @@ final class EnterpriseClientForm extends AbstractController
             $enterpriseClientRepository->save($ec, true);
 
             $this->ec = new EnterpriseClient();
-//            if ($this->modal) {
-//                $this->modalManage($ce);
-//                return null;
-//            }
-
+            if (!is_null($this->modal)) {
+                $this->modalManage($ec, 'Se ha seleccionado el nuevo cliente empresarial agregado.', [
+                    'enterpriseClient' => $ec->getId()
+                ], 'text-bg-success');
+                return null;
+            }
             if ($this->ajax) {
                 $this->ajaxManage($ec, $successMsg);
                 return null;

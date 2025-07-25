@@ -1,4 +1,4 @@
-{% if building.notWallArea() %}
+{% if building.notWallArea() or building.hasOriginalLocals() == false %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
@@ -82,6 +82,7 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
+                    <th></th>
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
@@ -100,7 +101,13 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {{ floor.name }}
-                            <span class="badge rounded-pill bg-danger" title="Subsistemas de la planta"
+                        </td>
+                        <td>
+                            <span class="badge rounded-pill {% if floor.hasOriginalSubSystems() %}bg-success{% else %}bg-danger{% endif %}"
+                                  title="Subsistemas de la planta"
+                                  {% if floor.hasOriginalSubSystems() == false %}
+                                      data-bs-toggle="tooltip" data-bs-title="No tiene definido subsistema." data-bs-custom-class="danger-tooltip"
+                                  {% endif %}
                                   style="cursor: pointer">
                                 {{ floor.getSubSystemAmount() }}
                                 <span class="visually-hidden">Locales</span>
@@ -168,6 +175,7 @@
             {% block tableFooter %}
                 <tr>
                     <th>Resumen del inmueble:</th>
+                    <th></th>
                     <th>{{ building.getUsefulArea() }}</th>
                     <th>{{ building.getWallArea() }}</th>
                     <th>{{ building.getEmptyArea() }}</th>

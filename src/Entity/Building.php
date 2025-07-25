@@ -753,4 +753,16 @@ class Building implements MeasurementDataInterface
             'undefined' => $undefined
         ];
     }
+
+    public function hasOriginalLocals(): bool
+    {
+        /** @var Floor $floor */
+        foreach($this->getOriginalFloors() as $floor){
+            if(!$floor->hasOriginalLocals()){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

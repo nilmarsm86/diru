@@ -165,7 +165,9 @@ class Local
 
         if($this->getType() == LocalType::WallArea){
             $this->setName('Área de muro');
-//            $this->setNumber($this->getSubSystem()->getMaxLocalNumber());
+            if(is_null($this->getId())){
+                $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
+            }
         }
 
         if($this->getType() == LocalType::EmptyArea){

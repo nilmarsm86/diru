@@ -108,7 +108,6 @@ final class LocalController extends AbstractController
         $automaticWall = Local::createAutomaticWall($area);
 
         $subSystem->addLocal($automaticWall);
-        $automaticWall->setNumber($subSystem->getMaxLocalNumber() + 1);
         $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se a creado el área de muro del área restante.');

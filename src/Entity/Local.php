@@ -66,7 +66,7 @@ class Local
 
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+//    #[Assert\Valid]
 //    #[Assert\NotBlank(message: 'Establezca el subsistema.')]
     private ?SubSystem $subSystem = null;
 
@@ -165,7 +165,11 @@ class Local
 
         if($this->getType() == LocalType::WallArea){
             $this->setName('Área de muro');
-            $this->setNumber(0);
+//            $this->setNumber($this->getSubSystem()->getMaxLocalNumber());
+        }
+
+        if($this->getType() == LocalType::EmptyArea){
+            $this->setHeight(0);
         }
     }
 
@@ -188,7 +192,7 @@ class Local
         $localWall->setType(LocalType::WallArea);
         $localWall->setArea($area);
         $localWall->setHeight(0);
-        $localWall->setNumber(0);
+//        $localWall->setNumber(0);
         $localWall->setTechnicalStatus(LocalTechnicalStatus::Undefined);
 
         return $localWall;

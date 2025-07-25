@@ -38,7 +38,7 @@ class SubSystem implements MeasurementDataInterface
 
     #[ORM\ManyToOne(inversedBy: 'subSystems')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+//    #[Assert\Valid]
 //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
 
@@ -317,6 +317,19 @@ class SubSystem implements MeasurementDataInterface
         }
 
         return $total;
+    }
+
+    public function getMaxLocalNumber(): int
+    {
+        $maxLocalNumber = 0;
+        /** @var Local $local */
+        foreach ($this->getOriginalLocals() as $local){
+            if($local->getNumber() > $maxLocalNumber){
+                $maxLocalNumber = $local->getNumber();
+            }
+        }
+
+        return $maxLocalNumber;
     }
 
 }

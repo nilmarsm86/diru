@@ -110,7 +110,7 @@ final class LocalController extends AbstractController
         $subSystem->addLocal($automaticWall);
         $localRepository->save($automaticWall, true);
 
-        $this->addFlash('success', 'Se a creado el área de muro del área restante.');
+        $this->addFlash('success', 'Se ha creado el área de muro del área restante.');
         return new RedirectResponse($this->generateUrl('app_local_index', ['subSystem' => $subSystem->getId()]), Response::HTTP_SEE_OTHER);
     }
 }

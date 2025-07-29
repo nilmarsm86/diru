@@ -3,18 +3,13 @@ import {useContentLoader} from "../behaviors/content-loader/use-content-loader.j
 import {useVisibility} from "../behaviors/visibility/use-visibility.js";
 import AbstractController from "./AbstractController.js";
 
-import {SHOW as BACKDROP_SHOW, HIDE as BACKDROP_HIDE} from "./twig/backdrop/backdrop_controller.js";
-import {NEW as CARD_NEW, CLOSE as CARD_CLOSE, REFRESH as CARD_REFRESH} from "./twig/card/card_controller.js";
+import {HIDE as BACKDROP_HIDE, SHOW as BACKDROP_SHOW} from "./twig/backdrop/backdrop_controller.js";
+import {CLOSE as CARD_CLOSE, NEW as CARD_NEW, REFRESH as CARD_REFRESH} from "./twig/card/card_controller.js";
+import {REFRESH as TABLE_REFRESH, SELECT as TABLE_SELECT} from "./twig/table/table_controller.js";
+import {SUCCESS as DELETE_FORM_SUCCESS} from "./delete-form-container_controller.js";
+import {Tooltip} from "bootstrap";
 // import {SUCCESS as FORM_SUCCESS} from "./live-form_controller.js";
 const FORM_SUCCESS = ':form_success';
-import {
-    DETAIL as TABLE_DETAIL,
-    EDIT as TABLE_EDIT,
-    REFRESH as TABLE_REFRESH,
-    SELECT as TABLE_SELECT
-} from "./twig/table/table_controller.js";
-import {SUCCESS as DELETE_FORM_SUCCESS, START as START_REMOVE_ITEM} from "./delete-form-container_controller.js";
-import {Tooltip} from "bootstrap";
 
 /*
  * This is an example Stimulus controller!
@@ -87,8 +82,7 @@ export default class extends AbstractController {
         setTimeout(() => {
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
-                let tooltip = new Tooltip(tooltipTriggerEl);
-                return tooltip;
+                return new Tooltip(tooltipTriggerEl);
             });
         }, 500);
     }

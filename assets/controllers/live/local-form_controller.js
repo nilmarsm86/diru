@@ -13,7 +13,7 @@ export default class extends AbstractController {
         modal: {type: String, default: ''},
     };
 
-    static targets = ["area"];
+    static targets = ["area", "type", "height", "technicalStatus"];
 
     connect() {
         useCsrfToken(this);
@@ -25,6 +25,16 @@ export default class extends AbstractController {
         this.areaTarget.addEventListener('input', (event) => {
             if (Number(this.areaTarget.value) > Number(this.areaTarget.getAttribute('max'))) {
                 this.areaTarget.value = this.areaTarget.getAttribute('max');
+            }
+        });
+
+        this.typeTarget.addEventListener('change', (event) => {
+            if(event.currentTarget.value == 0){
+                this.heightTarget.value = 0;
+                this.technicalStatusTarget.value = 4//bueno
+            }else{
+                this.heightTarget.value = '';
+                this.technicalStatusTarget.value = ''//bueno
             }
         });
     }

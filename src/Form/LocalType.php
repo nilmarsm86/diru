@@ -12,6 +12,7 @@ use App\Form\Types\UnitMeasurementType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -29,12 +30,13 @@ class LocalType extends AbstractType
                     'placeholder' => 'Nombre del local'
                 ]
             ])
-            ->add('number', null, [
+            ->add('number', IntegerType::class, [
                 'label' => 'Número:',
                 'attr' => [
                     'placeholder' => 'Número del local',
                     'min' => 1,
-                ]
+                    'data-controller' => 'positive-zero'
+                ],
             ])
             ->add('type', LocalTypeEnumType::class, [
                 'label' => 'Tipo de local:',
@@ -43,8 +45,10 @@ class LocalType extends AbstractType
                 'label' => 'Altura:',
                 'unit' => 'm',
                 'attr' => [
-                    'placeholder' => 'Altura del local'
+                    'placeholder' => 'Altura del local',
+                    'data-controller' => 'positive-zero'
                 ],
+//                'html5' => true
             ])
             ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
                 'label' => 'Estado técnico:',
@@ -53,7 +57,8 @@ class LocalType extends AbstractType
 //                'class' => \App\Entity\Enums\LocalType::class,
 //            ])
             ->add('impactHigherLevels', null, [
-                'label' => 'Tiene impacto en niveles superiores:'
+                'label' => 'Tiene impacto en niveles superiores:',
+                'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.'
             ])
         ;
 
@@ -93,9 +98,9 @@ class LocalType extends AbstractType
         $landArea = $options['subSystem']->getFloor()->getBuilding()->getMaxArea();
         $totalLocalsArea = $options['subSystem']->getFloor()->getTotalArea();
         $leftArea = $landArea - $totalLocalsArea;
-        if ($local && $local->getId()) {
+        /*if ($local && $local->getId()) {
             $leftArea = $local->getArea();
-        }
+        }*/
 
         if(is_null($local->getId()) && $leftArea > 1){
             $leftArea -= 1;

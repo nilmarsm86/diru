@@ -29,10 +29,12 @@ class Local
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El número del local está vacío.')]
+    #[Assert\PositiveOrZero(message: 'El número del local debe ser mayor que 0.')]
     private ?int $number = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área está vacía.')]
+    #[Assert\Positive(message: 'El área debe ser mayor que 0.')]
 //    #[Assert\Expression(
 //        "this.getFloor().getBuilding().getLandArea() < value",
 //        message: 'No debe ser mayor que el area de la obra.',

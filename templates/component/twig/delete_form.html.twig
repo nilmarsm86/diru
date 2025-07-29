@@ -6,7 +6,7 @@
         {{ attributes }}
 >
     <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
-    <button class="btn btn-sm btn-danger" title="{{ title }}">
+    <button class="btn btn-sm btn-danger" title="{{ title }}" {% if active == false %}disabled{% endif %}>
         {{ ux_icon(icon, {class:'bi'}) }}
         {{ label }}
     </button>

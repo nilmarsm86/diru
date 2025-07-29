@@ -44,6 +44,10 @@ trait MeasurementDataTrait
 
     public function calculateAllLocalsAreClassified(Collection $items): bool
     {
+        if($items->count() == 0){
+            return false;
+        }
+
         foreach ($items as $item){
             if(!$item->allLocalsAreClassified()){
                 return false;

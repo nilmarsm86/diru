@@ -291,6 +291,10 @@ class Floor implements MeasurementDataInterface
     }
     public function hasOriginalLocals(): bool
     {
+        if($this->getSubSystemAmount() === 0){
+            return false;
+        }
+
         /** @var SubSystem $subSystem */
         foreach($this->getOriginalSubsystems() as $subSystem){
             if(!$subSystem->hasOriginalLocals()){

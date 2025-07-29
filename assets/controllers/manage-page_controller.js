@@ -73,9 +73,6 @@ export default class extends AbstractController {
         this.element.addEventListener(DELETE_FORM_SUCCESS, this.deleteFormSuccess.bind(this));
         // window.addEventListener(START_REMOVE_ITEM, this.startRemoveItem.bind(this));
 
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
-
         const toastList = document.querySelectorAll('.toast');
         [...toastList].map(toast => {
             toast.addEventListener('hidden.bs.toast', () => {
@@ -83,6 +80,17 @@ export default class extends AbstractController {
             });
         });
 
+        this.tooltips();
+    }
+
+    tooltips(){
+        setTimeout(() => {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
+                let tooltip = new Tooltip(tooltipTriggerEl);
+                return tooltip;
+            });
+        }, 500);
     }
 
     backdrop(backdropElement, action) {
@@ -150,6 +158,8 @@ export default class extends AbstractController {
         }
 
         this.refreshContent(event);
+
+        this.tooltips();
     }
 
 }

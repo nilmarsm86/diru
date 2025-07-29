@@ -1,4 +1,4 @@
-{% if building.notWallArea() or building.hasOriginalLocals() == false %}
+{% if building.notWallArea() or building.hasOriginalLocals() == false or building.allLocalsAreClassified() == false %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",

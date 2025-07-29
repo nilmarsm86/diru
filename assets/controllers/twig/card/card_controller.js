@@ -49,7 +49,6 @@ export default class extends AbstractController {
 
     submitEnd(event){
         const selector = `form[name='${event.detail.form.name}']`;
-        console.log(selector);
         if(this.element.querySelector(selector)){
             this.backdrop(this.backdropTarget, BACKDROP_HIDE);
         }

@@ -71,7 +71,8 @@ class LocalRepository extends ServiceEntityRepository
     {
         $builder = $this->createQueryBuilder('l')->select(['l', 'ss'])
             ->leftJoin('l.subSystem', 'ss')
-            ->andWhere('ss.id = :idSubSystem');
+            ->andWhere('ss.id = :idSubSystem')
+            ->andWhere('l.original IS NULL');
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('l.name', 'ASC')

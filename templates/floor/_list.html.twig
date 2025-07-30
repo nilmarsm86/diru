@@ -15,7 +15,7 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de plantas',
+    title: reply ? 'Listado de plantas replicadas' : 'Listado de plantas',
     icon: card_icon
 } %}
     {% block header %}
@@ -180,6 +180,7 @@
             {% block tableFooter %}
                 <tr>
                     <th>Resumen del inmueble:</th>
+                    <th></th>
                     <th></th>
                     <th>{{ building.getUsefulArea() }}</th>
                     <th>{{ building.getWallArea() }}</th>

@@ -19,8 +19,8 @@ use Twig\Error\SyntaxError;
 #[Route('/floor')]
 final class FloorController extends AbstractController
 {
-    #[Route('/{building}', name: 'app_floor_index', methods: ['GET'])]
-    public function index(Request $request, FloorRepository $floorRepository, Building $building): Response
+    #[Route('/{building}/{reply}', name: 'app_floor_index', methods: ['GET'])]
+    public function index(Request $request, FloorRepository $floorRepository, Building $building, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = $request->query->get('amount', 10);
@@ -39,7 +39,8 @@ final class FloorController extends AbstractController
         return $this->render("floor/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'building' => $building
+            'building' => $building,
+            'reply' => $reply
         ]);
     }
 
@@ -94,4 +95,5 @@ final class FloorController extends AbstractController
         $successMsg = 'Se ha eliminado la planta.';
         return $crudActionService->deleteAction($request, $floorRepository, $floor, $successMsg, 'app_building_index');
     }
+
 }

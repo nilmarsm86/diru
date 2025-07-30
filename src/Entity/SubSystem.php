@@ -332,4 +332,17 @@ class SubSystem implements MeasurementDataInterface
         return $maxLocalNumber;
     }
 
+    public function createInitialLocal(): void
+    {
+        if(is_null($this->getId())){
+            $local = Local::createAutomaticLocal($this->getFloor()->getUnassignedArea() - 1);
+            $local->setNumber(1);
+            $wall = Local::createAutomaticWall(1);
+            $wall->setNumber(0);
+
+            $this->addLocal($local);
+            $this->addLocal($wall);
+        }
+    }
+
 }

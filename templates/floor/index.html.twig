@@ -7,16 +7,20 @@
 
 {% block content %}
     <div class="row">
-        {{ h1('Plantas', 'dinkie-icons:house-buildings-small') }}
+        {% if reply %}
+            {{ h1('Plantas Replicadas', 'dinkie-icons:house-buildings-small') }}
+        {% else %}
+            {{ h1('Plantas', 'dinkie-icons:house-buildings-small') }}
+        {% endif %}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Plantas'},
+            {label: (reply) ? 'Plantas replicadas' : 'Plantas'},
         ]) }}
     </div>
 
     <h2 class="mb-4">
-        Inmueble {% if building.isNew() %}nuevo{% else %}existente{% endif %}: {{ building.name }}
+        Inmueble {% if reply %}replicado{% endif %} {% if building.isNew() %}nuevo{% else %}existente{% endif %}: {{ building.name }}
     </h2>
 
     {% component ManagePage %}

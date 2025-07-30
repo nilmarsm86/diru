@@ -75,6 +75,9 @@ class Local
     #[ORM\Column]
     private ?bool $impactHigherLevels = null;
 
+    #[ORM\ManyToOne(inversedBy: 'locals')]
+    private ?ConstructiveAction $constructiveAction = null;
+
     public function __construct()
     {
         $this->impactHigherLevels = false;
@@ -202,6 +205,19 @@ class Local
         return $localWall;
     }
 
+    public static function createAutomaticLocal(int $area): self
+    {
+        $local = new Local();
+        $local->setName('Local');
+        $local->setType(LocalType::Local);
+        $local->setArea($area);
+        $local->setHeight(1);
+//        $local->setNumber(0);
+        $local->setTechnicalStatus(LocalTechnicalStatus::Undefined);
+
+        return $local;
+    }
+
     public function isClassified(): bool
     {
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
@@ -225,6 +241,18 @@ class Local
     public function setImpactHigherLevels(bool $impactHigherLevels): static
     {
         $this->impactHigherLevels = $impactHigherLevels;
+
+        return $this;
+    }
+
+    public function getConstructiveAction(): ?ConstructiveAction
+    {
+        return $this->constructiveAction;
+    }
+
+    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
+    {
+        $this->constructiveAction = $constructiveAction;
 
         return $this;
     }

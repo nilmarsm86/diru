@@ -573,13 +573,10 @@ class Building implements MeasurementDataInterface
     private function createFloor(string $name, bool $isGroundFloor=false, int $position=0): void
     {
         $f = new Floor();
-        if($isGroundFloor){
-            $f->setPosition($position);
-        }else{
-            $f->setPosition($position);
-        }
+        $f->setPosition($position);
         $f->setName($name);
         $f->setGroundFloor($isGroundFloor);
+        $f->createAutomaticSubsystem();
 
         $this->addFloor($f);
     }

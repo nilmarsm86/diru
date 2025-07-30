@@ -99,4 +99,26 @@ class FloorRepository extends ServiceEntityRepository
             $this->flush();
         }
     }
+
+    /**
+     * @param Building $building
+     * @param string $filter
+     * @param int $amountPerPage
+     * @param int $page
+     * @return Paginator Returns an array of User objects
+     */
+    public function findReplyBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
+            ->leftJoin('f.building', 'b')
+            ->andWhere('b.id = :idBuilding')
+            ->andWhere('f.original IS NOT NULL');
+        $builder->setParameter(':idBuilding', $building->getId());
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('f.groundFloor', 'DESC')
+            ->addOrderBy('f.position', 'ASC')
+            ->addOrderBy('f.name', 'ASC')
+            ->getQuery();
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

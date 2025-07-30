@@ -96,6 +96,8 @@ final class SubSystemForm extends AbstractController
             $subSystem = $this->getForm()->getData();
 //            $this->floor->addSubSystem($subSystem);
             $this->ss->setFloor($this->floor);
+            $subSystem->setFloor($this->floor);
+            $subSystem->createInitialLocal();
             $subSystemRepository->save($subSystem, true);
 
             $this->ss = new SubSystem();

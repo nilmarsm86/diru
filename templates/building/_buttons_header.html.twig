@@ -1,7 +1,10 @@
 {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-    {{ tableActionButton3(path('app_floor_index', {'building': building.id}), '', 'Inmueble a modificar', 'Inmueble a modificar') }}
+    {% if building.hasReply() %}
+        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), '', 'Inmueble a modificar', 'Inmueble a modificar') }}
+    {% endif %}
+
     <div class="dropdown d-inline-block">
         <button type="button"
                 class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"

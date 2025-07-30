@@ -1,4 +1,4 @@
-{% if floor.notWallArea() or floor.hasOriginalLocals() or floor.allLocalsAreClassified() == false %}
+{% if floor.notWallArea() == true or floor.hasOriginalLocals() == false or floor.allLocalsAreClassified() == false %}
     {% set card_icon = ux_icon('material-symbols:warning-rounded', {
         'class':'bi text-warning',
         'data-bs-toggle':"tooltip",

@@ -38,6 +38,8 @@ export default class extends AbstractController {
                 this.perimeterTarget.value = this.areaTarget.value;
             }
 
+            this.calculateOccupatedArea();
+
             this.calcualteCos(event);
             this.calculateHectare();
         });
@@ -47,9 +49,7 @@ export default class extends AbstractController {
                 this.occupiedTarget.value = Number(this.occupiedTarget.value) * -1;
             }
 
-            if (Number(this.occupiedTarget.value) > Number(this.areaTarget.value)) {
-                this.occupiedTarget.value = this.areaTarget.value;
-            }
+            this.calculateOccupatedArea();
 
             this.calcualteCos(event);
         });
@@ -62,11 +62,18 @@ export default class extends AbstractController {
             if (Number(this.perimeterTarget.value) > Number(this.areaTarget.value)) {
                 this.perimeterTarget.value = this.areaTarget.value;
             }
+
+            this.calculateOccupatedArea();
         });
 
         this.detailsTarget.addEventListener('toggle', this.calcualteCos.bind(this));
     }
 
+    calculateOccupatedArea(){
+        if (Number(this.occupiedTarget.value) > Number(this.areaTarget.value)) {
+            this.occupiedTarget.value = Number(this.areaTarget.value);
+        }
+    }
     calcualteCos(event) {
         if (!this.detailsTarget.open) {
             this.cosTarget.innerText = 0;

@@ -106,6 +106,12 @@ class LocalType extends AbstractType
             $leftArea -= 1;
         }
 
+        if($local->getId()){
+            if($local->getArea() > $leftArea){
+                $leftArea = $local->getArea();
+            }
+        }
+
         $constraints = [
             new Range(min: 1, max: $leftArea),
         ];

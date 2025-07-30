@@ -31,11 +31,13 @@ export default class extends AbstractController {
         this.typeTarget.addEventListener('change', (event) => {
             if(event.currentTarget.value == 0){
                 this.heightTarget.value = 0;
-                this.technicalStatusTarget.value = 4//bueno
+                this.technicalStatusTarget.value = 4;//bueno
             }else{
                 this.heightTarget.value = '';
-                this.technicalStatusTarget.value = ''//bueno
+                this.technicalStatusTarget.value = '';
             }
+
+            this.component.render();
         });
     }
 

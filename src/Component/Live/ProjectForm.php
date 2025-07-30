@@ -138,7 +138,6 @@ final class ProjectForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
-        dump($this->formValues);
         return $this->createForm(ProjectType::class, $this->pro);
     }
 
@@ -156,7 +155,6 @@ final class ProjectForm extends AbstractController
     ): ?Response
     {
         $this->preValue();
-        dump($this->formValues);
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();

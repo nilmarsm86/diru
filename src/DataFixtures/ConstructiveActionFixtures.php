@@ -17,12 +17,13 @@ class ConstructiveActionFixtures extends Fixture
             'Cambio de uso' => ConstructiveActionType::NoModifier,
             'Mantenimiento' => ConstructiveActionType::NoModifier,
             'Conservación' => ConstructiveActionType::NoModifier,
-            'Rehabilitación' => ConstructiveActionType::NoModifier,
-            'Demolicion' => ConstructiveActionType::Modifier,
+            'Rehabilitación' => ConstructiveActionType::Modifier,//modificacion de los elementos constructivos sin demoler
+            'Demolición' => ConstructiveActionType::Modifier,
             'Escombreo y limpieza' => ConstructiveActionType::NoModifier,
             'Ampliación' => ConstructiveActionType::Modifier,
             'Obra nueva' => ConstructiveActionType::Modifier,
             'Eliminación' => ConstructiveActionType::Modifier,
+            'Remodelación' => ConstructiveActionType::Modifier,//implica demolicion de algo
         ];
         foreach ($actions as $name => $type) {
             $constructiveAction = $manager->getRepository(ConstructiveAction::class)->findOneBy(['name' => $name]);

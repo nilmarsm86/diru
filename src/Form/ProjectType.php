@@ -185,7 +185,6 @@ class ProjectType extends AbstractType
             ]
         ]);
 
-//        dump($project->getIndividualClient($this->individualClientRepository));
         $form->add('individualClient', EntityPlusType::class, [
             'class' => IndividualClient::class,
             'choice_label' => function (IndividualClient $individualClient) {

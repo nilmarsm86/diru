@@ -65,7 +65,6 @@ final class FloorForm extends AbstractController
     #[LiveAction]
     public function save(FloorRepository $floorRepository): ?Response
     {
-        dump($this->fl);
         $successMsg = (is_null($this->fl->getId())) ? 'Se ha agregado la planta.' : 'Se ha modificado la planta.';//TODO: personalizar los mensajes
 
         $this->submitForm();

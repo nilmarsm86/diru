@@ -143,9 +143,9 @@ class SubSystem implements MeasurementDataInterface
     public function isFullyOccupied(bool $original = true): bool
     {
 //        throw new \Exception("Not need");
-        if($this->getFloor()->getBuilding()->isNew()){
-            return true;
-        }
+//        if($this->getFloor()->getBuilding()->isNew()){
+//            return true;
+//        }
 
         return $this->getFloor()->isFullyOccupied($original);
 
@@ -180,6 +180,7 @@ class SubSystem implements MeasurementDataInterface
 
     public function allLocalsAreClassified(): bool
     {
+        //TODO: duda con esto
         if ($this->getLocalsAmount(true) == 0) {
             return true;
         }
@@ -349,6 +350,16 @@ class SubSystem implements MeasurementDataInterface
             $this->addLocal($local);
             $this->addLocal($wall);
         }
+    }
+
+    public function inNewBuilding(): ?bool
+    {
+        return $this->getFloor()->getBuilding()->isNew();
+    }
+
+    public function hasReply(): ?bool
+    {
+        return $this->getFloor()->getBuilding()->hasReply();
     }
 
 }

@@ -183,9 +183,9 @@ class Floor implements MeasurementDataInterface
 //        }else{
 //            return $this->getBuilding()->getOccupiedArea() <= $this->getTotalArea();
 //        }
-        if($this->getBuilding()->isNew()){
-            return true;
-        }
+//        if($this->getBuilding()->isNew()){
+//            return true;
+//        }
 
         return $this->getTotalArea($original) >= (($this->getBuilding()->isNew()) ? $this->getBuilding()->getLandArea() : $this->getBuilding()->getOccupiedArea());
     }
@@ -322,5 +322,15 @@ class Floor implements MeasurementDataInterface
             $subSystem->createInitialLocal();
             $this->addSubSystem($subSystem);
         }
+    }
+
+    public function inNewBuilding(): ?bool
+    {
+        return $this->getBuilding()->isNew();
+    }
+
+    public function hasReply(): ?bool
+    {
+        return $this->getBuilding()->hasReply();
     }
 }

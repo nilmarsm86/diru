@@ -220,6 +220,9 @@ class Local
 
     public function isClassified(): bool
     {
+        if($this->getType() !== LocalType::Local){
+            return true;
+        }
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
     }
 
@@ -255,5 +258,15 @@ class Local
         $this->constructiveAction = $constructiveAction;
 
         return $this;
+    }
+
+    public function inNewBuilding(): ?bool
+    {
+        return $this->getSubSystem()->getFloor()->getBuilding()->isNew();
+    }
+
+    public function hasReply(): ?bool
+    {
+        return $this->getSubSystem()->getFloor()->getBuilding()->hasReply();
     }
 }

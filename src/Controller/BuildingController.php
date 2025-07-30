@@ -94,6 +94,6 @@ final class BuildingController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
         }
 
-        return $this->redirectToRoute('app_floor_index', ['building' => $building->getId()]);
+        return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
     }
 }

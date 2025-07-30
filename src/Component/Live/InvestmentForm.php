@@ -149,7 +149,6 @@ final class InvestmentForm extends AbstractController
     #[LiveAction]
     public function save(InvestmentRepository $investmentRepository, LocationZoneRepository $locationZoneRepository): ?Response
     {
-        dump($this->formValues);
         $this->preValue();
 
         $successMsg = (is_null($this->inv->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.';//TODO: personalizar los mensajes

@@ -2,7 +2,7 @@
 
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
     {% if building.hasReply() %}
-        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), '', 'Inmueble a modificar', 'Inmueble a modificar') }}
+        {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply': true}), 'dinkie-icons:house-buildings-small', 'Inmueble a modificar', 'Inmueble a modificar') }}
     {% endif %}
 
     <div class="dropdown d-inline-block">

@@ -637,9 +637,9 @@ class Building implements MeasurementDataInterface
 //            return $this->getOccupiedArea() <= $this->getTotalArea($original);
 //        }
 
-        if($this->isNew()){
-            return true;
-        }
+//        if($this->isNew()){
+//            return true;
+//        }
 
         return $this->getTotalArea($original) >= (($this->isNew()) ? $this->getLandArea() : $this->getOccupiedArea());
     }
@@ -663,6 +663,10 @@ class Building implements MeasurementDataInterface
 
     public function canReply(bool $original = true): bool
     {
+        if($this->isNew()){
+            return false;
+        }
+
         return (!$this->notWallArea($original) && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied($original) && !$this->hasReply());
     }
 

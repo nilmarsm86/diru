@@ -184,17 +184,20 @@
                                 </ul>
                             </div>
                             {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
-                            {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
-{#                            {% if floor.building.isNew() or sub_system.hasOriginalLocals() == false %}#}
+
+                            {% if floor.hasReply() == false %}
+                                {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
+                            {% endif %}
+
+                            {% if sub_system.inNewBuilding() or sub_system.hasReply() == false %}
                                 {{ component('DeleteForm', {
                                     path: path('app_sub_system_delete', {'id': sub_system.id}),
                                     confirm: 'Está seguro que desea eliminar el subsistema?',
                                     token: 'delete' ~ sub_system.id,
                                     title: 'Eliminar subsistema',
                                     icon: 'bi:trash',
-                                    active: floor.building.isNew() or sub_system.hasOriginalLocals() == false
                                 }) }}
-{#                            {% endif %}#}
+                            {% endif %}
                         </td>
                     </tr>
                 {% else %}

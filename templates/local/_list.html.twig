@@ -1,4 +1,4 @@
-{% if sub_system.allLocalsAreClassified() == false or sub_system.notWallArea() %}
+{% if sub_system.allLocalsAreClassified() == false or sub_system.notWallArea() or sub_system.isFullyOccupied() == false %}
     {% set card_icon = ux_icon('material-symbols:warning-rounded', {
         'class':'bi text-warning',
         'data-bs-toggle':"tooltip",
@@ -46,7 +46,11 @@
                 {% if sub_system.floor.isFullyOccupied() %}
                     , ocupados totalmente.
                 {% else %}
-                    , quedan {{ sub_system.floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                    {% if sub_system.floor.biulding.isNew() %}
+                    , quedan {{ sub_system.floor.getUnassignedArea() }}m<sup>2</sup> de área libre.
+                    {% else %}
+                        , quedan {{ sub_system.floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                    {% endif %}
                     {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
                         <br>
                         <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':sub_system.floor.getUnassignedArea() }) }}">

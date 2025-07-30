@@ -637,6 +637,10 @@ class Building implements MeasurementDataInterface
 //            return $this->getOccupiedArea() <= $this->getTotalArea($original);
 //        }
 
+        if($this->isNew()){
+            return true;
+        }
+
         return $this->getTotalArea($original) >= (($this->isNew()) ? $this->getLandArea() : $this->getOccupiedArea());
     }
 

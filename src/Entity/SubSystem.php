@@ -142,7 +142,13 @@ class SubSystem implements MeasurementDataInterface
 
     public function isFullyOccupied(bool $original = true): bool
     {
-        throw new \Exception("Not need");
+//        throw new \Exception("Not need");
+        if($this->getFloor()->getBuilding()->isNew()){
+            return true;
+        }
+
+        return $this->getFloor()->isFullyOccupied($original);
+
     }
 
     public function getLocalsAmount(bool $original = true): int

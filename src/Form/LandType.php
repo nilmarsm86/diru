@@ -61,7 +61,7 @@ class LandType extends AbstractType
             ])
             ->add('occupiedArea', UnitMeasurementType::class, [
                 'unit' => 'm<sup>2</sup>',
-                'label' => "Área a ocupar/ocupada:",
+                'label' => "Área ocupada:",
                 'attr' => [
                         'min' => 0
                     ] + $disabled,

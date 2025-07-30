@@ -183,6 +183,10 @@ class Floor implements MeasurementDataInterface
 //        }else{
 //            return $this->getBuilding()->getOccupiedArea() <= $this->getTotalArea();
 //        }
+        if($this->getBuilding()->isNew()){
+            return true;
+        }
+
         return $this->getTotalArea($original) >= (($this->getBuilding()->isNew()) ? $this->getBuilding()->getLandArea() : $this->getBuilding()->getOccupiedArea());
     }
 

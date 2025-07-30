@@ -103,10 +103,10 @@ final class ProjectForm extends AbstractController
                     $this->individualClient = $this->formValues['individualClient'];
                 }
             }
-
-            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
-                $this->formValues['individualClient'] = (string)$this->individualClient;
-            }
+//
+//            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
+//                $this->formValues['individualClient'] = (string)$this->individualClient;
+//            }
         }
 
         if(!is_null($this->pro->getId())){
@@ -117,8 +117,10 @@ final class ProjectForm extends AbstractController
             if(!empty($this->formValues['enterpriseClient'])){
                 if((int)$this->enterpriseClient > (int)$this->formValues['enterpriseClient']){
                     $this->formValues['enterpriseClient'] = (string)$this->enterpriseClient;
+                    $this->formValues['individualClient'] = '0';
+                    $this->individualClient = 0;
                 }else{
-                    $this->individualClient = $this->formValues['individualClient'];
+                    $this->enterpriseClient = $this->formValues['enterpriseClient'];
                 }
             }
 
@@ -136,6 +138,7 @@ final class ProjectForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+        dump($this->formValues);
         return $this->createForm(ProjectType::class, $this->pro);
     }
 
@@ -153,6 +156,7 @@ final class ProjectForm extends AbstractController
     ): ?Response
     {
         $this->preValue();
+        dump($this->formValues);
         $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();

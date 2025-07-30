@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ConstructiveAction;
 use App\Entity\Constructor;
 use App\Entity\Contract;
 use App\Entity\Enums\ConstructiveActionType;
@@ -12,19 +13,25 @@ class ConstructiveActionFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $contracts = [
+        $actions = [
             'Cambio de uso' => ConstructiveActionType::NoModifier,
             'Mantenimiento' => ConstructiveActionType::NoModifier,
-            'Conservacion' => ConstructiveActionType::NoModifier,
+            'Conservación' => ConstructiveActionType::NoModifier,
+            'Rehabilitación' => ConstructiveActionType::NoModifier,
+            'Demolicion' => ConstructiveActionType::Modifier,
+            'Escombreo y limpieza' => ConstructiveActionType::NoModifier,
+            'Ampliación' => ConstructiveActionType::Modifier,
+            'Obra nueva' => ConstructiveActionType::Modifier,
+            'Eliminación' => ConstructiveActionType::Modifier,
         ];
-        foreach ($contracts as $contract) {
-            $contractEntity = $manager->getRepository(Contract::class)->findOneBy(['code' => $contract]);
-            if (is_null($contractEntity)) {
-                $contractEntity = new Contract();
-                $contractEntity->setCode($contract);
-                $contractEntity->setYear(2025);
+        foreach ($actions as $name => $type) {
+            $constructiveAction = $manager->getRepository(ConstructiveAction::class)->findOneBy(['name' => $name]);
+            if (is_null($constructiveAction)) {
+                $constructiveAction = new ConstructiveAction();
+                $constructiveAction->setName($name);
+                $constructiveAction->setType($type);
 
-                $manager->persist($contractEntity);
+                $manager->persist($constructiveAction);
             }
         }
 

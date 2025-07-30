@@ -48,7 +48,8 @@ class LocalType extends AbstractType
                     'placeholder' => 'Altura del local',
                     'data-controller' => 'positive-zero'
                 ],
-//                'html5' => true
+//                'html5' => true,
+                'data' => 0
             ])
             ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
                 'label' => 'Estado técnico:',

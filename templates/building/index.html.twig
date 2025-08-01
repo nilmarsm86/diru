@@ -15,7 +15,11 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Gestión de Obras</h2>
+    {% if project is null %}
+        <h2 class="mb-4">Gestión de Obras</h2>
+    {% else %}
+        <h2 class="mb-4">Gestión de Obras del proyecto: {{ project.name }}</h2>
+    {% endif %}
 
     {% component ManagePage %}
         {% block list %}

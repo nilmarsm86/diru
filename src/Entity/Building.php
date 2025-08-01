@@ -426,6 +426,21 @@ class Building implements MeasurementDataInterface
         return $this->getConstructors()->count() > 0;
     }
 
+    public function hasActiveConstructor(): bool
+    {
+        return !is_null($this->getActiveConstructor());
+    }
+
+    public function getActiveConstructorName(): ?string
+    {
+        return $this->getActiveConstructor()->getName();
+    }
+
+    public function getActiveConstructorId(): ?int
+    {
+        return $this->getActiveConstructor()->getId();
+    }
+
     /**
      * @return Collection<int, ConstructorBuilding>
      */
@@ -576,9 +591,10 @@ class Building implements MeasurementDataInterface
         $f->setPosition($position);
         $f->setName($name);
         $f->setGroundFloor($isGroundFloor);
-        $f->createAutomaticSubsystem();
 
         $this->addFloor($f);
+
+        $f->createAutomaticSubsystem();
     }
 
     public function isNew(): ?bool
@@ -769,5 +785,20 @@ class Building implements MeasurementDataInterface
         }
 
         return true;
+    }
+
+    public function getProjectCurrency(): ?string
+    {
+        return $this->getProject()->getCurrency()->getCode();
+    }
+
+    public function getTotalApprovedValueFormated(): string
+    {
+        return $this->getTotalApprovedValue() . ' ' . $this->getProjectCurrency();
+    }
+
+    public function getTotalEstimatedValueFormated(): string
+    {
+        return $this->getTotalEstimatedValue() . ' ' . $this->getProjectCurrency();
     }
 }

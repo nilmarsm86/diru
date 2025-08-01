@@ -104,7 +104,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for floor in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if floor.inNewBuilding() %}class="table-success"{% endif %}>
                         <td>
                             {{ floor.name }}
                         </td>

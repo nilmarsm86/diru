@@ -22,7 +22,7 @@
 {% endmacro %}
 
 {% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary', badge=false) %}
-    <a class="btn btn-sm position-relative {{ cssClass }}" title="{{ title }}"
+    <a class="btn btn-sm position-relative {{ cssClass }}" title="{{ title }}" data-bs-toggle="tooltip"
        href="{{ path }}"
             {{ action|raw }}
     >

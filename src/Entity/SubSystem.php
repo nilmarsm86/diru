@@ -342,10 +342,8 @@ class SubSystem implements MeasurementDataInterface
     public function createInitialLocal(): void
     {
         if(is_null($this->getId())){
-            $local = Local::createAutomaticLocal($this->getFloor()->getUnassignedArea() - 1);
-            $local->setNumber(1);
-            $wall = Local::createAutomaticWall(1);
-            $wall->setNumber(0);
+            $local = Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
+            $wall = Local::createAutomaticWall(1, 0);
 
             $this->addLocal($local);
             $this->addLocal($wall);
@@ -354,12 +352,12 @@ class SubSystem implements MeasurementDataInterface
 
     public function inNewBuilding(): ?bool
     {
-        return $this->getFloor()->getBuilding()->isNew();
+        return $this->getFloor()->inNewBuilding();
     }
 
     public function hasReply(): ?bool
     {
-        return $this->getFloor()->getBuilding()->hasReply();
+        return $this->getFloor()->hasReply();
     }
 
 }

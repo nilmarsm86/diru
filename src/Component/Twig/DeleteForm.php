@@ -13,10 +13,6 @@ final class DeleteForm
     public string $title;
     public string $icon;
     public string $label = '';
-    public string $active;
-
-    public function __construct()
-    {
-        $this->active = true;
-    }
+    public bool $active = true;
+    public string $cssClass = 'btn-danger';
 }

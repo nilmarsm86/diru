@@ -326,6 +326,9 @@ class Floor implements MeasurementDataInterface
 
     public function inNewBuilding(): ?bool
     {
+        if(is_null($this->getBuilding())){
+            return true;
+        }
         return $this->getBuilding()->isNew();
     }
 

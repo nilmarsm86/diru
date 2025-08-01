@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250730170749 extends AbstractMigration
+final class Version20250801024147 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -62,10 +62,12 @@ final class Version20250730170749 extends AbstractMigration
         $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, explanation CLOB DEFAULT NULL, CONSTRAINT FK_7BF47B3B1994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B1994904A ON land_network_connection (land_id)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4EDCA4BC ON land_network_connection (network_connection_id)');
-        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, sub_system_id INTEGER NOT NULL, constructive_action_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, number INTEGER NOT NULL, area INTEGER NOT NULL, type VARCHAR(255) NOT NULL, height DOUBLE PRECISION NOT NULL, technical_status VARCHAR(255) NOT NULL, impact_higher_levels BOOLEAN NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8C298691B FOREIGN KEY (sub_system_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8369941F1 FOREIGN KEY (constructive_action_id) REFERENCES constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8108B7592 FOREIGN KEY (original_id) REFERENCES local (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, sub_system_id INTEGER NOT NULL, local_constructive_action_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, number INTEGER NOT NULL, area INTEGER NOT NULL, type VARCHAR(255) NOT NULL, height DOUBLE PRECISION NOT NULL, technical_status VARCHAR(255) NOT NULL, impact_higher_levels BOOLEAN NOT NULL, comment CLOB DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8C298691B FOREIGN KEY (sub_system_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8460C8FAC FOREIGN KEY (local_constructive_action_id) REFERENCES local_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8108B7592 FOREIGN KEY (original_id) REFERENCES local (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8BD688E8C298691B ON local (sub_system_id)');
-        $this->addSql('CREATE INDEX IDX_8BD688E8369941F1 ON local (constructive_action_id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8BD688E8460C8FAC ON local (local_constructive_action_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8BD688E8108B7592 ON local (original_id)');
+        $this->addSql('CREATE TABLE local_constructive_action (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, constructive_action_id INTEGER DEFAULT NULL, price BIGINT NOT NULL, CONSTRAINT FK_EECA25F5369941F1 FOREIGN KEY (constructive_action_id) REFERENCES constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_EECA25F5369941F1 ON local_constructive_action (constructive_action_id)');
         $this->addSql('CREATE TABLE location_zone (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE municipality (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, province_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_C6F56628E946114A FOREIGN KEY (province_id) REFERENCES province (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C6F56628E946114A ON municipality (province_id)');
@@ -124,6 +126,7 @@ final class Version20250730170749 extends AbstractMigration
         $this->addSql('DROP TABLE land');
         $this->addSql('DROP TABLE land_network_connection');
         $this->addSql('DROP TABLE local');
+        $this->addSql('DROP TABLE local_constructive_action');
         $this->addSql('DROP TABLE location_zone');
         $this->addSql('DROP TABLE municipality');
         $this->addSql('DROP TABLE network_connection');

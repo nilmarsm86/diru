@@ -1,0 +1,8 @@
+{% if app.request.query.get(type) != '' %}
+    <span class="text-primary">
+        {{ label }}
+        <span class="badge text-bg-primary">
+            {{ get_label_from(filterFrom, app.request.query.get(type)) }}
+        </span>
+    </span>
+{% endif %}

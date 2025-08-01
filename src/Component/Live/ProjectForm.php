@@ -237,7 +237,7 @@ final class ProjectForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_building_index', ['filter'=>$project->getName()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_building_project', ['project'=>$project->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

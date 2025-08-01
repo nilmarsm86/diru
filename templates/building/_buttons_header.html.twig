@@ -44,7 +44,7 @@
             {% set labelAndTitle = 'Inmueble nuevo' %}
         {% endif %}
         {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', labelAndTitle, labelAndTitle) }}
-{#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }}#}
+        {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }} #}
     {% endif %}
 
     {% if building.id is not null %}
@@ -68,5 +68,7 @@
             Datos generales del terreno
         </button>
     {% endif %}
-    {{ tableActionButton3(path('app_project_edit', {'id':building.project.id}), 'bi:table', 'Proyecto', 'Proyecto') }}
+    {% if building.project is not null %}
+        {{ tableActionButton3(path('app_project_edit', {'id':building.project.id}), 'bi:table', 'Proyecto', 'Proyecto') }}
+    {% endif %}
 </div>

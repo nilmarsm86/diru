@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\DTO\Paginator;
 use App\Entity\Building;
+use App\Entity\Enums\BuildingState;
+use App\Entity\Enums\ProjectState;
+use App\Entity\Project;
 use App\Entity\Role;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
@@ -30,7 +34,41 @@ final class BuildingController extends AbstractController
     #[Route(name: 'app_building_index', methods: ['GET'])]
     public function index(Request $request, BuildingRepository $buildingRepository, CrudActionService $crudActionService): Response
     {
-        return $crudActionService->indexAction($request, $buildingRepository, 'findBuildings', 'building');
+        return $crudActionService->indexAction($request, $buildingRepository, 'findBuildings', 'building', [
+            'project' => null
+        ]);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    #[Route('/project/{project}', name: 'app_building_project', methods: ['GET'])]
+    public function project(Request $request, BuildingRepository $buildingRepository, Project $project): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = $request->query->get('amount', 10);
+        $pageNumber = $request->query->get('page', 1);
+
+        $state = $request->query->get('state', '');
+
+        $data = $buildingRepository->findBuildingsByProject($project, $filter, $amountPerPage, $pageNumber, $state);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
+            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("building/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'project' => $project,
+            'states' => BuildingState::cases(),
+        ]);
     }
 
     /**
@@ -38,12 +76,13 @@ final class BuildingController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/new', name: 'app_building_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService): Response
+    #[Route('/new/{project}', name: 'app_building_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, Project $project = null): Response
     {
         $building = new Building();
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Nueva Obra',
+            'project' => $project
         ]);
     }
 
@@ -68,6 +107,7 @@ final class BuildingController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Editar Obra',
+            'project' => null
         ]);
     }
 

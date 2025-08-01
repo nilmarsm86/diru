@@ -15,7 +15,7 @@
             {% if option.value != '' %}
                 <li>
                     <a class="dropdown-item" {{ stimulusTarget('twig/card/filter-drop-down', 'option') }} data-value="{{ option.value }}"
-                       href="{{ path(path, {(queryName): option.value} + app.request.query.all) }}">
+                       href="{{ path(path, {(queryName): option.value} + app.request.query.all + pathParams) }}">
                         {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %}
                         {{ ux_icon(icon, {class:'bi'}) }}
                         {{ option.getLabelFrom(option) }}

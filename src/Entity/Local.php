@@ -8,6 +8,7 @@ use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
 use App\Repository\LocalRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -75,8 +76,14 @@ class Local
     #[ORM\Column]
     private ?bool $impactHigherLevels = null;
 
-    #[ORM\ManyToOne(inversedBy: 'locals')]
-    private ?ConstructiveAction $constructiveAction = null;
+//    #[ORM\ManyToOne(inversedBy: 'locals')]
+//    private ?ConstructiveAction $constructiveAction = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\OneToOne(inversedBy: 'local', cascade: ['persist', 'remove'])]
+    private ?LocalConstructiveAction $localConstructiveAction = null;
 
     public function __construct()
     {
@@ -168,14 +175,14 @@ class Local
         $this->type = $this->getType()->value;
         $this->technicalStatus = $this->getTechnicalStatus()->value;
 
-        if($this->getType() == LocalType::WallArea){
+        if ($this->getType() == LocalType::WallArea) {
             $this->setName('Área de muro');
-            if(is_null($this->getId())){
+            if (is_null($this->getId())) {
                 $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
             }
         }
 
-        if($this->getType() == LocalType::EmptyArea){
+        if ($this->getType() == LocalType::EmptyArea || $this->getType() == LocalType::WallArea) {
             $this->setHeight(0);
         }
     }
@@ -192,35 +199,38 @@ class Local
         return $this->getArea() * $this->getHeight();
     }
 
-    public static function createAutomaticWall(int $area): self
+    public static function createAutomaticWall(int $area, int $number = 0): self
     {
-        $localWall = new Local();
-        $localWall->setName('Área de muro');
-        $localWall->setType(LocalType::WallArea);
-        $localWall->setArea($area);
-        $localWall->setHeight(0);
-//        $localWall->setNumber(0);
-        $localWall->setTechnicalStatus(LocalTechnicalStatus::Undefined);
-
-        return $localWall;
+        return self::createAutomatic(LocalType::WallArea, LocalTechnicalStatus::Undefined, 'Área de muro', $area, 0, $number);
     }
 
-    public static function createAutomaticLocal(int $area): self
+    public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): self
+    {
+        if ($subSystem->inNewBuilding()) {
+            $technicalStatus = LocalTechnicalStatus::Good;
+        } else {
+            $technicalStatus = LocalTechnicalStatus::Undefined;
+        }
+
+        return self::createAutomatic(LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
+    }
+
+    private static function createAutomatic(LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): Local
     {
         $local = new Local();
-        $local->setName('Local');
-        $local->setType(LocalType::Local);
+        $local->setName($name);
+        $local->setType($type);
         $local->setArea($area);
-        $local->setHeight(1);
-//        $local->setNumber(0);
-        $local->setTechnicalStatus(LocalTechnicalStatus::Undefined);
+        $local->setHeight($height);
+        $local->setNumber($number);
+        $local->setTechnicalStatus($localTechnicalStatus);
 
         return $local;
     }
 
     public function isClassified(): bool
     {
-        if($this->getType() !== LocalType::Local){
+        if ($this->getType() !== LocalType::Local) {
             return true;
         }
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
@@ -248,25 +258,59 @@ class Local
         return $this;
     }
 
-    public function getConstructiveAction(): ?ConstructiveAction
-    {
-        return $this->constructiveAction;
-    }
-
-    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
-    {
-        $this->constructiveAction = $constructiveAction;
-
-        return $this;
-    }
+//    public function getConstructiveAction(): ?ConstructiveAction
+//    {
+//        return $this->constructiveAction;
+//    }
+//
+//    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
+//    {
+//        $this->constructiveAction = $constructiveAction;
+//
+//        return $this;
+//    }
 
     public function inNewBuilding(): ?bool
     {
-        return $this->getSubSystem()->getFloor()->getBuilding()->isNew();
+        return $this->getSubSystem()->inNewBuilding();
     }
 
     public function hasReply(): ?bool
     {
-        return $this->getSubSystem()->getFloor()->getBuilding()->hasReply();
+        return $this->getSubSystem()->hasReply();
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getLocalConstructiveAction(): ?LocalConstructiveAction
+    {
+        return $this->localConstructiveAction;
+    }
+
+    public function setLocalConstructiveAction(?LocalConstructiveAction $localConstructiveAction): static
+    {
+        $this->localConstructiveAction = $localConstructiveAction;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->getLocalConstructiveAction()->getPrice();
+    }
+
+    public function getConstructiveAction(): ?ConstructiveAction
+    {
+        return $this->getLocalConstructiveAction()->getConstructiveAction();
     }
 }

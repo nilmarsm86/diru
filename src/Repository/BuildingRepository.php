@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Building;
+use App\Entity\Enums\BuildingState;
+use App\Entity\Enums\ProjectState;
 use App\Entity\Investment;
+use App\Entity\Project;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -73,6 +76,35 @@ class BuildingRepository extends ServiceEntityRepository
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
 //            ->leftJoin('b.constructor', 'c')
             ->leftJoin('b.project', 'p');
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    private function addState(QueryBuilder $builder, $state): void
+    {
+        if ($state !== '') {
+            $state = BuildingState::from($state);
+            $builder->andWhere("b.state = :state ")->setParameter(':state', $state);
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @param string $filter
+     * @param int $amountPerPage
+     * @param int $page
+     * @param string $state
+     * @return Paginator Returns an array of User objects
+     */
+    public function findBuildingsByProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1, string $state = ''): Paginator
+    {
+        $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
+//            ->leftJoin('b.constructor', 'c')
+            ->leftJoin('b.project', 'p')
+        ->where('p.id = :project')
+            ->setParameter(':project',$project->getId());
+        $this->addState($builder, $state);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);

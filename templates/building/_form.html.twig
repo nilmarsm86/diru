@@ -10,7 +10,7 @@
     {% endblock %}
 
     {% block body %}
-        {{ component('BuildingForm', {modal:null, bui: building, ajax: ajax}) }}
+        {{ component('BuildingForm', {modal:null, bui: building, ajax: ajax, project: (project is not null) ? project.id : 0}) }}
     {% endblock %}
 
     {% block footer %}

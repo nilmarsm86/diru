@@ -8,6 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class FilterDropDown
 {
     public string $path = '';
+    public array $pathParams = [];
     public string $label = '';
     public array $options = [];
     public string $data = '';

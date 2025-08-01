@@ -46,9 +46,15 @@ final class BuildingForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?int $project = 0;
 
+    public function __construct(private readonly ProjectRepository $projectRepository)
+    {
+
+    }
+
     public function mount(?Building $bui = null): void
     {
         $this->bui = (is_null($bui)) ? new Building() : $bui;
+//        $this->project = $project;
     }
 
     /**
@@ -62,8 +68,10 @@ final class BuildingForm extends AbstractController
         }
 
         if ($this->project !== 0) {
-            $this->formValues['project'] = (string)$this->project;
-            $this->project = 0;
+//            $this->formValues['project'] = (string)$this->project;
+            $project = $this->projectRepository->find((int)$this->project);
+            $this->bui->setProject($project);
+//            $this->project = 0;
         }
     }
 
@@ -80,13 +88,14 @@ final class BuildingForm extends AbstractController
      */
     #[LiveAction]
     public function save(
-        BuildingRepository $buildingRepository,
+        BuildingRepository    $buildingRepository,
         ConstructorRepository $constructorRepository,
-        ProjectRepository $projectRepository,
-        DraftsmanRepository  $draftsmanRepository
+        ProjectRepository     $projectRepository,
+        DraftsmanRepository   $draftsmanRepository
     ): ?Response
     {
         $this->preValue();
+
         $successMsg = (is_null($this->bui->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
 
         $this->submitForm();
@@ -100,8 +109,11 @@ final class BuildingForm extends AbstractController
                 $building->addConstructor($constructor);
             }
 
-//            $project = $projectRepository->find((int)$this->formValues['project']);
-//            $building->setProject($project);
+            if ($this->project != 0) {
+                $project = $projectRepository->find((int)$this->project);
+                $building->setProject($project);
+            }
+
             if (!empty($this->formValues['draftsman'])) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
                 $building->addDraftsman($draftsman);

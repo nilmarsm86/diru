@@ -28,19 +28,19 @@ class ConstructiveAction
 
     #[Assert\Choice(
         choices: [ConstructiveActionType::NoModifier, ConstructiveActionType::Modifier],
-        message: 'Seleccione un tipo de proyecto.'
+        message: 'Seleccione un tipo de acción constructiva.'
     )]
     private ConstructiveActionType $enumType;
 
     /**
      * @var Collection<int, Local>
      */
-    #[ORM\OneToMany(targetEntity: Local::class, mappedBy: 'constructiveAction')]
-    private Collection $locals;
+    #[ORM\OneToMany(targetEntity: LocalConstructiveAction::class, mappedBy: 'constructiveAction')]
+    private Collection $localsConstructiveAction;
 
     public function __construct()
     {
-        $this->locals = new ArrayCollection();
+        $this->localsConstructiveAction = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,27 +80,27 @@ class ConstructiveAction
     /**
      * @return Collection<int, Local>
      */
-    public function getLocals(): Collection
+    public function getLocalsConstructiveAction(): Collection
     {
-        return $this->locals;
+        return $this->localsConstructiveAction;
     }
 
-    public function addLocal(Local $local): static
+    public function addLocalConstructiveAction(LocalConstructiveAction $localConstructiveAction): static
     {
-        if (!$this->locals->contains($local)) {
-            $this->locals->add($local);
-            $local->setConstructiveAction($this);
+        if (!$this->localsConstructiveAction->contains($localConstructiveAction)) {
+            $this->localsConstructiveAction->add($localConstructiveAction);
+            $localConstructiveAction->setConstructiveAction($this);
         }
 
         return $this;
     }
 
-    public function removeLocal(Local $local): static
+    public function removeLocalConstructiveAction(LocalConstructiveAction $localConstructiveAction): static
     {
-        if ($this->locals->removeElement($local)) {
+        if ($this->localsConstructiveAction->removeElement($localConstructiveAction)) {
             // set the owning side to null (unless already changed)
-            if ($local->getConstructiveAction() === $this) {
-                $local->setConstructiveAction(null);
+            if ($localConstructiveAction->getConstructiveAction() === $this) {
+                $localConstructiveAction->setConstructiveAction(null);
             }
         }
 

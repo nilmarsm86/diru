@@ -36,28 +36,23 @@
             paginator: paginator,
         } %}
             {% block message %}
-                {% if app.request.query.get('type') != '' %}
-                    <span class="text-primary">
-                        Proyectos de tipo
-                        <span class="badge text-bg-primary">
-                            {{ get_label_from('App\\Entity\\Enums\\ProjectType', app.request.query.get('type')) }}
-                        </span>
-                    </span>
-                {% endif %}
+                {{ component('message:filter', {
+                    type: 'type',
+                    label: 'Proyectos de tipo',
+                    filterFrom: 'App\\Entity\\Enums\\ProjectType',
+                }) }}
 
-                {% if app.request.query.get('state') != '' %}
-                    <span class="text-primary">
-                        Proyectos en estado
-                        <span class="badge text-bg-primary">
-                            {{ get_label_from('App\\Entity\\Enums\\ProjectState', app.request.query.get('state')) }}
-                        </span>
-                    </span>
-                {% endif %}
+                {{ component('message:filter', {
+                    type: 'state',
+                    label: 'Proyectos en estado',
+                    filterFrom: 'App\\Entity\\Enums\\ProjectState',
+                }) }}
             {% endblock %}
 
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
+                    <th>Obras {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
                     {% if app.request.query.get('type') == '' %}
                         <th>Tipo</th>
                     {% endif %}
@@ -75,12 +70,18 @@
 
                 {% for project in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ project.name }}</td>
                         <td>
-                            {{ project.name }}
-                            <span class="badge rounded-pill bg-danger" title="Obras del proyecto" style="cursor: pointer">
+                            <a href="{{ path('app_building_project', {'project':project.id}) }}">
+                                <span
+                                        class="badge rounded-pill bg-success"
+                                        title="Obras del proyecto"
+                                        style="cursor: pointer"
+                                        data-bs-toggle="tooltip"
+                                >
                                 {{ project.getBuildingsAmount() }}
                                 <span class="visually-hidden">Obras</span>
-                            </span>
+                                </span></a>
                         </td>
                         {% if app.request.query.get('type') == '' %}
                             <td>{{ project.type.getLabelFrom(project.type) }}</td>
@@ -90,7 +91,7 @@
                         {% endif %}
                         <td>
                             <a data-bs-toggle="modal" data-bs-target="#detail-investment"
-                               href="#" {{ stimulusController('detail-link-modal', {
+                               href="#" style="text-decoration: none" {{ stimulusController('detail-link-modal', {
                                 url: path('app_investment_show', {id:project.investment.id, state:'modal'}),
                                 container: '#detail-investment .modal-body'
                             }) }}
@@ -99,9 +100,9 @@
                             </a>
                         </td>
                         <td class="text-end">
-                            <div class="dropdown d-inline-block">
+                            <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Obras del proyecto">
                                 <button type="button"
-                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-link"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false" title="Obras del proyecto"
                                 >
@@ -111,23 +112,25 @@
                                     {% for building in project.buildings %}
                                         <li>
                                             <a class="dropdown-item"
-                                               href="{{ path('app_building_edit', {id: building.id}) }}" title="{{ building.name }}">
-                                                {{ building.shortName() }}
+                                               href="{{ path('app_building_edit', {id: building.id}) }}"
+                                               title="{{ building.name }}">
+                                                <small>{{ building.shortName() }}</small>
                                             </a>
                                         </li>
                                     {% endfor %}
                                 </ul>
                             </div>
-                            {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})})) }}
+                            {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})}), 'btn-link') }}
                             {#                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }} #}
-                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto') }}
+                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', '', 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_project_delete', {'id': project.id}),
                                 confirm: 'Está seguro que desea eliminar el proyecto?',
                                 token: 'delete' ~ project.id,
                                 title: 'Eliminar proyecto',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

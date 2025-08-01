@@ -103,7 +103,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for sub_system in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if sub_system.inNewBuilding() %}class="table-success"{% endif %}>
                         <td>
                             {{ sub_system.name }}
 {#                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema"#}

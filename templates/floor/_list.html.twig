@@ -1,4 +1,4 @@
-{% if building.notWallArea() or building.hasOriginalLocals() == false or building.allLocalsAreClassified() == false %}
+{% if building.hasErrors() %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
@@ -86,9 +86,10 @@
 
             {% block tableHead %}
                 <tr>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th></th>
-                    <th>#</th>
+
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
@@ -106,21 +107,21 @@
                 {% for floor in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }} {% if floor.inNewBuilding() %}class="table-success"{% endif %}>
                         <td>
+                            {{ floor.position }}
+                        </td>
+                        <td>
                             {{ floor.name }}
                         </td>
                         <td>
                             <span class="badge rounded-pill {% if floor.hasOriginalSubSystems() %}bg-success{% else %}bg-danger{% endif %}"
-                                  title="Subsistemas de la planta"
+                                  title="Subsistemas de la planta" data-bs-toggle="tooltip"
                                   {% if floor.hasOriginalSubSystems() == false %}
-                                      data-bs-toggle="tooltip" data-bs-title="No tiene definido subsistema." data-bs-custom-class="danger-tooltip"
+                                       data-bs-title="No tiene definido subsistema." data-bs-custom-class="danger-tooltip"
                                   {% endif %}
                                   style="cursor: pointer">
                                 {{ floor.getSubSystemAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
-                        </td>
-                        <td>
-                            {{ floor.position }}
                         </td>
 
                         <td>
@@ -161,10 +162,17 @@
                             {% else %}
                                 {% set subSystemsState = false %}
                             {% endif %}
-                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), 'ix:building-block' , '', 'Subsistemas', '', 'btn-info', subSystemsState) }}
+
+                            {% if floor.inNewBuilding() %}
+                                {% set cssClass = 'btn-link text-dark' %}
+                            {% else %}
+                                {% set cssClass = 'btn-link' %}
+                            {% endif %}
+
+                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), 'ix:building-block' , '', 'Subsistemas', '', cssClass, subSystemsState) }}
                             {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }} #}
                             {% if floor.hasReply() == false %}
-                                {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})})) }}
+                                {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})}), cssClass) }}
                             {% endif %}
 
                             {% if floor.inNewBuilding() or floor.hasReply() == false %}
@@ -174,7 +182,8 @@
                                     token: 'delete' ~ floor.id,
                                     title: 'Eliminar planta',
                                     icon: 'bi:trash',
-                                    active: floor.isGroundFloor() == false
+                                    active: floor.isGroundFloor() == false,
+                                    cssClass: 'btn-link text-danger'
                                 }) }}
                             {% endif %}
                         </td>
@@ -188,9 +197,7 @@
 
             {% block tableFooter %}
                 <tr>
-                    <th>Resumen del inmueble:</th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="3">Resumen del inmueble:</th>
                     <th>{{ building.getUsefulArea() }}</th>
                     <th>{{ building.getWallArea() }}</th>
                     <th>{{ building.getEmptyArea() }}</th>
@@ -198,7 +205,7 @@
                     <th>{{ building.getMaxHeight() }}</th>
                     <th>{{ building.getVolume() }}</th>
                     <th>{{ building.getUnassignedArea() }}</th>
-                    <th>CUS: {{ building.getCus() }}</th>
+                    <th class="text-end">CUS: {{ building.getCus() }}</th>
                 </tr>
             {% endblock %}
 

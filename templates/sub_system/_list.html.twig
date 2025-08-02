@@ -1,9 +1,9 @@
-{% if floor.notWallArea() == true or floor.hasOriginalLocals() == false or floor.allLocalsAreClassified() == false %}
-    {% set card_icon = ux_icon('material-symbols:warning-rounded', {
-        'class':'bi text-warning',
+{% if floor.hasErrors() %}
+    {% set card_icon = ux_icon('material-symbols:dangerous', {
+        'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
         'data-bs-title':"Revisar datos de los subsistemas.",
-        'data-bs-custom-class':"warning-tooltip"
+        'data-bs-custom-class':"danger-tooltip"
     }) %}
 {% else %}
     {% set card_icon = ux_icon('ep:success-filled', {
@@ -68,14 +68,13 @@
         } %}
 
             {% block message %}
-
                 {% if floor.building.isNew() %}
                     Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% else %}
                     Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m
                     <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% endif %}
-                <br>
+{#                <br>#}
                 {% if floor.isFullyOccupied() %}
                     ocupados totalmente.
                 {% else %}
@@ -106,18 +105,13 @@
                     <tr {{ stimulusController('delete-form-container') }} {% if sub_system.inNewBuilding() %}class="table-success"{% endif %}>
                         <td>
                             {{ sub_system.name }}
-{#                            <span class="badge rounded-pill bg-danger" title="Locales del sub sistema"#}
-{#                                  style="cursor: pointer">#}
-{#                                {{ sub_system.getLocalsAmount() }}#}
-{#                                <span class="visually-hidden">Locales</span>#}
-{#                            </span>#}
                         </td>
                         <td>
                             <span
                                     class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
-                                    title="Locales del subsistema"
+                                    title="Locales del subsistema" data-bs-toggle="tooltip"
                                     {% if sub_system.hasOriginalLocals() == false %}
-                                        data-bs-toggle="tooltip" data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
+                                        data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
                                     {% endif %}
                                   style="cursor: pointer">
                                 {{ sub_system.getLocalsAmount() }}
@@ -149,10 +143,15 @@
                             }) }}
                         </td>
                         <td class="text-end">
+                            {% if sub_system.inNewBuilding() %}
+                                {% set cssClass = 'btn-link text-dark' %}
+                            {% else %}
+                                {% set cssClass = 'btn-link' %}
+                            {% endif %}
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            <div class="dropdown d-inline-block">
+                            <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Reportes">
                                 <button type="button"
-                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm {{ cssClass }}"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false" title="Reportes"
                                 >
@@ -183,10 +182,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }}
+                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', cssClass) }}
 
                             {% if floor.hasReply() == false %}
-                                {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})})) }}
+                                {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})}), cssClass) }}
                             {% endif %}
 
                             {% if sub_system.inNewBuilding() or sub_system.hasReply() == false %}
@@ -196,6 +195,7 @@
                                     token: 'delete' ~ sub_system.id,
                                     title: 'Eliminar subsistema',
                                     icon: 'bi:trash',
+                                    cssClass: 'btn-link text-danger'
                                 }) }}
                             {% endif %}
                         </td>
@@ -209,8 +209,7 @@
 
             {% block tableFooter %}
                 <tr>
-                    <th>Resumen de la planta:</th>
-                    <th></th>
+                    <th colspan="2">Resumen de la planta:</th>
                     <th>
                         {% if floor.isFullyOccupied() %}
                             {{ floor.getUsefulArea() }}

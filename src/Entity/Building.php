@@ -801,4 +801,9 @@ class Building implements MeasurementDataInterface
     {
         return $this->getTotalEstimatedValue() . ' ' . $this->getProjectCurrency();
     }
+
+    public function hasErrors(): bool
+    {
+        return $this->notWallArea() || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false);
+    }
 }

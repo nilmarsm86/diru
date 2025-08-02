@@ -336,4 +336,9 @@ class Floor implements MeasurementDataInterface
     {
         return $this->getBuilding()->hasReply();
     }
+
+    public function hasErrors(): bool
+    {
+        return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false);
+    }
 }

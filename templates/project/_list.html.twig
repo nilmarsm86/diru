@@ -52,7 +52,7 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Obras {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
+                    <th class="text-center">Obras {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
                     {% if app.request.query.get('type') == '' %}
                         <th>Tipo</th>
                     {% endif %}
@@ -71,7 +71,7 @@
                 {% for project in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ project.name }}</td>
-                        <td>
+                        <td class="text-center">
                             <a href="{{ path('app_building_project', {'project':project.id}) }}">
                                 <span
                                         class="badge rounded-pill bg-success"

@@ -301,3 +301,12 @@ div#project_clientType label::after{
     --bs-tooltip-color: var(--bs-black);
     opacity: 1 !important;
 }
+
+.red{
+    color: red !important;
+}
+
+.btn-link-error-badge{
+    top: 25% !important;
+    left: 75% !important;
+}

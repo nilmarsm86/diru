@@ -1,9 +1,9 @@
-{% if sub_system.allLocalsAreClassified() == false or sub_system.notWallArea() or sub_system.isFullyOccupied() == false %}
-    {% set card_icon = ux_icon('material-symbols:warning-rounded', {
-        'class':'bi text-warning',
+{% if sub_system.hasErrors() %}
+    {% set card_icon = ux_icon('material-symbols:dangerous', {
+        'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
         'data-bs-title':"Revisar datos de los locales.",
-        'data-bs-custom-class':"warning-tooltip"
+        'data-bs-custom-class':"danger-tooltip"
     }) %}
 {% else %}
     {% set card_icon = ux_icon('ep:success-filled', {
@@ -112,10 +112,15 @@
                             {% endif %}
                         </td>
                         <td class="text-end">
+                            {% if sub_system.inNewBuilding() %}
+                                {% set cssClass = 'btn-link text-dark' %}
+                            {% else %}
+                                {% set cssClass = 'btn-link' %}
+                            {% endif %}
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
 
                             {% if local.hasReply() == false %}
-                                {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id})})) }}
+                                {{ tableActionButton3(path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id}), 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id})}), cssClass) }}
                             {% endif %}
 
                             {% if local.hasReply() == false or local.inNewBuilding() %}
@@ -125,7 +130,7 @@
                                     token: 'delete' ~ local.id,
                                     title: 'Eliminar local',
                                     icon: 'bi:trash',
-
+                                    cssClass: 'btn-link text-danger'
                                 }) }}
                             {% endif %}
                         </td>

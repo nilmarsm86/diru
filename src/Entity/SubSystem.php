@@ -360,4 +360,9 @@ class SubSystem implements MeasurementDataInterface
         return $this->getFloor()->hasReply();
     }
 
+    public function hasErrors(): bool
+    {
+        return ($this->allLocalsAreClassified() == false) || $this->notWallArea() || ($this->isFullyOccupied() == false);
+    }
+
 }

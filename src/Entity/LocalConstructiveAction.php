@@ -15,16 +15,17 @@ class LocalConstructiveAction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(mappedBy: 'constructiveAction', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'localConstructiveAction', cascade: ['persist', 'remove'])]
     private ?Local $local = null;
 
     #[ORM\ManyToOne(inversedBy: 'localsConstructiveAction')]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: 'Seleccione la acción constructiva.')]
     private ?ConstructiveAction $constructiveAction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $price = null;
-
 
     public function getId(): ?int
     {

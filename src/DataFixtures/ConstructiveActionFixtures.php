@@ -14,6 +14,7 @@ class ConstructiveActionFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $actions = [
+            'No es necesaria' => ConstructiveActionType::NoModifier,
             'Cambio de uso' => ConstructiveActionType::NoModifier,
             'Mantenimiento' => ConstructiveActionType::NoModifier,
             'Conservación' => ConstructiveActionType::NoModifier,

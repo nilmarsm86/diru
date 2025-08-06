@@ -4,8 +4,10 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
+use App\Entity\ConstructiveAction;
 use App\Entity\Floor;
 use App\Entity\Local;
+use App\Entity\LocalConstructiveAction;
 use App\Entity\Organism;
 use App\Entity\SubSystem;
 use App\Form\FloorType;
@@ -47,10 +49,14 @@ final class LocalForm extends AbstractController
     #[LiveProp]
     public ?SubSystem $subSystem = null;
 
+    #[LiveProp]
+    public ?LocalConstructiveAction $localConstructiveAction = null;
+
     public function mount(?Local $l = null, SubSystem $subSystem = null): void
     {
         $this->l = (is_null($l)) ? new Local() : $l;
         $this->subSystem = $subSystem;
+        $this->localConstructiveAction = $this->l->getLocalConstructiveAction();
     }
 
     protected function instantiateForm(): FormInterface
@@ -68,6 +74,7 @@ final class LocalForm extends AbstractController
     #[LiveAction]
     public function save(LocalRepository $localRepository): ?Response
     {
+        dump($this->l);
         $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : 'Se ha modificado el local.';//TODO: personalizar los mensajes
 
         $this->submitForm();
@@ -77,6 +84,20 @@ final class LocalForm extends AbstractController
             $local = $this->getForm()->getData();
 
             $local->setSubSystem($this->subSystem);
+
+            if (is_null($this->l->getId())) {
+                if (isset($this->formValues['localConstructiveAction']) && empty($this->formValues['localConstructiveAction']['price'])) {
+                    $this->formValues['localConstructiveAction'] = null;
+                    $local->setLocalConstructiveAction(null);
+                }
+            } else {
+                if (isset($this->formValues['localConstructiveAction']) && empty($this->formValues['localConstructiveAction']['price'])) {
+                    $this->formValues['localConstructiveAction']['price'] = $this->l->getLocalConstructiveAction()->getPrice();
+                    $this->formValues['localConstructiveAction']['constructiveAction'] = $this->l->getLocalConstructiveAction()->getConstructiveAction();
+                    $local->setLocalConstructiveAction($this->localConstructiveAction);
+                }
+            }
+
             $localRepository->save($local, true);
 
             $this->l = new Local();

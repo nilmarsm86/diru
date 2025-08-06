@@ -49,10 +49,20 @@ class Local
         choices: LocalType::CHOICES,
         message: 'Seleccione un tipo de local.'
     )]
-    private LocalType $enumType;
+    public LocalType $enumType;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'La altura está vacía.')]
+    #[Assert\Expression(
+        "this.validHeightInEmptyArea()",
+        message: 'La altura de un área de vacio siempre debe ser 0.',
+        negate: false
+    )]
+    #[Assert\Expression(
+        "this.validHeightInOtherArea()",
+        message: 'La altura de un local o área de muro debe ser mayor que 0.',
+        negate: false
+    )]
     private ?float $height = null;
 
     #[ORM\Column(length: 255)]
@@ -64,9 +74,6 @@ class Local
     )]
     private LocalTechnicalStatus $enumTechnicalStatus;
 
-//    #[ORM\Column(enumType: LocalType::class)]
-//    private ?LocalType $type2 = null;
-
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
 //    #[Assert\Valid]
@@ -76,18 +83,28 @@ class Local
     #[ORM\Column]
     private ?bool $impactHigherLevels = null;
 
-//    #[ORM\ManyToOne(inversedBy: 'locals')]
-//    private ?ConstructiveAction $constructiveAction = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
     #[ORM\OneToOne(inversedBy: 'local', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Assert\Valid]
     private ?LocalConstructiveAction $localConstructiveAction = null;
 
     public function __construct()
     {
         $this->impactHigherLevels = false;
+        $this->localConstructiveAction = null;
+    }
+
+    public function validHeightInEmptyArea(): bool
+    {
+        return $this->enumType->value == '0' && $this->getHeight() > 0;
+    }
+
+    public function validHeightInOtherArea(): bool
+    {
+        return ($this->enumType->value != '0' && $this->getHeight() == 0) && ($this->enumType->value != '' && $this->getHeight() == 0);
     }
 
     public function getId(): ?int

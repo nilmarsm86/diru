@@ -2,16 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
-use App\Entity\Floor;
 use App\Entity\Local;
 use App\Form\Types\LocalTechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
 use App\Form\Types\UnitMeasurementType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -46,20 +42,20 @@ class LocalType extends AbstractType
                 'unit' => 'm',
                 'attr' => [
                     'placeholder' => 'Altura del local',
-                    'data-controller' => 'positive-zero'
+                    'data-controller' => 'positive-zero',
+                    'min' => 0
                 ],
-//                'html5' => true,
                 'data' => 0
             ])
             ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
                 'label' => 'Estado técnico:',
             ])
-//            ->add('type2', EnumType::class, [
-//                'class' => \App\Entity\Enums\LocalType::class,
-//            ])
             ->add('impactHigherLevels', null, [
                 'label' => 'Tiene impacto en niveles superiores:',
                 'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.'
+            ])
+            ->add('comment', null, [
+                'label' => false,
             ])
         ;
 
@@ -103,12 +99,12 @@ class LocalType extends AbstractType
             $leftArea = $local->getArea();
         }*/
 
-        if(is_null($local->getId()) && $leftArea > 1 && $local->getSubSystem()->notWallArea() === true){
+        if (is_null($local->getId()) && $leftArea > 1 && $local->getSubSystem()->notWallArea() === true) {
             $leftArea -= 1;
         }
 
-        if($local->getId()){
-            if($local->getArea() > $leftArea){
+        if ($local->getId()) {
+            if ($local->getArea() > $leftArea) {
                 $leftArea += $local->getArea();
             }
         }
@@ -127,5 +123,12 @@ class LocalType extends AbstractType
             ],
             'constraints' => $constraints,
         ]);
+
+        if ($local->inNewBuilding() || ($local->getId() && $local->hasReply())) {
+            $form->add('localConstructiveAction', LocalConstructiveActionType::class, [
+                'required' => true,
+                'error_bubbling' => false
+            ]);
+        }
     }
 }

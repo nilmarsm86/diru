@@ -7,10 +7,6 @@
         }
     }) }}
 
-{#    {% if form_errors(form) %}#}
-{#        {{ form_errors(form) }}#}
-{#    {% endif %}#}
-
     <div class="mb-0 row">
         <div class="col">
             {{ form_row(form.type, {attr:{'data-live--local-form-target':'type'}}) }}
@@ -43,6 +39,50 @@
 
     <div class="mb-0 row">
         {{ form_row(form.impactHigherLevels) }}
+    </div>
+
+
+    <div class="mb-0 row">
+        {% if form.localConstructiveAction is defined %}
+            <div class="col">
+                <details class="collection" open>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Acción constructiva:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    <div class="mb-0 row">
+                        <div class="col">
+                            {{ form_row(form.localConstructiveAction.constructiveAction) }}
+                        </div>
+                        {% if form.localConstructiveAction.price is defined %}
+                            <div class="col" {{ stimulusController('usd-currency') }}>
+                                {{ form_row(form.localConstructiveAction.price) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </details>
+            </div>
+        {% endif %}
+
+        <div class="col">
+            <details class="collection">
+                <summary class="collection">
+                    <div class="row summary-btn-lis">
+                        <div class="col">Comentario:</div>
+                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                        </div>
+                    </div>
+                </summary>
+                <br>
+                {{ form_row(form.comment) }}
+            </details>
+        </div>
     </div>
 
     <div class="row mb-3">

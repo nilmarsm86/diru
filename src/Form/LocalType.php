@@ -103,13 +103,13 @@ class LocalType extends AbstractType
             $leftArea = $local->getArea();
         }*/
 
-        if(is_null($local->getId()) && $leftArea > 1){
+        if(is_null($local->getId()) && $leftArea > 1 && $local->getSubSystem()->notWallArea() === true){
             $leftArea -= 1;
         }
 
         if($local->getId()){
             if($local->getArea() > $leftArea){
-                $leftArea = $local->getArea();
+                $leftArea += $local->getArea();
             }
         }
 

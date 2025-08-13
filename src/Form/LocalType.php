@@ -56,8 +56,7 @@ class LocalType extends AbstractType
             ])
             ->add('comment', null, [
                 'label' => false,
-            ])
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $this->onPreSetData($event, $options);
@@ -124,7 +123,12 @@ class LocalType extends AbstractType
             'constraints' => $constraints,
         ]);
 
-        if (!$local->isOriginal() || $local->inNewBuilding() || ($local->getId() && $local->hasReply())) {
+        if (!$local->getSubSystem()->getFloor()->isOriginal() ||
+            !$local->getSubSystem()->isOriginal() ||
+            !$local->isOriginal() ||
+            $local->inNewBuilding() ||
+            ($local->getId() && $local->hasReply())
+        ) {
             $form->add('localConstructiveAction', LocalConstructiveActionType::class, [
                 'required' => true,
                 'error_bubbling' => false

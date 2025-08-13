@@ -24,14 +24,14 @@ use Twig\Error\SyntaxError;
 #[Route('/local')]
 final class LocalController extends AbstractController
 {
-    #[Route('/{subSystem}', name: 'app_local_index', methods: ['GET'])]
-    public function index(Request $request, LocalRepository $localRepository, SubSystem $subSystem): Response
+    #[Route('/{subSystem}/{reply}', name: 'app_local_index', methods: ['GET'], requirements: ['subSystem' => '\d+'])]
+    public function index(Request $request, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = $request->query->get('amount', 10);
         $pageNumber = $request->query->get('page', 1);
 
-        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber);
+        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -44,7 +44,8 @@ final class LocalController extends AbstractController
         return $this->render("local/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'sub_system' => $subSystem
+            'sub_system' => $subSystem,
+            'reply' => $reply
         ]);
     }
 

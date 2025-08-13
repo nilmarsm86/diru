@@ -99,37 +99,37 @@ class SubSystem implements MeasurementDataInterface
 
     public function hasOriginalLocals(): bool
     {
-        return $this->getLocalsAmount(true) > 0;
+        return $this->getOriginalLocals()->count() > 0;
     }
 
     public function hasReplyLocals(): bool
     {
-        return $this->getLocalsAmount(false) > 0;
+        return $this->getReplyLocals()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, bool $original = true): mixed
+    public function getMeasurementData(string $method, bool $original = null): mixed
     {
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $data = 0;
         foreach ($locals as $local) {
-            $data += call_user_func([$locals, $method], $original);
+            $data += call_user_func([$locals, $method], $this->isOriginal());
         }
 
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = true): ?int
+    public function getUnassignedArea(bool $original = null): ?int
     {
         $isNew = $this->getFloor()->getBuilding()->isNew();
         $landArea = $this->getFloor()->getBuilding()->getLandArea();
         $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea($original);
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
-    public function getMaxHeight(bool $original = true): int
+    public function getMaxHeight(bool $original = null): int
     {
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         $maxHeight = 0;
         foreach ($locals as $local){
             if($local->getHeight() > $maxHeight){
@@ -140,24 +140,24 @@ class SubSystem implements MeasurementDataInterface
         return $maxHeight;
     }
 
-    public function isFullyOccupied(bool $original = true): bool
+    public function isFullyOccupied(bool $original = null): bool
     {
 //        throw new \Exception("Not need");
 //        if($this->getFloor()->getBuilding()->isNew()){
 //            return true;
 //        }
 
-        return $this->getFloor()->isFullyOccupied($original);
+        return $this->getFloor()->isFullyOccupied();
 
     }
 
-    public function getLocalsAmount(bool $original = true): int
+    public function getLocalsAmount(): int
     {
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         return $locals->count();
     }
 
-    public function reply(EntityManagerInterface $entityManager): static
+    public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
 //        $replica = clone $this;
 //        $replica->setOriginal($this);
@@ -169,23 +169,36 @@ class SubSystem implements MeasurementDataInterface
 //        }
 //
 //        return $replica;
-        return $this->makeReply($entityManager, $this->getLocals());
+//        return $this->makeReply($entityManager, $this->getOriginalLocals());
+        $replica = clone $this;
+        $replica->setOriginal($this);
+        $replica->setName($replica->getName().' replicado');
+        $replica->setFloor($parent);
+
+        $entityManager->persist($replica);
+
+        foreach ($this->getOriginalLocals() as $item){
+            $item->reply($entityManager, $replica);
+        }
+
+        return $replica;
     }
 
-    public function hasVariableHeights(bool $original = true): bool
+    public function hasVariableHeights(): bool
     {
-        $totalHeight = $this->getMeasurementData('getHeight', $original);
-        return ($totalHeight % $this->getLocalsAmount($original)) > 0;
+        $totalHeight = $this->getMeasurementData('getHeight');
+        return ($totalHeight % $this->getLocalsAmount()) > 0;
     }
 
     public function allLocalsAreClassified(): bool
     {
         //TODO: duda con esto
-        if ($this->getLocalsAmount(true) == 0) {
+        if ($this->getLocalsAmount() == 0) {
             return true;
         }
 
-        foreach ($this->getOriginalLocals() as $local) {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        foreach ($locals as $local) {
             if (!$local->isClassified()) {
                 return false;
             }
@@ -194,13 +207,13 @@ class SubSystem implements MeasurementDataInterface
         return true;
     }
 
-    public function getUsefulArea(bool $original = true): int
+    public function getUsefulArea(bool $original = null): int
     {
-        if ($this->getLocalsAmount($original) === 0) {
+        if ($this->getLocalsAmount() === 0) {
             return 0;
         }
 
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $usefulArea = 0;
         foreach ($locals as $local) {
@@ -212,13 +225,13 @@ class SubSystem implements MeasurementDataInterface
         return $usefulArea;
     }
 
-    public function getWallArea(bool $original = true): int
+    public function getWallArea(bool $original = null): int
     {
-        if ($this->getLocalsAmount($original) === 0) {
+        if ($this->getLocalsAmount() === 0) {
             return 0;
         }
 
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $wallArea = 0;
         foreach ($locals as $local) {
@@ -230,13 +243,13 @@ class SubSystem implements MeasurementDataInterface
         return $wallArea;
     }
 
-    public function getEmptyArea(bool $original = true): int
+    public function getEmptyArea(bool $original = null): int
     {
         if ($this->getLocalsAmount() === 0) {
             return 0;
         }
 
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $emptyArea = 0;
         foreach ($locals as $local) {
@@ -260,19 +273,19 @@ class SubSystem implements MeasurementDataInterface
         return $this;
     }
 
-    public function getAmountLocalTechnicalStatus(bool $original = true): array
+    public function getAmountLocalTechnicalStatus(): array
     {
         $undefined = 0;
-        $critital = 0;
+        $critical = 0;
         $bad = 0;
         $regular = 0;
         $good = 0;
 
-        $locals = ($original) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         foreach ($locals as $local) {
             match ($local->getTechnicalStatus()) {
-                LocalTechnicalStatus::Critical => $critital++,
+                LocalTechnicalStatus::Critical => $critical++,
                 LocalTechnicalStatus::Bad => $bad++,
                 LocalTechnicalStatus::Regular => $regular++,
                 LocalTechnicalStatus::Good => $good++,
@@ -284,7 +297,7 @@ class SubSystem implements MeasurementDataInterface
             'good' => $good,
             'regular' => $regular,
             'bad' => $bad,
-            'critical' => $critital,
+            'critical' => $critical,
             'undefined' => $undefined
         ];
     }
@@ -292,14 +305,14 @@ class SubSystem implements MeasurementDataInterface
     public function getAmountMeterTechnicalStatus(): array
     {
         $undefined = 0;
-        $critital = 0;
+        $critical = 0;
         $bad = 0;
         $regular = 0;
         $good = 0;
 
         foreach ($this->getLocals() as $local) {
             match ($local->getTechnicalStatus()) {
-                LocalTechnicalStatus::Critical => $critital += $local->getArea(),
+                LocalTechnicalStatus::Critical => $critical += $local->getArea(),
                 LocalTechnicalStatus::Bad => $bad += $local->getArea(),
                 LocalTechnicalStatus::Regular => $regular += $local->getArea(),
                 LocalTechnicalStatus::Good => $good += $local->getArea(),
@@ -311,7 +324,7 @@ class SubSystem implements MeasurementDataInterface
             'good' => $good,
             'regular' => $regular,
             'bad' => $bad,
-            'critical' => $critital,
+            'critical' => $critical,
             'undefined' => $undefined
         ];
     }
@@ -343,7 +356,7 @@ class SubSystem implements MeasurementDataInterface
     {
         if(is_null($this->getId())){
             $local = Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
-            $wall = Local::createAutomaticWall(1, 0);
+            $wall = Local::createAutomaticWall(1);
 
             $this->addLocal($local);
             $this->addLocal($wall);
@@ -357,6 +370,9 @@ class SubSystem implements MeasurementDataInterface
 
     public function hasReply(): ?bool
     {
+        if(!$this->inNewBuilding() && !$this->isOriginal()){
+            return false;
+        }
         return $this->getFloor()->hasReply();
     }
 

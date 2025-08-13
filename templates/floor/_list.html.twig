@@ -1,4 +1,4 @@
-{% if building.hasErrors() %}
+{% if building.hasErrors(not reply) %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
@@ -22,9 +22,9 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {% if building.hasReply() and reply == true  %}
-                {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble existente', 'Inmueble existente') }}
-            {% endif %}
+            {#            {% if building.hasReply() and reply == true  %} #}
+            {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':reply ? false : true}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
+            {#            {% endif %} #}
 
             {% if building.canReply() %}
                 {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
@@ -89,7 +89,6 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th></th>
-
                     <th>Á. Util (m<sup>2</sup>)</th>
                     <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
@@ -113,29 +112,42 @@
                             {{ floor.name }}
                         </td>
                         <td>
-                            <span class="badge rounded-pill {% if floor.hasOriginalSubSystems() %}bg-success{% else %}bg-danger{% endif %}"
-                                  title="Subsistemas de la planta" data-bs-toggle="tooltip"
-                                  {% if floor.hasOriginalSubSystems() == false %}
-                                       data-bs-title="No tiene definido subsistema." data-bs-custom-class="danger-tooltip"
-                                  {% endif %}
-                                  style="cursor: pointer">
-                                {{ floor.getSubSystemAmount() }}
-                                <span class="visually-hidden">Locales</span>
-                            </span>
+                            {% if reply %}
+                                <span class="badge rounded-pill bg-success"
+                                      title="Subsistemas replicados de la planta" data-bs-toggle="tooltip"
+                                      style="cursor: pointer">
+                                    {{ floor.getSubSystemAmount(false) }}
+                                    <span class="visually-hidden">Subsistemas</span>
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill {% if floor.hasOriginalSubSystems() %}bg-success{% else %}bg-danger{% endif %}"
+                                      title="Subsistemas de la planta" data-bs-toggle="tooltip"
+                                      {% if floor.hasOriginalSubSystems() == false %}
+                                          data-bs-title="No tiene definido subsistema." data-bs-custom-class="danger-tooltip"
+                                      {% endif %}
+                                      style="cursor: pointer">
+                                    {{ floor.getSubSystemAmount() }}
+                                    <span class="visually-hidden">Subsistemas</span>
+                                </span>
+                            {% endif %}
                         </td>
 
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUsefulArea() }}
                             {% else %}
-                                <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Queda espacio sin aprovechar." data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                <span class="text-warning" data-bs-toggle="tooltip"
+                                      data-bs-title="Queda espacio sin aprovechar."
+                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ floor.getUsefulArea() }}
                                 </span>
                             {% endif %}
                         </td>
                         <td>
                             {% if floor.notWallArea() %}
-                                <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Debe tener área de muro." data-bs-custom-class="danger-tooltip" style="cursor: pointer">
+                                <span class="text-danger" data-bs-toggle="tooltip"
+                                      data-bs-title="Debe tener área de muro." data-bs-custom-class="danger-tooltip"
+                                      style="cursor: pointer">
                                     {{ floor.getWallArea() }}
                                 </span>
                             {% else %}
@@ -150,26 +162,22 @@
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUnassignedArea() }}
                             {% else %}
-                                <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Queda espacio sin aprovechar." data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                <span class="text-warning" data-bs-toggle="tooltip"
+                                      data-bs-title="Queda espacio sin aprovechar."
+                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ floor.getUnassignedArea() }}
                                 </span>
                             {% endif %}
                         </td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {% if floor.notWallArea() or floor.allLocalsAreClassified() == false %}
-                                {% set subSystemsState = true %}
-                            {% else %}
-                                {% set subSystemsState = false %}
-                            {% endif %}
-
                             {% if floor.inNewBuilding() %}
                                 {% set cssClass = 'btn-link text-dark' %}
                             {% else %}
                                 {% set cssClass = 'btn-link' %}
                             {% endif %}
 
-                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id}), 'ix:building-block' , '', 'Subsistemas', '', cssClass, subSystemsState) }}
+                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? 'Subsistemas replicados' : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
                             {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }} #}
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})}), cssClass) }}
@@ -198,14 +206,14 @@
             {% block tableFooter %}
                 <tr>
                     <th colspan="3">Resumen del inmueble:</th>
-                    <th>{{ building.getUsefulArea() }}</th>
-                    <th>{{ building.getWallArea() }}</th>
-                    <th>{{ building.getEmptyArea() }}</th>
-                    <th>{{ building.getTotalArea() }}</th>
-                    <th>{{ building.getMaxHeight() }}</th>
-                    <th>{{ building.getVolume() }}</th>
-                    <th>{{ building.getUnassignedArea() }}</th>
-                    <th class="text-end">CUS: {{ building.getCus() }}</th>
+                    <th>{{ building.getUsefulArea(not reply) }}</th>
+                    <th>{{ building.getWallArea(not reply) }}</th>
+                    <th>{{ building.getEmptyArea(not reply) }}</th>
+                    <th>{{ building.getTotalArea(not reply) }}</th>
+                    <th>{{ building.getMaxHeight(not reply) }}</th>
+                    <th>{{ building.getVolume(not reply) }}</th>
+                    <th>{{ building.getUnassignedArea(not reply) }}</th>
+                    <th class="text-end">CUS: {{ building.getCus(not reply) }}</th>
                 </tr>
             {% endblock %}
 

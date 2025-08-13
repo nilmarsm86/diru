@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
@@ -44,8 +43,6 @@ class Floor implements MeasurementDataInterface
 
     #[ORM\Column]
     private ?bool $groundFloor = null;
-
-
 
     #[ORM\Column]
     private ?int $position = null;
@@ -108,27 +105,27 @@ class Floor implements MeasurementDataInterface
 
     public function hasOriginalSubSystems(): bool
     {
-        return $this->getSubSystemAmount(true) > 0;
+        return $this->getOriginalSubsystems()->count() > 0;
     }
 
     public function hasReplySubSystems(): bool
     {
-        return $this->getSubSystemAmount(false) > 0;
+        return $this->getReplySubsystems()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, bool $original = true): mixed
+    public function getMeasurementData(string $method, bool $original = null): mixed
     {
-        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         $data = 0;
-        foreach ($subsystems as $subsystem){
-            $data += call_user_func([$subsystem, $method], $original);
+        foreach ($subsystems as $subsystem) {
+            $data += call_user_func([$subsystem, $method], $this->isOriginal());
         }
 
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = true): ?int
+    public function getUnassignedArea(bool $original = null): ?int
     {
 //        if($this->getBuilding()->isNew()){
 //            return $this->getBuilding()->getLandArea() - $this->getTotalArea();
@@ -136,20 +133,20 @@ class Floor implements MeasurementDataInterface
 //            return $this->getBuilding()->getOccupiedArea() - $this->getTotalArea();
 //        }
 
-        if(is_null($this->getBuilding())){
+        if (is_null($this->getBuilding())) {
             return 1;
         }
 
         $isNew = $this->getBuilding()->isNew();
         $landArea = $this->getBuilding()->getLandArea();
         $occupiedArea = $this->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea($original);
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
-    public function getMaxHeight(bool $original = true): int
+    public function getMaxHeight(bool $original = null): int
     {
-        $subSystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
-        return $this->calculateMaxHeight($subSystems, $original);
+        $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        return $this->calculateMaxHeight($subSystems);
     }
 
     public function getBuilding(): ?Building
@@ -176,7 +173,7 @@ class Floor implements MeasurementDataInterface
         return $this;
     }
 
-    public function isFullyOccupied(bool $original = true): bool
+    public function isFullyOccupied(bool $original = null): bool
     {
 //        if($this->getBuilding()->isNew()){
 //            return $this->getBuilding()->getLandArea() <= $this->getTotalArea();
@@ -186,22 +183,23 @@ class Floor implements MeasurementDataInterface
 //        if($this->getBuilding()->isNew()){
 //            return true;
 //        }
-
-        return $this->getTotalArea($original) >= (($this->getBuilding()->isNew()) ? $this->getBuilding()->getLandArea() : $this->getBuilding()->getOccupiedArea());
+        return $this->getTotalArea() >= (($this->getBuilding()->isNew())
+                ? $this->getBuilding()->getLandArea()
+                : $this->getBuilding()->getOccupiedArea());
     }
 
-    public function getSubSystemAmount(bool $original = true): int
+    public function getSubSystemAmount(): int
     {
-        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
         return $subsystems->count();
     }
 
     public function hasSubSystemAndIsNotCompletlyEmptyArea(): bool
     {
-        return $this->hasOriginalSubSystems() && ($this->getUsefulArea(true) > 0);
+        return $this->hasOriginalSubSystems() && ($this->getUsefulArea() > 0);
     }
 
-    public function reply(EntityManagerInterface $entityManager): static
+    public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
 //        $replica = clone $this;
 //        $replica->setOriginal($this);
@@ -213,13 +211,25 @@ class Floor implements MeasurementDataInterface
 //        }
 //
 //        return $replica;
-        return $this->makeReply($entityManager, $this->getOriginalSubsystems());
+
+//        return $this->makeReply($entityManager, $this->getOriginalSubsystems(), $parent);
+        $replica = clone $this;
+        $replica->setOriginal($this);
+        $replica->setName($replica->getName() . ' replicada');
+
+        $entityManager->persist($replica);
+
+        foreach ($this->getOriginalSubsystems() as $item) {
+            $item->reply($entityManager, $replica);
+        }
+
+        return $replica;
     }
 
-    public function hasVariableHeights(bool $original = true): bool
+    public function hasVariableHeights(): bool
     {
-        $totalHeight = $this->getMeasurementData('getMaxHeight', $original);
-        return ($totalHeight % $this->getSubSystemAmount($original)) > 0;
+        $totalHeight = $this->getMeasurementData('getMaxHeight');
+        return ($totalHeight % $this->getSubSystemAmount()) > 0;
     }
 
     public function allLocalsAreClassified(): bool
@@ -240,21 +250,21 @@ class Floor implements MeasurementDataInterface
     }
 
 
-    public function getAmountLocalTechnicalStatus(bool $original = true): array
+    public function getAmountLocalTechnicalStatus(): array
     {
         $undefined = 0;
-        $critital = 0;
+        $critical = 0;
         $bad = 0;
         $regular = 0;
         $good = 0;
 
-        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         foreach ($subsystems as $subsystem) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountLocalTechnicalStatus($original);
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountLocalTechnicalStatus($this->isOriginal());
 
             $undefined += $undefinedState;
-            $critital += $crititalState;
+            $critical += $crititalState;
             $bad += $badState;
             $regular += $regularState;
             $good += $goodState;
@@ -264,26 +274,26 @@ class Floor implements MeasurementDataInterface
             'good' => $good,
             'regular' => $regular,
             'bad' => $bad,
-            'critical' => $critital,
+            'critical' => $critical,
             'undefined' => $undefined
         ];
     }
 
-    public function getAmountMeterTechnicalStatus(bool $original = true): array
+    public function getAmountMeterTechnicalStatus(): array
     {
         $undefined = 0;
-        $critital = 0;
+        $critical = 0;
         $bad = 0;
         $regular = 0;
         $good = 0;
 
-        $subsystems = ($original) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         foreach ($subsystems as $subsystem) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountMeterTechnicalStatus($original);
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountMeterTechnicalStatus($this->isOriginal());
 
             $undefined += $undefinedState;
-            $critital += $crititalState;
+            $critical += $crititalState;
             $bad += $badState;
             $regular += $regularState;
             $good += $goodState;
@@ -293,19 +303,20 @@ class Floor implements MeasurementDataInterface
             'good' => $good,
             'regular' => $regular,
             'bad' => $bad,
-            'critical' => $critital,
+            'critical' => $critical,
             'undefined' => $undefined
         ];
     }
+
     public function hasOriginalLocals(): bool
     {
-        if($this->getSubSystemAmount() === 0){
+        if ($this->getSubSystemAmount() === 0) {
             return false;
         }
 
         /** @var SubSystem $subSystem */
-        foreach($this->getOriginalSubsystems() as $subSystem){
-            if(!$subSystem->hasOriginalLocals()){
+        foreach ($this->getOriginalSubsystems() as $subSystem) {
+            if (!$subSystem->hasOriginalLocals()) {
                 return false;
             }
         }
@@ -315,7 +326,7 @@ class Floor implements MeasurementDataInterface
 
     public function createAutomaticSubsystem(): void
     {
-        if(is_null($this->getId())){
+        if (is_null($this->getId())) {
             $subSystem = new SubSystem();
             $subSystem->setFloor($this);
             $subSystem->setName('Subsistema');
@@ -326,7 +337,7 @@ class Floor implements MeasurementDataInterface
 
     public function inNewBuilding(): ?bool
     {
-        if(is_null($this->getBuilding())){
+        if (is_null($this->getBuilding())) {
             return true;
         }
         return $this->getBuilding()->isNew();
@@ -334,11 +345,14 @@ class Floor implements MeasurementDataInterface
 
     public function hasReply(): ?bool
     {
+        if (!$this->inNewBuilding() && !$this->isOriginal()) {
+            return false;
+        }
         return $this->getBuilding()->hasReply();
     }
 
     public function hasErrors(): bool
     {
-        return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false);
+        return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false) || ($this->isFullyOccupied() === false);
     }
 }

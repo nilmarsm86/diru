@@ -11,7 +11,6 @@
     }) %}
 {% endif %}
 
-
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
@@ -58,7 +57,13 @@
             {% if floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo subsistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
             {% endif %}
-            {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }}
+
+            {#            {% if reply %} #}
+            {{ tableActionButton3(path('app_floor_index', {'building':floor.building.id, 'reply': reply}), 'dinkie-icons:house-buildings-small', reply ? 'Plantas replicadas' : 'Plantas', reply ? 'Listado de plantas replicadas' : 'Listado de plantas') }}
+            {#            {% else %} #}
+            {#                {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }} #}
+            {#            {% endif %} #}
+
         </div>
     {% endblock %}
 
@@ -74,10 +79,11 @@
                     Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m
                     <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
                 {% endif %}
-{#                <br>#}
+                {#                <br> #}
                 {% if floor.isFullyOccupied() %}
                     ocupados totalmente.
                 {% else %}
+                    <br>
                     quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
                 {% endif %}
 
@@ -107,9 +113,17 @@
                             {{ sub_system.name }}
                         </td>
                         <td>
-                            <span
-                                    class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
-                                    title="Locales del subsistema" data-bs-toggle="tooltip"
+                            {% if reply %}
+                                <span class="badge rounded-pill bg-success"
+                                      title="Locales del subsistema" data-bs-toggle="tooltip"
+                                      style="cursor: pointer">
+                                    {{ sub_system.getLocalsAmount(false) }}
+                                    <span class="visually-hidden">Locales</span>
+                                </span>
+                            {% else %}
+                                <span
+                                        class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
+                                        title="Locales del subsistema" data-bs-toggle="tooltip"
                                     {% if sub_system.hasOriginalLocals() == false %}
                                         data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
                                     {% endif %}
@@ -117,6 +131,9 @@
                                 {{ sub_system.getLocalsAmount() }}
                                 <span class="visually-hidden">Locales</span>
                             </span>
+
+
+                            {% endif %}
                         </td>
                         <td>{{ sub_system.getUsefulArea() }}</td>
                         <td>
@@ -134,13 +151,18 @@
                         <td>{{ sub_system.getMaxHeight() }}</td>
                         <td>{{ sub_system.getVolume() }}</td>
                         <td>
-                            {{ (sub_system.allLocalsAreClassified() and sub_system.hasOriginalLocals())
-                            ? ux_icon('bi:check-lg', {'class':'bi text-success'})
-                            : ux_icon('material-symbols:close-rounded', {
-                                'class':'bi text-danger', 'data-bs-toggle':"tooltip",
-                                'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan locales por diagnosticar.",
-                                'data-bs-custom-class':"danger-tooltip"
-                            }) }}
+                            {% if reply %}
+                                {{ ux_icon('bi:check-lg', {'class':'bi text-success'}) }}
+                            {% else %}
+                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasOriginalLocals())
+                                ? ux_icon('bi:check-lg', {'class':'bi text-success'})
+                                : ux_icon('material-symbols:close-rounded', {
+                                    'class':'bi text-danger', 'data-bs-toggle':"tooltip",
+                                    'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan locales por diagnosticar.",
+                                    'data-bs-custom-class':"danger-tooltip"
+                                }) }}
+                            {% endif %}
+
                         </td>
                         <td class="text-end">
                             {% if sub_system.inNewBuilding() %}
@@ -148,6 +170,7 @@
                             {% else %}
                                 {% set cssClass = 'btn-link' %}
                             {% endif %}
+
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
                             <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Reportes">
                                 <button type="button"
@@ -182,7 +205,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id}), 'lucide-lab:floor-plan', '', 'Locales', '', cssClass) }}
+                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), 'lucide-lab:floor-plan', '', 'Locales', '', cssClass, sub_system.hasErrors()) }}
 
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})}), cssClass) }}
@@ -268,16 +291,16 @@
 
 {% endcomponent %}
 
-{#{% component 'Card:Card' with {#}
-{#    cssClass: 'mb-4',#}
-{#    extra: '',#}
-{#    headerCssClass: 'd-flex justify-content-between align-items-center',#}
-{#    title: 'Detalles de la planta',#}
-{#} %}#}
-{#    {% block body %}#}
-{#        <table class="table table-hover">#}
-{#            {{ include('floor/_data.html.twig') }}#}
-{#        </table>#}
-{#    {% endblock %}#}
+{# {% component 'Card:Card' with { #}
+{#    cssClass: 'mb-4', #}
+{#    extra: '', #}
+{#    headerCssClass: 'd-flex justify-content-between align-items-center', #}
+{#    title: 'Detalles de la planta', #}
+{# } %} #}
+{#    {% block body %} #}
+{#        <table class="table table-hover"> #}
+{#            {{ include('floor/_data.html.twig') }} #}
+{#        </table> #}
+{#    {% endblock %} #}
 
-{#{% endcomponent %}#}
+{# {% endcomponent %} #}

@@ -67,12 +67,13 @@ class SubSystemRepository extends ServiceEntityRepository
      * @param int $page
      * @return Paginator Returns an array of User objects
      */
-    public function findSubsystemsFloor(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findSubsystemsFloor(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
     {
         $builder = $this->createQueryBuilder('ss')->select(['ss', 'f'])
             ->leftJoin('ss.floor', 'f')
-            ->andWhere('f.id = :idFloor')
-            ->andWhere('ss.original IS NULL');
+            ->andWhere('f.id = :idFloor');
+        $dqlReply = ($reply) ? 'ss.original IS NOT NULL' : 'ss.original IS NULL';
+        $builder->andWhere($dqlReply);
         $builder->setParameter(':idFloor', $floor->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->addOrderBy('ss.name', 'ASC')

@@ -67,12 +67,14 @@ class LocalRepository extends ServiceEntityRepository
      * @param int $page
      * @return Paginator Returns an array of User objects
      */
-    public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
     {
         $builder = $this->createQueryBuilder('l')->select(['l', 'ss'])
             ->leftJoin('l.subSystem', 'ss')
-            ->andWhere('ss.id = :idSubSystem')
-            ->andWhere('l.original IS NULL');
+            ->andWhere('ss.id = :idSubSystem');
+//            ->andWhere('l.original IS NULL');
+        $dqlReply = ($reply) ? 'l.original IS NOT NULL' : 'l.original IS NULL';
+        $builder->andWhere($dqlReply);
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('l.name', 'ASC')

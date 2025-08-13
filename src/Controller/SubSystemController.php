@@ -19,12 +19,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/sub/system')]
 final class SubSystemController extends AbstractController
 {
-    #[Route('/{floor}', name: 'app_sub_system_index', methods: ['GET'])]
-    public function index(Request $request, CrudActionService $crudActionService, SubSystemRepository $subSystemRepository, Floor $floor): Response
+    #[Route('/{floor}/{reply}', name: 'app_sub_system_index', methods: ['GET'], requirements: ['floor' => '\d+'])]
+    public function index(Request $request, CrudActionService $crudActionService, SubSystemRepository $subSystemRepository, Floor $floor, bool $reply = false): Response
     {
         list($filter, $amountPerPage, $pageNumber) = $crudActionService->getManageQuerys($request);
 
-        $data = $subSystemRepository->findSubsystemsFloor($floor, $filter, $amountPerPage, $pageNumber);
+        $data = $subSystemRepository->findSubsystemsFloor($floor, $filter, $amountPerPage, $pageNumber, $reply);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -40,7 +40,8 @@ final class SubSystemController extends AbstractController
         return $this->render("sub_system/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'floor' => $floor
+            'floor' => $floor,
+            'reply' => $reply
         ]);
     }
 

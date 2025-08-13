@@ -45,7 +45,7 @@ class LocalType extends AbstractType
                     'data-controller' => 'positive-zero',
                     'min' => 0
                 ],
-                'data' => 0
+                'empty_data' => 0
             ])
             ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
                 'label' => 'Estado técnico:',

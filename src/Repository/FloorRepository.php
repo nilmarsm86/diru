@@ -64,14 +64,17 @@ class FloorRepository extends ServiceEntityRepository
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
+     * @param bool $reply
      * @return Paginator Returns an array of User objects
      */
-    public function findBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
     {
         $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
             ->leftJoin('f.building', 'b')
-            ->andWhere('b.id = :idBuilding')
-            ->andWhere('f.original IS NULL');
+            ->andWhere('b.id = :idBuilding');
+        $dqlReply = ($reply) ? 'f.original IS NOT NULL' : 'f.original IS NULL';
+        $builder->andWhere($dqlReply);
+
         $builder->setParameter(':idBuilding', $building->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('f.groundFloor', 'DESC')
@@ -100,25 +103,25 @@ class FloorRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @param Building $building
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
-     * @return Paginator Returns an array of User objects
-     */
-    public function findReplyBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
-    {
-        $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
-            ->leftJoin('f.building', 'b')
-            ->andWhere('b.id = :idBuilding')
-            ->andWhere('f.original IS NOT NULL');
-        $builder->setParameter(':idBuilding', $building->getId());
-        $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('f.groundFloor', 'DESC')
-            ->addOrderBy('f.position', 'ASC')
-            ->addOrderBy('f.name', 'ASC')
-            ->getQuery();
-        return $this->paginate($query, $page, $amountPerPage);
-    }
+//    /**
+//     * @param Building $building
+//     * @param string $filter
+//     * @param int $amountPerPage
+//     * @param int $page
+//     * @return Paginator Returns an array of User objects
+//     */
+//    public function findReplyBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+//    {
+//        $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
+//            ->leftJoin('f.building', 'b')
+//            ->andWhere('b.id = :idBuilding')
+//            ->andWhere('f.original IS NOT NULL');
+//        $builder->setParameter(':idBuilding', $building->getId());
+//        $this->addFilter($builder, $filter, false);
+//        $query = $builder->orderBy('f.groundFloor', 'DESC')
+//            ->addOrderBy('f.position', 'ASC')
+//            ->addOrderBy('f.name', 'ASC')
+//            ->getQuery();
+//        return $this->paginate($query, $page, $amountPerPage);
+//    }
 }

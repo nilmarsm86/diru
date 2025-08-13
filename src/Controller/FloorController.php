@@ -26,7 +26,7 @@ final class FloorController extends AbstractController
         $amountPerPage = $request->query->get('amount', 10);
         $pageNumber = $request->query->get('page', 1);
 
-        $data = $floorRepository->findBuildingFloors($building, $filter, $amountPerPage, $pageNumber);
+        $data = $floorRepository->findBuildingFloors($building, $filter, $amountPerPage, $pageNumber, $reply);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {

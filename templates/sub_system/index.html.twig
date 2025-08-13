@@ -3,11 +3,15 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Subsistemas{% endblock %}
+{% block title %}Subsistemas {% if reply %}replicados{% endif %}{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Subsistemas', 'ix:building-block-filled') }}
+        {% if reply %}
+            {{ h1('Subsistemas replicados', 'ix:building-block-filled') }}
+        {% else %}
+            {{ h1('Subsistemas', 'ix:building-block-filled') }}
+        {% endif %}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
@@ -16,7 +20,7 @@
     </div>
 
     <h2 class="mb-4">
-        Subsistemas de: {{ floor.name }}
+        Subsistemas {% if reply %}replicados{% endif %} de: {{ floor.name }}
     </h2>
 
     {% component ManagePage %}

@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
-use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
 use App\Repository\LocalRepository;
@@ -104,7 +103,8 @@ class Local
 
     public function validHeightInOtherArea(): bool
     {
-        return ($this->enumType->value != '0' && $this->getHeight() == 0) && ($this->enumType->value != '' && $this->getHeight() == 0);
+//        return ($this->enumType->value != '0' && $this->getHeight() == 0) && ($this->enumType->value != '' && $this->getHeight() == 0);
+        return $this->enumType->value != '0' && $this->enumType->value != '' && $this->getHeight() == 0;
     }
 
     public function getId(): ?int
@@ -193,13 +193,18 @@ class Local
         $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if ($this->getType() == LocalType::WallArea) {
-            $this->setName('Área de muro');
+            if($this->isOriginal()){
+                $this->setName('Área de muro');
+            }else{
+                $this->setName('Área de muro replicada');
+            }
+
             if (is_null($this->getId())) {
                 $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
             }
         }
 
-        if ($this->getType() == LocalType::EmptyArea || $this->getType() == LocalType::WallArea) {
+        if ($this->getType() == LocalType::EmptyArea /*|| $this->getType() == LocalType::WallArea*/) {
             $this->setHeight(0);
         }
     }
@@ -218,17 +223,12 @@ class Local
 
     public static function createAutomaticWall(int $area, int $number = 0): self
     {
-        return self::createAutomatic(LocalType::WallArea, LocalTechnicalStatus::Undefined, 'Área de muro', $area, 0, $number);
+        return self::createAutomatic(LocalType::WallArea, LocalTechnicalStatus::Undefined, 'Área de muro', $area, 1, $number);
     }
 
     public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): self
     {
-        if ($subSystem->inNewBuilding()) {
-            $technicalStatus = LocalTechnicalStatus::Good;
-        } else {
-            $technicalStatus = LocalTechnicalStatus::Undefined;
-        }
-
+        $technicalStatus = ($subSystem->inNewBuilding()) ? LocalTechnicalStatus::Good : LocalTechnicalStatus::Undefined;
         return self::createAutomatic(LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
     }
 
@@ -253,10 +253,12 @@ class Local
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
     }
 
-    public function reply(EntityManagerInterface $entityManager): Floor|static
+    public function reply(EntityManagerInterface $entityManager, object $parent = null): Floor|static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
+        $replica->setName($replica->getName().' replicado');
+        $replica->setSubSystem($parent);
 
         $entityManager->persist($replica);
 
@@ -294,6 +296,9 @@ class Local
 
     public function hasReply(): ?bool
     {
+        if(!$this->inNewBuilding() && !$this->isOriginal()){
+            return false;
+        }
         return $this->getSubSystem()->hasReply();
     }
 

@@ -3,11 +3,15 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Locales{% endblock %}
+{% block title %}Locales {% if reply %}replicados{% endif %}{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Locales', 'lucide-lab:floor-plan') }}
+        {% if reply %}
+            {{ h1('Locales Replicados', 'lucide-lab:floor-plan') }}
+        {% else %}
+            {{ h1('Locales', 'lucide-lab:floor-plan') }}
+        {% endif %}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
@@ -15,7 +19,7 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Gestión de locales del subsistema: {{ sub_system.name }}</h2>
+    <h2 class="mb-4">Gestión de locales {% if reply %}replicados{% endif %} del subsistema: {{ sub_system.name }}</h2>
 
     {% component ManagePage %}
         {% block list %}

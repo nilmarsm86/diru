@@ -22,11 +22,11 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-
             {% if sub_system.floor.isFullyOccupied() == false %}
                 {{ tableActionButton3(path('app_local_new', {'subSystem': sub_system.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'subSystem': sub_system.id})})) }}
             {% endif %}
-            {{ tableActionButton3(path('app_sub_system_index', {floor:sub_system.floor.id}), 'ix:building-block-filled', 'Subsistemas', 'Listado de subsistemas') }}
+
+            {{ tableActionButton3(path('app_sub_system_index', {'floor':sub_system.floor.id, 'reply':reply}), 'ix:building-block-filled', (reply) ? 'Subsistemas replicados' : 'Subsistemas', (reply) ? 'Listado de subsistemas replicados' : 'Listado de subsistemas') }}
         </div>
     {% endblock %}
 
@@ -34,6 +34,8 @@
         {% component 'Table:Table' with {
             paginator: paginator,
         } %}
+
+            {% set original = reply ? false : true %}
 
             {% block message %}
                 {% if sub_system.floor.building.isNew() %}

@@ -124,7 +124,7 @@ class LocalType extends AbstractType
             'constraints' => $constraints,
         ]);
 
-        if ($local->inNewBuilding() || ($local->getId() && $local->hasReply())) {
+        if (!$local->isOriginal() || $local->inNewBuilding() || ($local->getId() && $local->hasReply())) {
             $form->add('localConstructiveAction', LocalConstructiveActionType::class, [
                 'required' => true,
                 'error_bubbling' => false

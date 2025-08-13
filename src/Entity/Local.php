@@ -257,7 +257,7 @@ class Local
     {
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName().' replicado');
+        $replica->setName($replica->getName().' (R)');
         $replica->setSubSystem($parent);
 
         $entityManager->persist($replica);

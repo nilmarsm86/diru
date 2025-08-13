@@ -215,7 +215,7 @@ class Floor implements MeasurementDataInterface
 //        return $this->makeReply($entityManager, $this->getOriginalSubsystems(), $parent);
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName() . ' replicada');
+        $replica->setName($replica->getName() . ' (R)');
 
         $entityManager->persist($replica);
 

@@ -172,7 +172,7 @@ class SubSystem implements MeasurementDataInterface
 //        return $this->makeReply($entityManager, $this->getOriginalLocals());
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName().' replicado');
+        $replica->setName($replica->getName().' (R)');
         $replica->setFloor($parent);
 
         $entityManager->persist($replica);

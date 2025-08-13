@@ -22,9 +22,9 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {#            {% if building.hasReply() and reply == true  %} #}
-            {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':reply ? false : true}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
-            {#            {% endif %} #}
+            {% if building.hasReply() %}
+                {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':reply ? false : true}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
+            {% endif %}
 
             {% if building.canReply() %}
                 {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}

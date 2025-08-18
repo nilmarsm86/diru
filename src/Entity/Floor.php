@@ -368,4 +368,22 @@ class Floor implements MeasurementDataInterface
     {
         return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false) || ($this->isFullyOccupied() === false);
     }
+
+    public function hasExtraSpace(): bool
+    {
+        if($this->getBuilding()->isNew()){
+            return false;
+        }
+        return $this->getTotalArea() > $this->getBuilding()->getOccupiedArea();
+    }
+
+    public function getExtraSpace(): ?int
+    {
+        $extraSpace = $this->getTotalArea() - $this->getBuilding()->getOccupiedArea();
+        if($extraSpace < 0){
+            $extraSpace = 0;
+        }
+
+        return $extraSpace;
+    }
 }

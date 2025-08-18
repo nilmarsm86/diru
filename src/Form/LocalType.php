@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Range;
 
 class LocalType extends AbstractType
@@ -112,14 +113,23 @@ class LocalType extends AbstractType
             new Range(min: 1, max: $leftArea),
         ];
 
+        $attr = [
+            'min' => 1,
+            'max' => $leftArea,
+            'placeholder' => 'Área que ocupa el local'
+        ];
+
+        if(!$options['subSystem']->isOriginal()){
+            unset($attr['max']);
+            $constraints = [
+                new GreaterThan(value: 1)
+            ];
+        }
+
         $form->add('area', UnitMeasurementType::class, [
             'unit' => 'm<sup>2</sup>',
             'label' => "Área:",
-            'attr' => [
-                'min' => 1,
-                'max' => $leftArea,
-                'placeholder' => 'Área que ocupa el local'
-            ],
+            'attr' => $attr,
             'constraints' => $constraints,
         ]);
 

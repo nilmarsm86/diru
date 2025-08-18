@@ -23,8 +23,10 @@ export default class extends AbstractController {
         });
 
         this.areaTarget.addEventListener('input', (event) => {
-            if (Number(this.areaTarget.value) > Number(this.areaTarget.getAttribute('max'))) {
-                this.areaTarget.value = this.areaTarget.getAttribute('max');
+            if(this.areaTarget.getAttribute('max')){
+                if (Number(this.areaTarget.value) > Number(this.areaTarget.getAttribute('max'))) {
+                    this.areaTarget.value = this.areaTarget.getAttribute('max');
+                }
             }
         });
 

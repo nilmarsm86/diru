@@ -47,7 +47,12 @@
                 {{ sub_system.floor.building.getMaxArea() }}m<sup>2</sup>
 
                 {% if sub_system.floor.isFullyOccupied() %}
-                    , ocupados totalmente.
+                    {% if sub_system.floor.hasExtraSpace() %}
+                        , ocupados totalmente, con espacio extra de {{ sub_system.floor.getExtraSpace() }}m<sup>2</sup>.
+                    {% else %}
+                        , ocupados totalmente.
+                    {% endif %}
+
                 {% else %}
                     {% if sub_system.floor.building.isNew() %}
                         , quedan {{ sub_system.floor.getUnassignedArea() }}m<sup>2</sup> de área libre.

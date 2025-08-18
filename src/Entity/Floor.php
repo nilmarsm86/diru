@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
@@ -15,13 +16,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'building'], message: 'Ya existe en la obra una planta con este nombre.', errorPath: 'name')]
-#[DoctrineAssert\UniqueEntity(fields: ['position', 'building'], message: 'Ya existe en la obra una planta en esa posición.', errorPath: 'position')]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'building', 'hasReply'], message: 'Ya existe en la obra una planta con este nombre.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['position', 'building', 'hasReply'], message: 'Ya existe en la obra una planta en esa posición.', errorPath: 'position')]
 class Floor implements MeasurementDataInterface
 {
     use NameToStringTrait;
     use OriginalTrait;
     use MeasurementDataTrait;
+    use HasReplyTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -51,6 +53,7 @@ class Floor implements MeasurementDataInterface
     {
         $this->subSystems = new ArrayCollection();
         $this->groundFloor = false;
+//        $this->hasReply = false;
     }
 
     public function getId(): ?int
@@ -196,7 +199,11 @@ class Floor implements MeasurementDataInterface
 
     public function hasSubSystemAndIsNotCompletlyEmptyArea(): bool
     {
-        return $this->hasOriginalSubSystems() && ($this->getUsefulArea() > 0);
+        if($this->isOriginal()){
+            return $this->hasOriginalSubSystems() && ($this->getUsefulArea() > 0);
+        }else{
+            return $this->hasReplySubSystems() && ($this->getUsefulArea() > 0);
+        }
     }
 
     public function reply(EntityManagerInterface $entityManager, object $parent = null): static
@@ -216,12 +223,18 @@ class Floor implements MeasurementDataInterface
         $replica = clone $this;
         $replica->setOriginal($this);
         $replica->setName($replica->getName() . ' (R)');
+        $replica->setHasReply(false);
 
         $entityManager->persist($replica);
 
-        foreach ($this->getOriginalSubsystems() as $item) {
-            $item->reply($entityManager, $replica);
-        }
+//        /** @var SubSystem $subsystem */
+//        foreach ($this->getOriginalSubsystems() as $subsystem) {
+//            $subsystem->reply($entityManager, $replica);
+//        }
+        $this->replySons($entityManager, $this->getOriginalSubsystems(), $replica);
+
+        $this->setHasReply(true);
+        $entityManager->persist($this);
 
         return $replica;
     }
@@ -343,13 +356,13 @@ class Floor implements MeasurementDataInterface
         return $this->getBuilding()->isNew();
     }
 
-    public function hasReply(): ?bool
-    {
-        if (!$this->inNewBuilding() && !$this->isOriginal()) {
-            return false;
-        }
-        return $this->getBuilding()->hasReply();
-    }
+//    public function hasReply(): ?bool
+//    {
+//        if (!$this->inNewBuilding() && !$this->isOriginal()) {
+//            return false;
+//        }
+//        return $this->getBuilding()->hasReply();
+//    }
 
     public function hasErrors(): bool
     {

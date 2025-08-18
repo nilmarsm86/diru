@@ -73,7 +73,7 @@ class SubSystemRepository extends ServiceEntityRepository
             ->leftJoin('ss.floor', 'f')
             ->andWhere('f.id = :idFloor');
         //TODO: tener en cuenta cuando es un subsistema nuevo dentro de la planta
-        $dqlReply = ($reply) ? 'ss.original IS NOT NULL OR f.original IS NOT NULL' : 'ss.original IS NULL';
+        $dqlReply = ($reply) ? 'ss.hasReply = false' : 'ss.original IS NULL AND (ss.hasReply IS NULL OR ss.hasReply = true)';
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idFloor', $floor->getId());
         $this->addFilter($builder, $filter, false);

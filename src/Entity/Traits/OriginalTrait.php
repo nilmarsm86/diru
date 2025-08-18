@@ -2,6 +2,7 @@
 
 namespace App\Entity\Traits;
 
+use App\Entity\Local;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,30 @@ trait OriginalTrait
 
     public function isOriginal(): bool
     {
-        return is_null($this->getOriginal());
+        //TODO: ver la forma de poder decir que un local nuevo en la replica no es original
+//        if($this instanceof Local){
+//            if(is_null($this->getOriginal())){
+//                if(is_null($this->getSubSystem()->getOriginal())){
+//                    if(is_null($this->getSubSystem()->getFloor()->getOriginal())){
+//
+//                    }
+//                }
+//            }
+//            $this->getSubSystem()->getFloor()->isOriginal();
+//        }
+
+
+
+        return (is_null($this->getOriginal()) && ($this->hasReply === true || is_null($this->hasReply)));
+
+//        return (is_null($this->getOriginal()) && is_null($this->hasReply())) || (is_null($this->getOriginal()) && $this->hasReply() === true);
+//        if(is_null($this->getOriginal())){
+//            if(){
+//
+//            }else{
+//
+//            }
+//        }
     }
 
     public function getOriginal(): ?self

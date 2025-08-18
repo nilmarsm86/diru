@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
 use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
@@ -24,6 +25,7 @@ class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
     use MeasurementDataTrait;
+    use HasReplyTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -98,9 +100,6 @@ class Building implements MeasurementDataInterface
 
     #[ORM\Column(nullable: true)]
     private ?bool $isNew = null;
-
-    #[ORM\Column]
-    private ?bool $hasReply = null;
 
     public function __construct()
     {
@@ -699,26 +698,16 @@ class Building implements MeasurementDataInterface
 
     public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
-        foreach ($this->getOriginalFloors() as $floor) {
-            $floor->reply($entityManager, $parent);
-        }
+//        /** @var Floor $floor */
+//        foreach ($this->getOriginalFloors() as $floor) {
+//            $floor->reply($entityManager, $parent);
+//        }
+        $this->replySons($entityManager, $this->getOriginalFloors(), $parent);
 
         $this->setHasReply(true);
         $entityManager->persist($this);
 
         $entityManager->flush();
-
-        return $this;
-    }
-
-    public function hasReply(): ?bool
-    {
-        return $this->hasReply;
-    }
-
-    public function setHasReply(bool $hasReply): static
-    {
-        $this->hasReply = $hasReply;
 
         return $this;
     }

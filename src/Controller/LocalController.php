@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\DTO\Paginator;
 use App\Entity\Building;
+use App\Entity\ConstructiveAction;
 use App\Entity\Floor;
 use App\Entity\Local;
+use App\Entity\LocalConstructiveAction;
 use App\Entity\SubSystem;
 use App\Form\LocalType;
 use App\Repository\FloorRepository;
@@ -54,13 +56,14 @@ final class LocalController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/new/{subSystem}', name: 'app_local_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, SubSystem $subSystem): Response
+    #[Route('/new/{subSystem}/{reply}', name: 'app_local_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, SubSystem $subSystem, bool $reply = false): Response
     {
         $local = new Local();
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Nuevo Local',
-            'sub_system' => $subSystem
+            'sub_system' => $subSystem,
+            'reply' => $reply
         ]);
     }
 
@@ -80,12 +83,13 @@ final class LocalController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit/{subSystem}', name: 'app_local_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Local $local, CrudActionService $crudActionService, SubSystem $subSystem): Response
+    #[Route('/{id}/edit/{subSystem}/{reply}', name: 'app_local_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Local $local, CrudActionService $crudActionService, SubSystem $subSystem, bool $reply = false): Response
     {
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Editar Local',
-            'sub_system' => $subSystem
+            'sub_system' => $subSystem,
+            'reply' => $reply
         ]);
     }
 
@@ -103,15 +107,15 @@ final class LocalController extends AbstractController
         ]);
     }
 
-    #[Route('/wall/{subSystem}/{area}', name: 'app_local_wall', methods: ['GET'])]
-    public function wall(Request $request, LocalRepository $localRepository, SubSystem $subSystem, int $area): Response
+    #[Route('/wall/{subSystem}/{area}/{reply}', name: 'app_local_wall', methods: ['GET'])]
+    public function wall(Request $request, EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, int $area, bool $reply = false): Response
     {
-        $automaticWall = Local::createAutomaticWall($area);
+        $automaticWall = Local::createAutomaticWall($subSystem, $area, ($subSystem->getMaxLocalNumber() + 1), $reply, $entityManager);
 
-        $subSystem->addLocal($automaticWall);
         $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se ha creado el área de muro del área restante.');
-        return new RedirectResponse($this->generateUrl('app_local_index', ['subSystem' => $subSystem->getId()]), Response::HTTP_SEE_OTHER);
+//        return new RedirectResponse($this->generateUrl('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply]), Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 }

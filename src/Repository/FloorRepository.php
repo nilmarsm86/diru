@@ -72,7 +72,7 @@ class FloorRepository extends ServiceEntityRepository
         $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
             ->leftJoin('f.building', 'b')
             ->andWhere('b.id = :idBuilding');
-        $dqlReply = ($reply) ? 'f.original IS NOT NULL' : 'f.original IS NULL';
+        $dqlReply = ($reply) ? 'f.hasReply = false' : 'f.original IS NULL AND (f.hasReply IS NULL OR f.hasReply = true)';
         $builder->andWhere($dqlReply);
 
         $builder->setParameter(':idBuilding', $building->getId());

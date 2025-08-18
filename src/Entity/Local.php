@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
+use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
 use App\Repository\LocalRepository;
@@ -21,6 +22,7 @@ class Local
 {
     use NameToStringTrait;
     use OriginalTrait;
+    use HasReplyTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -94,6 +96,7 @@ class Local
     {
         $this->impactHigherLevels = false;
         $this->localConstructiveAction = null;
+//        $this->hasReply = false;
     }
 
     public function validHeightInEmptyArea(): bool
@@ -192,12 +195,8 @@ class Local
         $this->type = $this->getType()->value;
         $this->technicalStatus = $this->getTechnicalStatus()->value;
 
-        if ($this->getType() == LocalType::WallArea) {
-            if($this->isOriginal()){
-                $this->setName('Área de muro');
-            }else{
-                $this->setName('Área de muro replicada');
-            }
+        if ($this->getType() == LocalType::WallArea && is_null($this->getId())) {
+            $this->setName('Área de muro');
 
             if (is_null($this->getId())) {
                 $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
@@ -206,6 +205,10 @@ class Local
 
         if ($this->getType() == LocalType::EmptyArea /*|| $this->getType() == LocalType::WallArea*/) {
             $this->setHeight(0);
+        }
+
+        if (!$this->isOriginal() && is_null($this->getId())) {
+            $this->setName($this->getName().' (R)');
         }
     }
 
@@ -221,18 +224,30 @@ class Local
         return $this->getArea() * $this->getHeight();
     }
 
-    public static function createAutomaticWall(int $area, int $number = 0): self
+    public static function createAutomaticWall(SubSystem $subSystem, int $area, int $number = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
-        return self::createAutomatic(LocalType::WallArea, LocalTechnicalStatus::Undefined, 'Área de muro', $area, 1, $number);
+        $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
+        $wall = self::createAutomatic($subSystem, LocalType::WallArea, LocalTechnicalStatus::Undefined, $name, $area, 1, $number);
+        if ($reply) {
+            $wall->setHasReply(false);
+            $wall->setTechnicalStatus(LocalTechnicalStatus::Good);
+
+            $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
+                'name' => 'No es necesaria'
+            ]);
+            $wall->setConstructiveAction($constructiveAction);
+        }
+
+        return $wall;
     }
 
     public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): self
     {
         $technicalStatus = ($subSystem->inNewBuilding()) ? LocalTechnicalStatus::Good : LocalTechnicalStatus::Undefined;
-        return self::createAutomatic(LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
+        return self::createAutomatic($subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
     }
 
-    private static function createAutomatic(LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): Local
+    private static function createAutomatic(SubSystem $subSystem, LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): Local
     {
         $local = new Local();
         $local->setName($name);
@@ -241,6 +256,8 @@ class Local
         $local->setHeight($height);
         $local->setNumber($number);
         $local->setTechnicalStatus($localTechnicalStatus);
+
+        $subSystem->addLocal($local);
 
         return $local;
     }
@@ -257,10 +274,14 @@ class Local
     {
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName().' (R)');
+        $replica->setName($replica->getName() . ' (R)');
         $replica->setSubSystem($parent);
+        $replica->setHasReply(false);
 
         $entityManager->persist($replica);
+
+        $this->setHasReply(true);
+        $entityManager->persist($this);
 
         return $replica;
     }
@@ -277,30 +298,41 @@ class Local
         return $this;
     }
 
-//    public function getConstructiveAction(): ?ConstructiveAction
-//    {
-//        return $this->constructiveAction;
-//    }
-//
-//    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
-//    {
-//        $this->constructiveAction = $constructiveAction;
-//
-//        return $this;
-//    }
+    public function getPrice(): ?int
+    {
+        return $this->getLocalConstructiveAction()->getPrice();
+    }
+
+    public function getConstructiveAction(): ?ConstructiveAction
+    {
+        return $this->getLocalConstructiveAction()->getConstructiveAction();
+    }
+
+    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
+    {
+        if(is_null($this->getLocalConstructiveAction())){
+            $localConstructiveAction = new LocalConstructiveAction();
+            $localConstructiveAction->setLocal($this);
+            $localConstructiveAction->setPrice(0);
+        }
+
+        $this->getLocalConstructiveAction()->setConstructiveAction($constructiveAction);
+
+        return $this;
+    }
 
     public function inNewBuilding(): ?bool
     {
         return $this->getSubSystem()->inNewBuilding();
     }
 
-    public function hasReply(): ?bool
-    {
-        if(!$this->inNewBuilding() && !$this->isOriginal()){
-            return false;
-        }
-        return $this->getSubSystem()->hasReply();
-    }
+//    public function hasReply(): ?bool
+//    {
+//        if(!$this->inNewBuilding() && !$this->isOriginal()){
+//            return false;
+//        }
+//        return $this->getSubSystem()->hasReply();
+//    }
 
     public function getComment(): ?string
     {
@@ -326,13 +358,13 @@ class Local
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function isNewInReply(): bool
     {
-        return $this->getLocalConstructiveAction()->getPrice();
+        return ($this->hasReply() === false) && (is_null($this->getOriginal()));
     }
 
-    public function getConstructiveAction(): ?ConstructiveAction
+    public function changeFromOriginal(): bool
     {
-        return $this->getLocalConstructiveAction()->getConstructiveAction();
+        return false;
     }
 }

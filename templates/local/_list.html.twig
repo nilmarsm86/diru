@@ -22,8 +22,9 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {% if sub_system.floor.isFullyOccupied() == false %}
-                {{ tableActionButton3(path('app_local_new', {'subSystem': sub_system.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_local_new', {'subSystem': sub_system.id})})) }}
+            {% if sub_system.floor.isFullyOccupied() == false or reply == true %}
+                {% set path = path('app_local_new', {'subSystem': sub_system.id, 'reply':reply}) %}
+                {{ tableActionButton3(path, 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
             {% endif %}
 
             {{ tableActionButton3(path('app_sub_system_index', {'floor':sub_system.floor.id, 'reply':reply}), 'ix:building-block-filled', (reply) ? 'Subsistemas replicados' : 'Subsistemas', (reply) ? 'Listado de subsistemas replicados' : 'Listado de subsistemas') }}
@@ -56,7 +57,7 @@
 
                     {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
                         <br>
-                        <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':sub_system.floor.getUnassignedArea() }) }}">
+                        <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':sub_system.floor.getUnassignedArea(), 'reply': reply }) }}">
                             Convertir en área de muro
                         </a>
                     {% endif %}
@@ -81,7 +82,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for local in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if local.inNewBuilding() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if local.inNewBuilding() or local.isNewInReply() %}class="table-success"{% endif %}>
                         <td>{{ local.name }} </td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>
@@ -145,9 +146,6 @@
             {% endblock %}
 
         {% endcomponent %}
-
-
-
     {% endblock %}
 
     {#    {% block footer %} #}

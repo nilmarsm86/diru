@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
@@ -23,6 +24,7 @@ class SubSystem implements MeasurementDataInterface
     use NameToStringTrait;
     use OriginalTrait;
     use MeasurementDataTrait;
+    use HasReplyTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -45,6 +47,7 @@ class SubSystem implements MeasurementDataInterface
     public function __construct()
     {
         $this->locals = new ArrayCollection();
+//        $this->hasReply = false;
     }
 
     public function getId(): ?int
@@ -131,8 +134,8 @@ class SubSystem implements MeasurementDataInterface
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         $maxHeight = 0;
-        foreach ($locals as $local){
-            if($local->getHeight() > $maxHeight){
+        foreach ($locals as $local) {
+            if ($local->getHeight() > $maxHeight) {
                 $maxHeight = $local->getHeight();
             }
         }
@@ -172,14 +175,20 @@ class SubSystem implements MeasurementDataInterface
 //        return $this->makeReply($entityManager, $this->getOriginalLocals());
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName().' (R)');
+        $replica->setName($replica->getName() . ' (R)');
         $replica->setFloor($parent);
+        $replica->setHasReply(false);
 
         $entityManager->persist($replica);
 
-        foreach ($this->getOriginalLocals() as $item){
-            $item->reply($entityManager, $replica);
-        }
+//        /** @var Local $local */
+//        foreach ($this->getOriginalLocals() as $local){
+//            $local->reply($entityManager, $replica);
+//        }
+        $this->replySons($entityManager, $this->getOriginalLocals(), $replica);
+
+        $this->setHasReply(true);
+        $entityManager->persist($this);
 
         return $replica;
     }
@@ -341,10 +350,12 @@ class SubSystem implements MeasurementDataInterface
 
     public function getMaxLocalNumber(): int
     {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
         $maxLocalNumber = 0;
         /** @var Local $local */
-        foreach ($this->getOriginalLocals() as $local){
-            if($local->getNumber() > $maxLocalNumber){
+        foreach ($locals as $local) {
+            if ($local->getNumber() > $maxLocalNumber) {
                 $maxLocalNumber = $local->getNumber();
             }
         }
@@ -354,9 +365,9 @@ class SubSystem implements MeasurementDataInterface
 
     public function createInitialLocal(): void
     {
-        if(is_null($this->getId())){
+        if (is_null($this->getId())) {
             $local = Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
-            $wall = Local::createAutomaticWall(1);
+            $wall = Local::createAutomaticWall($this, 1);
 
             $this->addLocal($local);
             $this->addLocal($wall);
@@ -370,7 +381,7 @@ class SubSystem implements MeasurementDataInterface
 
     public function hasReply(): ?bool
     {
-        if(!$this->inNewBuilding() && !$this->isOriginal()){
+        if (!$this->inNewBuilding() && !$this->isOriginal()) {
             return false;
         }
         return $this->getFloor()->hasReply();

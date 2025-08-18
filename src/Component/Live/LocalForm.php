@@ -52,11 +52,15 @@ final class LocalForm extends AbstractController
     #[LiveProp]
     public ?LocalConstructiveAction $localConstructiveAction = null;
 
-    public function mount(?Local $l = null, SubSystem $subSystem = null): void
+    #[LiveProp]
+    public bool $reply = false;
+
+    public function mount(?Local $l = null, SubSystem $subSystem = null, bool $reply = false): void
     {
         $this->l = (is_null($l)) ? new Local() : $l;
         $this->subSystem = $subSystem;
         $this->localConstructiveAction = $this->l->getLocalConstructiveAction();
+        $this->reply = $reply;
     }
 
     protected function instantiateForm(): FormInterface
@@ -98,6 +102,9 @@ final class LocalForm extends AbstractController
             }
 
 //            $local->setOriginal(0);
+            if($this->reply){
+                $local->setHasReply(false);
+            }
 
             $localRepository->save($local, true);
 

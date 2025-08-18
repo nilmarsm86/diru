@@ -23,10 +23,10 @@
 
         <div>
             {% if building.hasReply() %}
-                {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':reply ? false : true}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
+                {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':(not reply)}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
             {% endif %}
 
-            {% if building.canReply() %}
+            {% if building.canReply() and building.hasErrors(not reply) == false %}
                 {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
             {% endif %}
 
@@ -63,7 +63,7 @@
                 </ul>
             </div>
 
-            {% if building.isNew() %}
+            {% if (building.isNew() or building.hasReplyFloors()) and reply %}
                 {{ tableActionButton3(path('app_floor_new', {'building':building.id}), 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_floor_new', {'building':building.id})})) }}
             {% endif %}
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}

@@ -75,7 +75,7 @@ class LocalRepository extends ServiceEntityRepository
             ->andWhere('ss.id = :idSubSystem');
 //            ->andWhere('l.original IS NULL');
         //TODO: tener en cuenta cuando es un subsistema nuevo dentro de la planta
-        $dqlReply = ($reply) ? 'l.original IS NOT NULL OR ss.original IS NOT NULL' : 'l.original IS NULL';
+        $dqlReply = ($reply) ? 'l.hasReply = false' : 'l.original IS NULL AND (l.hasReply IS NULL OR l.hasReply = true)';
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);

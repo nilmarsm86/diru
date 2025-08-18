@@ -22,7 +22,7 @@ interface MeasurementDataInterface
 
     public function isFullyOccupied(bool $original = null): bool;
 
-    public function reply(EntityManagerInterface $entityManager, object $parent = null): static;
+//    public function reply(EntityManagerInterface $entityManager, object $parent = null): static;
 
     public function allLocalsAreClassified(): bool;
 

@@ -25,7 +25,12 @@ class LocalConstructiveAction
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $price = null;
+    private ?int $price;
+
+    public function __construct()
+    {
+        $this->price = 0;
+    }
 
     public function getId(): ?int
     {

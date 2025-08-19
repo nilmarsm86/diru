@@ -5,6 +5,7 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\ConstructiveAction;
+use App\Entity\Enums\ConstructiveActionType;
 use App\Entity\Floor;
 use App\Entity\Local;
 use App\Entity\LocalConstructiveAction;
@@ -14,6 +15,7 @@ use App\Form\FloorType;
 use App\Form\LocalType;
 use App\Repository\FloorRepository;
 use App\Repository\LocalRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -55,6 +57,11 @@ final class LocalForm extends AbstractController
     #[LiveProp]
     public bool $reply = false;
 
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+
+    }
+
     public function mount(?Local $l = null, SubSystem $subSystem = null, bool $reply = false): void
     {
         $this->l = (is_null($l)) ? new Local() : $l;
@@ -67,8 +74,16 @@ final class LocalForm extends AbstractController
     {
 //        $this->subSystem->addLocal($this->l);
         $this->l->setSubSystem($this->subSystem);
+        if(is_null($this->l->getLocalConstructiveAction())){
+            $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'No es necesaria']);
+
+            $localConstructiveAction = new LocalConstructiveAction();
+            $localConstructiveAction->setConstructiveAction($constructiveAction);
+            $this->l->setLocalConstructiveAction($localConstructiveAction);
+        }
         return $this->createForm(LocalType::class, $this->l, [
-            'subSystem' => $this->subSystem
+            'subSystem' => $this->subSystem,
+            'reply' => $this->reply
         ]);
     }
 

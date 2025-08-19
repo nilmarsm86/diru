@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Enums\LocalTechnicalStatus;
 use App\Entity\Local;
 use App\Form\Types\LocalTechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
@@ -48,9 +49,6 @@ class LocalType extends AbstractType
                 ],
                 'empty_data' => 0
             ])
-            ->add('technicalStatus', LocalTechnicalStatusEnumType::class, [
-                'label' => 'Estado técnico:',
-            ])
             ->add('impactHigherLevels', null, [
                 'label' => 'Tiene impacto en niveles superiores:',
                 'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.'
@@ -72,6 +70,7 @@ class LocalType extends AbstractType
                 'novalidate' => 'novalidate'
             ],
             'subSystem' => null,
+            'reply' => false,
             'error_mapping' => [
                 'enumType' => 'type',
                 'enumTechnicalStatus' => 'technicalStatus',
@@ -79,6 +78,7 @@ class LocalType extends AbstractType
         ]);
 
         $resolver->setAllowedTypes('subSystem', ['object']);
+        $resolver->setAllowedTypes('reply', ['boolean']);
     }
 
     /**
@@ -119,7 +119,7 @@ class LocalType extends AbstractType
             'placeholder' => 'Área que ocupa el local'
         ];
 
-        if(!$options['subSystem']->isOriginal()){
+        if (!$options['subSystem']->isOriginal()) {
             unset($attr['max']);
             $constraints = [
                 new GreaterThan(value: 1)
@@ -144,5 +144,21 @@ class LocalType extends AbstractType
                 'error_bubbling' => false
             ]);
         }
+
+        if(is_null($local->getId()) && $options['reply']){
+            $technicalStatusOptions = [
+                'label' => 'Estado técnico:',
+                'data' => LocalTechnicalStatus::Good,
+//                'row_attr' => [
+//                    'style' => 'display:none'
+//                ]
+            ];
+        }else{
+            $technicalStatusOptions = [
+                'label' => 'Estado técnico:',
+            ];
+        }
+
+        $form->add('technicalStatus', LocalTechnicalStatusEnumType::class, $technicalStatusOptions);
     }
 }

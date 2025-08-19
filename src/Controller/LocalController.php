@@ -3,14 +3,8 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
-use App\Entity\Building;
-use App\Entity\ConstructiveAction;
-use App\Entity\Floor;
 use App\Entity\Local;
-use App\Entity\LocalConstructiveAction;
 use App\Entity\SubSystem;
-use App\Form\LocalType;
-use App\Repository\FloorRepository;
 use App\Repository\LocalRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,7 +57,8 @@ final class LocalController extends AbstractController
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Nuevo Local',
             'sub_system' => $subSystem,
-            'reply' => $reply
+            'reply' => $reply,
+            'local' => $local
         ]);
     }
 

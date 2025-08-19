@@ -1,4 +1,4 @@
-<div {{ attributes.defaults(stimulusController('live/local-form', {modal:modal})) }}>
+<div {{ attributes.defaults(stimulusController('live/local-form', {'modal':modal, 'reply':reply, 'localId':this.l.id})) }}>
 
     {{ form_start(form, {
         attr: {
@@ -32,9 +32,15 @@
             {{ form_row(form.height, {attr:{'data-live--local-form-target':'height'}}) }}
         </div>
 
-        <div class="col">
-            {{ form_row(form.technicalStatus, {attr:{'data-live--local-form-target':'technicalStatus'}}) }}
-        </div>
+        {% if form.technicalStatus is defined %}
+            <div class="col">
+                {{ form_row(form.technicalStatus, {attr:{'data-live--local-form-target':'technicalStatus'}}) }}
+            </div>
+        {% else %}
+            <div class="col" style="padding-top: 1.5rem;">
+                {{ form_row(form.impactHigherLevels) }}
+            </div>
+        {% endif %}
     </div>
 
     <div class="mb-0 row">
@@ -80,9 +86,11 @@
         </div>
     </div>
 
-    <div class="mb-0 row">
-        {{ form_row(form.impactHigherLevels) }}
-    </div>
+    {% if form.technicalStatus is defined %}
+        <div class="mb-0 row">
+            {{ form_row(form.impactHigherLevels) }}
+        </div>
+    {% endif %}
 
     <div class="row mb-3">
         <div class="col-sm-12">

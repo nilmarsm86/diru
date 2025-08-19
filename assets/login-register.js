@@ -1,5 +1,5 @@
 import './bootstrap.js';
-import './js/color-modes.js';
+// import './js/color-modes.js';
 import { startStimulusApp } from '@symfony/stimulus-bundle';
 
 /*

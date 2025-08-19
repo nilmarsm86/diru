@@ -8,6 +8,7 @@
   'use strict'
 
   const getStoredTheme = () => localStorage.getItem('theme')
+  console.log(getStoredTheme());
   const setStoredTheme = theme => localStorage.setItem('theme', theme)
 
   const getPreferredTheme = () => {
@@ -28,6 +29,7 @@
   }
 
   setTheme(getPreferredTheme())
+  console.log(getPreferredTheme());
 
   const showActiveTheme = (theme, focus = false) => {
     const themeSwitcher = document.querySelector('#bd-theme')

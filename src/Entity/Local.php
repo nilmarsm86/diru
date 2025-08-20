@@ -156,6 +156,11 @@ class Local
         return $this->height;
     }
 
+//    public function getFormatedHeight(): ?float
+//    {
+//        return number_format(((float) $this->getHeight()), 2);
+//    }
+
     public function setHeight(float $height): static
     {
         $this->height = $height;

@@ -93,6 +93,9 @@ class LocalType extends AbstractType
         $form = $event->getForm();
 
         $landArea = $options['subSystem']->getFloor()->getBuilding()->getMaxArea();
+        if($options['reply']){
+            $landArea = $options['subSystem']->getFloor()->getBuilding()->getLandArea();
+        }
         $totalLocalsArea = $options['subSystem']->getFloor()->getTotalArea();
         $leftArea = $landArea - $totalLocalsArea;
         /*if ($local && $local->getId()) {

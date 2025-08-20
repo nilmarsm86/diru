@@ -95,7 +95,7 @@
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>
                         <td>{{ local.type.getLabelFrom(local.type) }}</td>
-                        <td>{{ local.height }}</td>
+                        <td>{{ local.height|number_format(2) }}</td>
                         <td>{{ local.getVolume() }}</td>
                         <td>
                             {% if local.isClassified() %}

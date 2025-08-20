@@ -381,7 +381,7 @@ class Local
 
     public function getFormatedPrice(): string
     {
-        return $this->getPrice().' '.$this->getCurrency();
+        return (number_format(((float) $this->getPrice() / 100), 2)).' '.$this->getCurrency();
     }
 
     public function isLocalType(): bool

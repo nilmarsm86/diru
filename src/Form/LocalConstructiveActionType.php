@@ -60,6 +60,7 @@ class LocalConstructiveActionType extends AbstractType
             'currency' => $currency,
             'html5' => true,
             'input' => 'integer',
+            'divisor' => 100,
             'attr' => [
                 'placeholder' => '0',
                 'min' => 0,

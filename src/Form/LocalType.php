@@ -119,12 +119,12 @@ class LocalType extends AbstractType
             'placeholder' => 'Área que ocupa el local'
         ];
 
-        if (!$options['subSystem']->isOriginal()) {
-            unset($attr['max']);
-            $constraints = [
-                new GreaterThan(value: 1)
-            ];
-        }
+//        if (!$options['subSystem']->isOriginal()) {
+//            unset($attr['max']);
+//            $constraints = [
+//                new GreaterThan(value: 1)
+//            ];
+//        }
 
         $form->add('area', UnitMeasurementType::class, [
             'unit' => 'm<sup>2</sup>',

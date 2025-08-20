@@ -795,12 +795,12 @@ class Building implements MeasurementDataInterface
 
     public function getTotalApprovedValueFormated(): string
     {
-        return $this->getTotalApprovedValue() . ' ' . $this->getProjectCurrency();
+        return (number_format(((float) $this->getTotalApprovedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
     }
 
     public function getTotalEstimatedValueFormated(): string
     {
-        return $this->getTotalEstimatedValue() . ' ' . $this->getProjectCurrency();
+        return (number_format(((float) $this->getTotalEstimatedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
     }
 
     public function hasErrors(bool $original = null): bool

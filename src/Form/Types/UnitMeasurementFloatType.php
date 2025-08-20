@@ -16,8 +16,8 @@ class UnitMeasurementFloatType extends AbstractType
     {
         $resolver
             ->setDefault('unit', '')
-            ->setDefault('html5', true);
-
+            ->setDefault('html5', true)
+            ->setDefault('scale', 2);
     }
 
     /**

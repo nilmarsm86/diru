@@ -110,7 +110,8 @@ class BuildingType extends AbstractType
             'required' => false,
             'currency' => $currency,
             'html5' => true,
-            'input' => 'integer'
+            'input' => 'integer',
+            'divisor' => 100,
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Valor estimado en equipos:',
@@ -124,7 +125,8 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
-                'input' => 'integer'
+                'input' => 'integer',
+                'divisor' => 100,
             ])
             ->add('estimatedValueOther', MoneyType::class, [
                 'label' => 'Otros valores estimados:',
@@ -138,7 +140,8 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
-                'input' => 'integer'
+                'input' => 'integer',
+                'divisor' => 100,
             ])
             ->add('approvedValueConstruction', MoneyType::class, [
                 'label' => 'Valor aprobado de construcción:',
@@ -152,7 +155,8 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
-                'input' => 'integer'
+                'input' => 'integer',
+                'divisor' => 100,
             ])
             ->add('approvedValueEquipment', MoneyType::class, [
                 'label' => 'Valor aprobado en equipos:',
@@ -166,7 +170,8 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
-                'input' => 'integer'
+                'input' => 'integer',
+                'divisor' => 100,
             ])
             ->add('approvedValueOther', MoneyType::class, [
                 'label' => 'Otros valores aprobados:',
@@ -180,7 +185,8 @@ class BuildingType extends AbstractType
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
-                'input' => 'integer'
+                'input' => 'integer',
+                'divisor' => 100,
             ]);
     }
 }

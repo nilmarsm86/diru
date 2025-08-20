@@ -74,7 +74,7 @@ final class LocalForm extends AbstractController
     {
 //        $this->subSystem->addLocal($this->l);
         $this->l->setSubSystem($this->subSystem);
-        if(is_null($this->l->getLocalConstructiveAction())){
+        if(is_null($this->l->getLocalConstructiveAction()) && ($this->reply === true || $this->l->inNewBuilding())){
             $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'No es necesaria']);
 
             $localConstructiveAction = new LocalConstructiveAction();

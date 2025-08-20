@@ -1,4 +1,4 @@
-<div {{ attributes.defaults(stimulusController('live/local-form', {'modal':modal, 'reply':reply, 'localId':this.l.id})) }}>
+<div {{ attributes.defaults(stimulusController('live/local-form', {'modal':modal, 'isNew':(this.l.id is null)})) }}>
 
     {{ form_start(form, {
         attr: {

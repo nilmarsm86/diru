@@ -208,7 +208,7 @@ class Local
         }
 
         if (!$this->isOriginal() && is_null($this->getId())) {
-            $this->setName($this->getName().' (R)');
+            $this->setName($this->getName());
         }
     }
 
@@ -264,7 +264,8 @@ class Local
 
     public function isClassified(): bool
     {
-        if ($this->getType() !== LocalType::Local) {
+//        if ($this->getType() !== LocalType::Local) {
+        if (!$this->isLocalType()) {
             return true;
         }
         return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
@@ -300,12 +301,12 @@ class Local
 
     public function getPrice(): ?int
     {
-        return $this->getLocalConstructiveAction()->getPrice();
+        return $this->getLocalConstructiveAction()?->getPrice();
     }
 
     public function getConstructiveAction(): ?ConstructiveAction
     {
-        return $this->getLocalConstructiveAction()->getConstructiveAction();
+        return $this->getLocalConstructiveAction()?->getConstructiveAction();
     }
 
     public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
@@ -351,6 +352,11 @@ class Local
         return $this->localConstructiveAction;
     }
 
+    public function hasLocalConstructiveAction(): bool
+    {
+        return !is_null($this->getLocalConstructiveAction());
+    }
+
     public function setLocalConstructiveAction(?LocalConstructiveAction $localConstructiveAction): static
     {
         $this->localConstructiveAction = $localConstructiveAction;
@@ -366,6 +372,36 @@ class Local
     public function changeFromOriginal(): bool
     {
         return false;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->getSubSystem()->getFloor()->getBuilding()->getProjectCurrency();
+    }
+
+    public function getFormatedPrice(): string
+    {
+        return $this->getPrice().' '.$this->getCurrency();
+    }
+
+    public function isLocalType(): bool
+    {
+        return $this->getType() === LocalType::Local;
+    }
+
+    public function classifiedAsUndefined(): bool
+    {
+        return $this->getTechnicalStatus() === LocalTechnicalStatus::Undefined;
+    }
+
+    public function hasTechnicalStatusUndefinedHelp(): bool
+    {
+        return !$this->isLocalType() && $this->classifiedAsUndefined();
+    }
+
+    public function showConstructiveActionInList(bool $reply): bool
+    {
+        return $reply || $this->inNewBuilding();
     }
 
 }

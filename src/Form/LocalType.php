@@ -145,18 +145,12 @@ class LocalType extends AbstractType
             ]);
         }
 
-        if(is_null($local->getId()) && $options['reply']){
-            $technicalStatusOptions = [
-                'label' => 'Estado técnico:',
-                'data' => LocalTechnicalStatus::Good,
-//                'row_attr' => [
-//                    'style' => 'display:none'
-//                ]
-            ];
-        }else{
-            $technicalStatusOptions = [
-                'label' => 'Estado técnico:',
-            ];
+        $technicalStatusOptions = [
+            'label' => 'Estado técnico:',
+        ];
+
+        if(is_null($local->getId()) /*&& $options['reply']*/){
+            $technicalStatusOptions[ 'data'] = LocalTechnicalStatus::Good;
         }
 
         $form->add('technicalStatus', LocalTechnicalStatusEnumType::class, $technicalStatusOptions);

@@ -79,6 +79,9 @@
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Estado</th>
                     <th>Impacta</th>
+                    {% if reply or sub_system.inNewBuilding() %}
+                        <th>Acción. C</th>
+                    {% endif %}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -102,7 +105,12 @@
                                       data-bs-toggle="tooltip"
                                       data-bs-title="Para poder realizar la réplica se debe diagnosticar el estado técnico del local."
                                       data-bs-custom-class="danger-tooltip"
-                                >{{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}</span>
+                                >
+                                    {{ local.technicalStatus.getLabelFrom(local.technicalStatus) }}
+                                </span>
+                            {% endif %}
+                            {% if local.hasTechnicalStatusUndefinedHelp() %}
+                                *
                             {% endif %}
                         </td>
                         <td>
@@ -119,6 +127,19 @@
                                 }) }}
                             {% endif %}
                         </td>
+                        {% if local.showConstructiveActionInList(reply) %}
+                            <td>
+                                {% if local.hasLocalConstructiveAction() %}
+                                    {{ local.getConstructiveAction()~' ('~local.getFormatedPrice()~')' }}
+                                {% else %}
+                                    <span class="text-danger"
+                                          data-bs-toggle="tooltip"
+                                          data-bs-title="Se debe establecer una accion constructiva."
+                                          data-bs-custom-class="danger-tooltip"
+                                    >Sin definir</span>
+                                {% endif %}
+                            </td>
+                        {% endif %}
                         <td class="text-end">
                             {% if sub_system.inNewBuilding() %}
                                 {% set cssClass = 'btn-link text-dark' %}
@@ -149,16 +170,18 @@
                     </tr>
                 {% endfor %}
             {% endblock %}
-
         {% endcomponent %}
     {% endblock %}
 
-    {#    {% block footer %} #}
-    {#        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %} #}
-    {#        <div> #}
-    {#        {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), '', 'Listado de plantas', 'Listado de plantas') }} #}
-    {#        </div> #}
-    {#    {% endblock %} #}
+    {% block footer %}
+        <div class="card-footer">
+            <p style="margin-bottom: 0">
+                <em>
+                    * Las Áreas de muro y Áreas de vacío con estado técnico "Sin definir", no son tenidas en cuenta...
+                </em>
+            </p>
+        </div>
+    {% endblock %}
 
 {% endcomponent %}
 

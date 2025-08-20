@@ -79,7 +79,7 @@ class LocalRepository extends ServiceEntityRepository
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('l.name', 'ASC')
+        $query = $builder->orderBy('l.number', 'ASC')
             ->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }

@@ -11,6 +11,7 @@ export default class extends AbstractController {
 
     static values = {
         modal: {type: String, default: ''},
+        isNew: {type: Boolean, default: false},
     };
 
     static targets = ["area", "type", "height", "technicalStatus"];
@@ -31,24 +32,26 @@ export default class extends AbstractController {
         });
 
         this.typeTarget.addEventListener('change', (event) => {
-            if (event.currentTarget.value == 0) {//
+            if(this.isNewValue === true){//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+                this.technicalStatusTarget.value = 4;
+            }
+
+            if (event.currentTarget.value == 0) {//area de vacio
                 this.heightTarget.value = 0;
                 this.heightTarget.min = 0;
-                this.technicalStatusTarget.value = 4;//bueno
+                this.technicalStatusTarget.value = 4;//estado bueno
             } else {
                 if (Number(this.heightTarget.value) <= 0) {
                     this.heightTarget.value = 1;
                 }
                 this.heightTarget.min = 1;
-                this.technicalStatusTarget.value = '';
+                if(this.isNewValue === false){//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+                    this.technicalStatusTarget.value = '';
+                }
             }
 
             // this.component.render();
         });
-
-        // if(){
-        //
-        // }
     }
 
     async initialize() {

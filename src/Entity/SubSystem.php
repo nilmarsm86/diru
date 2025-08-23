@@ -160,6 +160,24 @@ class SubSystem implements MeasurementDataInterface
         return $locals->count();
     }
 
+    public function getWallsAmount(): int
+    {
+        $walls = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $filterWall = [];
+        /** @var Local $wall */
+        foreach ($walls as $wall) {
+            if ($wall->isWallType() && !is_null($wall->getId())) {
+                $filterWall[] = $wall;
+            }
+        }
+        return count($filterWall);
+    }
+
+    public function hasWalls(): bool
+    {
+        return $this->getWallsAmount() > 0;
+    }
+
     public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
 //        $replica = clone $this;

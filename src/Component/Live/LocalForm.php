@@ -116,12 +116,26 @@ final class LocalForm extends AbstractController
                 }
             }
 
+            if($this->subSystem->inNewBuilding()){
+                $local->recent();
+            }
+
 //            $local->setOriginal(0);
             if($this->reply){
                 $local->setHasReply(false);
+            }else{
+                if($this->subSystem->inNewBuilding()){
+                    $local->recent();
+                }else{
+                    $local->existingWithoutReplicating();
+                }
             }
 
+
+
             $localRepository->save($local, true);
+
+
 
             $this->l = new Local();
             if (!is_null($this->modal)) {

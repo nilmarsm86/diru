@@ -7,6 +7,7 @@ use App\Entity\Enums\LocalType;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
+use App\Entity\Traits\StructureStateTrait;
 use App\Repository\LocalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +24,7 @@ class Local
     use NameToStringTrait;
     use OriginalTrait;
     use HasReplyTrait;
+    use StructureStateTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -201,7 +203,11 @@ class Local
         $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if ($this->getType() == LocalType::WallArea && is_null($this->getId())) {
-            $this->setName('Área de muro');
+            if(!$this->getSubSystem()->hasWalls()){
+                $this->setName('Área de muro');
+            }else{
+                $this->setName('Área de muro '.$this->getSubSystem()->getMaxLocalNumber() + 1);
+            }
 
             if (is_null($this->getId())) {
                 $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
@@ -233,6 +239,7 @@ class Local
     {
         $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
         $wall = self::createAutomatic($subSystem, LocalType::WallArea, LocalTechnicalStatus::Undefined, $name, $area, 1, $number);
+        $subSystem->inNewBuilding() ? $wall->recent() : $wall->existingWithoutReplicating();
         if ($reply) {
             $wall->setHasReply(false);
             $wall->setTechnicalStatus(LocalTechnicalStatus::Good);
@@ -241,6 +248,7 @@ class Local
                 'name' => 'No es necesaria'
             ]);
             $wall->setConstructiveAction($constructiveAction);
+            $wall->replica();
         }
 
         return $wall;
@@ -261,6 +269,7 @@ class Local
         $local->setHeight($height);
         $local->setNumber($number);
         $local->setTechnicalStatus($localTechnicalStatus);
+        $subSystem->inNewBuilding() ? $local->recent() : $local->existingWithoutReplicating();
 
         $subSystem->addLocal($local);
 
@@ -283,10 +292,13 @@ class Local
         $replica->setName($replica->getName() . ' (R)');
         $replica->setSubSystem($parent);
         $replica->setHasReply(false);
+        $replica->replica();
 
         $entityManager->persist($replica);
 
         $this->setHasReply(true);
+        $this->existingReplicated();
+
         $entityManager->persist($this);
 
         return $replica;
@@ -392,6 +404,11 @@ class Local
     public function isLocalType(): bool
     {
         return $this->getType() === LocalType::Local;
+    }
+
+    public function isWallType(): bool
+    {
+        return $this->getType() === LocalType::WallArea;
     }
 
     public function classifiedAsUndefined(): bool

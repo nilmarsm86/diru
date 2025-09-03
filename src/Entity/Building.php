@@ -575,27 +575,29 @@ class Building implements MeasurementDataInterface
     public function createFloors(): static
     {
         $floor = $this->getLand()->getFloor();
-        $this->createFloor('Planta Baja', true);
+        $this->createAutomaticFloor('Planta Baja', true);
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
-                $this->createFloor('Planta ' . $i, false, $i);
+                $this->createAutomaticFloor('Planta ' . $i, false, $i);
             }
         }
 
         return $this;
     }
 
-    private function createFloor(string $name, bool $isGroundFloor = false, int $position = 0): void
+    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0): void
     {
-        $f = new Floor();
-        $f->setPosition($position);
-        $f->setName($name);
-        $f->setGroundFloor($isGroundFloor);
+        Floor::createAutomatic($this, $name, $isGroundFloor, $position);
+//        $f = new Floor();
+//        $f->setPosition($position);
+//        $f->setName($name);
+//        $f->setGroundFloor($isGroundFloor);
+//
+//        $this->addFloor($f);
 
-        $this->addFloor($f);
+//        $f->createAutomaticSubsystem();
 
-        $f->createAutomaticSubsystem();
     }
 
     public function isNew(): ?bool

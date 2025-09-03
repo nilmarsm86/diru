@@ -98,7 +98,6 @@ class Local
     {
         $this->impactHigherLevels = false;
         $this->localConstructiveAction = null;
-//        $this->hasReply = false;
     }
 
     public function validHeightInEmptyArea(): bool
@@ -239,46 +238,48 @@ class Local
     {
         $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
         $wall = self::createAutomatic($subSystem, LocalType::WallArea, LocalTechnicalStatus::Undefined, $name, $area, 1, $number);
-        $subSystem->inNewBuilding() ? $wall->recent() : $wall->existingWithoutReplicating();
         if ($reply) {
             $wall->setHasReply(false);
             $wall->setTechnicalStatus(LocalTechnicalStatus::Good);
 
-            $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
-                'name' => 'No es necesaria'
-            ]);
-            $wall->setConstructiveAction($constructiveAction);
-            $wall->replica();
+            if(!is_null($entityManager)){
+                $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
+                    'name' => 'No es necesaria'
+                ]);
+                $wall->setConstructiveAction($constructiveAction);
+                $wall->replica();
+            }
         }
 
         return $wall;
     }
 
-    public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): self
+    public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): void
     {
         $technicalStatus = ($subSystem->inNewBuilding()) ? LocalTechnicalStatus::Good : LocalTechnicalStatus::Undefined;
-        return self::createAutomatic($subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
+        self::createAutomatic($subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
     }
 
-    private static function createAutomatic(SubSystem $subSystem, LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): Local
+    private static function createAutomatic(SubSystem $subSystem, LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): self
     {
         $local = new Local();
+        $subSystem->addLocal($local);
+
         $local->setName($name);
         $local->setType($type);
         $local->setArea($area);
         $local->setHeight($height);
         $local->setNumber($number);
         $local->setTechnicalStatus($localTechnicalStatus);
+
         $subSystem->inNewBuilding() ? $local->recent() : $local->existingWithoutReplicating();
 
-        $subSystem->addLocal($local);
 
         return $local;
     }
 
     public function isClassified(): bool
     {
-//        if ($this->getType() !== LocalType::Local) {
         if (!$this->isLocalType()) {
             return true;
         }
@@ -409,6 +410,11 @@ class Local
     public function isWallType(): bool
     {
         return $this->getType() === LocalType::WallArea;
+    }
+
+    public function isEmptyType(): bool
+    {
+        return $this->getType() === LocalType::EmptyArea;
     }
 
     public function classifiedAsUndefined(): bool

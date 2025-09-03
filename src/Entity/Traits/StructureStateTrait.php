@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait StructureStateTrait
 {
     #[ORM\Column(length: 255)]
-    protected ?string $state = null;
+    private ?string $state = null;
 
     #[Assert\Choice(choices: StructureState::CHOICES, message: 'Seleccione un estado válido.')]
     protected ?StructureState $enumState = null;

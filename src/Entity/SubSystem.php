@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Enums\LocalTechnicalStatus;
-use App\Entity\Enums\LocalType;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
+use App\Entity\Traits\StructureStateTrait;
 use App\Repository\SubSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: SubSystemRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name',)]
 class SubSystem implements MeasurementDataInterface
 {
@@ -25,6 +26,7 @@ class SubSystem implements MeasurementDataInterface
     use OriginalTrait;
     use MeasurementDataTrait;
     use HasReplyTrait;
+    use StructureStateTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -47,7 +49,6 @@ class SubSystem implements MeasurementDataInterface
     public function __construct()
     {
         $this->locals = new ArrayCollection();
-//        $this->hasReply = false;
     }
 
     public function getId(): ?int
@@ -116,7 +117,7 @@ class SubSystem implements MeasurementDataInterface
 
         $data = 0;
         foreach ($locals as $local) {
-            $data += call_user_func([$locals, $method], $this->isOriginal());
+            $data += call_user_func([$local, $method], $this->isOriginal());
         }
 
         return $data;
@@ -163,14 +164,14 @@ class SubSystem implements MeasurementDataInterface
     public function getWallsAmount(): int
     {
         $walls = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
-        $filterWall = [];
+        $wallsAmount = 0;
         /** @var Local $wall */
         foreach ($walls as $wall) {
             if ($wall->isWallType() && !is_null($wall->getId())) {
-                $filterWall[] = $wall;
+                $wallsAmount++;
             }
         }
-        return count($filterWall);
+        return $wallsAmount;
     }
 
     public function hasWalls(): bool
@@ -243,8 +244,9 @@ class SubSystem implements MeasurementDataInterface
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $usefulArea = 0;
+        /** @var Local $local */
         foreach ($locals as $local) {
-            if ($local->getType() === LocalType::Local) {
+            if ($local->isLocalType()) {
                 $usefulArea += $local->getArea();
             }
         }
@@ -261,8 +263,9 @@ class SubSystem implements MeasurementDataInterface
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $wallArea = 0;
+        /** @var Local $local */
         foreach ($locals as $local) {
-            if ($local->getType() === LocalType::WallArea) {
+            if ($local->isWallType()) {
                 $wallArea += $local->getArea();
             }
         }
@@ -279,8 +282,9 @@ class SubSystem implements MeasurementDataInterface
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
         $emptyArea = 0;
+        /** @var Local $local */
         foreach ($locals as $local) {
-            if ($local->getType() === LocalType::EmptyArea) {
+            if ($local->isEmptyType()) {
                 $emptyArea += $local->getArea();
             }
         }
@@ -384,12 +388,24 @@ class SubSystem implements MeasurementDataInterface
     public function createInitialLocal(): void
     {
         if (is_null($this->getId())) {
-            $local = Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
-            $wall = Local::createAutomaticWall($this, 1);
-
-            $this->addLocal($local);
-            $this->addLocal($wall);
+            Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
+            Local::createAutomaticWall($this, 1);
         }
+    }
+
+    public static function createAutomatic(Floor $floor, string $name): void
+    {
+        $subSystem = new SubSystem();
+        $floor->addSubSystem($subSystem);
+
+//        $subSystem->setFloor($floor);
+        $subSystem->setName($name);
+
+
+        $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
+        $subSystem->createInitialLocal();
+
+//        return $subSystem;
     }
 
     public function inNewBuilding(): ?bool

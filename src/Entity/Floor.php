@@ -7,6 +7,7 @@ use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
+use App\Entity\Traits\StructureStateTrait;
 use App\Repository\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'building', 'hasReply'], message: 'Ya existe en la obra una planta con este nombre.', errorPath: 'name')]
 #[DoctrineAssert\UniqueEntity(fields: ['position', 'building', 'hasReply'], message: 'Ya existe en la obra una planta en esa posición.', errorPath: 'position')]
 class Floor implements MeasurementDataInterface
@@ -24,6 +26,7 @@ class Floor implements MeasurementDataInterface
     use OriginalTrait;
     use MeasurementDataTrait;
     use HasReplyTrait;
+    use StructureStateTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -53,7 +56,6 @@ class Floor implements MeasurementDataInterface
     {
         $this->subSystems = new ArrayCollection();
         $this->groundFloor = false;
-//        $this->hasReply = false;
     }
 
     public function getId(): ?int
@@ -337,14 +339,22 @@ class Floor implements MeasurementDataInterface
         return true;
     }
 
+    public static function createAutomatic(Building $building, string $name, bool $isGroundFloor = false, int $position = 0): void
+    {
+        $floor = new Floor();
+        $building->addFloor($floor);
+
+        $floor->setPosition($position);
+        $floor->setName($name);
+        $floor->setGroundFloor($isGroundFloor);
+        $floor->createAutomaticSubsystem();
+        $floor->inNewBuilding() ? $floor->recent() : $floor->existingWithoutReplicating();
+    }
+
     public function createAutomaticSubsystem(): void
     {
-        if (is_null($this->getId())) {
-            $subSystem = new SubSystem();
-            $subSystem->setFloor($this);
-            $subSystem->setName('Subsistema');
-            $subSystem->createInitialLocal();
-            $this->addSubSystem($subSystem);
+        if (is_null($this->getId())) {// TODO: no se pq hice esto
+            SubSystem::createAutomatic($this, 'Subsistema');
         }
     }
 

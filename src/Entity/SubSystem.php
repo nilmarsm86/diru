@@ -181,32 +181,19 @@ class SubSystem implements MeasurementDataInterface
 
     public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
-//        $replica = clone $this;
-//        $replica->setOriginal($this);
-//
-//        $entityManager->persist($replica);
-//
-//        foreach ($this->getLocals() as $local) {
-//            $local->reply($entityManager);
-//        }
-//
-//        return $replica;
-//        return $this->makeReply($entityManager, $this->getOriginalLocals());
         $replica = clone $this;
         $replica->setOriginal($this);
         $replica->setName($replica->getName() . ' (R)');
         $replica->setFloor($parent);
         $replica->setHasReply(false);
+        $replica->replica();
 
         $entityManager->persist($replica);
 
-//        /** @var Local $local */
-//        foreach ($this->getOriginalLocals() as $local){
-//            $local->reply($entityManager, $replica);
-//        }
         $this->replySons($entityManager, $this->getOriginalLocals(), $replica);
 
         $this->setHasReply(true);
+        $this->existingReplicated();
         $entityManager->persist($this);
 
         return $replica;

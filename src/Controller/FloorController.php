@@ -19,7 +19,7 @@ use Twig\Error\SyntaxError;
 #[Route('/floor')]
 final class FloorController extends AbstractController
 {
-    #[Route('/{building}/{reply}', name: 'app_floor_index', methods: ['GET'], requirements: ['building' => '\d+'])]
+    #[Route('/{building}/{reply}', name: 'app_floor_index', requirements: ['building' => '\d+'], methods: ['GET'])]
     public function index(Request $request, FloorRepository $floorRepository, Building $building, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');

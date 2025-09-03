@@ -96,6 +96,7 @@ final class LocalForm extends AbstractController
         $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : 'Se ha modificado el local.';//TODO: personalizar los mensajes
 
         $this->submitForm();
+        dump($this->formValues);
 
         if ($this->isSubmitAndValid()) {
             /** @var Local $local */

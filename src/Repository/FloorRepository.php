@@ -72,7 +72,7 @@ class FloorRepository extends ServiceEntityRepository
         $builder = $this->createQueryBuilder('f')->select(['f', 'b'])
             ->leftJoin('f.building', 'b')
             ->andWhere('b.id = :idBuilding');
-        $dqlReply = ($reply) ? 'f.hasReply = false' : 'f.original IS NULL AND (f.hasReply IS NULL OR f.hasReply = true)';
+        $dqlReply = ($reply) ? 'f.hasReply = false AND f.state = 3' : 'f.original IS NULL AND (f.hasReply IS NULL OR f.hasReply = true) AND f.state != 3';//TODO: 3 Estado de estructura: Replica
         $builder->andWhere($dqlReply);
 
         $builder->setParameter(':idBuilding', $building->getId());

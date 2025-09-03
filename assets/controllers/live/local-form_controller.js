@@ -24,33 +24,42 @@ export default class extends AbstractController {
         });
 
         this.areaTarget.addEventListener('input', (event) => {
-            if(this.areaTarget.getAttribute('max')){
+            if (this.areaTarget.getAttribute('max')) {
                 if (Number(this.areaTarget.value) > Number(this.areaTarget.getAttribute('max'))) {
                     this.areaTarget.value = this.areaTarget.getAttribute('max');
                 }
             }
         });
 
+        // this.heightTechnicalStatus();
+
         this.typeTarget.addEventListener('change', (event) => {
-            if(this.isNewValue === true){//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-                this.technicalStatusTarget.value = 4;
-            }
-
-            if (event.currentTarget.value == 0) {//area de vacio
-                this.heightTarget.value = 0;
-                this.heightTarget.min = 0;
-                this.technicalStatusTarget.value = 4;//estado bueno
-            } else {
-                if (Number(this.heightTarget.value) <= 0) {
-                    this.heightTarget.value = 1;
-                }
-                this.heightTarget.min = 1;
-                if(this.isNewValue === false){//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-                    this.technicalStatusTarget.value = '';
-                }
-            }
-
-            // this.component.render();
+            // if (this.isNewValue === true) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+            //     this.technicalStatusTarget.value = 4;
+            // }
+            //
+            // if (event.currentTarget.value == 0) {//area de vacio
+            //     this.heightTarget.value = 0;
+            //     this.heightTarget.min = 0;
+            //     this.technicalStatusTarget.value = 4;//estado bueno
+            // }
+            //
+            // if (event.currentTarget.value == 1) {// local
+            //     this.heightTarget.value = 2.40;
+            //     this.heightTarget.min = 1;
+            //     if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+            //         this.technicalStatusTarget.value = '';
+            //     }
+            // }
+            //
+            // if (event.currentTarget.value == 2) {// area de muro
+            //     this.heightTarget.value = 1;
+            //     this.heightTarget.min = 1;
+            //     if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+            //         this.technicalStatusTarget.value = '';
+            //     }
+            // }
+            this.heightTechnicalStatus();
         });
     }
 
@@ -59,8 +68,41 @@ export default class extends AbstractController {
         this.processCsrfToken();
 
         this.component.on('render:finished', (component) => {
+            // this.heightTechnicalStatus();
             this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
+
         });
+
+        // this.heightTechnicalStatus();
+    }
+
+    heightTechnicalStatus(){
+        console.log(this.typeTarget.value);
+        if (this.isNewValue === true) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+            this.technicalStatusTarget.value = 4;
+        }
+
+        if (this.typeTarget.value == 0) {//area de vacio
+            // this.heightTarget.value = 0;
+            this.heightTarget.min = 0;
+            this.technicalStatusTarget.value = 4;//estado bueno
+        }
+
+        if (this.typeTarget.value == 1) {// local
+            // this.heightTarget.value = '2.40';
+            this.heightTarget.min = 1;
+            if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+                this.technicalStatusTarget.value = '';
+            }
+        }
+
+        if (this.typeTarget.value == 2) {// area de muro
+            // this.heightTarget.value = 1;
+            this.heightTarget.min = 1;
+            if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
+                this.technicalStatusTarget.value = '';
+            }
+        }
     }
 
 }

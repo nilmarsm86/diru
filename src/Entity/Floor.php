@@ -188,6 +188,7 @@ class Floor implements MeasurementDataInterface
 //        if($this->getBuilding()->isNew()){
 //            return true;
 //        }
+
         return $this->getTotalArea() >= (($this->getBuilding()->isNew())
                 ? $this->getBuilding()->getLandArea()
                 : $this->getBuilding()->getOccupiedArea());
@@ -210,32 +211,18 @@ class Floor implements MeasurementDataInterface
 
     public function reply(EntityManagerInterface $entityManager, object $parent = null): static
     {
-//        $replica = clone $this;
-//        $replica->setOriginal($this);
-//
-//        $entityManager->persist($replica);
-//
-//        foreach ($this->getOriginalSubsystems() as $subSystem){
-//            $subSystem->reply($entityManager);
-//        }
-//
-//        return $replica;
-
-//        return $this->makeReply($entityManager, $this->getOriginalSubsystems(), $parent);
         $replica = clone $this;
         $replica->setOriginal($this);
         $replica->setName($replica->getName() . ' (R)');
         $replica->setHasReply(false);
+        $replica->replica();
 
         $entityManager->persist($replica);
 
-//        /** @var SubSystem $subsystem */
-//        foreach ($this->getOriginalSubsystems() as $subsystem) {
-//            $subsystem->reply($entityManager, $replica);
-//        }
         $this->replySons($entityManager, $this->getOriginalSubsystems(), $replica);
 
         $this->setHasReply(true);
+        $this->existingReplicated();
         $entityManager->persist($this);
 
         return $replica;

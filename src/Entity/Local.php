@@ -257,7 +257,7 @@ class Local
     public static function createAutomaticLocal(SubSystem $subSystem, int $area, int $number): void
     {
         $technicalStatus = ($subSystem->inNewBuilding()) ? LocalTechnicalStatus::Good : LocalTechnicalStatus::Undefined;
-        self::createAutomatic($subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 1, $number);
+        self::createAutomatic($subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 2.40, $number);
     }
 
     private static function createAutomatic(SubSystem $subSystem, LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number): self

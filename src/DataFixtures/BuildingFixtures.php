@@ -26,6 +26,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
                 $buildingEntity->setEstimatedValueConstruction(1000000);
                 $buildingEntity->setEstimatedValueEquipment(1000000);
                 $buildingEntity->setEstimatedValueOther(1000000);
+                $buildingEntity->setPopulation(1);
 
                 if($building === 'Obra1'){
                     $buildingEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));

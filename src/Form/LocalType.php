@@ -152,9 +152,9 @@ class LocalType extends AbstractType
             'label' => 'Estado técnico:',
         ];
 
-        if(is_null($local->getId()) /*&& $options['reply']*/){
-            $technicalStatusOptions[ 'data'] = LocalTechnicalStatus::Good;
-        }
+//        if(is_null($local->getId()) /*&& $options['reply']*/){
+//            $technicalStatusOptions['data'] = LocalTechnicalStatus::Good;
+//        }
 
         $form->add('technicalStatus', LocalTechnicalStatusEnumType::class, $technicalStatusOptions);
     }

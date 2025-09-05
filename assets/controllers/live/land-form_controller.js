@@ -45,6 +45,10 @@ export default class extends AbstractController {
         });
 
         this.occupiedTarget.addEventListener('input', (event) => {
+            if(this.occupiedTarget.value == ''){
+                this.occupiedTarget.value = 0;
+            }
+
             if (Number(this.occupiedTarget.value) < 0) {
                 this.occupiedTarget.value = Number(this.occupiedTarget.value) * -1;
             }

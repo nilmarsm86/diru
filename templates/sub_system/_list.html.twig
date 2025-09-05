@@ -55,7 +55,8 @@
                 </ul>
             </div>
             {% if floor.isFullyOccupied() == false %}
-                {{ tableActionButton3(path('app_sub_system_new', {'floor': floor.id}), 'bi:plus-lg', 'Nuevo', 'Nuevo subsistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_sub_system_new', {'floor': floor.id})})) }}
+                {% set path = path('app_sub_system_new', {'floor': floor.id, 'reply': reply}) %}
+                {{ tableActionButton3(path, 'bi:plus-lg', 'Nuevo', 'Nuevo subsistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path })) }}
             {% endif %}
 
             {#            {% if reply %} #}
@@ -108,7 +109,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for sub_system in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if sub_system.inNewBuilding() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if sub_system.inNewBuilding() or sub_system.isNewInReply() %}class="table-success"{% endif %}>
                         <td>
                             {{ sub_system.name }}
                         </td>

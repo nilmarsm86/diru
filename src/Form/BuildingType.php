@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 class BuildingType extends AbstractType
 {
@@ -31,6 +32,15 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre de la obra'
                 ]
+            ])
+            ->add('population', null, [
+                'label' => 'Cantidad de personas:',
+                'attr' => [
+                    'placeholder' => 'Cantidad de personas para la cual esta diseño'
+                ]
+            ])
+            ->add('constructionAssemblyComment', null, [
+                'label' => false,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
@@ -187,6 +197,27 @@ class BuildingType extends AbstractType
                 'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+            ])
+            ->add('constructionAssembly', MoneyType::class, [
+                'label' => 'Valor de construcción y montaje:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer',
+                'divisor' => 100,
+            ])
+            ->add('landNetworkConnections', LiveCollectionType::class, [
+                'entry_type' => LandNetworkConnectionType::class,
+                'button_delete_options' => [
+                    'label_html' => true
+                ],
+                'error_bubbling' => false,
             ]);
     }
 }

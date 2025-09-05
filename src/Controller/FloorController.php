@@ -49,13 +49,14 @@ final class FloorController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/new/{building}', name: 'app_floor_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Building $building): Response
+    #[Route('/new/{building}/{reply}', name: 'app_floor_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, Building $building, bool $reply = false): Response
     {
         $floor = new Floor();
         return $crudActionService->formLiveComponentAction($request, $floor, 'floor', [
             'title' => 'Nueva Planta',
-            'building' => $building
+            'building' => $building,
+            'reply' => $reply,
         ]);
     }
 

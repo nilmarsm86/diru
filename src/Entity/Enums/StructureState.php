@@ -9,10 +9,10 @@ enum StructureState: string
 {
     use EnumsTrait;
 
-    case Recent  = '0';
-    case ExistingWithoutReplicating = '1';
-    case ExistingReplicated = '2';
-    case Replica = '3';
+    case Recent  = '0';//Estructura en un inmueble nuevo
+    case ExistingWithoutReplicating = '1';//Estructura en un inmueble existente a la que NO se le a realizado replica
+    case ExistingReplicated = '2';//Estructura en un inmueble existente, a la que se le ha realizado replica
+    case Replica = '3';//Replica de un inmueble existente
 
     const CHOICES = [self::Recent, self::ExistingWithoutReplicating, self::ExistingReplicated, self::Replica];
 

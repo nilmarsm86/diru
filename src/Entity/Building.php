@@ -101,6 +101,25 @@ class Building implements MeasurementDataInterface
     #[ORM\Column(nullable: true)]
     private ?bool $isNew = null;
 
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'Seleccione o cree el proyecto al cual pertenece la obra.')]
+    #[Assert\Positive(message: 'El valor debe ser positivo')]
+    private ?int $population = null;
+
+    #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+    private ?int $constructionAssembly = 0;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $constructionAssemblyComment = null;
+
+    /**
+     * @var Collection<int, LandNetworkConnection>
+     */
+    #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'building', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
+    private Collection $landNetworkConnections;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -119,6 +138,10 @@ class Building implements MeasurementDataInterface
 //        $this->isNew = false;
 
         $this->hasReply = false;
+
+        $this->population = 0;
+        $this->constructionAssembly = 0;
+        $this->landNetworkConnections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -572,32 +595,23 @@ class Building implements MeasurementDataInterface
     /*
      * Create the automatic the floors, based on land floors
      */
-    public function createFloors(): static
+    public function createFloors(bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
         $floor = $this->getLand()->getFloor();
-        $this->createAutomaticFloor('Planta Baja', true);
+        $this->createAutomaticFloor('Planta Baja', true, 0, $reply, $entityManager);
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
-                $this->createAutomaticFloor('Planta ' . $i, false, $i);
+                $this->createAutomaticFloor('Planta ' . $i, false, $i, $reply, $entityManager);
             }
         }
 
         return $this;
     }
 
-    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0): void
+    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
-        Floor::createAutomatic($this, $name, $isGroundFloor, $position);
-//        $f = new Floor();
-//        $f->setPosition($position);
-//        $f->setName($name);
-//        $f->setGroundFloor($isGroundFloor);
-//
-//        $this->addFloor($f);
-
-//        $f->createAutomaticSubsystem();
-
+        Floor::createAutomatic($this, $name, $isGroundFloor, $position, $reply, $entityManager);
     }
 
     public function isNew(): ?bool
@@ -797,25 +811,25 @@ class Building implements MeasurementDataInterface
 
     public function getTotalApprovedValueFormated(): string
     {
-        return (number_format(((float) $this->getTotalApprovedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
+        return (number_format(((float)$this->getTotalApprovedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
     }
 
     public function getTotalEstimatedValueFormated(): string
     {
-        return (number_format(((float) $this->getTotalEstimatedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
+        return (number_format(((float)$this->getTotalEstimatedValue() / 100), 2)) . ' ' . $this->getProjectCurrency();
     }
 
     public function hasErrors(bool $original = null): bool
     {
-        if($original){
-            foreach ($this->getOriginalFloors() as $floor){
-                if($floor->hasErrors()){
+        if ($original) {
+            foreach ($this->getOriginalFloors() as $floor) {
+                if ($floor->hasErrors()) {
                     return true;
                 }
             }
-        }else{
-            foreach ($this->getReplyFloors() as $floor){
-                if($floor->hasErrors()){
+        } else {
+            foreach ($this->getReplyFloors() as $floor) {
+                if ($floor->hasErrors()) {
                     return true;
                 }
             }
@@ -829,4 +843,70 @@ class Building implements MeasurementDataInterface
 ////        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
 //        return $this->getMeasurementData('getUsefulArea', $original);
 //    }
+
+    public function getPopulation(): ?int
+    {
+        return $this->population;
+    }
+
+    public function setPopulation(int $population): static
+    {
+        $this->population = $population;
+
+        return $this;
+    }
+
+    public function getConstructionAssembly(): ?int
+    {
+        return $this->constructionAssembly;
+    }
+
+    public function setConstructionAssembly(?int $constructionAssembly): static
+    {
+        $this->constructionAssembly = $constructionAssembly;
+
+        return $this;
+    }
+
+    public function getConstructionAssemblyComment(): ?string
+    {
+        return $this->constructionAssemblyComment;
+    }
+
+    public function setConstructionAssemblyComment(?string $constructionAssemblyComment): static
+    {
+        $this->constructionAssemblyComment = $constructionAssemblyComment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LandNetworkConnection>
+     */
+    public function getLandNetworkConnections(): Collection
+    {
+        return $this->landNetworkConnections;
+    }
+
+    public function addLandNetworkConnection(LandNetworkConnection $landNetworkConnection): static
+    {
+        if (!$this->landNetworkConnections->contains($landNetworkConnection)) {
+            $this->landNetworkConnections->add($landNetworkConnection);
+            $landNetworkConnection->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLandNetworkConnection(LandNetworkConnection $landNetworkConnection): static
+    {
+        if ($this->landNetworkConnections->removeElement($landNetworkConnection)) {
+            // set the owning side to null (unless already changed)
+            if ($landNetworkConnection->getBuilding() === $this) {
+                $landNetworkConnection->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
 }

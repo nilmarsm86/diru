@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\ConstructiveActionType;
 use App\Repository\LocalConstructiveActionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,8 +26,20 @@ class LocalConstructiveAction
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
+    #[Assert\NotBlank(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+    #[Assert\Expression(
+        "this.validPrice()",
+        message: 'El precio para esta acción constructiva debe ser mayor que 0.',
+        negate: false
+    )]
     private ?int $price;
+
+    public function validPrice(): bool
+    {
+        return !in_array($this->constructiveAction?->getName(), ['', 'No es necesaria', 'Eliminación', 'Cambio de uso'])
+            && $this->getPrice() == 0;
+    }
 
     public function __construct()
     {

@@ -94,7 +94,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for local in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if local.inNewBuilding() or local.isNewInReply() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if local.isNewStructure() %}class="table-success"{% endif %}>
                         <td>{{ local.name }} </td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>

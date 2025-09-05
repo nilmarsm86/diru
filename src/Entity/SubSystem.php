@@ -372,15 +372,15 @@ class SubSystem implements MeasurementDataInterface
         return $maxLocalNumber;
     }
 
-    public function createInitialLocal(): void
+    public function createInitialLocal(bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {
-            Local::createAutomaticLocal($this, $this->getFloor()->getUnassignedArea() - 1, 1);
-            Local::createAutomaticWall($this, 1);
+            Local::createAutomaticLocal(null, $this, $this->getFloor()->getUnassignedArea() - 1, 1);
+            Local::createAutomaticWall($this, 1, 0, $reply, $entityManager);
         }
     }
 
-    public static function createAutomatic(Floor $floor, string $name): void
+    public static function createAutomatic(Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         $subSystem = new SubSystem();
         $floor->addSubSystem($subSystem);
@@ -390,7 +390,7 @@ class SubSystem implements MeasurementDataInterface
 
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
-        $subSystem->createInitialLocal();
+        $subSystem->createInitialLocal($reply, $entityManager);
 
 //        return $subSystem;
     }
@@ -411,6 +411,11 @@ class SubSystem implements MeasurementDataInterface
     public function hasErrors(): bool
     {
         return ($this->allLocalsAreClassified() == false) || $this->notWallArea() || ($this->isFullyOccupied() == false);
+    }
+
+    public function isNewInReply(): bool
+    {
+        return ($this->hasReply() === false) && (is_null($this->getOriginal()));
     }
 
 }

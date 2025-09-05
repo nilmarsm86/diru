@@ -6,6 +6,8 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\Enums\ConstructiveActionType;
+use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Enums\StructureState;
 use App\Entity\Floor;
 use App\Entity\Local;
 use App\Entity\LocalConstructiveAction;
@@ -70,17 +72,37 @@ final class LocalForm extends AbstractController
         $this->reply = $reply;
     }
 
-    protected function instantiateForm(): FormInterface
+    /**
+     * @return void
+     */
+    public function setDefaultTechnicalStatus(): void
     {
-//        $this->subSystem->addLocal($this->l);
-        $this->l->setSubSystem($this->subSystem);
-        if(is_null($this->l->getLocalConstructiveAction()) && ($this->reply === true || $this->l->inNewBuilding())){
-            $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'No es necesaria']);
+        if (is_null($this->l->getId()) && $this->subSystem->getState() !== StructureState::ExistingWithoutReplicating) {
+            $this->l->setTechnicalStatus(LocalTechnicalStatus::Good);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function setDefaultConstructiveAction(): void
+    {
+        if (is_null($this->l->getLocalConstructiveAction()) && ($this->reply === true || $this->l->inNewBuilding()) && is_null($this->l->getOriginal())) {
+            $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'Obra nueva']);
 
             $localConstructiveAction = new LocalConstructiveAction();
             $localConstructiveAction->setConstructiveAction($constructiveAction);
             $this->l->setLocalConstructiveAction($localConstructiveAction);
         }
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+//        $this->subSystem->addLocal($this->l);
+        $this->l->setSubSystem($this->subSystem);
+        $this->setDefaultConstructiveAction();
+        $this->setDefaultTechnicalStatus();
+
         return $this->createForm(LocalType::class, $this->l, [
             'subSystem' => $this->subSystem,
             'reply' => $this->reply
@@ -93,50 +115,19 @@ final class LocalForm extends AbstractController
     #[LiveAction]
     public function save(LocalRepository $localRepository): ?Response
     {
-        $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : 'Se ha modificado el local.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : (($this->reply) ? 'Se ha modificado el local replicado.' : 'Se ha modificado el local.');//TODO: personalizar los mensajes
 
         $this->submitForm();
-        dump($this->formValues);
 
         if ($this->isSubmitAndValid()) {
             /** @var Local $local */
             $local = $this->getForm()->getData();
 
-            $local->setSubSystem($this->subSystem);
-
             if (is_null($this->l->getId())) {
-                if (isset($this->formValues['localConstructiveAction']) && empty($this->formValues['localConstructiveAction']['price'])) {
-                    $this->formValues['localConstructiveAction'] = null;
-                    $local->setLocalConstructiveAction(null);
-                }
-            } else {
-                if (isset($this->formValues['localConstructiveAction']) && empty($this->formValues['localConstructiveAction']['price'])) {
-                    $this->formValues['localConstructiveAction']['price'] = $this->l->getLocalConstructiveAction()->getPrice();
-                    $this->formValues['localConstructiveAction']['constructiveAction'] = $this->l->getLocalConstructiveAction()->getConstructiveAction();
-                    $local->setLocalConstructiveAction($this->localConstructiveAction);
-                }
+                $local = Local::createAutomaticLocal($local, $this->subSystem, $this->formValues['area'], $this->formValues['number'], $this->reply, $this->entityManager);
             }
-
-            if($this->subSystem->inNewBuilding()){
-                $local->recent();
-            }
-
-//            $local->setOriginal(0);
-            if($this->reply){
-                $local->setHasReply(false);
-            }else{
-                if($this->subSystem->inNewBuilding()){
-                    $local->recent();
-                }else{
-                    $local->existingWithoutReplicating();
-                }
-            }
-
-
 
             $localRepository->save($local, true);
-
-
 
             $this->l = new Local();
             if (!is_null($this->modal)) {

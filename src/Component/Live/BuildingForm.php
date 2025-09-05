@@ -19,6 +19,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
 #[AsLiveComponent(template: 'component/live/building_form.html.twig')]
 final class BuildingForm extends AbstractController
@@ -27,6 +28,7 @@ final class BuildingForm extends AbstractController
     use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
+    use LiveCollectionTrait;
 
     /**
      * The initial data used to create the form.

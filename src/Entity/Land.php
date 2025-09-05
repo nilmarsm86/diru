@@ -37,19 +37,11 @@ class Land
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $microlocalization = null;
 
-    /**
-     * @var Collection<int, LandNetworkConnection>
-     */
-        #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'land', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Assert\Valid]
-    private Collection $landNetworkConnections;
-
     #[ORM\Column]
     private ?int $floor = null;
 
     public function __construct()
     {
-        $this->landNetworkConnections = new ArrayCollection();
         $this->occupiedArea = 0;
         $this->floor = 0;
         $this->landArea = 1;
@@ -121,36 +113,6 @@ class Land
         return $this;
     }
 
-    /**
-     * @return Collection<int, LandNetworkConnection>
-     */
-    public function getLandNetworkConnections(): Collection
-    {
-        return $this->landNetworkConnections;
-    }
-
-    public function addLandNetworkConnection(LandNetworkConnection $landNetworkConnection): static
-    {
-        if (!$this->landNetworkConnections->contains($landNetworkConnection)) {
-            $this->landNetworkConnections->add($landNetworkConnection);
-            $landNetworkConnection->setLand($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLandNetworkConnection(LandNetworkConnection $landNetworkConnection): static
-    {
-        if ($this->landNetworkConnections->removeElement($landNetworkConnection)) {
-            // set the owning side to null (unless already changed)
-            if ($landNetworkConnection->getLand() === $this) {
-                $landNetworkConnection->setLand(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFloor(): ?int
     {
         return $this->floor;
@@ -168,7 +130,7 @@ class Land
         return $this->occupiedArea > 0;
     }
 
-    public function hasFloors()
+    public function hasFloors(): bool
     {
         return $this->getFloor() > 0;
     }

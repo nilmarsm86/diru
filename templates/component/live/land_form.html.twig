@@ -5,9 +5,9 @@
     {% if this.isNew() == true %}
         {% set msg = 'Para un inmueble existente una vez creada la información de los datos del terreno, la misma <strong>NO</strong> podrá ser modificada.' %}
     {% else %}
-        {% if this.building.isNew() == false %}
-            {% set msg = 'Esta información no puede ser modificada.' %}
-        {% endif %}
+        {#        {% if this.building.isNew() == false %} #}
+        {% set msg = 'Esta información no puede ser modificada.' %}
+        {#        {% endif %} #}
     {% endif %}
 
     {% if msg is defined %}
@@ -35,7 +35,7 @@
                     <div class="mb-3">
                         <p class="">Hectáreas (ha):</p>
                         <h5 class="">
-                            <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'hectare') }}>0</span>
+                            <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'hectare') }}>{{ 0|number_format(2) }}</span>
                         </h5>
                     </div>
                 </div>
@@ -83,44 +83,8 @@
         </div>
     </div>
 
+    {#    {% if this.isNew() == true or this.building.isNew() == true %} #}
     {% if this.isNew() == true %}
-        {{ form_row(form.landNetworkConnections.vars.button_add, {
-            label: 'Agregar conexion de red',
-            attr: { class: 'btn btn-outline-nav-link btn-sm' }
-        }) }}
-    {% endif %}
-
-    {% if form_errors(form.landNetworkConnections) %}
-        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
-            <div class="col-sm-12">
-                {{ form_errors(form.landNetworkConnections) }}
-            </div>
-        </div>
-    {% endif %}
-
-    {% for key, connection in form.landNetworkConnections %}
-        <details class="collection" {% if form_errors(connection.networkConnection) %}open{% endif %}>
-            <summary class="collection">
-                <div class="row summary-btn-lis">
-                    <div class="col">Conexión de
-                        red: {% if connection.vars.data.id is not null %}{{ connection.vars.data.networkConnection.name }}{% endif %}</div>
-                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-                        {% if this.isNew() == true %}
-                            {{ form_widget(connection.vars.button_delete, {
-                                label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
-                                attr: { class: 'btn btn-outline-danger btn-sm' }
-                            }) }}
-                        {% endif %}
-                    </div>
-                </div>
-            </summary>
-
-            {{ form_row(connection.networkConnection) }}
-            {{ form_row(connection.explanation) }}
-        </details>
-    {% endfor %}
-
-    {% if this.isNew() == true or this.building.isNew() == true %}
         <div class="row mb-3">
             <div class="col-sm-12">
                 {{ component('button:submit', {

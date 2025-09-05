@@ -8,12 +8,13 @@ import AbstractController from "./AbstractController.js";
 export default class extends AbstractController {
 
     static targets = ["field", "total"];
-    connect(){
+
+    connect() {
         this.summation();
 
         this.fieldTargets.forEach((field) => {
             field.addEventListener('input', (event) => {
-                if(Number(field.value) < 0){
+                if (Number(field.value) < 0) {
                     field.value = Number(field.value) * -1;
                 }
                 this.summation();
@@ -24,23 +25,26 @@ export default class extends AbstractController {
         this.element.parentElement.addEventListener('toggle', (event) => {
             this.fieldTargets.forEach((field) => {
                 let inputGroupText = field.parentElement.querySelector('.input-group-text');
-                if(event.currentTarget.open){
-                    if(inputGroupText.innerText === 'US$'){
+                if (event.currentTarget.open) {
+                    if (inputGroupText.innerText === 'US$') {
                         inputGroupText.innerText = 'USD';
                     }
                 }
             });
         });
 
-        window.addEventListener('live-form:submitEnd', (event)=>{
+        window.addEventListener('live-form:submitEnd', (event) => {
             this.summation();
         });
     }
 
-    summation(){
-        this.totalTarget.innerText = this.fieldTargets.reduce((accumulator, field) => accumulator + Number(field.value), 0);
+    summation() {
+        let USDollar = new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+        });
+        this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + Number(field.value), 0));
     }
-
 
 
 }

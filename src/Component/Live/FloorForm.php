@@ -8,6 +8,7 @@ use App\Entity\Floor;
 use App\Entity\Organism;
 use App\Form\FloorType;
 use App\Repository\FloorRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -45,12 +46,16 @@ final class FloorForm extends AbstractController
     #[LiveProp]
     public ?Building $building = null;
 
-    public function mount(?Floor $fl = null, Building $building = null): void
+    #[LiveProp]
+    public bool $reply = false;
+
+    public function mount(?Floor $fl = null, Building $building = null, bool $reply = false): void
     {
         $this->fl = (is_null($fl)) ? new Floor() : $fl;
         $this->entity = $this->fl;
         $this->building = $building;
         $this->building->addFloor($this->fl);
+        $this->reply = $reply;
     }
 
     protected function instantiateForm(): FormInterface
@@ -63,7 +68,7 @@ final class FloorForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(FloorRepository $floorRepository): ?Response
+    public function save(FloorRepository $floorRepository, EntityManagerInterface $entityManager): ?Response
     {
         $successMsg = (is_null($this->fl->getId())) ? 'Se ha agregado la planta.' : 'Se ha modificado la planta.';//TODO: personalizar los mensajes
 
@@ -73,6 +78,23 @@ final class FloorForm extends AbstractController
             /** @var Floor $floor */
             $floor = $this->getForm()->getData();
             $this->building->addFloor($floor);
+
+            if($floor->inNewBuilding()){
+                $floor->recent();
+            }
+
+//            $local->setOriginal(0);
+            if($this->reply){
+                $floor->setHasReply(false);
+                $floor->recent();
+            }else{
+                if($floor->inNewBuilding()){
+                    $floor->recent();
+                }else{
+                    $floor->existingWithoutReplicating();
+                }
+            }
+            $floor->createAutomaticSubsystem($this->reply, $entityManager);
             $floorRepository->save($floor, true);
 
             $this->fl = new Floor();

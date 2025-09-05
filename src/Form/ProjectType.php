@@ -46,7 +46,7 @@ class ProjectType extends AbstractType
             ->add('investment', EntityPlusType::class, [
                 'class' => Investment::class,
                 'choice_label' => 'name',
-                'label' => 'Inversión:',
+                'label' => 'Datos de la Inversión:',
 
                 'detail' => true,
                 'detail_title' => 'Detalle de la Inversión',

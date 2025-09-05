@@ -18,8 +18,8 @@ class LandNetworkConnection
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca el terreno')]
-    private ?Land $land = null;
+    #[Assert\NotBlank(message: 'Establezca la obra')]
+    private ?Building $building = null;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,14 +35,14 @@ class LandNetworkConnection
         return $this->id;
     }
 
-    public function getLand(): ?Land
+    public function getBuilding(): ?Building
     {
-        return $this->land;
+        return $this->building;
     }
 
-    public function setLand(?Land $land): static
+    public function setBuilding(?Building $building): static
     {
-        $this->land = $land;
+        $this->building = $building;
 
         return $this;
     }

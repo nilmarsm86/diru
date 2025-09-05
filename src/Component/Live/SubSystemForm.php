@@ -11,6 +11,7 @@ use App\Form\FloorType;
 use App\Form\SubSystemType;
 use App\Repository\FloorRepository;
 use App\Repository\SubSystemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -49,13 +50,17 @@ final class SubSystemForm extends AbstractController
     #[LiveProp]
     public ?Floor $floor = null;
 
-    public function mount(?SubSystem $ss = null, Floor $floor = null): void
+    #[LiveProp]
+    public bool $reply = false;
+
+    public function mount(?SubSystem $ss = null, Floor $floor = null, bool $reply = false): void
     {
         $this->ss = (is_null($ss)) ? new SubSystem() : $ss;
         $this->entity = $this->ss;
         $this->floor = $floor;
         $this->floor->addSubSystem($this->ss);
         $this->ss->setFloor($this->floor);
+        $this->reply = $reply;
     }
 
     protected function instantiateForm(): FormInterface
@@ -68,7 +73,7 @@ final class SubSystemForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(SubSystemRepository $subSystemRepository): ?Response
+    public function save(SubSystemRepository $subSystemRepository, EntityManagerInterface $entityManager): ?Response
     {
         $successMsg = (is_null($this->ss->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.';//TODO: personalizar los mensajes
 
@@ -97,7 +102,23 @@ final class SubSystemForm extends AbstractController
 //            $this->floor->addSubSystem($subSystem);
             $this->ss->setFloor($this->floor);
             $subSystem->setFloor($this->floor);
-            $subSystem->createInitialLocal();
+            $subSystem->createInitialLocal($this->reply, $entityManager);
+
+            if($this->floor->inNewBuilding()){
+                $subSystem->recent();
+            }
+
+//            $local->setOriginal(0);
+            if($this->reply){
+                $subSystem->setHasReply(false);
+                $subSystem->recent();
+            }else{
+                if($this->floor->inNewBuilding()){
+                    $subSystem->recent();
+                }else{
+                    $subSystem->existingWithoutReplicating();
+                }
+            }
             $subSystemRepository->save($subSystem, true);
 
             $this->ss = new SubSystem();

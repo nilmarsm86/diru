@@ -65,7 +65,8 @@
 
 {#            {% if (building.isNew() or building.hasReplyFloors()) or reply %}#}
             {% if building.isNew() or reply %}
-                {{ tableActionButton3(path('app_floor_new', {'building':building.id}), 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_floor_new', {'building':building.id})})) }}
+                {% set path = path('app_floor_new', {'building':building.id, 'reply': reply}) %}
+                {{ tableActionButton3(path, 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
             {% endif %}
             {{ tableActionButton3(path('app_building_edit', {id:building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
         </div>
@@ -105,7 +106,7 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for floor in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if floor.inNewBuilding() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }} {% if floor.inNewBuilding() or floor.isNewInReply() %}class="table-success"{% endif %}>
                         <td>
                             {{ floor.position }}
                         </td>

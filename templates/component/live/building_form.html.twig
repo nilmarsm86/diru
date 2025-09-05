@@ -15,7 +15,16 @@
         }) }}
     {% endif %}
 
-    {{ form_row(form.name) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+
+        <div class="col">
+            {{ form_row(form.population) }}
+        </div>
+    </div>
 
     <div class="mb-0 row">
         <div class="col">
@@ -51,8 +60,8 @@
             <div class="col">
                 <div class="mb-3">
                     <p class="text-end">Total:</p>
-                    <h5 class="text-end">$ <span
-                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
+                    <h5 class="text-end">{# $ #} <span
+                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>{{ 0|number_format(2) }}</span>
                     </h5>
                 </div>
             </div>
@@ -82,13 +91,66 @@
             <div class="col">
                 <div class="mb-3">
                     <p class="text-end">Total:</p>
-                    <h5 class="text-end">$ <span
-                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>0</span>
+                    <h5 class="text-end">{# $ #} <span
+                                class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>{{ 0|number_format(2) }}</span>
                     </h5>
                 </div>
             </div>
         </div>
     </details>
+
+    <details class="collection">
+        <summary class="collection">
+            <div class="row summary-btn-lis">
+                <div class="col">Valor de construcción y montaje:</div>
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                </div>
+            </div>
+        </summary>
+        <br>
+        <div class="mb-0 row">
+            {{ form_row(form.constructionAssembly) }}
+            {{ form_row(form.constructionAssemblyComment) }}
+        </div>
+    </details>
+
+    {{ form_row(form.landNetworkConnections.vars.button_add, {
+        label: 'Agregar conexion de red',
+        attr: { class: 'btn btn-outline-nav-link btn-sm' }
+    }) }}
+
+    {% if form_errors(form.landNetworkConnections) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-12">
+                {{ form_errors(form.landNetworkConnections) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% for key, connection in form.landNetworkConnections %}
+        <details class="collection" {% if form_errors(connection.networkConnection) %}open{% endif %}>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">
+                        Conexión de red:
+                        {% if connection.vars.data.id is not null %}
+                            <strong>{{ connection.vars.data.networkConnection.name }}</strong>
+                        {% endif %}
+                    </div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        {{ form_widget(connection.vars.button_delete, {
+                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                            attr: { class: 'btn btn-outline-danger btn-sm' }
+                        }) }}
+                    </div>
+                </div>
+            </summary>
+
+            {{ form_row(connection.networkConnection) }}
+            {{ form_row(connection.explanation) }}
+        </details>
+    {% endfor %}
 
     <div class="row mb-3">
         <div class="col-sm-12">
@@ -99,5 +161,6 @@
             }) }}
         </div>
     </div>
-    {{ form_end(form) }}
+    {{ form_row(form._token) }}
+    {{ form_end(form, {render_rest:false}) }}
 </div>

@@ -45,13 +45,14 @@ final class SubSystemController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{floor}', name: 'app_sub_system_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Floor $floor): Response
+    #[Route('/new/{floor}/{reply}', name: 'app_sub_system_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, Floor $floor, bool $reply = false): Response
     {
         $subSystem = new SubSystem();
         return $crudActionService->formLiveComponentAction($request, $subSystem, 'sub_system', [
             'title' => 'Nuevo Subsistema',
-            'floor' => $floor
+            'floor' => $floor,
+            'reply' => $reply,
         ]);
     }
 

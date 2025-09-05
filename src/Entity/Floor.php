@@ -326,7 +326,7 @@ class Floor implements MeasurementDataInterface
         return true;
     }
 
-    public static function createAutomatic(Building $building, string $name, bool $isGroundFloor = false, int $position = 0): void
+    public static function createAutomatic(Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         $floor = new Floor();
         $building->addFloor($floor);
@@ -334,14 +334,14 @@ class Floor implements MeasurementDataInterface
         $floor->setPosition($position);
         $floor->setName($name);
         $floor->setGroundFloor($isGroundFloor);
-        $floor->createAutomaticSubsystem();
+        $floor->createAutomaticSubsystem($reply, $entityManager);
         $floor->inNewBuilding() ? $floor->recent() : $floor->existingWithoutReplicating();
     }
 
-    public function createAutomaticSubsystem(): void
+    public function createAutomaticSubsystem(bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {// TODO: no se pq hice esto
-            SubSystem::createAutomatic($this, 'Subsistema');
+            SubSystem::createAutomatic($this, 'Subsistema', $reply, $entityManager);
         }
     }
 
@@ -382,5 +382,10 @@ class Floor implements MeasurementDataInterface
         }
 
         return $extraSpace;
+    }
+
+    public function isNewInReply(): bool
+    {
+        return ($this->hasReply() === false) && (is_null($this->getOriginal()));
     }
 }

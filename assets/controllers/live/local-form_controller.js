@@ -14,7 +14,7 @@ export default class extends AbstractController {
         isNew: {type: Boolean, default: false},
     };
 
-    static targets = ["area", "type", "height", "technicalStatus"];
+    static targets = ["name", "area", "type", "height", "technicalStatus"];
 
     connect() {
         useCsrfToken(this);
@@ -31,34 +31,11 @@ export default class extends AbstractController {
             }
         });
 
-        // this.heightTechnicalStatus();
+        this.nameTarget.addEventListener('input', (event) =>{
+            event.currentTarget.value = event.currentTarget.value[0].toUpperCase() + event.currentTarget.value.slice(1);
+        });
 
         this.typeTarget.addEventListener('change', (event) => {
-            // if (this.isNewValue === true) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-            //     this.technicalStatusTarget.value = 4;
-            // }
-            //
-            // if (event.currentTarget.value == 0) {//area de vacio
-            //     this.heightTarget.value = 0;
-            //     this.heightTarget.min = 0;
-            //     this.technicalStatusTarget.value = 4;//estado bueno
-            // }
-            //
-            // if (event.currentTarget.value == 1) {// local
-            //     this.heightTarget.value = 2.40;
-            //     this.heightTarget.min = 1;
-            //     if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-            //         this.technicalStatusTarget.value = '';
-            //     }
-            // }
-            //
-            // if (event.currentTarget.value == 2) {// area de muro
-            //     this.heightTarget.value = 1;
-            //     this.heightTarget.min = 1;
-            //     if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-            //         this.technicalStatusTarget.value = '';
-            //     }
-            // }
             this.heightTechnicalStatus();
         });
     }
@@ -68,41 +45,40 @@ export default class extends AbstractController {
         this.processCsrfToken();
 
         this.component.on('render:finished', (component) => {
-            // this.heightTechnicalStatus();
             this.dispatch('submitEnd', {detail: {form: this.element.querySelector('form')}});
 
         });
-
-        // this.heightTechnicalStatus();
     }
 
     heightTechnicalStatus(){
-        console.log(this.typeTarget.value);
         if (this.isNewValue === true) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-            this.technicalStatusTarget.value = 4;
+            this.technicalStatusTarget.selectedIndex = 5;
         }
 
         if (this.typeTarget.value == 0) {//area de vacio
-            // this.heightTarget.value = 0;
+            this.heightTarget.value = 0;
             this.heightTarget.min = 0;
-            this.technicalStatusTarget.value = 4;//estado bueno
+            this.technicalStatusTarget.selectedIndex = 5;//estado bueno
         }
 
         if (this.typeTarget.value == 1) {// local
-            // this.heightTarget.value = '2.40';
+            this.heightTarget.value = '2.40';
             this.heightTarget.min = 1;
             if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-                this.technicalStatusTarget.value = '';
+                this.technicalStatusTarget.selectedIndex = 0;
             }
         }
 
         if (this.typeTarget.value == 2) {// area de muro
-            // this.heightTarget.value = 1;
+            this.heightTarget.value = 1;
             this.heightTarget.min = 1;
             if (this.isNewValue === false) {//si es un nuevo local, el estado tecnico debe de ser bueno por defecto
-                this.technicalStatusTarget.value = '';
+                this.technicalStatusTarget.selectedIndex = 0;
             }
         }
+
+        this.technicalStatusTarget.dispatchEvent(new Event('change', { bubbles: true }));
+        this.heightTarget.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
 }

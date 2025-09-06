@@ -18,7 +18,7 @@ interface MeasurementDataInterface
     public function getEmptyArea(bool $original = null): int;
 
 //    public function getTotalArea(bool $original = true): int;
-    public function getMaxHeight(bool $original = null): int;
+    public function getMaxHeight(bool $original = null): float;
 
     public function isFullyOccupied(bool $original = null): bool;
 
@@ -26,7 +26,7 @@ interface MeasurementDataInterface
 
     public function allLocalsAreClassified(): bool;
 
-    public function getAmountLocalTechnicalStatus(): array;
+    public function getAmountTechnicalStatus(): array;
 
     public function getAmountMeterTechnicalStatus(): array;
 

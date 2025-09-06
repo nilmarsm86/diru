@@ -5,7 +5,7 @@ namespace App\Entity\Enums;
 use App\Entity\Traits\EnumsTrait;
 use BackedEnum;
 
-enum LocalTechnicalStatus: string
+enum TechnicalStatus: string
 {
     use EnumsTrait;
 

@@ -661,7 +661,7 @@ class Building implements MeasurementDataInterface
         return $this->getMeasurementData('getUnassignedArea', $original);
     }
 
-    public function getMaxHeight(bool $original = null): int
+    public function getMaxHeight(bool $original = null): float
     {
         if (is_null($original)) {
             $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
@@ -733,7 +733,7 @@ class Building implements MeasurementDataInterface
         return $this->calculateAllLocalsAreClassified($this->getOriginalFloors());
     }
 
-    public function getAmountLocalTechnicalStatus(): array
+    public function getAmountTechnicalStatus(): array
     {
         $undefined = 0;
         $critical = 0;
@@ -744,7 +744,7 @@ class Building implements MeasurementDataInterface
         $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountLocalTechnicalStatus(!$this->hasReply());
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountTechnicalStatus(!$this->hasReply());
 
             $undefined += $undefinedState;
             $critical += $crititalState;

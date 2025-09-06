@@ -2,9 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Local;
-use App\Form\Types\LocalTechnicalStatusEnumType;
+use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
 use App\Form\Types\UnitMeasurementType;
@@ -153,9 +153,9 @@ class LocalType extends AbstractType
         ];
 
 //        if(is_null($local->getId()) /*&& $options['reply']*/){
-//            $technicalStatusOptions['data'] = LocalTechnicalStatus::Good;
+//            $technicalStatusOptions['data'] = TechnicalStatus::Good;
 //        }
 
-        $form->add('technicalStatus', LocalTechnicalStatusEnumType::class, $technicalStatusOptions);
+        $form->add('technicalStatus', TechnicalStatusEnumType::class, $technicalStatusOptions);
     }
 }

@@ -148,7 +148,7 @@ class Floor implements MeasurementDataInterface
         return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
-    public function getMaxHeight(bool $original = null): int
+    public function getMaxHeight(bool $original = null): float
     {
         $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
         return $this->calculateMaxHeight($subSystems);
@@ -252,7 +252,7 @@ class Floor implements MeasurementDataInterface
     }
 
 
-    public function getAmountLocalTechnicalStatus(): array
+    public function getAmountTechnicalStatus(): array
     {
         $undefined = 0;
         $critical = 0;
@@ -263,7 +263,7 @@ class Floor implements MeasurementDataInterface
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         foreach ($subsystems as $subsystem) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountLocalTechnicalStatus($this->isOriginal());
+            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountTechnicalStatus($this->isOriginal());
 
             $undefined += $undefinedState;
             $critical += $crititalState;

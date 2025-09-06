@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
@@ -131,7 +131,7 @@ class SubSystem implements MeasurementDataInterface
         return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
-    public function getMaxHeight(bool $original = null): int
+    public function getMaxHeight(bool $original = null): float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         $maxHeight = 0;
@@ -291,7 +291,7 @@ class SubSystem implements MeasurementDataInterface
         return $this;
     }
 
-    public function getAmountLocalTechnicalStatus(): array
+    public function getAmountTechnicalStatus(): array
     {
         $undefined = 0;
         $critical = 0;
@@ -303,10 +303,10 @@ class SubSystem implements MeasurementDataInterface
 
         foreach ($locals as $local) {
             match ($local->getTechnicalStatus()) {
-                LocalTechnicalStatus::Critical => $critical++,
-                LocalTechnicalStatus::Bad => $bad++,
-                LocalTechnicalStatus::Regular => $regular++,
-                LocalTechnicalStatus::Good => $good++,
+                TechnicalStatus::Critical => $critical++,
+                TechnicalStatus::Bad => $bad++,
+                TechnicalStatus::Regular => $regular++,
+                TechnicalStatus::Good => $good++,
                 default => $undefined++
             };
         }
@@ -330,10 +330,10 @@ class SubSystem implements MeasurementDataInterface
 
         foreach ($this->getLocals() as $local) {
             match ($local->getTechnicalStatus()) {
-                LocalTechnicalStatus::Critical => $critical += $local->getArea(),
-                LocalTechnicalStatus::Bad => $bad += $local->getArea(),
-                LocalTechnicalStatus::Regular => $regular += $local->getArea(),
-                LocalTechnicalStatus::Good => $good += $local->getArea(),
+                TechnicalStatus::Critical => $critical += $local->getArea(),
+                TechnicalStatus::Bad => $bad += $local->getArea(),
+                TechnicalStatus::Regular => $regular += $local->getArea(),
+                TechnicalStatus::Good => $good += $local->getArea(),
                 default => $undefined += $local->getArea()
             };
         }

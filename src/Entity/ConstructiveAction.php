@@ -37,9 +37,16 @@ class ConstructiveAction
     #[ORM\OneToMany(targetEntity: LocalConstructiveAction::class, mappedBy: 'constructiveAction')]
     private Collection $localsConstructiveAction;
 
+    /**
+     * @var Collection<int, LandNetworkConnection>
+     */
+    #[ORM\OneToMany(targetEntity: LandNetworkConnectionConstructiveAction::class, mappedBy: 'constructiveAction')]
+    private Collection $landNetworkConnectionsConstructiveAction;
+
     public function __construct()
     {
         $this->localsConstructiveAction = new ArrayCollection();
+        $this->landNetworkConnectionsConstructiveAction = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,6 +107,36 @@ class ConstructiveAction
             // set the owning side to null (unless already changed)
             if ($localConstructiveAction->getConstructiveAction() === $this) {
                 $localConstructiveAction->setConstructiveAction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LandNetworkConnection>
+     */
+    public function getLandNetworkConnectionConstructiveAction(): Collection
+    {
+        return $this->landNetworkConnectionsConstructiveAction;
+    }
+
+    public function addLandNetworkConnectionConstructiveAction(LandNetworkConnectionConstructiveAction $landNetworkConnectionConstructiveAction): static
+    {
+        if (!$this->landNetworkConnectionsConstructiveAction->contains($landNetworkConnectionConstructiveAction)) {
+            $this->landNetworkConnectionsConstructiveAction->add($landNetworkConnectionConstructiveAction);
+            $landNetworkConnectionConstructiveAction->setConstructiveAction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLandNetworkConnectionConstructiveAction(LandNetworkConnectionConstructiveAction $landNetworkConnectionConstructiveAction): static
+    {
+        if ($this->landNetworkConnectionsConstructiveAction->removeElement($landNetworkConnectionConstructiveAction)) {
+            // set the owning side to null (unless already changed)
+            if ($landNetworkConnectionConstructiveAction->getConstructiveAction() === $this) {
+                $landNetworkConnectionConstructiveAction->setConstructiveAction(null);
             }
         }
 

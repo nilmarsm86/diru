@@ -6,7 +6,7 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\Enums\ConstructiveActionType;
-use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Enums\StructureState;
 use App\Entity\Floor;
 use App\Entity\Local;
@@ -78,7 +78,7 @@ final class LocalForm extends AbstractController
     public function setDefaultTechnicalStatus(): void
     {
         if (is_null($this->l->getId()) && $this->subSystem->getState() !== StructureState::ExistingWithoutReplicating) {
-            $this->l->setTechnicalStatus(LocalTechnicalStatus::Good);
+            $this->l->setTechnicalStatus(TechnicalStatus::Good);
         }
     }
 

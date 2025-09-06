@@ -84,7 +84,7 @@ final class SubSystemController extends AbstractController
     public function reportLocal(Request $request, SubSystem $subSystem): Response
     {
         return $this->render("sub_system/report.html.twig", [
-            'local_status' => $subSystem->getAmountLocalTechnicalStatus(),
+            'local_status' => $subSystem->getAmountTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
             'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem

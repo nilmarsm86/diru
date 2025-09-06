@@ -24,8 +24,18 @@
                         {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
                         Obras
                     </button>
-                    <ul class="dropdown-menu" data-bs-theme="light">
+                    <ul class="dropdown-menu btn-sm" data-bs-theme="light">
                         {% for building in project.buildings %}
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_building_project', {'project': project.id}) }}"
+                                   title="Todas las obras">
+                                    <small>Todas</small>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="{{ path('app_building_edit', {id: building.id}) }}">
                                     {{ building.name }}

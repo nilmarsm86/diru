@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\LocalTechnicalStatus;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Enums\StructureState;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
 use App\Entity\Traits\StructureStateTrait;
+use App\Entity\Traits\TechnicalStatusTrait;
 use App\Repository\LocalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ class Local
     use OriginalTrait;
     use HasReplyTrait;
     use StructureStateTrait;
+    use TechnicalStatusTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -69,15 +71,6 @@ class Local
     )]
     private ?float $height = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $technicalStatus = null;
-
-    #[Assert\Choice(
-        choices: LocalTechnicalStatus::CHOICES,
-        message: 'Seleccione el estado técnico del local.'
-    )]
-    private LocalTechnicalStatus $enumTechnicalStatus;
-
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
 //    #[Assert\Valid]
@@ -99,6 +92,19 @@ class Local
     {
         $this->impactHigherLevels = false;
         $this->localConstructiveAction = null;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param Local|null $local
+     * @return void
+     */
+    private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local): void
+    {
+        $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
+            'name' => 'Obra nueva'
+        ]);
+        $local->setConstructiveAction($constructiveAction);
     }
 
     public function validHeightInEmptyArea(): bool
@@ -169,19 +175,6 @@ class Local
         return $this;
     }
 
-    public function getTechnicalStatus(): LocalTechnicalStatus
-    {
-        return $this->enumTechnicalStatus;
-    }
-
-    public function setTechnicalStatus(LocalTechnicalStatus $enumTechnicalStatus): static
-    {
-        $this->technicalStatus = '';
-        $this->enumTechnicalStatus = $enumTechnicalStatus;
-
-        return $this;
-    }
-
     public function getSubSystem(): ?SubSystem
     {
         return $this->subSystem;
@@ -199,7 +192,7 @@ class Local
     public function onSave(): void
     {
         $this->type = $this->getType()->value;
-        $this->technicalStatus = $this->getTechnicalStatus()->value;
+//        $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if ($this->getType() == LocalType::WallArea && is_null($this->getId())) {
             if(!$this->getSubSystem()->hasWalls()){
@@ -228,7 +221,7 @@ class Local
     public function onLoad(): void
     {
         $this->setType(LocalType::from($this->type));
-        $this->setTechnicalStatus(LocalTechnicalStatus::from($this->technicalStatus));
+//        $this->setTechnicalStatus(TechnicalStatus::from($this->technicalStatus));
     }
 
     public function getVolume(): float|int
@@ -239,16 +232,13 @@ class Local
     public static function createAutomaticWall(SubSystem $subSystem, int $area, int $number = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
-        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, LocalTechnicalStatus::Undefined, $name, $area, 1, $number, $entityManager);
+        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 1, $number, $entityManager);
         if ($reply) {
             $wall->setHasReply(false);
-            $wall->setTechnicalStatus(LocalTechnicalStatus::Good);
+            $wall->setTechnicalStatus(TechnicalStatus::Good);
 
             if(!is_null($entityManager)){
-                $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
-                    'name' => 'Obra nueva'
-                ]);
-                $wall->setConstructiveAction($constructiveAction);
+                self::setDefaultConstructiveAction($entityManager, $wall);
                 $wall->replica();
             }
         }
@@ -258,18 +248,15 @@ class Local
 
     public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, int $area, int $number, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
-        $technicalStatus = ($subSystem->inNewBuilding()) ? LocalTechnicalStatus::Good : LocalTechnicalStatus::Undefined;
+        $technicalStatus = ($subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 
         $local = self::createAutomatic($local, $subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 2.40, $number, $entityManager);
         if ($reply) {
             $local->setHasReply(false);
-            $local->setTechnicalStatus(LocalTechnicalStatus::Good);
+            $local->setTechnicalStatus(TechnicalStatus::Good);
 
             if(!is_null($entityManager)){
-                $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
-                    'name' => 'Obra nueva'
-                ]);
-                $local->setConstructiveAction($constructiveAction);
+                self::setDefaultConstructiveAction($entityManager, $local);
                 $local->replica();
             }
         }
@@ -277,7 +264,7 @@ class Local
         return $local;
     }
 
-    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, LocalTechnicalStatus $localTechnicalStatus, string $name, int $area, float $height, int $number, EntityManagerInterface $entityManager = null): self
+    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, int $area, float $height, int $number, EntityManagerInterface $entityManager = null): self
     {
         if(is_null($local)){
             $local = new Local();
@@ -286,7 +273,7 @@ class Local
             $local->setArea($area);
             $local->setHeight($height);
             $local->setNumber($number);
-            $local->setTechnicalStatus($localTechnicalStatus);
+            $local->setTechnicalStatus($technicalStatus);
         }
 
         $subSystem->addLocal($local);
@@ -294,10 +281,7 @@ class Local
         if($subSystem->inNewBuilding()){
             $local->recent();
             if(!is_null($entityManager) && is_null($local->getLocalConstructiveAction())){
-                $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
-                    'name' => 'Obra nueva'
-                ]);
-                $local->setConstructiveAction($constructiveAction);
+                self::setDefaultConstructiveAction($entityManager, $local);
             }
         }else{
             $local->existingWithoutReplicating();
@@ -311,7 +295,7 @@ class Local
         if (!$this->isLocalType()) {
             return true;
         }
-        return $this->getTechnicalStatus() !== LocalTechnicalStatus::Undefined;
+        return $this->getTechnicalStatus() !== TechnicalStatus::Undefined;
     }
 
     public function reply(EntityManagerInterface $entityManager, object $parent = null): Floor|static
@@ -332,8 +316,6 @@ class Local
 
         return $replica;
     }
-
-
 
     public function isImpactHigherLevels(): ?bool
     {
@@ -449,7 +431,7 @@ class Local
 
     public function classifiedAsUndefined(): bool
     {
-        return $this->getTechnicalStatus() === LocalTechnicalStatus::Undefined;
+        return $this->getTechnicalStatus() === TechnicalStatus::Undefined;
     }
 
     public function hasTechnicalStatusUndefinedHelp(): bool

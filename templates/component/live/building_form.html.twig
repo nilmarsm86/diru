@@ -117,7 +117,7 @@
 
     {{ form_row(form.landNetworkConnections.vars.button_add, {
         label: 'Agregar conexion de red',
-        attr: { class: 'btn btn-outline-nav-link btn-sm' }
+        attr: { class: 'btn btn-outline-nav-link btn-sm' },
     }) }}
 
     {% if form_errors(form.landNetworkConnections) %}
@@ -136,6 +136,7 @@
                         Conexión de red:
                         {% if connection.vars.data.id is not null %}
                             <strong>{{ connection.vars.data.networkConnection.name }}</strong>
+                            (<em>{{ connection.vars.data.type.getLabelFrom(connection.vars.data.type) }}</em>)
                         {% endif %}
                     </div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
@@ -147,7 +148,24 @@
                 </div>
             </summary>
 
-            {{ form_row(connection.networkConnection) }}
+            <div class="mb-0 row">
+                <div class="col">
+                    {{ form_row(connection.networkConnection) }}
+                </div>
+
+                <div class="col">
+                    {{ form_row(connection.type) }}
+                </div>
+
+                <div class="col">
+                    {{ form_row(connection.longitude) }}
+                </div>
+
+                <div class="col">
+                    {{ form_row(connection.technicalStatus) }}
+                </div>
+            </div>
+
             {{ form_row(connection.explanation) }}
         </details>
     {% endfor %}

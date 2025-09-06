@@ -5,6 +5,10 @@ namespace App\Form;
 use App\Entity\Land;
 use App\Entity\LandNetworkConnection;
 use App\Entity\NetworkConnection;
+use App\Form\Types\TechnicalStatusEnumType;
+use App\Form\Types\NetworkConnectionEnumType;
+use App\Form\Types\UnitMeasurementFloatType;
+use App\Form\Types\UnitMeasurementType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,13 +21,26 @@ class LandNetworkConnectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('explanation', null, [
-        'label' => 'Explicación:',
-    ])
-        ->add('networkConnection', EntityType::class, [
-            'class' => NetworkConnection::class,
-            'choice_label' => 'name',
-            'label' => 'Tipo:',
-            'placeholder' => '-Seleccinar-',
+            'label' => 'Explicación:',
+        ])
+            ->add('networkConnection', EntityType::class, [
+                'class' => NetworkConnection::class,
+                'choice_label' => 'name',
+                'label' => 'Tipo:',
+                'placeholder' => '-Seleccinar-',
+            ])
+            ->add('type', NetworkConnectionEnumType::class, [
+                'label' => 'Tipo de conexión:',
+            ])
+            ->add('longitude', UnitMeasurementFloatType::class, [
+                'label' => 'Longitud:',
+                'unit' => 'm',
+                'attr' => [
+                    'min' => 0
+                ]
+            ])
+        ->add('technicalStatus', TechnicalStatusEnumType::class, [
+            'label' => 'Estado técnico:'
         ]);
 //        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
 //            $this->onPreSetData($event, $options);

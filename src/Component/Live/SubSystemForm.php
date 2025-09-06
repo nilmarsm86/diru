@@ -100,24 +100,27 @@ final class SubSystemForm extends AbstractController
             /** @var SubSystem $subSystem */
             $subSystem = $this->getForm()->getData();
 //            $this->floor->addSubSystem($subSystem);
-            $this->ss->setFloor($this->floor);
-            $subSystem->setFloor($this->floor);
-            $subSystem->createInitialLocal($this->reply, $entityManager);
+//            $this->ss->setFloor($this->floor);
+//            $subSystem->setFloor($this->floor);
+//            $subSystem->createInitialLocal($this->reply, $entityManager);
 
-            if($this->floor->inNewBuilding()){
-                $subSystem->recent();
-            }
+//            if($this->floor->inNewBuilding()){
+//                $subSystem->recent();
+//            }
 
 //            $local->setOriginal(0);
-            if($this->reply){
-                $subSystem->setHasReply(false);
-                $subSystem->recent();
-            }else{
-                if($this->floor->inNewBuilding()){
-                    $subSystem->recent();
-                }else{
-                    $subSystem->existingWithoutReplicating();
-                }
+//            if($this->reply){
+//                $subSystem->setHasReply(false);
+//                $subSystem->recent();
+//            }else{
+//                if($this->floor->inNewBuilding()){
+//                    $subSystem->recent();
+//                }else{
+//                    $subSystem->existingWithoutReplicating();
+//                }
+//            }
+            if (is_null($this->ss->getId())) {
+                $subSystem = SubSystem::createAutomatic($subSystem, $this->floor, $this->formValues['name'], $this->reply, $entityManager);
             }
             $subSystemRepository->save($subSystem, true);
 

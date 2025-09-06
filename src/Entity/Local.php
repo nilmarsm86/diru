@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: LocalRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'subSystem'], message: 'Ya existe en el subsistema un local con este nombre.', errorPath: 'name', )]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'subSystem'], message: 'Ya existe en el subsistema un local con este nombre.', errorPath: 'name',)]
 #[DoctrineAssert\UniqueEntity(fields: ['number', 'subSystem'], message: 'Ya existe en el subsistema un local con este número.', errorPath: 'number')]
 class Local
 {
@@ -193,10 +193,10 @@ class Local
 //        $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if ($this->getType() == LocalType::WallArea && is_null($this->getId())) {
-            if(!$this->getSubSystem()->hasWalls()){
+            if (!$this->getSubSystem()->hasWalls()) {
                 $this->setName('Área de muro');
-            }else{
-                $this->setName('Área de muro '.$this->getSubSystem()->getMaxLocalNumber() + 1);
+            } else {
+                $this->setName('Área de muro ' . $this->getSubSystem()->getMaxLocalNumber() + 1);
             }
 
             if (is_null($this->getId())) {
@@ -235,9 +235,9 @@ class Local
             $wall->setHasReply(false);
             $wall->setTechnicalStatus(TechnicalStatus::Good);
 
-            if(!is_null($entityManager)){
+            if (!is_null($entityManager)) {
                 self::setDefaultConstructiveAction($entityManager, $wall);
-                $wall->replica();
+                $wall->recent();
             }
         }
 
@@ -249,13 +249,30 @@ class Local
         $technicalStatus = ($subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 
         $local = self::createAutomatic($local, $subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 2.40, $number, $entityManager);
+
         if ($reply) {
             $local->setHasReply(false);
             $local->setTechnicalStatus(TechnicalStatus::Good);
 
-            if(!is_null($entityManager)){
+            if (!is_null($entityManager)) {
                 self::setDefaultConstructiveAction($entityManager, $local);
-                $local->replica();
+//                if ($subSystem->isRecent()) {
+//                    $local->recent();
+//                } else {
+//                    $local->replica();
+//                }
+//                if($subSystem->isReplica() and !is_null($subSystem->getOriginal())){
+//                    $local->replica();
+//                } else {
+//                    $local->recent();
+//                }
+                $local->recent();
+            }
+        }else{
+            if($subSystem->inNewBuilding()){
+                $subSystem->recent();
+            }else{
+                $subSystem->existingWithoutReplicating();
             }
         }
 
@@ -264,7 +281,7 @@ class Local
 
     private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, int $area, float $height, int $number, EntityManagerInterface $entityManager = null): self
     {
-        if(is_null($local)){
+        if (is_null($local)) {
             $local = new Local();
             $local->setName($name);
             $local->setType($type);
@@ -276,13 +293,17 @@ class Local
 
         $subSystem->addLocal($local);
 
-        if($subSystem->inNewBuilding()){
+        if ($subSystem->inNewBuilding()) {
             $local->recent();
-            if(!is_null($entityManager) && is_null($local->getLocalConstructiveAction())){
+            if (!is_null($entityManager) && is_null($local->getLocalConstructiveAction())) {
                 self::setDefaultConstructiveAction($entityManager, $local);
             }
-        }else{
+        } else {
+//            if($subSystem->isRecent()){
+//                $local->recent();
+//            }else{
             $local->existingWithoutReplicating();
+//            }
         }
 
         return $local;
@@ -339,7 +360,7 @@ class Local
 
     public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
     {
-        if(is_null($this->getLocalConstructiveAction())){
+        if (is_null($this->getLocalConstructiveAction())) {
             $localConstructiveAction = new LocalConstructiveAction();
             $localConstructiveAction->setLocal($this);
             $localConstructiveAction->setPrice(0);
@@ -394,7 +415,7 @@ class Local
 
     public function isNewInReply(): bool
     {
-        return ($this->hasReply() === false) && is_null($this->getOriginal()) && $this->getState() === StructureState::Replica;
+        return ($this->hasReply() === false) && is_null($this->getOriginal()) && $this->isRecent();
     }
 
     public function changeFromOriginal(): bool
@@ -409,7 +430,7 @@ class Local
 
     public function getFormatedPrice(): string
     {
-        return (number_format(((float) $this->getPrice() / 100), 2)).' '.$this->getCurrency();
+        return (number_format(((float)$this->getPrice() / 100), 2)) . ' ' . $this->getCurrency();
     }
 
     public function isLocalType(): bool
@@ -442,9 +463,6 @@ class Local
         return $reply || $this->inNewBuilding();
     }
 
-    public function isNewStructure(): bool
-    {
-        return $this->inNewBuilding() || $this->isNewInReply();
-    }
+
 
 }

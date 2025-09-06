@@ -62,12 +62,13 @@ final class SubSystemController extends AbstractController
         return $crudActionService->showAction($request, $subSystem, 'sub_system', 'subSystem', 'Detalles del subsistema');
     }
 
-    #[Route('/{id}/edit/{floor}', name: 'app_sub_system_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, SubSystem $subSystem, CrudActionService $crudActionService, Floor $floor): Response
+    #[Route('/{id}/edit/{floor}/{reply}', name: 'app_sub_system_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, SubSystem $subSystem, CrudActionService $crudActionService, Floor $floor, bool $reply = false): Response
     {
         return $crudActionService->formLiveComponentAction($request, $subSystem, 'sub_system', [
             'title' => 'Editar Subsistema',
-            'floor' => $floor
+            'floor' => $floor,
+            'reply' => $reply,
         ]);
     }
 

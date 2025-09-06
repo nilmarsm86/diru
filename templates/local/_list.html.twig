@@ -145,7 +145,7 @@
                             </td>
                         {% endif %}
                         <td class="text-end">
-                            {% if sub_system.inNewBuilding() %}
+                            {% if local.isNewStructure() %}
                                 {% set cssClass = 'btn-link text-dark' %}
                             {% else %}
                                 {% set cssClass = 'btn-link' %}

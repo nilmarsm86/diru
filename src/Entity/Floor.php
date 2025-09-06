@@ -339,7 +339,7 @@ class Floor implements MeasurementDataInterface
     public function createAutomaticSubsystem(bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {// TODO: no se pq hice esto
-            SubSystem::createAutomatic($this, 'Subsistema', $reply, $entityManager);
+            SubSystem::createAutomatic(null, $this, 'Subsistema', $reply, $entityManager);
         }
     }
 

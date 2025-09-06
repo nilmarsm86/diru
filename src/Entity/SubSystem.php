@@ -373,24 +373,41 @@ class SubSystem implements MeasurementDataInterface
     public function createInitialLocal(bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {
-            Local::createAutomaticLocal(null, $this, $this->getFloor()->getUnassignedArea() - 1, 1);
+            Local::createAutomaticLocal(null, $this, $this->getFloor()->getUnassignedArea() - 1, 1, $reply, $entityManager);
             Local::createAutomaticWall($this, 1, 0, $reply, $entityManager);
         }
     }
 
-    public static function createAutomatic(Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): void
+    public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
-        $subSystem = new SubSystem();
+        if(is_null($subSystem)){
+            $subSystem = new SubSystem();
+            $subSystem->setName($name);
+        }
         $floor->addSubSystem($subSystem);
 
 //        $subSystem->setFloor($floor);
-        $subSystem->setName($name);
-
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
+        if($reply){
+            $subSystem->setHasReply(false);
+            $subSystem->recent();
+//            if($floor->isReplica() && !is_null($floor->getOriginal())){
+////            if ($floor->isRecent()) {
+//                $subSystem->replica();
+//            } else {
+//                $subSystem->recent();
+//            }
+        }else{
+            if($floor->inNewBuilding()){
+                $subSystem->recent();
+            }else{
+                $subSystem->existingWithoutReplicating();
+            }
+        }
         $subSystem->createInitialLocal($reply, $entityManager);
 
-//        return $subSystem;
+        return $subSystem;
     }
 
     public function inNewBuilding(): ?bool

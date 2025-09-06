@@ -215,4 +215,9 @@ trait StructureStateTrait
 
         return $replyItems;
     }
+
+    public function isNewStructure(): bool
+    {
+        return $this->inNewBuilding() || $this->isNewInReply();
+    }
 }

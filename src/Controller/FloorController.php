@@ -76,12 +76,13 @@ final class FloorController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit/{building}', name: 'app_floor_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Floor $floor, CrudActionService $crudActionService, Building $building): Response
+    #[Route('/{id}/edit/{building}/{reply}', name: 'app_floor_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Floor $floor, CrudActionService $crudActionService, Building $building, bool $reply = false): Response
     {
         return $crudActionService->formLiveComponentAction($request, $floor, 'floor', [
             'title' => 'Editar Planta',
-            'building' => $building
+            'building' => $building,
+            'reply' => $reply,
         ]);
     }
 

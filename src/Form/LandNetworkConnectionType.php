@@ -39,9 +39,13 @@ class LandNetworkConnectionType extends AbstractType
                     'min' => 0
                 ]
             ])
-        ->add('technicalStatus', TechnicalStatusEnumType::class, [
-            'label' => 'Estado técnico:'
-        ]);
+            ->add('technicalStatus', TechnicalStatusEnumType::class, [
+                'label' => 'Estado técnico:'
+            ])
+            ->add('landNetworkConnectionConstructiveAction', LandNetworkConnectionConstructiveActionType::class, [
+                'required' => true,
+                'error_bubbling' => false
+            ]);
 //        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
 //            $this->onPreSetData($event, $options);
 //        });

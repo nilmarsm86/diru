@@ -25,7 +25,7 @@ class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
     use MeasurementDataTrait;
-    use HasReplyTrait;
+//    use HasReplyTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -119,6 +119,9 @@ class Building implements MeasurementDataInterface
     #[ORM\OneToMany(targetEntity: LandNetworkConnection::class, mappedBy: 'building', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $landNetworkConnections;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $hasReply = null;
 
     public function __construct()
     {
@@ -908,5 +911,24 @@ class Building implements MeasurementDataInterface
         }
 
         return $this;
+    }
+
+    public function hasReply(): ?bool
+    {
+        return $this->hasReply;
+    }
+
+    public function setHasReply(bool $hasReply): static
+    {
+        $this->hasReply = $hasReply;
+
+        return $this;
+    }
+
+    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null)
+    {
+        foreach ($items as $item) {
+            $item->reply($entityManager, $parent);
+        }
     }
 }

@@ -24,8 +24,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 class Local
 {
     use NameToStringTrait;
-    use OriginalTrait;
-    use HasReplyTrait;
     use StructureStateTrait;
     use TechnicalStatusTrait;
 

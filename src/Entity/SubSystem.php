@@ -23,9 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 class SubSystem implements MeasurementDataInterface
 {
     use NameToStringTrait;
-    use OriginalTrait;
     use MeasurementDataTrait;
-    use HasReplyTrait;
     use StructureStateTrait;
 
     #[ORM\Id]

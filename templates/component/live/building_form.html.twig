@@ -166,7 +166,35 @@
                 </div>
             </div>
 
-            {{ form_row(connection.explanation) }}
+            <div class="mb-0 row">
+                <div class="col">
+                    <details class="collection" open>
+                        <summary class="collection">
+                            <div class="row summary-btn-lis">
+                                <div class="col">Acción constructiva:</div>
+                                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                                </div>
+                            </div>
+                        </summary>
+                        <br>
+                        <div class="mb-0 row">
+                            <div class="col">
+                                {{ form_row(connection.landNetworkConnectionConstructiveAction.constructiveAction) }}
+                            </div>
+                            {% if connection.landNetworkConnectionConstructiveAction.price is defined %}
+                                <div class="col" {{ stimulusController('usd-currency') }}>
+                                    {{ form_row(connection.landNetworkConnectionConstructiveAction.price) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </details>
+                </div>
+
+                <div class="col">
+                    {{ form_row(connection.explanation, {'attr':{'style':'min-height:115px'}}) }}
+                </div>
+            </div>
         </details>
     {% endfor %}
 

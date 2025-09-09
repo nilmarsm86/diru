@@ -48,12 +48,14 @@ class Floor implements MeasurementDataInterface
     private ?bool $groundFloor = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Establezca la posición de la planta.')]
     private ?int $position = null;
 
     public function __construct()
     {
         $this->subSystems = new ArrayCollection();
         $this->groundFloor = false;
+        $this->position = 0;
     }
 
     public function getId(): ?int
@@ -324,16 +326,28 @@ class Floor implements MeasurementDataInterface
         return true;
     }
 
-    public static function createAutomatic(Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): void
+    public static function createAutomatic(?Floor $floor, Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
-        $floor = new Floor();
+        if(is_null($floor)){
+            $floor = new Floor();
+            $floor->setPosition($position);
+            $floor->setName($name);
+            $floor->setGroundFloor($isGroundFloor);
+        }
         $building->addFloor($floor);
-
-        $floor->setPosition($position);
-        $floor->setName($name);
-        $floor->setGroundFloor($isGroundFloor);
-        $floor->createAutomaticSubsystem($reply, $entityManager);
         $floor->inNewBuilding() ? $floor->recent() : $floor->existingWithoutReplicating();
+        if($reply){
+            $floor->setHasReply(false);
+            $floor->recent();
+        }else{
+            if($floor->inNewBuilding()){
+                $floor->recent();
+            }else{
+                $floor->existingWithoutReplicating();
+            }
+        }
+        $floor->createAutomaticSubsystem($reply, $entityManager);
+        return $floor;
     }
 
     public function createAutomaticSubsystem(bool $reply = false, EntityManagerInterface $entityManager = null): void

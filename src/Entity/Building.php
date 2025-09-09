@@ -598,23 +598,23 @@ class Building implements MeasurementDataInterface
     /*
      * Create the automatic the floors, based on land floors
      */
-    public function createFloors(bool $reply = false, EntityManagerInterface $entityManager = null): static
+    public function createFloors(): static
     {
         $floor = $this->getLand()->getFloor();
-        $this->createAutomaticFloor('Planta Baja', true, 0, $reply, $entityManager);
+        $this->createAutomaticFloor( 'Planta Baja', true, 0);
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
-                $this->createAutomaticFloor('Planta ' . $i, false, $i, $reply, $entityManager);
+                $this->createAutomaticFloor('Planta ' . $i, false, $i);
             }
         }
 
         return $this;
     }
 
-    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): void
+    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0): void
     {
-        Floor::createAutomatic($this, $name, $isGroundFloor, $position, $reply, $entityManager);
+        Floor::createAutomatic(null, $this, $name, $isGroundFloor, $position);
     }
 
     public function isNew(): ?bool

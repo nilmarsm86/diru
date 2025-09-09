@@ -390,14 +390,8 @@ class SubSystem implements MeasurementDataInterface
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         if($reply){
-            $subSystem->setHasReply(false);
+            $floor->setHasReply(false);
             $subSystem->recent();
-//            if($floor->isReplica() && !is_null($floor->getOriginal())){
-////            if ($floor->isRecent()) {
-//                $subSystem->replica();
-//            } else {
-//                $subSystem->recent();
-//            }
         }else{
             if($floor->inNewBuilding()){
                 $subSystem->recent();

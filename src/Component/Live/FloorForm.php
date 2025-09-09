@@ -61,7 +61,9 @@ final class FloorForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->building->addFloor($this->fl);
-        return $this->createForm(FloorType::class, $this->fl);
+        return $this->createForm(FloorType::class, $this->fl, [
+            'reply' => $this->reply
+        ]);
     }
 
     /**
@@ -79,22 +81,9 @@ final class FloorForm extends AbstractController
             $floor = $this->getForm()->getData();
             $this->building->addFloor($floor);
 
-            if($floor->inNewBuilding()){
-                $floor->recent();
+            if (is_null($this->fl->getId())) {
+                $floor = Floor::createAutomatic($floor, $this->building, $this->formValues['name'], false, (int)$this->formValues['position'], $this->reply, $entityManager);
             }
-
-//            $local->setOriginal(0);
-            if($this->reply){
-                $floor->setHasReply(false);
-                $floor->recent();
-            }else{
-                if($floor->inNewBuilding()){
-                    $floor->recent();
-                }else{
-                    $floor->existingWithoutReplicating();
-                }
-            }
-            $floor->createAutomaticSubsystem($this->reply, $entityManager);
             $floorRepository->save($floor, true);
 
             $this->fl = new Floor();

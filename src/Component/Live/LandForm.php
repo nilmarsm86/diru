@@ -84,10 +84,8 @@ final class LandForm extends AbstractController
                 if (empty($this->formValues['floor']) or $this->formValues['occupiedArea'] == 0) {
                     $land->setFloor(1);
                     $this->building->setIsNew(true);
-//                    $this->building->createFloors();
                 }else{
                     $this->building->setIsNew(false);
-//                    $this->building->createFloors();
                 }
                 $this->building->createFloors();
             }

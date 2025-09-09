@@ -16,8 +16,8 @@ class FloorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-            $this->onPreSetData($event);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+            $this->onPreSetData($event, $options);
         });
     }
 
@@ -27,11 +27,12 @@ class FloorType extends AbstractType
             'data_class' => Floor::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
+            'reply' => false,
         ]);
     }
 
-    private function onPreSetData(FormEvent $event): void
+    private function onPreSetData(FormEvent $event, array $options): void
     {
         /** @var Floor $floor */
         $floor = $event->getData();
@@ -46,15 +47,34 @@ class FloorType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la planta'
-                ]+$disabled
-            ])
-            ->add('position', null, [
+                        'placeholder' => 'Nombre de la planta'
+                    ] + $disabled
+            ]);
+
+        $nextPosition = 0;
+        if (!is_null($floor) && is_null($floor->getId()) && !is_null($floor->getBuilding())) {
+            if ($options['reply']) {
+                $nextPosition = $floor->getBuilding()->getReplyFloors()->count();
+            } else {
+                $nextPosition = $floor->getBuilding()->getOriginalFloors()->count();
+            }
+
+            $fieldOptions = [
+                'label' => 'Posición:',
+                'data' => ($nextPosition + 1),
+                'attr' => [
+                        'placeholder' => 'Posición'
+                    ] + $disabled
+            ];
+        }else{
+            $fieldOptions = [
                 'label' => 'Posición:',
                 'attr' => [
                         'placeholder' => 'Posición'
-                    ]+$disabled
-            ])
-        ;
+                    ] + $disabled
+            ];
+        }
+
+        $form->add('position', null, $fieldOptions);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ConstructiveAction;
+use App\Entity\ConstructiveSystem;
 use App\Entity\Local;
 use App\Entity\LocalConstructiveAction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,6 +23,12 @@ class LocalConstructiveActionType extends AbstractType
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
                 'label' => 'Acción constructiva:',
+                'placeholder' => '-Seleccionar-'
+            ])
+            ->add('constructiveSystem', EntityType::class, [
+                'class' => ConstructiveSystem::class,
+                'choice_label' => 'name',
+                'label' => 'Sistema constructivo:',
                 'placeholder' => '-Seleccionar-'
             ]);
 

@@ -35,6 +35,11 @@ class LocalConstructiveAction
     )]
     private ?int $price;
 
+    #[ORM\ManyToOne(inversedBy: 'localsConstructiveAction')]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: 'Seleccione el systema constructivo.')]
+    private ?ConstructiveSystem $constructiveSystem = null;
+
     public function validPrice(): bool
     {
         return !in_array($this->constructiveAction?->getName(), ['', 'No es necesaria', 'Eliminación', 'Cambio de uso'])
@@ -93,6 +98,18 @@ class LocalConstructiveAction
     public function setPrice(?int $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getConstructiveSystem(): ?ConstructiveSystem
+    {
+        return $this->constructiveSystem;
+    }
+
+    public function setConstructiveSystem(?ConstructiveSystem $constructiveSystem): static
+    {
+        $this->constructiveSystem = $constructiveSystem;
 
         return $this;
     }

@@ -23,6 +23,9 @@
 
         <div>
             {% if building.hasReply() %}
+                {% if reply %}
+                    {{ tableActionButton3("", '', 'Sistema constructivo', 'Clasificar sistema constructivo') }}
+                {% endif %}
                 {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':(not reply)}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
             {% endif %}
 
@@ -173,7 +176,7 @@
                         </td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {% if floor.inNewBuilding() %}
+                            {% if floor.isNewStructure() %}
                                 {% set cssClass = 'btn-link text-dark' %}
                             {% else %}
                                 {% set cssClass = 'btn-link' %}

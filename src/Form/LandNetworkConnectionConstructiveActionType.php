@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ConstructiveAction;
+use App\Entity\ConstructiveSystem;
 use App\Entity\LandNetworkConnectionConstructiveAction;
 use App\Entity\Local;
 use App\Entity\LocalConstructiveAction;
@@ -23,6 +24,12 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
                 'label' => 'Tipo:',
+                'placeholder' => '-Seleccionar-'
+            ])
+            ->add('constructiveSystem', EntityType::class, [
+                'class' => ConstructiveSystem::class,
+                'choice_label' => 'name',
+                'label' => 'Sistema constructivo:',
                 'placeholder' => '-Seleccionar-'
             ]);
 

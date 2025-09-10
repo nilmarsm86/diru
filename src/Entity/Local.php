@@ -358,6 +358,11 @@ class Local
         return $this->getLocalConstructiveAction()?->getConstructiveAction();
     }
 
+    public function getConstructiveSystem(): ?ConstructiveSystem
+    {
+        return $this->getLocalConstructiveAction()?->getConstructiveSystem();
+    }
+
     public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
     {
         if (is_null($this->getLocalConstructiveAction())) {

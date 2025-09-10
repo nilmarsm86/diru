@@ -132,7 +132,12 @@
                             {% endif %}
                         </td>
                         {% if local.showConstructiveActionInList(reply) %}
-                            <td>
+                            <td
+                                {% if local.getConstructiveSystem() %}
+                                    data-bs-toggle="tooltip"
+                                    data-bs-title="{% if local.getConstructiveSystem() %}{{ local.getConstructiveSystem().name }}{% endif %}"
+                                {% endif %}
+                            >
                                 {% if local.hasLocalConstructiveAction() %}
                                     {{ local.getConstructiveAction()~' ('~local.getFormatedPrice()~')' }}
                                 {% else %}

@@ -55,6 +55,10 @@ class LandNetworkConnectionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => LandNetworkConnection::class,
+            'error_mapping' => [
+                'enumTechnicalStatus' => 'technicalStatus',
+                'enumType' => 'type',
+            ],
         ]);
     }
 

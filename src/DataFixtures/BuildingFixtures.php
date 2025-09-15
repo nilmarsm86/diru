@@ -6,10 +6,11 @@ use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\Draftsman;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class BuildingFixtures extends Fixture implements DependentFixtureInterface
+class BuildingFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -55,5 +56,10 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
             ConstructorFixtures::class,
             UserFixtures::class,
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 }

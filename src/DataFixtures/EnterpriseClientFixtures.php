@@ -9,10 +9,11 @@ use App\Entity\Municipality;
 use App\Entity\Person;
 use App\Entity\Representative;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterface
+class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -55,5 +56,10 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
             ProvinceFixtures::class,
             CorporateEntityFixtures::class
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 }

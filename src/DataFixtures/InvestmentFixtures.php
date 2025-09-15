@@ -7,10 +7,11 @@ use App\Entity\Investment;
 use App\Entity\LocationZone;
 use App\Entity\Municipality;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class InvestmentFixtures extends Fixture implements DependentFixtureInterface
+class InvestmentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -57,5 +58,10 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface
             ProvinceFixtures::class,
 //            BuildingFixtures::class
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 }

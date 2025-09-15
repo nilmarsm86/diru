@@ -5,9 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Municipality;
 use App\Entity\Province;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProvinceFixtures extends Fixture
+class ProvinceFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -61,6 +62,11 @@ class ProvinceFixtures extends Fixture
         $manager->persist($province);
 
         return true;
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 
 }

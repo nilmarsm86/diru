@@ -17,10 +17,11 @@ use App\Entity\Investment;
 use App\Entity\Project;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProjectFixtures extends Fixture implements DependentFixtureInterface
+class ProjectFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -123,5 +124,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             BuildingFixtures::class,
             CurrencyFixtures::class
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 }

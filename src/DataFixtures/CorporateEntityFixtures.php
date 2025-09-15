@@ -6,18 +6,22 @@ use App\Entity\CorporateEntity;
 use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Municipality;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Organism;
 
-class CorporateEntityFixtures extends Fixture implements DependentFixtureInterface
+class CorporateEntityFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
         $corporateEntities = ['Entidad corporativa 1', 'Entidad corporativa 2', 'Entidad corporativa 3'];
-        foreach ($corporateEntities as $corporateEntity){
+        $corporateEntities = $corporateEntities + [
+                ''
+            ];
+        foreach ($corporateEntities as $corporateEntity) {
             $corporate = $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => $corporateEntity]);
-            if(is_null($corporate)){
+            if (is_null($corporate)) {
                 $corporate = new CorporateEntity();
                 $corporate->setName($corporateEntity);
                 $corporate->setCode(strtoupper(substr(base64_encode($corporateEntity), -5, 5)));
@@ -26,15 +30,15 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
                 $corporate->setMunicipality($this->findMunicipality($manager));
                 //buscar organismo por nombre y agregarlo
                 $corporate->setOrganism($this->findOrganism($manager));
-                if($corporateEntity === 'Entidad corporativa 1'){
+                if ($corporateEntity === 'Entidad corporativa 1') {
                     $corporate->setType(CorporateEntityType::Client);
                 }
 
-                if($corporateEntity === 'Entidad corporativa 2'){
+                if ($corporateEntity === 'Entidad corporativa 2') {
                     $corporate->setType(CorporateEntityType::Constructor);
                 }
 
-                if($corporateEntity === 'Entidad corporativa 3'){
+                if ($corporateEntity === 'Entidad corporativa 3') {
                     $corporate->setType(CorporateEntityType::ClientAndConstructor);
                 }
 
@@ -61,5 +65,10 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
             OrganismFixtures::class,
             ProvinceFixtures::class
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['default'];
     }
 }

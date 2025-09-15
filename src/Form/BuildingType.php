@@ -77,7 +77,7 @@ class BuildingType extends AbstractType
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
                 'class' => Draftsman::class,
-                'placeholder' => '-Seleccionar-',
+                'placeholder' => '-Seleccione-',
                 'label' => 'Proyectista:',
                 'required' => false,
                 'data' => $building->getActiveDraftsman()

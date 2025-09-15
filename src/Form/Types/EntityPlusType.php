@@ -14,7 +14,7 @@ class EntityPlusType extends AbstractType
     {
         $resolver
 
-            ->setDefault('placeholder', '-Seleccionar-')
+            ->setDefault('placeholder', '-Seleccione-')
 
             ->setDefault('add', false)
             ->setDefault('add_title', 'Agregar')

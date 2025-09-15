@@ -23,13 +23,13 @@ class LocalConstructiveActionType extends AbstractType
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
                 'label' => 'Acción constructiva:',
-                'placeholder' => '-Seleccionar-'
+                'placeholder' => '-Seleccione-'
             ])
             ->add('constructiveSystem', EntityType::class, [
                 'class' => ConstructiveSystem::class,
                 'choice_label' => 'name',
                 'label' => 'Sistema constructivo:',
-                'placeholder' => '-Seleccionar-'
+                'placeholder' => '-Seleccione-'
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {

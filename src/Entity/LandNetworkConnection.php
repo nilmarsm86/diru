@@ -45,6 +45,7 @@ class LandNetworkConnection
     public NetworkConnectionType $enumType;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Assert\NotBlank(message: 'Establezca la longitud.')]
     #[Assert\Positive(message: 'La longitud debe ser positiva.')]
     private ?string $longitude = null;
 

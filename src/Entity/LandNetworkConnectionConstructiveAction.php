@@ -26,7 +26,7 @@ class LandNetworkConnectionConstructiveAction
     private ?ConstructiveAction $constructiveAction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
+//    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\NotBlank(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     #[Assert\Expression(

@@ -29,7 +29,7 @@ class LandNetworkConnection
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnections')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca el tipo de red')]
+    #[Assert\NotBlank(message: 'Seleccione el tipo de red')]
     private ?NetworkConnection $networkConnection = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

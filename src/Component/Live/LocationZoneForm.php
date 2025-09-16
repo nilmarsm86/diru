@@ -17,7 +17,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: '_only_name_form.html.twig')]
+#[AsLiveComponent(template: 'partials/live_component/_only_name_form.html.twig')]
 final class LocationZoneForm extends AbstractController
 {
     use DefaultActionTrait;

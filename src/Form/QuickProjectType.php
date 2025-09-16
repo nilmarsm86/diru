@@ -52,9 +52,15 @@ class QuickProjectType extends AbstractType
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
-                'choice_label' => 'representative',
+//                'choice_label' => 'representative',
+                'choice_label' => function (EnterpriseClient $enterpriseClient) {
+                    return $enterpriseClient->getEmail();
+                },
+                'group_by' => function(EnterpriseClient $enterpriseClient, int $key, string $value) {
+                    return $enterpriseClient->getRepresentative();
+                },
                 'mapped' => false,
-                'label' => 'Cliente empresarial',
+                'label' => 'Cliente empresarial-negocio',
 //                'placeholder' => '-Seleccione-'
             ])
             ->add('button', HiddenType::class, [

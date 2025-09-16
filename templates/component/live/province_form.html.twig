@@ -29,7 +29,12 @@
         <details class="offset-sm-2 collection" open>
             <summary class="collection">
                 <div class="row summary-btn-lis">
-                    <div class="col">Municipio:</div>
+                    <div class="col">
+                        Municipio:
+                        {% if form_errors(municipality.name) %}
+                            <div class="invalid-feedback d-inline">Revise los errores.</div>
+                        {% endif %}
+                    </div>
                     <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                         {{ form_widget(municipality.vars.button_delete, {
                             label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',

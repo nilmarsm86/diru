@@ -128,6 +128,13 @@
                         <strong>{{ connection.vars.data.networkConnection.name }}</strong>
                         (<em>{{ connection.vars.data.type.getLabelFrom(connection.vars.data.type) }}</em>)
                     {% endif %}
+                    {% if form_errors(connection.networkConnection) or
+                        form_errors(connection.type) or
+                        form_errors(connection.longitude) or
+                        form_errors(connection.technicalStatus)
+                    %}
+                        <div class="invalid-feedback d-inline">Revise los errores.</div>
+                    {% endif %}
                 </div>
                 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                     {{ form_widget(connection.vars.button_delete, {
@@ -161,7 +168,15 @@
                 <details class="collection" open>
                     <summary class="collection">
                         <div class="row summary-btn-lis">
-                            <div class="col">Acción constructiva:</div>
+                            <div class="col-sm-12">
+                                Acción constructiva:
+                                {% if form_errors(connection.landNetworkConnectionConstructiveAction.constructiveAction) or
+                                    form_errors(connection.landNetworkConnectionConstructiveAction.price) or
+                                    form_errors(connection.landNetworkConnectionConstructiveAction.constructiveSystem)
+                                %}
+                                    <div class="invalid-feedback d-inline">Revise los errores.</div>
+                                {% endif %}
+                            </div>
                             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
                             </div>

@@ -22,7 +22,11 @@
                 <tbody>
                 <tr>
                     <th>Nombre:</th>
-                    <td>{{ investment.name }}</td>
+                    <td>
+                        <a href="{{ path('app_investment_edit', {'id': investment.id }) }}" target="_blank">
+                            {{ investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>Calle:</th>
@@ -59,7 +63,7 @@
                 <tr>
                     <th>Municipio:</th>
                     <td>
-                        <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}">
+                        <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}" target="_blank">
                             {{ investment.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -67,7 +71,7 @@
                 <tr>
                     <th>Provincia:</th>
                     <td>
-                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}">
+                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}" target="_blank">
                             {{ investment.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>

@@ -1,0 +1,192 @@
+<div class="mb-0 row">
+    <div class="col">
+        {{ form_row(name) }}
+    </div>
+
+    <div class="col">
+        {{ form_row(population) }}
+    </div>
+</div>
+
+<div class="mb-0 row">
+    <div class="col">
+        {{ form_row(constructor) }}
+    </div>
+    {% if draftsman is defined and draftsman is not null %}
+        <div class="col">
+            {{ form_row(draftsman) }}
+        </div>
+    {% endif %}
+</div>
+
+<details class="collection">
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Valores aprobados:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row" {{ stimulusController('summation-values') }}>
+        <div class="col">
+            {{ form_row(approvedValueConstruction) }}
+        </div>
+        <div class="col">
+            {{ form_row(approvedValueEquipment) }}
+        </div>
+        <div class="col">
+            {{ form_row(approvedValueOther) }}
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <p class="text-end">Total:</p>
+                <h5 class="text-end">{# $ #}
+                    <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
+                        {{ 0|number_format(2) }}
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+</details>
+
+<details class="collection">
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Valores estimados:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row" {{ stimulusController('summation-values') }}>
+        <div class="col">
+            {{ form_row(estimatedValueConstruction) }}
+        </div>
+        <div class="col">
+            {{ form_row(estimatedValueEquipment) }}
+        </div>
+        <div class="col">
+            {{ form_row(estimatedValueOther) }}
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <p class="text-end">Total:</p>
+                <h5 class="text-end">{# $ #}
+                    <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
+                        {{ 0|number_format(2) }}
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+</details>
+
+<details class="collection">
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Valor de construcción y montaje:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row">
+        <div class="col-sm-3">
+            {{ form_row(constructionAssembly) }}
+        </div>
+        <div class="col-sm-9">
+            {{ form_row(constructionAssemblyComment) }}
+        </div>
+    </div>
+</details>
+
+{{ form_row(landNetworkConnections.vars.button_add, {
+    label: 'Agregar conexion de red',
+    attr: { class: 'btn btn-outline-nav-link btn-sm' },
+}) }}
+
+{% if form_errors(landNetworkConnections) %}
+    <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+        <div class="col-sm-12">
+            {{ form_errors(landNetworkConnections) }}
+        </div>
+    </div>
+{% endif %}
+
+{% for key, connection in landNetworkConnections %}
+    <details class="collection" {% if form_errors(connection.networkConnection) %}open{% endif %}>
+        <summary class="collection">
+            <div class="row summary-btn-lis">
+                <div class="col">
+                    Conexión de red:
+                    {% if connection.vars.data.id is not null %}
+                        <strong>{{ connection.vars.data.networkConnection.name }}</strong>
+                        (<em>{{ connection.vars.data.type.getLabelFrom(connection.vars.data.type) }}</em>)
+                    {% endif %}
+                </div>
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                    {{ form_widget(connection.vars.button_delete, {
+                        label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                        attr: { class: 'btn btn-outline-danger btn-sm' }
+                    }) }}
+                </div>
+            </div>
+        </summary>
+
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(connection.networkConnection) }}
+            </div>
+
+            <div class="col">
+                {{ form_row(connection.type) }}
+            </div>
+
+            <div class="col">
+                {{ form_row(connection.longitude) }}
+            </div>
+
+            <div class="col">
+                {{ form_row(connection.technicalStatus) }}
+            </div>
+        </div>
+
+        <div class="mb-0 row">
+            <div class="col">
+                <details class="collection" open>
+                    <summary class="collection">
+                        <div class="row summary-btn-lis">
+                            <div class="col">Acción constructiva:</div>
+                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                            </div>
+                        </div>
+                    </summary>
+                    <br>
+                    <div class="mb-0 row">
+                        <div class="col">
+                            {{ form_row(connection.landNetworkConnectionConstructiveAction.constructiveAction) }}
+                        </div>
+                        {% if connection.landNetworkConnectionConstructiveAction.price is defined %}
+                            <div class="col" {{ stimulusController('usd-currency') }}>
+                                {{ form_row(connection.landNetworkConnectionConstructiveAction.price) }}
+                            </div>
+                        {% endif %}
+                        <div class="col">
+                            {{ form_row(connection.landNetworkConnectionConstructiveAction.constructiveSystem) }}
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="col">
+                {{ form_row(connection.explanation) }}
+            </div>
+        </div>
+    </details>
+{% endfor %}

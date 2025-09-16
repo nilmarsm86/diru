@@ -47,7 +47,7 @@ class LandNetworkConnection
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Assert\NotBlank(message: 'Establezca la longitud.')]
     #[Assert\Positive(message: 'La longitud debe ser positiva.')]
-    private ?string $longitude = null;
+    private ?string $longitude = '0';
 
     #[ORM\OneToOne(inversedBy: 'landNetworkConnection', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -57,6 +57,7 @@ class LandNetworkConnection
     public function __construct()
     {
         $this->landNetworkConnectionConstructiveAction = null;
+        $this->longitude = '0';
     }
 
     public function getId(): ?int
@@ -129,7 +130,7 @@ class LandNetworkConnection
         return $this->longitude;
     }
 
-    public function setLongitude(string $longitude): static
+    public function setLongitude(?string $longitude): static
     {
         $this->longitude = $longitude;
 

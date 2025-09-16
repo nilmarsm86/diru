@@ -22,12 +22,15 @@ class LandNetworkConnectionType extends AbstractType
     {
         $builder->add('explanation', null, [
             'label' => 'Explicación:',
+            'attr' => [
+                'rows' => 4
+            ]
         ])
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
                 'label' => 'Red:',
-                'placeholder' => '-Seleccinar-',
+                'placeholder' => '-Seleccine-',
             ])
             ->add('type', NetworkConnectionEnumType::class, [
                 'label' => 'Tipo de conexión:',
@@ -37,7 +40,8 @@ class LandNetworkConnectionType extends AbstractType
                 'unit' => 'm',
                 'attr' => [
                     'min' => 0
-                ]
+                ],
+                'empty_data' => 0
             ])
             ->add('technicalStatus', TechnicalStatusEnumType::class, [
                 'label' => 'Estado técnico:'

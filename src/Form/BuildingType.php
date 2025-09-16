@@ -37,10 +37,14 @@ class BuildingType extends AbstractType
                 'label' => 'Cantidad de personas:',
                 'attr' => [
                     'placeholder' => 'Cantidad de personas para la cual esta diseño'
-                ]
+                ],
+                'empty_data' => 1
             ])
             ->add('constructionAssemblyComment', null, [
-                'label' => false,
+                'label' => 'Comentario:',
+                'attr' => [
+                    'rows' => 1
+                ]
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
@@ -199,11 +203,11 @@ class BuildingType extends AbstractType
                 'divisor' => 100,
             ])
             ->add('constructionAssembly', MoneyType::class, [
-                'label' => 'Valor de construcción y montaje:',
+                'label' => 'Precio:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
-                    'data-currency-target' => 'field'
+                    'data-usd-currency-target' => 'field'
                 ],
                 'empty_data' => 0,
                 'required' => false,

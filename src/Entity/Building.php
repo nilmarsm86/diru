@@ -102,9 +102,9 @@ class Building implements MeasurementDataInterface
     private ?bool $isNew = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Seleccione o cree el proyecto al cual pertenece la obra.')]
+    #[Assert\NotBlank(message: 'Establezca la cantidad de personas.')]
     #[Assert\Positive(message: 'El valor debe ser positivo')]
-    private ?int $population = null;
+    private ?int $population = 1;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
@@ -142,7 +142,7 @@ class Building implements MeasurementDataInterface
 
         $this->hasReply = false;
 
-        $this->population = 0;
+        $this->population = 1;
         $this->constructionAssembly = 0;
         $this->landNetworkConnections = new ArrayCollection();
     }
@@ -852,7 +852,7 @@ class Building implements MeasurementDataInterface
         return $this->population;
     }
 
-    public function setPopulation(int $population): static
+    public function setPopulation(?int $population): static
     {
         $this->population = $population;
 

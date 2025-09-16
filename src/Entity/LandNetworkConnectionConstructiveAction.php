@@ -34,11 +34,11 @@ class LandNetworkConnectionConstructiveAction
         message: 'El precio para esta acción constructiva debe ser mayor que 0.',
         negate: false
     )]
-    private ?int $price;
+    private ?int $price = 0;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnectionsConstructiveAction')]
     #[Assert\Valid]
-    #[Assert\NotNull(message: 'Seleccione el systema constructivo.')]
+    #[Assert\NotNull(message: 'Seleccione el sistema constructivo.')]
     private ?ConstructiveSystem $constructiveSystem = null;
 
     public function validPrice(): bool

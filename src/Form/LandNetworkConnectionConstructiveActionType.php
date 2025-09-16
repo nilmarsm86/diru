@@ -70,10 +70,11 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [
-                'placeholder' => '0',
+                'placeholder' => 0,
                 'min' => 0,
                 'data-usd-currency-target' => 'field'
             ],
+            'empty_data' => 0
         ]);
     }
 }

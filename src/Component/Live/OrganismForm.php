@@ -17,7 +17,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent(template: 'partials/live_component/only_name_form.html.twig')]
+#[AsLiveComponent(template: '_only_name_form.html.twig')]
 final class OrganismForm extends AbstractController
 {
     use DefaultActionTrait;

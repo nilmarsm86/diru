@@ -7,13 +7,13 @@
         }
     }) }}
 
-    {% if form_errors(form) %}
-        {{ component('message:alert', {
-            'icon': 'ix:error',
-            'type': 'danger',
-            'message': "Una obra esta asociada a un proyecto. Para crear una obra nueva, vaya al <a href=" ~ path('app_project_index') ~ ">listado de proyectos</a> y seleccione sobre cual desea crearla."
-        }) }}
-    {% endif %}
+{#    {% if form_errors(form) %}#}
+{#        {{ component('message:alert', {#}
+{#            'icon': 'ix:error',#}
+{#            'type': 'danger',#}
+{#            'message': "Una obra esta asociada a un proyecto. Para crear una obra nueva, vaya al <a href=" ~ path('app_project_index') ~ ">listado de proyectos</a> y seleccione sobre cual desea crearla."#}
+{#        }) }}#}
+{#    {% endif %}#}
 
     {{ include('partials/live_component/_building.html.twig', {
         'name' : form.name,

@@ -383,7 +383,6 @@ class Local
         }
 
 //        $this->getLocalConstructiveAction()->setConstructiveAction($constructiveAction);
-
         return $this;
     }
 

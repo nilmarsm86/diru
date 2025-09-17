@@ -53,10 +53,15 @@ class FloorType extends AbstractType
 
         $nextPosition = 0;
         if (!is_null($floor) && is_null($floor->getId()) && !is_null($floor->getBuilding())) {
-            if ($options['reply']) {
-                $nextPosition = $floor->getBuilding()->getReplyFloors()->count();
-            } else {
-                $nextPosition = $floor->getBuilding()->getOriginalFloors()->count();
+//            if ($options['reply']) {
+//                $floors = $floor->getBuilding()->getReplyExistsFloors();
+//            } else {
+//                $floors = $floor->getBuilding()->getOriginalExistsFloors();
+//            }
+            $floors = ($options['reply']) ? $floor->getBuilding()->getReplyExistsFloors() : $floor->getBuilding()->getOriginalExistsFloors();
+
+            if($floors->count()){
+                $nextPosition = $floors->last()->getPosition();
             }
 
             $fieldOptions = [

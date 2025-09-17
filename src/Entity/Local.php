@@ -95,14 +95,19 @@ class Local
     /**
      * @param EntityManagerInterface $entityManager
      * @param Local|null $local
+     * @param string $constructiveActionName
      * @return void
      */
-    private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local): void
+    private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local, string $constructiveActionName = 'Obra nueva'): void
     {
         $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
-            'name' => 'Obra nueva'
+            'name' => $constructiveActionName
         ]);
-        $local->setConstructiveAction($constructiveAction);
+
+        $constructiveSystem = $entityManager->getRepository(ConstructiveSystem::class)->findOneBy([
+            'name' => 'Ninguno'
+        ]);
+        $local->setConstructiveAction($constructiveAction, $constructiveSystem, 100);
     }
 
     public function validHeightInEmptyArea(): bool
@@ -236,7 +241,8 @@ class Local
             $wall->setTechnicalStatus(TechnicalStatus::Good);
 
             if (!is_null($entityManager)) {
-                self::setDefaultConstructiveAction($entityManager, $wall);
+                //TODO: esto del sistema constructivo ver si realmente necesito repetirlo
+                self::setDefaultConstructiveAction($entityManager, $wall, 'No es necesaria');
                 $wall->recent();
             }
         }
@@ -253,7 +259,7 @@ class Local
         if ($reply) {
             $local->setHasReply(false);
             $local->setTechnicalStatus(TechnicalStatus::Good);
-
+            //TODO: esto del estado y el sistema constructivo ver si realmente necesito repetirlo
             if (!is_null($entityManager)) {
                 self::setDefaultConstructiveAction($entityManager, $local);
 //                if ($subSystem->isRecent()) {
@@ -292,7 +298,7 @@ class Local
         }
 
         $subSystem->addLocal($local);
-
+        //TODO: esto del estado y el sistema constructivo ver si realmente necesito repetirlo
         if ($subSystem->inNewBuilding()) {
             $local->recent();
             if (!is_null($entityManager) && is_null($local->getLocalConstructiveAction())) {
@@ -363,15 +369,19 @@ class Local
         return $this->getLocalConstructiveAction()?->getConstructiveSystem();
     }
 
-    public function setConstructiveAction(?ConstructiveAction $constructiveAction): static
+    public function setConstructiveAction(?ConstructiveAction $constructiveAction, ?ConstructiveSystem $constructiveSystem, int $price=0): static
     {
         if (is_null($this->getLocalConstructiveAction())) {
             $localConstructiveAction = new LocalConstructiveAction();
             $localConstructiveAction->setLocal($this);
-            $localConstructiveAction->setPrice(0);
+            $localConstructiveAction->setPrice($price);
+            $localConstructiveAction->setConstructiveSystem($constructiveSystem);
+            $localConstructiveAction->setConstructiveAction($constructiveAction);
+
+            $this->setLocalConstructiveAction($localConstructiveAction);
         }
 
-        $this->getLocalConstructiveAction()->setConstructiveAction($constructiveAction);
+//        $this->getLocalConstructiveAction()->setConstructiveAction($constructiveAction);
 
         return $this;
     }

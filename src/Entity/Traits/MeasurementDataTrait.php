@@ -36,7 +36,7 @@ trait MeasurementDataTrait
 //        return $this->getMeasurementData('getUnassignedArea');
 //    }
 
-    private function calculateMaxHeight(Collection $items): int
+    private function calculateMaxHeight(Collection $items): float
     {
         $maxHeight = 0;
         /** @var MeasurementDataInterface $item */

@@ -10,6 +10,7 @@ use App\Form\LandType;
 use App\Repository\BuildingRepository;
 use App\Repository\FloorRepository;
 use App\Repository\LandRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -47,6 +48,11 @@ final class LandForm extends AbstractController
 
     #[LiveProp]
     public ?string $route = null;
+
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+
+    }
 
     public function mount(?Land $land = null, Building $building = null): void
     {
@@ -87,7 +93,7 @@ final class LandForm extends AbstractController
                 }else{
                     $this->building->setIsNew(false);
                 }
-                $this->building->createFloors();
+                $this->building->createFloors(false, $this->entityManager);
             }
 
             $landRepository->save($land, true);

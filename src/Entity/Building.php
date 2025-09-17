@@ -523,11 +523,35 @@ class Building implements MeasurementDataInterface
         return $originalFloors;
     }
 
+    public function getOriginalExistsFloors(): ArrayCollection
+    {
+        $originalFloors = new ArrayCollection();
+        foreach ($this->getFloors() as $floor) {
+            if ($floor->isOriginal() && !is_null($floor->getId())) {
+                $originalFloors->add($floor);
+            }
+        }
+
+        return $originalFloors;
+    }
+
     public function getReplyFloors(): ArrayCollection
     {
         $replyFloors = new ArrayCollection();
         foreach ($this->getFloors() as $floor) {
             if (!$floor->isOriginal()) {
+                $replyFloors->add($floor);
+            }
+        }
+
+        return $replyFloors;
+    }
+
+    public function getReplyExistsFloors(): ArrayCollection
+    {
+        $replyFloors = new ArrayCollection();
+        foreach ($this->getFloors() as $floor) {
+            if (!$floor->isOriginal() && !is_null($floor->getId())) {
                 $replyFloors->add($floor);
             }
         }
@@ -598,23 +622,23 @@ class Building implements MeasurementDataInterface
     /*
      * Create the automatic the floors, based on land floors
      */
-    public function createFloors(): static
+    public function createFloors(bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
         $floor = $this->getLand()->getFloor();
-        $this->createAutomaticFloor( 'Planta Baja', true, 0);
+        $this->createAutomaticFloor( 'Planta Baja', true, 0, $reply, $entityManager);
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
-                $this->createAutomaticFloor('Planta ' . $i, false, $i);
+                $this->createAutomaticFloor('Planta ' . $i, false, $i, $reply, $entityManager);
             }
         }
 
         return $this;
     }
 
-    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0): void
+    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
-        Floor::createAutomatic(null, $this, $name, $isGroundFloor, $position);
+        Floor::createAutomatic(null, $this, $name, $isGroundFloor, $position, $reply, $entityManager);
     }
 
     public function isNew(): ?bool

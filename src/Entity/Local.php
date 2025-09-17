@@ -96,9 +96,10 @@ class Local
      * @param EntityManagerInterface $entityManager
      * @param Local|null $local
      * @param string $constructiveActionName
+     * @param int $precio
      * @return void
      */
-    private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local, string $constructiveActionName = 'Obra nueva'): void
+    private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local, string $constructiveActionName = 'Obra nueva', int $precio = 100): void
     {
         $constructiveAction = $entityManager->getRepository(ConstructiveAction::class)->findOneBy([
             'name' => $constructiveActionName
@@ -107,7 +108,7 @@ class Local
         $constructiveSystem = $entityManager->getRepository(ConstructiveSystem::class)->findOneBy([
             'name' => 'Ninguno'
         ]);
-        $local->setConstructiveAction($constructiveAction, $constructiveSystem, 100);
+        $local->setConstructiveAction($constructiveAction, $constructiveSystem, $precio);
     }
 
     public function validHeightInEmptyArea(): bool
@@ -242,7 +243,7 @@ class Local
 
             if (!is_null($entityManager)) {
                 //TODO: esto del sistema constructivo ver si realmente necesito repetirlo
-                self::setDefaultConstructiveAction($entityManager, $wall, 'No es necesaria');
+                self::setDefaultConstructiveAction($entityManager, $wall, 'No es necesaria', 0);
                 $wall->recent();
             }
         }

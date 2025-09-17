@@ -390,7 +390,7 @@ class SubSystem implements MeasurementDataInterface
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         if($reply){
-            $floor->setHasReply(false);
+            $subSystem->setHasReply(false);
             $subSystem->recent();
         }else{
             if($floor->inNewBuilding()){

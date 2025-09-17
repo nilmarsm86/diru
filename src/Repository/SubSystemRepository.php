@@ -65,6 +65,7 @@ class SubSystemRepository extends ServiceEntityRepository
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
+     * @param bool $reply
      * @return Paginator Returns an array of User objects
      */
     public function findSubsystemsFloor(Floor $floor, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator

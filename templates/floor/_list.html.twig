@@ -182,7 +182,7 @@
                                 {% set cssClass = 'btn-link' %}
                             {% endif %}
 
-                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? 'Subsistemas replicados' : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
+                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
                             {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }} #}
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})}), cssClass) }}

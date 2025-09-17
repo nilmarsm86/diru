@@ -206,7 +206,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), 'lucide-lab:floor-plan', '', 'Locales', '', cssClass, sub_system.hasErrors()) }}
+                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), 'lucide-lab:floor-plan', '', (reply) ? ((sub_system.isNewInReply()) ? 'Locales nuevos' : 'Locales replicados') : 'Locales', '', cssClass, sub_system.hasErrors()) }}
 
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})}), cssClass) }}

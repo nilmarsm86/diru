@@ -30,7 +30,7 @@ class LandNetworkConnectionType extends AbstractType
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
                 'label' => 'Red:',
-                'placeholder' => '-Seleccine-',
+                'placeholder' => '-Seleccione-',
             ])
             ->add('type', NetworkConnectionEnumType::class, [
                 'label' => 'Tipo de conexión:',

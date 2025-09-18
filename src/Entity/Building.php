@@ -730,6 +730,11 @@ class Building implements MeasurementDataInterface
         return $this->getTotalArea($original) / $this->getLandArea();
     }
 
+    public function getCos(bool $original = null): float|int
+    {
+        return number_format((float)$this->getLand()->getOccupiedArea() * 100 / $this->getLand()->getLandArea(), 2);
+    }
+
     public function canReply(): bool
     {
         if ($this->isNew()) {
@@ -771,7 +776,13 @@ class Building implements MeasurementDataInterface
         $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountTechnicalStatus(!$this->hasReply());
+//            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountTechnicalStatus(!$this->hasReply());
+            $buildingAmountTechnicalStatus = $floor->getAmountTechnicalStatus(!$this->hasReply());
+            $goodState = $buildingAmountTechnicalStatus['good'];
+            $regularState = $buildingAmountTechnicalStatus['regular'];
+            $badState = $buildingAmountTechnicalStatus['bad'];
+            $crititalState = $buildingAmountTechnicalStatus['critical'];
+            $undefinedState = $buildingAmountTechnicalStatus['undefined'];
 
             $undefined += $undefinedState;
             $critical += $crititalState;
@@ -800,7 +811,12 @@ class Building implements MeasurementDataInterface
         $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountMeterTechnicalStatus(!$this->hasReply());
+            $buildingAmountMeterTechnicalStatus = $floor->getAmountMeterTechnicalStatus(!$this->hasReply());
+            $goodState = $buildingAmountMeterTechnicalStatus['good'];
+            $regularState = $buildingAmountMeterTechnicalStatus['regular'];
+            $badState = $buildingAmountMeterTechnicalStatus['bad'];
+            $crititalState = $buildingAmountMeterTechnicalStatus['critical'];
+            $undefinedState = $buildingAmountMeterTechnicalStatus['undefined'];
 
             $undefined += $undefinedState;
             $critical += $crititalState;
@@ -954,5 +970,50 @@ class Building implements MeasurementDataInterface
         foreach ($items as $item) {
             $item->reply($entityManager, $parent);
         }
+    }
+
+    public function getLocalsAmount(): int
+    {
+        $locals = 0;
+        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $locals += $floor->getLocalsAmount();
+        }
+
+        return $locals;
+    }
+
+    public function getAmountMeters(): ?int
+    {
+        $total = 0;
+        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $total += $floor->getAmountMeters();
+        }
+
+        return $total;
+    }
+
+    public function getFloorsAmount(): int
+    {
+        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        return $floors->count();
+    }
+
+    public function getSubsystemsAmount(): int
+    {
+        $subsystems = 0;
+        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $subsystems += $floor->getSubSystemAmount();
+        }
+
+        return $subsystems;
     }
 }

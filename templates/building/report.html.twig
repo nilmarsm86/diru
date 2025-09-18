@@ -1,0 +1,23 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Subsistemas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Obra') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Obra'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">
+        Obra de:
+    </h2>
+
+    {{ include('building/_amount_local_technical_status.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

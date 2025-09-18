@@ -136,4 +136,15 @@ final class BuildingController extends AbstractController
 
         return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
     }
+
+    #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]
+    public function reportLocal(Request $request, Building $building): Response
+    {
+        return $this->render("building/report.html.twig", [
+            'local_status' => $building->getAmountTechnicalStatus(),
+            'meter_status' => $building->getAmountMeterTechnicalStatus(),
+            'title' => 'Estado técnico de los locales de la obra',
+            'building' => $building
+        ]);
+    }
 }

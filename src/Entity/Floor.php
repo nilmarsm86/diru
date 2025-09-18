@@ -263,7 +263,12 @@ class Floor implements MeasurementDataInterface
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         foreach ($subsystems as $subsystem) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountTechnicalStatus($this->isOriginal());
+            $subsystemAmountTechnicalStatus = $subsystem->getAmountTechnicalStatus($this->isOriginal());
+            $goodState = $subsystemAmountTechnicalStatus['good'];
+            $regularState = $subsystemAmountTechnicalStatus['regular'];
+            $badState = $subsystemAmountTechnicalStatus['bad'];
+            $crititalState = $subsystemAmountTechnicalStatus['critical'];
+            $undefinedState = $subsystemAmountTechnicalStatus['undefined'];
 
             $undefined += $undefinedState;
             $critical += $crititalState;
@@ -292,7 +297,12 @@ class Floor implements MeasurementDataInterface
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
         foreach ($subsystems as $subsystem) {
-            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $subsystem->getAmountMeterTechnicalStatus($this->isOriginal());
+            $subsystemAmountMeterTechnicalStatus = $subsystem->getAmountMeterTechnicalStatus($this->isOriginal());
+            $goodState = $subsystemAmountMeterTechnicalStatus['good'];
+            $regularState = $subsystemAmountMeterTechnicalStatus['regular'];
+            $badState = $subsystemAmountMeterTechnicalStatus['bad'];
+            $crititalState = $subsystemAmountMeterTechnicalStatus['critical'];
+            $undefinedState = $subsystemAmountMeterTechnicalStatus['undefined'];
 
             $undefined += $undefinedState;
             $critical += $crititalState;
@@ -432,6 +442,31 @@ class Floor implements MeasurementDataInterface
         }
 
         return true;
+    }
+
+    public function getLocalsAmount(): int
+    {
+        $locals = 0;
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            $locals += $subsystem->getLocalsAmount();
+        }
+
+        return $locals;
+    }
+
+    public function getAmountMeters(): ?int
+    {
+        $total = 0;
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            $total += $subsystem->getAmountMeters();
+        }
+
+        return $total;
     }
 
 }

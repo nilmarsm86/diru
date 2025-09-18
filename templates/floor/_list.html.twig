@@ -187,6 +187,40 @@
                                 {% set cssClass = cssClass ~ ' text-dark' %}
                             {% endif %}
 
+                            <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Reportes">
+                                <button type="button"
+                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm {{ cssClass }}"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false" title="Reportes"
+                                >
+                                    R
+                                </button>
+                                <ul class="dropdown-menu" data-bs-theme="light">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{{ path('app_floor_report_local', {'id': floor.id}) }}"
+                                           title="">
+                                            Reporte de estado técnico
+                                        </a>
+                                    </li>
+                                    {#                                    <li> #}
+                                    {#                                        <a class="dropdown-item" #}
+                                    {#                                           href="" title=""> #}
+                                    {#                                            Reporte de estado técnico por metros cuadrados #}
+                                    {#                                        </a> #}
+                                    {#                                    </li> #}
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="" title="">
+                                            Reporte de descripción por locales (PDF)
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
                             {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
                             {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }} #}
                             {% if floor.hasReply() == false %}
@@ -233,16 +267,40 @@
 
 {% endcomponent %}
 
-{# {% component 'Card:Card' with { #}
-{#    cssClass: 'mb-4', #}
-{#    extra: '', #}
-{#    headerCssClass: 'd-flex justify-content-between align-items-center', #}
-{#    title: 'Detalles del inmueble', #}
-{# } %} #}
-{#    {% block body %} #}
-{#        <table class="table table-hover"> #}
-{#            {{ include('building/_data.html.twig') }} #}
-{#        </table> #}
-{#    {% endblock %} #}
+ {% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Resumen del inmueble',
+ } %}
+    {% block body %}
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <th>Plantas:</th>
+                <td>{{ building.getFloorsAmount() }}</td>
 
-{# {% endcomponent %} #}
+                <th>Subsistemas:</th>
+                <td>{{ building.getSubsystemsAmount() }}</td>
+            </tr>
+
+            <tr>
+                <th>Locales:</th>
+                <td>{{ building.getLocalsAmount() }}</td>
+
+                <th></th>
+                <td></td>
+            </tr>
+
+            <tr>
+                <th>CUS:</th>
+                <td>{{ building.getCus(not reply) }}</td>
+
+                <th>COS:</th>
+                <td>{{ building.getCos(not reply)|number_format(2) }} %</td>
+            </tr>
+            </tbody>
+        </table>
+    {% endblock %}
+
+ {% endcomponent %}

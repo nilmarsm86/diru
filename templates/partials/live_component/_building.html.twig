@@ -19,7 +19,7 @@
     {% endif %}
 </div>
 
-<details class="collection">
+<details class="collection" {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valores aprobados:</div>
@@ -52,7 +52,7 @@
     </div>
 </details>
 
-<details class="collection">
+<details class="collection" {% if estimatedValueConstruction.vars.data > 0 or estimatedValueEquipment.vars.data > 0 or estimatedValueOther > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valores estimados:</div>

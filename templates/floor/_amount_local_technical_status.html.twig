@@ -24,7 +24,7 @@
                 <td>{{ local_status.bad }}</td>
                 <td>{{ local_status.critical }}</td>
                 <td>{{ local_status.undefined }}</td>
-                <td>{{ sub_system.getLocalsAmount() }}</td>
+                <td>{{ floor.getLocalsAmount() }}</td>
             </tr>
         </table>
     {% endblock %}
@@ -57,7 +57,7 @@
                 <td>{{ meter_status.bad }}</td>
                 <td>{{ meter_status.critical }}</td>
                 <td>{{ meter_status.undefined }}</td>
-                <td>{{ sub_system.getAmountMeters() }}</td>
+                <td>{{ floor.getAmountMeters() }}</td>
             </tr>
         </table>
     {% endblock %}

@@ -400,4 +400,38 @@ class Floor implements MeasurementDataInterface
     {
         return ($this->hasReply() === false) && (is_null($this->getOriginal()));
     }
+
+    public function hasChangesFromOriginal(): bool
+    {
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            if ($subsystem->hasChangesFromOriginal()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasBackgroundColorOfChange(): bool
+    {
+        return $this->isNewStructure() || $this->hasChangesFromOriginal();
+    }
+
+    public function hasRemoveConstructiveAction(): bool
+    {
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            if (!$subsystem->hasRemoveConstructiveAction()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

@@ -22,7 +22,7 @@
 
     <tr>
         <th>Altura máxima (m):</th>
-        <td>{{ sub_system.getMaxHeight() }}</td>
+        <td>{{ sub_system.getMaxHeight()|number_format(2) }}</td>
 
         <th>Volumen (m<sup>3</sup>):</th>
         <td>{{ sub_system.getVolume() }}</td>

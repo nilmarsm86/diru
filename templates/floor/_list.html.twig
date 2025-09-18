@@ -109,12 +109,18 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for floor in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if floor.inNewBuilding() or floor.isNewInReply() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }}
+                        class="
+                        {% if floor.inNewBuilding() or floor.isNewInReply() %}table-success {% endif %}
+                        {% if floor.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if floor.hasRemoveConstructiveAction() %} table-danger {% endif %}
+                        "
+                    >
                         <td>
                             {{ floor.position }}
                         </td>
                         <td>
-                            {{ floor.name }}
+                            {% if floor.hasChangesFromOriginal() %}<em>{{ floor.name }}</em>{% else %}{{ floor.name }}{% endif %}
                         </td>
                         <td>
                             {% if reply %}
@@ -161,7 +167,7 @@
                         </td>
                         <td>{{ floor.getEmptyArea() }}</td>
                         <td>{{ floor.getTotalArea() }}</td>
-                        <td>{{ floor.getMaxHeight() }}</td>
+                        <td>{{ floor.getMaxHeight()|number_format(2) }}</td>
                         <td>{{ floor.getVolume() }}</td>
                         <td>
                             {% if floor.isFullyOccupied() %}
@@ -176,10 +182,9 @@
                         </td>
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
-                            {% if floor.isNewStructure() %}
-                                {% set cssClass = 'btn-link text-dark' %}
-                            {% else %}
-                                {% set cssClass = 'btn-link' %}
+                            {% set cssClass = 'btn-link' %}
+                            {% if floor.hasBackgroundColorOfChange() %}
+                                {% set cssClass = cssClass ~ ' text-dark' %}
                             {% endif %}
 
                             {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
@@ -215,7 +220,7 @@
                     <th>{{ building.getWallArea(not reply) }}</th>
                     <th>{{ building.getEmptyArea(not reply) }}</th>
                     <th>{{ building.getTotalArea(not reply) }}</th>
-                    <th>{{ building.getMaxHeight(not reply) }}</th>
+                    <th>{{ building.getMaxHeight(not reply)|number_format(2) }}</th>
                     <th>{{ building.getVolume(not reply) }}</th>
                     <th>{{ building.getUnassignedArea(not reply) }}</th>
                     <th class="text-end">CUS: {{ building.getCus(not reply) }}</th>

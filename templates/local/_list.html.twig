@@ -94,8 +94,22 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for local in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if local.isNewStructure() %}class="table-success"{% endif %}>
-                        <td>{{ local.name }} </td>
+                    <tr {{ stimulusController('delete-form-container') }}
+                        class="
+                        {% if local.isNewStructure() %} table-success {% endif %}
+                        {% if local.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if local.hasRemoveConstructiveAction() %} table-danger {% endif %}
+                        "
+                    >
+                        <td
+                            {% if local.hasChangesFromOriginal() %}
+                                data-bs-toggle="tooltip"
+                                data-bs-title="{{ local.getChangesFromOriginal()|join("\n") }}"
+                                data-bs-custom-class="danger-info"
+                            {% endif %}
+                        >
+                            {% if local.hasChangesFromOriginal() %}<em>{{ local.name }}</em>{% else %}{{ local.name }}{% endif %}
+                        </td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area }}</td>
                         <td>{{ local.type.getLabelFrom(local.type) }}</td>
@@ -150,11 +164,11 @@
                             </td>
                         {% endif %}
                         <td class="text-end">
-                            {% if local.isNewStructure() %}
-                                {% set cssClass = 'btn-link text-dark' %}
-                            {% else %}
-                                {% set cssClass = 'btn-link' %}
+                            {% set cssClass = 'btn-link' %}
+                            {% if local.hasBackgroundColorOfChange() %}
+                                {% set cssClass = cssClass ~ ' text-dark' %}
                             {% endif %}
+
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
 
                             {% if local.hasReply() == false %}

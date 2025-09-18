@@ -113,7 +113,7 @@ class LocalType extends AbstractType
         }
 
         $constraints = [
-            new Range(min: 1, max: $leftArea),
+            new Range(min: 0, max: $leftArea),
         ];
 
         $attr = [

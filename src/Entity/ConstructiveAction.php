@@ -17,6 +17,10 @@ class ConstructiveAction
 {
     use NameToStringTrait;
 
+    private const DEMOLISHED = 'Demolición';
+    private const DELETED = 'Eliminación';
+    public const REMOVE_ACTIONS = [self::DEMOLISHED, self::DELETED];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

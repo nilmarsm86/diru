@@ -427,4 +427,37 @@ class SubSystem implements MeasurementDataInterface
         return ($this->hasReply() === false) && (is_null($this->getOriginal()));
     }
 
+    public function hasChangesFromOriginal(): bool
+    {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            if ($local->hasChangesFromOriginal()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasBackgroundColorOfChange(): bool
+    {
+        return $this->isNewStructure() || $this->hasChangesFromOriginal();
+    }
+
+    public function hasRemoveConstructiveAction(): bool
+    {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            if (!$local->hasRemoveConstructiveAction()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

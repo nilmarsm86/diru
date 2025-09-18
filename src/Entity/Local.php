@@ -86,10 +86,13 @@ class Local
     #[Assert\Valid]
     private ?LocalConstructiveAction $localConstructiveAction = null;
 
+    private array $changesFromOriginal;
+
     public function __construct()
     {
         $this->impactHigherLevels = false;
         $this->localConstructiveAction = null;
+        $this->changesFromOriginal = [];
     }
 
     /**
@@ -140,6 +143,9 @@ class Local
 
     public function getArea(): ?int
     {
+        if($this->hasRemoveConstructiveAction()){
+            return 0;
+        }
         return $this->area;
     }
 
@@ -219,6 +225,10 @@ class Local
         }
 
         $this->setName(ucfirst($this->getName()));
+
+        if($this->hasRemoveConstructiveAction()){
+            $this->setArea(0);
+        }
     }
 
     #[ORM\PostLoad]
@@ -236,7 +246,7 @@ class Local
     public static function createAutomaticWall(SubSystem $subSystem, int $area, int $number = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
-        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 1, $number, $entityManager);
+        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 2.40, $number, $entityManager);
         if ($reply) {
             $wall->setHasReply(false);
             $wall->setTechnicalStatus(TechnicalStatus::Good);
@@ -433,9 +443,62 @@ class Local
         return ($this->hasReply() === false) && is_null($this->getOriginal()) && $this->isRecent();
     }
 
-    public function changeFromOriginal(): bool
+    public function hasChangesFromOriginal(): bool
     {
-        return false;
+        $hasChanges = false;
+        $original = $this->getOriginal();
+        $this->changesFromOriginal = [];
+
+        if(is_null($original)){
+            return false;
+        }
+
+        if($original->getNumber() !== $this->getNumber()){
+            $this->changesFromOriginal[] = 'Cambio de número.';
+            $hasChanges = true;
+        }
+
+        if($original->getArea() !== $this->getArea()){
+            $this->changesFromOriginal[] = 'Cambio de área.';
+            $hasChanges = true;
+        }
+
+        if($original->getType() !== $this->getType()){
+            $this->changesFromOriginal[] = 'Cambio de tipo.';
+            $hasChanges = true;
+        }
+
+        if($original->getHeight() !== $this->getHeight()){
+            $this->changesFromOriginal[] = 'Cambio de altura.';
+            $hasChanges = true;
+        }
+
+        if($original->getVolume() !== $this->getVolume()){
+            $this->changesFromOriginal[] = 'Cambio de volumen.';
+            $hasChanges = true;
+        }
+
+        if($original->getTechnicalStatus() !== $this->getTechnicalStatus()){
+            $this->changesFromOriginal[] = 'Cambio de estado técnico.';
+            $hasChanges = true;
+        }
+
+        if($original->isImpactHigherLevels() !== $this->isImpactHigherLevels()){
+            $this->changesFromOriginal[] = 'Cambio en el impacto en niveles superiores.';
+            $hasChanges = true;
+        }
+
+        if($this->hasRemoveConstructiveAction()){
+            $this->changesFromOriginal[] = 'El local ha sido removido.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function getChangesFromOriginal(): array
+    {
+        return $this->changesFromOriginal;
     }
 
     public function getCurrency(): ?string
@@ -478,6 +541,14 @@ class Local
         return $reply || $this->inNewBuilding();
     }
 
+    public function hasBackgroundColorOfChange(): bool
+    {
+        return $this->isNewStructure() || $this->hasChangesFromOriginal() || $this->hasRemoveConstructiveAction();
+    }
 
+    public function hasRemoveConstructiveAction(): bool
+    {
+        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::REMOVE_ACTIONS);
+    }
 
 }

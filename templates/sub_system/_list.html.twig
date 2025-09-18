@@ -109,9 +109,15 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for sub_system in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }} {% if sub_system.isNewStructure() %}class="table-success"{% endif %}>
+                    <tr {{ stimulusController('delete-form-container') }}
+                        class="
+                        {% if sub_system.isNewStructure() %}table-success {% endif %}
+                        {% if sub_system.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if sub_system.hasRemoveConstructiveAction() %} table-danger {% endif %}
+                        "
+                    >
                         <td>
-                            {{ sub_system.name }}
+                            {% if sub_system.hasChangesFromOriginal() %}<em>{{ sub_system.name }}</em>{% else %}{{ sub_system.name }}{% endif %}
                         </td>
                         <td>
                             {% if reply %}
@@ -149,7 +155,7 @@
                         </td>
                         <td>{{ sub_system.getEmptyArea() }}</td>
                         <td>{{ sub_system.getTotalArea() }}</td>
-                        <td>{{ sub_system.getMaxHeight() }}</td>
+                        <td>{{ sub_system.getMaxHeight()|number_format(2) }}</td>
                         <td>{{ sub_system.getVolume() }}</td>
                         <td>
                             {% if reply %}
@@ -166,10 +172,9 @@
 
                         </td>
                         <td class="text-end">
-                            {% if sub_system.isNewStructure() %}
-                                {% set cssClass = 'btn-link text-dark' %}
-                            {% else %}
-                                {% set cssClass = 'btn-link' %}
+                            {% set cssClass = 'btn-link' %}
+                            {% if sub_system.hasBackgroundColorOfChange() %}
+                                {% set cssClass = cssClass ~ ' text-dark' %}
                             {% endif %}
 
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
@@ -258,7 +263,7 @@
                     <th>{{ floor.getEmptyArea() }}</th>
                     <th>{{ floor.getTotalArea() }}</th>
                     <th>
-                        {{ floor.getMaxHeight() }}
+                        {{ floor.getMaxHeight()|number_format(2) }}
                         {#                        {% if floor.hasVariableHeights() %} #}
                         {#                            <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Alturas variables. Queda áreas de vacio no definidas." data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
                         {#                                {{ floor.getMaxHeight() }} #}

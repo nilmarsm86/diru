@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UrbanRegulationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -38,6 +40,17 @@ class UrbanRegulation
     #[ORM\ManyToOne(inversedBy: 'urbanRegulations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UrbanRegulationType $type = null;
+
+    /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'urbanRegulations')]
+    private Collection $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +149,33 @@ class UrbanRegulation
     public function setType(?UrbanRegulationType $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addUrbanRegulation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeUrbanRegulation($this);
+        }
 
         return $this;
     }

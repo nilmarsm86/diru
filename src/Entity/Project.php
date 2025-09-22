@@ -102,6 +102,12 @@ class Project
     #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
     private ?Currency $currency = null;
 
+    /**
+     * @var Collection<int, UrbanRegulation>
+     */
+    #[ORM\ManyToMany(targetEntity: UrbanRegulation::class, inversedBy: 'projects')]
+    private Collection $urbanRegulations;
+
     public function __construct()
     {
         $this->setState(ProjectState::Registered);
@@ -109,6 +115,7 @@ class Project
         $this->registerAt = new \DateTimeImmutable();
         $this->buildings = new ArrayCollection();
         $this->contract = null;
+        $this->urbanRegulations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -475,6 +482,30 @@ class Project
         foreach ($this->getBuildings() as $building){
             $building->cancel();
         }
+    }
+
+    /**
+     * @return Collection<int, UrbanRegulation>
+     */
+    public function getUrbanRegulations(): Collection
+    {
+        return $this->urbanRegulations;
+    }
+
+    public function addUrbanRegulation(UrbanRegulation $urbanRegulation): static
+    {
+        if (!$this->urbanRegulations->contains($urbanRegulation)) {
+            $this->urbanRegulations->add($urbanRegulation);
+        }
+
+        return $this;
+    }
+
+    public function removeUrbanRegulation(UrbanRegulation $urbanRegulation): static
+    {
+        $this->urbanRegulations->removeElement($urbanRegulation);
+
+        return $this;
     }
 
 

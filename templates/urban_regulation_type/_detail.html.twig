@@ -1,0 +1,46 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="urban_regulation_type_detail_' ~ urban_regulation_type.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_urban_regulation_type_new',
+            label: 'Nuevo',
+            title: 'Nuevo tipo de regulación urbana',
+            entity: urban_regulation_type,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ urban_regulation_type.name }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_urban_regulation_type_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_urban_regulation_type_edit', label: 'Editar', title:'Editar tipo de regulación urbana'},
+            delete: {href: 'app_urban_regulation_type_delete', label: 'Eliminar', title:'Eliminar tipo de regulación urbana'},
+            id: location_zone.id,
+            message: 'Está seguro que desea eliminar el tipo de regulación urbana?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

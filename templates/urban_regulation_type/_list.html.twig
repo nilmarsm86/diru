@@ -1,0 +1,56 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de tipos de regulaciones urbanas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_urban_regulation_type_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo tipo de regulación urbana', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_urban_regulation_type_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for urban_regulation_type in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ urban_regulation_type.name }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id}), 'fa:edit', '', 'Editar tipo de regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_urban_regulation_type_delete', {'id': urban_regulation_type.id}),
+                                confirm: 'Está seguro que desea eliminar el tipo de regulación urbana?',
+                                token: 'delete' ~ urban_regulation_type.id,
+                                title: 'Eliminar tipo de regulación urbana',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron tipos de regulaciones urbanas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

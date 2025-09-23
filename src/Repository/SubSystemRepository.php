@@ -84,14 +84,14 @@ class SubSystemRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Floor $entity
+     * @param SubSystem $entity
      * @param bool $flush
      * @return void
      * @throws Exception
      */
     public function remove(SubSystem $entity, bool $flush = false): void
     {
-        if($entity->hasSubSystems()){
+        if($entity->hasLocals()){
             throw new Exception('El subsistema aun tiene locales asociados. Elimine los mismos primero.', 1);
         }
 

@@ -24,7 +24,7 @@ class UrbanRegulationTypeFixtures extends Fixture implements FixtureGroupInterfa
             $urbanRegulationType = $manager->getRepository(UrbanRegulationType::class)->findOneBy(['name' => $type]);
             if(is_null($urbanRegulationType)){
                 $urbanRegulationTypeEntity = new UrbanRegulationType();
-                $urbanRegulationTypeEntity->setName($type);
+                $urbanRegulationTypeEntity->setName(ucfirst(strtolower($type)));
 
                 $manager->persist($urbanRegulationTypeEntity);
             }

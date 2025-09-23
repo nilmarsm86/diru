@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Nuevo tipo de regulacion urbana{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Tipos de regulaciones urbanas') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Tipos', href: path('app_urban_regulation_type_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar tipo de regulación urbana</h2>
+
+    {{ include('urban_regulation_type/_form.html.twig', {showButton: true, title: title}) }}
+{% endblock %}

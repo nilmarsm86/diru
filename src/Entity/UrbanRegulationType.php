@@ -7,8 +7,10 @@ use App\Repository\UrbanRegulationTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: UrbanRegulationTypeRepository::class)]
+#[DoctrineAssert\UniqueEntity(fields: ['name'], message: 'Ya existe un tipo de regulación urbana con este nombre.')]
 class UrbanRegulationType
 {
     use NameToStringTrait;
@@ -62,5 +64,10 @@ class UrbanRegulationType
         }
 
         return $this;
+    }
+
+    public function hasUrbanRegulations(): bool
+    {
+        return $this->getUrbanRegulations()->count() > 0;
     }
 }

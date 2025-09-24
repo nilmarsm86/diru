@@ -42,14 +42,16 @@
                         <td>{{ urban_regulation.legalReference }}</td>
                         <td>{{ urban_regulation.type }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_urban_regulation_edit', {'id': urban_regulation.id}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_edit', {'id': urban_regulation.id})})) }}
+                            {{ tableActionButton3(path('app_urban_regulation_show', {'id': urban_regulation.id}), 'bi:eye', '', 'Detalle de la regulación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_show', {'id': urban_regulation.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_urban_regulation_edit', {'id': urban_regulation.id}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_edit', {'id': urban_regulation.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_urban_regulation_delete', {'id': urban_regulation.id}),
                                 confirm: 'Está seguro que desea eliminar la regulación urbana?',
                                 token: 'delete' ~ urban_regulation.id,
                                 title: 'Eliminar regulación urbana',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

@@ -6,6 +6,7 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType;
 use App\Repository\UrbanRegulationRepository;
+use App\Repository\UrbanRegulationTypeRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -40,14 +41,29 @@ final class UrbanRegulationForm extends AbstractController
     #[LiveProp]
     public UrbanRegulation $entity;
 
+    #[LiveProp(writable: true)]
+    public ?int $type = 0;
+
     public function mount(?UrbanRegulation $ur = null): void
     {
         $this->ur = (is_null($ur)) ? new UrbanRegulation() : $ur;
         $this->entity = $this->ur;
     }
 
+    /**
+     * @return void
+     */
+    public function preValue(): void
+    {
+        if ($this->type !== 0) {
+            $this->formValues['type'] = (string)$this->type;
+            $this->type = 0;
+        }
+    }
+
     protected function instantiateForm(): FormInterface
     {
+        $this->preValue();
         return $this->createForm(\App\Form\UrbanRegulationType::class, $this->ur);
     }
 
@@ -55,8 +71,10 @@ final class UrbanRegulationForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(UrbanRegulationRepository $urbanRegulationRepository): ?Response
+    public function save(UrbanRegulationRepository $urbanRegulationRepository, UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {
+        $this->preValue();
+
         $successMsg = (is_null($this->ur->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.';//TODO: personalizar los mensajes
 
         $this->submitForm();
@@ -64,6 +82,11 @@ final class UrbanRegulationForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var UrbanRegulation $ur */
             $ur = $this->getForm()->getData();
+
+            if (!empty($this->formValues['type'])) {
+                $type = $urbanRegulationTypeRepository->find((int)$this->formValues['type']);
+                $ur->setType($type);
+            }
 
             $urbanRegulationRepository->save($ur, true);
 

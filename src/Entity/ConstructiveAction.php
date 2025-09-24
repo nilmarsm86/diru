@@ -20,6 +20,7 @@ class ConstructiveAction
     private const DEMOLISHED = 'Demolición';
     private const DELETED = 'Eliminación';
     public const REMOVE_ACTIONS = [self::DEMOLISHED, self::DELETED];
+    public const STRUCTURAL_CHANGE_ACTIONS = ['Rehabilitación', 'Demolición', 'Ampliación', 'Obra nueva', 'Eliminación', 'Remodelación'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

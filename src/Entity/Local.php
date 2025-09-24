@@ -543,12 +543,17 @@ class Local
 
     public function hasBackgroundColorOfChange(): bool
     {
-        return $this->isNewStructure() || $this->hasChangesFromOriginal() || $this->hasRemoveConstructiveAction();
+        return $this->isNewStructure() || $this->hasChangesFromOriginal() || $this->hasRemoveConstructiveAction() || $this->hasStructuralChange();
     }
 
     public function hasRemoveConstructiveAction(): bool
     {
         return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::REMOVE_ACTIONS);
+    }
+
+    public function hasStructuralChange(): bool
+    {
+        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::STRUCTURAL_CHANGE_ACTIONS);
     }
 
 }

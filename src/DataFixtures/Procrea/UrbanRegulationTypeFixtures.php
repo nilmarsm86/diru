@@ -11,15 +11,18 @@ use App\Entity\Organism;
 
 class UrbanRegulationTypeFixtures extends Fixture implements FixtureGroupInterface
 {
+    const TYPES = [
+        'COS',
+        'Alturas',
+        'Disposición de la edificación en la parcela',
+        'Alineación de las edificaciones',
+        'Tipo y elementos de fachada principal',
+        'Usos y funciones (clasificación de subsistemas)'
+    ];
+
     public function load(ObjectManager $manager): void
     {
-        $types = [
-            'ALTURAS',
-            'DISPOSICIÓN DE LA EDIFICACIÓN EN LA PARCELA',
-            'ALINEACIÓN DE LAS EDIFICACIONES',
-            'TIPO Y ELMENTOS DE FACHADA PRINCIPAL',
-            'USOS Y FUNCIONES (CLASIFICACIÓN DE SUBSISTEMAS)'
-        ];
+        $types = self::TYPES;
         foreach ($types as $type){
             $urbanRegulationType = $manager->getRepository(UrbanRegulationType::class)->findOneBy(['name' => $type]);
             if(is_null($urbanRegulationType)){

@@ -27,7 +27,7 @@ enum ConstructiveActionType: string
 
         return match ($enum) {
             self::NoModifier => 'No modificadora',//translate
-            self::Modifier => 'Nodificadora',//translate
+            self::Modifier => 'Modificadora',//translate
             default => '-Seleccione-'//translate
         };
     }

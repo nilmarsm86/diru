@@ -1,0 +1,74 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="urban_regulation_detail_' ~ urban_regulation.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_urban_regulation_new',
+            label: 'Nueva',
+            title: 'Nueva regulación urbana',
+            entity: urban_regulation,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Código:</th>
+                    <td>{{ urban_regulation.code }}</td>
+                </tr>
+                <tr>
+                    <th>Descripción:</th>
+                    <td>{{ urban_regulation.description }}</td>
+                </tr>
+                <tr>
+                    <th>Dato:</th>
+                    <td>{{ urban_regulation.data }}</td>
+                </tr>
+                <tr>
+                    <th>Unidad de medida:</th>
+                    <td>{{ urban_regulation.measurementUnit }}</td>
+                </tr>
+                <tr>
+                    <th>Foto:</th>
+                    <td>{{ urban_regulation.photo }}</td>
+                </tr>
+                <tr>
+                    <th>Comentario:</th>
+                    <td>{{ urban_regulation.comment }}</td>
+                </tr>
+                <tr>
+                    <th>Referencia legal:</th>
+                    <td>{{ urban_regulation.legalReference }}</td>
+                </tr>
+                <tr>
+                    <th>Tipo:</th>
+                    <td>{{ urban_regulation.type }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_urban_regulation_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_urban_regulation_edit', label: 'Editar', title:'Editar regulación urbana'},
+            delete: {href: 'app_urban_regulation_delete', label: 'Eliminar', title:'Eliminar regulación urbana'},
+            id: location_zone.id,
+            message: 'Está seguro que desea eliminar la regulación urbana?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

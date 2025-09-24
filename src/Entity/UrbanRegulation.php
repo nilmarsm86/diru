@@ -26,7 +26,7 @@ class UrbanRegulation
     private ?string $data = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $MeasurementUnit = null;
+    private ?string $measurementUnit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
@@ -95,12 +95,12 @@ class UrbanRegulation
 
     public function getMeasurementUnit(): ?string
     {
-        return $this->MeasurementUnit;
+        return $this->measurementUnit;
     }
 
-    public function setMeasurementUnit(string $MeasurementUnit): static
+    public function setMeasurementUnit(string $measurementUnit): static
     {
-        $this->MeasurementUnit = $MeasurementUnit;
+        $this->measurementUnit = $measurementUnit;
 
         return $this;
     }

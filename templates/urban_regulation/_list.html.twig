@@ -1,0 +1,67 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de regulaciones urbanas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_urban_regulation_new'), 'bi:plus-lg', 'Nueva', 'Nueva regulación urbana', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_urban_regulation_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Código</th>
+                    <th>Dato</th>
+                    <th>Unidad de Medida</th>
+                    <th>Referencia legal</th>
+                    <th>Tipo</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for urban_regulation in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td data-bs-toggle="tooltip"
+                            data-bs-title="{{ urban_regulation.description }}">
+                            {{ urban_regulation.code }}
+                        </td>
+                        <td>{{ urban_regulation.data }}</td>
+                        <td>{{ urban_regulation.measurementUnit }}</td>
+                        <td>{{ urban_regulation.legalReference }}</td>
+                        <td>{{ urban_regulation.type }}</td>
+                        <td class="text-end">
+                            {{ tableActionButton3(path('app_urban_regulation_edit', {'id': urban_regulation.id}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_edit', {'id': urban_regulation.id})})) }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_urban_regulation_delete', {'id': urban_regulation.id}),
+                                confirm: 'Está seguro que desea eliminar la regulación urbana?',
+                                token: 'delete' ~ urban_regulation.id,
+                                title: 'Eliminar regulación urbana',
+                                icon: 'bi:trash'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron regulaciones urbanas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

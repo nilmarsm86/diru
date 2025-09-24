@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Role;
 use App\Entity\UrbanRegulationType;
-use App\Form\UrbanRegulationTypeType;
 use App\Repository\UrbanRegulationTypeRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +16,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[IsGranted(Role::ROLE_DRAFTSMAN)]
-#[Route('/urban/regulation/type')]
+#[Route('/urban/regulation-type')]
 final class UrbanRegulationTypeController extends AbstractController
 {
     /**

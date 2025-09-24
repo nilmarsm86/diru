@@ -96,6 +96,7 @@
                 {% for local in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}
                         class="
+                        {% if local.hasStructuralChange() %} table-secondary {% endif %}
                         {% if local.isNewStructure() %} table-success {% endif %}
                         {% if local.hasChangesFromOriginal() %} table-info {% endif %}
                         {% if local.hasRemoveConstructiveAction() %} table-danger {% endif %}

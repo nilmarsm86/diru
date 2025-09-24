@@ -12,7 +12,12 @@ class UrbanRegulationTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del tipo de regulación urbana',
+                ],
+            ])
         ;
     }
 

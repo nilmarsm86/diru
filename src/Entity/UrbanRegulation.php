@@ -47,7 +47,7 @@ class UrbanRegulation
 
     #[ORM\ManyToOne(inversedBy: 'urbanRegulations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'Seleccione el tipo de regulación.')]
+    #[Assert\NotBlank(message: 'Seleccione o cree el tipo de regulación.')]
     #[Assert\Valid]
     private ?UrbanRegulationType $type = null;
 

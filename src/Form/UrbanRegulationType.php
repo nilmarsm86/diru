@@ -2,17 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Project;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType as Type;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\Types\EntityPlusType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UrbanRegulationType extends AbstractType
 {
+    public function __construct(
+        private readonly RouterInterface            $router,
+    )
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -56,9 +64,23 @@ class UrbanRegulationType extends AbstractType
                     'placeholder' => 'Referencia legal que sustenta la regulación'
                 ]
             ])
-            ->add('type', EntityType::class, [
+            ->add('type', EntityPlusType::class, [
                 'class' => Type::class,
                 'choice_label' => 'name',
+                'label' => 'Tipo de regulación',
+
+                'detail' => true,
+                'detail_title' => 'Detalle del tipo de regulación',
+                'detail_id' => 'modal-load',//'detail_investment_entity',
+                'detail_url' => $this->router->generate('app_urban_regulation_type_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar tipo',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_urban_regulation_type_new', ['modal' => 'modal-load']),
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Seleccione o cree el tipo de regulación.')
+                ]
             ])
 //            ->add('projects', EntityType::class, [
 //                'class' => Project::class,
@@ -72,6 +94,9 @@ class UrbanRegulationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UrbanRegulation::class,
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ],
         ]);
     }
 }

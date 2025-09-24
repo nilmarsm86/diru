@@ -7,8 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+
 
 #[ORM\Entity(repositoryClass: UrbanRegulationRepository::class)]
+#[DoctrineAssert\UniqueEntity(fields: ['code'], message: 'Ya existe una regulación urbana con este código.')]
 class UrbanRegulation
 {
     #[ORM\Id]
@@ -17,15 +21,19 @@ class UrbanRegulation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'El código de la regulación está vacío.')]
     private ?string $code = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'El descripción de la regulación está vacía.')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'El dato de la regulación está vacío.')]
     private ?string $data = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La unidad de medida de la regulación está vacía.')]
     private ?string $measurementUnit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -39,6 +47,8 @@ class UrbanRegulation
 
     #[ORM\ManyToOne(inversedBy: 'urbanRegulations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Seleccione el tipo de regulación.')]
+    #[Assert\Valid]
     private ?UrbanRegulationType $type = null;
 
     /**

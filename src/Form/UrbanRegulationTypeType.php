@@ -25,6 +25,9 @@ class UrbanRegulationTypeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UrbanRegulationType::class,
+            'attr' => [
+                'novalidate' => 'novalidate'
+            ],
         ]);
     }
 }

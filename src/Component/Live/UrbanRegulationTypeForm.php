@@ -74,7 +74,7 @@ final class UrbanRegulationTypeForm extends AbstractController
             $this->entity = $this->urt;
             if (!is_null($this->modal)) {
                 $this->modalManage($urt, 'Se ha seleccionado el tipo de regulación urbana.', [
-                    'urbanRegulationType' => $urt->getId()
+                    'type' => $urt->getId()
                 ]);
                 return null;
             }

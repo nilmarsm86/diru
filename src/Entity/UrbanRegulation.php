@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\UrbanRegulationStructure;
 use App\Repository\UrbanRegulationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
-
 #[ORM\Entity(repositoryClass: UrbanRegulationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['code'], message: 'Ya existe una regulación urbana con este código.')]
 class UrbanRegulation
 {
@@ -56,6 +58,15 @@ class UrbanRegulation
      */
     #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'urbanRegulations')]
     private Collection $projects;
+
+    #[ORM\Column(length: 255)]
+    private string $structure;
+
+    #[Assert\Choice(
+        choices: UrbanRegulationStructure::CHOICES,
+        message: 'Seleccione la estructura sobre la cual se aplica esta regulación.'
+    )]
+    private UrbanRegulationStructure $enumStructure;
 
     public function __construct()
     {
@@ -188,5 +199,34 @@ class UrbanRegulation
         }
 
         return $this;
+    }
+
+    public function getStructure(): UrbanRegulationStructure
+    {
+        return $this->enumStructure;
+    }
+
+    public function setStructure(UrbanRegulationStructure $enumStructure): static
+    {
+        $this->structure = "";
+        $this->enumStructure = $enumStructure;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function onSave(): void
+    {
+        $this->structure = $this->getStructure()->value;
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[ORM\PostLoad]
+    public function onLoad(): void
+    {
+        $this->setStructure(UrbanRegulationStructure::from($this->structure));
     }
 }

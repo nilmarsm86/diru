@@ -24,6 +24,7 @@
                     <th>Unidad de Medida</th>
                     <th>Referencia legal</th>
                     <th>Tipo</th>
+                    <th>Estructura</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -41,6 +42,8 @@
                         <td>{{ urban_regulation.measurementUnit }}</td>
                         <td>{{ urban_regulation.legalReference }}</td>
                         <td>{{ urban_regulation.type }}</td>
+{#                        <td>{{ urban_regulation.structure.getLabelFrom(urban_regulation.structure) }}</td>#}
+                        <td>{{ get_label_from(urban_regulation.structure) }}</td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_urban_regulation_show', {'id': urban_regulation.id}), 'bi:eye', '', 'Detalle de la regulación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_show', {'id': urban_regulation.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_urban_regulation_edit', {'id': urban_regulation.id}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_edit', {'id': urban_regulation.id})}), 'btn-link') }}

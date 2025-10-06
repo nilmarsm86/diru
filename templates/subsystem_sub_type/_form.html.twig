@@ -1,0 +1,41 @@
+{% if app.request.query.get('modal') %}
+    {{ component('SubsystemSubTypeForm', {modal:app.request.query.get('modal'), ssst: subsystem_sub_type, ajax: ajax}) }}
+{% else %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
+
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_subsystem_sub_type_new',
+                label: 'Nuevo',
+                title: 'Nuevo sub tipo',
+                entity: subsystem_sub_type,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
+
+        {% block body %}
+            {{ component('SubsystemSubTypeForm', {modal:null, ssst: subsystem_sub_type, ajax: ajax}) }}
+        {% endblock %}
+
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_subsystem_sub_type_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_subsystem_sub_type_delete', label: 'Eliminar', title:'Eliminar sub tipo'},
+                id: subsystem_sub_type.id,
+                message: 'Está seguro que desea eliminar el sub tipo?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: subsystem_sub_type
+            }) }}
+        {% endblock %}
+
+    {% endcomponent %}
+{% endif %}
+
+{{ include('partials/modal/_modal_load.html.twig') }}

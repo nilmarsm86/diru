@@ -1,0 +1,61 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="subsystem_type_detail_' ~ subsystem_type.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_subsystem_type_new',
+            label: 'Nueva',
+            title: 'Nuevo tipo',
+            entity: subsystem_type,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ subsystem_type.name }}</td>
+                </tr>
+                <tr>
+                    <th>Sub tipos:</th>
+                    <td>
+                        <ul class="px-0 list-unstyled">
+                            {% for subType in subsystem_type.subTypes %}
+                                <li>
+                                    <a href="{{ path('app_subsystem_sub_type_show', {'id': subType.id}) }}" target="_blank">
+                                        {{ subType.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="text-danger">No tiene sub tipos asociados</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_subsystem_type_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_subsystem_type_edit', label: 'Editar', title:'Editar tipo'},
+            delete: {href: 'app_subsystem_type_delete', label: 'Eliminar', title:'Eliminar tipo'},
+            id: subsystem_type.id,
+            message: 'Está seguro que desea eliminar el tipo?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+

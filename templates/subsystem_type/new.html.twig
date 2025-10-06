@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Nuevo tipo{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Tipos') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Tipos', href: path('app_subsystem_type_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar tipo</h2>
+
+    {{ include('subsystem_type/_form.html.twig', {showButton: true, title: title}) }}
+{% endblock %}

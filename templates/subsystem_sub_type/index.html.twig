@@ -1,0 +1,25 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Sub tipos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Sub tipos') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Sub tipos'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de sub tipos de subsistemas</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('subsystem_sub_type/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

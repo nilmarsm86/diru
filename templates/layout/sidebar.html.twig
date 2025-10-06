@@ -121,6 +121,35 @@
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                            data-bs-toggle="collapse" data-bs-target="#subsystem-collapse"
+                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}true{% else %}false{% endif %}"
+                            style="width:100%;text-align:left">
+                        <span class="d-inline-flex align-items-center">Subsistemas</span>
+                    </button>
+                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}show{% else %}hide{% endif %}" id="subsystem-collapse">
+                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
+                            data-bs-theme="light"
+                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_subsystem_type_index') }}"
+                                   href="{{ path('app_subsystem_type_index') }}"
+                                >
+                                    {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }}
+                                    Tipos
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_subsystem_sub_type_index') }}"
+                                   href="{{ path('app_subsystem_sub_type_index') }}">
+                                    {{ ux_icon('lets-icons:paper', {class:'bi'}) }}
+                                    Sub tipos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                             data-bs-toggle="collapse" data-bs-target="#regulation-collapse"
                             aria-expanded="{% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}true{% else %}false{% endif %}"
                             style="width:100%;text-align:left">
@@ -131,7 +160,7 @@
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
                             <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center" {{ activeLink('app_urban_regulation_type_index') }}
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urban_regulation_type_index') }}"
                                    href="{{ path('app_urban_regulation_type_index') }}"
                                 >
                                     {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }}
@@ -139,7 +168,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center" {{ activeLink('app_urban_regulation_index') }}
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urban_regulation_index') }}"
                                    href="{{ path('app_urban_regulation_index') }}">
                                     {{ ux_icon('lets-icons:paper', {class:'bi'}) }}
                                     Reg. urbanas

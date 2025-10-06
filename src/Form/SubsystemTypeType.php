@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Province;
+use App\Entity\SubsystemType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
-class ProvinceType extends AbstractType
+class SubsystemTypeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -16,22 +16,23 @@ class ProvinceType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la provincia'
+                    'placeholder' => 'Nombre del tipo de subsistema'
                 ]
             ])
-            ->add('municipalities', LiveCollectionType::class, [
-                'entry_type' => MunicipalityType::class,
+            ->add('subTypes', LiveCollectionType::class, [
+                'entry_type' => SubsystemSubTypeType::class,
                 'button_delete_options' => [
                     'label_html' => true
                 ],
                 'error_bubbling' => false
             ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Province::class,
+            'data_class' => SubsystemType::class,
             'attr' => [
                 'novalidate' => 'novalidate'
             ],

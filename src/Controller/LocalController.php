@@ -105,6 +105,7 @@ final class LocalController extends AbstractController
     #[Route('/wall/{subSystem}/{area}/{reply}', name: 'app_local_wall', methods: ['GET'])]
     public function wall(Request $request, EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, int $area, bool $reply = false): Response
     {
+        $area = $area / 100;
         $automaticWall = Local::createAutomaticWall($subSystem, $area, ($subSystem->getMaxLocalNumber() + 1), $reply, $entityManager);
 
         $localRepository->save($automaticWall, true);

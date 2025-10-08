@@ -19,7 +19,8 @@
     {% endif %}
 </div>
 
-<details class="collection" {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther > 0 %}open{% endif %}>
+<details class="collection"
+         {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valores aprobados:</div>
@@ -52,7 +53,8 @@
     </div>
 </details>
 
-<details class="collection" {% if estimatedValueConstruction.vars.data > 0 or estimatedValueEquipment.vars.data > 0 or estimatedValueOther > 0 %}open{% endif %}>
+<details class="collection"
+         {% if estimatedValueConstruction.vars.data > 0 or estimatedValueEquipment.vars.data > 0 or estimatedValueOther > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valores estimados:</div>
@@ -63,33 +65,37 @@
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-        <div class="col">
+        <div class="col-4">
             {{ form_row(estimatedValueConstruction) }}
         </div>
-        <div class="col">
-            <div class="mb-3">
-                <label for="building_estimatedValueConstruction" class="form-label">
-                    precio de proyecto y preparacion tecnica:
-                </label>
-                <div class="input-group ">
-                    <input type="number" id="building_estimatedValueConstruction" name="building[estimatedValueConstruction]" placeholder="0" min="0" data-summation-values-target="field" data-currency-target="field" class="form-control" value="10000.00">
-                    <span class="input-group-text"> m<sub>2</sub></span>
-                </div>
-            </div>
+        <div class="col-4">
+            {{ form_row(projectPriceTechnicalPreparation) }}
+            {#            <div class="mb-3"> #}
+            {#                <label for="building_estimatedValueConstruction" class="form-label"> #}
+            {#                    precio de proyecto y preparacion tecnica: #}
+            {#                </label> #}
+            {#                <div class="input-group "> #}
+            {#                    <input type="number" id="building_estimatedValueConstruction" name="building[estimatedValueConstruction]" placeholder="0" min="0" data-summation-values-target="field" data-currency-target="field" class="form-control" value="10000.00"> #}
+            {#                    <span class="input-group-text"> m<sub>2</sub></span> #}
+            {#                </div> #}
+            {#            </div> #}
         </div>
-        <div class="col">
-            <p class="text-end">Total:</p>
-            <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
+        <div class="col-4">
+            <p class="text-end">VEC + PPPT:</p>
+            <h5 class="text-end">{# $ #}
+                <span class="badge text-bg-info vecpppt">
                         {{ 0|number_format(2) }}
                     </span>
+            </h5>
         </div>
-        <div class="col">
+
+        <div class="col-4">
             {{ form_row(estimatedValueEquipment) }}
         </div>
-        <div class="col">
+        <div class="col-4">
             {{ form_row(estimatedValueOther) }}
         </div>
-        <div class="col">
+        <div class="col-4">
             <div class="mb-3">
                 <p class="text-end">Total:</p>
                 <h5 class="text-end">{# $ #}
@@ -148,8 +154,7 @@
                     {% if form_errors(connection.networkConnection) or
                         form_errors(connection.type) or
                         form_errors(connection.longitude) or
-                        form_errors(connection.technicalStatus)
-                    %}
+                        form_errors(connection.technicalStatus) %}
                         <div class="invalid-feedback d-inline">Revise los errores.</div>
                     {% endif %}
                 </div>
@@ -189,8 +194,7 @@
                                 Acción constructiva:
                                 {% if form_errors(connection.landNetworkConnectionConstructiveAction.constructiveAction) or
                                     form_errors(connection.landNetworkConnectionConstructiveAction.price) or
-                                    form_errors(connection.landNetworkConnectionConstructiveAction.constructiveSystem)
-                                %}
+                                    form_errors(connection.landNetworkConnectionConstructiveAction.constructiveSystem) %}
                                     <div class="invalid-feedback d-inline">Revise los errores.</div>
                                 {% endif %}
                             </div>

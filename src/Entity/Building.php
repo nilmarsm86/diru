@@ -68,6 +68,10 @@ class Building implements MeasurementDataInterface
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueOther = 0;
 
+    #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+    private ?int $projectPriceTechnicalPreparation = 0;
+
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
@@ -132,6 +136,8 @@ class Building implements MeasurementDataInterface
         $this->approvedValueConstruction = 0;
         $this->approvedValueEquipment = 0;
         $this->approvedValueOther = 0;
+
+        $this->projectPriceTechnicalPreparation = 0;
 
         $this->setState(BuildingState::Registered);
         $this->draftsmansBuildings = new ArrayCollection();
@@ -270,9 +276,21 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
+    public function getProjectPriceTechnicalPreparation(): ?int
+    {
+        return $this->projectPriceTechnicalPreparation;
+    }
+
+    public function setProjectPriceTechnicalPreparation(?int $projectPriceTechnicalPreparation): static
+    {
+        $this->projectPriceTechnicalPreparation = $projectPriceTechnicalPreparation;
+
+        return $this;
+    }
+
     public function getTotalEstimatedValue(): int|string|null
     {
-        return $this->getEstimatedValueConstruction() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther();
+        return $this->getEstimatedValueConstruction() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther() + $this->projectPriceTechnicalPreparation;
     }
 
     public function getTotalApprovedValue(): ?int
@@ -613,7 +631,7 @@ class Building implements MeasurementDataInterface
         return $this->getLand()->getLandArea();
     }
 
-    public function getOccupiedArea(): ?int
+    public function getOccupiedArea(): ?float
     {
         //TODO: esto esta mal, debe ser por sumatoria tambien de sus elementos, pues si se derrumba algo el numero no es real
         return $this->getLand()->getOccupiedArea();
@@ -653,7 +671,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getMaxArea(): ?int
+    public function getMaxArea(): ?float
     {
         return ($this->isNew) ? $this->getLandArea() : $this->getOccupiedArea();
     }
@@ -683,7 +701,7 @@ class Building implements MeasurementDataInterface
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = null): ?int
+    public function getUnassignedArea(bool $original = null): ?float
     {
         return $this->getMeasurementData('getUnassignedArea', $original);
     }
@@ -985,7 +1003,7 @@ class Building implements MeasurementDataInterface
         return $locals;
     }
 
-    public function getAmountMeters(): ?int
+    public function getAmountMeters(): ?float
     {
         $total = 0;
         $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();

@@ -44,6 +44,10 @@ export default class extends AbstractController {
             currency: 'USD',
         });
         this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + Number(field.value), 0));
+        if(this.element.querySelector('.vecpppt')){
+            // this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").entries().reduce((accumulator, field) => accumulator + Number(field.value), 0));
+            this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + Number(field.value), 0));
+        }
     }
 
 

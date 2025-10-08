@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\SubsystemFunctionalClassification;
 use App\Entity\SubsystemType;
+use App\Form\Types\EntityPlusType;
+use App\Form\Types\SubsystemFunctionalClassificationEnumType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,14 +23,16 @@ class SubsystemTypeType extends AbstractType
                     'placeholder' => 'Nombre del tipo de subsistema'
                 ]
             ])
-            ->add('subTypes', LiveCollectionType::class, [
+            ->add('subsystemSubTypes', LiveCollectionType::class, [
                 'entry_type' => SubsystemSubTypeType::class,
                 'button_delete_options' => [
                     'label_html' => true
                 ],
                 'error_bubbling' => false
+            ])
+            ->add('classification', SubsystemFunctionalClassificationEnumType::class, [
+                'label' => 'Clasificación:',
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

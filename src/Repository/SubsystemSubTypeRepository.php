@@ -60,10 +60,6 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
     {
         if($filter){
             $predicate = "ssst.name LIKE :filter ";
-//            if($place){
-//                $predicate .= "OR ssst.name LIKE :filter ";
-//            }
-
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
         }

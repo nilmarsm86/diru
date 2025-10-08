@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Land;
-use App\Form\Types\UnitMeasurementType;
+use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,14 +49,14 @@ class LandType extends AbstractType
         }
 
         $form
-            ->add('landArea', UnitMeasurementType::class, [
+            ->add('landArea', UnitMeasurementFloatType::class, [
                 'unit' => 'm<sup>2</sup>',
                 'label' => "Área de terreno:",
                 'attr' => [
                         'min' => 0
                     ] + $disabled
             ])
-            ->add('occupiedArea', UnitMeasurementType::class, [
+            ->add('occupiedArea', UnitMeasurementFloatType::class, [
                 'unit' => 'm<sup>2</sup>',
                 'label' => "Área ocupada:",
                 'attr' => [
@@ -64,7 +64,7 @@ class LandType extends AbstractType
                     ] + $disabled,
                 'required' => false
             ])
-            ->add('perimeter', UnitMeasurementType::class, [
+            ->add('perimeter', UnitMeasurementFloatType::class, [
                 'unit' => 'm',
                 'label' => "Perímetro:",
                 'attr' => [

@@ -130,7 +130,7 @@ class Floor implements MeasurementDataInterface
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = null): ?int
+    public function getUnassignedArea(bool $original = null): ?float
     {
 //        if($this->getBuilding()->isNew()){
 //            return $this->getBuilding()->getLandArea() - $this->getTotalArea();
@@ -396,7 +396,7 @@ class Floor implements MeasurementDataInterface
         return $this->getTotalArea() > $this->getBuilding()->getOccupiedArea();
     }
 
-    public function getExtraSpace(): ?int
+    public function getExtraSpace(): ?float
     {
         $extraSpace = $this->getTotalArea() - $this->getBuilding()->getOccupiedArea();
         if($extraSpace < 0){
@@ -457,7 +457,7 @@ class Floor implements MeasurementDataInterface
         return $locals;
     }
 
-    public function getAmountMeters(): ?int
+    public function getAmountMeters(): ?float
     {
         $total = 0;
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();

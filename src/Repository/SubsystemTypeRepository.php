@@ -71,7 +71,9 @@ class SubsystemTypeRepository extends ServiceEntityRepository
      */
     public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('sst');
+        $builder = $this->createQueryBuilder('sst')
+            ->select(['sst', 'ssfc'])
+            ->leftJoin('sst.subsystemSubTypes', 'ssfc');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('sst.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
@@ -85,7 +87,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository
      */
     public function remove(SubsystemType $entity, bool $flush = false): void
     {
-        if($entity->getSubTypes()->count() > 0){
+        if($entity->getSubsystemSubTypes()->count() > 0){
             throw new Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
         }
 

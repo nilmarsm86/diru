@@ -82,10 +82,10 @@
 
             {% block message %}
                 {% if building.isNew() %}
-                    Área de terreno de la obra: {{ building.getLandArea() }}m<sup>2</sup>.
+                    Área de terreno de la obra: {{ building.getLandArea()|number_format(2) }}m<sup>2</sup>.
                 {% else %}
-                    Área ocupada de la obra: {{ building.getOccupiedArea() }}m
-                    <sup>2</sup> de un área de terreno de {{ building.getLandArea() }}m<sup>2</sup>.
+                    Área ocupada de la obra: {{ building.getOccupiedArea()|number_format(2) }}m
+                    <sup>2</sup> de un área de terreno de {{ building.getLandArea()|number_format(2) }}m<sup>2</sup>.
                 {% endif %}
             {% endblock %}
 
@@ -145,12 +145,12 @@
 
                         <td>
                             {% if floor.isFullyOccupied() %}
-                                {{ floor.getUsefulArea() }}
+                                {{ floor.getUsefulArea()|number_format(2) }}
                             {% else %}
                                 <span class="text-warning" data-bs-toggle="tooltip"
                                       data-bs-title="Queda espacio sin aprovechar."
                                       data-bs-custom-class="warning-tooltip" style="cursor: pointer">
-                                    {{ floor.getUsefulArea() }}
+                                    {{ floor.getUsefulArea()|number_format(2) }}
                                 </span>
                             {% endif %}
                         </td>
@@ -159,24 +159,24 @@
                                 <span class="text-danger" data-bs-toggle="tooltip"
                                       data-bs-title="Debe tener área de muro." data-bs-custom-class="danger-tooltip"
                                       style="cursor: pointer">
-                                    {{ floor.getWallArea() }}
+                                    {{ floor.getWallArea()|number_format(2) }}
                                 </span>
                             {% else %}
-                                {{ floor.getWallArea() }}
+                                {{ floor.getWallArea()|number_format(2) }}
                             {% endif %}
                         </td>
-                        <td>{{ floor.getEmptyArea() }}</td>
-                        <td>{{ floor.getTotalArea() }}</td>
+                        <td>{{ floor.getEmptyArea()|number_format(2) }}</td>
+                        <td>{{ floor.getTotalArea()|number_format(2) }}</td>
                         <td>{{ floor.getMaxHeight()|number_format(2) }}</td>
-                        <td>{{ floor.getVolume() }}</td>
+                        <td>{{ floor.getVolume()|number_format(2) }}</td>
                         <td>
                             {% if floor.isFullyOccupied() %}
-                                {{ floor.getUnassignedArea() }}
+                                {{ floor.getUnassignedArea()|number_format(2) }}
                             {% else %}
                                 <span class="text-warning" data-bs-toggle="tooltip"
                                       data-bs-title="Queda espacio sin aprovechar."
                                       data-bs-custom-class="warning-tooltip" style="cursor: pointer">
-                                    {{ floor.getUnassignedArea() }}
+                                    {{ floor.getUnassignedArea()|number_format(2) }}
                                 </span>
                             {% endif %}
                         </td>
@@ -250,14 +250,14 @@
             {% block tableFooter %}
                 <tr>
                     <th colspan="3">Resumen del inmueble:</th>
-                    <th>{{ building.getUsefulArea(not reply) }}</th>
-                    <th>{{ building.getWallArea(not reply) }}</th>
-                    <th>{{ building.getEmptyArea(not reply) }}</th>
-                    <th>{{ building.getTotalArea(not reply) }}</th>
+                    <th>{{ building.getUsefulArea(not reply)|number_format(2) }}</th>
+                    <th>{{ building.getWallArea(not reply)|number_format(2) }}</th>
+                    <th>{{ building.getEmptyArea(not reply)|number_format(2) }}</th>
+                    <th>{{ building.getTotalArea(not reply)|number_format(2) }}</th>
                     <th>{{ building.getMaxHeight(not reply)|number_format(2) }}</th>
-                    <th>{{ building.getVolume(not reply) }}</th>
-                    <th>{{ building.getUnassignedArea(not reply) }}</th>
-                    <th class="text-end">CUS: {{ building.getCus(not reply) }}</th>
+                    <th>{{ building.getVolume(not reply)|number_format(2) }}</th>
+                    <th>{{ building.getUnassignedArea(not reply)|number_format(2) }}</th>
+                    <th class="text-end">CUS: {{ building.getCus(not reply)|number_format(2) }}</th>
                 </tr>
             {% endblock %}
 
@@ -294,7 +294,7 @@
 
             <tr>
                 <th>CUS:</th>
-                <td>{{ building.getCus(not reply) }}</td>
+                <td>{{ building.getCus(not reply)|number_format(2) }}</td>
 
                 <th>COS:</th>
                 <td>{{ building.getCos(not reply)|number_format(2) }} %</td>

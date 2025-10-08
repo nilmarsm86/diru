@@ -19,17 +19,17 @@ class Land
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área de terreno está vacía.')]
     #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
-    private ?int $landArea = null;
+    private ?float $landArea = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área ocupada está vacía.')]
     #[Assert\PositiveOrZero(message: 'El área ocupada debe ser positivo.')]
 //    #[Assert\Assert\LessThanOrEqual()]
-    private ?int $occupiedArea = null;
+    private ?float $occupiedArea = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\PositiveOrZero(message: 'El perímetro debe ser un número positivo.')]
-    private ?int $perimeter = null;
+    private ?float $perimeter = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
@@ -53,36 +53,36 @@ class Land
         return $this->id;
     }
 
-    public function getLandArea(): ?int
+    public function getLandArea(): ?float
     {
         return $this->landArea;
     }
 
-    public function setLandArea(int $landArea): static
+    public function setLandArea(float $landArea): static
     {
         $this->landArea = $landArea;
 
         return $this;
     }
 
-    public function getOccupiedArea(): ?int
+    public function getOccupiedArea(): ?float
     {
         return $this->occupiedArea;
     }
 
-    public function setOccupiedArea(int $occupiedArea): static
+    public function setOccupiedArea(float $occupiedArea): static
     {
         $this->occupiedArea = $occupiedArea;
 
         return $this;
     }
 
-    public function getPerimeter(): ?int
+    public function getPerimeter(): ?float
     {
         return $this->perimeter;
     }
 
-    public function setPerimeter(int $perimeter): static
+    public function setPerimeter(float $perimeter): static
     {
         $this->perimeter = $perimeter;
 

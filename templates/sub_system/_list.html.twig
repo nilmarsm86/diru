@@ -75,17 +75,17 @@
 
             {% block message %}
                 {% if floor.building.isNew() %}
-                    Área de terreno de la obra: {{ floor.building.getLandArea() }}m<sup>2</sup>,
+                    Área de terreno de la obra: {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,
                 {% else %}
-                    Área ocupada de la obra: {{ floor.building.getOccupiedArea() }}m
-                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea() }}m<sup>2</sup>,
+                    Área ocupada de la obra: {{ floor.building.getOccupiedArea()|number_format(2) }}m
+                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,
                 {% endif %}
                 {#                <br> #}
                 {% if floor.isFullyOccupied() %}
                     ocupados totalmente.
                 {% else %}
                     <br>
-                    quedan {{ floor.getUnassignedArea() }}m<sup>2</sup> por ocupar en esta planta.
+                    quedan {{ floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> por ocupar en esta planta.
                 {% endif %}
 
             {% endblock %}
@@ -142,21 +142,21 @@
 
                             {% endif %}
                         </td>
-                        <td>{{ sub_system.getUsefulArea() }}</td>
+                        <td>{{ sub_system.getUsefulArea()|number_format(2) }}</td>
                         <td>
                             {% if sub_system.notWallArea() %}
                                 <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Sin área de muro."
                                       data-bs-custom-class="warning-tooltip" style="cursor: pointer">
-                                    {{ sub_system.getWallArea() }}
+                                    {{ sub_system.getWallArea()|number_format(2) }}
                                 </span>
                             {% else %}
-                                {{ sub_system.getWallArea() }}
+                                {{ sub_system.getWallArea()|number_format(2) }}
                             {% endif %}
                         </td>
-                        <td>{{ sub_system.getEmptyArea() }}</td>
-                        <td>{{ sub_system.getTotalArea() }}</td>
+                        <td>{{ sub_system.getEmptyArea()|number_format(2) }}</td>
+                        <td>{{ sub_system.getTotalArea()|number_format(2) }}</td>
                         <td>{{ sub_system.getMaxHeight()|number_format(2) }}</td>
-                        <td>{{ sub_system.getVolume() }}</td>
+                        <td>{{ sub_system.getVolume()|number_format(2) }}</td>
                         <td>
                             {% if reply %}
                                 {{ ux_icon('bi:check-lg', {'class':'bi text-success'}) }}
@@ -241,12 +241,12 @@
                     <th colspan="2">Resumen de la planta:</th>
                     <th>
                         {% if floor.isFullyOccupied() %}
-                            {{ floor.getUsefulArea() }}
+                            {{ floor.getUsefulArea()|number_format(2) }}
                         {% else %}
                             <span class="text-warning" data-bs-toggle="tooltip"
                                   data-bs-title="Queda espacio sin aprovechar." data-bs-custom-class="warning-tooltip"
                                   style="cursor: pointer">
-                                {{ floor.getUsefulArea() }}
+                                {{ floor.getUsefulArea()|number_format(2) }}
                             </span>
                         {% endif %}
                     </th>
@@ -254,14 +254,14 @@
                         {% if floor.notWallArea() %}
                             <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Debe tener área de muro."
                                   data-bs-custom-class="danger-tooltip" style="cursor: pointer">
-                                {{ floor.getWallArea() }}
+                                {{ floor.getWallArea()|number_format(2) }}
                             </span>
                         {% else %}
-                            {{ floor.getWallArea() }}
+                            {{ floor.getWallArea()|number_format(2) }}
                         {% endif %}
                     </th>
-                    <th>{{ floor.getEmptyArea() }}</th>
-                    <th>{{ floor.getTotalArea() }}</th>
+                    <th>{{ floor.getEmptyArea()|number_format(2) }}</th>
+                    <th>{{ floor.getTotalArea()|number_format(2) }}</th>
                     <th>
                         {{ floor.getMaxHeight()|number_format(2) }}
                         {#                        {% if floor.hasVariableHeights() %} #}
@@ -272,7 +272,7 @@
                         {#                            {{ floor.getMaxHeight() }} #}
                         {#                        {% endif %} #}
                     </th>
-                    <th>{{ floor.getVolume() }}</th>
+                    <th>{{ floor.getVolume()|number_format(2) }}</th>
                     <th>
                         {% if floor.hasOriginalLocals() and floor.allLocalsAreClassified() and floor.notWallArea() == false %}
                             {{ ux_icon('ep:success-filled', {

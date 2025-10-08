@@ -121,7 +121,7 @@ class SubSystem implements MeasurementDataInterface
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = null): ?int
+    public function getUnassignedArea(bool $original = null): ?float
     {
         $isNew = $this->getFloor()->getBuilding()->isNew();
         $landArea = $this->getFloor()->getBuilding()->getLandArea();
@@ -220,7 +220,7 @@ class SubSystem implements MeasurementDataInterface
         return true;
     }
 
-    public function getUsefulArea(bool $original = null): int
+    public function getUsefulArea(bool $original = null): float
     {
         if ($this->getLocalsAmount() === 0) {
             return 0;
@@ -239,7 +239,7 @@ class SubSystem implements MeasurementDataInterface
         return $usefulArea;
     }
 
-    public function getWallArea(bool $original = null): int
+    public function getWallArea(bool $original = null): float
     {
         if ($this->getLocalsAmount() === 0) {
             return 0;
@@ -258,7 +258,7 @@ class SubSystem implements MeasurementDataInterface
         return $wallArea;
     }
 
-    public function getEmptyArea(bool $original = null): int
+    public function getEmptyArea(bool $original = null): float
     {
         if ($this->getLocalsAmount() === 0) {
             return 0;
@@ -345,7 +345,7 @@ class SubSystem implements MeasurementDataInterface
         ];
     }
 
-    public function getAmountMeters(): ?int
+    public function getAmountMeters(): ?float
     {
         $total = 0;
         foreach ($this->getLocals() as $local) {

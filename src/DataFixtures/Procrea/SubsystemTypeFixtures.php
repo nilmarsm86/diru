@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\Procrea;
 
+use App\Entity\Enums\SubsystemFunctionalClassification;
 use App\Entity\SubsystemType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -11,39 +12,37 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $types = ['Sin tipo', 'Residencial', 'Alojamiento', 'Administrativo', 'Comercio', 'Grastronomía',
-            'Servicios de ciudad', 'Servicios básicos de salud', 'Servicios básicos de educación',
-            'Servicios básicos socioculturales-recreativos', 'Servicios básicos deportivos', 'Servicios básicos otros',
-            'Almacenes/talleres pequeños', 'Recojida de desechos solidos', 'Especiales', 'Producción', 'Religioso',
-            'Agropecuario', 'Parqueos construidos'];
-        foreach ($types  as $typeName){
-            $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
-            if(is_null($type)){
-//                $result = match ($type) {
-//                    'Sin provincia' => $this->addProvinceMunicipality($manager, $provinceName, ['Sin municipio']),
-//                    'Pinar del Río' => $this->addProvinceMunicipality($manager, $provinceName, ['Candelaria']),
-//                    'La Habana' => $this->addProvinceMunicipality($manager, $provinceName, ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa']),
-//                    'Artemisa' => $this->addProvinceMunicipality($manager, $provinceName, ['Artemisa']),
-//                    'Mayabeque' => $this->addProvinceMunicipality($manager, $provinceName, ['San Antonio']),
-//                    'Matanzas' => $this->addProvinceMunicipality($manager, $provinceName, ['Varadero', 'Cárdenas']),
-//                    'Cienfuegos' => $this->addProvinceMunicipality($manager, $provinceName, ['Cienfuegos']),
-//                    'Villa Clara' => $this->addProvinceMunicipality($manager, $provinceName, ['Santa Clara']),
-//                    'Sancti Spíritus' => $this->addProvinceMunicipality($manager, $provinceName, ['Sancti Spíritus']),
-//                    'Ciego de Ávila' => $this->addProvinceMunicipality($manager, $provinceName, ['Ciego de Ávila']),
-//                    'Camagüey' => $this->addProvinceMunicipality($manager, $provinceName, ['Camagüey']),
-//                    'Las Tunas' => $this->addProvinceMunicipality($manager, $provinceName, ['Las Tunas']),
-//                    'Granma' => $this->addProvinceMunicipality($manager, $provinceName, ['Bayamo']),
-//                    'Holguín' => $this->addProvinceMunicipality($manager, $provinceName, ['Holguín']),
-//                    'Santiago de Cuba' => $this->addProvinceMunicipality($manager, $provinceName, ['Santiago de Cuba']),
-//                    'Guantánamo' => $this->addProvinceMunicipality($manager, $provinceName, ['Baracoa']),
-//                    'Isla de la Juventud' => $this->addProvinceMunicipality($manager, $provinceName, ['Isla de la Juventud']),
-//                    default => false,
-//                };
+//        $types = ['Sin tipo', 'Residencial', 'Alojamiento', 'Administrativo', 'Comercio', 'Grastronomía',
+//            'Servicios de ciudad', 'Servicios básicos de salud', 'Servicios básicos de educación',
+//            'Servicios básicos socioculturales-recreativos', 'Servicios básicos deportivos', 'Servicios básicos otros',
+//            'Almacenes/talleres pequeños', 'Recojida de desechos solidos', 'Especiales', 'Producción', 'Religioso',
+//            'Agropecuario', 'Parqueos construidos'];
+        $types = [
+            '0' => [
+                'Vivienda rural unifamiliar', 'Vivienda rural multifamiliar', 'Vivienda urbana unifamiliar social',
+                'Vivienda urbana unifamiliar de mediano estandar', 'Vivienda urbana unifamiliar de alto estandar',
+                'Vivienda urbana multifamiliar social', 'Vivienda urbana multifamiliar de mediano estandar',
+                'Vivienda urbana multifamiliar de alto estandar'
+            ],
+            '1' => [
+                'Salud', 'Educación', 'Comerciales', 'Gastronómicos', 'Socioculturales y Recreativos', 'Deportivos', 'Administrativos',
+                'Otros servicios urbanos'
+            ],
+            '2' => [],
+            '3' => [],
+        ];
 
-//                if(!$result){
-                    $manager->persist((new SubsystemType())->setName($typeName));
-//                }
+        foreach ($types as $classification => $typeNames) {
+            foreach ($typeNames as $typeName){
+                $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
+                if (is_null($type)) {
+                    $subsystemType = new SubsystemType();
+                    $subsystemType->setName($typeName);
+                    $subsystemType->setClassification(SubsystemFunctionalClassification::from($classification));
+                    $manager->persist($subsystemType);
+                }
             }
+
         }
 
         $manager->flush();

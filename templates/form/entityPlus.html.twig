@@ -66,10 +66,16 @@
         addId: add_id,
         addPlaceholder: add_placeholder,
         addTitle: add_title,
+
         detailUrl: detail_url,
         detailId: detail_id,
         detailPlaceholder: detail_placeholder,
         detailTitle: detail_title,
+
+        modifyUrl: modify_url,
+        modifyId: modify_id,
+        modifyPlaceholder: modify_placeholder,
+        modifyTitle: modify_title,
     }) }}
     >
     {%- if 'form-floating' in row_class -%}
@@ -96,6 +102,16 @@
                         {{ stimulusTarget('type/entity-plus', 'add') }}
                 >
                     {{ ux_icon(add_icon, {class:'bi', style:'color:white'}) }}
+                </button>
+            {% endif %}
+
+            {% if modify == true %}
+                <button
+                    class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
+                    type="button"
+                    {{ stimulusTarget('type/entity-plus', 'modify') }}
+                >
+                    {{ ux_icon(modify_icon, {class:'bi', style:'color:white'}) }}
                 </button>
             {% endif %}
         </div>

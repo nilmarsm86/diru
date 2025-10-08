@@ -118,7 +118,8 @@ class BuildingType extends AbstractType
                 'placeholder' => '0',
                 'min' => 0,
                 'data-summation-values-target' => 'field',
-                'data-currency-target' => 'field'
+                'data-currency-target' => 'field',
+                'data-vecpppt' => true
             ],
             'empty_data' => 0,
             'required' => false,
@@ -194,6 +195,23 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer',
+                'divisor' => 100,
+            ])
+            ->add('projectPriceTechnicalPreparation', MoneyType::class, [
+                'label' => 'Precio de proyecto y preparación técnica: (m<sup>2</sup>)',
+                'label_html' => true,
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field',
+                    'data-vecpppt' => true
                 ],
                 'empty_data' => 0,
                 'required' => false,

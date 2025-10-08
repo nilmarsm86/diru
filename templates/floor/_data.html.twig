@@ -4,38 +4,38 @@
         <td>{{ floor.name }}</td>
 
         <th>Sin asignar:</th>
-        <td>{{ floor.getUnassignedArea() }}</td>
+        <td>{{ floor.getUnassignedArea()|number_format(2) }}</td>
     </tr>
 
     <tr>
         <th>Área útil (m<sup>2</sup>):</th>
-        <td>{{ floor.getUsefulArea() }}</td>
+        <td>{{ floor.getUsefulArea()|number_format(2) }}</td>
 
         <th>Área muro (m<sup>2</sup>):</th>
         <td>
             {% if floor.notWallArea() %}
                 <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Debe tener área de muro." data-bs-custom-class="danger-tooltip" style="cursor: pointer">
-                    {{ floor.getWallArea() }}
+                    {{ floor.getWallArea()|number_format(2) }}
                 </span>
             {% else %}
-                {{ floor.getWallArea() }}
+                {{ floor.getWallArea()|number_format(2) }}
             {% endif %}
         </td>
     </tr>
 
     <tr>
         <th>Área de vacío (m<sup>2</sup>):</th>
-        <td>{{ floor.getEmptyArea() }}</td>
+        <td>{{ floor.getEmptyArea()|number_format(2) }}</td>
 
         <th>Área total (m<sup>2</sup>):</th>
-        <td>{{ floor.getTotalArea() }}</td>
+        <td>{{ floor.getTotalArea()|number_format(2) }}</td>
     </tr>
 
     <tr>
         <th>Altura máxima (m)</th>
-        <td>{{ floor.getMaxHeight() }}</td>
+        <td>{{ floor.getMaxHeight()|number_format(2) }}</td>
 
         <th>Volumen (m<sup>3</sup>)</th>
-        <td>{{ floor.getVolume() }}</td>
+        <td>{{ floor.getVolume()|number_format(2) }}</td>
     </tr>
 </tbody>

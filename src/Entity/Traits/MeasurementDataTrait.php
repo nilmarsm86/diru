@@ -10,28 +10,28 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait MeasurementDataTrait
 {
-    public function getTotalArea(bool $original = null): int
+    public function getTotalArea(bool $original = null): float
     {
         return $this->getUsefulArea($original) + $this->getWallArea($original) + $this->getEmptyArea($original);
     }
 
-    public function getUsefulArea(bool $original = null): int
+    public function getUsefulArea(bool $original = null): float
     {
 //        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
         return $this->getMeasurementData('getUsefulArea', $original);
     }
 
-    public function getWallArea(bool $original = null): int
+    public function getWallArea(bool $original = null): float
     {
         return $this->getMeasurementData('getWallArea', $original);
     }
 
-    public function getEmptyArea(bool $original = null): int
+    public function getEmptyArea(bool $original = null): float
     {
         return $this->getMeasurementData('getEmptyArea', $original);
     }
 
-//    public function getUnassignedArea(bool $original = null): ?int
+//    public function getUnassignedArea(bool $original = null): ?float
 //    {
 //        return $this->getMeasurementData('getUnassignedArea');
 //    }

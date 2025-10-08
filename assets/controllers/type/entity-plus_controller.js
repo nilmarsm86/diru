@@ -8,7 +8,7 @@ import {Modal} from "bootstrap";
 * See https://github.com/symfony/stimulus-bridge#lazy-controllers
 */
 export default class extends AbstractController {
-    static targets = ['select', 'detail', 'add'];
+    static targets = ['select', 'detail', 'add', 'modify'];
     static values = {
         addUrl: {type: String, default: ''},
         addId: {type: String, default: ''},
@@ -19,6 +19,11 @@ export default class extends AbstractController {
         detailPlaceholder: {type: String, default: ''},
         detailId: {type: String, default: ''},
         detailTitle: {type: String, default: ''},
+
+        modifyUrl: {type: String, default: ''},
+        modifyPlaceholder: {type: String, default: ''},
+        modifyId: {type: String, default: ''},
+        modifyTitle: {type: String, default: ''},
     };
     message = '';
 
@@ -43,6 +48,32 @@ export default class extends AbstractController {
         //
         //     // }
         // });
+
+        if (this.hasModifyTarget) {
+            this.modifyTarget.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                if (!this.selectTarget.value) {
+                    alert('Debe seleccionar al menos un valor a modificar.');//TODO: dar la posibilidad de personalizar
+                    return;
+                }
+
+                const modalBody = document.querySelector('#'+this.modifyIdValue+' .modal-body-content');
+                this.addChildsNodes(this.modifyPlaceholderValue, modalBody);
+
+                this.addChildsNodes(this.modifyTitleValue, document.querySelector('#'+this.modifyIdValue+' .modal-title'));
+                Modal.getOrCreateInstance(document.querySelector('#'+this.modifyIdValue)).show();
+
+                const eventDetail = new CustomEvent('eventDetail', {
+                    detail: {
+                        url: this.modifyUrlValue.replace('0', this.selectTarget.value),
+                        container: modalBody,
+                        eventLoadedName: 'loadDetail',
+                    }
+                });
+                this.refreshContent(eventDetail);
+            });
+        }
 
         if (this.hasDetailTarget) {
             this.detailTarget.addEventListener('click', (event) => {

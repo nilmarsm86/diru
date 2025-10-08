@@ -29,6 +29,13 @@ class EntityPlusType extends AbstractType
             ->setDefault('detail_placeholder', 'Cargando...')
             ->setDefault('detail_url', '')
             ->setDefault('detail_icon', 'bi:eye')
+
+            ->setDefault('modify', false)
+            ->setDefault('modify_title', 'Modificar')
+            ->setDefault('modify_id', '')
+            ->setDefault('modify_placeholder', 'Cargando...')
+            ->setDefault('modify_url', '')
+            ->setDefault('modify_icon', 'fa:edit')
         ;
 
         $resolver->setAllowedTypes('add', 'bool');
@@ -44,6 +51,13 @@ class EntityPlusType extends AbstractType
         $resolver->setAllowedTypes('detail_placeholder', 'string');
         $resolver->setAllowedTypes('detail_url', 'string');
         $resolver->setAllowedTypes('detail_icon', 'string');
+
+        $resolver->setAllowedTypes('modify', 'bool');
+        $resolver->setAllowedTypes('modify_title', 'string');
+        $resolver->setAllowedTypes('modify_id', 'string');
+        $resolver->setAllowedTypes('modify_placeholder', 'string');
+        $resolver->setAllowedTypes('modify_url', 'string');
+        $resolver->setAllowedTypes('modify_icon', 'string');
     }
 
     /**
@@ -64,6 +78,13 @@ class EntityPlusType extends AbstractType
         $view->vars['detail_placeholder'] = $options['detail_placeholder'];
         $view->vars['detail_url'] = $options['detail_url'];
         $view->vars['detail_icon'] = $options['detail_icon'];
+
+        $view->vars['modify'] = $options['modify'];
+        $view->vars['modify_title'] = $options['modify_title'];
+        $view->vars['modify_id'] = $options['modify_id'];
+        $view->vars['modify_placeholder'] = $options['modify_placeholder'];
+        $view->vars['modify_url'] = $options['modify_url'];
+        $view->vars['modify_icon'] = $options['modify_icon'];
     }
     public function getParent(): string
     {

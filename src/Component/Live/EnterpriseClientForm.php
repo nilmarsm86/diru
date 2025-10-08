@@ -164,6 +164,7 @@ final class EnterpriseClientForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var EnterpriseClient $ec */
             $ec = $this->getForm()->getData();
+            $msgEntityPlus = ($ec->getId()) ? 'Se a modificado el cliente empresarial.' : 'Se ha seleccionado el nuevo cliente empresarial.';
 
             $ec->setStreet($this->formValues['streetAddress']['street']);
 
@@ -180,7 +181,7 @@ final class EnterpriseClientForm extends AbstractController
 
             $this->ec = new EnterpriseClient();
             if (!is_null($this->modal)) {
-                $this->modalManage($ec, 'Se ha seleccionado el nuevo cliente empresarial agregado.', [
+                $this->modalManage($ec, $msgEntityPlus, [
                     'enterpriseClient' => $ec->getId()
                 ], 'text-bg-success');
                 return null;

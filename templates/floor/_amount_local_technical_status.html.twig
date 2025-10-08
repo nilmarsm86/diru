@@ -52,12 +52,12 @@
             </tr>
 
             <tr>
-                <td>{{ meter_status.good }}</td>
-                <td>{{ meter_status.regular }}</td>
-                <td>{{ meter_status.bad }}</td>
-                <td>{{ meter_status.critical }}</td>
-                <td>{{ meter_status.undefined }}</td>
-                <td>{{ floor.getAmountMeters() }}</td>
+                <td>{{ meter_status.good|number_format(2) }}</td>
+                <td>{{ meter_status.regular|number_format(2) }}</td>
+                <td>{{ meter_status.bad|number_format(2) }}</td>
+                <td>{{ meter_status.critical|number_format(2) }}</td>
+                <td>{{ meter_status.undefined|number_format(2) }}</td>
+                <td>{{ floor.getAmountMeters()|number_format(2) }}</td>
             </tr>
         </table>
     {% endblock %}

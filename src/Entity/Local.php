@@ -44,7 +44,7 @@ class Local
 //        "this.getFloor().getBuilding().getLandArea() < value",
 //        message: 'No debe ser mayor que el area de la obra.',
 //    )]
-    private ?int $area = null;
+    private ?float $area = null;
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
@@ -141,7 +141,7 @@ class Local
         return $this;
     }
 
-    public function getArea(): ?int
+    public function getArea(): ?float
     {
         if($this->hasRemoveConstructiveAction()){
             return 0;
@@ -149,7 +149,7 @@ class Local
         return $this->area;
     }
 
-    public function setArea(int $area): static
+    public function setArea(float $area): static
     {
         $this->area = $area;
 
@@ -243,7 +243,7 @@ class Local
         return $this->getArea() * $this->getHeight();
     }
 
-    public static function createAutomaticWall(SubSystem $subSystem, int $area, int $number = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
+    public static function createAutomaticWall(SubSystem $subSystem, float $area, int $number = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
         $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 2.40, $number, $entityManager);
@@ -261,7 +261,7 @@ class Local
         return $wall;
     }
 
-    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, int $area, int $number, bool $reply = false, EntityManagerInterface $entityManager = null): static
+    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, int $number, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
         $technicalStatus = ($subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 
@@ -296,7 +296,7 @@ class Local
         return $local;
     }
 
-    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, int $area, float $height, int $number, EntityManagerInterface $entityManager = null): self
+    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, float $area, float $height, int $number, EntityManagerInterface $entityManager = null): self
     {
         if (is_null($local)) {
             $local = new Local();

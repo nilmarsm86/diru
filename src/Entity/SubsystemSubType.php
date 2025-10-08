@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubsystemSubTypeRepository::class)]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'subsystemType'], message: 'Ya existe en la clasificación esta subclasificación.', errorPath: 'name')]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'subsystemType'], message: 'Ya existe en el tipo este subtipo.', errorPath: 'name')]
 #[ORM\HasLifecycleCallbacks]
 class SubsystemSubType
 {
@@ -21,7 +21,7 @@ class SubsystemSubType
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subTypes')]
+    #[ORM\ManyToOne(inversedBy: 'subsystemSubTypes')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Ignore]
@@ -33,7 +33,14 @@ class SubsystemSubType
         return $this->id;
     }
 
-    public function getSubSystemType(): ?SubsystemType
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function onSave(): void
+    {
+        $this->name = ucwords($this->getName());
+    }
+
+    public function getSubsystemType(): ?SubsystemType
     {
         return $this->subsystemType;
     }
@@ -43,13 +50,6 @@ class SubsystemSubType
         $this->subsystemType = $subsystemType;
 
         return $this;
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function onSave(): void
-    {
-        $this->name = ucwords($this->getName());
     }
 
 }

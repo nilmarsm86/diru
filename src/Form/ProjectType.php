@@ -225,6 +225,11 @@ class ProjectType extends AbstractType
             'add_title' => 'Agregar cliente empresarial-negocio',
             'add_id' => 'modal-load',
             'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
+
+            'modify' => true,
+            'modify_title' => 'Detalle del cliente empresarial',
+            'modify_id' => 'modal-load',
+            'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
         ]);
 
         $form->add('type', ChoiceType::class, [

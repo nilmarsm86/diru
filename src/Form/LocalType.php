@@ -2,12 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Local;
 use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
-use App\Form\Types\UnitMeasurementType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -129,7 +127,7 @@ class LocalType extends AbstractType
 //            ];
 //        }
 
-        $form->add('area', UnitMeasurementType::class, [
+        $form->add('area', UnitMeasurementFloatType::class, [
             'unit' => 'm<sup>2</sup>',
             'label' => "Área:",
             'attr' => $attr,

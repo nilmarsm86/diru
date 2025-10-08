@@ -9,15 +9,15 @@ interface MeasurementDataInterface
 {
     public function getMeasurementData(string $method, bool $original = null): mixed;
 
-    public function getUnassignedArea(bool $original = null): ?int;
+    public function getUnassignedArea(bool $original = null): ?float;
 
-    public function getUsefulArea(bool $original = null): int;
+    public function getUsefulArea(bool $original = null): float;
 
-    public function getWallArea(bool $original = null): int;
+    public function getWallArea(bool $original = null): float;
 
-    public function getEmptyArea(bool $original = null): int;
+    public function getEmptyArea(bool $original = null): float;
 
-//    public function getTotalArea(bool $original = true): int;
+//    public function getTotalArea(bool $original = true): float;
     public function getMaxHeight(bool $original = null): float;
 
     public function isFullyOccupied(bool $original = null): bool;

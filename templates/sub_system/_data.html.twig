@@ -6,18 +6,18 @@
 
     <tr>
         <th>Área útil (m<sup>2</sup>):</th>
-        <td>{{ sub_system.getUsefulArea() }}</td>
+        <td>{{ sub_system.getUsefulArea()|number_format(2) }}</td>
 
         <th>Área muro (m<sup>2</sup>):</th>
-        <td>{{ sub_system.getWallArea() }}</td>
+        <td>{{ sub_system.getWallArea()|number_format(2) }}</td>
     </tr>
 
     <tr>
         <th>Área de vacío (m<sup>2</sup>):</th>
-        <td>{{ sub_system.getEmptyArea() }}</td>
+        <td>{{ sub_system.getEmptyArea()|number_format(2) }}</td>
 
         <th>Área total (m<sup>2</sup>):</th>
-        <td>{{ sub_system.getTotalArea() }}</td>
+        <td>{{ sub_system.getTotalArea()|number_format(2) }}</td>
     </tr>
 
     <tr>
@@ -25,6 +25,6 @@
         <td>{{ sub_system.getMaxHeight()|number_format(2) }}</td>
 
         <th>Volumen (m<sup>3</sup>):</th>
-        <td>{{ sub_system.getVolume() }}</td>
+        <td>{{ sub_system.getVolume()|number_format(2) }}</td>
     </tr>
 </tbody>

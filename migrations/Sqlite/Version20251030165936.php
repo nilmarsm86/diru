@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251008115106 extends AbstractMigration
+final class Version20251030165936 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -59,7 +59,7 @@ final class Version20251008115106 extends AbstractMigration
         $this->addSql('CREATE TABLE investment (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, location_zone_id INTEGER DEFAULT NULL, municipality_id INTEGER NOT NULL, between_streets CLOB DEFAULT NULL, town VARCHAR(255) DEFAULT NULL, popular_council VARCHAR(255) DEFAULT NULL, block VARCHAR(255) DEFAULT NULL, district VARCHAR(255) DEFAULT NULL, street VARCHAR(255) NOT NULL, address_number VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_43CA0AD671692C0F FOREIGN KEY (location_zone_id) REFERENCES location_zone (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_43CA0AD6AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_43CA0AD671692C0F ON investment (location_zone_id)');
         $this->addSql('CREATE INDEX IDX_43CA0AD6AE6F181C ON investment (municipality_id)');
-        $this->addSql('CREATE TABLE land (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_area DOUBLE PRECISION NOT NULL, occupied_area DOUBLE PRECISION NOT NULL, perimeter DOUBLE PRECISION DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, microlocalization VARCHAR(255) DEFAULT NULL, floor INTEGER NOT NULL)');
+        $this->addSql('CREATE TABLE land (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_area DOUBLE PRECISION NOT NULL, occupied_area DOUBLE PRECISION NOT NULL, perimeter DOUBLE PRECISION DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, microlocalization VARCHAR(255) DEFAULT NULL, floor INTEGER NOT NULL, is_blocked BOOLEAN DEFAULT NULL)');
         $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, land_network_connection_constructive_action_id INTEGER DEFAULT NULL, explanation CLOB DEFAULT NULL, type VARCHAR(255) NOT NULL, longitude NUMERIC(10, 2) NOT NULL, technical_status VARCHAR(255) NOT NULL, CONSTRAINT FK_7BF47B3B4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B754933F6 FOREIGN KEY (land_network_connection_constructive_action_id) REFERENCES land_network_connection_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4D2A7E12 ON land_network_connection (building_id)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4EDCA4BC ON land_network_connection (network_connection_id)');
@@ -106,10 +106,11 @@ final class Version20251008115106 extends AbstractMigration
         $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B1C5EC7108B7592 ON sub_system (original_id)');
-        $this->addSql('CREATE TABLE subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, subsystem_type_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_7F7F76F149C277F0 FOREIGN KEY (subsystem_type_id) REFERENCES subsystem_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_7F7F76F149C277F0 ON subsystem_sub_type (subsystem_type_id)');
+        $this->addSql('CREATE TABLE subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE subsystem_sub_type_subsystem_type (subsystem_sub_type_id INTEGER NOT NULL, subsystem_type_id INTEGER NOT NULL, PRIMARY KEY(subsystem_sub_type_id, subsystem_type_id), CONSTRAINT FK_263C64DD6B986E75 FOREIGN KEY (subsystem_sub_type_id) REFERENCES subsystem_sub_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_263C64DD49C277F0 FOREIGN KEY (subsystem_type_id) REFERENCES subsystem_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_263C64DD6B986E75 ON subsystem_sub_type_subsystem_type (subsystem_sub_type_id)');
+        $this->addSql('CREATE INDEX IDX_263C64DD49C277F0 ON subsystem_sub_type_subsystem_type (subsystem_type_id)');
         $this->addSql('CREATE TABLE subsystem_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, classification VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE UNIQUE INDEX subsystem_type_name ON subsystem_type (name)');
         $this->addSql('CREATE TABLE urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, description CLOB NOT NULL, data VARCHAR(255) NOT NULL, measurement_unit VARCHAR(255) NOT NULL, photo VARCHAR(255) DEFAULT NULL, comment CLOB DEFAULT NULL, legal_reference VARCHAR(255) DEFAULT NULL, structure VARCHAR(255) NOT NULL, CONSTRAINT FK_C3CB3A23C54C8C93 FOREIGN KEY (type_id) REFERENCES urban_regulation_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C3CB3A23C54C8C93 ON urban_regulation (type_id)');
         $this->addSql('CREATE TABLE urban_regulation_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
@@ -157,6 +158,7 @@ final class Version20251008115106 extends AbstractMigration
         $this->addSql('DROP TABLE role');
         $this->addSql('DROP TABLE sub_system');
         $this->addSql('DROP TABLE subsystem_sub_type');
+        $this->addSql('DROP TABLE subsystem_sub_type_subsystem_type');
         $this->addSql('DROP TABLE subsystem_type');
         $this->addSql('DROP TABLE urban_regulation');
         $this->addSql('DROP TABLE urban_regulation_type');

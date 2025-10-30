@@ -148,6 +148,18 @@ class Floor implements MeasurementDataInterface
         return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
+    public function getFreeArea(bool $original = null): ?float
+    {
+        if (is_null($this->getBuilding())) {
+            return 1;
+        }
+
+        $isNew = $this->getBuilding()->isNew();
+        $landArea = $this->getBuilding()->getLandArea();
+        $occupiedArea = $this->getBuilding()->getOccupiedArea();
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+    }
+
     public function getMaxHeight(bool $original = null): float
     {
         $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();

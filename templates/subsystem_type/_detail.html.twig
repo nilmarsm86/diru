@@ -28,7 +28,7 @@
                     <th>Sub tipos:</th>
                     <td>
                         <ul class="px-0 list-unstyled">
-                            {% for subType in subsystem_type.subTypes %}
+                            {% for subType in subsystem_type.subsystemSubTypes %}
                                 <li>
                                     <a href="{{ path('app_subsystem_sub_type_show', {'id': subType.id}) }}" target="_blank">
                                         {{ subType.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}

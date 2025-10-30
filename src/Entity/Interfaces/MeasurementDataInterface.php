@@ -11,6 +11,8 @@ interface MeasurementDataInterface
 
     public function getUnassignedArea(bool $original = null): ?float;
 
+    public function getFreeArea(bool $original = null): ?float;
+
     public function getUsefulArea(bool $original = null): float;
 
     public function getWallArea(bool $original = null): float;

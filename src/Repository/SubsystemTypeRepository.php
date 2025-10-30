@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Enums\SubsystemFunctionalClassification;
 use App\Entity\SubsystemType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -63,19 +64,28 @@ class SubsystemTypeRepository extends ServiceEntityRepository
         }
     }
 
+    private function addClassification(QueryBuilder $builder, $classification): void
+    {
+        if ($classification !== '') {
+            $classification = SubsystemFunctionalClassification::from($classification);
+            $builder->andWhere("sst.classification = :classification ")->setParameter(':classification', $classification);
+        }
+    }
+
     /**
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
+     * @param string $classification
      * @return Paginator Returns an array of User objects
      */
-    public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1, string $classification = ''): Paginator
     {
-        $builder = $this->createQueryBuilder('sst')
-            ->select(['sst', 'ssfc'])
-            ->leftJoin('sst.subsystemSubTypes', 'ssfc');
+        $builder = $this->createQueryBuilder('sst');
+        $this->addClassification($builder, $classification);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('sst.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('sst.classification', 'ASC')->getQuery();
+//        $query = $builder->orderBy('sst.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
 

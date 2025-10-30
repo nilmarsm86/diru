@@ -240,6 +240,12 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
+    public function getEstimatedValueUrbanization(): ?int
+    {
+        //sumatoria de cada uno de los items de estimados de urbanizacion
+        return 0;
+    }
+
     public function getApprovedValueConstruction(): ?int
     {
         return $this->approvedValueConstruction;
@@ -704,6 +710,11 @@ class Building implements MeasurementDataInterface
     public function getUnassignedArea(bool $original = null): ?float
     {
         return $this->getMeasurementData('getUnassignedArea', $original);
+    }
+
+    public function getFreeArea(bool $original = null): ?float
+    {
+        return $this->getMeasurementData('getFreeArea', $original);
     }
 
     public function getMaxHeight(bool $original = null): float

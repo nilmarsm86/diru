@@ -207,7 +207,7 @@ class ProjectType extends AbstractType
         $form->add('enterpriseClient', EntityPlusType::class, [
             'class' => EnterpriseClient::class,
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
-                return $enterpriseClient->getEmail();
+                return $enterpriseClient->getCorporateEntity()->getName();
             },
             'group_by' => function(EnterpriseClient $enterpriseClient, int $key, string $value) {
                 return $enterpriseClient->getRepresentative();

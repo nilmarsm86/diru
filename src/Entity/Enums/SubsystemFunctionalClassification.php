@@ -30,7 +30,7 @@ enum SubsystemFunctionalClassification: string
         return match ($enum) {
             self::Residential => 'Residencial',//translate
             self::Local => 'Servicios Básicos Locales',//translate
-            self::City => 'Serrvicios de Escala de Ciudad',//translate
+            self::City => 'Servicios de Escala de Ciudad',//translate
             self::Enterprise => 'Instalación productiva-empresarial',//translate
             default => '-Seleccione-'//translate
         };

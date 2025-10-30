@@ -14,13 +14,13 @@ class Role
 {
     use NameToStringTrait;
 
-    const string ROLE_CLIENT = 'ROLE_CLIENT';
-    const string ROLE_DIRECTOR = 'ROLE_DIRECTOR';
-    const string ROLE_INVESTOR = 'ROLE_INVESTOR';
-    const string ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
-    const string ROLE_ADMIN = 'ROLE_ADMIN';
-    const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-    const string IS_AUTHENTICATED = 'IS_AUTHENTICATED';
+    const  ROLE_CLIENT = 'ROLE_CLIENT';
+    const  ROLE_DIRECTOR = 'ROLE_DIRECTOR';
+    const  ROLE_INVESTOR = 'ROLE_INVESTOR';
+    const  ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
+    const  ROLE_ADMIN = 'ROLE_ADMIN';
+    const  ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const  IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

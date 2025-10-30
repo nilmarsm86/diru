@@ -129,6 +129,14 @@ class SubSystem implements MeasurementDataInterface
         return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
+    public function getFreeArea(bool $original = null): ?float
+    {
+        $isNew = $this->getFloor()->getBuilding()->isNew();
+        $landArea = $this->getFloor()->getBuilding()->getLandArea();
+        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+    }
+
     public function getMaxHeight(bool $original = null): float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();

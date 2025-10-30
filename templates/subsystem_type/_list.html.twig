@@ -8,6 +8,18 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_subsystem_type_index'),
+                queryNames:['classification', 'amount', 'filter', 'page']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_subsystem_type_index',
+                label:'Sistemas',
+                queryName: 'classification',
+                options:classifications
+            }) }}
+
             {{ tableActionButton3(path('app_subsystem_type_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo tipo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_subsystem_type_new')})) }}
         </div>
     {% endblock %}
@@ -17,10 +29,22 @@
             paginator: paginator,
         } %}
 
+            {% block message %}
+                {{ component('message:filter', {
+                    type: 'classification',
+                    label: 'Sistemas',
+                    filterFrom: 'App\\Entity\\Enums\\SubsystemFunctionalClassification',
+                }) }}
+            {% endblock %}
+
             {% block tableHead %}
                 <tr>
 {#                    <th style="width: 1em"></th>#}
                     <th>Nombre</th>
+                    {% if app.request.query.get('classification') == '' %}
+                        <th>Sistemas</th>
+                    {% endif %}
+
                     <th></th>
                 </tr>
             {% endblock %}
@@ -38,6 +62,9 @@
 {#                            >#}
 {#                        </td>#}
                         <td>{{ subsystemType.name }}</td>
+                        {% if app.request.query.get('classification') == '' %}
+                            <td>{{ subsystemType.classification.getLabelFrom(subsystemType.classification) }}</td>
+                        {% endif %}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})})) }}
                             {{ tableActionButton3(path('app_subsystem_type_edit', {'id': subsystemType.id}), 'fa:edit', '', 'Editar tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_edit', {'id': subsystemType.id})})) }}

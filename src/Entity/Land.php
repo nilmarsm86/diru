@@ -40,12 +40,16 @@ class Land
     #[ORM\Column]
     private ?int $floor = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isBlocked = null;
+
     public function __construct()
     {
         $this->occupiedArea = 0;
         $this->floor = 0;
         $this->landArea = 1;
         $this->perimeter = 0;
+        $this->isBlocked = false;
     }
 
     public function getId(): ?int
@@ -133,6 +137,18 @@ class Land
     public function hasFloors(): bool
     {
         return $this->getFloor() > 0;
+    }
+
+    public function isBlocked(): ?bool
+    {
+        return $this->isBlocked;
+    }
+
+    public function setIsBlocked(bool $isBlocked): static
+    {
+        $this->isBlocked = $isBlocked;
+
+        return $this;
     }
 
 }

@@ -3,13 +3,8 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Entity\Municipality;
 use App\Entity\SubsystemSubType;
-use App\Entity\SubsystemType;
-use App\Form\MunicipalityType;
 use App\Form\SubsystemSubTypeType;
-use App\Repository\MunicipalityRepository;
-use App\Repository\ProvinceRepository;
 use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
 use Exception;
@@ -48,6 +43,7 @@ final class SubsystemSubTypeForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
+        dump($this->formValues);
         if(!is_null($this->subsystemType)){
             $this->formValues['subsystemType'] = $this->subsystemType;
         }
@@ -63,7 +59,7 @@ final class SubsystemSubTypeForm extends AbstractController
         if (is_null($this->ssst)) {
             $this->ssst = new SubsystemSubType();
         } else {
-            if (!is_null($this->ssst->getSubSystemType())) {
+            if (!is_null($this->ssst->getSubsystemType())) {
                 $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
             }
         }
@@ -76,13 +72,12 @@ final class SubsystemSubTypeForm extends AbstractController
     public function save(SubsystemSubTypeRepository $subsystemSubTypeRepository, SubsystemTypeRepository $subsystemTypeRepository): ?Response
     {
         $successMsg = (is_null($this->ssst->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.';//TODO: personalizar los mensajes
-
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var SubsystemSubType $subsystemSubType */
             $subsystemSubType = $this->getForm()->getData();
-            dump($this->subsystemType);
+
             $subsystemType = $subsystemTypeRepository->find($this->subsystemType);
             $subsystemSubType->setSubsystemType($subsystemType);
 

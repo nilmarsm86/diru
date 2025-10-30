@@ -65,23 +65,17 @@
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-        <div class="col-4">
+        <div class="col-3">
             {{ form_row(estimatedValueConstruction) }}
         </div>
-        <div class="col-4">
+        <div class="col-3">
             {{ form_row(projectPriceTechnicalPreparation) }}
-            {#            <div class="mb-3"> #}
-            {#                <label for="building_estimatedValueConstruction" class="form-label"> #}
-            {#                    precio de proyecto y preparacion tecnica: #}
-            {#                </label> #}
-            {#                <div class="input-group "> #}
-            {#                    <input type="number" id="building_estimatedValueConstruction" name="building[estimatedValueConstruction]" placeholder="0" min="0" data-summation-values-target="field" data-currency-target="field" class="form-control" value="10000.00"> #}
-            {#                    <span class="input-group-text"> m<sub>2</sub></span> #}
-            {#                </div> #}
-            {#            </div> #}
         </div>
-        <div class="col-4">
-            <p class="text-end">VEC + PPPT:</p>
+        <div class="col-3">
+            {{ form_row(estimatedValueUrbanization) }}
+        </div>
+        <div class="col-3">
+            <p class="text-end">VEC + PPPT + VEU:</p>
             <h5 class="text-end">{# $ #}
                 <span class="badge text-bg-info vecpppt">
                         {{ 0|number_format(2) }}

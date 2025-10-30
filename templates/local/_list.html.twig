@@ -28,6 +28,7 @@
             {% endif %}
 
             {{ tableActionButton3(path('app_sub_system_index', {'floor':sub_system.floor.id, 'reply':reply}), 'ix:building-block-filled', (reply) ? 'Subsistemas replicados' : 'Subsistemas', (reply) ? 'Listado de subsistemas replicados' : 'Listado de subsistemas') }}
+            {{ tableActionButton3(path('app_building_edit', {id:sub_system.floor.building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
         </div>
     {% endblock %}
 

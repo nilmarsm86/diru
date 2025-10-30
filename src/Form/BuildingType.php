@@ -204,7 +204,7 @@ class BuildingType extends AbstractType
                 'divisor' => 100,
             ])
             ->add('projectPriceTechnicalPreparation', MoneyType::class, [
-                'label' => 'Precio de proyecto y preparación técnica: (m<sup>2</sup>)',
+                'label' => 'Precio de proy. y preparación técnica: (m<sup>2</sup>)',
                 'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
@@ -219,6 +219,25 @@ class BuildingType extends AbstractType
                 'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+            ])
+            ->add('estimatedValueUrbanization', MoneyType::class, [
+                'label' => 'Valor estimado de urbanización:',
+//                'label_html' => true,
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field',
+                    'data-vecpppt' => true,
+                    'readonly' => 'readonly'
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'html5' => true,
+                'input' => 'integer',
+                'divisor' => 100,
+                'mapped' => false
             ])
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',

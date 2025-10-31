@@ -60,7 +60,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
     {
         if($filter){
             $predicate = "ssst.name LIKE :filter ";
-            $predicate .= "OR sst.name LIKE :filter ";
+//            $predicate .= "OR sst.name LIKE :filter ";
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
         }
@@ -74,12 +74,11 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
      */
     public function findSubsystemSubtypes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('ssst')
-            ->select(['ssst', 'sst'])
-            ->leftJoin('ssst.subsystemType', 'sst');
+        $builder = $this->createQueryBuilder('ssst');
+//            ->select(['ssst', 'sst'])
+//            ->leftJoin('ssst.subsystemTypes', 'sst');
         $this->addFilter($builder, $filter);
-//        $query = $builder->orderBy('sst.classification', 'ASC')->getQuery();
-        $query = $builder->orderBy('sst.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('ssst.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
 

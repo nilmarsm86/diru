@@ -38,15 +38,15 @@ final class SubsystemSubTypeForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
-    #[LiveProp(writable: true)]
-    public ?string $subsystemType = null;
+//    #[LiveProp(writable: true)]
+//    public ?string $subsystemType = null;
 
     protected function instantiateForm(): FormInterface
     {
-        dump($this->formValues);
-        if(!is_null($this->subsystemType)){
-            $this->formValues['subsystemType'] = $this->subsystemType;
-        }
+//        dump($this->formValues);
+//        if(!is_null($this->subsystemType)){
+//            $this->formValues['subsystemType'] = $this->subsystemType;
+//        }
 
         return $this->createForm(SubsystemSubTypeType::class, $this->ssst, [
             'modal' => $this->modal
@@ -59,9 +59,9 @@ final class SubsystemSubTypeForm extends AbstractController
         if (is_null($this->ssst)) {
             $this->ssst = new SubsystemSubType();
         } else {
-            if (!is_null($this->ssst->getSubsystemType())) {
-                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
-            }
+//            if (!is_null($this->ssst->getSubsystemType())) {
+//                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
+//            }
         }
     }
 
@@ -78,8 +78,8 @@ final class SubsystemSubTypeForm extends AbstractController
             /** @var SubsystemSubType $subsystemSubType */
             $subsystemSubType = $this->getForm()->getData();
 
-            $subsystemType = $subsystemTypeRepository->find($this->subsystemType);
-            $subsystemSubType->setSubsystemType($subsystemType);
+//            $subsystemType = $subsystemTypeRepository->find($this->subsystemType);
+//            $subsystemSubType->setSubsystemType($subsystemType);
 
             $subsystemSubTypeRepository->save($subsystemSubType, true);
 

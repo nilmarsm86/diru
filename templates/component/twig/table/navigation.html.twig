@@ -1,39 +1,71 @@
 <nav
-        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers"
-        {{ stimulusController('twig/table/navigation', {queryName: this.queryName, page:this.page}) }}
+    class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers"
+    {{ stimulusController('twig/table/navigation', {queryName: this.queryName, page:this.page}) }}
 >
     {% if this.paginator.maxPage > 1 %}
         <ul class="pagination">
             <li class="page-item {% if this.paginator.currentPage == 1 %}disabled{% endif %}">
                 <a
-                        class="page-link"
-                        aria-label="First"
-                        href="{{ this.getNumberPath(1) }}"
-                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
-                        data-number="1"
+                    class="page-link"
+                    aria-label="First"
+                    href="{{ this.getNumberPath(1) }}"
+                    {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                    data-number="1"
                 >
                     <span aria-hidden="true">«</span>
                 </a>
             </li>
-            {% for item in 1..paginator.maxPage %}
-                <li class="page-item {% if paginator.currentPage == item %}active{% endif %}">
+            {% if paginator.maxPage > 15 %}
+                <li class="page-item {% if this.paginator.currentPage == 1 %}disabled{% endif %}">
                     <a
+                        class="page-link"
+                        href="{{ this.getNumberPath(paginator.currentPage - 1) }}"
+                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                        data-number="{{ paginator.currentPage - 1 }}"
+                    >
+                        <span aria-hidden="true"><</span>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a
+                        class="page-link"
+                        href=""
+                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                    >
+                        Página {{ paginator.currentPage }}
+                    </a>
+                </li>
+                <li class="page-item {% if paginator.currentPage == paginator.maxPage %}disabled{% endif %}">
+                    <a
+                        class="page-link"
+                        href="{{ this.getNumberPath(paginator.currentPage + 1) }}"
+                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                        data-number="{{ paginator.currentPage + 1 }}"
+                    >
+                        <span aria-hidden="true">></span>
+                    </a>
+                </li>
+            {% else %}
+                {% for item in 1..paginator.maxPage %}
+                    <li class="page-item {% if paginator.currentPage == item %}active{% endif %}">
+                        <a
                             class="page-link"
                             href="{{ this.getNumberPath(item) }}"
                             {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
                             data-number="{{ item }}"
-                    >
-                        {{ item }}
-                    </a>
-                </li>
-            {% endfor %}
+                        >
+                            {{ item }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
             <li class="page-item {% if paginator.currentPage == paginator.maxPage %}disabled{% endif %}">
                 <a
-                        class="page-link"
-                        aria-label="Last"
-                        href="{{ this.getNumberPath(paginator.maxPage) }}"
-                        {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
-                        data-number="{{ paginator.maxPage }}"
+                    class="page-link"
+                    aria-label="Last"
+                    href="{{ this.getNumberPath(paginator.maxPage) }}"
+                    {{ stimulusTarget('twig/table/navigation', 'pageLink') }}
+                    data-number="{{ paginator.maxPage }}"
                 >
                     <span aria-hidden="true">»</span>
                 </a>

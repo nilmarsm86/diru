@@ -8,6 +8,7 @@ use App\Entity\SubsystemType;
 use App\Form\ProvinceType;
 use App\Form\SubsystemTypeType;
 use App\Repository\ProvinceRepository;
+use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,14 +52,16 @@ final class SubsystemTypeForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(SubsystemTypeType::class, $this->sst);
+        return $this->createForm(SubsystemTypeType::class, $this->sst, [
+//            'screen' => 'building'
+        ]);
     }
 
     /**
      * @throws Exception
      */
     #[LiveAction]
-    public function save(SubsystemTypeRepository $subsystemTypeRepository): ?Response
+    public function save(SubsystemTypeRepository $subsystemTypeRepository, SubsystemSubTypeRepository $subsystemSubTypeRepository): ?Response
     {
         $successMsg = (is_null($this->sst->getId())) ? 'Se ha agregado el tipo.' : 'Se ha modificado el tipo.';//TODO: personalizar los mensajes
 
@@ -67,6 +70,16 @@ final class SubsystemTypeForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var SubsystemType $subsystemType */
             $subsystemType = $this->getForm()->getData();
+
+            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
+                if(is_null($subsystemSubType->getId())){
+                    $subsystemType->removeSubsystemSubType($subsystemSubType);
+                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
+                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
+                        $subsystemType->addSubsystemSubType($subsystemSubType);
+                    }
+                }
+            }
 
             $subsystemTypeRepository->save($subsystemType, true);
 

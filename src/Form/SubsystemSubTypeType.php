@@ -27,41 +27,21 @@ class SubsystemSubTypeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $provinceAttr = [
-            'class' => SubsystemType::class,
-            'choice_label' => 'name',
-            'label' => 'Tipo:',
-            'attr' => [
-                'data-model' => 'subsystemType',
-            ],
-            //'query_builder' => $this->getProvinceQueryBuilder(),
-        ];
+        if ($options['screen'] === 'type') {
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+                $this->onPreSetData($event, $options);
+            });
+        }
 
-        //si es nuevo
-//        $builder
-//            ->add('name', null, [
-//                'label' => 'Nombre:',
-//                'attr' => [
-//                    'placeholder' => 'Nombre del subtipo'
-//                ]
-//            ]);
-
-
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $this->onPreSetData($event, $options);
-        });
-
-//        if (is_null($options['modal'])) {
-//            $builder->add('subsystemTypes', EntityPlusType::class, [
-//                    'add' => true,
-//                    'add_title' => 'Agregar tipo',
-//                    'add_id' => 'modal-load',
-//                    'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load']),
-//            ]+$provinceAttr);
-//        } else {
-//            $builder->add('subsystemTypes', EntityType::class, []+$provinceAttr);
-//        }
+        if ($options['screen'] === 'subtype') {
+            $builder
+                ->add('name', null, [
+                    'label' => 'Nombre:',
+                    'attr' => [
+                        'placeholder' => 'Nombre del subtipo'
+                    ]
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -72,21 +52,12 @@ class SubsystemSubTypeType extends AbstractType
                 'novalidate' => 'novalidate'
             ],
             'modal' => null,
-            'screen' => 'project'//building || project
+            'screen' => 'type'//subtype || type
         ]);
 
         $resolver->setAllowedTypes('modal', ['null', 'string']);
+        $resolver->setAllowedTypes('screen', 'string');
     }
-
-    /**
-     * @return Closure
-
-    private function getProvinceQueryBuilder(): Closure
-    {
-        return function (ProvinceRepository $provinceRepository): QueryBuilder|array {
-            return $provinceRepository->findProvincesForForm();
-        };
-    }*/
 
     /**
      * @param FormEvent $event
@@ -113,7 +84,10 @@ class SubsystemSubTypeType extends AbstractType
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
 
-                'data' => $subsystemSubType
+                'data' => $subsystemSubType,
+//                'row_attr' => [
+//                    'class' => 'mb-3 row'
+//                ]
             ]);
     }
 }

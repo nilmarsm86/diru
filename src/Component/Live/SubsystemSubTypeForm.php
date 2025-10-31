@@ -49,7 +49,8 @@ final class SubsystemSubTypeForm extends AbstractController
 //        }
 
         return $this->createForm(SubsystemSubTypeType::class, $this->ssst, [
-            'modal' => $this->modal
+            'modal' => $this->modal,
+            'screen' => 'subtype'
         ]);
     }
 

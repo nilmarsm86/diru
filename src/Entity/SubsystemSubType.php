@@ -12,8 +12,8 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubsystemSubTypeRepository::class)]
-//#[ORM\UniqueConstraint(name: 'municipality_name', columns: ['name'])]
-//#[DoctrineAssert\UniqueEntity(fields: ['name', 'subsystemType'], message: 'Ya existe en tipo este subtipo.', errorPath: 'name')]
+#[ORM\UniqueConstraint(name: 'subsystem_sub_type_name', columns: ['name'])]
+//#[DoctrineAssert\UniqueEntity('name', message: 'El sub tipo ya existe.')]
 #[ORM\HasLifecycleCallbacks]
 class SubsystemSubType
 {

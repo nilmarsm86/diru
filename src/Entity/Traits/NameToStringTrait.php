@@ -10,7 +10,7 @@ trait NameToStringTrait
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El nombre está vacío.')]
 //    #[Assert\NotNull(message: 'El nombre no debe ser nulo.')]
-    #[Assert\NoSuspiciousCharacters]
+//    #[Assert\NoSuspiciousCharacters]
     private ?string $name = null;
 
     /**

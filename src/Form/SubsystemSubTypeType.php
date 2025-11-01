@@ -76,8 +76,8 @@ class SubsystemSubTypeType extends AbstractType
                     'placeholder' => 'Nombre del subtipo'
                 ],
                 'class' => SubsystemSubType::class,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
+//                'choice_label' => 'name',
+//                'choice_value' => 'id',
 
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',

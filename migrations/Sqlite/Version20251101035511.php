@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251030165936 extends AbstractMigration
+final class Version20251101035511 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -107,6 +107,7 @@ final class Version20251030165936 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B1C5EC7108B7592 ON sub_system (original_id)');
         $this->addSql('CREATE TABLE subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE UNIQUE INDEX subsystem_sub_type_name ON subsystem_sub_type (name)');
         $this->addSql('CREATE TABLE subsystem_sub_type_subsystem_type (subsystem_sub_type_id INTEGER NOT NULL, subsystem_type_id INTEGER NOT NULL, PRIMARY KEY(subsystem_sub_type_id, subsystem_type_id), CONSTRAINT FK_263C64DD6B986E75 FOREIGN KEY (subsystem_sub_type_id) REFERENCES subsystem_sub_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_263C64DD49C277F0 FOREIGN KEY (subsystem_type_id) REFERENCES subsystem_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_263C64DD6B986E75 ON subsystem_sub_type_subsystem_type (subsystem_sub_type_id)');
         $this->addSql('CREATE INDEX IDX_263C64DD49C277F0 ON subsystem_sub_type_subsystem_type (subsystem_type_id)');

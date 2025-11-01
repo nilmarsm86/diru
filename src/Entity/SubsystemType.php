@@ -25,7 +25,7 @@ class SubsystemType
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: SubsystemSubType::class, mappedBy: 'subsystemTypes', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: SubsystemSubType::class, mappedBy: 'subsystemTypes')]
     #[Assert\Count(
         min: 1,
         minMessage: 'Debe establecer al menos 1 subtipo para este tipo.',

@@ -44,6 +44,12 @@ final class SubsystemTypeForm extends AbstractController
     #[LiveProp]
     public SubsystemType $entity;
 
+    #[LiveProp(writable: true)]
+    public ?string $subsystemSubType = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $subsystemSubTypePosition = null;
+
     public function mount(?SubsystemType $sst = null): void
     {
         $this->sst = (is_null($sst)) ? new SubsystemType() : $sst;
@@ -52,6 +58,10 @@ final class SubsystemTypeForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
+        if(!is_null($this->subsystemSubType)){
+            $this->formValues['subsystemSubTypes'][(count($this->formValues['subsystemSubTypes']) - 1)]['name'] = $this->subsystemSubType;
+        }
+
         return $this->createForm(SubsystemTypeType::class, $this->sst, [
 //            'screen' => 'building'
         ]);
@@ -77,6 +87,7 @@ final class SubsystemTypeForm extends AbstractController
                     $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
                     if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
                         $subsystemType->addSubsystemSubType($subsystemSubType);
+//                        $subsystemSubType->addSubsystemType($subsystemType);
                     }
                 }
             }

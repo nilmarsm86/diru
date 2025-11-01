@@ -87,7 +87,7 @@ final class SubsystemSubTypeForm extends AbstractController
             $this->ssst = new SubsystemSubType();
             if (!is_null($this->modal)) {
                 $this->modalManage($subsystemSubType, 'Se ha seleccionado el nuevo subtipo agregado.', [
-                    'subsystemSubType' => $subsystemSubType->getId()
+                    'subsystemSubType' => $subsystemSubType->getId(),
                 ]);
                 return null;
             }

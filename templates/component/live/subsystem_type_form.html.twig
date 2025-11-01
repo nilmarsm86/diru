@@ -12,10 +12,17 @@
     {{ form_row(form.name) }}
     {{ form_row(form.classification) }}
 
-    {{ form_row(form.subsystemSubTypes.vars.button_add, {
-        label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar sub tipo',
-        attr: { class: 'btn btn-outline-nav-link btn-sm' }
-    }) }}
+    {% if form_errors(form.subsystemSubTypes) %}
+        {{ form_row(form.subsystemSubTypes.vars.button_add, {
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar sub tipo',
+            attr: { class: 'btn btn-outline-nav-link btn-sm', style: 'border-color: var(--bs-form-invalid-border-color);color: var(--bs-form-invalid-border-color);' }
+        }) }}
+    {% else %}
+        {{ form_row(form.subsystemSubTypes.vars.button_add, {
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar sub tipo',
+            attr: { class: 'btn btn-outline-nav-link btn-sm' }
+        }) }}
+    {% endif %}
 
     {% if form_errors(form.subsystemSubTypes) %}
         <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">

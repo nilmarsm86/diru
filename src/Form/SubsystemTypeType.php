@@ -41,6 +41,9 @@ class SubsystemTypeType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate'
             ],
+            'error_mapping' => [
+                'enumClassification' => 'classification',
+            ],
         ]);
     }
 }

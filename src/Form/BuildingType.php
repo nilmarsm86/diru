@@ -6,6 +6,7 @@ use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\Draftsman;
 use App\Form\Types\EntityPlusType;
+use App\Form\Types\MoneyPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -59,7 +60,8 @@ class BuildingType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate'
             ],
-            'screen' => 'project'//building || project
+            'screen' => 'project',//building || project
+            'urbanizationEstimate' => 0
         ]);
     }
 
@@ -220,7 +222,7 @@ class BuildingType extends AbstractType
                 'input' => 'integer',
                 'divisor' => 100,
             ])
-            ->add('estimatedValueUrbanization', MoneyType::class, [
+            ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Valor estimado de urbanización:',
 //                'label_html' => true,
                 'attr' => [
@@ -229,15 +231,27 @@ class BuildingType extends AbstractType
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
                     'data-vecpppt' => true,
-                    'readonly' => 'readonly'
+                    'readonly' => 'readonly',
+                    'data-type--money-plus-target' => "field"
                 ],
-                'empty_data' => 0,
+                'data' => $options['urbanizationEstimate'],
+//                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
                 'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
-                'mapped' => false
+                'mapped' => false,
+
+                'list' => true,
+                'list_title' => 'Listado de estimados de urbanización',
+                'list_id' => 'modal-load',
+                'list_url' => $this->router->generate('app_urbanization_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
+
+                'add' => true,
+                'add_title' => 'Agregar estimado de urbanización',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => $building->getId(), 'modal' => 'modal-load', 'screen' => $options['screen']]),
             ])
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',

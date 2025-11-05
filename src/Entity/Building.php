@@ -127,6 +127,12 @@ class Building implements MeasurementDataInterface
     #[ORM\Column(nullable: true)]
     private ?bool $hasReply = null;
 
+    /**
+     * @var Collection<int, UrbanizationEstimate>
+     */
+    #[ORM\OneToMany(targetEntity: UrbanizationEstimate::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $urbanizationEstimates;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -151,6 +157,7 @@ class Building implements MeasurementDataInterface
         $this->population = 1;
         $this->constructionAssembly = 0;
         $this->landNetworkConnections = new ArrayCollection();
+        $this->urbanizationEstimates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1044,5 +1051,45 @@ class Building implements MeasurementDataInterface
         }
 
         return $subsystems;
+    }
+
+    /**
+     * @return Collection<int, UrbanizationEstimate>
+     */
+    public function getUrbanizationEstimates(): Collection
+    {
+        return $this->urbanizationEstimates;
+    }
+
+    public function addUrbanizationEstimate(UrbanizationEstimate $urbanizationEstimate): static
+    {
+        if (!$this->urbanizationEstimates->contains($urbanizationEstimate)) {
+            $this->urbanizationEstimates->add($urbanizationEstimate);
+            $urbanizationEstimate->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUrbanizationEstimate(UrbanizationEstimate $urbanizationEstimate): static
+    {
+        if ($this->urbanizationEstimates->removeElement($urbanizationEstimate)) {
+            // set the owning side to null (unless already changed)
+            if ($urbanizationEstimate->getBuilding() === $this) {
+                $urbanizationEstimate->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUrbanizationEstimateTotalPrice(): float
+    {
+        $price = 0;
+        foreach ($this->urbanizationEstimates as $urbanizationEstimate){
+            $price += $urbanizationEstimate->getTotalPrice();
+        }
+
+        return $price;
     }
 }

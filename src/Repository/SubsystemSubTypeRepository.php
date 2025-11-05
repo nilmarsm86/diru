@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Municipality>
@@ -80,6 +81,25 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ssst.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @param SubsystemSubType $entity
+     * @param bool $flush
+     * @return void
+     * @throws Exception
+     */
+    public function remove(SubsystemSubType $entity, bool $flush = false): void
+    {
+        if($entity->getSubsystemTypes()->count() > 0){
+            throw new Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
     }
 
 }

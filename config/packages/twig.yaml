@@ -6,6 +6,7 @@ twig:
         - 'form/address.html.twig'
         - 'form/streetAddress.html.twig'
         - 'form/entityPlus.html.twig'
+        - 'form/moneyPlus.html.twig'
         - 'form/unitMeasurement.html.twig'
         - 'form/unitMeasurementFloat.html.twig'
 when@test:

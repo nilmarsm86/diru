@@ -141,6 +141,7 @@ readonly class CrudActionService
                         'type' => 'text-bg-success',
                         'message' => $successMsg
                     ]);
+
                     return new Response($template);
                 }
             } catch (\Exception $exception) {

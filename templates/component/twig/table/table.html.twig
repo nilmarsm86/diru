@@ -1,5 +1,5 @@
 <div {{ stimulusController('twig/table/table') }}
-        style="position: relative" {{ tableContainer }}
+    style="position: relative" {{ tableContainer }}
 >
     <div class="row">
         <div class="col-md-3 text-nowrap">
@@ -48,12 +48,14 @@
 
     {% if paginator is not null %}
         <div class="row">
-            <div class="col-md-6 align-self-center">
-                <p class="dataTables_info" role="status" aria-live="polite">
-                    Mostrar <strong>{{ paginator.from }}</strong> al <strong>{{ paginator.to }}</strong> de
-                    <strong>{{ paginator.total }}</strong>
-                </p>
-            </div>
+            {% block show_page %}
+                <div class="col-md-6 align-self-center">
+                    <p class="dataTables_info" role="status" aria-live="polite">
+                        Mostrar <strong>{{ paginator.from }}</strong> al <strong>{{ paginator.to }}</strong> de
+                        <strong>{{ paginator.total }}</strong>
+                    </p>
+                </div>
+            {% endblock %}
 
             <div class="col-md-6">
                 {% block navigation %}

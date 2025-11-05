@@ -1,0 +1,25 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Estimados de urbanización{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Estimados de urbanización') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Estimados de urbanización'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de estimados de urbanización</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('urbanization_estimate/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

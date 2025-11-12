@@ -354,6 +354,34 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         ];
     }
 
+    public function getAmountConstructiveAction(): array
+    {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $constructiveAction = [];
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
+            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + 1 : 1;
+        }
+
+        return $constructiveAction;
+    }
+
+    public function getPriceByConstructiveAction(): array
+    {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $constructiveAction = [];
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
+            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getConstructiveActionAmount() : $local->getConstructiveActionAmount();
+        }
+
+        return $constructiveAction;
+    }
+
     public function getAmountMeters(): ?float
     {
         $total = 0;
@@ -389,7 +417,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
-        if(is_null($subSystem)){
+        if (is_null($subSystem)) {
             $subSystem = new SubSystem();
             $subSystem->setName($name);
         }
@@ -398,13 +426,13 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 //        $subSystem->setFloor($floor);
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
-        if($reply){
+        if ($reply) {
             $subSystem->setHasReply(false);
             $subSystem->recent();
-        }else{
-            if($floor->inNewBuilding()){
+        } else {
+            if ($floor->inNewBuilding()) {
                 $subSystem->recent();
-            }else{
+            } else {
                 $subSystem->existingWithoutReplicating();
             }
         }
@@ -480,7 +508,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         $price = 0;
         /** @var Local $local */
         foreach ($locals as $local) {
-                $price += $local->getPrice();
+            $price += $local->getConstructiveActionAmount();
         }
 
         return $price;

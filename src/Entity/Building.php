@@ -213,7 +213,8 @@ class Building implements MeasurementDataInterface
 
     public function getEstimatedValueConstruction(): ?int
     {
-        return $this->estimatedValueConstruction;
+        return $this->getPrice();
+        //return $this->estimatedValueConstruction;
     }
 
     public function setEstimatedValueConstruction(?int $estimatedValueConstruction): static
@@ -1088,6 +1089,23 @@ class Building implements MeasurementDataInterface
         $price = 0;
         foreach ($this->urbanizationEstimates as $urbanizationEstimate){
             $price += $urbanizationEstimate->getTotalPrice();
+        }
+
+        return $price;
+    }
+
+    public function getPrice(bool $original = null): int
+    {
+        if ($this->getFloorsAmount() === 0) {
+            return 0;
+        }
+
+        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        $price = 0;
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $price += $floor->getPrice();
         }
 
         return $price;

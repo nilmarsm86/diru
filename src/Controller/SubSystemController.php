@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
+use App\Entity\ConstructiveAction;
 use App\Entity\Floor;
 use App\Entity\SubSystem;
 use App\Form\SubSystemType;
+use App\Repository\ConstructiveActionRepository;
 use App\Repository\LocalRepository;
 use App\Repository\SubSystemRepository;
 use App\Service\CrudActionService;
@@ -82,11 +84,27 @@ final class SubSystemController extends AbstractController
     }
 
     #[Route('/{id}/report/local', name: 'app_sub_system_report_local', methods: ['GET'])]
-    public function reportLocal(Request $request, SubSystem $subSystem): Response
+    public function reportLocal(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository): Response
     {
+        $constructiveActionStatus = $subSystem->getAmountConstructiveAction();
+        $constructiveActionPrice = $subSystem->getPriceByConstructiveAction();
+        $constructiveActions = $constructiveActionRepository->findAll();
+
+        foreach ($constructiveActions as $constructiveAction){
+            if(!array_key_exists($constructiveAction->getName(), $constructiveActionStatus)){
+                $constructiveActionStatus[$constructiveAction->getName()] = 0;
+            }
+
+            if(!array_key_exists($constructiveAction->getName(), $constructiveActionPrice)){
+                $constructiveActionPrice[$constructiveAction->getName()] = 0;
+            }
+        }
+
         return $this->render("sub_system/report.html.twig", [
             'local_status' => $subSystem->getAmountTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
+            'constructive_action_status' => $constructiveActionStatus,
+            'constructive_action_price' => $constructiveActionPrice,
             'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem
         ]);

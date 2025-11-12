@@ -22,6 +22,8 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ tableActionButton3(path('app_sub_system_report_local', {'id': sub_system.id}), '', 'Reportes', 'Reportes', '', 'btn-info') }}
+
             {% if sub_system.floor.isFullyOccupied() == false or reply == true %}
                 {% set path = path('app_local_new', {'subSystem': sub_system.id, 'reply':reply}) %}
                 {{ tableActionButton3(path, 'bi:plus-lg', 'Nuevo', 'Nuevo local', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
@@ -50,19 +52,22 @@
 
                 {% if sub_system.floor.isFullyOccupied() %}
                     {% if sub_system.floor.hasExtraSpace() %}
-                        , ocupados totalmente, con espacio extra de {{ sub_system.floor.getExtraSpace()|number_format(2) }}m<sup>2</sup>.
+                        , ocupados totalmente, con espacio extra de {{ sub_system.floor.getExtraSpace()|number_format(2) }}m
+                        <sup>2</sup>.
                     {% else %}
                         , ocupados totalmente.
                     {% endif %}
 
                     {% if reply %}
-                        <br>De un area de terreno: {{ sub_system.floor.building.getLandArea()|number_format(2) }}m<sup>2</sup><br>
+                        <br>De un area de terreno: {{ sub_system.floor.building.getLandArea()|number_format(2) }}m
+                        <sup>2</sup><br>
                     {% endif %}
                 {% else %}
                     {% if sub_system.floor.building.isNew() %}
                         , quedan {{ sub_system.floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> de área libre.
                     {% else %}
-                        , quedan {{ sub_system.floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> por ocupar en esta planta.
+                        , quedan {{ sub_system.floor.getUnassignedArea()|number_format(2) }}m
+                        <sup>2</sup> por ocupar en esta planta.
                     {% endif %}
 
                     {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
@@ -111,7 +116,8 @@
                                 data-bs-custom-class="danger-info"
                             {% endif %}
                         >
-                            {% if local.hasChangesFromOriginal() %}<em>{{ local.name }}</em>{% else %}{{ local.name }}{% endif %}
+                            {% if local.hasChangesFromOriginal() %}
+                                <em>{{ local.name }}</em>{% else %}{{ local.name }}{% endif %}
                         </td>
                         <td>{{ local.number }}</td>
                         <td>{{ local.area|number_format(2) }}</td>
@@ -170,7 +176,9 @@
                                     >Sin definir</span>
                                 {% endif %}
                             </td>
-                            <td>{{ money(local.getConstructiveActionAmount(), local.getCurrency()) }}</td>
+                            {% if local.hasLocalConstructiveAction() %}
+                                <td>{{ money(local.getConstructiveActionAmount(), local.getCurrency()) }}</td>
+                            {% endif %}
                         {% endif %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}

@@ -122,7 +122,8 @@ class BuildingType extends AbstractType
                 'data-summation-values-target' => 'field',
                 'data-currency-target' => 'field',
                 'data-vecpppt' => true,
-                'data-controller' => 'money'
+                'data-controller' => 'money',
+                'readonly' => 'readonly'
             ],
             'empty_data' => 0,
             'required' => false,

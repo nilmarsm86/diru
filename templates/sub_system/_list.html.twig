@@ -78,7 +78,8 @@
                     Área de terreno de la obra: {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,
                 {% else %}
                     Área ocupada de la obra: {{ floor.building.getOccupiedArea()|number_format(2) }}m
-                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,
+                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m
+                    <sup>2</sup>,
                 {% endif %}
                 {#                <br> #}
                 {% if floor.isFullyOccupied() %}
@@ -101,6 +102,9 @@
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Diagnosticados</th>
+                    {% if reply or floor.inNewBuilding() %}
+                        <th>Importe</th>
+                    {% endif %}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -117,7 +121,8 @@
                         "
                     >
                         <td>
-                            {% if sub_system.hasChangesFromOriginal() %}<em>{{ sub_system.name }}</em>{% else %}{{ sub_system.name }}{% endif %}
+                            {% if sub_system.hasChangesFromOriginal() %}
+                                <em>{{ sub_system.name }}</em>{% else %}{{ sub_system.name }}{% endif %}
                         </td>
                         <td>
                             {% if reply %}
@@ -129,8 +134,8 @@
                                 </span>
                             {% else %}
                                 <span
-                                        class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
-                                        title="Locales del subsistema" data-bs-toggle="tooltip"
+                                    class="badge rounded-pill {% if sub_system.hasOriginalLocals() %}bg-success{% else %}bg-danger{% endif %}"
+                                    title="Locales del subsistema" data-bs-toggle="tooltip"
                                     {% if sub_system.hasOriginalLocals() == false %}
                                         data-bs-title="No tiene definido ningun local." data-bs-custom-class="danger-tooltip"
                                     {% endif %}
@@ -169,8 +174,10 @@
                                     'data-bs-custom-class':"danger-tooltip"
                                 }) }}
                             {% endif %}
-
                         </td>
+                        {% if reply or floor.inNewBuilding() %}
+                            <td>{{ money(sub_system.getPrice(), sub_system.getCurrency()) }}</td>
+                        {% endif %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}
                             {% if sub_system.hasBackgroundColorOfChange() %}

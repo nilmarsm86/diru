@@ -2,7 +2,7 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Estado de subsistemas por locales',
+    title: 'Estado técnico de los locales del subsistema',
 } %}
     {% block header %}
     {% endblock %}
@@ -35,7 +35,7 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Estado de subsistemas por metros',
+    title: 'Estado técnico por metros<sup>2</sup> del subsistema',
 } %}
     {% block header %}
     {% endblock %}
@@ -64,3 +64,56 @@
 
 {% endcomponent %}
 
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Acciones constructivas de los locales del subsistema',
+} %}
+    {% block header %}
+    {% endblock %}
+
+    {% block body %}
+        <table class="table table-hover">
+            <tr>
+                {% for key, value in constructive_action_status %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                {% for key, value in constructive_action_status %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+    {% endblock %}
+
+{% endcomponent %}
+
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Precio de las acciones constructivas de los locales del subsistema',
+} %}
+    {% block header %}
+    {% endblock %}
+
+    {% block body %}
+        <table class="table table-hover">
+            <tr>
+                {% for key, value in constructive_action_price %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                {% for key, value in constructive_action_price %}
+                    <td>{{ money(value, 'CUP') }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+    {% endblock %}
+
+{% endcomponent %}

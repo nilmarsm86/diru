@@ -481,4 +481,26 @@ class Floor implements MeasurementDataInterface
         return $total;
     }
 
+    public function getPrice(bool $original = null): int
+    {
+        if ($this->getSubSystemAmount() === 0) {
+            return 0;
+        }
+
+        $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        $price = 0;
+        /** @var SubSystem $subSystem */
+        foreach ($subSystems as $subSystem) {
+            $price += $subSystem->getPrice();
+        }
+
+        return $price;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->getBuilding()->getProjectCurrency();
+    }
+
 }

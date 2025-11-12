@@ -22,7 +22,7 @@ class LocalConstructiveActionType extends AbstractType
             ->add('constructiveAction', EntityType::class, [
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
-                'label' => 'Acción constructiva:',
+                'label' => 'Tipo:',
                 'placeholder' => '-Seleccione-',
                 'group_by' => function(ConstructiveAction $constructiveAction, int $key, string $value) {
                     return $constructiveAction->getType()->getLabelFrom($constructiveAction->getType());

@@ -53,11 +53,14 @@ class LocalConstructiveActionType extends AbstractType
      */
     private function onPreSetData(FormEvent $event): void
     {
+//        \Locale::setDefault('en');
+
         /** @var LocalConstructiveAction $localConstructiveAction */
         $localConstructiveAction = $event->getData();
         $form = $event->getForm();
 
         $currency = 'CUP';
+        $local = null;
         if($localConstructiveAction){
             $local = $localConstructiveAction->getLocal();
             if($local){
@@ -68,14 +71,17 @@ class LocalConstructiveActionType extends AbstractType
         $form->add('price', MoneyType::class, [
             'label' => 'Precio:',
             'currency' => $currency,
-            'html5' => true,
+//            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [
                 'placeholder' => '0',
                 'min' => 0,
-                'data-usd-currency-target' => 'field'
+                'data-usd-currency-target' => 'field',
+                'data-controller' => 'money'
             ],
+            'data' => (!is_null($local)) ? $local->getPrice() : 0,
+            'grouping' => true,
         ]);
     }
 }

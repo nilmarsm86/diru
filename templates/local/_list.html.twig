@@ -77,15 +77,16 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Número</th>
+                    <th>#</th>
                     <th>Área (m<sup>2</sup>)</th>
                     <th>Tipo</th>
-                    <th>Altura (m)</th>
-                    <th>Volumen (m<sup>3</sup>)</th>
+                    <th>Alt. (m)</th>
+                    <th>Vol. (m<sup>3</sup>)</th>
                     <th>Estado. T</th>
                     <th>Impacta</th>
                     {% if reply or sub_system.inNewBuilding() %}
                         <th>Acción. C</th>
+                        <th>Importe</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -151,11 +152,16 @@
                             <td
                                 {% if local.getConstructiveSystem() %}
                                     data-bs-toggle="tooltip"
-                                    data-bs-title="{% if local.getConstructiveSystem() %}{{ local.getConstructiveSystem().name }}{% endif %}"
+                                    data-bs-title="{% if local.hasLocalConstructiveAction() %}{{ money(local) }}{% endif %}"
                                 {% endif %}
                             >
                                 {% if local.hasLocalConstructiveAction() %}
-                                    {{ local.getConstructiveAction()~' ('~local.getFormatedPrice()~')' }}
+                                    {% if local.getConstructiveSystem() %}
+                                        {{ local.getConstructiveAction()~' ('~local.constructiveSystem.name~')' }}
+                                    {% else %}
+                                        {{ local.getConstructiveAction() }}
+                                    {% endif %}
+
                                 {% else %}
                                     <span class="text-danger"
                                           data-bs-toggle="tooltip"
@@ -164,6 +170,7 @@
                                     >Sin definir</span>
                                 {% endif %}
                             </td>
+                            <td>{{ money(local.getConstructiveActionAmount(), local.getCurrency()) }}</td>
                         {% endif %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}

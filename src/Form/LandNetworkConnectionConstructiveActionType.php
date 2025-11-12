@@ -66,15 +66,17 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         $form->add('price', MoneyType::class, [
             'label' => 'Precio:',
             'currency' => $currency,
-            'html5' => true,
+//            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [
                 'placeholder' => 0,
                 'min' => 0,
-                'data-usd-currency-target' => 'field'
+                'data-usd-currency-target' => 'field',
+                'data-controller' => 'money'
             ],
-            'empty_data' => 0
+            'empty_data' => 0,
+            'grouping' => true
         ]);
     }
 }

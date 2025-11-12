@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Enums\LocalType;
 use App\Entity\Enums\StructureState;
+use App\Entity\Interfaces\MoneyInterface;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Entity\Traits\OriginalTrait;
@@ -21,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'subSystem'], message: 'Ya existe en el subsistema un local con este nombre.', errorPath: 'name',)]
 #[DoctrineAssert\UniqueEntity(fields: ['number', 'subSystem'], message: 'Ya existe en el subsistema un local con este número.', errorPath: 'number')]
-class Local
+class Local implements MoneyInterface
 {
     use NameToStringTrait;
     use StructureStateTrait;
@@ -506,10 +507,10 @@ class Local
         return $this->getSubSystem()->getFloor()->getBuilding()->getProjectCurrency();
     }
 
-    public function getFormatedPrice(): string
+    /*public function getFormatedPrice(): string
     {
         return (number_format(((float)$this->getPrice() / 100), 2)) . ' ' . $this->getCurrency();
-    }
+    }*/
 
     public function isLocalType(): bool
     {
@@ -554,6 +555,14 @@ class Local
     public function hasStructuralChange(): bool
     {
         return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::STRUCTURAL_CHANGE_ACTIONS);
+    }
+
+    public function getConstructiveActionAmount(): float
+    {
+        if(!$this->hasLocalConstructiveAction()){
+            return 0;
+        }
+        return $this->getLocalConstructiveAction()->getPrice() * $this->getArea();
     }
 
 }

@@ -28,13 +28,15 @@ class UrbanizationEstimateType extends AbstractType
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true
             ])
             ->add('quantity', null, [
                 'label' => 'Cantidad:'

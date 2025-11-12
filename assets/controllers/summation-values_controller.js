@@ -39,16 +39,19 @@ export default class extends AbstractController {
     }
 
     summation() {
-        let USDollar = new Intl.NumberFormat('en', {
+        let USDollar = new Intl.NumberFormat('es-CU', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'CUP',
         });
-        this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + Number(field.value), 0));
+        this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0));
         if(this.element.querySelector('.vecpppt')){
             // this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").entries().reduce((accumulator, field) => accumulator + Number(field.value), 0));
-            this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + Number(field.value), 0));
+            this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0));
         }
     }
 
-
+    clearNumber(number){
+        const cleaned = number.replace(/[^0-9.]/g, '');
+        return Number(cleaned.replace(/,/g, ''));
+    }
 }

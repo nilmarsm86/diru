@@ -121,14 +121,16 @@ class BuildingType extends AbstractType
                 'min' => 0,
                 'data-summation-values-target' => 'field',
                 'data-currency-target' => 'field',
-                'data-vecpppt' => true
+                'data-vecpppt' => true,
+                'data-controller' => 'money'
             ],
             'empty_data' => 0,
             'required' => false,
             'currency' => $currency,
-            'html5' => true,
+//            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
+            'grouping' => true,
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Valor estimado en equipos:',
@@ -136,14 +138,16 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
-                    'data-currency-target' => 'field'
+                    'data-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('estimatedValueOther', MoneyType::class, [
                 'label' => 'Otros valores estimados:',
@@ -151,14 +155,16 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
-                    'data-currency-target' => 'field'
+                    'data-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('approvedValueConstruction', MoneyType::class, [
                 'label' => 'Valor aprobado de construcción:',
@@ -166,14 +172,16 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
-                    'data-currency-target' => 'field'
+                    'data-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('approvedValueEquipment', MoneyType::class, [
                 'label' => 'Valor aprobado en equipos:',
@@ -181,14 +189,16 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
-                    'data-currency-target' => 'field'
+                    'data-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('approvedValueOther', MoneyType::class, [
                 'label' => 'Otros valores aprobados:',
@@ -196,14 +206,16 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
-                    'data-currency-target' => 'field'
+                    'data-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('projectPriceTechnicalPreparation', MoneyType::class, [
                 'label' => 'Precio de proy. y preparación técnica: (m<sup>2</sup>)',
@@ -213,14 +225,16 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-vecpppt' => true
+                    'data-vecpppt' => true,
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true,
             ])
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Valor estimado de urbanización:',
@@ -258,14 +272,16 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
-                    'data-usd-currency-target' => 'field'
+                    'data-usd-currency-target' => 'field',
+                    'data-controller' => 'money'
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'grouping' => true
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [
                 'entry_type' => LandNetworkConnectionType::class,

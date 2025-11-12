@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Interfaces\MoneyInterface;
 use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
@@ -20,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 #[ORM\Entity(repositoryClass: SubSystemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name',)]
-class SubSystem implements MeasurementDataInterface
+class SubSystem implements MeasurementDataInterface, MoneyInterface
 {
     use NameToStringTrait;
     use MeasurementDataTrait;
@@ -466,6 +467,28 @@ class SubSystem implements MeasurementDataInterface
         }
 
         return true;
+    }
+
+    public function getPrice(bool $original = null): int
+    {
+        if ($this->getLocalsAmount() === 0) {
+            return 0;
+        }
+
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        $price = 0;
+        /** @var Local $local */
+        foreach ($locals as $local) {
+                $price += $local->getPrice();
+        }
+
+        return $price;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->getFloor()->getBuilding()->getProjectCurrency();
     }
 
 }

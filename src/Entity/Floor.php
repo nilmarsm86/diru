@@ -138,6 +138,10 @@ class Floor implements MeasurementDataInterface
 //            return $this->getBuilding()->getOccupiedArea() - $this->getTotalArea();
 //        }
 
+        if($this->getBuilding()->getLand()->isBlocked()){
+            return 0;
+        }
+
         if (is_null($this->getBuilding())) {
             return 1;
         }
@@ -145,11 +149,19 @@ class Floor implements MeasurementDataInterface
         $isNew = $this->getBuilding()->isNew();
         $landArea = $this->getBuilding()->getLandArea();
         $occupiedArea = $this->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        if($this->getTotalArea() > $occupiedArea){
+            return $landArea - $this->getTotalArea();
+        }else{
+            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        }
     }
 
     public function getFreeArea(bool $original = null): ?float
     {
+        if(!$this->getBuilding()->getLand()->isBlocked()){
+            return 0;
+        }
+
         if (is_null($this->getBuilding())) {
             return 1;
         }
@@ -157,7 +169,12 @@ class Floor implements MeasurementDataInterface
         $isNew = $this->getBuilding()->isNew();
         $landArea = $this->getBuilding()->getLandArea();
         $occupiedArea = $this->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+//        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        if($this->getTotalArea() > $occupiedArea){
+            return $landArea - $this->getTotalArea();
+        }else{
+            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        }
     }
 
     public function getMaxHeight(bool $original = null): float

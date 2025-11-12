@@ -5,59 +5,48 @@
     title: 'Estado técnico de los locales del subsistema',
 } %}
     {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        <div>
+            {{ tableActionButton3(path('app_sub_system_index', {'floor': sub_system.floor.id, 'reply': true}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}
+        </div>
     {% endblock %}
 
     {% block body %}
         <table class="table table-hover">
             <tr>
-                <th>Bueno</th>
-                <th>Regular</th>
-                <th>Malo</th>
-                <th>Crítico</th>
-                <th>Sin definir</th>
-                <th>Totales</th>
+                <th>Estado técnico</th>
+                <th>Cantidad</th>
+                <th>Metros(m<sup>2</sup>)</th>
             </tr>
-
             <tr>
+                <th>Bueno</th>
                 <td>{{ local_status.good }}</td>
-                <td>{{ local_status.regular }}</td>
-                <td>{{ local_status.bad }}</td>
-                <td>{{ local_status.critical }}</td>
-                <td>{{ local_status.undefined }}</td>
-                <td>{{ sub_system.getLocalsAmount() }}</td>
-            </tr>
-        </table>
-    {% endblock %}
-
-{% endcomponent %}
-
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Estado técnico por metros<sup>2</sup> del subsistema',
-} %}
-    {% block header %}
-    {% endblock %}
-
-    {% block body %}
-        <table class="table table-hover">
-            <tr>
-                <th>Bueno</th>
-                <th>Regular</th>
-                <th>Malo</th>
-                <th>Crítico</th>
-                <th>Sin definir</th>
-                <th>Totales</th>
-            </tr>
-
-            <tr>
                 <td>{{ meter_status.good|number_format(2) }}</td>
+            </tr>
+            <tr>
+                <th>Regular</th>
+                <td>{{ local_status.regular }}</td>
                 <td>{{ meter_status.regular|number_format(2) }}</td>
+            </tr>
+            <tr>
+                <th>Malo</th>
+                <td>{{ local_status.bad }}</td>
                 <td>{{ meter_status.bad|number_format(2) }}</td>
+            </tr>
+            <tr>
+                <th>Crítico</th>
+                <td>{{ local_status.critical }}</td>
                 <td>{{ meter_status.critical|number_format(2) }}</td>
+            </tr>
+            <tr>
+                <th>Sin definir</th>
+                <td>{{ local_status.undefined }}</td>
                 <td>{{ meter_status.undefined|number_format(2) }}</td>
-                <td>{{ sub_system.getAmountMeters()|number_format(2) }}</td>
+            </tr>
+            <tr>
+                <th>Totales</th>
+                <th>{{ sub_system.getLocalsAmount() }}</th>
+                <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
             </tr>
         </table>
     {% endblock %}
@@ -76,42 +65,26 @@
     {% block body %}
         <table class="table table-hover">
             <tr>
-                {% for key, value in constructive_action_status %}
+                <th>Acción constructiva</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Metros(m<sup>2</sup>)</th>
+            </tr>
+
+            {% for key, value in constructive_action %}
+                <tr>
                     <th>{{ key }}</th>
-                {% endfor %}
-            </tr>
+                    <th>{{ value['status'] }}</th>
+                    <th>{{ money(value['price'], 'CUP') }}</th>
+                    <th>{{ value['meter']|number_format(2) }}</th>
+                </tr>
+            {% endfor %}
 
             <tr>
-                {% for key, value in constructive_action_status %}
-                    <td>{{ value }}</td>
-                {% endfor %}
-            </tr>
-        </table>
-    {% endblock %}
-
-{% endcomponent %}
-
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Precio de las acciones constructivas de los locales del subsistema',
-} %}
-    {% block header %}
-    {% endblock %}
-
-    {% block body %}
-        <table class="table table-hover">
-            <tr>
-                {% for key, value in constructive_action_price %}
-                    <th>{{ key }}</th>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for key, value in constructive_action_price %}
-                    <td>{{ money(value, 'CUP') }}</td>
-                {% endfor %}
+                <th>Totales</th>
+                <th>{{ sub_system.getLocalsAmount() }}</th>
+                <th>{{ money(sub_system.getPrice(), 'CUP') }}</th>
+                <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
             </tr>
         </table>
     {% endblock %}

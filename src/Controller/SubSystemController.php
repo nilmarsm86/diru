@@ -88,23 +88,30 @@ final class SubSystemController extends AbstractController
     {
         $constructiveActionStatus = $subSystem->getAmountConstructiveAction();
         $constructiveActionPrice = $subSystem->getPriceByConstructiveAction();
+        $constructiveActionMeter = $subSystem->getMeterByConstructiveAction();
         $constructiveActions = $constructiveActionRepository->findAll();
+        $ca = [];
 
-        foreach ($constructiveActions as $constructiveAction){
-            if(!array_key_exists($constructiveAction->getName(), $constructiveActionStatus)){
-                $constructiveActionStatus[$constructiveAction->getName()] = 0;
-            }
-
-            if(!array_key_exists($constructiveAction->getName(), $constructiveActionPrice)){
-                $constructiveActionPrice[$constructiveAction->getName()] = 0;
+        foreach ($constructiveActions as $constructiveAction) {
+            if (!array_key_exists($constructiveAction->getName(), $constructiveActionMeter)) {
+                $ca[$constructiveAction->getName()] = [
+                    'status' => 0,
+                    'price' => 0,
+                    'meter' => 0,
+                ];
+            } else {
+                $ca[$constructiveAction->getName()] = [
+                    'status' => $constructiveActionStatus[$constructiveAction->getName()],
+                    'price' => $constructiveActionPrice[$constructiveAction->getName()],
+                    'meter' => $constructiveActionMeter[$constructiveAction->getName()],
+                ];
             }
         }
 
         return $this->render("sub_system/report.html.twig", [
             'local_status' => $subSystem->getAmountTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
-            'constructive_action_status' => $constructiveActionStatus,
-            'constructive_action_price' => $constructiveActionPrice,
+            'constructive_action' => $ca,
             'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem
         ]);

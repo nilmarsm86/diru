@@ -382,6 +382,20 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $constructiveAction;
     }
 
+    public function getMeterByConstructiveAction(): array
+    {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $constructiveAction = [];
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
+            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getArea() : $local->getArea();
+        }
+
+        return $constructiveAction;
+    }
+
     public function getAmountMeters(): ?float
     {
         $total = 0;

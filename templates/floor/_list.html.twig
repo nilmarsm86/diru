@@ -101,6 +101,7 @@
                     <th>Altura (m)</th>
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Sin asignar (m<sup>2</sup>)</th>
+                    <th>Libre (m<sup>2</sup>)</th>
                     {% if reply or building.isNew() %}
                         <th>Importe</th>
                     {% endif %}
@@ -183,6 +184,11 @@
                                       data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ floor.getUnassignedArea()|number_format(2) }}
                                 </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if floor.isFullyOccupied() %}
+                                {{ floor.getFreeArea()|number_format(2) }}
                             {% endif %}
                         </td>
                         {% if reply or building.isNew() %}

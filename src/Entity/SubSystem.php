@@ -122,20 +122,51 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $data;
     }
 
-    public function getUnassignedArea(bool $original = null): ?float
+    private function unassignedOrFreeArea(): float|int|null
     {
+        if (is_null($this->getFloor()->getBuilding())) {
+            return 1;
+        }
+
         $isNew = $this->getFloor()->getBuilding()->isNew();
         $landArea = $this->getFloor()->getBuilding()->getLandArea();
         $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        if($this->getTotalArea() > $occupiedArea){
+            return $landArea - $this->getTotalArea();
+        }else{
+            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        }
+    }
+
+    public function getUnassignedArea(bool $original = null): ?float
+    {
+        if($this->getFloor()->getBuilding()->getLand()->isBlocked()){
+            return 0;
+        }
+
+//        if (is_null($this->getFloor()->getBuilding())) {
+//            return 1;
+//        }
+//
+//        $isNew = $this->getFloor()->getBuilding()->isNew();
+//        $landArea = $this->getFloor()->getBuilding()->getLandArea();
+//        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
+////        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+//        if($this->getTotalArea() > $occupiedArea){
+//            return $landArea - $this->getTotalArea();
+//        }else{
+//            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+//        }
+        return $this->unassignedOrFreeArea();
     }
 
     public function getFreeArea(bool $original = null): ?float
     {
-        $isNew = $this->getFloor()->getBuilding()->isNew();
-        $landArea = $this->getFloor()->getBuilding()->getLandArea();
-        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        if(!$this->getFloor()->getBuilding()->getLand()->isBlocked()){
+            return 0;
+        }
+
+        return $this->unassignedOrFreeArea();
     }
 
     public function getMaxHeight(bool $original = null): float
@@ -399,7 +430,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function getAmountMeters(): ?float
     {
         $total = 0;
-        foreach ($this->getLocals() as $local) {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        /** @var Local $local */
+        foreach ($locals as $local) {
             $total += $local->getArea();
         }
 
@@ -444,11 +477,12 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             $subSystem->setHasReply(false);
             $subSystem->recent();
         } else {
-            if ($floor->inNewBuilding()) {
-                $subSystem->recent();
-            } else {
-                $subSystem->existingWithoutReplicating();
-            }
+//            if ($floor->inNewBuilding()) {
+//                $subSystem->recent();
+//            } else {
+//                $subSystem->existingWithoutReplicating();
+//            }
+            ($floor->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         }
         $subSystem->createInitialLocal($reply, $entityManager);
 

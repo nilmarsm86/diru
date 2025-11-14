@@ -51,9 +51,9 @@ trait MeasurementDataTrait
 
     public function calculateAllLocalsAreClassified(Collection $items): bool
     {
-        if((!$this instanceof Building) && !$this->isOriginal()){
-            return true;
-        }
+//        if((!$this instanceof Building) && !$this->isOriginal()){
+//            return true;
+//        }
 
         if($items->count() == 0){
             return false;

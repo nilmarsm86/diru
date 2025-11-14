@@ -148,6 +148,7 @@ class LocalType extends AbstractType
 
         $technicalStatusOptions = [
             'label' => 'Estado técnico:',
+            'undefined_option' => $local->isOriginal(),
         ];
 
 //        if(is_null($local->getId()) /*&& $options['reply']*/){

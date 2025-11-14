@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Building;
+use App\Entity\Floor;
 use App\Entity\Land;
 use App\Entity\NetworkConnection;
 use App\Form\LandType;
@@ -82,5 +83,15 @@ final class LandController extends AbstractController
     {
         $successMsg = 'Se ha eliminado los datos del terreno.';
         return $crudActionService->deleteAction($request, $landRepository, $land, $successMsg, 'app_land_index');
+    }
+
+    #[Route('/unassigned-free/{id}/{building}/{reply}', name: 'app_land_unassigned-free', methods: ['GET'])]
+    public function unassignedOrFree(Land $land, LandRepository $landRepository, Building $building, bool $reply = false): Response
+    {
+        $land->setIsBlocked(!$land->isBlocked());
+        $landRepository->save($land, true);
+
+        $this->addFlash('success', 'Se ha transformado el área.');
+        return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,4 +1,4 @@
-{% if isNew %}Área de terreno{% else %}Área ocupada{% endif %} de la obra:{{ maxArea|number_format(2) }}m<sup>2</sup>
+{% if isNew %}Área de terreno{% else %}Área ocupada{% endif %} de la obra: {{ maxArea|number_format(2) }}m<sup>2</sup>
 
 {% if isFullyOccupied %}
     {% if hasFreeArea %}
@@ -7,10 +7,11 @@
         , ocupados totalmente.
         {% if hasUnassignedArea %}
             <br>con espacio extra de {{ unassignedArea|number_format(2) }}m<sup>2</sup>.
+        {% else %}
+            <br>con espacio extra de {{ (landArea - maxArea)|number_format(2) }}m<sup>2</sup>.
         {% endif %}
     {% endif %}
-
-    {% if reply %}De un area de terreno: {{ landArea|number_format(2) }}m<sup>2</sup><br>{% endif %}
+    {% if reply %}<br>De un area de terreno: {{ landArea|number_format(2) }}m<sup>2</sup><br>{% endif %}
 {% else %}
     , quedan {{ unassignedArea|number_format(2) }}m<sup>2</sup>
     {% if isNew %}de área sin asignar.{% else %}por ocupar en esta planta.{% endif %}

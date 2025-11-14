@@ -53,9 +53,9 @@
                     landArea: sub_system.floor.building.getLandArea(),
                 }) }}
 
-                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
+                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() and (sub_system.floor.hasUnassignedArea() or sub_system.floor.hasFreeArea()) %}
                     <br>
-                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':(sub_system.floor.getUnassignedArea() * 100), 'reply': reply }) }}">
+                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'reply': reply }) }}">
                         Convertir en área de muro
                     </a>
                 {% endif %}

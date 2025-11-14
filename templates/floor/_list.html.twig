@@ -92,10 +92,17 @@
                     landArea: building.getLandArea(),
                 }) }}
 
-                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
+                {% if building.hasFreeArea() %}
                     <br>
-                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':(sub_system.floor.getUnassignedArea() * 100), 'reply': reply }) }}">
-                        Convertir en área de muro
+                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">
+                        Convertir en área sin asignar
+                    </a>
+                {% endif %}
+
+                {% if building.hasUnassignedArea() %}
+                    <br>
+                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">
+                        Convertir en área libre
                     </a>
                 {% endif %}
             {% endblock %}

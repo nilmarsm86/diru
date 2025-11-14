@@ -42,40 +42,22 @@
             {% set original = reply ? false : true %}
 
             {% block message %}
-                {% if sub_system.floor.building.isNew() %}
-                    Área de terreno de la obra:
-                {% else %}
-                    Área ocupada de la obra:
+                {{ include('structure/_table_message.html.twig', {
+                    isNew: sub_system.floor.building.isNew(),
+                    maxArea: sub_system.floor.building.getMaxArea(),
+                    isFullyOccupied: sub_system.floor.isFullyOccupied(),
+                    hasFreeArea: sub_system.floor.hasFreeArea(),
+                    freeArea: sub_system.floor.getFreeArea(),
+                    hasUnassignedArea: sub_system.floor.hasUnassignedArea(),
+                    unassignedArea: sub_system.floor.getUnassignedArea(),
+                    landArea: sub_system.floor.building.getLandArea(),
+                }) }}
 
-                {% endif %}
-                {{ sub_system.floor.building.getMaxArea()|number_format(2) }}m<sup>2</sup>
-
-                {% if sub_system.floor.isFullyOccupied() %}
-                    {% if sub_system.floor.hasExtraSpace() %}
-                        , ocupados totalmente, con espacio extra de {{ sub_system.floor.getExtraSpace()|number_format(2) }}m
-                        <sup>2</sup>.
-                    {% else %}
-                        , ocupados totalmente.
-                    {% endif %}
-
-                    {% if reply %}
-                        <br>De un area de terreno: {{ sub_system.floor.building.getLandArea()|number_format(2) }}m
-                        <sup>2</sup><br>
-                    {% endif %}
-                {% else %}
-                    {% if sub_system.floor.building.isNew() %}
-                        , quedan {{ sub_system.floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> de área libre.
-                    {% else %}
-                        , quedan {{ sub_system.floor.getUnassignedArea()|number_format(2) }}m
-                        <sup>2</sup> por ocupar en esta planta.
-                    {% endif %}
-
-                    {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
-                        <br>
-                        <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':(sub_system.floor.getUnassignedArea() * 100), 'reply': reply }) }}">
-                            Convertir en área de muro
-                        </a>
-                    {% endif %}
+                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
+                    <br>
+                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':(sub_system.floor.getUnassignedArea() * 100), 'reply': reply }) }}">
+                        Convertir en área de muro
+                    </a>
                 {% endif %}
             {% endblock %}
 
@@ -87,7 +69,7 @@
                     <th>Tipo</th>
                     <th>Alt. (m)</th>
                     <th>Vol. (m<sup>3</sup>)</th>
-                    <th>Estado. T</th>
+                    <th>Est. Tec</th>
                     <th>Impacta</th>
                     {% if reply or sub_system.inNewBuilding() %}
                         <th>Acción. C</th>

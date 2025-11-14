@@ -81,11 +81,22 @@
         } %}
 
             {% block message %}
-                {% if building.isNew() %}
-                    Área de terreno de la obra: {{ building.getLandArea()|number_format(2) }}m<sup>2</sup>.
-                {% else %}
-                    Área ocupada de la obra: {{ building.getOccupiedArea()|number_format(2) }}m
-                    <sup>2</sup> de un área de terreno de {{ building.getLandArea()|number_format(2) }}m<sup>2</sup>.
+                {{ include('structure/_table_message.html.twig', {
+                    isNew: building.isNew(),
+                    maxArea: building.getMaxArea(),
+                    isFullyOccupied: building.isFullyOccupied(),
+                    hasFreeArea: building.hasFreeArea(),
+                    freeArea: building.getFreeArea(),
+                    hasUnassignedArea: building.hasUnassignedArea(),
+                    unassignedArea: building.getUnassignedArea(),
+                    landArea: building.getLandArea(),
+                }) }}
+
+                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() %}
+                    <br>
+                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'area':(sub_system.floor.getUnassignedArea() * 100), 'reply': reply }) }}">
+                        Convertir en área de muro
+                    </a>
                 {% endif %}
             {% endblock %}
 

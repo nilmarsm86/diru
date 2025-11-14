@@ -223,9 +223,7 @@ class Floor implements MeasurementDataInterface
 //            return true;
 //        }
 
-        return $this->getTotalArea() >= (($this->getBuilding()->isNew())
-                ? $this->getBuilding()->getLandArea()
-                : $this->getBuilding()->getOccupiedArea());
+        return $this->getTotalArea() >= $this->getBuilding()->getMaxArea();
     }
 
     public function getSubSystemAmount(): int
@@ -446,22 +444,32 @@ class Floor implements MeasurementDataInterface
         }
     }
 
-    public function hasExtraSpace(): bool
+//    public function hasExtraSpace(): bool
+//    {
+//        if($this->getBuilding()->isNew()){
+//            return false;
+//        }
+//        return $this->getTotalArea() > $this->getBuilding()->getOccupiedArea();
+//    }
+
+//    public function getExtraSpace(): ?float
+//    {
+//        $extraSpace = $this->getTotalArea() - $this->getBuilding()->getOccupiedArea();
+//        if($extraSpace < 0){
+//            $extraSpace = 0;
+//        }
+//
+//        return $extraSpace;
+//    }
+
+    public function hasFreeArea(): float
     {
-        if($this->getBuilding()->isNew()){
-            return false;
-        }
-        return $this->getTotalArea() > $this->getBuilding()->getOccupiedArea();
+        return $this->getFreeArea() > 0;
     }
 
-    public function getExtraSpace(): ?float
+    public function hasUnassignedArea(): float
     {
-        $extraSpace = $this->getTotalArea() - $this->getBuilding()->getOccupiedArea();
-        if($extraSpace < 0){
-            $extraSpace = 0;
-        }
-
-        return $extraSpace;
+        return $this->getUnassignedArea() > 0;
     }
 
     public function isNewInReply(): bool

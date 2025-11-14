@@ -725,6 +725,16 @@ class Building implements MeasurementDataInterface
         return $this->getMeasurementData('getFreeArea', $original);
     }
 
+    public function hasFreeArea(): float
+    {
+        return $this->getFreeArea() > 0;
+    }
+
+    public function hasUnassignedArea(): float
+    {
+        return $this->getUnassignedArea() > 0;
+    }
+
     public function getMaxHeight(bool $original = null): float
     {
         if (is_null($original)) {
@@ -747,7 +757,7 @@ class Building implements MeasurementDataInterface
 //        if($this->isNew()){
 //            return true;
 //        }
-        return $this->getTotalArea($original) >= (($this->isNew()) ? $this->getLandArea() : $this->getOccupiedArea());
+        return $this->getTotalArea($original) >= $this->getMaxArea();
     }
 
     private function getFloorAmount(): int

@@ -73,22 +73,35 @@
             paginator: paginator,
         } %}
 
-            {% block message %}
-                {% if floor.building.isNew() %}
-                    Área de terreno de la obra: {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,
-                {% else %}
-                    Área ocupada de la obra: {{ floor.building.getOccupiedArea()|number_format(2) }}m
-                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m
-                    <sup>2</sup>,
-                {% endif %}
-                {#                <br> #}
-                {% if floor.isFullyOccupied() %}
-                    ocupados totalmente.
-                {% else %}
-                    <br>
-                    quedan {{ floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> por ocupar en esta planta.
-                {% endif %}
+{#            {% block message %}#}
+{#                {% if floor.building.isNew() %}#}
+{#                    Área de terreno de la obra: {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,#}
+{#                {% else %}#}
+{#                    Área ocupada de la obra: {{ floor.building.getOccupiedArea()|number_format(2) }}m#}
+{#                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m#}
+{#                    <sup>2</sup>,#}
+{#                {% endif %}#}
+{#                #}{#                <br> #}
+{#                {% if floor.isFullyOccupied() %}#}
+{#                    ocupados totalmente.#}
+{#                {% else %}#}
+{#                    <br>#}
+{#                    quedan {{ floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> por ocupar en esta planta.#}
+{#                {% endif %}#}
 
+{#            {% endblock %}#}
+
+            {% block message %}
+                {{ include('structure/_table_message.html.twig', {
+                    isNew: floor.building.isNew(),
+                    maxArea: floor.building.getMaxArea(),
+                    isFullyOccupied: floor.isFullyOccupied(),
+                    hasFreeArea: floor.hasFreeArea(),
+                    freeArea: floor.getFreeArea(),
+                    hasUnassignedArea: floor.hasUnassignedArea(),
+                    unassignedArea: floor.getUnassignedArea(),
+                    landArea: floor.building.getLandArea(),
+                }) }}
             {% endblock %}
 
             {% block tableHead %}

@@ -73,7 +73,7 @@
                     <th>Impacta</th>
                     {% if reply or sub_system.inNewBuilding() %}
                         <th>Acción. C</th>
-                        <th>Importe</th>
+                        <th>Importe (CUP)</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -159,7 +159,7 @@
                                 {% endif %}
                             </td>
                             {% if local.hasLocalConstructiveAction() %}
-                                <td>{{ money(local.getConstructiveActionAmount(), local.getCurrency()) }}</td>
+                                <td>{{ money(local.getConstructiveActionAmount()) }}</td>
                             {% endif %}
                         {% endif %}
                         <td class="text-end">

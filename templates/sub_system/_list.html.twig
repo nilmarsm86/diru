@@ -116,7 +116,7 @@
                     <th>Volumen (m<sup>3</sup>)</th>
                     <th>Diagnosticados</th>
                     {% if reply or floor.inNewBuilding() %}
-                        <th>Importe</th>
+                        <th>Importe (CUP)</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -195,7 +195,7 @@
                             {% endif %}
                         </td>
                         {% if reply or floor.inNewBuilding() %}
-                            <td>{{ money(sub_system.getPrice(), sub_system.getCurrency()) }}</td>
+                            <td>{{ money(sub_system.getPrice()) }}</td>
                         {% endif %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}
@@ -300,7 +300,7 @@
                     </th>
                     <th>{{ floor.getVolume()|number_format(2) }}</th>
                     <th>
-                        {% if floor.hasOriginalLocals() and floor.allLocalsAreClassified() and floor.notWallArea() == false %}
+                        {% if floor.hasErrors() == false %}
                             {{ ux_icon('ep:success-filled', {
                                 'class':'bi text-success',
                             }) }}
@@ -313,6 +313,9 @@
                             }) }}
                         {% endif %}
                     </th>
+                    {% if reply or floor.inNewBuilding() %}
+                        <th>{{ money(floor.getPrice()) }}</th>
+                    {% endif %}
                     <th></th>
                 </tr>
             {% endblock %}

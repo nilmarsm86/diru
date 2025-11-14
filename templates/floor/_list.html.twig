@@ -121,7 +121,7 @@
                     <th>Sin asignar (m<sup>2</sup>)</th>
                     <th>Libre (m<sup>2</sup>)</th>
                     {% if reply or building.isNew() %}
-                        <th>Importe</th>
+                        <th>Importe (CUP)</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -210,7 +210,7 @@
                             {% endif %}
                         </td>
                         {% if reply or building.isNew() %}
-                            <td>{{ money(floor.getPrice(), floor.getCurrency()) }}</td>
+                            <td>{{ money(floor.getPrice()) }}</td>
                         {% endif %}
                         <td class="text-end">
                             {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
@@ -289,6 +289,8 @@
                     <th>{{ building.getMaxHeight(not reply)|number_format(2) }}</th>
                     <th>{{ building.getVolume(not reply)|number_format(2) }}</th>
                     <th>{{ building.getUnassignedArea(not reply)|number_format(2) }}</th>
+                    <th>{{ building.getFreeArea(not reply)|number_format(2) }}</th>
+                    <th>{{ money(building.getPrice()) }}</th>
                     <th class="text-end">CUS: {{ building.getCus(not reply)|number_format(2) }}</th>
                 </tr>
             {% endblock %}

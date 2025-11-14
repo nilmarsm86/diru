@@ -164,7 +164,13 @@
                         <td>{{ sub_system.getVolume()|number_format(2) }}</td>
                         <td>
                             {% if reply %}
-                                {{ ux_icon('bi:check-lg', {'class':'bi text-success'}) }}
+                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasReplyLocals())
+                                ? ux_icon('bi:check-lg', {'class':'bi text-success'})
+                                : ux_icon('material-symbols:close-rounded', {
+                                    'class':'bi text-danger', 'data-bs-toggle':"tooltip",
+                                    'data-bs-title':(sub_system.hasReplyLocals() == false) ? "No tiene definido locales replicados para diagnosticar." : "Faltan locales replicados por diagnosticar.",
+                                    'data-bs-custom-class':"danger-tooltip"
+                                }) }}
                             {% else %}
                                 {{ (sub_system.allLocalsAreClassified() and sub_system.hasOriginalLocals())
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})

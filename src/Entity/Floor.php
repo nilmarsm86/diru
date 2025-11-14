@@ -265,7 +265,8 @@ class Floor implements MeasurementDataInterface
 
     public function allLocalsAreClassified(): bool
     {
-        return $this->calculateAllLocalsAreClassified($this->getOriginalSubsystems());
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+        return $this->calculateAllLocalsAreClassified($subsystems);
     }
 
     public function getPosition(): ?int
@@ -365,6 +366,22 @@ class Floor implements MeasurementDataInterface
         return true;
     }
 
+    public function hasReplyLocals(): bool
+    {
+        if ($this->getSubSystemAmount() === 0) {
+            return false;
+        }
+
+        /** @var SubSystem $subSystem */
+        foreach ($this->getReplySubsystems() as $subSystem) {
+            if (!$subSystem->hasReplyLocals()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static function createAutomatic(?Floor $floor, Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
         if(is_null($floor)){
@@ -414,7 +431,12 @@ class Floor implements MeasurementDataInterface
 
     public function hasErrors(): bool
     {
-        return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false) || ($this->isFullyOccupied() === false);
+        if($this->isOriginal()){
+            return ($this->notWallArea() == true) || ($this->hasOriginalLocals() == false) || ($this->allLocalsAreClassified() == false) || ($this->isFullyOccupied() === false);
+        }else{
+            return ($this->notWallArea() == true) || ($this->hasReplyLocals() == false) || ($this->allLocalsAreClassified() == false) || ($this->isFullyOccupied() === false);
+        }
+
     }
 
     public function hasExtraSpace(): bool

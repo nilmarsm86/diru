@@ -26,7 +26,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'formula' => null,
                 'parent' => 1,
                 'name' => 'Materiales aportados por el Constructor Estimado',
-            ]
+            ],
         ];
         foreach ($concepts as $concept) {
             $conceptEntity = $manager->getRepository(SeparateConcept::class)->findOneBy(['name' => $concept['name']]);

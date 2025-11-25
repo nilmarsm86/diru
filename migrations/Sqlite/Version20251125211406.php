@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251105205609 extends AbstractMigration
+final class Version20251125211406 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,6 +23,9 @@ final class Version20251105205609 extends AbstractMigration
         $this->addSql('CREATE TABLE building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER DEFAULT NULL, land_id INTEGER DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason CLOB DEFAULT NULL, estimated_value_construction BIGINT NOT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, project_price_technical_preparation BIGINT NOT NULL, is_new BOOLEAN DEFAULT NULL, population INTEGER NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment CLOB DEFAULT NULL, has_reply BOOLEAN DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E16F61D4166D1F9C ON building (project_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E16F61D41994904A ON building (land_id)');
+        $this->addSql('CREATE TABLE building_separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, separate_concept_id INTEGER NOT NULL, percent DOUBLE PRECISION NOT NULL, CONSTRAINT FK_2D9790594D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2D979059754DF490 FOREIGN KEY (separate_concept_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_2D9790594D2A7E12 ON building_separate_concept (building_id)');
+        $this->addSql('CREATE INDEX IDX_2D979059754DF490 ON building_separate_concept (separate_concept_id)');
         $this->addSql('CREATE TABLE client (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, representative_id INTEGER DEFAULT NULL, municipality_id INTEGER NOT NULL, address CLOB NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, discr VARCHAR(255) NOT NULL, CONSTRAINT FK_C7440455FC3FF006 FOREIGN KEY (representative_id) REFERENCES representative (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C7440455AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C7440455FC3FF006 ON client (representative_id)');
         $this->addSql('CREATE INDEX IDX_C7440455AE6F181C ON client (municipality_id)');
@@ -103,6 +106,8 @@ final class Version20251105205609 extends AbstractMigration
         $this->addSql('CREATE TABLE representative (id INTEGER NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_2507390EBF396750 FOREIGN KEY (id) REFERENCES person (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE role (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, importance INTEGER NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX role_name ON role (name)');
+        $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number DOUBLE PRECISION NOT NULL, formula VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_14FBEE96727ACA70 ON separate_concept (parent_id)');
         $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B1C5EC7108B7592 ON sub_system (original_id)');
@@ -129,6 +134,7 @@ final class Version20251105205609 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE building');
+        $this->addSql('DROP TABLE building_separate_concept');
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE constructive_action');
         $this->addSql('DROP TABLE constructive_system');
@@ -159,6 +165,7 @@ final class Version20251105205609 extends AbstractMigration
         $this->addSql('DROP TABLE province');
         $this->addSql('DROP TABLE representative');
         $this->addSql('DROP TABLE role');
+        $this->addSql('DROP TABLE separate_concept');
         $this->addSql('DROP TABLE sub_system');
         $this->addSql('DROP TABLE subsystem_sub_type');
         $this->addSql('DROP TABLE subsystem_sub_type_subsystem_type');

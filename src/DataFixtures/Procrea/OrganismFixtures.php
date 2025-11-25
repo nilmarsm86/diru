@@ -34,12 +34,12 @@ class OrganismFixtures extends Fixture implements FixtureGroupInterface
         $manager->flush();
     }
 
-    public function getDependencies(): array
-    {
-        return [
-            \App\DataFixtures\OrganismFixtures::class
-        ];
-    }
+//    public function getDependencies(): array
+//    {
+//        return [
+//            \App\DataFixtures\OrganismFixtures::class
+//        ];
+//    }
 
     public static function getGroups(): array
     {

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
 use App\Entity\Interfaces\MeasurementDataInterface;
-use App\Entity\Traits\HasReplyTrait;
+//use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
@@ -133,6 +133,12 @@ class Building implements MeasurementDataInterface
     #[ORM\OneToMany(targetEntity: UrbanizationEstimate::class, mappedBy: 'building', cascade: ['persist'])]
     private Collection $urbanizationEstimates;
 
+    /**
+     * @var Collection<int, BuildingSeparateConcept>
+     */
+    #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $buildingSeparateConcepts;
+
     public function __construct()
     {
         $this->estimatedValueConstruction = 0;
@@ -158,6 +164,7 @@ class Building implements MeasurementDataInterface
         $this->constructionAssembly = 0;
         $this->landNetworkConnections = new ArrayCollection();
         $this->urbanizationEstimates = new ArrayCollection();
+        $this->buildingSeparateConcepts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1119,5 +1126,35 @@ class Building implements MeasurementDataInterface
         }
 
         return $price;
+    }
+
+    /**
+     * @return Collection<int, BuildingSeparateConcept>
+     */
+    public function getBuildingSeparateConcepts(): Collection
+    {
+        return $this->buildingSeparateConcepts;
+    }
+
+    public function addBuildingSeparateConcept(BuildingSeparateConcept $buildingSeparateConcept): static
+    {
+        if (!$this->buildingSeparateConcepts->contains($buildingSeparateConcept)) {
+            $this->buildingSeparateConcepts->add($buildingSeparateConcept);
+            $buildingSeparateConcept->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuildingSeparateConcept(BuildingSeparateConcept $buildingSeparateConcept): static
+    {
+        if ($this->buildingSeparateConcepts->removeElement($buildingSeparateConcept)) {
+            // set the owning side to null (unless already changed)
+            if ($buildingSeparateConcept->getBuilding() === $this) {
+                $buildingSeparateConcept->setBuilding(null);
+            }
+        }
+
+        return $this;
     }
 }

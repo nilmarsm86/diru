@@ -49,9 +49,9 @@ export default class extends AbstractController {
             let up = cleanTotal + (cleanTotal * 20 / 100);
             let down = cleanTotal - (cleanTotal * 20 / 100);
             if(this.element.querySelector('.vecpppt') instanceof HTMLInputElement){
-                this.element.querySelector('.vecpppt').value = cleanTotal;
-                this.element.querySelector('.vecpppt').setAttribute('min', down);
-                this.element.querySelector('.vecpppt').setAttribute('max', up);
+                // this.element.querySelector('.vecpppt').value = cleanTotal;
+                // this.element.querySelector('.vecpppt').setAttribute('min', down);
+                // this.element.querySelector('.vecpppt').setAttribute('max', up);
             }else{
                 this.element.querySelector('.vecpppt').innerText = USDollar.format(cleanTotal);
             }

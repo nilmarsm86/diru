@@ -222,7 +222,6 @@ class BuildingType extends AbstractType
             ])
             ->add('projectPriceTechnicalPreparation', MoneyPlusType::class, [
                 'label' => 'Proy. y preparación técnica:',
-//                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
@@ -240,7 +239,8 @@ class BuildingType extends AbstractType
 //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
-//                'grouping' => true,
+                'grouping' => true,
+
                 'list' => true,
                 'list_title' => 'Listado de estimados de proyecto y preparación técnica',
                 'list_id' => 'modal-load',
@@ -253,7 +253,6 @@ class BuildingType extends AbstractType
             ])
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Urbanización:',
-//                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
@@ -261,7 +260,8 @@ class BuildingType extends AbstractType
                     'data-currency-target' => 'field',
                     'data-vecpppt' => true,
                     'readonly' => 'readonly',
-                    'data-type--money-plus-target' => "field"
+                    'data-type--money-plus-target' => "field",
+                    'data-controller' => 'money',
                 ],
                 'data' => $options['urbanizationEstimate'],
 //                'empty_data' => 0,
@@ -271,6 +271,7 @@ class BuildingType extends AbstractType
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
+                'grouping' => true,
 
                 'list' => true,
                 'list_title' => 'Listado de estimados de urbanización',
@@ -310,9 +311,12 @@ class BuildingType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'vecpppt',
-                    'data-range-target' => 'range'
+                    'data-range-target' => 'range',
+                    'min' => $building->getRangeMinPrice(),
+                    'max' => $building->getRangeMaxPrice(),
+//                    'step' => 1000
                 ],
-                'data' => 0,
+                'data' => $building->getRangePrice(),
                 'row_attr' => [
                     'class' => 'mb-0',
                 ]

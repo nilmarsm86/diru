@@ -15,12 +15,12 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.actualTarget.textContent = USDollar.format(this.rangeTarget.value);
-        this.minTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('min'));
-        this.maxTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('max'));
+        this.actualTarget.textContent = USDollar.format(this.rangeTarget.value / 100);
+        this.minTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('min') / 100);
+        this.maxTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('max') / 100);
 
         this.rangeTarget.addEventListener('input', function() {
-            this.actualTarget.textContent = USDollar.format(this.rangeTarget.value);
+            this.actualTarget.textContent = USDollar.format(this.rangeTarget.value / 100);
         }.bind(this));
     }
 

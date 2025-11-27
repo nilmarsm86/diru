@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
 use App\Entity\Interfaces\MeasurementDataInterface;
+
 //use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
@@ -25,6 +26,7 @@ class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
     use MeasurementDataTrait;
+
 //    use HasReplyTrait;
 
     #[ORM\Id]
@@ -671,7 +673,7 @@ class Building implements MeasurementDataInterface
     public function createFloors(bool $reply = false, EntityManagerInterface $entityManager = null): static
     {
         $floor = $this->getLand()->getFloor();
-        $this->createAutomaticFloor( 'Planta Baja', true, 0, $reply, $entityManager);
+        $this->createAutomaticFloor('Planta Baja', true, 0, $reply, $entityManager);
 
         if ($floor > 1) {
             for ($i = 1; $i < $floor; $i++) {
@@ -1111,7 +1113,7 @@ class Building implements MeasurementDataInterface
     public function getUrbanizationEstimateTotalPrice(): float
     {
         $price = 0;
-        foreach ($this->urbanizationEstimates as $urbanizationEstimate){
+        foreach ($this->urbanizationEstimates as $urbanizationEstimate) {
             $price += $urbanizationEstimate->getTotalPrice();
         }
 
@@ -1151,7 +1153,7 @@ class Building implements MeasurementDataInterface
     public function getProjectTechnicalPreparationEstimateTotalPrice(): float
     {
         $price = 0;
-        foreach ($this->projectTechnicalPreparationEstimates as $projectTechnicalPreparationEstimate){
+        foreach ($this->projectTechnicalPreparationEstimates as $projectTechnicalPreparationEstimate) {
             $price += $projectTechnicalPreparationEstimate->getTotalPrice();
         }
 
@@ -1203,5 +1205,20 @@ class Building implements MeasurementDataInterface
         }
 
         return $this;
+    }
+
+    public function getRangePrice(): int
+    {
+        return $this->getPrice() + $this->getUrbanizationEstimateTotalPrice() + $this->getProjectTechnicalPreparationEstimateTotalPrice();
+    }
+
+    public function getRangeMinPrice(): int
+    {
+        return $this->getRangePrice() - ($this->getRangePrice() * 20 / 100);
+    }
+
+    public function getRangeMaxPrice(): int
+    {
+        return $this->getRangePrice() + ($this->getRangePrice() * 20 / 100);
     }
 }

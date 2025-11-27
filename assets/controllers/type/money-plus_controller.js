@@ -87,7 +87,7 @@ export default class extends AbstractController {
 
                 const eventDetail = new CustomEvent('eventList', {
                     detail: {
-                        url: this.listUrlValue.replace('0', this.fieldTarget.value),
+                        url: this.listUrlValue,
                         container: modalBody,
                         eventLoadedName: 'loadList',
                     }

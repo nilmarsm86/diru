@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251125211406 extends AbstractMigration
+final class Version20251126183647 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -53,6 +53,8 @@ final class Version20251125211406 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F9CF0F7B4D2A7E12 ON draftsman_building (building_id)');
         $this->addSql('CREATE TABLE enterprise_client (id INTEGER NOT NULL, corporate_entity_id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_54598E4C8BA692E5 FOREIGN KEY (corporate_entity_id) REFERENCES corporate_entity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_54598E4CBF396750 FOREIGN KEY (id) REFERENCES client (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_54598E4C8BA692E5 ON enterprise_client (corporate_entity_id)');
+        $this->addSql('CREATE TABLE estimate (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, concept VARCHAR(255) NOT NULL, measurement_unit VARCHAR(255) NOT NULL, price BIGINT NOT NULL, quantity DOUBLE PRECISION NOT NULL, comment CLOB DEFAULT NULL, discr VARCHAR(255) NOT NULL, CONSTRAINT FK_D2EA46074D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_D2EA46074D2A7E12 ON estimate (building_id)');
         $this->addSql('CREATE TABLE floor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, original_id INTEGER DEFAULT NULL, ground_floor BOOLEAN NOT NULL, position INTEGER NOT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_BE45D62E4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BE45D62E108B7592 FOREIGN KEY (original_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_BE45D62E4D2A7E12 ON floor (building_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_BE45D62E108B7592 ON floor (original_id)');
@@ -101,12 +103,13 @@ final class Version20251125211406 extends AbstractMigration
         $this->addSql('CREATE TABLE project_urban_regulation (project_id INTEGER NOT NULL, urban_regulation_id INTEGER NOT NULL, PRIMARY KEY(project_id, urban_regulation_id), CONSTRAINT FK_7E4EF94A166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4EF94A7555F80B FOREIGN KEY (urban_regulation_id) REFERENCES urban_regulation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7E4EF94A166D1F9C ON project_urban_regulation (project_id)');
         $this->addSql('CREATE INDEX IDX_7E4EF94A7555F80B ON project_urban_regulation (urban_regulation_id)');
+        $this->addSql('CREATE TABLE project_technical_preparation_estimate (id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_39DA26B1BF396750 FOREIGN KEY (id) REFERENCES estimate (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE province (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX province_name ON province (name)');
         $this->addSql('CREATE TABLE representative (id INTEGER NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_2507390EBF396750 FOREIGN KEY (id) REFERENCES person (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE role (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, importance INTEGER NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX role_name ON role (name)');
-        $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number DOUBLE PRECISION NOT NULL, formula VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, formula VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_14FBEE96727ACA70 ON separate_concept (parent_id)');
         $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
@@ -120,8 +123,7 @@ final class Version20251125211406 extends AbstractMigration
         $this->addSql('CREATE TABLE urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, description CLOB NOT NULL, data VARCHAR(255) NOT NULL, measurement_unit VARCHAR(255) NOT NULL, photo VARCHAR(255) DEFAULT NULL, comment CLOB DEFAULT NULL, legal_reference VARCHAR(255) DEFAULT NULL, structure VARCHAR(255) NOT NULL, CONSTRAINT FK_C3CB3A23C54C8C93 FOREIGN KEY (type_id) REFERENCES urban_regulation_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C3CB3A23C54C8C93 ON urban_regulation (type_id)');
         $this->addSql('CREATE TABLE urban_regulation_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE urbanization_estimate (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, concept VARCHAR(255) NOT NULL, measurement_unit VARCHAR(255) NOT NULL, price BIGINT NOT NULL, quantity DOUBLE PRECISION NOT NULL, comment CLOB DEFAULT NULL, CONSTRAINT FK_89AA13F84D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_89AA13F84D2A7E12 ON urbanization_estimate (building_id)');
+        $this->addSql('CREATE TABLE urbanization_estimate (id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_89AA13F8BF396750 FOREIGN KEY (id) REFERENCES estimate (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE "user" (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, person_id INTEGER NOT NULL, username VARCHAR(180) NOT NULL, password VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, CONSTRAINT FK_8D93D649217BBB47 FOREIGN KEY (person_id) REFERENCES person (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649217BBB47 ON "user" (person_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_USERNAME ON "user" (username)');
@@ -146,6 +148,7 @@ final class Version20251125211406 extends AbstractMigration
         $this->addSql('DROP TABLE draftsman');
         $this->addSql('DROP TABLE draftsman_building');
         $this->addSql('DROP TABLE enterprise_client');
+        $this->addSql('DROP TABLE estimate');
         $this->addSql('DROP TABLE floor');
         $this->addSql('DROP TABLE geographic_location');
         $this->addSql('DROP TABLE individual_client');
@@ -162,6 +165,7 @@ final class Version20251125211406 extends AbstractMigration
         $this->addSql('DROP TABLE person');
         $this->addSql('DROP TABLE project');
         $this->addSql('DROP TABLE project_urban_regulation');
+        $this->addSql('DROP TABLE project_technical_preparation_estimate');
         $this->addSql('DROP TABLE province');
         $this->addSql('DROP TABLE representative');
         $this->addSql('DROP TABLE role');

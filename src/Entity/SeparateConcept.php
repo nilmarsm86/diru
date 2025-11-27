@@ -31,8 +31,8 @@ class SeparateConcept
     )]
     private SeparateConceptType $enumType;
 
-    #[ORM\Column]
-    private ?float $number = null;
+    #[ORM\Column(length: 255)]
+    private ?string $number = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $formula = null;
@@ -75,12 +75,12 @@ class SeparateConcept
         return $this;
     }
 
-    public function getNumber(): ?float
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(float $number): static
+    public function setNumber(string $number): static
     {
         $this->number = $number;
 

@@ -134,6 +134,12 @@ class Building implements MeasurementDataInterface
     private Collection $urbanizationEstimates;
 
     /**
+     * @var Collection<int, ProjectTechnicalPreparationEstimate>
+     */
+    #[ORM\OneToMany(targetEntity: ProjectTechnicalPreparationEstimate::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $projectTechnicalPreparationEstimates;
+
+    /**
      * @var Collection<int, BuildingSeparateConcept>
      */
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
@@ -164,6 +170,7 @@ class Building implements MeasurementDataInterface
         $this->constructionAssembly = 0;
         $this->landNetworkConnections = new ArrayCollection();
         $this->urbanizationEstimates = new ArrayCollection();
+        $this->projectTechnicalPreparationEstimates = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
     }
 
@@ -1106,6 +1113,46 @@ class Building implements MeasurementDataInterface
         $price = 0;
         foreach ($this->urbanizationEstimates as $urbanizationEstimate){
             $price += $urbanizationEstimate->getTotalPrice();
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return Collection<int, ProjectTechnicalPreparationEstimate>
+     */
+    public function getProjectTechnicalPreparationEstimates(): Collection
+    {
+        return $this->projectTechnicalPreparationEstimates;
+    }
+
+    public function addProjectTechnicalPreparationEstimate(ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate): static
+    {
+        if (!$this->projectTechnicalPreparationEstimates->contains($projectTechnicalPreparationEstimate)) {
+            $this->projectTechnicalPreparationEstimates->add($projectTechnicalPreparationEstimate);
+            $projectTechnicalPreparationEstimate->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectTechnicalPreparationEstimate(ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate): static
+    {
+        if ($this->projectTechnicalPreparationEstimates->removeElement($projectTechnicalPreparationEstimate)) {
+            // set the owning side to null (unless already changed)
+            if ($projectTechnicalPreparationEstimate->getBuilding() === $this) {
+                $projectTechnicalPreparationEstimate->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProjectTechnicalPreparationEstimateTotalPrice(): float
+    {
+        $price = 0;
+        foreach ($this->projectTechnicalPreparationEstimates as $projectTechnicalPreparationEstimate){
+            $price += $projectTechnicalPreparationEstimate->getTotalPrice();
         }
 
         return $price;

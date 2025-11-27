@@ -1,0 +1,26 @@
+{% if not app.request.query.get('modal') %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: 'Listado de estimados proyecto y preparación técnica',
+    } %}
+        {% block header %}
+            {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+            <div>
+                {{ tableActionButton3(path('app_ptp_estimate_new'), 'bi:plus-lg', 'Nueva', 'Nuevo estimado de proyecto y preparación técnica', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ptp_estimate_new')})) }}
+            </div>
+        {% endblock %}
+
+        {% block body %}
+            {{ include('ptp_estimate/_table.html.twig') }}
+        {% endblock %}
+
+    {% endcomponent %}
+
+{% else %}
+    {{ include('ptp_estimate/_table.html.twig') }}
+{% endif %}
+
+

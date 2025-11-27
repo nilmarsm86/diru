@@ -51,6 +51,9 @@ final class BuildingForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?float $urbanizationEstimateTotalPrice = 0;
 
+    #[LiveProp(writable: true)]
+    public ?float $ptpEstimateTotalPrice = 0;
+
     public function __construct(private readonly ProjectRepository $projectRepository)
     {
 
@@ -62,6 +65,7 @@ final class BuildingForm extends AbstractController
 //        $this->project = $project;
         if(!is_null($this->bui->getId())){
             $this->urbanizationEstimateTotalPrice = $this->bui->getUrbanizationEstimateTotalPrice();
+            $this->ptpEstimateTotalPrice = $this->bui->getProjectTechnicalPreparationEstimateTotalPrice();
         }
     }
 
@@ -85,6 +89,10 @@ final class BuildingForm extends AbstractController
         if ($this->urbanizationEstimateTotalPrice !== 0) {
             $this->formValues['estimatedValueUrbanization'] = (float)$this->urbanizationEstimateTotalPrice / 100;
         }
+
+        if ($this->ptpEstimateTotalPrice !== 0) {
+            $this->formValues['projectPriceTechnicalPreparation'] = (float)$this->ptpEstimateTotalPrice / 100;
+        }
     }
 
     protected function instantiateForm(): FormInterface
@@ -92,7 +100,8 @@ final class BuildingForm extends AbstractController
         $this->preValue();
         return $this->createForm(BuildingType::class, $this->bui, [
             'screen' => 'building',
-            'urbanizationEstimate' => $this->urbanizationEstimateTotalPrice
+            'urbanizationEstimate' => $this->urbanizationEstimateTotalPrice,
+            'ptpEstimate' => $this->ptpEstimateTotalPrice
         ]);
     }
 

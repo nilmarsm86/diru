@@ -64,39 +64,66 @@
         </div>
     </summary>
     <br>
-    <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-        <div class="col-3">
-            {{ form_row(estimatedValueConstruction) }}
+    <div {{ stimulusController('summation-values') }}>
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(estimatedValueConstruction) }}
+            </div>
+            <div class="col">
+                {{ form_row(projectPriceTechnicalPreparation) }}
+            </div>
+            <div class="col">
+                {{ form_row(estimatedValueUrbanization) }}
+            </div>
+            {#            <div class="col-2"> #}
+            {#                <p class="text-end">VEC + PPPT + VEU:</p> #}
+            {#                <h5 class="text-end"> #}{# $ #}
+            {#                    <span class="badge text-bg-info vecpppt"> #}
+            {#                        {{ 0|number_format(2) }} #}
+            {#                    </span> #}
+            {#                </h5> #}
+            {#            </div> #}
         </div>
-        <div class="col-3">
-            {{ form_row(projectPriceTechnicalPreparation) }}
-        </div>
-        <div class="col-4">
-            {{ form_row(estimatedValueUrbanization) }}
-        </div>
-        <div class="col-2">
-            <p class="text-end">VEC + PPPT + VEU:</p>
-            <h5 class="text-end">{# $ #}
-                <span class="badge text-bg-info vecpppt">
-                        {{ 0|number_format(2) }}
-                    </span>
-            </h5>
+        <div class="mb-3 row">
+            <div class="col-12 text-center" {{ stimulusController('range') }}>
+                {{ form_row(range) }}
+                <div class="row">
+                    <div class="col text-start">
+                        <output data-range-target="min"></output>
+                        <span style="font-size: 0.5em">(-20%)</span>
+                    </div>
+                    <div class="col text-center">
+                        <output
+                            for="{{ estimatedValueConstruction.vars.id }} {{ projectPriceTechnicalPreparation.vars.id }} {{ estimatedValueUrbanization.vars.id }}"
+                            id="rangeValue" aria-hidden="true" class="badge text-bg-info" data-range-target="actual"
+                            style="font-size: 1em">
+                            {{ 0|number_format(2) }}
+                        </output>
+                    </div>
+                    <div class="col text-end">
+                        <output data-range-target="max"></output>
+                        <span style="font-size: 0.5em">(-20%)</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-5">
-            {{ form_row(estimatedValueEquipment) }}
-        </div>
-        <div class="col-5">
-            {{ form_row(estimatedValueOther) }}
-        </div>
-        <div class="col-2">
-            <div class="mb-3">
-                <p class="text-end">Total:</p>
-                <h5 class="text-end">{# $ #}
-                    <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
+        <div class="mb-0 row">
+            <div class="col-5">
+                {{ form_row(estimatedValueEquipment) }}
+            </div>
+            <div class="col-5">
+                {{ form_row(estimatedValueOther) }}
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <p class="text-end">Total:</p>
+                    <h5 class="text-end">{# $ #}
+                        <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
                         {{ 0|number_format(2) }}
                     </span>
-                </h5>
+                    </h5>
+                </div>
             </div>
         </div>
     </div>

@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -61,7 +62,8 @@ class BuildingType extends AbstractType
                 'novalidate' => 'novalidate'
             ],
             'screen' => 'project',//building || project
-            'urbanizationEstimate' => 0
+            'urbanizationEstimate' => 0,
+            'ptpEstimate' => 0
         ]);
     }
 
@@ -115,7 +117,7 @@ class BuildingType extends AbstractType
         ]);
 
         $form->add('estimatedValueConstruction', MoneyType::class, [
-            'label' => 'Valor estimado de construcción:',
+            'label' => 'Construcción:',
             'attr' => [
                 'placeholder' => '0',
                 'min' => 0,
@@ -134,7 +136,7 @@ class BuildingType extends AbstractType
             'grouping' => true,
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
-                'label' => 'Valor estimado en equipos:',
+                'label' => 'Equipos:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
@@ -151,7 +153,7 @@ class BuildingType extends AbstractType
                 'grouping' => true,
             ])
             ->add('estimatedValueOther', MoneyType::class, [
-                'label' => 'Otros valores estimados:',
+                'label' => 'Otros valores:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
@@ -218,27 +220,39 @@ class BuildingType extends AbstractType
                 'divisor' => 100,
                 'grouping' => true,
             ])
-            ->add('projectPriceTechnicalPreparation', MoneyType::class, [
-                'label' => 'Precio de proy. y preparación técnica: (m<sup>2</sup>)',
-                'label_html' => true,
+            ->add('projectPriceTechnicalPreparation', MoneyPlusType::class, [
+                'label' => 'Proy. y preparación técnica:',
+//                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
                     'data-vecpppt' => true,
-                    'data-controller' => 'money'
+                    'readonly' => 'readonly',
+                    'data-controller' => 'money',
+                    'data-type--money-plus-target' => "field"
                 ],
-                'empty_data' => 0,
+                'data' => $options['ptpEstimate'],
+//                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
 //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
-                'grouping' => true,
+//                'grouping' => true,
+                'list' => true,
+                'list_title' => 'Listado de estimados de proyecto y preparación técnica',
+                'list_id' => 'modal-load',
+                'list_url' => $this->router->generate('app_ptp_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
+
+                'add' => true,
+                'add_title' => 'Agregar estimado de proyecto y preparación técnica',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => $building->getId(), 'modal' => 'modal-load', 'screen' => $options['screen']]),
             ])
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
-                'label' => 'Valor estimado de urbanización:',
+                'label' => 'Urbanización:',
 //                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
@@ -253,7 +267,7 @@ class BuildingType extends AbstractType
 //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                'html5' => true,
+//                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
@@ -290,6 +304,19 @@ class BuildingType extends AbstractType
                     'label_html' => true
                 ],
                 'error_bubbling' => false,
-            ]);
+            ])
+            ->add('range', RangeType::class, [
+                'mapped' => false,
+                'label' => false,
+                'attr' => [
+                    'class' => 'vecpppt',
+                    'data-range-target' => 'range'
+                ],
+                'data' => 0,
+                'row_attr' => [
+                    'class' => 'mb-0',
+                ]
+            ])
+        ;
     }
 }

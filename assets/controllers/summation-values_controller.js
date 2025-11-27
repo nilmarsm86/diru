@@ -44,13 +44,21 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
         this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0));
-        if(this.element.querySelector('.vecpppt')){
-            // this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").entries().reduce((accumulator, field) => accumulator + Number(field.value), 0));
-            this.element.querySelector('.vecpppt').innerText = USDollar.format(document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0));
+        if (this.element.querySelector('.vecpppt')) {
+            let cleanTotal = document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0);
+            let up = cleanTotal + (cleanTotal * 20 / 100);
+            let down = cleanTotal - (cleanTotal * 20 / 100);
+            if(this.element.querySelector('.vecpppt') instanceof HTMLInputElement){
+                this.element.querySelector('.vecpppt').value = cleanTotal;
+                this.element.querySelector('.vecpppt').setAttribute('min', down);
+                this.element.querySelector('.vecpppt').setAttribute('max', up);
+            }else{
+                this.element.querySelector('.vecpppt').innerText = USDollar.format(cleanTotal);
+            }
         }
     }
 
-    clearNumber(number){
+    clearNumber(number) {
         const cleaned = number.replace(/[^0-9.]/g, '');
         return Number(cleaned.replace(/,/g, ''));
     }

@@ -43,8 +43,8 @@ final class UrbanizationEstimateController extends AbstractController
     #[Route('/new/{building}', name: 'app_urbanization_estimate_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService, Building $building = null): Response
     {
-        $organism = new UrbanizationEstimate();
-        return $crudActionService->formLiveComponentAction($request, $organism, 'urbanization_estimate', [
+        $urbanizationEstimate = new UrbanizationEstimate();
+        return $crudActionService->formLiveComponentAction($request, $urbanizationEstimate, 'urbanization_estimate', [
             'title' => 'Nuevo estimado de urbanización',
             'building' => $building
         ]);

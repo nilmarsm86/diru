@@ -62,19 +62,6 @@ class ProjectType extends AbstractType
                     new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.')
                 ]
             ])
-            ->add('buildings', LiveCollectionType::class, [
-                'entry_type' => BuildingType::class,
-                'button_delete_options' => [
-                    'label_html' => true
-                ],
-                'constraints' => [
-                    new Assert\Count(
-                        min: 1,
-                        minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
-                    )
-                ],
-                'error_bubbling' => false
-            ])
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
                 'label' => 'Moneda:',
@@ -209,7 +196,7 @@ class ProjectType extends AbstractType
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
                 return $enterpriseClient->getCorporateEntity()->getName();
             },
-            'group_by' => function(EnterpriseClient $enterpriseClient, int $key, string $value) {
+            'group_by' => function (EnterpriseClient $enterpriseClient, int $key, string $value) {
                 return $enterpriseClient->getRepresentative();
             },
             'mapped' => false,
@@ -246,6 +233,20 @@ class ProjectType extends AbstractType
                 'class' => 'radio-inline'
             ],
             'required' => false
+        ]);
+
+        $form->add('buildings', LiveCollectionType::class, [
+            'entry_type' => BuildingType::class,
+            'button_delete_options' => [
+                'label_html' => true
+            ],
+            'constraints' => [
+                new Assert\Count(
+                    min: 1,
+                    minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
+                )
+            ],
+            'error_bubbling' => false,
         ]);
     }
 }

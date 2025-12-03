@@ -21,8 +21,8 @@ class SubsystemTypeType extends AbstractType
                     'placeholder' => 'Nombre del tipo'
                 ]
             ])
-            ->add('subsystemSubTypes', LiveCollectionType::class, [
-                'entry_type' => SubsystemSubTypeType::class,
+            ->add('subsystemTypeSubsystemSubTypes', LiveCollectionType::class, [
+                'entry_type' => SubsystemTypeSubsystemSubTypeType::class,
                 'button_delete_options' => [
                     'label_html' => true
                 ],

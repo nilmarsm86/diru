@@ -10,6 +10,7 @@ use App\Form\SubsystemTypeType;
 use App\Repository\ProvinceRepository;
 use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -59,7 +60,7 @@ final class SubsystemTypeForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         if(!is_null($this->subsystemSubType)){
-            $this->formValues['subsystemSubTypes'][(count($this->formValues['subsystemSubTypes']) - 1)]['name'] = $this->subsystemSubType;
+            $this->formValues['subsystemTypeSubsystemSubTypes'][(count($this->formValues['subsystemTypeSubsystemSubTypes']) - 1)]['subsystemSubType'] = $this->subsystemSubType;
         }
 
         return $this->createForm(SubsystemTypeType::class, $this->sst, [
@@ -71,7 +72,7 @@ final class SubsystemTypeForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(SubsystemTypeRepository $subsystemTypeRepository, SubsystemSubTypeRepository $subsystemSubTypeRepository): ?Response
+    public function save(SubsystemTypeRepository $subsystemTypeRepository, SubsystemSubTypeRepository $subsystemSubTypeRepository, EntityManagerInterface $entityManager): ?Response
     {
         $successMsg = (is_null($this->sst->getId())) ? 'Se ha agregado el tipo.' : 'Se ha modificado el tipo.';//TODO: personalizar los mensajes
 
@@ -81,16 +82,31 @@ final class SubsystemTypeForm extends AbstractController
             /** @var SubsystemType $subsystemType */
             $subsystemType = $this->getForm()->getData();
 
-            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
-                if(is_null($subsystemSubType->getId())){
-                    $subsystemType->removeSubsystemSubType($subsystemSubType);
-                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
-                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
-                        $subsystemType->addSubsystemSubType($subsystemSubType);
-//                        $subsystemSubType->addSubsystemType($subsystemType);
-                    }
-                }
-            }
+//            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
+//                if(is_null($subsystemSubType->getId())){
+//                    $subsystemType->removeSubsystemSubType($subsystemSubType);
+//                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
+//                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
+//                        $subsystemType->addSubsystemSubType($subsystemSubType);
+////                        $subsystemSubType->addSubsystemType($subsystemType);
+//                    }
+//                }
+//            }
+//
+//            if(!is_null($subsystemType->getId())){
+//                foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
+//                    $subsystemType->removeSubsystemTypeSubsystemSubType($subsystemTypeSubsystemSubType);
+//                    $entityManager->remove($subsystemTypeSubsystemSubType);
+//                    $entityManager->flush();
+//                }
+////                $subsystemTypeRepository->save($subsystemType, true);
+//
+//
+//                foreach ($this->formValues['subsystemTypeSubsystemSubTypes'] as $subsystemTypeSubsystemSubType){
+////                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
+////                    dump($subsystemTypeSubsystemSubType);
+//                }
+//            }
 
             $subsystemTypeRepository->save($subsystemType, true);
 

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251126183647 extends AbstractMigration
+final class Version20251203002443 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -115,11 +115,10 @@ final class Version20251126183647 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B1C5EC7108B7592 ON sub_system (original_id)');
         $this->addSql('CREATE TABLE subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE UNIQUE INDEX subsystem_sub_type_name ON subsystem_sub_type (name)');
-        $this->addSql('CREATE TABLE subsystem_sub_type_subsystem_type (subsystem_sub_type_id INTEGER NOT NULL, subsystem_type_id INTEGER NOT NULL, PRIMARY KEY(subsystem_sub_type_id, subsystem_type_id), CONSTRAINT FK_263C64DD6B986E75 FOREIGN KEY (subsystem_sub_type_id) REFERENCES subsystem_sub_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_263C64DD49C277F0 FOREIGN KEY (subsystem_type_id) REFERENCES subsystem_type (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_263C64DD6B986E75 ON subsystem_sub_type_subsystem_type (subsystem_sub_type_id)');
-        $this->addSql('CREATE INDEX IDX_263C64DD49C277F0 ON subsystem_sub_type_subsystem_type (subsystem_type_id)');
         $this->addSql('CREATE TABLE subsystem_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, classification VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE subsystem_type_subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, subsystem_type_id INTEGER DEFAULT NULL, subsystem_sub_type_id INTEGER DEFAULT NULL, CONSTRAINT FK_EC809E3349C277F0 FOREIGN KEY (subsystem_type_id) REFERENCES subsystem_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_EC809E336B986E75 FOREIGN KEY (subsystem_sub_type_id) REFERENCES subsystem_sub_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_EC809E3349C277F0 ON subsystem_type_subsystem_sub_type (subsystem_type_id)');
+        $this->addSql('CREATE INDEX IDX_EC809E336B986E75 ON subsystem_type_subsystem_sub_type (subsystem_sub_type_id)');
         $this->addSql('CREATE TABLE urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, description CLOB NOT NULL, data VARCHAR(255) NOT NULL, measurement_unit VARCHAR(255) NOT NULL, photo VARCHAR(255) DEFAULT NULL, comment CLOB DEFAULT NULL, legal_reference VARCHAR(255) DEFAULT NULL, structure VARCHAR(255) NOT NULL, CONSTRAINT FK_C3CB3A23C54C8C93 FOREIGN KEY (type_id) REFERENCES urban_regulation_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C3CB3A23C54C8C93 ON urban_regulation (type_id)');
         $this->addSql('CREATE TABLE urban_regulation_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
@@ -172,8 +171,8 @@ final class Version20251126183647 extends AbstractMigration
         $this->addSql('DROP TABLE separate_concept');
         $this->addSql('DROP TABLE sub_system');
         $this->addSql('DROP TABLE subsystem_sub_type');
-        $this->addSql('DROP TABLE subsystem_sub_type_subsystem_type');
         $this->addSql('DROP TABLE subsystem_type');
+        $this->addSql('DROP TABLE subsystem_type_subsystem_sub_type');
         $this->addSql('DROP TABLE urban_regulation');
         $this->addSql('DROP TABLE urban_regulation_type');
         $this->addSql('DROP TABLE urbanization_estimate');

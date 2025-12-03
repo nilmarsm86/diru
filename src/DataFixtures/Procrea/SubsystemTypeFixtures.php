@@ -5,6 +5,7 @@ namespace App\DataFixtures\Procrea;
 use App\Entity\Enums\SubsystemFunctionalClassification;
 use App\Entity\SubsystemSubType;
 use App\Entity\SubsystemType;
+use App\Entity\SubsystemTypeSubsystemSubType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -69,20 +70,23 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 
         foreach ($types as $classification => $typeNames) {
             foreach ($typeNames as $typeName => $subs) {
-                //$type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
-                //if (is_null($type)) {
-                    $subsystemType = new SubsystemType();
-                    $subsystemType->setName($typeName);
-                    $subsystemType->setClassification(SubsystemFunctionalClassification::from($classification));
+//                $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
+//                if (is_null($type)) {
+                    $type = new SubsystemType();
+                    $type->setName($typeName);
+                    $type->setClassification(SubsystemFunctionalClassification::from($classification));
 
-                    $this->addSubType($manager, $subsystemType, $subs);
+                    $manager->persist($type);
+                    $manager->flush();
+//                }
 
-                    $manager->persist($subsystemType);
-                //}
+                $this->addSubType($manager, $type, $subs);
+
+
             }
         }
 
-        $manager->flush();
+
     }
 
     /**
@@ -94,20 +98,27 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
     public function addSubType(ObjectManager $manager, SubsystemType $subsystemType, array $subs): void
     {
         foreach ($subs as $subName) {
-            $isNew = false;
+//            $isNew = false;
             $subType = $manager->getRepository(SubsystemSubType::class)->findOneBy(['name' => $subName]);
             if (is_null($subType)) {
                 $subType = new SubsystemSubType();
-                $isNew = true;
-            }
-            $subType->setName($subName);
-
-            $subsystemType->addSubsystemSubType($subType);
-            if($isNew){
-                $manager->persist($subsystemType);
+                $subType->setName($subName);
+//                $isNew = true;
                 $manager->persist($subType);
                 $manager->flush();
             }
+
+            $stsst = new SubsystemTypeSubsystemSubType();
+            $stsst->setSubsystemType($subsystemType);
+            $stsst->setSubsystemSubType($subType);
+
+            $manager->persist($stsst);
+            $manager->flush();
+//            $subsystemType->addSubsystemSubType($subType);
+//            if ($isNew) {
+//                $manager->persist($subsystemType);
+
+//            }
         }
     }
 

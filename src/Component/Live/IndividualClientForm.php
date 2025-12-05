@@ -212,7 +212,7 @@ final class IndividualClientForm extends AbstractController
         return null;
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }

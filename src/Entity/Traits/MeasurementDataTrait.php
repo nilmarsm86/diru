@@ -75,7 +75,7 @@ trait MeasurementDataTrait
 
     public function notWallArea(): bool
     {
-        return $this->getWallArea() === 0;
+        return $this->getWallArea() == 0;
     }
 
 //    public function makeReply(EntityManagerInterface $entityManager, Collection $items, object $parent = null): static

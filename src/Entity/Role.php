@@ -59,6 +59,7 @@ class Role
             static::ROLE_DRAFTSMAN => 'Rol proyectista',
             static::ROLE_ADMIN => 'Rol admin',
             static::ROLE_SUPER_ADMIN => 'Rol super admin',
+            default => throw new \InvalidArgumentException('Valor no soportado'),
         };
     }
 
@@ -76,6 +77,7 @@ class Role
             static::ROLE_DRAFTSMAN => 'draftsman',
             static::ROLE_ADMIN => 'admin',
             static::ROLE_SUPER_ADMIN => 'super_admin',
+            default => throw new \InvalidArgumentException('Valor no soportado'),
         };
     }
 

@@ -30,8 +30,8 @@ final class CorporateEntityController extends AbstractController
     public function index(Request $request, CorporateEntityRepository $corporateEntityRepository): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', 10);
+        $pageNumber = (int)$request->query->get('page', 1);
 
         $type = $request->query->get('entity', '');
 

@@ -13,7 +13,9 @@ class ProfileFullNameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('person', PersonType::class)
+            ->add('person', PersonType::class, [
+                'passport' => false
+            ])
             ->add('phone', null, [
                 'label_html' => true,
                 'label' => '<strong>Teléfono: </strong>',

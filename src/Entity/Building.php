@@ -88,7 +88,7 @@ class Building implements MeasurementDataInterface
     private Collection $draftsmansBuildings;
 
     /**
-     * @var Collection<int, DraftsmanBuilding>
+     * @var Collection<int, ConstructorBuilding>
      */
     #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'building', cascade: ['persist'])]
     #[Assert\Valid]
@@ -240,7 +240,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getEstimatedValueEquipment(): ?string
+    public function getEstimatedValueEquipment(): ?int
     {
         return $this->estimatedValueEquipment;
     }
@@ -656,7 +656,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getLandArea(): ?int
+    public function getLandArea(): null|int|float
     {
         return $this->getLand()->getLandArea();
     }
@@ -741,12 +741,12 @@ class Building implements MeasurementDataInterface
         return $this->getMeasurementData('getFreeArea', $original);
     }
 
-    public function hasFreeArea(): float
+    public function hasFreeArea(): bool
     {
         return $this->getFreeArea() > 0;
     }
 
-    public function hasUnassignedArea(): float
+    public function hasUnassignedArea(): bool
     {
         return $this->getUnassignedArea() > 0;
     }
@@ -793,7 +793,7 @@ class Building implements MeasurementDataInterface
         return $this->getTotalArea($original) / $this->getLandArea();
     }
 
-    public function getCos(bool $original = null): float|int
+    public function getCos(bool $original = null): string
     {
         return number_format((float)$this->getLand()->getOccupiedArea() * 100 / $this->getLand()->getLandArea(), 2);
     }
@@ -1207,7 +1207,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getRangePrice(): int
+    public function getRangePrice(): int|float
     {
         return $this->getPrice() + $this->getUrbanizationEstimateTotalPrice() + $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }

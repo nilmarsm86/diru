@@ -64,7 +64,7 @@ class CorporateEntityType extends AbstractType
             'attr' => [
 //                    'data-model' => 'norender|organism',
             ],
-            'query_builder' => $this->getOrganismQueryBuilder($options),
+            'query_builder' => $this->getOrganismQueryBuilder(),
         ];
 
         //if (is_null($options['modal'])) {
@@ -103,13 +103,10 @@ class CorporateEntityType extends AbstractType
     }
 
     /**
-     * @param array $options
      * @return Closure
      */
-    private function getOrganismQueryBuilder(array $options): Closure
+    private function getOrganismQueryBuilder(): Closure
     {
-        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-            return $er->createQueryBuilder('o')->orderBy('o.name');
-        };
+        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('o')->orderBy('o.name');
     }
 }

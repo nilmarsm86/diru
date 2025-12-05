@@ -24,8 +24,8 @@ final class LocalController extends AbstractController
     public function index(Request $request, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', 10);
+        $pageNumber = (int)$request->query->get('page', 1);
 
         $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
 
@@ -105,6 +105,7 @@ final class LocalController extends AbstractController
     #[Route('/wall/{subSystem}/{reply}', name: 'app_local_wall', methods: ['GET'])]
     public function wall(Request $request, EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
+        $area = 0;
         if($subSystem->getFloor()->hasFreeArea()){
             $area = $subSystem->getFloor()->getFreeArea();
         }

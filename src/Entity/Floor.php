@@ -130,7 +130,7 @@ class Floor implements MeasurementDataInterface
         return $data;
     }
 
-    private function unassignedOrFreeArea(): float|int|null
+    private function unassignedOrFreeArea(): float|int
     {
         if (is_null($this->getBuilding())) {
             return 1;
@@ -387,7 +387,7 @@ class Floor implements MeasurementDataInterface
         return true;
     }
 
-    public static function createAutomatic(?Floor $floor, Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): static
+    public static function createAutomatic(?Floor $floor, Building $building, string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         if(is_null($floor)){
             $floor = new Floor();
@@ -462,12 +462,12 @@ class Floor implements MeasurementDataInterface
 //        return $extraSpace;
 //    }
 
-    public function hasFreeArea(): float
+    public function hasFreeArea(): bool
     {
         return $this->getFreeArea() > 0;
     }
 
-    public function hasUnassignedArea(): float
+    public function hasUnassignedArea(): bool
     {
         return $this->getUnassignedArea() > 0;
     }

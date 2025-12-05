@@ -30,7 +30,7 @@ final class SubSystemController extends AbstractController
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
-            $number = ($pageNumber === 1) ?? ($pageNumber - 1);
+            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
             return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [
                 ...$request->query->all(),
                 'page' => $number

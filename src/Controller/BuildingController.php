@@ -48,8 +48,8 @@ final class BuildingController extends AbstractController
     public function project(Request $request, BuildingRepository $buildingRepository, Project $project): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', 10);
+        $pageNumber = (int)$request->query->get('page', 1);
 
         $state = $request->query->get('state', '');
 

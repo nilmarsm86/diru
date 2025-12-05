@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -23,9 +26,10 @@ readonly class CrudActionService
     public function __construct(
         private Environment               $environment,
         private CsrfTokenManagerInterface $csrfTokenManager,
-        private RequestStack              $requestStack,
+//        private RequestStack              $requestStack,
         private RouterInterface           $router,
-        private FormFactoryInterface      $formFactory
+//        private FormFactoryInterface      $formFactory,
+//        private FlashBagInterface         $flashBag
     )
     {
     }
@@ -111,7 +115,7 @@ readonly class CrudActionService
 
     /**
      * @param Request $request
-     * @param ServiceEntityRepository $repository
+     * @param object $repository
      * @param object $entity
      * @param string $successMsg
      * @param string $gotTo
@@ -122,12 +126,12 @@ readonly class CrudActionService
      * @throws SyntaxError
      */
     public function deleteAction(
-        Request                 $request,
-        ServiceEntityRepository $repository,
-        object                  $entity,
-        string                  $successMsg,
-        string                  $gotTo,
-        array                   $goToParams = []
+        Request $request,
+        object  $repository,
+        object  $entity,
+        string  $successMsg,
+        string  $gotTo,
+        array   $goToParams = []
     ): Response
     {
         if ($this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
@@ -155,124 +159,123 @@ readonly class CrudActionService
                 }
             }
         }
-
-        $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
+//        $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
         return new RedirectResponse($this->router->generate($gotTo, $goToParams), Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @param Request $request
-     * @param ServiceEntityRepository $repository
-     * @param object $entity
-     * @param string $formType
-     * @param string $action
-     * @param string $successMsg
-     * @param string $gotTo
-     * @param string $templateDir
-     * @param array $vars
-     * @param bool $modal
-     * @return Response
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function newAction(
-        Request                 $request,
-        ServiceEntityRepository $repository,
-        object                  $entity,
-        string                  $formType,
-        string                  $action,
-        string                  $successMsg,
-        string                  $gotTo,
-        string                  $templateDir,
-        array                   $vars = [],
-        bool                    $modal = false
-    ): Response
-    {
-        $form = $this->formFactory->create($formType, $entity, [
-            'action' => $action,
-        ]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+//    /**
+//     * @param Request $request
+//     * @param object $repository
+//     * @param object $entity
+//     * @param string $formType
+//     * @param string $action
+//     * @param string $successMsg
+//     * @param string $gotTo
+//     * @param string $templateDir
+//     * @param array $vars
+//     * @param bool $modal
+//     * @return Response
+//     * @throws LoaderError
+//     * @throws RuntimeError
+//     * @throws SyntaxError
+//     */
+//    public function newAction(
+//        Request $request,
+//        object  $repository,
+//        object  $entity,
+//        string  $formType,
+//        string  $action,
+//        string  $successMsg,
+//        string  $gotTo,
+//        string  $templateDir,
+//        array   $vars = [],
+//        bool    $modal = false
+//    ): Response
+//    {
+//        $form = $this->formFactory->create($formType, $entity, [
+//            'action' => $action,
+//        ]);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            $repository->save($entity, true);
+//
+//            //si el formulario se mando correctamente por ajax
+//            if ($request->isXmlHttpRequest()) {
+//                $template = $this->environment->render("partials/_form_success.html.twig", [
+//                    'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
+//                    'type' => 'text-bg-success',
+//                    'message' => $successMsg
+//                ]);
+//                return new Response($template);
+//            }
+//
+//            $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
+//            return new RedirectResponse($this->router->generate($gotTo), Response::HTTP_SEE_OTHER);
+//        }
+//
+//        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : 'new.html.twig');//comportamiento por controlador
+//        return new Response($this->environment->render("$templateDir/$template", [
+//                $templateDir => $entity,
+//                'form' => $form->createView(),
+//            ] + $vars), ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK);
+//    }
 
-            $repository->save($entity, true);
-
-            //si el formulario se mando correctamente por ajax
-            if ($request->isXmlHttpRequest()) {
-                $template = $this->environment->render("partials/_form_success.html.twig", [
-                    'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
-                    'type' => 'text-bg-success',
-                    'message' => $successMsg
-                ]);
-                return new Response($template);
-            }
-
-            $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
-            return new RedirectResponse($this->router->generate($gotTo), Response::HTTP_SEE_OTHER);
-        }
-
-        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : 'new.html.twig');//comportamiento por controlador
-        return new Response($this->environment->render("$templateDir/$template", [
-                $templateDir => $entity,
-                'form' => $form->createView(),
-            ] + $vars), ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK);
-    }
-
-    /**
-     * @param Request $request
-     * @param ServiceEntityRepository $repository
-     * @param object $entity
-     * @param string $formType
-     * @param string $action
-     * @param string $successMsg
-     * @param string $gotTo
-     * @param string $templateDir
-     * @param array $vars
-     * @return Response
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function editAction(
-        Request                 $request,
-        ServiceEntityRepository $repository,
-        object                  $entity,
-        string                  $formType,
-        string                  $action,
-        string                  $successMsg,
-        string                  $gotTo,
-        string                  $templateDir,
-        array                   $vars = []
-    ): Response
-    {
-        $form = $this->formFactory->create($formType, $entity, [
-            'action' => $action,
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->flush();
-
-            //si el formulario se mando correctamente por ajax
-            if ($request->isXmlHttpRequest()) {
-                $template = $this->environment->render("partials/_form_success.html.twig", [
-                    'id' => 'edit_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
-                    'type' => 'text-bg-success',
-                    'message' => $successMsg
-                ]);
-                return new Response($template);
-            }
-
-            $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
-            return new RedirectResponse($this->router->generate($gotTo), Response::HTTP_SEE_OTHER);
-        }
-
-        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : 'edit.html.twig';
-        return new Response($this->environment->render("$templateDir/$template", [
-                $templateDir => $entity,
-                'form' => $form->createView(),
-            ] + $vars), ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK);
-    }
+//    /**
+//     * @param Request $request
+//     * @param object $repository
+//     * @param object $entity
+//     * @param string $formType
+//     * @param string $action
+//     * @param string $successMsg
+//     * @param string $gotTo
+//     * @param string $templateDir
+//     * @param array $vars
+//     * @return Response
+//     * @throws LoaderError
+//     * @throws RuntimeError
+//     * @throws SyntaxError
+//     */
+//    public function editAction(
+//        Request $request,
+//        object  $repository,
+//        object  $entity,
+//        string  $formType,
+//        string  $action,
+//        string  $successMsg,
+//        string  $gotTo,
+//        string  $templateDir,
+//        array   $vars = []
+//    ): Response
+//    {
+//        $form = $this->formFactory->create($formType, $entity, [
+//            'action' => $action,
+//        ]);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $repository->flush();
+//
+//            //si el formulario se mando correctamente por ajax
+//            if ($request->isXmlHttpRequest()) {
+//                $template = $this->environment->render("partials/_form_success.html.twig", [
+//                    'id' => 'edit_' . $this->getClassName($entity::class) . '_' . $entity->getId(),
+//                    'type' => 'text-bg-success',
+//                    'message' => $successMsg
+//                ]);
+//                return new Response($template);
+//            }
+//
+//            $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
+//            return new RedirectResponse($this->router->generate($gotTo), Response::HTTP_SEE_OTHER);
+//        }
+//
+//        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : 'edit.html.twig';
+//        return new Response($this->environment->render("$templateDir/$template", [
+//                $templateDir => $entity,
+//                'form' => $form->createView(),
+//            ] + $vars), ($form->isSubmitted() && !$form->isValid()) ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK);
+//    }
 
     /**
      * @param Request $request

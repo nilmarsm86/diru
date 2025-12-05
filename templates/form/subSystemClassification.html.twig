@@ -1,0 +1,49 @@
+{#{% block sub_system_classification_row %}#}
+{#    <div#}
+{#            class="mb-0 {% if row == false and col == true %}row{% endif %}"#}
+{#            {% if live_form == false %}#}
+{#                {{ stimulusController('type/subsystem-classification', {url:path('type_subtype', {'id': 0})}) }}#}
+{#            {% endif %}#}
+{#    >#}
+{#        {% if row == true and col == false %}#}
+{#            {{ form_row(form.type) }}#}
+{#            {{ form_row(form.subType) }}#}
+{#        {% endif %}#}
+
+{#        {% if row == false and col == true %}#}
+{#            <div class="col">#}
+{#                {{ form_row(form.type, {label_attr:{'class':'col-sm-4'}, attr:{'data-type--subsystem-classification-target' : "type"}}) }}#}
+{#            </div>#}
+{#            <div class="col">#}
+{#                {{ form_row(form.subType, {label_attr:{'class':'col-sm-4'}, attr:{'data-type--subsystem-classification-target' : "subType"}}) }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{% block sub_system_classification_row %}
+    <div
+        class="mb-0 {% if row == false and col == true %}row{% endif %}"
+{#        {% if live_form == false %}#}
+{#            {{ stimulusController('type/subsystem-classification', {url:path('type_subtype', {'id': 0})}) }}#}
+{#        {% endif %}#}
+    >
+        {% if row == true and col == false %}
+            {{ form_row(form.classification) }}
+            {{ form_row(form.type) }}
+            {{ form_row(form.subType) }}
+        {% endif %}
+
+        {% if row == false and col == true %}
+            <div class="col">
+                {{ form_row(form.classification, {label_attr:{'class':'col-sm-4'}}) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.type, {label_attr:{'class':'col-sm-4'}}) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.subType, {label_attr:{'class':'col-sm-4'}}) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

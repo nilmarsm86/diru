@@ -1,0 +1,193 @@
+<?php
+
+namespace App\Form\Types;
+
+use App\Entity\Enums\SubsystemFunctionalClassification;
+use App\Entity\SubsystemSubType;
+use App\Entity\SubsystemType;
+use App\Repository\SubsystemSubTypeRepository;
+use App\Repository\SubsystemTypeRepository;
+use Closure;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
+
+class SubSystemClassificationType extends AbstractType
+{
+    public function __construct(
+        private readonly SubsystemTypeRepository    $subsystemTypeRepository,
+        private readonly SubsystemSubTypeRepository $subsystemSubTypeRepository,
+//        private readonly RouterInterface            $router
+    )
+    {
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder = new DynamicFormBuilder($builder);
+
+        $classification = [];
+        if ($options['type'] != 0) {
+            $type = $this->subsystemTypeRepository->find($options['type']);
+            $classification['data'] = $type->getClassification();
+        }
+
+        $builder->add('classification', SubsystemFunctionalClassificationEnumType::class, [
+            'label' => 'Clasificación:',
+            'mapped' => false,
+        ] + $classification);
+
+        $builder->addDependent('type', 'classification', function (DependentField $field, ?SubsystemFunctionalClassification $subsystemFunctionalClassification) use ($options) {
+            $isValid = (!is_null($subsystemFunctionalClassification) && ($subsystemFunctionalClassification->value != ''));
+            $typeAttr = [
+                'class' => SubsystemType::class,
+                'placeholder' => $isValid ? '-Seleccione-' : '-Seleccione una clasificación-',
+                'label' => 'Tipo:',
+                'mapped' => false,
+                'constraints' => $this->getTypeConstraints($options),
+                'query_builder' => $this->getTypeQueryBuilder($subsystemFunctionalClassification),
+                'attr' => ['disabled' => !$isValid]
+            ];
+
+            if ($options['type'] != 0) {
+                $type = $this->subsystemTypeRepository->find($options['type']);
+                $typeAttr['data'] = $type;
+            }
+
+//        if (is_null($options['modal'])) {
+//            $builder->add('type', EntityPlusType::class, [
+//                    'add' => true,
+//                    'add_title' => 'Agregar Tipo',
+//                    'add_id' => 'modal-load',
+//                    'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load']),
+//                ] + $typeAttr);
+//        } else {
+
+            $field->add(EntityType::class, [] + $typeAttr);
+        });
+
+//        }
+
+
+//        if (is_null($options['modal'])) {
+//            $builder->add('subType', EntityPlusType::class, [
+//                    'add' => true,
+//                    'add_title' => 'Agregar sub tipo',
+//                    'add_id' => 'modal-load',
+//                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
+//                ] + $subTypeAttr);
+//        } else {
+        $builder->addDependent('subType', 'type', function (DependentField $field, ?SubsystemType $subsystemType) use ($options) {
+            $subType = $this->subsystemSubTypeRepository->find($options['subType']);
+            $subTypeAttr = [
+                'class' => SubsystemSubType::class,
+                'placeholder' => !is_null($subsystemType) ? '-Seleccione-' : '-Seleccione un tipo-',
+                'label' => 'Sub tipo:',
+                'constraints' => $this->getSubTypeConstraints($subsystemType),
+                'data' => $subType,
+                'query_builder' => $this->getSubTypeQueryBuilder($subsystemType),
+                'attr' => ['disabled' => is_null($subsystemType)]
+            ];
+
+
+            $field->add(EntityType::class, $subTypeAttr);
+        });
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'type' => 0,
+            'subType' => 0,
+            'row' => false,
+            'col' => true,
+            'live_form' => false,
+            'modal' => null
+        ]);
+
+        $resolver->setAllowedTypes('type', ['int']);
+        $resolver->setAllowedTypes('subType', ['int']);
+        $resolver->setAllowedTypes('row', 'bool');
+        $resolver->setAllowedTypes('col', 'bool');
+        $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
+        $view->vars['row'] = $options['row'];
+        $view->vars['col'] = $options['col'];
+        $view->vars['live_form'] = $options['live_form'];
+    }
+
+    /**
+     * @param SubsystemType|null $subsystemType
+     * @return array|NotBlank[]
+     */
+    private function getSubTypeConstraints(?SubsystemType $subsystemType): array
+    {
+        $subTypeConstraints = [];
+        if (is_null($subsystemType)) {
+            $subTypeConstraints = [
+                new NotBlank(message: 'Seleccione un sub tipo.')
+            ];
+        }
+
+        return $subTypeConstraints;
+    }
+
+    /**
+     * @param array $options
+     * @return array|NotBlank[]
+     */
+    private function getTypeConstraints(array $options): array
+    {
+        $typeConstraints = [];
+        if ($options['type'] === 0) {
+            $typeConstraints = [
+                new NotBlank(message: 'Seleccione un tipo.')
+            ];
+        }
+
+        return $typeConstraints;
+    }
+
+    /**
+     * @param SubsystemFunctionalClassification|null $subsystemFunctionalClassification
+     * @return Closure
+     */
+    private function getTypeQueryBuilder(?SubsystemFunctionalClassification $subsystemFunctionalClassification): Closure
+    {
+        return function (SubsystemTypeRepository $subsystemTypeRepository) use ($subsystemFunctionalClassification): QueryBuilder {
+            return $subsystemTypeRepository->findSubsystemTypeForForm($subsystemFunctionalClassification);
+        };
+    }
+
+    /**
+     * @param SubsystemType|null $subsystemType
+     * @return Closure
+     */
+    private function getSubTypeQueryBuilder(?SubsystemType $subsystemType = null): Closure
+    {
+        return function (EntityRepository $er) use ($subsystemType): QueryBuilder {
+            return $er->createQueryBuilder('ssst')
+                ->leftJoin('ssst.subsystemTypeSubsystemSubTypes', 'sstssst')
+                ->leftJoin('sstssst.subsystemType', 'sst')
+                ->where('sst.id = :sst_id')
+                ->setParameter('sst_id', !is_null($subsystemType) ? $subsystemType->getId() : 0);
+        };
+    }
+
+}

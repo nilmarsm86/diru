@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251203002443 extends AbstractMigration
+final class Version20251203123941 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -111,8 +111,9 @@ final class Version20251203002443 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX role_name ON role (name)');
         $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, formula VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_14FBEE96727ACA70 ON separate_concept (parent_id)');
-        $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, subsystem_type_subsystem_sub_type_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC74216BAA1 FOREIGN KEY (subsystem_type_subsystem_sub_type_id) REFERENCES subsystem_type_subsystem_sub_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');
+        $this->addSql('CREATE INDEX IDX_7B1C5EC74216BAA1 ON sub_system (subsystem_type_subsystem_sub_type_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B1C5EC7108B7592 ON sub_system (original_id)');
         $this->addSql('CREATE TABLE subsystem_sub_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE subsystem_type (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, classification VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');

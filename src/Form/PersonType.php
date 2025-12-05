@@ -29,14 +29,15 @@ class PersonType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Carnet de identidad'
                 ]
-            ])
-            ->add('passport', null,[
+            ]);
+        if ($options['passport']) {
+            $builder->add('passport', null, [
                 'label' => 'Pasaporte:',
                 'attr' => [
                     'placeholder' => 'Pasaporte'
                 ]
-            ])
-        ;
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -46,6 +47,9 @@ class PersonType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate'
             ],
+            'passport' => true
         ]);
+
+        $resolver->setAllowedTypes('passport', 'bool');
     }
 }

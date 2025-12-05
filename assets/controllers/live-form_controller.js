@@ -47,6 +47,16 @@ export default class extends AbstractController {
             }
         });
 
+        // window.addEventListener('type--subsystem-classification:loaded', (event) => {
+        //     if (this.modalValue === 'add-subType') {
+        //         try {
+        //             this.component.set('type', event.target.querySelectorAll('select')[0].value);
+        //         } catch (e) {
+        //         }
+        //         this.component.render();
+        //     }
+        // });
+
         const toastElList = document.querySelectorAll('.toast')
         const toastList = [...toastElList].map(toastEl => {
             const toastBootstrap = Toast.getOrCreateInstance(toastEl);
@@ -68,7 +78,7 @@ export default class extends AbstractController {
     }
 
     removeDoubleSameOption(select){
-        if(select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality'){
+        if((select.dataset['type-AddressTarget'] && select.dataset['type-AddressTarget'] === 'municipality')){
             for (let i = 0; i < select.options.length; i++) {
                 if(select.options[i].dataset.ajax !== undefined && !select.options[i].selected){
                     select.options.remove(i);

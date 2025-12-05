@@ -45,6 +45,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
 
+    #[ORM\ManyToOne(inversedBy: 'subSystems')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType = null;
+
     public function __construct()
     {
         $this->locals = new ArrayCollection();
@@ -122,7 +126,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $data;
     }
 
-    private function unassignedOrFreeArea(): float|int|null
+    private function unassignedOrFreeArea(): float|int
     {
         if (is_null($this->getFloor()->getBuilding())) {
             return 1;
@@ -462,7 +466,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
     }
 
-    public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): static
+    public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         if (is_null($subSystem)) {
             $subSystem = new SubSystem();
@@ -565,6 +569,18 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function getCurrency(): ?string
     {
         return $this->getFloor()->getBuilding()->getProjectCurrency();
+    }
+
+    public function getSubsystemTypeSubsystemSubType(): ?SubsystemTypeSubsystemSubType
+    {
+        return $this->subsystemTypeSubsystemSubType;
+    }
+
+    public function setSubsystemTypeSubsystemSubType(?SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType): static
+    {
+        $this->subsystemTypeSubsystemSubType = $subsystemTypeSubsystemSubType;
+
+        return $this;
     }
 
 }

@@ -166,6 +166,7 @@ final class ProjectForm extends AbstractController
             $investment = $investmentRepository->find((int)$this->formValues['investment']);
             $project->setInvestment($investment);
 
+            $client = 0;
             if ($this->formValues['clientType'] === 'individual') {
                 $client = (int)$this->formValues['individualClient'];
             }
@@ -243,7 +244,7 @@ final class ProjectForm extends AbstractController
         return null;
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }

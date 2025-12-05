@@ -35,8 +35,8 @@ class LocalConstructiveActionType extends AbstractType
                 'placeholder' => '-Seleccione-'
             ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $this->onPreSetData($event, $options);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+            $this->onPreSetData($event);
         });
     }
 

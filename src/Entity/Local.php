@@ -262,7 +262,7 @@ class Local implements MoneyInterface
         return $wall;
     }
 
-    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, int $number, bool $reply = false, EntityManagerInterface $entityManager = null): static
+    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, int $number, bool $reply = false, EntityManagerInterface $entityManager = null): self
     {
         $technicalStatus = ($subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 

@@ -9,6 +9,7 @@ twig:
         - 'form/moneyPlus.html.twig'
         - 'form/unitMeasurement.html.twig'
         - 'form/unitMeasurementFloat.html.twig'
+        - 'form/subSystemClassification.html.twig'
 when@test:
     twig:
         strict_variables: true

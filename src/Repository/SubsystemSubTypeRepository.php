@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
 /**
- * @extends ServiceEntityRepository<Municipality>
+ * @extends ServiceEntityRepository<SubsystemSubType>
  *
  * @method SubsystemSubType|null find($id, $lockMode = null, $lockVersion = null)
  * @method SubsystemSubType|null findOneBy(array $criteria, array $orderBy = null)
@@ -91,7 +91,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
      */
     public function remove(SubsystemSubType $entity, bool $flush = false): void
     {
-        if($entity->getSubsystemTypes()->count() > 0){
+        if($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0){
             throw new Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
         }
 

@@ -97,7 +97,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository
      */
     public function remove(SubsystemType $entity, bool $flush = false): void
     {
-        if($entity->getSubsystemSubTypes()->count() > 0){
+        if($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0){
             throw new Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
         }
 
@@ -108,10 +108,11 @@ class SubsystemTypeRepository extends ServiceEntityRepository
         }
     }
 
-//    public function findSubsystemTypeForForm(): QueryBuilder
-//    {
-//        return $this->createQueryBuilder('sst')
-//            ->where("sst.name NOT LIKE '%provincia%'")
-//            ->orderBy('sst.name');
-//    }
+    public function findSubsystemTypeForForm(?SubsystemFunctionalClassification $subsystemFunctionalClassification): QueryBuilder
+    {
+        return $this->createQueryBuilder('sst')
+            ->where("sst.classification = :classification")
+            ->setParameter('classification', $subsystemFunctionalClassification?->value)
+            ->orderBy('sst.name');
+    }
 }

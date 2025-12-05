@@ -65,7 +65,7 @@ final class ConstructorForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var Province $province */
+            /** @var Constructor $constructor */
             $constructor = $this->getForm()->getData();
 
             $constructorRepository->save($constructor, true);
@@ -99,7 +99,7 @@ final class ConstructorForm extends AbstractController
         return null;
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }

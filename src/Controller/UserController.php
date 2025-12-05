@@ -77,7 +77,14 @@ class UserController extends AbstractController
     public function profile(Request $request, RoleRepository $roleRepository, UserService $userService): Response
     {
         $formName = $userService->handleNameForm($request);
+        if($formName->isSubmitted() && $formName->isValid()){
+            $this->addFlash('success', 'Datos salvados.');
+        }
+
         $formPassword = $userService->handlePassword($request);
+        if($formPassword->isSubmitted() && $formPassword->isValid()){
+            $this->addFlash('success', 'Contraseña cambiada.');
+        }
 
         return $this->render('user/profile.html.twig', [
             'roles' => $roleRepository->findAll(),

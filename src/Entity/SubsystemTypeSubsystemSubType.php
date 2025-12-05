@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubsystemTypeSubsystemSubTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,6 +25,17 @@ class SubsystemTypeSubsystemSubType
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
     private ?SubsystemSubType $subsystemSubType = null;
+
+    /**
+     * @var Collection<int, SubSystem>
+     */
+    #[ORM\OneToMany(targetEntity: SubSystem::class, mappedBy: 'subsystemTypeSubsystemSubType')]
+    private Collection $subSystems;
+
+    public function __construct()
+    {
+        $this->subSystems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -49,6 +62,36 @@ class SubsystemTypeSubsystemSubType
     public function setSubsystemSubType(?SubsystemSubType $subsystemSubType): static
     {
         $this->subsystemSubType = $subsystemSubType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubSystem>
+     */
+    public function getSubSystems(): Collection
+    {
+        return $this->subSystems;
+    }
+
+    public function addSubSystem(SubSystem $subSystem): static
+    {
+        if (!$this->subSystems->contains($subSystem)) {
+            $this->subSystems->add($subSystem);
+            $subSystem->setSubsystemTypeSubsystemSubType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubSystem(SubSystem $subSystem): static
+    {
+        if ($this->subSystems->removeElement($subSystem)) {
+            // set the owning side to null (unless already changed)
+            if ($subSystem->getSubsystemTypeSubsystemSubType() === $this) {
+                $subSystem->setSubsystemTypeSubsystemSubType(null);
+            }
+        }
 
         return $this;
     }

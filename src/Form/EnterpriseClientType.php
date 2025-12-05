@@ -120,10 +120,8 @@ class EnterpriseClientType extends AbstractType
      */
     private function getEntityQueryBuilder(): Closure
     {
-        return function (EntityRepository $er): QueryBuilder|array {
-            return $er->createQueryBuilder('ce')
-                ->orderBy('ce.name', 'ASC');
-        };
+        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
+            ->orderBy('ce.name', 'ASC');
     }
 
     /**

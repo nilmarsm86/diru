@@ -1,0 +1,11 @@
+parameters:
+    level: 4
+    phpVersion: 80200
+    paths:
+        - src
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - '#Property .+::\$id \(int\|null\) is never assigned int#'
+        - '#Method App\\Component\\Live\\.+::.+ is unused#'
+        - '#Match arm comparison between .+ is always true#'
+        - '#Property .+ is never read, only written#'

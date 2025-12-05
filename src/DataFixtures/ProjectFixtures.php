@@ -91,7 +91,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         return $manager->getRepository(Investment::class)->findOneBy(['name' => $investment]);
     }
 
-    private function findClient(ObjectManager $manager, bool $enterprise = true): ?Client
+    private function findClient(ObjectManager $manager, bool $enterprise = true): Client
     {
         $entityClass = ($enterprise) ? EnterpriseClient::class : IndividualClient::class;
         $clients = $manager->getRepository($entityClass)->findAll();
@@ -103,10 +103,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         return $manager->getRepository(Contract::class)->findOneBy(['code' => $contract]);
     }
 
-    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
-    {
-        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
-    }
+//    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
+//    {
+//        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
+//    }
 
     private function findBuilding(ObjectManager $manager, string $building): ?Building
     {

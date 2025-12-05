@@ -15,10 +15,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class QuickProjectType extends AbstractType
 {
-    public function __construct(private readonly RouterInterface $router)
-    {
-
-    }
+//    public function __construct(private readonly RouterInterface $router)
+//    {
+//
+//    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

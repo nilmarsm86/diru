@@ -4,9 +4,13 @@ namespace App\Form;
 
 use App\Entity\Floor;
 use App\Entity\SubSystem;
+use App\Form\Types\SubSystemClassificationType;
+use App\Form\Types\SubsystemFunctionalClassificationEnumType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SubSystemType extends AbstractType
@@ -19,8 +23,11 @@ class SubSystemType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre del subsistema'
                 ]
-            ])
-        ;
+            ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+            $this->onPreSetData($event, $options);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -29,7 +36,43 @@ class SubSystemType extends AbstractType
             'data_class' => SubSystem::class,
             'attr' => [
                 'novalidate' => 'novalidate'
-            ]
+            ],
+            'type' => 0,
+            'subType' => 0,
+            'live_form' => false,
+            'modal' => null,
+        ]);
+
+        $resolver->setAllowedTypes('type', 'int');
+        $resolver->setAllowedTypes('subType', 'int');
+        $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
+    }
+
+    /**
+     * @param FormEvent $event
+     * @param array $options
+     * @return void
+     */
+    private function onPreSetData(FormEvent $event, array $options): void
+    {
+        /** @var SubSystem $subSystem */
+        $subSystem = $event->getData();
+        $form = $event->getForm();
+
+        $type = 0;
+        $subType = 0;
+        if($subSystem && $subSystem->getId()){
+            $type = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemType()->getId();
+            $subType = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemSubType()->getId();
+        }
+
+        $form->add('subsystemClassification', SubSystemClassificationType::class, [
+            'mapped' => false,
+            'type' => $type,
+            'subType' => $subType,
+            'live_form' => $options['live_form'],
+            'modal' => $options['modal']
         ]);
     }
 }

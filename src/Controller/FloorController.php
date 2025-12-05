@@ -24,8 +24,8 @@ final class FloorController extends AbstractController
     public function index(Request $request, FloorRepository $floorRepository, Building $building, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', 10);
+        $pageNumber = (int)$request->query->get('page', 1);
 
         $data = $floorRepository->findBuildingFloors($building, $filter, $amountPerPage, $pageNumber, $reply);
 

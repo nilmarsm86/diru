@@ -6,8 +6,10 @@ use App\DTO\Paginator;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Enums\SubsystemFunctionalClassification;
+use App\Entity\Province;
 use App\Entity\Role;
 use App\Entity\SubsystemType;
+use App\Entity\SubsystemTypeSubsystemSubType;
 use App\Form\SubsystemTypeType;
 use App\Repository\SubsystemTypeRepository;
 use App\Service\CrudActionService;
@@ -16,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
@@ -30,8 +33,8 @@ final class SubsystemTypeController extends AbstractController
     public function index(Request $request, SubsystemTypeRepository $subsystemTypeRepository, CrudActionService $crudActionService): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', 10);
+        $pageNumber = (int)$request->query->get('page', 1);
 
         $classification = $request->query->get('classification', '');
 
@@ -100,5 +103,25 @@ final class SubsystemTypeController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el tipo.';
         return $crudActionService->deleteAction($request, $subsystemTypeRepository, $subsystemType, $successMsg, 'app_subsystem_type_index');
+    }
+
+    #[Route('/sub_type/{id}', name: 'type_subtype', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function subType(Request $request, SubsystemType $subsystemType): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $entities = [];
+            /** @var SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType */
+            foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
+                $entities[] = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+            }
+
+            return $this->render('partials/_select_options.html.twig', [
+                'entities' => $entities,
+                'selected' => (count($entities)) ? $entities[0]->getId() : 0,
+                'empty' => '-Seleccione un tipo-'
+            ]);
+        }
+
+        throw new BadRequestHttpException('Ajax request');
     }
 }

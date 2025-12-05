@@ -40,7 +40,7 @@ class AddressType extends AbstractType
             'mapped' => false,
             'constraints' => $this->getProvinceConstraints($options),
             'data' => $province,
-            'query_builder' => $this->getProvinceQueryBuilder($options),
+            'query_builder' => $this->getProvinceQueryBuilder(),
         ];
 
         if (is_null($options['modal'])) {
@@ -137,14 +137,11 @@ class AddressType extends AbstractType
     }
 
     /**
-     * @param array $options
      * @return Closure
      */
-    private function getProvinceQueryBuilder(array $options): Closure
+    private function getProvinceQueryBuilder(): Closure
     {
-        return function (ProvinceRepository $provinceRepository) use ($options): QueryBuilder|array {
-            return $provinceRepository->findProvincesForForm();
-        };
+        return fn(ProvinceRepository $provinceRepository) : QueryBuilder => $provinceRepository->findProvincesForForm();
     }
 
     /**
@@ -158,9 +155,7 @@ class AddressType extends AbstractType
 //                return $er->createQueryBuilder('m')->where('m.id = ' . $options['municipality']);
 //            };
 //        } else {
-        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-            return $er->createQueryBuilder('m')->where('m.province = ' . $options['province']);
-        };
+        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('m')->where('m.province = ' . $options['province']);
 //        }
     }
 

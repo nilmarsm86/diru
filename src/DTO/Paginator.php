@@ -65,9 +65,9 @@ class Paginator
 
     /**
      * Max page amount inpagination
-     * @return int
+     * @return int|float
      */
-    public function getMaxPage(): int
+    public function getMaxPage(): int|float
     {
         return ceil($this->getTotal() / $this->amount);
     }

@@ -28,7 +28,7 @@ readonly class UserService
         private FormFactoryInterface        $formFactory,
         private Security                    $security,
         private UserPasswordHasherInterface $userPasswordHasher,
-        private RequestStack                $requestStack
+//        private RequestStack                $requestStack
     )
     {
     }
@@ -78,17 +78,16 @@ readonly class UserService
      * Handle name and lastname form
      *
      * @param Request $request
-     * @return Form
+     * @return FormInterface
      */
     public function handleNameForm(Request $request): FormInterface
     {
         $formName = $this->formFactory->create(ProfileFullNameType::class, $this->security->getUser());
         $formName->handleRequest($request);
-
         if($formName->isSubmitted() && $formName->isValid()){
             $this->userRepository->save($this->security->getUser(), true);
 
-            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
+//            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
         }
 
         return $formName;
@@ -98,7 +97,7 @@ readonly class UserService
      * handle password form
      *
      * @param Request $request
-     * @return Form
+     * @return FormInterface
      */
     public function handlePassword(Request $request): FormInterface
     {
@@ -112,7 +111,7 @@ readonly class UserService
             $user->changePassword($this->userPasswordHasher);
             $this->userRepository->save($user, true);
 
-            $this->requestStack->getSession()->getFlashBag()->add('success', 'Contraseña cambiada.');
+//            $this->requestStack->getSession()->getFlashBag()->add('success', 'Contraseña cambiada.');
         }
 
         return $formPassword;

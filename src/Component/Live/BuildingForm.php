@@ -86,11 +86,11 @@ final class BuildingForm extends AbstractController
 //            $this->project = 0;
         }
 
-        if ($this->urbanizationEstimateTotalPrice !== 0) {
+        if ($this->urbanizationEstimateTotalPrice != 0) {
             $this->formValues['estimatedValueUrbanization'] = (float)$this->urbanizationEstimateTotalPrice / 100;
         }
 
-        if ($this->ptpEstimateTotalPrice !== 0) {
+        if ($this->ptpEstimateTotalPrice != 0) {
             $this->formValues['projectPriceTechnicalPreparation'] = (float)$this->ptpEstimateTotalPrice / 100;
         }
     }
@@ -163,7 +163,7 @@ final class BuildingForm extends AbstractController
         return null;
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }

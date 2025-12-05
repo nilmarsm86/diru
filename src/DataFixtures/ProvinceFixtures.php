@@ -33,7 +33,7 @@ class ProvinceFixtures extends Fixture implements FixtureGroupInterface
                     'Holguín' => $this->addProvinceMunicipality($manager, $provinceName, ['Holguín']),
                     'Santiago de Cuba' => $this->addProvinceMunicipality($manager, $provinceName, ['Santiago de Cuba']),
                     'Guantánamo' => $this->addProvinceMunicipality($manager, $provinceName, ['Baracoa']),
-                    'Isla de la Juventud' => $this->addProvinceMunicipality($manager, $provinceName, ['Isla de la Juventud']),
+                    'Isla de la Juventud' => $this->addProvinceMunicipality($manager, $provinceName, ['Isla de la juventud']),
                     default => false,
                 };
 

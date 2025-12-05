@@ -72,8 +72,6 @@ class MunicipalityType extends AbstractType
      */
     private function getProvinceQueryBuilder(): Closure
     {
-        return function (ProvinceRepository $provinceRepository): QueryBuilder|array {
-            return $provinceRepository->findProvincesForForm();
-        };
+        return fn(ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
     }
 }

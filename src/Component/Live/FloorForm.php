@@ -117,7 +117,7 @@ final class FloorForm extends AbstractController
         return true;
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }

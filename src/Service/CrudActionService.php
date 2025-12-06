@@ -125,6 +125,44 @@ readonly class CrudActionService
      * @throws RuntimeError
      * @throws SyntaxError
      */
+//    public function deleteAction(
+//        Request $request,
+//        object  $repository,
+//        object  $entity,
+//        string  $successMsg,
+//        string  $gotTo,
+//        array   $goToParams = []
+//    ): Response
+//    {
+//        if ($this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
+//            $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entity->getId();
+//            try {
+//                $repository->remove($entity, true);
+//
+//                if ($request->isXmlHttpRequest()) {
+//                    $template = $this->environment->render("partials/_form_success.html.twig", [
+//                        'id' => $id,
+//                        'type' => 'text-bg-success',
+//                        'message' => $successMsg
+//                    ]);
+//
+//                    return new Response($template);
+//                }
+//            } catch (\Exception $exception) {
+//                if ($request->isXmlHttpRequest()) {
+//                    $template = $this->environment->render("partials/_form_success.html.twig", [
+//                        'id' => $id,
+//                        'type' => 'text-bg-danger',
+//                        'message' => $exception->getMessage()
+//                    ]);
+//                    return new Response($template);
+//                }
+//            }
+//        }
+////        $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
+//        return new RedirectResponse($this->router->generate($gotTo, $goToParams), Response::HTTP_SEE_OTHER);
+//    }
+
     public function deleteAction(
         Request $request,
         object  $repository,
@@ -134,32 +172,34 @@ readonly class CrudActionService
         array   $goToParams = []
     ): Response
     {
-        if ($this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
-            $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entity->getId();
-            try {
-                $repository->remove($entity, true);
+        $isAjax = $request->isXmlHttpRequest();
+        $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entity->getId();
 
-                if ($request->isXmlHttpRequest()) {
-                    $template = $this->environment->render("partials/_form_success.html.twig", [
-                        'id' => $id,
-                        'type' => 'text-bg-success',
-                        'message' => $successMsg
-                    ]);
-
-                    return new Response($template);
-                }
-            } catch (\Exception $exception) {
-                if ($request->isXmlHttpRequest()) {
-                    $template = $this->environment->render("partials/_form_success.html.twig", [
-                        'id' => $id,
-                        'type' => 'text-bg-danger',
-                        'message' => $exception->getMessage()
-                    ]);
-                    return new Response($template);
-                }
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
+            if ($isAjax) {
+                return new Response($this->environment->render("partials/_form_success.html.twig", [
+                    'id' => $id,
+                    'type' => 'text-bg-danger',
+                    'message' => 'Token CSRF inválido'
+                ]));
             }
+            return new RedirectResponse($this->router->generate($gotTo, $goToParams), Response::HTTP_SEE_OTHER);
         }
-//        $this->requestStack->getSession()->getFlashBag()->add('success', $successMsg);
+
+        try {
+            $repository->remove($entity, true);
+            $template = ['id' => $id, 'type' => 'text-bg-success', 'message' => $successMsg];
+        } catch (\Exception $exception) {
+            $template = ['id' => $id, 'type' => 'text-bg-danger', 'message' => $exception->getMessage()];
+        }
+
+        if ($isAjax) {
+            return new Response($this->environment->render("partials/_form_success.html.twig", $template));
+        }
+
+        // Para requests normales, podrías agregar flash message
+        // $this->requestStack->getSession()->getFlashBag()->add($template['type'], $template['message']);
+
         return new RedirectResponse($this->router->generate($gotTo, $goToParams), Response::HTTP_SEE_OTHER);
     }
 

@@ -4,6 +4,7 @@ namespace App\DTO;
 
 use App\Entity\User;
 use App\Validator\Password;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
@@ -18,10 +19,10 @@ final class ProfilePasswordForm
     public string $plainPassword;
 
     /**
-     * @param User|null $user
+     * @param UserInterface|null $user
      * @return User
      */
-    public function toEntity(?User $user): User
+    public function toEntity(?UserInterface $user): UserInterface
     {
         $user->setPassword($this->plainPassword);
         return $user;

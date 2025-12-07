@@ -150,13 +150,7 @@ class AddressType extends AbstractType
      */
     private function getMunicipalityQueryBuilder(array $options): Closure
     {
-//        if ($options['municipality']) {
-//            return function (EntityRepository $er) use ($options): QueryBuilder|array {
-//                return $er->createQueryBuilder('m')->where('m.id = ' . $options['municipality']);
-//            };
-//        } else {
         return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('m')->where('m.province = ' . $options['province']);
-//        }
     }
 
 }

@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
@@ -170,9 +169,7 @@ class SubSystemClassificationType extends AbstractType
      */
     private function getTypeQueryBuilder(?SubsystemFunctionalClassification $subsystemFunctionalClassification): Closure
     {
-        return function (SubsystemTypeRepository $subsystemTypeRepository) use ($subsystemFunctionalClassification): QueryBuilder {
-            return $subsystemTypeRepository->findSubsystemTypeForForm($subsystemFunctionalClassification);
-        };
+        return fn(SubsystemTypeRepository $subsystemTypeRepository): QueryBuilder => $subsystemTypeRepository->findSubsystemTypeForForm($subsystemFunctionalClassification);
     }
 
     /**
@@ -181,13 +178,11 @@ class SubSystemClassificationType extends AbstractType
      */
     private function getSubTypeQueryBuilder(?SubsystemType $subsystemType = null): Closure
     {
-        return function (EntityRepository $er) use ($subsystemType): QueryBuilder {
-            return $er->createQueryBuilder('ssst')
-                ->leftJoin('ssst.subsystemTypeSubsystemSubTypes', 'sstssst')
-                ->leftJoin('sstssst.subsystemType', 'sst')
-                ->where('sst.id = :sst_id')
-                ->setParameter('sst_id', !is_null($subsystemType) ? $subsystemType->getId() : 0);
-        };
+        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ssst')
+            ->leftJoin('ssst.subsystemTypeSubsystemSubTypes', 'sstssst')
+            ->leftJoin('sstssst.subsystemType', 'sst')
+            ->where('sst.id = :sst_id')
+            ->setParameter('sst_id', !is_null($subsystemType) ? $subsystemType->getId() : 0);
     }
 
 }

@@ -2,9 +2,7 @@
 
 namespace App\Form\Types;
 
-use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Enums\TechnicalStatus;
-use App\Entity\Enums\LocalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\OptionsResolver\Options;

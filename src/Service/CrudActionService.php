@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\Paginator;
+use App\Repository\FilterInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +33,7 @@ readonly class CrudActionService
 
     /**
      * @param Request $request
-     * @param ServiceEntityRepository<object> $repository
+     * @param FilterInterface $repository
      * @param string $findMethod
      * @param string $templateDir
      * @param array<mixed> $vars
@@ -43,7 +44,7 @@ readonly class CrudActionService
      */
     public function indexAction(
         Request                 $request,
-        ServiceEntityRepository $repository,
+        FilterInterface $repository,
         string                  $findMethod,
         string                  $templateDir,
         array                   $vars = []

@@ -33,7 +33,7 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    private function findRepresentative(ObjectManager $manager, $name): ?Representative
+    private function findRepresentative(ObjectManager $manager, string $name): ?Representative
     {
         return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }

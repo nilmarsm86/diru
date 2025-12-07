@@ -87,6 +87,7 @@ class Local implements MoneyInterface
     #[Assert\Valid]
     private ?LocalConstructiveAction $localConstructiveAction = null;
 
+    /** @var array<mixed>  */
     private array $changesFromOriginal;
 
     public function __construct()
@@ -497,6 +498,9 @@ class Local implements MoneyInterface
         return $hasChanges;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getChangesFromOriginal(): array
     {
         return $this->changesFromOriginal;

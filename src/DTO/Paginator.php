@@ -10,7 +10,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 class Paginator
 {
     /**
-     * @param DoctrinePaginator|array|null $data
+     * @param DoctrinePaginator<object>|array<mixed>|null $data
      * @param int|null $amount
      * @param int|null $page
      * @param int|null $fake
@@ -56,7 +56,7 @@ class Paginator
 
     /**
      * Get data to paginate
-     * @return DoctrinePaginator|array
+     * @return DoctrinePaginator<object>|array<mixed>
      */
     public function getData(): DoctrinePaginator|array
     {

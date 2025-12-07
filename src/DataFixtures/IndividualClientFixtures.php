@@ -34,12 +34,12 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    private function findPerson(ObjectManager $manager, $name): ?Person
+    private function findPerson(ObjectManager $manager, string $name): ?Person
     {
         return $manager->getRepository(Person::class)->findOneBy(['name' => $name]);
     }
 
-    private function findRepresentative(ObjectManager $manager, $name): ?Representative
+    private function findRepresentative(ObjectManager $manager, string $name): ?Representative
     {
         return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }

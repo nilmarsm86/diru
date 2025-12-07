@@ -559,6 +559,9 @@ class Building implements MeasurementDataInterface
         return $this->floors;
     }
 
+    /**
+     * @return ArrayCollection<int, Floor>
+     */
     public function getOriginalFloors(): ArrayCollection
     {
         $originalFloors = new ArrayCollection();
@@ -571,6 +574,9 @@ class Building implements MeasurementDataInterface
         return $originalFloors;
     }
 
+    /**
+     * @return ArrayCollection<int, Floor>
+     */
     public function getOriginalExistsFloors(): ArrayCollection
     {
         $originalFloors = new ArrayCollection();
@@ -583,6 +589,9 @@ class Building implements MeasurementDataInterface
         return $originalFloors;
     }
 
+    /**
+     * @return ArrayCollection<int, Floor>
+     */
     public function getReplyFloors(): ArrayCollection
     {
         $replyFloors = new ArrayCollection();
@@ -595,6 +604,9 @@ class Building implements MeasurementDataInterface
         return $replyFloors;
     }
 
+    /**
+     * @return ArrayCollection<int, Floor>
+     */
     public function getReplyExistsFloors(): ArrayCollection
     {
         $replyFloors = new ArrayCollection();
@@ -828,6 +840,9 @@ class Building implements MeasurementDataInterface
         return $this->calculateAllLocalsAreClassified($this->getOriginalFloors());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountTechnicalStatus(): array
     {
         $undefined = 0;
@@ -840,7 +855,7 @@ class Building implements MeasurementDataInterface
 
         foreach ($floors as $floor) {
 //            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountTechnicalStatus(!$this->hasReply());
-            $buildingAmountTechnicalStatus = $floor->getAmountTechnicalStatus(!$this->hasReply());
+            $buildingAmountTechnicalStatus = $floor->getAmountTechnicalStatus();
             $goodState = $buildingAmountTechnicalStatus['good'];
             $regularState = $buildingAmountTechnicalStatus['regular'];
             $badState = $buildingAmountTechnicalStatus['bad'];
@@ -863,6 +878,9 @@ class Building implements MeasurementDataInterface
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountMeterTechnicalStatus(): array
     {
         $undefined = 0;
@@ -874,7 +892,7 @@ class Building implements MeasurementDataInterface
         $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
-            $buildingAmountMeterTechnicalStatus = $floor->getAmountMeterTechnicalStatus(!$this->hasReply());
+            $buildingAmountMeterTechnicalStatus = $floor->getAmountMeterTechnicalStatus();
             $goodState = $buildingAmountMeterTechnicalStatus['good'];
             $regularState = $buildingAmountMeterTechnicalStatus['regular'];
             $badState = $buildingAmountMeterTechnicalStatus['bad'];
@@ -1028,7 +1046,13 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null)
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param Collection<int, Floor> $items
+     * @param object|null $parent
+     * @return void
+     */
+    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null): void
     {
         foreach ($items as $item) {
             $item->reply($entityManager, $parent);

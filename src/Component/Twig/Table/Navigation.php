@@ -12,6 +12,7 @@ final class Navigation
 {
     public int $page = 1;
     public string $queryName = 'page';
+    /** @var array<string>  */
     public array $queryStrings = [];
     public ?Paginator $paginator = null;
     public string $path = '';

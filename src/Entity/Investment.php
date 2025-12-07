@@ -55,6 +55,7 @@ class Investment
 //    #[Assert\NotBlank(message: 'Establezca el municipio.')]
     private ?Municipality $municipality = null;
 
+    /** @var Collection<int, Project>  */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]
     #[Assert\Valid]
     private Collection $projects;

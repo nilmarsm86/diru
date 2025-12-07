@@ -28,8 +28,14 @@ interface MeasurementDataInterface
 
     public function allLocalsAreClassified(): bool;
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountTechnicalStatus(): array;
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountMeterTechnicalStatus(): array;
 
 }

@@ -42,10 +42,10 @@ trait ComponentForm
     }
 
     /**
-     * @param $classname
+     * @param string $classname
      * @return false|int|string
      */
-    protected function getClassName($classname): false|int|string
+    protected function getClassName(string $classname): false|int|string
     {
         if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
         return $pos;

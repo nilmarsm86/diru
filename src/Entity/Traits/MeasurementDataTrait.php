@@ -7,6 +7,7 @@ use App\Entity\Floor;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Local;
 use App\Entity\SubSystem;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -39,7 +40,8 @@ trait MeasurementDataTrait
 //    }
 
     /**
-     * @param Collection<int, Floor|SubSystem> $items
+     * @template T of Floor|SubSystem
+     * @param Collection<int, T> $items
      * @return float
      */
     private function calculateMaxHeight(Collection $items): float
@@ -56,10 +58,11 @@ trait MeasurementDataTrait
     }
 
     /**
-     * @param Collection<int, Floor|SubSystem> $items
+     * @template T of Floor|SubSystem
+     * @param ArrayCollection<int, T> $items
      * @return bool
      */
-    public function calculateAllLocalsAreClassified(Collection $items): bool
+    public function calculateAllLocalsAreClassified(ArrayCollection $items): bool
     {
 //        if((!$this instanceof Building) && !$this->isOriginal()){
 //            return true;

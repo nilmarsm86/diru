@@ -9,6 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Refresh
 {
     public string $path = '';
+    /** @var array<string>  */
     public array $queryNames = [];
 
     public function __construct(private readonly RequestStack $requestStack)

@@ -32,10 +32,10 @@ readonly class CrudActionService
 
     /**
      * @param Request $request
-     * @param ServiceEntityRepository $repository
+     * @param ServiceEntityRepository<object> $repository
      * @param string $findMethod
      * @param string $templateDir
-     * @param array $vars
+     * @param array<mixed> $vars
      * @return Response
      * @throws LoaderError
      * @throws RuntimeError
@@ -71,6 +71,10 @@ readonly class CrudActionService
         return new Response($template);
     }
 
+    /**
+     * @param Request $request
+     * @return array<mixed>
+     */
     public function getManageQuerys(Request $request): array
     {
         $filter = $request->query->get('filter', '');
@@ -86,7 +90,7 @@ readonly class CrudActionService
      * @param string $templateDir
      * @param string $type
      * @param string $title
-     * @param array $vars
+     * @param array<mixed> $vars
      * @return Response
      * @throws LoaderError
      * @throws RuntimeError
@@ -115,7 +119,7 @@ readonly class CrudActionService
      * @param object $entity
      * @param string $successMsg
      * @param string $gotTo
-     * @param array $goToParams
+     * @param array<mixed> $goToParams
      * @return Response
      * @throws LoaderError
      * @throws RuntimeError
@@ -208,7 +212,7 @@ readonly class CrudActionService
 //     * @param string $successMsg
 //     * @param string $gotTo
 //     * @param string $templateDir
-//     * @param array $vars
+//     * @param array<mixed> $vars
 //     * @param bool $modal
 //     * @return Response
 //     * @throws LoaderError
@@ -266,7 +270,7 @@ readonly class CrudActionService
 //     * @param string $successMsg
 //     * @param string $gotTo
 //     * @param string $templateDir
-//     * @param array $vars
+//     * @param array<mixed> $vars
 //     * @return Response
 //     * @throws LoaderError
 //     * @throws RuntimeError
@@ -317,7 +321,7 @@ readonly class CrudActionService
      * @param Request $request
      * @param object $entity
      * @param string $templateDir
-     * @param array $vars
+     * @param array<mixed> $vars
      * @param bool $modal
      * @return Response
      * @throws LoaderError
@@ -341,9 +345,13 @@ readonly class CrudActionService
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
+     * @param Request $request
+     * @param object $entity
+     * @param array<mixed> $entities
+     * @return Response
      * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function options(Request $request, object $entity, array $entities): Response
     {
@@ -358,10 +366,10 @@ readonly class CrudActionService
     }
 
     /**
-     * @param $classname
+     * @param string $classname
      * @return false|int|string
      */
-    private function getClassName($classname): false|int|string
+    private function getClassName(string $classname): false|int|string
     {
         if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
         return $pos;

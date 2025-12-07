@@ -68,7 +68,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
         }
     }
 
-    private function addType(QueryBuilder $builder, $type): void
+    private function addType(QueryBuilder $builder, string $type): void
     {
         if ($type !== '') {
             $type = CorporateEntityType::from($type);
@@ -81,7 +81,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
      * @param int $amountPerPage
      * @param int $page
      * @param string $type
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findEntities(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = ''): Paginator
     {

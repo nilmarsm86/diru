@@ -1,5 +1,7 @@
 parameters:
-    level: 5
+    bootstrapFiles:
+        - vendor/autoload.php
+    level: 6
     phpVersion: 80200
     paths:
         - src

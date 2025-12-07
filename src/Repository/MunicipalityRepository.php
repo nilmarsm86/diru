@@ -15,9 +15,9 @@ use Doctrine\Persistence\ManagerRegistry;
  * @extends ServiceEntityRepository<Municipality>
  *
  * @method Municipality|null find($id, $lockMode = null, $lockVersion = null)
- * @method Municipality|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Municipality|null findOneBy(mixed[] $criteria, mixed[] $orderBy = null)
  * @method Municipality[]    findAll()
- * @method Municipality[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Municipality[]    findBy(mixed[] $criteria, mixed[] $orderBy = null, $limit = null, $offset = null)
  */
 class MunicipalityRepository extends ServiceEntityRepository implements FilterInterface
 {
@@ -74,7 +74,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findMunicipalities(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

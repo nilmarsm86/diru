@@ -92,7 +92,7 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
     /**
      * @param ObjectManager $manager
      * @param SubsystemType $subsystemType
-     * @param array $subs
+     * @param array<mixed> $subs
      * @return void
      */
     public function addSubType(ObjectManager $manager, SubsystemType $subsystemType, array $subs): void

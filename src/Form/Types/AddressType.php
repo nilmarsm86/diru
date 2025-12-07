@@ -105,8 +105,8 @@ class AddressType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array|NotBlank[]
+     * @param array<mixed> $options
+     * @return array<mixed>|NotBlank[]
      */
     private function getMunicipalityConstraints(array $options): array
     {
@@ -121,8 +121,8 @@ class AddressType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array|NotBlank[]
+     * @param array<mixed> $options
+     * @return array<mixed>|NotBlank[]
      */
     private function getProvinceConstraints(array $options): array
     {
@@ -145,7 +145,7 @@ class AddressType extends AbstractType
     }
 
     /**
-     * @param array $options
+     * @param array<mixed> $options
      * @return Closure
      */
     private function getMunicipalityQueryBuilder(array $options): Closure

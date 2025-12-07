@@ -37,7 +37,7 @@ readonly class UserService
     /**
      * Add role to user
      * @param Request $request
-     * @return array
+     * @return array<mixed>
      */
     public function addRole(Request $request): array
     {
@@ -58,7 +58,7 @@ readonly class UserService
      *
      * @param Request $request
      * @param bool $authorize
-     * @return array
+     * @return array<mixed>
      */
     public function removeRole(Request $request, bool $authorize): array
     {
@@ -124,7 +124,7 @@ readonly class UserService
      * Change state user
      *
      * @param Request $request
-     * @return array
+     * @return array<mixed>
      */
     public function changeState(Request $request): array
     {

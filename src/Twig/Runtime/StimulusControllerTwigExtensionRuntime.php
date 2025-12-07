@@ -15,9 +15,9 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
 
     /**
      * @param string $controllerName the Stimulus controller name
-     * @param array $controllerValues array of controller values
-     * @param array $controllerClasses array of controller CSS classes
-     * @param array $controllerOutlets array of controller outlets
+     * @param array<mixed> $controllerValues array of controller values
+     * @param array<mixed> $controllerClasses array of controller CSS classes
+     * @param array<mixed> $controllerOutlets array of controller outlets
      * @return StimulusAttributes
      */
     public function renderStimulusController(string $controllerName, array $controllerValues = [], array $controllerClasses = [], array $controllerOutlets = []): StimulusAttributes
@@ -33,7 +33,7 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
      * @param string $controllerName
      * @param string|null $actionName
      * @param string|null $eventName
-     * @param array $parameters
+     * @param array<mixed> $parameters
      * @return StimulusAttributes
      */
     public function renderStimulusAction(string $controllerName, ?string $actionName = null, ?string $eventName = null, array $parameters = []): StimulusAttributes

@@ -67,11 +67,17 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->locals;
     }
 
+    /**
+     * @return ArrayCollection<int, Local>
+     */
     public function getOriginalLocals(): ArrayCollection
     {
         return $this->getItemsFilter($this->getLocals(), true);
     }
 
+    /**
+     * @return ArrayCollection<int, Local>
+     */
     public function getReplyLocals(): ArrayCollection
     {
         return $this->getItemsFilter($this->getLocals(), false);
@@ -333,6 +339,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountTechnicalStatus(): array
     {
         $undefined = 0;
@@ -362,6 +371,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountMeterTechnicalStatus(): array
     {
         $undefined = 0;
@@ -389,6 +401,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getAmountConstructiveAction(): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
@@ -403,6 +418,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $constructiveAction;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getPriceByConstructiveAction(): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
@@ -417,6 +435,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $constructiveAction;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getMeterByConstructiveAction(): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();

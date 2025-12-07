@@ -67,7 +67,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
@@ -79,7 +79,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
         return $this->paginate($query, $page, $amountPerPage);
     }
 
-    private function addState(QueryBuilder $builder, $state): void
+    private function addState(QueryBuilder $builder, string $state): void
     {
         if ($state !== '') {
             $state = BuildingState::from($state);
@@ -93,7 +93,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
      * @param int $amountPerPage
      * @param int $page
      * @param string $state
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findBuildingsByProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1, string $state = ''): Paginator
     {

@@ -23,6 +23,7 @@ class Province
     #[ORM\Column]
     private ?int $id = null;
 
+    /** @var Collection<int, Municipality> */
     #[ORM\OneToMany(targetEntity: Municipality::class, mappedBy: 'province', cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Count(
         min: 1,

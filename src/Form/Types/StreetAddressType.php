@@ -50,8 +50,8 @@ class StreetAddressType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array|NotBlank[]
+     * @param array<mixed> $options
+     * @return array<mixed>|NotBlank[]
      */
     private function getStreetConstraints(array $options): array
     {

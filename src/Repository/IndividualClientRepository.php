@@ -72,7 +72,7 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findIndividuals(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

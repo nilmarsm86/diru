@@ -16,7 +16,6 @@ use Exception;
  */
 class InvestmentRepository extends ServiceEntityRepository implements FilterInterface
 {
-
     use SaveData;
     use PaginateTrait;
 
@@ -72,7 +71,7 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findInvestments(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

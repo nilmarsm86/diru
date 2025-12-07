@@ -11,7 +11,7 @@ trait PaginateTrait
      * @param Query $dql
      * @param int $page
      * @param int $limit
-     * @return Paginator
+     * @return Paginator<object>
      */
     private function paginate(Query $dql, int $page, int $limit): Paginator
     {

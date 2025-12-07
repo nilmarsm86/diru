@@ -16,9 +16,9 @@ use Exception;
  * @extends ServiceEntityRepository<SubsystemType>
  *
  * @method SubsystemType|null find($id, $lockMode = null, $lockVersion = null)
- * @method SubsystemType|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SubsystemType|null findOneBy(mixed[] $criteria, mixed[] $orderBy = null)
  * @method SubsystemType[]    findAll()
- * @method SubsystemType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SubsystemType[]    findBy(mixed[] $criteria, mixed[] $orderBy = null, $limit = null, $offset = null)
  */
 class SubsystemTypeRepository extends ServiceEntityRepository implements FilterInterface
 {
@@ -64,7 +64,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
         }
     }
 
-    private function addClassification(QueryBuilder $builder, $classification): void
+    private function addClassification(QueryBuilder $builder, string $classification): void
     {
         if ($classification !== '') {
             $classification = SubsystemFunctionalClassification::from($classification);
@@ -77,7 +77,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
      * @param int $amountPerPage
      * @param int $page
      * @param string $classification
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1, string $classification = ''): Paginator
     {

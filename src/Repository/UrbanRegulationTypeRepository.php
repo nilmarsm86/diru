@@ -62,7 +62,7 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findUrbanRegulationTypes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

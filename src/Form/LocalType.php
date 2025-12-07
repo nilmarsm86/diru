@@ -80,7 +80,7 @@ class LocalType extends AbstractType
 
     /**
      * @param FormEvent $event
-     * @param array $options
+     * @param array<mixed> $options
      * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void

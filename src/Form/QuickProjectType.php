@@ -88,7 +88,7 @@ class QuickProjectType extends AbstractType
     }
 
 //    /**
-//     * @param array $options
+//     * @param array<mixed> $options
 //     * @return Closure
 //     */
 //    private function getInvestmentQueryBuilder(array $options): \Closure

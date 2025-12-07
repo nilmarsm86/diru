@@ -3,6 +3,9 @@
 namespace App\Entity\Traits;
 
 use App\Entity\Enums\StructureState;
+use App\Entity\Floor;
+use App\Entity\Local;
+use App\Entity\SubSystem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -147,7 +150,14 @@ trait StructureStateTrait
         return $this;
     }
 
-    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null)
+    /**
+     * @template T of SubSystem|Local
+     * @param EntityManagerInterface $entityManager
+     * @param Collection<int, T> $items
+     * @param object|null $parent
+     * @return void
+     */
+    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null): void
     {
         foreach ($items as $item) {
             $item->reply($entityManager, $parent);
@@ -204,6 +214,12 @@ trait StructureStateTrait
 //        return $this->getItemsFilter($items, false);
 //    }
 
+    /**
+     * @template T of SubSystem|Local
+     * @param Collection<int, T> $items
+     * @param bool $condition
+     * @return ArrayCollection<int, T>
+     */
     private function getItemsFilter(Collection $items, bool $condition): ArrayCollection
     {
         $replyItems = new ArrayCollection();

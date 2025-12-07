@@ -32,7 +32,7 @@ trait ComponentForm
 
     /**
      * Emit success event for all
-     * @param array $eventData
+     * @param array<mixed> $eventData
      * @return void
      */
     protected function emitSuccess(array $eventData): void
@@ -69,7 +69,7 @@ trait ComponentForm
     /**
      * @param object $entity
      * @param string $message
-     * @param array $updateEventData
+     * @param array<mixed> $updateEventData
      * @param string $mssageType
      * @return void
      */

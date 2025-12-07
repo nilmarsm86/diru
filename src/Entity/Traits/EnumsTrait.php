@@ -10,7 +10,7 @@ trait EnumsTrait
  {
     /**
      * Get all possible values
-     * @return array
+     * @return array<mixed>
      */
     public static function values(): array
     {
@@ -19,7 +19,7 @@ trait EnumsTrait
 
     /**
      * Get all values for select
-     * @return array
+     * @return array<mixed>
      */
     public static function forSelect(): array
     {

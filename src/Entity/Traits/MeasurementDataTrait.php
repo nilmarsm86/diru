@@ -5,6 +5,8 @@ namespace App\Entity\Traits;
 use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Interfaces\MeasurementDataInterface;
+use App\Entity\Local;
+use App\Entity\SubSystem;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -36,6 +38,10 @@ trait MeasurementDataTrait
 //        return $this->getMeasurementData('getUnassignedArea');
 //    }
 
+    /**
+     * @param Collection<int, Floor|SubSystem> $items
+     * @return float
+     */
     private function calculateMaxHeight(Collection $items): float
     {
         $maxHeight = 0;
@@ -49,6 +55,10 @@ trait MeasurementDataTrait
         return $maxHeight;
     }
 
+    /**
+     * @param Collection<int, Floor|SubSystem> $items
+     * @return bool
+     */
     public function calculateAllLocalsAreClassified(Collection $items): bool
     {
 //        if((!$this instanceof Building) && !$this->isOriginal()){

@@ -63,7 +63,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         }
     }
 
-    private function addType(QueryBuilder $builder, $type): void
+    private function addType(QueryBuilder $builder, string $type): void
     {
         if ($type !== '') {
             $type = ProjectType::from($type);
@@ -71,7 +71,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         }
     }
 
-    private function addState(QueryBuilder $builder, $state): void
+    private function addState(QueryBuilder $builder, string $state): void
     {
         if ($state !== '') {
             $state = ProjectState::from($state);
@@ -85,7 +85,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
      * @param int $page
      * @param string $type
      * @param string $state
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findProjects(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = '', string $state = ''): Paginator
     {

@@ -39,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Username]
     private ?string $username = null;
 
+    /** @var Collection<int, Role>  */
     #[ORM\ManyToMany(targetEntity: Role::class)]
     #[Assert\Count(
         min: 1,

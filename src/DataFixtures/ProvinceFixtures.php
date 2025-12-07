@@ -49,7 +49,7 @@ class ProvinceFixtures extends Fixture implements FixtureGroupInterface
     /**
      * @param ObjectManager $manager
      * @param string $provinceName
-     * @param array $municipalities
+     * @param array<mixed> $municipalities
      * @return bool
      */
     public function addProvinceMunicipality(ObjectManager $manager, string $provinceName, array $municipalities): bool

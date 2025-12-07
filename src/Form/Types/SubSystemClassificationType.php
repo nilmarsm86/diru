@@ -133,7 +133,7 @@ class SubSystemClassificationType extends AbstractType
 
     /**
      * @param SubsystemType|null $subsystemType
-     * @return array|NotBlank[]
+     * @return array<mixed>|NotBlank[]
      */
     private function getSubTypeConstraints(?SubsystemType $subsystemType): array
     {
@@ -148,8 +148,8 @@ class SubSystemClassificationType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array|NotBlank[]
+     * @param array<mixed> $options
+     * @return array<mixed>|NotBlank[]
      */
     private function getTypeConstraints(array $options): array
     {

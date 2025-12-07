@@ -25,7 +25,7 @@ trait MunicipalityTrait
 
     /**
      * @param object $entity
-     * @param array $data
+     * @param array<mixed> $data
      * @return int
      */
     public function getMunicipalityId(object $entity, array $data): int

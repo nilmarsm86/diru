@@ -65,7 +65,7 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
      * @param int $amountPerPage
      * @param int $page
      * @param bool $reply
-     * @return Paginator Returns an array of User objects
+     * @return Paginator<object> Returns an array of User objects
      */
     public function findBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
     {
@@ -108,7 +108,7 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
 //     * @param string $filter
 //     * @param int $amountPerPage
 //     * @param int $page
-//     * @return Paginator Returns an array of User objects
+//     * @return Paginator<object> Returns an array of User objects
 //     */
 //    public function findReplyBuildingFloors(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
 //    {

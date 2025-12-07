@@ -45,7 +45,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     /**
      * @param ObjectManager $manager
      * @param User $user
-     * @param array $roles
+     * @param array<mixed> $roles
      * @return void
      * @throws Exception
      */

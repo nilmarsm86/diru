@@ -7,7 +7,6 @@ use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

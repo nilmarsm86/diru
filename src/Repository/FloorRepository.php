@@ -15,7 +15,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<Floor>
  */
-class FloorRepository extends ServiceEntityRepository
+class FloorRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\SubSystem;
 use App\Repository\Traits\PaginateTrait;
@@ -16,7 +15,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<SubSystem>
  */
-class SubSystemRepository extends ServiceEntityRepository
+class SubSystemRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

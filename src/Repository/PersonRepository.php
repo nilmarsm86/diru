@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Person>
  */
-class PersonRepository extends ServiceEntityRepository
+class PersonRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -48,7 +48,7 @@ class PersonRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "p.name LIKE :filter ";

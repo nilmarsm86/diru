@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Land>
  */
-class LandRepository extends ServiceEntityRepository
+class LandRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -48,15 +48,6 @@ class LandRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-//    private function addFilter(QueryBuilder $builder, string $filter): void
-//    {
-//        if($filter){
-//            $predicate = "nc.name LIKE :filter ";
-//            $builder->andWhere($predicate)
-//                ->setParameter(':filter','%'.$filter.'%');
-//        }
-//    }
-
     /**
      * @param string $filter
      * @param int $amountPerPage
@@ -66,9 +57,13 @@ class LandRepository extends ServiceEntityRepository
     public function findLands(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('l')->select(['l']);
-//        $this->addFilter($builder, $filter);
+        $this->addFilter($builder, $filter);
         $query = $builder->orderBy('l.id', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
 
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        // TODO: Implement addFilter() method.
+    }
 }

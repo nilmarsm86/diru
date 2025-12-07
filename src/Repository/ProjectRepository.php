@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Building;
-use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Project;
@@ -18,7 +16,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<Project>
  */
-class ProjectRepository extends ServiceEntityRepository
+class ProjectRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

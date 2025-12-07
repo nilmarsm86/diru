@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\ProfilePasswordForm;
+use App\Entity\User;
 use App\Form\ProfileFullNameType;
 use App\Form\ProfilePasswordType;
 use App\Repository\RoleRepository;
@@ -107,7 +108,9 @@ readonly class UserService
         if($formPassword->isSubmitted() && $formPassword->isValid()){
             /** @var ProfilePasswordForm $dto */
             $dto = $formPassword->getData();
-            $user = $dto->toEntity($this->security->getUser());
+            $user = $this->security->getUser();
+            assert($user instanceof User);
+            $user = $dto->toEntity($user);
             $user->changePassword($this->userPasswordHasher);
             $this->userRepository->save($user, true);
 

@@ -14,15 +14,15 @@ class RepresentativeFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         $representatives = ['Representante 1', 'Representante 2', 'Representante 3', 'Representante 4'];
-        foreach ($representatives as $representatives){
-            $personEntity = $manager->getRepository(Representative::class)->findOneBy(['name' => $representatives]);
+        foreach ($representatives as $representative){
+            $personEntity = $manager->getRepository(Representative::class)->findOneBy(['name' => $representative]);
             if(is_null($personEntity)){
                 $personEntity = new Representative();
-                $personEntity->setName($representatives);
+                $personEntity->setName($representative);
                 $personEntity->setLastname("Apellido1 Apellido2");
-                $personEntity->setIdentificationNumber(rand(11111111111, 99999999999));
-                $personEntity->setPhone(rand(50000000, 69999999));
-                $personEntity->setEmail(strtolower(str_replace(' ', '_', $representatives)).'@diru.com');
+                $personEntity->setIdentificationNumber((string) rand(11111111111, 99999999999));
+                $personEntity->setPhone((string) rand(50000000, 69999999));
+                $personEntity->setEmail(strtolower(str_replace(' ', '_', $representative)).'@diru.com');
                 $manager->persist($personEntity);
             }
         }

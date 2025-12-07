@@ -20,7 +20,7 @@ class PersonFixtures extends Fixture implements FixtureGroupInterface
                 $personEntity = new Person();
                 $personEntity->setName($person);
                 $personEntity->setLastname("Apellido1 Apellido2");
-                $personEntity->setIdentificationNumber(rand(11111111111, 99999999999));
+                $personEntity->setIdentificationNumber((string) rand(11111111111, 99999999999));
                 $manager->persist($personEntity);
             }
         }

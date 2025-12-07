@@ -14,7 +14,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<UrbanRegulationType>
  */
-class UrbanRegulationTypeRepository extends ServiceEntityRepository
+class UrbanRegulationTypeRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -49,7 +49,7 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "urt.name LIKE :filter ";

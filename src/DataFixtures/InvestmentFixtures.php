@@ -24,7 +24,7 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface, F
                 $investmentEntity->setStreet('calle');
                 $investmentEntity->setMunicipality($this->findMunicipality($manager));
                 $investmentEntity->setBlock('manzana');
-                $investmentEntity->setAddressNumber(1);
+                $investmentEntity->setAddressNumber('1');
                 $investmentEntity->setBetweenStreets('entre calle A y calle B');
                 $investmentEntity->setDistrict('circunscripcion');
                 $investmentEntity->setLocationZone($this->findLocationZone($manager));

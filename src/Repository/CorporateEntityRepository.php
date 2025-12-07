@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\CorporateEntity;
-use App\Entity\EnterpriseClient;
 use App\Entity\Enums\CorporateEntityType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;

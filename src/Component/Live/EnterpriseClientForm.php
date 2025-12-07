@@ -10,6 +10,7 @@ use App\Repository\EnterpriseClientRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
+use App\Repository\RepresentativeRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -60,7 +61,7 @@ final class EnterpriseClientForm extends AbstractController
         protected readonly ProvinceRepository        $provinceRepository,
         protected readonly MunicipalityRepository    $municipalityRepository,
         protected readonly CorporateEntityRepository $corporateEntityRepository,
-        protected readonly PersonRepository $personRepository
+//        protected readonly PersonRepository $personRepository
     )
     {
 
@@ -153,7 +154,7 @@ final class EnterpriseClientForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(EnterpriseClientRepository $enterpriseClientRepository): ?Response
+    public function save(EnterpriseClientRepository $enterpriseClientRepository, RepresentativeRepository $representativeRepository): ?Response
     {
         $this->preValue();
 
@@ -174,7 +175,7 @@ final class EnterpriseClientForm extends AbstractController
             $corporateEntity = $this->corporateEntityRepository->find((int)$this->formValues['corporateEntity']);
             $ec->setCorporateEntity($corporateEntity);
 
-            $representative = $this->personRepository->find((int)$this->formValues['representative']);
+            $representative = $representativeRepository->find((int)$this->formValues['representative']);
             $ec->setRepresentative($representative);
 
             $enterpriseClientRepository->save($ec, true);

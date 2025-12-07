@@ -24,7 +24,7 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
                 $individualClient->setStreet('direccion de la calle');
                 $individualClient->setMunicipality($this->findMunicipality($manager));
                 $individualClient->setEmail($client.'@gmail.com');
-                $individualClient->setPhone(rand(55555555, 66666666));
+                $individualClient->setPhone((string) rand(55555555, 66666666));
                 if($client === end($clients)){
                     $individualClient->setRepresentative($this->findRepresentative($manager, $representatives[$key]));
                 }
@@ -39,7 +39,7 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
         return $manager->getRepository(Person::class)->findOneBy(['name' => $name]);
     }
 
-    private function findRepresentative(ObjectManager $manager, $name): ?Person
+    private function findRepresentative(ObjectManager $manager, $name): ?Representative
     {
         return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }

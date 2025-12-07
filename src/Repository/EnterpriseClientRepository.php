@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\EnterpriseClient;
-use App\Entity\IndividualClient;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -15,7 +14,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<EnterpriseClient>
  */
-class EnterpriseClientRepository extends ServiceEntityRepository
+class EnterpriseClientRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<UrbanRegulation>
  */
-class UrbanRegulationRepository extends ServiceEntityRepository
+class UrbanRegulationRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -48,7 +48,7 @@ class UrbanRegulationRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "ur.code LIKE :filter ";

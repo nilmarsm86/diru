@@ -4,6 +4,7 @@ namespace App\DTO;
 
 use App\Entity\User;
 use App\Validator\Password;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
@@ -19,10 +20,10 @@ final class ProfilePasswordForm
     public string $plainPassword;
 
     /**
-     * @param UserInterface|null $user
+     * @param User $user
      * @return User
      */
-    public function toEntity(?UserInterface $user): UserInterface
+    public function toEntity(User $user): User
     {
         $user->setPassword($this->plainPassword);
         return $user;

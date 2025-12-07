@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Building;
-use App\Entity\Floor;
 use App\Entity\Local;
 use App\Entity\SubSystem;
 use App\Repository\Traits\PaginateTrait;
@@ -16,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Local>
  */
-class LocalRepository extends ServiceEntityRepository
+class LocalRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

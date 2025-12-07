@@ -4,7 +4,6 @@ namespace App\Twig\Extension;
 
 use App\Twig\Runtime\TableListTwigExtensionRuntime;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class TableListTwigExtension extends AbstractExtension

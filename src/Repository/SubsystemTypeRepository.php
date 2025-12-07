@@ -20,7 +20,7 @@ use Exception;
  * @method SubsystemType[]    findAll()
  * @method SubsystemType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SubsystemTypeRepository extends ServiceEntityRepository
+class SubsystemTypeRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -55,7 +55,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "sst.name LIKE :filter ";

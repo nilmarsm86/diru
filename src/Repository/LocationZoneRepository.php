@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<LocationZone>
  */
-class LocationZoneRepository extends ServiceEntityRepository
+class LocationZoneRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -48,7 +48,7 @@ class LocationZoneRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "lz.name LIKE :filter ";

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\NetworkConnection;
-use App\Entity\Project;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -15,7 +14,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<NetworkConnection>
  */
-class NetworkConnectionRepository extends ServiceEntityRepository
+class NetworkConnectionRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -50,7 +49,7 @@ class NetworkConnectionRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "nc.name LIKE :filter ";

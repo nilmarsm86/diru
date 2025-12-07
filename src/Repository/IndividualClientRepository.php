@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Building;
 use App\Entity\IndividualClient;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -15,7 +14,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<IndividualClient>
  */
-class IndividualClientRepository extends ServiceEntityRepository
+class IndividualClientRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

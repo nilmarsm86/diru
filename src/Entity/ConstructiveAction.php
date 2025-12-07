@@ -37,13 +37,13 @@ class ConstructiveAction
     private ConstructiveActionType $enumType;
 
     /**
-     * @var Collection<int, Local>
+     * @var Collection<int, LocalConstructiveAction>
      */
     #[ORM\OneToMany(targetEntity: LocalConstructiveAction::class, mappedBy: 'constructiveAction')]
     private Collection $localsConstructiveAction;
 
     /**
-     * @var Collection<int, LandNetworkConnection>
+     * @var Collection<int, LandNetworkConnectionConstructiveAction>
      */
     #[ORM\OneToMany(targetEntity: LandNetworkConnectionConstructiveAction::class, mappedBy: 'constructiveAction')]
     private Collection $landNetworkConnectionsConstructiveAction;
@@ -89,7 +89,7 @@ class ConstructiveAction
     }
 
     /**
-     * @return Collection<int, Local>
+     * @return Collection<int, LocalConstructiveAction>
      */
     public function getLocalsConstructiveAction(): Collection
     {
@@ -119,7 +119,7 @@ class ConstructiveAction
     }
 
     /**
-     * @return Collection<int, LandNetworkConnection>
+     * @return Collection<int, LandNetworkConnectionConstructiveAction>
      */
     public function getLandNetworkConnectionConstructiveAction(): Collection
     {

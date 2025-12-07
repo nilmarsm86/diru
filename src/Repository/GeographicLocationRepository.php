@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<GeographicLocation>
  */
-class GeographicLocationRepository extends ServiceEntityRepository
+class GeographicLocationRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -48,7 +48,7 @@ class GeographicLocationRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "gl.name LIKE :filter ";

@@ -21,7 +21,7 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
         $representatives = ['Representante 1', 'Representante 2', 'Representante 3', 'Representante 4'];
         foreach ($clients as $key => $client){
                 $enterpriseClient = new EnterpriseClient();
-                $enterpriseClient->setPhone(rand(55555555, 66666666));
+                $enterpriseClient->setPhone((string) rand(55555555, 66666666));
                 $enterpriseClient->setMunicipality($this->findMunicipality($manager));
                 $enterpriseClient->setEmail('empresa_'.$key.'@gmail.com');
                 $enterpriseClient->setStreet('direccion de la calle de la empresa');
@@ -33,7 +33,7 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    private function findRepresentative(ObjectManager $manager, $name): ?Person
+    private function findRepresentative(ObjectManager $manager, $name): ?Representative
     {
         return $manager->getRepository(Representative::class)->findOneBy(['name' => $name]);
     }

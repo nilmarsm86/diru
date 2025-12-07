@@ -14,7 +14,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<Investment>
  */
-class InvestmentRepository extends ServiceEntityRepository
+class InvestmentRepository extends ServiceEntityRepository implements FilterInterface
 {
 
     use SaveData;

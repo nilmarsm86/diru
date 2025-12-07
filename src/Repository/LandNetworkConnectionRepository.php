@@ -4,12 +4,13 @@ namespace App\Repository;
 
 use App\Entity\LandNetworkConnection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<LandNetworkConnection>
  */
-class LandNetworkConnectionRepository extends ServiceEntityRepository
+class LandNetworkConnectionRepository extends ServiceEntityRepository implements FilterInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -40,4 +41,8 @@ class LandNetworkConnectionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        // TODO: Implement addFilter() method.
+    }
 }

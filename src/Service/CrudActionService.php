@@ -4,14 +4,10 @@ namespace App\Service;
 
 use App\DTO\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Component\Form\FormFactoryInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -189,7 +185,7 @@ readonly class CrudActionService
         try {
             $repository->remove($entity, true);
             $template = ['id' => $id, 'type' => 'text-bg-success', 'message' => $successMsg];
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $template = ['id' => $id, 'type' => 'text-bg-danger', 'message' => $exception->getMessage()];
         }
 

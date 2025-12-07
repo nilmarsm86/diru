@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
-use App\Entity\Enums\ProjectState;
-use App\Entity\Investment;
 use App\Entity\Project;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -18,7 +16,7 @@ use Exception;
 /**
  * @extends ServiceEntityRepository<Building>
  */
-class BuildingRepository extends ServiceEntityRepository
+class BuildingRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;

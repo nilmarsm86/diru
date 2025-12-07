@@ -10,6 +10,7 @@ use App\Repository\IndividualClientRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
+use App\Repository\RepresentativeRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -56,7 +57,7 @@ final class IndividualClientForm extends AbstractController
     public function __construct(
         protected readonly ProvinceRepository     $provinceRepository,
         protected readonly MunicipalityRepository $municipalityRepository,
-        protected readonly PersonRepository       $personRepository
+//        protected readonly PersonRepository       $personRepository
     )
     {
 
@@ -167,7 +168,7 @@ final class IndividualClientForm extends AbstractController
      * @throws Exception
      */
     #[LiveAction]
-    public function save(IndividualClientRepository $individualClientRepository): ?Response
+    public function save(IndividualClientRepository $individualClientRepository, RepresentativeRepository $representativeRepository): ?Response
     {
         $this->preValue();
 
@@ -182,7 +183,7 @@ final class IndividualClientForm extends AbstractController
             $person = $this->createPerson($ic);
             $ic->setPerson($person);
 
-            $representative = $this->personRepository->find((int)$this->formValues['representative']);
+            $representative = $representativeRepository->find((int)$this->formValues['representative']);
             $ic->setRepresentative($representative);
 
             $ic->setStreet($this->formValues['streetAddress']['street']);

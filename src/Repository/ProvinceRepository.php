@@ -19,7 +19,7 @@ use Exception;
  * @method Province[]    findAll()
  * @method Province[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProvinceRepository extends ServiceEntityRepository
+class ProvinceRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -54,7 +54,7 @@ class ProvinceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    private function addFilter(QueryBuilder $builder, string $filter): void
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if($filter){
             $predicate = "p.name LIKE :filter ";

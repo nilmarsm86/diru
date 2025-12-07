@@ -14,10 +14,9 @@ class SubsystemFunctionalClassificationEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', SubsystemFunctionalClassification::class)
-            ->setDefault('choices', static fn (Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
             ->setDefault('choice_label', SubsystemFunctionalClassification::getLabel())
-            ->setDefault('choice_value', SubsystemFunctionalClassification::getValue())
-        ;
+            ->setDefault('choice_value', SubsystemFunctionalClassification::getValue());
     }
 
     public function getParent(): string

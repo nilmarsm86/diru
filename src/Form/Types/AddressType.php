@@ -141,7 +141,7 @@ class AddressType extends AbstractType
      */
     private function getProvinceQueryBuilder(): Closure
     {
-        return fn(ProvinceRepository $provinceRepository) : QueryBuilder => $provinceRepository->findProvincesForForm();
+        return fn(ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
     }
 
     /**

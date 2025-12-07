@@ -56,10 +56,10 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "p.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -85,7 +85,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
      */
     public function remove(Province $entity, bool $flush = false): void
     {
-        if($entity->getMunicipalities()->count() > 0){
+        if ($entity->getMunicipalities()->count() > 0) {
             throw new Exception('La provincia aun tiene municipios asociados.', 1);
         }
 

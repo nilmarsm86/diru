@@ -57,10 +57,10 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "sst.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -97,7 +97,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
      */
     public function remove(SubsystemType $entity, bool $flush = false): void
     {
-        if($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0){
+        if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
             throw new Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
         }
 

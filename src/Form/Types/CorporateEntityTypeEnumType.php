@@ -14,10 +14,9 @@ class CorporateEntityTypeEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', CorporateEntityType::class)
-            ->setDefault('choices', static fn (Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
             ->setDefault('choice_label', CorporateEntityType::getLabel())
-            ->setDefault('choice_value', CorporateEntityType::getValue())
-        ;
+            ->setDefault('choice_value', CorporateEntityType::getValue());
     }
 
     public function getParent(): string

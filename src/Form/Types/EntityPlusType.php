@@ -13,30 +13,25 @@ class EntityPlusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-
             ->setDefault('placeholder', '-Seleccione-')
-
             ->setDefault('add', false)
             ->setDefault('add_title', 'Agregar')
             ->setDefault('add_id', '')
             ->setDefault('add_placeholder', 'Cargando...')
             ->setDefault('add_url', '')
             ->setDefault('add_icon', 'bi:plus-lg')
-
             ->setDefault('detail', false)
             ->setDefault('detail_title', 'Detalle')
             ->setDefault('detail_id', '')
             ->setDefault('detail_placeholder', 'Cargando...')
             ->setDefault('detail_url', '')
             ->setDefault('detail_icon', 'bi:eye')
-
             ->setDefault('modify', false)
             ->setDefault('modify_title', 'Modificar')
             ->setDefault('modify_id', '')
             ->setDefault('modify_placeholder', 'Cargando...')
             ->setDefault('modify_url', '')
-            ->setDefault('modify_icon', 'fa:edit')
-        ;
+            ->setDefault('modify_icon', 'fa:edit');
 
         $resolver->setAllowedTypes('add', 'bool');
         $resolver->setAllowedTypes('add_title', 'string');
@@ -86,6 +81,7 @@ class EntityPlusType extends AbstractType
         $view->vars['modify_url'] = $options['modify_url'];
         $view->vars['modify_icon'] = $options['modify_icon'];
     }
+
     public function getParent(): string
     {
         return EntityType::class;

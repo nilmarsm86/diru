@@ -37,8 +37,7 @@ class ProfileFullNameType extends AbstractType
                     'class' => 'form-control no-border-left',
                     'placeholder' => 'Correo del usuario'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

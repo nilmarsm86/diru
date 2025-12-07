@@ -51,11 +51,11 @@ class ContractRepository extends ServiceEntityRepository implements FilterInterf
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "c.code LIKE :filter ";
             $predicate .= "OR c.year LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -81,7 +81,7 @@ class ContractRepository extends ServiceEntityRepository implements FilterInterf
      */
     public function remove(Contract $entity, bool $flush = false): void
     {
-        if(!is_null($entity->getProject())){
+        if (!is_null($entity->getProject())) {
             throw new Exception('Este contrato está asociado a un proyecto.', 1);
         }
 

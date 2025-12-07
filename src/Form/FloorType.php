@@ -2,10 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
 use App\Entity\Floor;
-use App\Entity\Land;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;

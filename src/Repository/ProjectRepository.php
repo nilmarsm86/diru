@@ -53,13 +53,13 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "p.name LIKE :filter ";
             $predicate .= "OR i.name LIKE :filter ";
 //            $predicate .= "OR c.code LIKE :filter ";
 //            $predicate .= "OR c.country LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -109,12 +109,12 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     {
         $msg = 'Si desea podría cambiarle el estado al proyecto a: Cancelado.';
 
-        if(!is_null($entity->getClient())){
-            throw new Exception('El proyecto aun tiene un cliente asociado. '.$msg, 1);
+        if (!is_null($entity->getClient())) {
+            throw new Exception('El proyecto aun tiene un cliente asociado. ' . $msg, 1);
         }
 
-        if($entity->hasBuildings()){
-            throw new Exception('El proyecto tiene obras asociadas. '.$msg, 1);
+        if ($entity->hasBuildings()) {
+            throw new Exception('El proyecto tiene obras asociadas. ' . $msg, 1);
         }
 
         $this->getEntityManager()->remove($entity);

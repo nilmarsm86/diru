@@ -5,8 +5,6 @@ namespace App\Form;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
 use App\Entity\LandNetworkConnectionConstructiveAction;
-use App\Entity\Local;
-use App\Entity\LocalConstructiveAction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;

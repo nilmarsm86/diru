@@ -57,7 +57,6 @@ class RegistrationFormType extends AbstractType
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => false
             ])
-
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordToggleType::class,
                 'first_options' => [
@@ -77,8 +76,7 @@ class RegistrationFormType extends AbstractType
                     ],
                 ],
                 'invalid_message' => 'Las contraseñas no coinciden.'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

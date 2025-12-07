@@ -22,7 +22,6 @@ class MoneyPlusType extends AbstractType
             ->setDefault('add_placeholder', 'Cargando...')
             ->setDefault('add_url', '')
             ->setDefault('add_icon', 'bi:plus-lg')
-
             ->setDefault('list', false)
             ->setDefault('list_title', 'Detalle')
             ->setDefault('list_id', '')
@@ -86,6 +85,7 @@ class MoneyPlusType extends AbstractType
 //        $view->vars['modify_url'] = $options['modify_url'];
 //        $view->vars['modify_icon'] = $options['modify_icon'];
     }
+
     public function getParent(): string
     {
         return MoneyType::class;

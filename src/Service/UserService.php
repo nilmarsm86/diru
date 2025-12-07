@@ -48,7 +48,7 @@ readonly class UserService
             $user->addRole($role);
             $this->userRepository->save($user, true);
             return [$user, $role, 'text-bg-success', '', new Response()];
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             return [$user, $role, 'text-bg-danger', $exception->getMessage(), new Response('', Response::HTTP_UNPROCESSABLE_ENTITY)];
         }
     }
@@ -69,7 +69,7 @@ readonly class UserService
             $user->removeRole($role, !$authorize);
             $this->userRepository->save($user, true);
             return [$user, $role, 'text-bg-success', '', new Response()];
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $code = ($exception->getCode() === 1) ? Response::HTTP_UNAUTHORIZED : Response::HTTP_UNPROCESSABLE_ENTITY;
             return [$user, $role, 'text-bg-danger', $exception->getMessage(), new Response('', $code)];
         }
@@ -85,7 +85,7 @@ readonly class UserService
     {
         $formName = $this->formFactory->create(ProfileFullNameType::class, $this->security->getUser());
         $formName->handleRequest($request);
-        if($formName->isSubmitted() && $formName->isValid()){
+        if ($formName->isSubmitted() && $formName->isValid()) {
             $this->userRepository->save($this->security->getUser(), true);
 
 //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
@@ -105,7 +105,7 @@ readonly class UserService
         $formPassword = $this->formFactory->create(ProfilePasswordType::class);
         $formPassword->handleRequest($request);
 
-        if($formPassword->isSubmitted() && $formPassword->isValid()){
+        if ($formPassword->isSubmitted() && $formPassword->isValid()) {
             /** @var ProfilePasswordForm $dto */
             $dto = $formPassword->getData();
             $user = $this->security->getUser();

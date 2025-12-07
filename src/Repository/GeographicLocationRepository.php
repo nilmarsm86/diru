@@ -50,10 +50,10 @@ class GeographicLocationRepository extends ServiceEntityRepository implements Fi
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "gl.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 

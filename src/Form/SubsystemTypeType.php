@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\SubsystemType;
-use App\Entity\SubsystemSubType;
 use App\Form\Types\SubsystemFunctionalClassificationEnumType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

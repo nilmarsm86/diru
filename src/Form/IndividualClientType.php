@@ -6,9 +6,6 @@ use App\Entity\IndividualClient;
 use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
-use Closure;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -103,8 +100,8 @@ class IndividualClientType extends AbstractType
      */
     private function onPreSetData(FormEvent $event): void
     {
-        /** @var IndividualClient $ic */
-        $ic = $event->getData();
+//        /** @var IndividualClient $ic */
+//        $ic = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [

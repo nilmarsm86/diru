@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
-use App\Entity\Local;
 use App\Entity\LocalConstructiveAction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,9 +23,7 @@ class LocalConstructiveActionType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Tipo:',
                 'placeholder' => '-Seleccione-',
-                'group_by' => function(ConstructiveAction $constructiveAction, int $key, string $value) {
-                    return $constructiveAction->getType()->getLabelFrom($constructiveAction->getType());
-                },
+                'group_by' => fn(ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()->getLabelFrom($constructiveAction->getType()),
             ])
             ->add('constructiveSystem', EntityType::class, [
                 'class' => ConstructiveSystem::class,
@@ -61,9 +58,9 @@ class LocalConstructiveActionType extends AbstractType
 
         $currency = 'CUP';
         $local = null;
-        if($localConstructiveAction){
+        if ($localConstructiveAction) {
             $local = $localConstructiveAction->getLocal();
-            if($local){
+            if ($local) {
                 $currency = $local->getSubSystem()->getFloor()->getBuilding()->getProject()->getCurrency()->getCode();
             }
         }

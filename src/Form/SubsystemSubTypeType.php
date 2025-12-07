@@ -3,15 +3,8 @@
 namespace App\Form;
 
 use App\Entity\SubsystemSubType;
-use App\Entity\SubsystemType;
 use App\Form\Types\EntityPlusType;
-use App\Repository\SubsystemTypeRepository;
-use Closure;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -28,8 +21,8 @@ class SubsystemSubTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['screen'] === 'type') {
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-                $this->onPreSetData($event, $options);
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+                $this->onPreSetData($event);
             });
         }
 
@@ -61,10 +54,9 @@ class SubsystemSubTypeType extends AbstractType
 
     /**
      * @param FormEvent $event
-     * @param array $options
      * @return void
      */
-    private function onPreSetData(FormEvent $event, array $options): void
+    private function onPreSetData(FormEvent $event): void
     {
         $subsystemSubType = $event->getData();
         $form = $event->getForm();
@@ -82,7 +74,7 @@ class SubsystemSubTypeType extends AbstractType
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
+                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
 
                 'data' => $subsystemSubType,
 //                'row_attr' => [

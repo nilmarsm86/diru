@@ -14,9 +14,10 @@ final class Username extends Constraint
     // All configurable options must be passed to the constructor.
     public function __construct(
         public string $mode = 'strict',
-        ?array $groups = null,
-        mixed $payload = null
-    ) {
+        ?array        $groups = null,
+        mixed         $payload = null
+    )
+    {
         parent::__construct([], $groups, $payload);
     }
 }

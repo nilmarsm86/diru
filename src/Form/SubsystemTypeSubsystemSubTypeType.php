@@ -35,8 +35,8 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
 //            ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-            $this->onPreSetData($event, $options);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+            $this->onPreSetData($event);
         });
     }
 
@@ -49,16 +49,15 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
 
     /**
      * @param FormEvent $event
-     * @param array $options
      * @return void
      */
-    private function onPreSetData(FormEvent $event, array $options): void
+    private function onPreSetData(FormEvent $event): void
     {
         /** @var SubsystemTypeSubsystemSubType $stsst */
         $stsst = $event->getData();
         $form = $event->getForm();
 
-        if(is_null($stsst)){
+        if (is_null($stsst)) {
             $form
                 ->add('subsystemSubType', EntityPlusType::class, [
                     'label' => 'Nombre:',
@@ -72,14 +71,14 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
                     'add' => true,
                     'add_title' => 'Agregar Subtipo',
                     'add_id' => 'modal-load',
-                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
+                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
 
 //                'data' => $stsst->getSubsystemSubType(),
 //                'row_attr' => [
 //                    'class' => 'mb-3 row'
 //                ]
                 ]);
-        }else{
+        } else {
             $form
                 ->add('subsystemSubType', EntityType::class, [
                     'label' => 'Nombre:',

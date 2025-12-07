@@ -51,12 +51,12 @@ class ConstructorRepository extends ServiceEntityRepository implements FilterInt
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "c.name LIKE :filter ";
             $predicate .= "OR c.code LIKE :filter ";
             $predicate .= "OR c.country LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -82,7 +82,7 @@ class ConstructorRepository extends ServiceEntityRepository implements FilterInt
      */
     public function remove(Constructor $entity, bool $flush = false): void
     {
-        if($entity->hasBuildings()){
+        if ($entity->hasBuildings()) {
             throw new Exception('Esta constructora aun tiene obras asociados.', 1);
         }
 

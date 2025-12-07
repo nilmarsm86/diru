@@ -41,9 +41,9 @@ class SubSystemClassificationType extends AbstractType
         }
 
         $builder->add('classification', SubsystemFunctionalClassificationEnumType::class, [
-            'label' => 'Clasificación:',
-            'mapped' => false,
-        ] + $classification);
+                'label' => 'Clasificación:',
+                'mapped' => false,
+            ] + $classification);
 
         $builder->addDependent('type', 'classification', function (DependentField $field, ?SubsystemFunctionalClassification $subsystemFunctionalClassification) use ($options) {
             $isValid = (!is_null($subsystemFunctionalClassification) && ($subsystemFunctionalClassification->value != ''));

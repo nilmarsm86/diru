@@ -13,9 +13,9 @@ class EnumTwigExtensionRuntime implements RuntimeExtensionInterface
 
     public function getLabelFrom(mixed $enum, $value = null): string
     {
-        if(gettype($enum) === 'string'){
+        if (gettype($enum) === 'string') {
             return call_user_func_array([$enum, 'getLabelFrom'], [$value]);
-        }else{
+        } else {
             return $enum->getLabelFrom($enum);
         }
     }

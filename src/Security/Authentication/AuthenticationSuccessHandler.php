@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Security\Authentication;
 
 use App\Repository\UserRepository;
@@ -17,7 +18,7 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
      * @param UserRepository $userRepository
      * @param Security $security
      */
-    public function __construct(private UrlGeneratorInterface $urlGenerator,private UserRepository $userRepository, private Security $security)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private UserRepository $userRepository, private Security $security)
     {
     }
 
@@ -30,7 +31,7 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
     {
         $user = $this->userRepository->findOneBy(['username' => $request->request->get('_username', '')]);
 
-        if(!$user->isActive()){
+        if (!$user->isActive()) {
             $this->security->logout();
             return new RedirectResponse($this->urlGenerator->generate('app_login', ['inactive' => true]));
         }

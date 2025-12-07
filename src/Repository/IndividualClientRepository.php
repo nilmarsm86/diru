@@ -94,7 +94,7 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
      */
     public function remove(IndividualClient $entity, bool $flush = false): void
     {
-        if($entity->hasProjects()){
+        if ($entity->hasProjects()) {
             throw new Exception('Este cliente natural aun tiene proyectos asociados.', 1);
         }
 

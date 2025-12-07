@@ -95,7 +95,7 @@ class EnterpriseClientRepository extends ServiceEntityRepository implements Filt
      */
     public function remove(EnterpriseClient $entity, bool $flush = false): void
     {
-        if($entity->hasProjects()){
+        if ($entity->hasProjects()) {
             throw new Exception('Este cliente empresarial aun tiene proyectos asociados.', 1);
         }
 

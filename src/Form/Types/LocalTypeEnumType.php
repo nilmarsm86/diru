@@ -14,10 +14,9 @@ class LocalTypeEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', LocalType::class)
-            ->setDefault('choices', static fn (Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
             ->setDefault('choice_label', LocalType::getLabel())
-            ->setDefault('choice_value', LocalType::getValue())
-        ;
+            ->setDefault('choice_value', LocalType::getValue());
     }
 
     public function getParent(): string

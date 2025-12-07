@@ -41,8 +41,7 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
             ])
             ->add('comment', null, [
                 'label' => 'Comentario:'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -17,8 +17,7 @@ class UrbanRegulationTypeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre del tipo de regulación urbana',
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

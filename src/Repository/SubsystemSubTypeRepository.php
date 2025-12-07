@@ -59,11 +59,11 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
      */
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "ssst.name LIKE :filter ";
 //            $predicate .= "OR sst.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -91,7 +91,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
      */
     public function remove(SubsystemSubType $entity, bool $flush = false): void
     {
-        if($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0){
+        if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
             throw new Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
         }
 

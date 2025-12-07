@@ -54,8 +54,7 @@ class ProfilePasswordType extends AbstractType
                         'class' => 'form-label col-sm-12'
                     ]
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

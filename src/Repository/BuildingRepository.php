@@ -53,13 +53,13 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "b.name LIKE :filter ";
 //            $predicate .= "OR c.name LIKE :filter ";
 //            $predicate .= "OR c.code LIKE :filter ";
             $predicate .= "OR p.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -100,8 +100,8 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
 //            ->leftJoin('b.constructor', 'c')
             ->leftJoin('b.project', 'p')
-        ->where('p.id = :project')
-            ->setParameter(':project',$project->getId());
+            ->where('p.id = :project')
+            ->setParameter(':project', $project->getId());
         $this->addState($builder, $state);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();
@@ -118,20 +118,20 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     {
         $msg = 'Si desea podría cambiarle el estado a la obra a: Cancelada.';
 
-        if(!is_null($entity->getProject())){
-            throw new Exception('La obra aun esta asignada a un proyecto. '.$msg, 1);
+        if (!is_null($entity->getProject())) {
+            throw new Exception('La obra aun esta asignada a un proyecto. ' . $msg, 1);
         }
 
-        if($entity->hasConstructor()){
-            throw new Exception('La obra aun tiene una constructora a cargo. '.$msg, 1);
+        if ($entity->hasConstructor()) {
+            throw new Exception('La obra aun tiene una constructora a cargo. ' . $msg, 1);
         }
 
-        if($entity->hasDraftsman()){
-            throw new Exception('La obra aun tiene un proyectista a cargo. '.$msg, 1);
+        if ($entity->hasDraftsman()) {
+            throw new Exception('La obra aun tiene un proyectista a cargo. ' . $msg, 1);
         }
 
-        if($entity->hasFloors()){
-            throw new Exception('La obra aun tiene plantas asociadas. '.$msg, 1);
+        if ($entity->hasFloors()) {
+            throw new Exception('La obra aun tiene plantas asociadas. ' . $msg, 1);
         }
 
         $this->getEntityManager()->remove($entity);

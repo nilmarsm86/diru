@@ -17,7 +17,7 @@ class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
         if (gettype($price) === 'object' && $price instanceof MoneyInterface) {
             return number_format(((float)$price->getPrice() / 100), 2) . ' ' . $price->getCurrency();
         } else {
-            return number_format(((float)$price / 100), 2) .' '. (!is_null($currency) ? $currency : '');
+            return number_format(((float)$price / 100), 2) . ' ' . (!is_null($currency) ? $currency : '');
         }
     }
 }

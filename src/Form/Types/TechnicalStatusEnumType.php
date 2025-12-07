@@ -17,7 +17,7 @@ class TechnicalStatusEnumType extends AbstractType
             ->setDefault('class', TechnicalStatus::class)
 //            ->setDefault('choices', static fn (Options $options): array => $options['class']::cases())
             ->setDefault('choices', static function (Options $options): array {
-                if($options['undefined_option']){
+                if ($options['undefined_option']) {
                     return $options['class']::cases();
                 }
 

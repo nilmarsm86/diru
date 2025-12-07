@@ -7,7 +7,6 @@ use App\Entity\Province;
 use App\Form\Types\EntityPlusType;
 use App\Repository\ProvinceRepository;
 use Closure;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -48,9 +47,9 @@ class MunicipalityType extends AbstractType
                     'add_title' => 'Agregar Provincia',
                     'add_id' => 'modal-load',
                     'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
-            ]+$provinceAttr);
+                ] + $provinceAttr);
         } else {
-            $builder->add('province', EntityType::class, []+$provinceAttr);
+            $builder->add('province', EntityType::class, [] + $provinceAttr);
         }
     }
 

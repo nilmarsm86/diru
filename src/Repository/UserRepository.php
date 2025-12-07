@@ -54,13 +54,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $builder->andWhere($predicate)
                 ->setParameter(':filter','%'.$filter.'%');
         }*/
-        if($filter){
+        if ($filter) {
             $predicate = "u.username LIKE :filter ";
             $predicate .= "OR u.name LIKE :filter ";
             $predicate .= "OR u.lastname LIKE :filter";
 
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 

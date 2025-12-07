@@ -50,12 +50,12 @@ class PersonRepository extends ServiceEntityRepository implements FilterInterfac
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "p.name LIKE :filter ";
             $predicate .= "OR p.identificationNumber LIKE :filter ";
             $predicate .= "OR p.passport LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 

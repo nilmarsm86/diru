@@ -17,8 +17,7 @@ class NetworkConnectionType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre de la conexión de red',
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -31,7 +31,7 @@ class RepresentativeType extends AbstractType
                     'placeholder' => 'Carnet de identidad'
                 ]
             ])
-            ->add('passport', null,[
+            ->add('passport', null, [
                 'label' => 'Pasaporte:',
                 'attr' => [
                     'placeholder' => 'Pasaporte'
@@ -48,8 +48,7 @@ class RepresentativeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Correo del representante'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

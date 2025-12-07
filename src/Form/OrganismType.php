@@ -17,8 +17,7 @@ class OrganismType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nombre del organismo'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -52,10 +52,10 @@ class SubSystemRepository extends ServiceEntityRepository implements FilterInter
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "ss.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -90,7 +90,7 @@ class SubSystemRepository extends ServiceEntityRepository implements FilterInter
      */
     public function remove(SubSystem $entity, bool $flush = false): void
     {
-        if($entity->hasLocals()){
+        if ($entity->hasLocals()) {
             throw new Exception('El subsistema aun tiene locales asociados. Elimine los mismos primero.', 1);
         }
 

@@ -51,10 +51,10 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "nc.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -80,7 +80,7 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
      */
     public function remove(NetworkConnection $entity, bool $flush = false): void
     {
-        if($entity->isOnLand()){
+        if ($entity->isOnLand()) {
             throw new Exception('La conexión de red esta asociada a una o varias obras.', 1);
         }
 

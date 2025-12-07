@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 
 class QuickProjectType extends AbstractType
 {
@@ -56,9 +55,7 @@ class QuickProjectType extends AbstractType
                 'choice_label' => function (EnterpriseClient $enterpriseClient) {
                     return $enterpriseClient->getEmail();
                 },
-                'group_by' => function(EnterpriseClient $enterpriseClient, int $key, string $value) {
-                    return $enterpriseClient->getRepresentative();
-                },
+                'group_by' => fn(EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
                 'mapped' => false,
                 'label' => 'Cliente empresarial-negocio',
 //                'placeholder' => '-Seleccione-'

@@ -2,11 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Floor;
 use App\Entity\SubSystem;
 use App\Form\Types\SubSystemClassificationType;
-use App\Form\Types\SubsystemFunctionalClassificationEnumType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -62,7 +59,7 @@ class SubSystemType extends AbstractType
 
         $type = 0;
         $subType = 0;
-        if($subSystem && $subSystem->getId()){
+        if ($subSystem && $subSystem->getId()) {
             $type = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemType()->getId();
             $subType = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemSubType()->getId();
         }

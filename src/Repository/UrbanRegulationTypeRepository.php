@@ -51,10 +51,10 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "urt.name LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -80,7 +80,7 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
      */
     public function remove(UrbanRegulationType $entity, bool $flush = false): void
     {
-        if($entity->hasUrbanRegulations()){
+        if ($entity->hasUrbanRegulations()) {
             throw new \Exception('Este tipo de regulacion urbana está asociado a un varias regulaciones urbanas.', 1);
         }
 

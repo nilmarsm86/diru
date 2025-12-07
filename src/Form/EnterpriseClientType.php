@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
 use App\Entity\CorporateEntity;
 use App\Entity\EnterpriseClient;
 use App\Entity\Representative;
@@ -130,7 +129,7 @@ class EnterpriseClientType extends AbstractType
      */
     private function onPreSetData(FormEvent $event): void
     {
-        $ec = $event->getData();
+//        $ec = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [

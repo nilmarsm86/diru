@@ -50,12 +50,12 @@ class RepresentativeRepository extends ServiceEntityRepository implements Filter
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if($filter){
+        if ($filter) {
             $predicate = "r.name LIKE :filter ";
             $predicate .= "OR r.identificationNumber LIKE :filter ";
             $predicate .= "OR r.passport LIKE :filter ";
             $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 

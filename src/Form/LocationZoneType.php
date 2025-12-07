@@ -13,6 +13,7 @@ class LocationZoneType extends AbstractType
 {
     private int $min = 1;
     private int $max = 100;
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -31,8 +32,7 @@ class LocationZoneType extends AbstractType
                         max: $this->max,
                     )
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

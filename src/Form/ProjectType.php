@@ -15,8 +15,6 @@ use App\Repository\IndividualClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -65,9 +63,7 @@ class ProjectType extends AbstractType
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
                 'label' => 'Moneda:',
-                'choice_attr' => function ($choice, string $key, mixed $value) {
-                    return ['data-code' => $choice->getCode()];
-                },
+                'choice_attr' => fn($choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
                 'attr' => [
                     'data-currency-target' => 'select'
                 ]
@@ -196,9 +192,7 @@ class ProjectType extends AbstractType
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
                 return $enterpriseClient->getCorporateEntity()->getName();
             },
-            'group_by' => function (EnterpriseClient $enterpriseClient, int $key, string $value) {
-                return $enterpriseClient->getRepresentative();
-            },
+            'group_by' => fn(EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
             'mapped' => false,
             'label' => 'Cliente empresarial-negocio',
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),

@@ -67,7 +67,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findProvinces(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

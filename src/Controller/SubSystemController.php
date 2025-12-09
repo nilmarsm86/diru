@@ -17,24 +17,23 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/sub/system')]
 final class SubSystemController extends AbstractController
 {
-    #[Route('/{floor}/{reply}', name: 'app_sub_system_index', methods: ['GET'], requirements: ['floor' => '\d+'])]
-    public function index(Request $request, CrudActionService $crudActionService, SubSystemRepository $subSystemRepository, Floor $floor, bool $reply = false): Response
+    #[Route('/{floor}/{reply}', name: 'app_sub_system_index', requirements: ['floor' => '\d+'], methods: ['GET'])]
+    public function index(Request $request, RouterInterface $router, CrudActionService $crudActionService, SubSystemRepository $subSystemRepository, Floor $floor, bool $reply = false): Response
     {
-        list($filter, $amountPerPage, $pageNumber) = $crudActionService->getManageQuerys($request);
+        /** @var array{string, int, int} $result */
+        $result = $crudActionService->getManageQuerys($request);
+        list($filter, $amountPerPage, $pageNumber) = $result;
 
         $data = $subSystemRepository->findSubsystemsFloor($floor, $filter, $amountPerPage, $pageNumber, $reply);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
-            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [
-                ...$request->query->all(),
-                'page' => $number
-            ]), Response::HTTP_SEE_OTHER);
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';

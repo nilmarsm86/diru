@@ -10,13 +10,17 @@ final class PasswordValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
+        if (!is_string($value) && !$value instanceof \Stringable) {
+            throw new \InvalidArgumentException('Valor no convertible a string');
+        }
+
         /* @var Password $constraint */
 
         if (!$constraint instanceof Password) {
             throw new UnexpectedTypeException($constraint, Password::class);
         }
 
-        if (null === $value || '' === $value) {
+        if ('' == $value) {
             return;
         }
 

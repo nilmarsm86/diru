@@ -124,7 +124,7 @@ class Floor implements MeasurementDataInterface
         return $this->getReplySubsystems()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, bool $original = null): mixed
+    public function getMeasurementData(string $method, bool $original = null): int|float
     {
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
@@ -293,7 +293,7 @@ class Floor implements MeasurementDataInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int>
      */
     public function getAmountTechnicalStatus(): array
     {
@@ -331,7 +331,7 @@ class Floor implements MeasurementDataInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<float>
      */
     public function getAmountMeterTechnicalStatus(): array
     {

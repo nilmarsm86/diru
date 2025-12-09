@@ -49,6 +49,9 @@ final class UrbanRegulationTypeForm extends AbstractController
         $this->entity = $this->urt;
     }
 
+    /**
+     * @return FormInterface<UrbanRegulationType>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(UrbanRegulationTypeType::class, $this->urt);

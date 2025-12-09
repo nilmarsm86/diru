@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Building;
 use App\Entity\Land;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
@@ -44,8 +45,11 @@ class LandType extends AbstractType
         $form = $event->getForm();
 
         $disabled = [];
-        if (!is_null($land) && $land->getId() && !$options['building']->isNew()) {
-            $disabled = ['disabled' => true, 'readonly' => true];
+        $building = $options['building'];
+        if($building instanceof Building){
+            if (!is_null($land) && $land->getId() && !$building->isNew()) {
+                $disabled = ['disabled' => true, 'readonly' => true];
+            }
         }
 
         $form

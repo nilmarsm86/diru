@@ -67,7 +67,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
@@ -93,7 +93,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
      * @param int $amountPerPage
      * @param int $page
      * @param string $state
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findBuildingsByProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1, string $state = ''): Paginator
     {

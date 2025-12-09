@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface MeasurementDataInterface
 {
-    public function getMeasurementData(string $method, bool $original = null): mixed;
+    public function getMeasurementData(string $method, bool $original = null): int|float;
 
     public function getUnassignedArea(bool $original = null): ?float;
 
@@ -34,7 +34,7 @@ interface MeasurementDataInterface
     public function getAmountTechnicalStatus(): array;
 
     /**
-     * @return array<mixed>
+     * @return array<float>
      */
     public function getAmountMeterTechnicalStatus(): array;
 

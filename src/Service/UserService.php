@@ -91,7 +91,7 @@ readonly class UserService
      * Handle name and lastname form
      *
      * @param Request $request
-     * @return FormInterface
+     * @return FormInterface<ProfileFullNameType>
      */
     public function handleNameForm(Request $request): FormInterface
     {
@@ -114,7 +114,7 @@ readonly class UserService
      * handle password form
      *
      * @param Request $request
-     * @return FormInterface
+     * @return FormInterface<ProfilePasswordType>
      */
     public function handlePassword(Request $request): FormInterface
     {

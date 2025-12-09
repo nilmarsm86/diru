@@ -85,7 +85,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
      * @param int $page
      * @param string $type
      * @param string $state
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findProjects(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = '', string $state = ''): Paginator
     {

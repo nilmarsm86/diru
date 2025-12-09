@@ -53,16 +53,21 @@ readonly class CrudActionService
 //        $filter = $request->query->get('filter', '');
 //        $amountPerPage = $request->query->get('amount', 10);
 //        $pageNumber = $request->query->get('page', 1);
+        /** @var string $filter */
+        /** @var int $amountPerPage */
+        /** @var int $pageNumber */
         list($filter, $amountPerPage, $pageNumber) = $this->getManageQuerys($request);
 
         $callback = [$repository, $findMethod];
         assert(is_callable($callback));
+        /** @var array<mixed> $data */
         $data = call_user_func_array($callback, [$filter, $amountPerPage, $pageNumber]);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->from() > $paginator->getTotal()) {
-            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-            return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+//            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
+//            return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+            return $paginator->greatherThanTotal($request, $this->router, $pageNumber);
         }
 
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
@@ -80,9 +85,12 @@ readonly class CrudActionService
      */
     public function getManageQuerys(Request $request): array
     {
+        /** @var string $filter */
         $filter = $request->query->get('filter', '');
-        $amountPerPage = $request->query->get('amount', 10);
-        $pageNumber = $request->query->get('page', 1);
+        /** @var int $amountPerPage */
+        $amountPerPage = $request->query->get('amount', '10');
+        /** @var int $pageNumber */
+        $pageNumber = $request->query->get('page', '1');
 
         return [$filter, $amountPerPage, $pageNumber];
     }
@@ -177,6 +185,7 @@ readonly class CrudActionService
     {
         $callback = [$entity, 'getId'];
         assert(is_callable($callback));
+        /** @var string $entityId */
         $entityId = call_user_func_array($callback, []);
 
         $isAjax = $request->isXmlHttpRequest();

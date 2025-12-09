@@ -14,7 +14,7 @@ class ProjectStateEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', ProjectState::class)
-            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => ProjectState::cases())
             ->setDefault('choice_label', ProjectState::getLabel())
             ->setDefault('choice_value', ProjectState::getValue());
     }

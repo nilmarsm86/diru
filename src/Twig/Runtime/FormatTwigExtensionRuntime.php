@@ -12,9 +12,9 @@ class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
         // Inject dependencies if needed
     }
 
-    public function money(mixed $price, ?string $currency = null): string
+    public function money(MoneyInterface|string $price, ?string $currency = null): string
     {
-        if (gettype($price) === 'object' && $price instanceof MoneyInterface) {
+        if (!is_string($price)) {
             return number_format(((float)$price->getPrice() / 100), 2) . ' ' . $price->getCurrency();
         } else {
             return number_format(((float)$price / 100), 2) . ' ' . (!is_null($currency) ? $currency : '');

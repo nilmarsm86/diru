@@ -71,7 +71,7 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
      * @param string $filter
      * @param int $amountPerPage
      * @param int $page
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findInvestments(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {

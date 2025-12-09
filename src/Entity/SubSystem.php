@@ -120,7 +120,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getReplyLocals()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, bool $original = null): mixed
+    public function getMeasurementData(string $method, bool $original = null): int|float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
@@ -346,7 +346,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int>
      */
     public function getAmountTechnicalStatus(): array
     {
@@ -378,7 +378,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<float>
      */
     public function getAmountMeterTechnicalStatus(): array
     {

@@ -81,7 +81,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
      * @param int $amountPerPage
      * @param int $page
      * @param string $type
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findEntities(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = ''): Paginator
     {

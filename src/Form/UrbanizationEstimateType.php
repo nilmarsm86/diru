@@ -8,6 +8,10 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of UrbanizationEstimate
+ * @extends AbstractType<UrbanizationEstimate>
+ */
 class UrbanizationEstimateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

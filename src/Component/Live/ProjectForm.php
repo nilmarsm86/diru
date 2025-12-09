@@ -183,8 +183,9 @@ final class ProjectForm extends AbstractController
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
 
                 if (is_null($project->getId())) {
-                    /** @var Building $building */
-                    foreach ($this->getForm()->get('buildings')->getData() as $building) {
+                    /** @var Building[] $data */
+                    $data = $this->getForm()->get('buildings')->getData();
+                    foreach ($data as $building) {
                         assert($draftsman instanceof Draftsman);
                         $building->addDraftsman($draftsman);
                     }
@@ -204,7 +205,9 @@ final class ProjectForm extends AbstractController
                 }
 
                 //Change draftmans
-                foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
+                /** @var Building[] $data */
+                $data = $this->getForm()->get('buildings')->getData();
+                foreach ($data as $key => $building) {
                     if(isset($this->formValues['buildings'][$key]['draftsman'])){
                         $draftsman = $draftsmanRepository->find((int)$this->formValues['buildings'][$key]['draftsman']);
                         if ($draftsman) {
@@ -215,7 +218,9 @@ final class ProjectForm extends AbstractController
             }
 
             //fix constructor
-            foreach ($this->getForm()->get('buildings')->getData() as $key => $building) {
+            /** @var Building[] $data */
+            $data = $this->getForm()->get('buildings')->getData();
+            foreach ($data as $key => $building) {
                 if(isset($this->formValues['buildings'][$key]['constructor'])){
                     $constructor = $constructorRepository->find((int)$this->formValues['buildings'][$key]['constructor']);
                     if($constructor){

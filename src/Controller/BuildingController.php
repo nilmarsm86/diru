@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -45,11 +46,11 @@ final class BuildingController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/project/{project}', name: 'app_building_project', methods: ['GET'])]
-    public function project(Request $request, BuildingRepository $buildingRepository, Project $project): Response
+    public function project(Request $request, RouterInterface $router, BuildingRepository $buildingRepository, Project $project): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', 10);
-        $pageNumber = (int)$request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', '10');
+        $pageNumber = (int)$request->query->get('page', '1');
 
         $state = $request->query->get('state', '');
 
@@ -57,8 +58,10 @@ final class BuildingController extends AbstractController
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
-            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+//            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
+//            $route = $request->attributes->get('_route');
+//            return new RedirectResponse($this->generateUrl(is_string($route) ? $route : '', [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';

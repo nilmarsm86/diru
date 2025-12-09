@@ -14,7 +14,7 @@ class ProjectTypeEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', ProjectType::class)
-            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => ProjectType::cases())
             ->setDefault('choice_label', ProjectType::getLabel())
             ->setDefault('choice_value', ProjectType::getValue());
     }

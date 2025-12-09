@@ -28,7 +28,8 @@ final class Navigation
      */
     public function mount(): void
     {
-        $this->path = $this->requestStack->getMainRequest()?->attributes->get('_route');
+        $route = $this->requestStack->getMainRequest()?->attributes->get('_route');
+        $this->path = is_string($route) ? $route : '';
     }
 
     /**
@@ -39,7 +40,7 @@ final class Navigation
     public function getNumberPath(int $item): string
     {
         $this->queryStrings[$this->queryName] = $item;
-        $routeParams = $this->requestStack->getMainRequest()?->attributes->get('_route_params');
+        $routeParams = (array)$this->requestStack->getMainRequest()?->attributes->get('_route_params');
         return $this->router->generate($this->path, $routeParams + $this->queryStrings);
     }
 

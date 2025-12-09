@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Role;
+use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\CrudActionService;
@@ -38,7 +39,9 @@ class UserController extends AbstractController
     public function addRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
-            list($user, $role, $type, $message, $response) = $userService->addRole($request);
+            /** @var array{User, Role, string, string, Response} $result */
+            $result = $userService->addRole($request);
+            list($user, $role, $type, $message, $response) = $result;
 
             return $this->render('user/_add_remove_role.html.twig', [
                 'id' => 'add_'.$user->getId().'-'.$role->getId(),
@@ -57,7 +60,9 @@ class UserController extends AbstractController
     public function removeRole(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
-            list($user, $role, $type, $message, $response) = $userService->removeRole($request, $this->isGranted('ROLE_SUPER_ADMIN'));
+            /** @var array{User, Role, string, string, Response} $result */
+            $result = $userService->removeRole($request, $this->isGranted('ROLE_SUPER_ADMIN'));
+            list($user, $role, $type, $message, $response) = $result;
 
             return $this->render('user/_add_remove_role.html.twig', [
                     'id' => 'remove_'.$user->getId().'-'.$role->getId(),
@@ -97,7 +102,9 @@ class UserController extends AbstractController
     public function state(Request $request, UserService $userService): Response
     {
         if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
-            list($user, $action) = $userService->changeState($request);
+            /** @var array{User, string} $result */
+            $result = $userService->changeState($request);
+            list($user, $action) = $result;
 
             return $this->render('user/_activate_deactivate_user.html.twig', [
                 'id' => $action.'_'.$user->getId(),

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -21,18 +22,17 @@ use Twig\Error\SyntaxError;
 final class LocalController extends AbstractController
 {
     #[Route('/{subSystem}/{reply}', name: 'app_local_index', methods: ['GET'], requirements: ['subSystem' => '\d+'])]
-    public function index(Request $request, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
+    public function index(Request $request, RouterInterface $router, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', 10);
-        $pageNumber = (int)$request->query->get('page', 1);
+        $amountPerPage = (int)$request->query->get('amount', '10');
+        $pageNumber = (int)$request->query->get('page', '1');
 
         $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
-            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-            return new RedirectResponse($this->generateUrl($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';

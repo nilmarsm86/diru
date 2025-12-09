@@ -77,7 +77,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
      * @param int $amountPerPage
      * @param int $page
      * @param string $classification
-     * @return Paginator<object> Returns an array of User objects
+     * @return Paginator<mixed>
      */
     public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1, string $classification = ''): Paginator
     {

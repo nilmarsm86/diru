@@ -20,6 +20,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
+/**
+ * @template TData of Building
+ * @extends AbstractType<Building>
+ */
 class BuildingType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

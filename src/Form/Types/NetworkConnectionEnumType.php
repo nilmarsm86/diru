@@ -14,7 +14,7 @@ class NetworkConnectionEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', NetworkConnectionType::class)
-            ->setDefault('choices', static fn(Options $options): array => $options['class']::cases())
+            ->setDefault('choices', static fn(Options $options): array => NetworkConnectionType::cases())
             ->setDefault('choice_label', NetworkConnectionType::getLabel())
             ->setDefault('choice_value', NetworkConnectionType::getValue());
     }

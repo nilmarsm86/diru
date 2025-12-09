@@ -726,7 +726,7 @@ class Building implements MeasurementDataInterface
         return $this->getName();
     }
 
-    public function getMeasurementData(string $method, bool $original = null): mixed
+    public function getMeasurementData(string $method, bool $original = null): int|float
     {
         if (is_null($original)) {
             $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
@@ -843,7 +843,7 @@ class Building implements MeasurementDataInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int>
      */
     public function getAmountTechnicalStatus(): array
     {
@@ -881,7 +881,7 @@ class Building implements MeasurementDataInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array<float>
      */
     public function getAmountMeterTechnicalStatus(): array
     {

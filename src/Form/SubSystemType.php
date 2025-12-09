@@ -64,9 +64,13 @@ class SubSystemType extends AbstractType
         if ($subSystem && $subSystem->getId()) {
             $subsystemTypeSubsystemSubType = $subSystem->getSubsystemTypeSubsystemSubType();
             $subsystemType = $subsystemTypeSubsystemSubType?->getSubsystemType();
-            $type = $subsystemType?->getId();
-            $subsystemSubType = $subsystemTypeSubsystemSubType?->getSubsystemSubType();
-            $subType = $subsystemSubType?->getId();
+            if(!is_null($subsystemType)){
+                $type = $subsystemType->getId();
+                $subsystemSubType = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+                if(!is_null($subsystemSubType)){
+                    $subType = $subsystemSubType->getId();
+                }
+            }
         }
 
         $form->add('subsystemClassification', SubSystemClassificationType::class, [

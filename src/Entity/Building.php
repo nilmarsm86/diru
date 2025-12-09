@@ -1061,10 +1061,11 @@ class Building implements MeasurementDataInterface
         }
     }
 
-    public function getLocalsAmount(): int
+    public function getLocalsAmount(bool $reply = false): int
     {
         $locals = 0;
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        $floors = ($this->hasReply() !== $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {

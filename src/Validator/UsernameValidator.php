@@ -10,12 +10,16 @@ final class UsernameValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
+        if (!is_string($value) && !$value instanceof \Stringable) {
+            throw new \InvalidArgumentException('Valor no convertible a string');
+        }
+
         /* @var Username $constraint */
         if (!$constraint instanceof Username) {
             throw new UnexpectedTypeException($constraint, Username::class);
         }
 
-        if (null === $value || '' === $value) {
+        if ('' == $value) {
             return;
         }
 

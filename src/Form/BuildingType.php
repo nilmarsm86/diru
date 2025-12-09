@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\Currency;
 use App\Entity\Draftsman;
+use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -90,7 +92,9 @@ class BuildingType extends AbstractType
                 'data' => $building->getActiveDraftsman()
             ]);
 
-            $currency = $building->getProject()->getCurrency()->getCode();
+            $project = $building->getProject();
+            $currency = $project?->getCurrency();
+            $currency = $currency?->getCode();
             $activeConstructor = $building->getActiveConstructor();
         }
 

@@ -57,7 +57,7 @@ final class ProvinceForm extends AbstractController
     #[LiveAction]
     public function save(ProvinceRepository $provinceRepository): ?Response
     {
-        $successMsg = (is_null($this->prov->getId())) ? 'Se ha agregado la provincia.' : 'Se ha modificado la provincia.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->prov?->getId())) ? 'Se ha agregado la provincia.' : 'Se ha modificado la provincia.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

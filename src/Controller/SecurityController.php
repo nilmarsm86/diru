@@ -74,7 +74,7 @@ class SecurityController extends AbstractController
 
             if ($form->isValid()) {
                 $roleUser = $rolRepository->findOneBy(['name' => Role::ROLE_CLIENT]);
-
+                assert($roleUser instanceof Role);
                 $user = $dto->toEntity();
                 $user->register($userPasswordHasher, $roleUser);
 

@@ -60,7 +60,7 @@ final class ConstructorForm extends AbstractController
     #[LiveAction]
     public function save(RequestStack $request, ConstructorRepository $constructorRepository): ?Response
     {
-        $successMsg = (is_null($this->cons->getId())) ? 'Se ha agregado la constructora.' : 'Se ha modificado la constructora.';
+        $successMsg = (is_null($this->cons?->getId())) ? 'Se ha agregado la constructora.' : 'Se ha modificado la constructora.';
 
         $this->submitForm();
 

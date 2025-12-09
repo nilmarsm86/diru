@@ -75,7 +75,7 @@ final class UrbanRegulationForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ur->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ur?->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

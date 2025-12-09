@@ -138,7 +138,7 @@ class Constructor
     public function getConstructorBuildingByBuilding(Building $building): ?ConstructorBuilding
     {
         foreach ($this->getConstructorBuildings() as $constructorBuilding){
-            if($constructorBuilding->getBuilding()->getId() === $building->getId()){
+            if($constructorBuilding->getBuilding()?->getId() === $building->getId()){
                 return $constructorBuilding;
             }
         }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
+use App\Entity\Person;
 use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -43,7 +44,8 @@ class QuickProjectType extends AbstractType
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
                 'choice_label' => function (IndividualClient $individualClient) {
-                    return $individualClient->getPerson()->getFullName();
+                $person = $individualClient->getPerson();
+                return $person?->getFullName();
                 },
                 'mapped' => false,
                 'label' => 'Persona natural',

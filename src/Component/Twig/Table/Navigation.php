@@ -12,7 +12,7 @@ final class Navigation
 {
     public int $page = 1;
     public string $queryName = 'page';
-    /** @var array<string>  */
+    /** @var array<int|string> */
     public array $queryStrings = [];
     public ?Paginator $paginator = null;
     public string $path = '';
@@ -28,7 +28,7 @@ final class Navigation
      */
     public function mount(): void
     {
-        $this->path = $this->requestStack->getMainRequest()->attributes->get('_route');
+        $this->path = $this->requestStack->getMainRequest()?->attributes->get('_route');
     }
 
     /**
@@ -39,7 +39,7 @@ final class Navigation
     public function getNumberPath(int $item): string
     {
         $this->queryStrings[$this->queryName] = $item;
-        $routeParams = $this->requestStack->getMainRequest()->attributes->get('_route_params');
+        $routeParams = $this->requestStack->getMainRequest()?->attributes->get('_route_params');
         return $this->router->generate($this->path, $routeParams + $this->queryStrings);
     }
 

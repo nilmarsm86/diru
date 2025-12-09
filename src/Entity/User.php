@@ -100,9 +100,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
-        return $this->username;
+//        if(is_null($this->username)){
+//            return '';
+//        }
+//        return $this->username;
+
+        return (is_null($this->username)) ? '' : $this->username;
     }
 
     public function setUsername(string $username): static
@@ -116,6 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     * @return string
      */
     public function getUserIdentifier(): string
     {
@@ -123,7 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return list<string>
+     * @return array<string>
      * @see UserInterface
      *
      */
@@ -211,7 +217,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function changePassword(UserPasswordHasherInterface $userPasswordHasher): static
     {
-        $encodePassword = $userPasswordHasher->hashPassword($this, $this->password);
+        $pass = (is_null($this->password)) ? '' : $this->password;
+        $encodePassword = $userPasswordHasher->hashPassword($this, $pass);
         $this->setPassword($encodePassword);
         return $this;
     }

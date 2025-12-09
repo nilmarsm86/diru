@@ -2,6 +2,7 @@
 
 namespace App\Security\Authentication;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,8 +31,7 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
         $user = $this->userRepository->findOneBy(['username' => $request->request->get('_username', '')]);
-
-        if (!$user->isActive()) {
+        if (!$user?->isActive()) {
             $this->security->logout();
             return new RedirectResponse($this->urlGenerator->generate('app_login', ['inactive' => true]));
         }

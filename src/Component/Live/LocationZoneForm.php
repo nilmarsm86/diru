@@ -57,7 +57,7 @@ final class LocationZoneForm extends AbstractController
     #[LiveAction]
     public function save(LocationZoneRepository $locationZoneRepository): ?Response
     {
-        $successMsg = (is_null($this->lz->getId())) ? 'Se ha agregado la zona de ubicación.' : 'Se ha modificado la zona de ubicación.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->lz?->getId())) ? 'Se ha agregado la zona de ubicación.' : 'Se ha modificado la zona de ubicación.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

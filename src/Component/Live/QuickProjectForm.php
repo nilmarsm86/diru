@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Currency;
+use App\Entity\Municipality;
 use App\Entity\Project;
 use App\Form\QuickProjectType;
 use App\Repository\ClientRepository;
@@ -82,7 +83,7 @@ final class QuickProjectForm extends AbstractController
     {
         $this->preValue();
         $currency = $this->entityManager->getRepository(Currency::class)->findOneBy(['code' => 'CUP']);
-        $this->pro->setCurrency($currency);
+        $this->pro?->setCurrency($currency);
         return $this->createForm(QuickProjectType::class, $this->pro);
     }
 
@@ -100,7 +101,7 @@ final class QuickProjectForm extends AbstractController
     ): ?Response
     {
         $this->preValue();
-        $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
+        $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
 //        $project = $this->getForm()->getData();
@@ -124,6 +125,7 @@ final class QuickProjectForm extends AbstractController
 
             $municipality = $municipalityRepository->findOneBy(['name'=>ucfirst('Sin Municipio')]);
 
+            assert($municipality instanceof Municipality);
             $project->createAutomaticInvestment($municipality);
             $project->createAutomaticBuilding();
             $project->setCurrency($currencyRepository->findOneBy(['code'=>'CUP']));

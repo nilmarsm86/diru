@@ -57,7 +57,7 @@ final class NetworkConnectionForm extends AbstractController
     #[LiveAction]
     public function save(NetworkConnectionRepository $networkConnectionRepository): ?Response
     {
-        $successMsg = (is_null($this->nc->getId())) ? 'Se ha agregado la conexión de red.' : 'Se ha modificado la conexión de red.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->nc?->getId())) ? 'Se ha agregado la conexión de red.' : 'Se ha modificado la conexión de red.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

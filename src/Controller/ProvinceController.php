@@ -89,7 +89,7 @@ final class ProvinceController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render('partials/_select_options.html.twig', [
                 'entities' => $province->getMunicipalities(),
-                'selected' => ($province->getMunicipalities()->count()) ? $province->getMunicipalities()->first()->getId() : 0,
+                'selected' => ($province->getMunicipalities()->count()) ? (($province->getMunicipalities()->first()) ?? $province->getMunicipalities()->first()->getId()) : 0,
                 'empty' => '-Seleccione una provincia-'
             ]);
         }

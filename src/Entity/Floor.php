@@ -130,7 +130,9 @@ class Floor implements MeasurementDataInterface
 
         $data = 0;
         foreach ($subsystems as $subsystem) {
-            $data += call_user_func([$subsystem, $method], $this->isOriginal());
+            $callback = [$subsystem, $method];
+            assert(is_callable($callback));
+            $data += call_user_func($callback, $this->isOriginal());
         }
 
         return $data;
@@ -160,7 +162,7 @@ class Floor implements MeasurementDataInterface
 //            return $this->getBuilding()->getOccupiedArea() - $this->getTotalArea();
 //        }
 
-        if ($this->getBuilding()->getLand()->isBlocked()) {
+        if ($this->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
@@ -181,7 +183,7 @@ class Floor implements MeasurementDataInterface
 
     public function getFreeArea(bool $original = null): ?float
     {
-        if (!$this->getBuilding()->getLand()->isBlocked()) {
+        if (!$this->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
@@ -229,7 +231,7 @@ class Floor implements MeasurementDataInterface
 //            return true;
 //        }
 
-        return $this->getTotalArea() >= $this->getBuilding()->getMaxArea();
+        return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
     }
 
     public function getSubSystemAmount(): int
@@ -546,7 +548,7 @@ class Floor implements MeasurementDataInterface
         return $total;
     }
 
-    public function getPrice(bool $original = null): int
+    public function getPrice(bool $original = null): int|float
     {
         if ($this->getSubSystemAmount() === 0) {
             return 0;
@@ -565,7 +567,7 @@ class Floor implements MeasurementDataInterface
 
     public function getCurrency(): ?string
     {
-        return $this->getBuilding()->getProjectCurrency();
+        return $this->getBuilding()?->getProjectCurrency();
     }
 
 

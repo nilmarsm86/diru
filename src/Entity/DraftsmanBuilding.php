@@ -65,11 +65,11 @@ class DraftsmanBuilding
 
     public function hasBuilding(Building $building): bool
     {
-        return $this->getBuilding()->getId() === $building->getId();
+        return $this->getBuilding()?->getId() === $building->getId();
     }
 
     public function hasDraftsman(Draftsman $draftsman): bool
     {
-        return $this->getDraftsman()->getId() === $draftsman->getId();
+        return $this->getDraftsman()?->getId() === $draftsman->getId();
     }
 }

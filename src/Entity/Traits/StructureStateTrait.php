@@ -55,7 +55,8 @@ trait StructureStateTrait
     #[ORM\PostLoad]
     public function onLoadState(): void
     {
-        $this->setState(StructureState::from($this->state));
+        $state = (is_null($this->state)) ? '' : $this->state;
+        $this->setState(StructureState::from($state));
     }
 
     /**
@@ -154,7 +155,8 @@ trait StructureStateTrait
      * @template T of SubSystem|Local
      * @param EntityManagerInterface $entityManager
      * @param Collection<int, T> $items
-     * @param object|null $parent
+     * @template S of Floor|SubSystem|null
+     * @param S $parent
      * @return void
      */
     private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null): void

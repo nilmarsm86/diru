@@ -59,8 +59,11 @@ trait ComponentForm
      */
     private function getSuccessTemplate(object $entity, string $message, string $type='text-bg-success'): string
     {
+        $callback = [$entity, 'getId'];
+        assert(is_callable($callback));
+
         return $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($entity::class) . '_' . $entity->getId().'_'.time(),
+            'id' => 'new_' . $this->getClassName($entity::class) . '_' . call_user_func_array($callback, []).'_'.time(),
             'type' => $type,
             'message' => $message
         ]);

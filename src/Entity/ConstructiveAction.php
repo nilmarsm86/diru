@@ -85,7 +85,8 @@ class ConstructiveAction
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setType(ConstructiveActionType::from($this->type));
+        $type = (is_null($this->type)) ? '' : $this->type;
+        $this->setType(ConstructiveActionType::from($type));
     }
 
     /**

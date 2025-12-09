@@ -53,7 +53,7 @@ final class RepresentativeForm extends AbstractController
     #[LiveAction]
     public function save(RepresentativeRepository $representativeRepository): ?Response
     {
-        $successMsg = (is_null($this->per->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

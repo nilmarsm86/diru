@@ -12,7 +12,7 @@ trait StateTrait
     protected ?string $state = null;
 
     #[Assert\Choice(choices: [StateEnum::Active, StateEnum::Inactive], message: 'Seleccione un estado válido.')]
-    protected ?StateEnum $enumState = null;
+    protected StateEnum $enumState;
 
     /**
      * @return StateEnum
@@ -43,7 +43,8 @@ trait StateTrait
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setState(StateEnum::from($this->state));
+        $state = (is_null($this->state)) ? '' : $this->state;
+        $this->setState(StateEnum::from($state));
     }
 
     /**
@@ -52,7 +53,7 @@ trait StateTrait
      */
     public function isActive():bool
     {
-        return $this->enumState?->name === StateEnum::Active->name;
+        return $this->enumState->name === StateEnum::Active->name;
     }
 
     /**

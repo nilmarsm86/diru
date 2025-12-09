@@ -57,7 +57,7 @@ final class OrganismForm extends AbstractController
     #[LiveAction]
     public function save(OrganismRepository $organismRepository): ?Response
     {
-        $successMsg = (is_null($this->org->getId())) ? 'Se ha agregado el organismo.' : 'Se ha modificado el organismo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->org?->getId())) ? 'Se ha agregado el organismo.' : 'Se ha modificado el organismo.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

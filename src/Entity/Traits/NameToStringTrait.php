@@ -14,11 +14,12 @@ trait NameToStringTrait
     private ?string $name = null;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
-        return $this->name;
+//        return $this->name;
+        return (is_null($this->name)) ? '' : $this->name;
     }
 
     /**

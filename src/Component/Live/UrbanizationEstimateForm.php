@@ -53,12 +53,15 @@ final class UrbanizationEstimateForm extends AbstractController
         $this->ue = (is_null($ue)) ? new UrbanizationEstimate() : $ue;
         $this->entity = $this->ue;
         $this->building = $building;
-        $this->building->addUrbanizationEstimate($this->ue);
+        $this->building?->addUrbanizationEstimate($this->ue);
     }
 
     protected function instantiateForm(): FormInterface
     {
-        $this->building->addUrbanizationEstimate($this->ue);
+        if(!is_null($this->ue)){
+            $this->building?->addUrbanizationEstimate($this->ue);
+        }
+
         return $this->createForm(UrbanizationEstimateType::class, $this->ue);
     }
 
@@ -68,14 +71,14 @@ final class UrbanizationEstimateForm extends AbstractController
     #[LiveAction]
     public function save(UrbanizationEstimateRepository $urbanizationEstimateRepository): ?Response
     {
-        $successMsg = (is_null($this->ue->getId())) ? 'Se ha agregado el estimado de urbanización.' : 'Se ha modificado el estimado de urbanización.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ue?->getId())) ? 'Se ha agregado el estimado de urbanización.' : 'Se ha modificado el estimado de urbanización.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var UrbanizationEstimate $ue */
             $ue = $this->getForm()->getData();
-            $this->building->addUrbanizationEstimate($ue);
+            $this->building?->addUrbanizationEstimate($ue);
 
             $urbanizationEstimateRepository->save($ue, true);
 
@@ -83,7 +86,7 @@ final class UrbanizationEstimateForm extends AbstractController
             $this->entity = $this->ue;
             if (!is_null($this->modal)) {
                 $this->modalManage($ue, 'Se ha sumado el precio del nuevo estimado de urbanización.', [
-                    'urbanizationEstimateTotalPrice' => $ue->getBuilding()->getUrbanizationEstimateTotalPrice()
+                    'urbanizationEstimateTotalPrice' => $ue->getBuilding()?->getUrbanizationEstimateTotalPrice()
                 ]);
                 return null;
             }

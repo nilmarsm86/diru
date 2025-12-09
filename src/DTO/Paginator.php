@@ -10,15 +10,15 @@ use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 class Paginator
 {
     /**
-     * @param DoctrinePaginator<object>|array<mixed>|null $data
-     * @param int|null $amount
-     * @param int|null $page
+     * @param DoctrinePaginator<object>|array<mixed> $data
+     * @param int $amount
+     * @param int $page
      * @param int|null $fake
      */
     public function __construct(
-        private readonly DoctrinePaginator|array|null $data = [],
-        private ?int                         $amount = 10,
-        private ?int                         $page = 1,
+        private readonly DoctrinePaginator|array $data = [],
+        private int                         $amount = 10,
+        private int                         $page = 1,
         private ?int                         $fake = null
     )
     {
@@ -102,11 +102,12 @@ class Paginator
     public function getTotal(): int
     {
         if(is_null($this->fake)){
-            if(is_array($this->data)){
-                return count($this->data);
-            }else{
-                return $this->data->count();
-            }
+//            if(is_array($this->data)){
+//                return count($this->data);
+//            }else{
+//                return $this->data->count();
+//            }
+            return (is_array($this->data)) ? count($this->data) : $this->data->count();
         }else{
              return $this->fake;
         }

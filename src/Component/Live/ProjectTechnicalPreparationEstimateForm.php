@@ -30,7 +30,7 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
      * The initial data used to create the form.
      */
     #[LiveProp]
-    public ?ProjectTechnicalPreparationEstimate $ue = null;
+    public ?ProjectTechnicalPreparationEstimate $ptpe = null;
 
     #[LiveProp]
     public ?string $modal = null;
@@ -46,16 +46,17 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
 
     public function mount(?ProjectTechnicalPreparationEstimate $ue = null, Building $building = null): void
     {
-        $this->ue = (is_null($ue)) ? new ProjectTechnicalPreparationEstimate() : $ue;
-        $this->entity = $this->ue;
+        $this->ptpe = (is_null($ue)) ? new ProjectTechnicalPreparationEstimate() : $ue;
+        $this->entity = $this->ptpe;
         $this->building = $building;
-        $this->building->addProjectTechnicalPreparationEstimate($this->ue);
+        $this->building?->addProjectTechnicalPreparationEstimate($this->ptpe);
     }
 
     protected function instantiateForm(): FormInterface
     {
-        $this->building->addProjectTechnicalPreparationEstimate($this->ue);
-        return $this->createForm(ProjectTechnicalPreparationEstimateType::class, $this->ue);
+        assert($this->ptpe instanceof ProjectTechnicalPreparationEstimate);
+        $this->building?->addProjectTechnicalPreparationEstimate($this->ptpe);
+        return $this->createForm(ProjectTechnicalPreparationEstimateType::class, $this->ptpe);
     }
 
     /**
@@ -64,22 +65,22 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
     #[LiveAction]
     public function save(ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository): ?Response
     {
-        $successMsg = (is_null($this->ue->getId())) ? 'Se ha agregado el estimado de proyecto y preparación técnica.' : 'Se ha modificado el estimado de proyecto y preparación técnica.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ptpe?->getId())) ? 'Se ha agregado el estimado de proyecto y preparación técnica.' : 'Se ha modificado el estimado de proyecto y preparación técnica.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var ProjectTechnicalPreparationEstimate $ue */
             $ue = $this->getForm()->getData();
-            $this->building->addProjectTechnicalPreparationEstimate($ue);
+            $this->building?->addProjectTechnicalPreparationEstimate($ue);
 
             $projectTechnicalPreparationEstimateRepository->save($ue, true);
 
-            $this->ue = new ProjectTechnicalPreparationEstimate();
-            $this->entity = $this->ue;
+            $this->ptpe = new ProjectTechnicalPreparationEstimate();
+            $this->entity = $this->ptpe;
             if (!is_null($this->modal)) {
                 $this->modalManage($ue, 'Se ha sumado el precio del nuevo estimado de proyecto y preparación técnica.', [
-                    'ptpEstimateTotalPrice' => $ue->getBuilding()->getProjectTechnicalPreparationEstimateTotalPrice()
+                    'ptpEstimateTotalPrice' => $ue->getBuilding()?->getProjectTechnicalPreparationEstimateTotalPrice()
                 ]);
                 return null;
             }

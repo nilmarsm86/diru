@@ -126,7 +126,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         $data = 0;
         foreach ($locals as $local) {
-            $data += call_user_func([$local, $method], $this->isOriginal());
+            $callback = [$local, $method];
+            assert(is_callable($callback));
+            $data += call_user_func($callback, $this->isOriginal());
         }
 
         return $data;
@@ -134,7 +136,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     private function unassignedOrFreeArea(): float|int
     {
-        if (is_null($this->getFloor()->getBuilding())) {
+        if (is_null($this->getFloor()?->getBuilding())) {
             return 1;
         }
 
@@ -150,7 +152,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function getUnassignedArea(bool $original = null): ?float
     {
-        if($this->getFloor()->getBuilding()->getLand()->isBlocked()){
+        if($this->getFloor()?->getBuilding()?->getLand()?->isBlocked()){
             return 0;
         }
 
@@ -172,7 +174,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function getFreeArea(bool $original = null): ?float
     {
-        if(!$this->getFloor()->getBuilding()->getLand()->isBlocked()){
+        if(!$this->getFloor()?->getBuilding()?->getLand()?->isBlocked()){
             return 0;
         }
 
@@ -198,6 +200,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 //        if($this->getFloor()->getBuilding()->isNew()){
 //            return true;
 //        }
+
+        if(is_null($this->getFloor())){
+            return false;
+        }
 
         return $this->getFloor()->isFullyOccupied();
 
@@ -227,7 +233,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getWallsAmount() > 0;
     }
 
-    public function reply(EntityManagerInterface $entityManager, object $parent = null): static
+    public function reply(EntityManagerInterface $entityManager, Floor $parent = null): static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
@@ -411,8 +417,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         /** @var Local $local */
         foreach ($locals as $local) {
-            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
-            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + 1 : 1;
+            $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
+            if(!is_null($key)){
+                $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + 1 : 1;
+            }
         }
 
         return $constructiveAction;
@@ -428,8 +436,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         /** @var Local $local */
         foreach ($locals as $local) {
-            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
-            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getConstructiveActionAmount() : $local->getConstructiveActionAmount();
+            $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
+            if(!is_null($key)){
+                $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getConstructiveActionAmount() : $local->getConstructiveActionAmount();
+            }
         }
 
         return $constructiveAction;
@@ -445,8 +455,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         /** @var Local $local */
         foreach ($locals as $local) {
-            $key = $local->getLocalConstructiveAction()->getConstructiveAction()->getName();
-            $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getArea() : $local->getArea();
+            $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
+            if(!is_null($key)){
+                $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getArea() : $local->getArea();
+            }
         }
 
         return $constructiveAction;
@@ -482,7 +494,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function createInitialLocal(bool $reply = false, EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {
-            Local::createAutomaticLocal(null, $this, $this->getFloor()->getUnassignedArea() - 1, 1, $reply, $entityManager);
+            Local::createAutomaticLocal(null, $this, $this->getFloor()?->getUnassignedArea() - 1, 1, $reply, $entityManager);
             Local::createAutomaticWall($this, 1, 0, $reply, $entityManager);
         }
     }
@@ -516,7 +528,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function inNewBuilding(): ?bool
     {
-        return $this->getFloor()->inNewBuilding();
+        return $this->getFloor()?->inNewBuilding();
     }
 
     public function hasReply(): ?bool
@@ -524,7 +536,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         if (!$this->inNewBuilding() && !$this->isOriginal()) {
             return false;
         }
-        return $this->getFloor()->hasReply();
+        return $this->getFloor()?->hasReply();
     }
 
     public function hasErrors(): bool
@@ -570,7 +582,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return true;
     }
 
-    public function getPrice(bool $original = null): int
+    public function getPrice(bool $original = null): int|float
     {
         if ($this->getLocalsAmount() === 0) {
             return 0;
@@ -589,7 +601,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function getCurrency(): ?string
     {
-        return $this->getFloor()->getBuilding()->getProjectCurrency();
+        $floor = $this->getFloor();
+        $building = $floor?->getBuilding();
+        return $building?->getProjectCurrency();
     }
 
     public function getSubsystemTypeSubsystemSubType(): ?SubsystemTypeSubsystemSubType

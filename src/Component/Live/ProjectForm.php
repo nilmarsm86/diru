@@ -5,6 +5,7 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\Contract;
+use App\Entity\Draftsman;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ClientRepository;
@@ -87,7 +88,7 @@ final class ProjectForm extends AbstractController
             $this->investment = 0;
         }
 
-        if(!is_null($this->pro->getId())){
+        if(!is_null($this->pro?->getId())){
 //            if ($this->individualClient !== 0) {
 //                $this->formValues['individualClient'] = (string)$this->individualClient;
 //                $this->individualClient = 0;
@@ -109,7 +110,7 @@ final class ProjectForm extends AbstractController
 //            }
         }
 
-        if(!is_null($this->pro->getId())){
+        if(!is_null($this->pro?->getId())){
             if(!empty($this->formValues['enterpriseClient'])){
                 $this->enterpriseClient = $this->formValues['enterpriseClient'];
             }
@@ -155,7 +156,7 @@ final class ProjectForm extends AbstractController
     ): ?Response
     {
         $this->preValue();
-        $successMsg = (is_null($this->pro->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
+        $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
 
@@ -184,20 +185,21 @@ final class ProjectForm extends AbstractController
                 if (is_null($project->getId())) {
                     /** @var Building $building */
                     foreach ($this->getForm()->get('buildings')->getData() as $building) {
+                        assert($draftsman instanceof Draftsman);
                         $building->addDraftsman($draftsman);
                     }
                 }
             }
 
-            if (is_null($this->pro->getId())) {
+            if (is_null($this->pro?->getId())) {
                 if ($this->formValues['contract'] && empty($this->formValues['contract']['code'])) {
                     $this->formValues['contract'] = null;
                     $project->setContract(null);
                 }
             } else {
                 if ($this->formValues['contract'] && empty($this->formValues['contract']['code'])) {
-                    $this->formValues['contract']['code'] = $this->pro->getContract()->getCode();
-                    $this->formValues['contract']['year'] = $this->pro->getContract()->getYear();
+                    $this->formValues['contract']['code'] = $this->pro->getContract()?->getCode();
+                    $this->formValues['contract']['year'] = $this->pro->getContract()?->getYear();
                     $project->setContract($this->contract);
                 }
 
@@ -251,17 +253,23 @@ final class ProjectForm extends AbstractController
 
     public function isIndividualClient(): bool
     {
+        if(is_null($this->pro)){
+            return false;
+        }
         return $this->pro->isIndividualClient($this->individualClientRepository);
     }
 
     public function isEnterpriseClient(): bool
     {
+        if(is_null($this->pro)){
+            return false;
+        }
         return $this->pro->isEnterpriseClient($this->enterpriseClientRepository);
     }
 
     public function isNew(): bool
     {
-        return is_null($this->pro->getId());
+        return is_null($this->pro?->getId());
     }
 
     public function getUrl(Building $building): string

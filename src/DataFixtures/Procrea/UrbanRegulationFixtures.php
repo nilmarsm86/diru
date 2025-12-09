@@ -428,7 +428,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                         $urbanRegulationEntity->setCode((string) rand(111111, 999999));
                         $urbanRegulationEntity->setType($urbanRegulationEntityType);
                         $urbanRegulationEntity->setComment($regulation['observation']);
-                        $urbanRegulationEntity->setData($value);
+                        $urbanRegulationEntity->setData((string)$value);
                         $urbanRegulationEntity->setDescription($regulation['description']);
                         $urbanRegulationEntity->setMeasurementUnit($regulation['um']);
                         $urbanRegulationEntity->setStructure($regulation['structure']);

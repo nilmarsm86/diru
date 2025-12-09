@@ -41,7 +41,7 @@ class SubsystemType
         choices: SubsystemFunctionalClassification::CHOICES,
         message: 'Seleccione una clasificación.'
     )]
-    private ?SubsystemFunctionalClassification $enumClassification = null;
+    private SubsystemFunctionalClassification $enumClassification;
 
     /**
      * @var Collection<int, SubsystemTypeSubsystemSubType>
@@ -111,15 +111,16 @@ class SubsystemType
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setClassification(SubsystemFunctionalClassification::from($this->classification));
+        $classification = (is_null($this->classification)) ? '' : $this->classification;
+        $this->setClassification(SubsystemFunctionalClassification::from($classification));
     }
 
-    public function getClassification(): ?SubsystemFunctionalClassification
+    public function getClassification(): SubsystemFunctionalClassification
     {
         return $this->enumClassification;
     }
 
-    public function setClassification(?SubsystemFunctionalClassification $enumClassification): static
+    public function setClassification(SubsystemFunctionalClassification $enumClassification): static
     {
         $this->classification = "";
         $this->enumClassification = $enumClassification;

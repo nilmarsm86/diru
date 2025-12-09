@@ -60,7 +60,7 @@ final class UrbanRegulationTypeForm extends AbstractController
     #[LiveAction]
     public function save(UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {
-        $successMsg = (is_null($this->urt->getId())) ? 'Se ha agregado el tipo de regulación urbana.' : 'Se ha modificado el tipo de regulación urbana.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->urt?->getId())) ? 'Se ha agregado el tipo de regulación urbana.' : 'Se ha modificado el tipo de regulación urbana.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

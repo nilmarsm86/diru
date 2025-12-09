@@ -71,7 +71,7 @@ final class MunicipalityForm extends AbstractController
     #[LiveAction]
     public function save(MunicipalityRepository $municipalityRepository, ProvinceRepository $provinceRepository): ?Response
     {
-        $successMsg = (is_null($this->mun->getId())) ? 'Se ha agregado el municipio.' : 'Se ha modificado el municipio.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->mun?->getId())) ? 'Se ha agregado el municipio.' : 'Se ha modificado el municipio.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

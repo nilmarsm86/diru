@@ -36,40 +36,48 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 //                $projectEntity->setHasOccupiedArea(false);
 
                 if ($project === 'Proyect1') {
-                    $investment = $this->findInvestment($manager, 'Inversion1');
-                    $investment->setName($investment->getName() . ' ' . $project);
-                    $projectEntity->setInvestment($investment);
-                    $projectEntity->setClient($this->findClient($manager, true));
-                    $projectEntity->setContract($this->findContract($manager, 'abc123'));
+                    if ($investment = $this->findInvestment($manager, 'Inversion1')) {
+                        $investment->setName($investment->getName() . ' ' . $project);
+                        $projectEntity->setInvestment($investment);
+                        $projectEntity->setClient($this->findClient($manager, true));
+                        $projectEntity->setContract($this->findContract($manager, 'abc123'));
 
-                    //esto debe ser automatizado
+                        //esto debe ser automatizado
 //                    $draftsmanProject = new DraftsmanProject();
 //                    $draftsmanProject->setProject($projectEntity);
 //                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
 //                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
 
 //                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
-
-                    $projectEntity->addBuilding($this->findBuilding($manager, 'Obra1'));
+                        if ($building = $this->findBuilding($manager, 'Obra1')) {
+                            $projectEntity->addBuilding($building);
+                        }
+                    }
                 }
 
                 if ($project === 'Proyect2') {
-                    $investment = $this->findInvestment($manager, 'Inversion2');
-                    $investment->setName($investment->getName() . ' ' . $project);
-                    $projectEntity->setInvestment($investment);
-                    $projectEntity->setClient($this->findClient($manager, false));
+                    if ($investment = $this->findInvestment($manager, 'Inversion2')) {
+                        $investment->setName($investment->getName() . ' ' . $project);
+                        $projectEntity->setInvestment($investment);
+                        $projectEntity->setClient($this->findClient($manager, false));
 
-                    $projectEntity->addBuilding($this->findBuilding($manager, 'Obra2'));
+                        if ($building = $this->findBuilding($manager, 'Obra2')) {
+                            $projectEntity->addBuilding($building);
+                        }
+                    }
                 }
 
                 if ($project === 'Proyect3') {
-                    $investment = $this->findInvestment($manager, 'Inversion3');
-                    $investment->setName($investment->getName() . ' ' . $project);
-                    $projectEntity->setInvestment($investment);
-                    $projectEntity->setClient($this->findClient($manager, true));
-                    $projectEntity->setContract($this->findContract($manager, 'qaz753'));
+                    if ($investment = $this->findInvestment($manager, 'Inversion3')) {
+                        $investment->setName($investment->getName() . ' ' . $project);
+                        $projectEntity->setInvestment($investment);
+                        $projectEntity->setClient($this->findClient($manager, true));
+                        $projectEntity->setContract($this->findContract($manager, 'qaz753'));
 
-                    $projectEntity->addBuilding($this->findBuilding($manager, 'Obra3'));
+                        if ($building = $this->findBuilding($manager, 'Obra3')) {
+                            $projectEntity->addBuilding($building);
+                        }
+                    }
                 }
 
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));

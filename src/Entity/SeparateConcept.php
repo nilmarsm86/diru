@@ -63,7 +63,7 @@ class SeparateConcept
         return $this->id;
     }
 
-    public function getType(): ?SeparateConceptType
+    public function getType(): SeparateConceptType
     {
         return $this->enumType;
     }
@@ -181,6 +181,7 @@ class SeparateConcept
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setType(SeparateConceptType::from($this->type));
+        $type = (is_null($this->type)) ? '' : $this->type;
+        $this->setType(SeparateConceptType::from($type));
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
+use App\Entity\Currency;
 use App\Entity\LandNetworkConnectionConstructiveAction;
+use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -57,7 +60,10 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         if($landNetworkConnectionConstructiveAction){
             $landNetworkConnection = $landNetworkConnectionConstructiveAction->getLandNetworkConnection();
             if($landNetworkConnection){
-                $currency = $landNetworkConnection->getBuilding()->getProject()->getCurrency()->getCode();
+                $building = $landNetworkConnection->getBuilding();
+                $project = $building?->getProject();
+                $currency = $project?->getCurrency();
+                $currency = $currency?->getCode();
             }
         }
 

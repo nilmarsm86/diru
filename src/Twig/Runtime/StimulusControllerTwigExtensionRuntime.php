@@ -31,12 +31,12 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
 
     /**
      * @param string $controllerName
-     * @param string|null $actionName
+     * @param string $actionName
      * @param string|null $eventName
      * @param array<mixed> $parameters
      * @return StimulusAttributes
      */
-    public function renderStimulusAction(string $controllerName, ?string $actionName = null, ?string $eventName = null, array $parameters = []): StimulusAttributes
+    public function renderStimulusAction(string $controllerName, string $actionName, ?string $eventName = null, array $parameters = []): StimulusAttributes
     {
         $controllerName = strtr($controllerName, ['/' => '--']);
         $stimulusAttributes = $this->stimulusHelper->createStimulusAttributes();

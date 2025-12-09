@@ -37,7 +37,7 @@ class SubSystemClassificationType extends AbstractType
         $classification = [];
         if ($options['type'] != 0) {
             $type = $this->subsystemTypeRepository->find($options['type']);
-            $classification['data'] = $type->getClassification();
+            $classification['data'] = $type?->getClassification();
         }
 
         $builder->add('classification', SubsystemFunctionalClassificationEnumType::class, [

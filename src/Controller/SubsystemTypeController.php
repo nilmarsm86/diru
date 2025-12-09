@@ -112,7 +112,10 @@ final class SubsystemTypeController extends AbstractController
             $entities = [];
             /** @var SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType */
             foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
-                $entities[] = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+                if(!is_null($subsystemTypeSubsystemSubType->getSubsystemSubType())){
+                    $entities[] = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+                }
+
             }
 
             return $this->render('partials/_select_options.html.twig', [

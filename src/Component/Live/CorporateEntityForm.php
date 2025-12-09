@@ -85,10 +85,10 @@ final class CorporateEntityForm extends AbstractController
                 if (isset($this->formValues['address']['province'])) {
                     if ($this->formValues['address']['municipality']) {
                         $mun = $this->municipalityRepository->find((int)$this->formValues['address']['municipality']);
-                        if ((string)$mun->getProvince()->getId() !== $this->formValues['address']['province']) {
+                        if ((string)$mun?->getProvince()?->getId() !== $this->formValues['address']['province']) {
                             $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
                             if (!is_null($prov)) {
-                                $this->formValues['address']['municipality'] = ($prov->getMunicipalities()->count())
+                                $this->formValues['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
                                     ? (string)$prov->getMunicipalities()->first()->getId()
                                     : '';
                             }
@@ -96,7 +96,7 @@ final class CorporateEntityForm extends AbstractController
                     } else {
                         $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
                         if (!is_null($prov)) {
-                            if ($prov->getMunicipalities()->count()) {
+                            if ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first()) {
                                 $this->formValues['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
                             }
                         }
@@ -110,14 +110,15 @@ final class CorporateEntityForm extends AbstractController
     {
         $this->preValue();
 
-        if (!$this->ce->getId()) {
+        if (!$this->ce?->getId()) {
             if (isset($this->formValues['address'])) {
                 $province = (int)$this->formValues['address']['province'];
                 $municipality = (int)$this->formValues['address']['municipality'];
             }
         } else {
-            $province = (empty($this->formValues['address']['province']) ? $this->ce->getMunicipality()->getProvince()->getId() : (int)$this->formValues['address']['province']);
-            $municipality = (empty($this->formValues['address']['municipality']) ? $this->ce->getMunicipality()->getId() : (int)$this->formValues['address']['municipality']);
+            $municipality = $this->ce->getMunicipality();
+            $province = (empty($this->formValues['address']['province']) ? $municipality?->getProvince()?->getId() : (int)$this->formValues['address']['province']);
+            $municipality = (empty($this->formValues['address']['municipality']) ? $municipality?->getId() : (int)$this->formValues['address']['municipality']);
         }
 
         return $this->createForm(CorporateEntityType::class, $this->ce, [

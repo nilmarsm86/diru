@@ -9,7 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Refresh
 {
     public string $path = '';
-    /** @var array<string>  */
+    /** @var array<string> */
     public array $queryNames = [];
 
     public function __construct(private readonly RequestStack $requestStack)
@@ -20,7 +20,8 @@ final class Refresh
     public function showRefresh(): bool
     {
         foreach ($this->queryNames as $q) {
-            if ($this->requestStack->getCurrentRequest()->query->has($q) && strlen($this->requestStack->getCurrentRequest()->query->get($q)) > 0) {
+            $currentRequest = $this->requestStack->getCurrentRequest();
+            if ($currentRequest?->query->has($q) && strlen((string)$currentRequest->query->get($q)) > 0) {
                 return true;
             }
         }

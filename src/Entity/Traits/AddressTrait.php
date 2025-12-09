@@ -3,6 +3,7 @@
 namespace App\Entity\Traits;
 
 use App\Entity\Municipality;
+use App\Entity\Province;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,19 +15,20 @@ trait AddressTrait
     private ?Municipality $municipality = null;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMunicipalityName(): string
+    public function getMunicipalityName(): ?string
     {
-        return $this->municipality->getName();
+        return $this->municipality?->getName();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getProvinceName(): string
+    public function getProvinceName(): ?string
     {
-        return $this->municipality->getProvince()->getName();
+        $province = $this->municipality?->getProvince();
+        return $province?->getName();
     }
 
     public function getMunicipality(): ?Municipality

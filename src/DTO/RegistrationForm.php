@@ -38,13 +38,13 @@ final class RegistrationForm
     public string $plainPassword;
 
     #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
-    public ?string $identificationNumber = null;
+    public string $identificationNumber = '';
 
     #[Assert\NotBlank(message: 'El correo está vacío.')]
-    public ?string $email = null;
+    public string $email = '';
 
     #[Assert\NotBlank(message: 'El teléfono está vacío.')]
-    public ?string $phone = null;
+    public string $phone = '';
 
     /**
      * @param User|null $user
@@ -52,8 +52,8 @@ final class RegistrationForm
      */
     public function toEntity(?User $user = null): User
     {
-        if(is_null($user)){
-            $user =  new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber, $this->phone, $this->email);
+        if (is_null($user)) {
+            $user = new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber, $this->phone, $this->email);
 //            $user->setEmail($this->email);
 //            $user->setPhone($this->phone);
         }

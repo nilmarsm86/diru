@@ -79,7 +79,7 @@ final class SubSystemForm extends AbstractController
         $this->ss = (is_null($ss)) ? new SubSystem() : $ss;
         $this->entity = $this->ss;
         $this->floor = $floor;
-        $this->floor->addSubSystem($this->ss);
+        $this->floor?->addSubSystem($this->ss);
         $this->ss->setFloor($this->floor);
         $this->reply = $reply;
     }
@@ -119,7 +119,7 @@ final class SubSystemForm extends AbstractController
 //                                        : '';
 //                                }
 //                            }
-                            $this->formValues['subsystemClassification']['subType'] = (string)$subsystemTypeSubsystemSubType->getSubsystemSubType()->getId();
+                            $this->formValues['subsystemClassification']['subType'] = (string)$subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
                         }
                     } else {
 //                        $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
@@ -129,7 +129,7 @@ final class SubSystemForm extends AbstractController
                         ]);
                         if (!is_null($subsystemTypeSubsystemSubType)) {
 //                            if ($prov->getMunicipalities()->count()) {
-                            $this->formValues['subsystemClassification']['subType'] = (string)$subsystemTypeSubsystemSubType->getSubsystemSubType()->getId();
+                            $this->formValues['subsystemClassification']['subType'] = (string)$subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
 //                            }
                         }
                     }
@@ -142,17 +142,19 @@ final class SubSystemForm extends AbstractController
     {
         $this->preValue();
 
-        if (!$this->ss->getId()) {
+        if (!$this->ss?->getId()) {
             if (isset($this->formValues['subsystemClassification'])) {
                 $type = (int)$this->formValues['subsystemClassification']['type'];
                 $subType = (int)$this->formValues['subsystemClassification']['subType'];
             }
         } else {
-            $type = (empty($this->formValues['subsystemClassification']['type']) ? $this->ss->getSubsystemTypeSubsystemSubType()->getSubsystemType()->getId() : (int)$this->formValues['subsystemClassification']['type']);
-            $subType = (empty($this->formValues['subsystemClassification']['subType']) ? $this->ss->getSubsystemTypeSubsystemSubType()->getSubsystemSubType()->getId() : (int)$this->formValues['subsystemClassification']['subType']);
+            $subsystemTypeSubsystemSubType = $this->ss->getSubsystemTypeSubsystemSubType();
+            $type = (empty($this->formValues['subsystemClassification']['type']) ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : (int)$this->formValues['subsystemClassification']['type']);
+            $subType = (empty($this->formValues['subsystemClassification']['subType']) ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : (int)$this->formValues['subsystemClassification']['subType']);
         }
 
-        $this->floor->addSubSystem($this->ss);
+        assert($this->ss instanceof SubSystem);
+        $this->floor?->addSubSystem($this->ss);
         return $this->createForm(SubSystemType::class, $this->ss, [
             'type' => $type ?? 0,
             'subType' => $subType ?? 0,
@@ -169,7 +171,7 @@ final class SubSystemForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ss->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ss?->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.';//TODO: personalizar los mensajes
 
 
 //        if(is_null($this->ss->getId())){
@@ -212,7 +214,8 @@ final class SubSystemForm extends AbstractController
 //                    $subSystem->existingWithoutReplicating();
 //                }
 //            }
-            if (is_null($this->ss->getId())) {
+            if (is_null($this->ss?->getId())) {
+                assert($this->floor instanceof Floor);
                 $subSystem = SubSystem::createAutomatic($subSystem, $this->floor, $this->formValues['name'], $this->reply, $entityManager);
             }
 
@@ -253,7 +256,7 @@ final class SubSystemForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_sub_system_index', ['floor' => $this->floor->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sub_system_index', ['floor' => $this->floor?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

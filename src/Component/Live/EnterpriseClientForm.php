@@ -107,7 +107,7 @@ final class EnterpriseClientForm extends AbstractController
                     if ((string)$mun->getProvince()->getId() !== $this->formValues['streetAddress']['address']['province']) {
                         $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
-                            $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count())
+                            $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
                                 ? (string)$prov->getMunicipalities()->first()->getId()
                                 : '';
                         }
@@ -115,7 +115,7 @@ final class EnterpriseClientForm extends AbstractController
                 } else {
                     $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
                     if (!is_null($prov)) {
-                        if ($prov->getMunicipalities()->count()) {
+                        if ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first()) {
                             $this->formValues['streetAddress']['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
                         }
                     }

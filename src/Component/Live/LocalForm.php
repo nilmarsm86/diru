@@ -77,8 +77,8 @@ final class LocalForm extends AbstractController
      */
     public function setDefaultTechnicalStatus(): void
     {
-        if (is_null($this->l->getId()) && $this->subSystem->getState() !== StructureState::ExistingWithoutReplicating) {
-            $this->l->setTechnicalStatus(TechnicalStatus::Good);
+        if (is_null($this->l?->getId()) && $this->subSystem?->getState() !== StructureState::ExistingWithoutReplicating) {
+            $this->l?->setTechnicalStatus(TechnicalStatus::Good);
         }
     }
 
@@ -87,19 +87,19 @@ final class LocalForm extends AbstractController
      */
     public function setDefaultConstructiveAction(): void
     {
-        if (is_null($this->l->getLocalConstructiveAction()) && ($this->reply === true || $this->l->inNewBuilding()) && is_null($this->l->getOriginal())) {
+        if (is_null($this->l?->getLocalConstructiveAction()) && ($this->reply === true || $this->l?->inNewBuilding()) && is_null($this->l?->getOriginal())) {
             $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'Obra nueva']);
 
             $localConstructiveAction = new LocalConstructiveAction();
             $localConstructiveAction->setConstructiveAction($constructiveAction);
-            $this->l->setLocalConstructiveAction($localConstructiveAction);
+            $this->l?->setLocalConstructiveAction($localConstructiveAction);
         }
     }
 
     protected function instantiateForm(): FormInterface
     {
 //        $this->subSystem->addLocal($this->l);
-        $this->l->setSubSystem($this->subSystem);
+        $this->l?->setSubSystem($this->subSystem);
         $this->setDefaultConstructiveAction();
         $this->setDefaultTechnicalStatus();
 
@@ -115,7 +115,7 @@ final class LocalForm extends AbstractController
     #[LiveAction]
     public function save(LocalRepository $localRepository): ?Response
     {
-        $successMsg = (is_null($this->l->getId())) ? 'Se ha agregado el local.' : (($this->reply) ? 'Se ha modificado el local replicado.' : 'Se ha modificado el local.');//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->l?->getId())) ? 'Se ha agregado el local.' : (($this->reply) ? 'Se ha modificado el local replicado.' : 'Se ha modificado el local.');//TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -123,7 +123,8 @@ final class LocalForm extends AbstractController
             /** @var Local $local */
             $local = $this->getForm()->getData();
 
-            if (is_null($this->l->getId())) {
+            if (is_null($this->l?->getId())) {
+                assert($this->subSystem instanceof SubSystem);
                 $local = Local::createAutomaticLocal($local, $this->subSystem, $this->formValues['area'], $this->formValues['number'], $this->reply, $this->entityManager);
             }
 
@@ -143,7 +144,7 @@ final class LocalForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_local_index', ['subSystem' => $this->subSystem->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_local_index', ['subSystem' => $this->subSystem?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

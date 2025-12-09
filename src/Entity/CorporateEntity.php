@@ -168,7 +168,7 @@ class CorporateEntity
 
     public function __toString()
     {
-        return $this->getName().' ('.$this->getOrganism()->getName().')';
+        return $this->getName().' ('.$this->getOrganism()?->getName().')';
     }
 
     public function hasEnterpriseClients(): bool

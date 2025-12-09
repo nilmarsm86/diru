@@ -113,7 +113,7 @@ class Local implements MoneyInterface
         $constructiveSystem = $entityManager->getRepository(ConstructiveSystem::class)->findOneBy([
             'name' => 'Ninguno'
         ]);
-        $local->setConstructiveAction($constructiveAction, $constructiveSystem, $precio);
+        $local?->setConstructiveAction($constructiveAction, $constructiveSystem, $precio);
     }
 
     public function validHeightInEmptyArea(): bool
@@ -207,14 +207,14 @@ class Local implements MoneyInterface
 //        $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if ($this->getType() == LocalType::WallArea && is_null($this->getId())) {
-            if (!$this->getSubSystem()->hasWalls()) {
+            if (!$this->getSubSystem()?->hasWalls()) {
                 $this->setName('Área de muro');
             } else {
                 $this->setName('Área de muro ' . $this->getSubSystem()->getMaxLocalNumber() + 1);
             }
 
             if (is_null($this->getId())) {
-                $this->setNumber($this->getSubSystem()->getMaxLocalNumber() + 1);
+                $this->setNumber($this->getSubSystem()?->getMaxLocalNumber() + 1);
             }
         }
 
@@ -236,7 +236,8 @@ class Local implements MoneyInterface
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setType(LocalType::from($this->type));
+        $type = (is_null($this->type)) ? '' : $this->type;
+        $this->setType(LocalType::from($type));
 //        $this->setTechnicalStatus(TechnicalStatus::from($this->technicalStatus));
     }
 
@@ -336,7 +337,7 @@ class Local implements MoneyInterface
         return $this->getTechnicalStatus() !== TechnicalStatus::Undefined;
     }
 
-    public function reply(EntityManagerInterface $entityManager, object $parent = null): Floor|static
+    public function reply(EntityManagerInterface $entityManager, SubSystem $parent = null): Floor|static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
@@ -367,9 +368,12 @@ class Local implements MoneyInterface
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int|float
     {
-        return $this->getLocalConstructiveAction()?->getPrice();
+        if(is_null($this->getLocalConstructiveAction())){
+            return 0;
+        }
+        return $this->getLocalConstructiveAction()->getPrice();
     }
 
     public function getConstructiveAction(): ?ConstructiveAction
@@ -400,7 +404,7 @@ class Local implements MoneyInterface
 
     public function inNewBuilding(): ?bool
     {
-        return $this->getSubSystem()->inNewBuilding();
+        return $this->getSubSystem()?->inNewBuilding();
     }
 
 //    public function hasReply(): ?bool
@@ -508,7 +512,7 @@ class Local implements MoneyInterface
 
     public function getCurrency(): ?string
     {
-        return $this->getSubSystem()->getFloor()->getBuilding()->getProjectCurrency();
+        return $this->getSubSystem()?->getFloor()?->getBuilding()?->getProjectCurrency();
     }
 
     /*public function getFormatedPrice(): string
@@ -566,7 +570,7 @@ class Local implements MoneyInterface
         if(!$this->hasLocalConstructiveAction()){
             return 0;
         }
-        return $this->getLocalConstructiveAction()->getPrice() * $this->getArea();
+        return $this->getLocalConstructiveAction()?->getPrice() * $this->getArea();
     }
 
 }

@@ -53,7 +53,7 @@ final class PersonForm extends AbstractController
     #[LiveAction]
     public function save(PersonRepository $personRepository): ?Response
     {
-        $successMsg = (is_null($this->per->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

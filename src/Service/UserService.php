@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\ProfilePasswordForm;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\ProfileFullNameType;
 use App\Form\ProfilePasswordType;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * User Service
@@ -45,6 +47,11 @@ readonly class UserService
         $role = $this->roleRepository->find($request->request->get('role'));
 
         try {
+            if (!$user instanceof User) {
+                throw new AccessDeniedException('Usuario no autenticado');
+            }
+
+            assert($role instanceof Role);
             $user->addRole($role);
             $this->userRepository->save($user, true);
             return [$user, $role, 'text-bg-success', '', new Response()];
@@ -66,6 +73,11 @@ readonly class UserService
         $role = $this->roleRepository->find($request->request->get('role'));
 
         try {
+            if (!$user instanceof User) {
+                throw new AccessDeniedException('Usuario no autenticado');
+            }
+
+            assert($role instanceof Role);
             $user->removeRole($role, !$authorize);
             $this->userRepository->save($user, true);
             return [$user, $role, 'text-bg-success', '', new Response()];
@@ -86,7 +98,11 @@ readonly class UserService
         $formName = $this->formFactory->create(ProfileFullNameType::class, $this->security->getUser());
         $formName->handleRequest($request);
         if ($formName->isSubmitted() && $formName->isValid()) {
-            $this->userRepository->save($this->security->getUser(), true);
+            $user = $this->security->getUser();
+            if (!$user instanceof User) {
+                throw new AccessDeniedException('Usuario no autenticado');
+            }
+            $this->userRepository->save($user, true);
 
 //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
         }
@@ -129,6 +145,10 @@ readonly class UserService
     public function changeState(Request $request): array
     {
         $user = $this->userRepository->find($request->request->get('user'));
+        if (!$user instanceof User) {
+            throw new AccessDeniedException('Usuario no autenticado');
+        }
+
         $action = $request->request->get('action');
         ($action === 'activate') ? $user->activate() : $user->deactivate();
 

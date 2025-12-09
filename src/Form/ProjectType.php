@@ -2,11 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\CorporateEntity;
 use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
+use App\Entity\Person;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
@@ -171,7 +173,8 @@ class ProjectType extends AbstractType
         $form->add('individualClient', EntityPlusType::class, [
             'class' => IndividualClient::class,
             'choice_label' => function (IndividualClient $individualClient) {
-                return $individualClient->getPerson()->getFullName();
+                $person = $individualClient->getPerson();
+                return $person?->getFullName();
             },
             'mapped' => false,
             'label' => 'Persona natural',
@@ -190,7 +193,8 @@ class ProjectType extends AbstractType
         $form->add('enterpriseClient', EntityPlusType::class, [
             'class' => EnterpriseClient::class,
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
-                return $enterpriseClient->getCorporateEntity()->getName();
+                $corporateEntity = $enterpriseClient->getCorporateEntity();
+                return $corporateEntity?->getName();
             },
             'group_by' => fn(EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
             'mapped' => false,

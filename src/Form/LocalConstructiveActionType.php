@@ -2,9 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
+use App\Entity\Currency;
+use App\Entity\Floor;
 use App\Entity\LocalConstructiveAction;
+use App\Entity\Project;
+use App\Entity\SubSystem;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -61,7 +66,12 @@ class LocalConstructiveActionType extends AbstractType
         if ($localConstructiveAction) {
             $local = $localConstructiveAction->getLocal();
             if ($local) {
-                $currency = $local->getSubSystem()->getFloor()->getBuilding()->getProject()->getCurrency()->getCode();
+                $subSystem = $local->getSubSystem();
+                $floor = $subSystem?->getFloor();
+                $building = $floor?->getBuilding();
+                $project = $building?->getProject();
+                $currency = $project?->getCurrency();
+                $currency = $currency?->getCode();
             }
         }
 

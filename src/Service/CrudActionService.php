@@ -55,7 +55,9 @@ readonly class CrudActionService
 //        $pageNumber = $request->query->get('page', 1);
         list($filter, $amountPerPage, $pageNumber) = $this->getManageQuerys($request);
 
-        $data = call_user_func_array([$repository, $findMethod], [$filter, $amountPerPage, $pageNumber]);
+        $callback = [$repository, $findMethod];
+        assert(is_callable($callback));
+        $data = call_user_func_array($callback, [$filter, $amountPerPage, $pageNumber]);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->from() > $paginator->getTotal()) {
@@ -173,10 +175,14 @@ readonly class CrudActionService
         array   $goToParams = []
     ): Response
     {
-        $isAjax = $request->isXmlHttpRequest();
-        $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entity->getId();
+        $callback = [$entity, 'getId'];
+        assert(is_callable($callback));
+        $entityId = call_user_func_array($callback, []);
 
-        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entity->getId(), $request->getPayload()->getString('_token')))) {
+        $isAjax = $request->isXmlHttpRequest();
+        $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entityId;
+
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entityId, $request->getPayload()->getString('_token')))) {
             if ($isAjax) {
                 return new Response($this->environment->render("partials/_form_success.html.twig", [
                     'id' => $id,
@@ -188,7 +194,11 @@ readonly class CrudActionService
         }
 
         try {
-            $repository->remove($entity, true);
+            $callback = [$repository, 'remove'];
+            assert(is_callable($callback));
+
+//            $repository->remove($entity, true);
+            call_user_func_array($callback, [$entity, true]);
             $template = ['id' => $id, 'type' => 'text-bg-success', 'message' => $successMsg];
         } catch (Exception $exception) {
             $template = ['id' => $id, 'type' => 'text-bg-danger', 'message' => $exception->getMessage()];
@@ -337,7 +347,10 @@ readonly class CrudActionService
         bool    $modal = false
     ): Response
     {
-        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : ($entity->getid() ? 'edit.html.twig' : 'new.html.twig'));//comportamiento por controlador
+        $callback = [$entity, 'getId'];
+        assert(is_callable($callback));
+
+        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : (call_user_func_array($callback, []) ? 'edit.html.twig' : 'new.html.twig'));//comportamiento por controlador
         return new Response($this->environment->render("$templateDir/$template", [
                 $templateDir => $entity,
                 'ajax' => $request->isXmlHttpRequest(),
@@ -357,9 +370,12 @@ readonly class CrudActionService
     public function options(Request $request, object $entity, array $entities): Response
     {
         if ($request->isXmlHttpRequest()) {
+            $callback = [$entity, 'getId'];
+            assert(is_callable($callback));
+
             return new Response($this->environment->render('partials/_select_options.html.twig', [
                 'entities' => $entities,
-                'selected' => $entity->getId()
+                'selected' => call_user_func_array($callback, [])
             ]));
         }
 

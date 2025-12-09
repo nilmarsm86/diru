@@ -90,9 +90,9 @@ class LocalConstructiveAction
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
-        return $this->price;
+        return (is_null($this->price)) ? 0 : $this->price;
     }
 
     public function setPrice(?int $price): static

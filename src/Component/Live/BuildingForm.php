@@ -4,6 +4,8 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
+use App\Entity\Constructor;
+use App\Entity\Project;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
 use App\Repository\ConstructorRepository;
@@ -82,7 +84,7 @@ final class BuildingForm extends AbstractController
         if ($this->project !== 0) {
 //            $this->formValues['project'] = (string)$this->project;
             $project = $this->projectRepository->find((int)$this->project);
-            $this->bui->setProject($project);
+            $this->bui?->setProject($project);
 //            $this->project = 0;
         }
 
@@ -118,7 +120,7 @@ final class BuildingForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->bui->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
+        $successMsg = (is_null($this->bui?->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
 
         $this->submitForm();
 
@@ -128,17 +130,22 @@ final class BuildingForm extends AbstractController
 
             if (!empty($this->formValues['constructor'])) {
                 $constructor = $constructorRepository->find((int)$this->formValues['constructor']);
-                $building->addConstructor($constructor);
+                if($constructor){
+                    $building->addConstructor($constructor);
+                }
             }
 
             if ($this->project != 0) {
                 $project = $projectRepository->find((int)$this->project);
+                assert($project instanceof Project);
                 $building->setProject($project);
             }
 
             if (!empty($this->formValues['draftsman'])) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
-                $building->addDraftsman($draftsman);
+                if($draftsman){
+                    $building->addDraftsman($draftsman);
+                }
             }
 
             $buildingRepository->save($building, true);

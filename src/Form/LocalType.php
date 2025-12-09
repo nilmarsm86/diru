@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Floor;
 use App\Entity\Local;
+use App\Entity\SubSystem;
 use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
@@ -99,7 +101,8 @@ class LocalType extends AbstractType
             $leftArea = $local->getArea();
         }*/
 
-        if (is_null($local->getId()) && $leftArea > 1 && $local->getSubSystem()->notWallArea() === true) {
+        $subSystem = $local->getSubSystem();
+        if (is_null($local->getId()) && $leftArea > 1 && $subSystem?->notWallArea() === true) {
             $leftArea -= 1;
         }
 
@@ -133,8 +136,11 @@ class LocalType extends AbstractType
             'constraints' => $constraints,
         ]);
 
-        if (!$local->getSubSystem()->getFloor()->isOriginal() ||
-            !$local->getSubSystem()->isOriginal() ||
+        $subSystem = $local->getSubSystem();
+        $floor = $subSystem?->getFloor();
+
+        if (!$floor?->isOriginal() ||
+            !$subSystem->isOriginal() ||
             !$local->isOriginal() ||
             $local->inNewBuilding() ||
             ($local->getId() && $local->hasReply())

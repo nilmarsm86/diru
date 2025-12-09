@@ -38,7 +38,7 @@ class Draftsman extends Person
     public function getDraftsmanBuildingByBuilding(Building $building): ?DraftsmanBuilding
     {
         foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding){
-            if($draftsmansBuilding->getBuilding()->getId() === $building->getId()){
+            if($draftsmansBuilding->getBuilding()?->getId() === $building->getId()){
                 return $draftsmansBuilding;
             }
         }

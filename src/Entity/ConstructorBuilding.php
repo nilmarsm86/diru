@@ -65,11 +65,11 @@ class ConstructorBuilding
 
     public function hasBuilding(Building $building): bool
     {
-        return $this->getBuilding()->getId() === $building->getId();
+        return $this->getBuilding()?->getId() === $building->getId();
     }
 
     public function hasConstructor(Constructor $constructor): bool
     {
-        return $this->getConstructor()->getId() === $constructor->getId();
+        return $this->getConstructor()?->getId() === $constructor->getId();
     }
 }

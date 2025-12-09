@@ -111,7 +111,8 @@ class LandNetworkConnection
     #[ORM\PostLoad]
     public function onLoad(): void
     {
-        $this->setType(NetworkConnectionType::from($this->type));
+        $type = (is_null($this->type)) ? '' : $this->type;
+        $this->setType(NetworkConnectionType::from($type));
     }
     public function getType(): NetworkConnectionType
     {

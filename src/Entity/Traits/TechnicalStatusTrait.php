@@ -40,6 +40,7 @@ trait TechnicalStatusTrait
     #[ORM\PostLoad]
     public function onLoadTechnicalStatus(): void
     {
-        $this->setTechnicalStatus(TechnicalStatus::from($this->technicalStatus));
+        $technicalStatus = (is_null($this->technicalStatus)) ? '' : $this->technicalStatus;
+        $this->setTechnicalStatus(TechnicalStatus::from($technicalStatus));
     }
  }

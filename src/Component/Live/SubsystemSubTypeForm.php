@@ -72,7 +72,7 @@ final class SubsystemSubTypeForm extends AbstractController
     #[LiveAction]
     public function save(SubsystemSubTypeRepository $subsystemSubTypeRepository, SubsystemTypeRepository $subsystemTypeRepository): ?Response
     {
-        $successMsg = (is_null($this->ssst->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ssst?->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.';//TODO: personalizar los mensajes
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {

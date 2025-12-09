@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\SubSystem;
+use App\Entity\SubsystemSubType;
+use App\Entity\SubsystemTypeSubsystemSubType;
 use App\Form\Types\SubSystemClassificationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -60,8 +62,11 @@ class SubSystemType extends AbstractType
         $type = 0;
         $subType = 0;
         if ($subSystem && $subSystem->getId()) {
-            $type = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemType()->getId();
-            $subType = $subSystem->getSubsystemTypeSubsystemSubType()->getSubsystemSubType()->getId();
+            $subsystemTypeSubsystemSubType = $subSystem->getSubsystemTypeSubsystemSubType();
+            $subsystemType = $subsystemTypeSubsystemSubType?->getSubsystemType();
+            $type = $subsystemType?->getId();
+            $subsystemSubType = $subsystemTypeSubsystemSubType?->getSubsystemSubType();
+            $subType = $subsystemSubType?->getId();
         }
 
         $form->add('subsystemClassification', SubSystemClassificationType::class, [

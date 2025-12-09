@@ -53,7 +53,7 @@ final class ContractForm extends AbstractController
     #[LiveAction]
     public function save(ContractRepository $contractRepository): ?Response
     {
-        $successMsg = (is_null($this->con->getId())) ? 'Se ha agregado el contrato.' : 'Se ha modificado el contrato.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->con?->getId())) ? 'Se ha agregado el contrato.' : 'Se ha modificado el contrato.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

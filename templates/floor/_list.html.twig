@@ -92,19 +92,19 @@
                     landArea: building.getLandArea(),
                 }) }}
 
-                {% if building.hasFreeArea() %}
-                    <br>
-                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">
-                        Convertir en área sin asignar
-                    </a>
-                {% endif %}
+{#                {% if building.hasFreeArea() %}#}
+{#                    <br>#}
+{#                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">#}
+{#                        Convertir en área sin asignar#}
+{#                    </a>#}
+{#                {% endif %}#}
 
-                {% if building.hasUnassignedArea() %}
-                    <br>
-                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">
-                        Convertir en área libre
-                    </a>
-                {% endif %}
+{#                {% if building.hasUnassignedArea() %}#}
+{#                    <br>#}
+{#                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">#}
+{#                        Convertir en área libre#}
+{#                    </a>#}
+{#                {% endif %}#}
             {% endblock %}
 
             {% block tableHead %}
@@ -207,6 +207,12 @@
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getFreeArea()|number_format(2) }}
+                            {% else %}
+                                <span class="text-warning" data-bs-toggle="tooltip"
+                                      data-bs-title="Queda espacio libre."
+                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                    {{ floor.getFreeArea()|number_format(2) }}
+                                </span>
                             {% endif %}
                         </td>
                         {% if reply or building.isNew() %}

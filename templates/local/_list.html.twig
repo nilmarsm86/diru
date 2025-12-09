@@ -136,13 +136,14 @@
                                 }) }}
                             {% endif %}
                         </td>
-                        {% if local.showConstructiveActionInList(reply) %}
-                            <td
-                                {% if local.getConstructiveSystem() %}
-                                    data-bs-toggle="tooltip"
-                                    data-bs-title="{% if local.hasLocalConstructiveAction() %}{{ money(local) }}{% endif %}"
-                                {% endif %}
-                            >
+                        <td
+                            {% if local.getConstructiveSystem() %}
+                                data-bs-toggle="tooltip"
+                                data-bs-title="{% if local.hasLocalConstructiveAction() %}{{ money(local) }}{% endif %}"
+                            {% endif %}
+                        >
+                            {% if local.showConstructiveActionInList(reply) %}
+
                                 {% if local.hasLocalConstructiveAction() %}
                                     {% if local.getConstructiveSystem() %}
                                         {{ local.getConstructiveAction()~' ('~local.constructiveSystem.name~')' }}
@@ -157,11 +158,16 @@
                                           data-bs-custom-class="danger-tooltip"
                                     >Sin definir</span>
                                 {% endif %}
-                            </td>
-                            {% if local.hasLocalConstructiveAction() %}
-                                <td>{{ money(local.getConstructiveActionAmount()) }}</td>
                             {% endif %}
-                        {% endif %}
+                        </td>
+                        <td>
+                            {% if local.hasLocalConstructiveAction() %}
+                                {{ money(local.getConstructiveActionAmount()) }}
+                            {% else %}
+                                {{ money(0) }}
+                            {% endif %}
+                        </td>
+
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}
                             {% if local.hasBackgroundColorOfChange() %}

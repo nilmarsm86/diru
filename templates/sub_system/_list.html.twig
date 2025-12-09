@@ -102,6 +102,20 @@
                     unassignedArea: floor.getUnassignedArea(),
                     landArea: floor.building.getLandArea(),
                 }) }}
+
+                {% if floor.building.hasFreeArea() and floor.hasFreeArea() %}
+                    <br>
+                    <a href="{{ path('app_land_unassigned-free', {'id': floor.building.land.id, 'building': floor.building.id, 'reply': reply }) }}">
+                        Convertir en área sin asignar
+                    </a>
+                {% endif %}
+
+                {% if floor.building.hasUnassignedArea() and floor.hasUnassignedArea() %}
+                    <br>
+                    <a href="{{ path('app_land_unassigned-free', {'id': floor.building.land.id, 'building': floor.building.id, 'reply': reply }) }}">
+                        Convertir en área libre
+                    </a>
+                {% endif %}
             {% endblock %}
 
             {% block tableHead %}

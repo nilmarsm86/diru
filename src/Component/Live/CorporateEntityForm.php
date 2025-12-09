@@ -137,7 +137,7 @@ final class CorporateEntityForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ce->getId())) ? 'Se ha agregado la entidad corporativa.' : 'Se ha modificado la entidad corporativa.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ce?->getId())) ? 'Se ha agregado la entidad corporativa.' : 'Se ha modificado la entidad corporativa.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

@@ -73,7 +73,7 @@ final class LandForm extends AbstractController
     #[LiveAction]
     public function save(Request $request, LandRepository $landRepository, FloorRepository $floorRepository): ?Response
     {
-        $successMsg = (is_null($this->l->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -82,18 +82,18 @@ final class LandForm extends AbstractController
             /** @var Land $land */
             $land = $this->getForm()->getData();
 
-            $this->building->setLand($land);
+            $this->building?->setLand($land);
             $showFloorMessage = false;
             //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
                 $showFloorMessage = true;
                 if (empty($this->formValues['floor']) or $this->formValues['occupiedArea'] == 0) {
                     $land->setFloor(1);
-                    $this->building->setIsNew(true);
+                    $this->building?->setIsNew(true);
                 }else{
-                    $this->building->setIsNew(false);
+                    $this->building?->setIsNew(false);
                 }
-                $this->building->createFloors(false, $this->entityManager);
+                $this->building?->createFloors(false, $this->entityManager);
             }
 
             $landRepository->save($land, true);
@@ -109,7 +109,7 @@ final class LandForm extends AbstractController
                     if($showFloorMessage){
                         $this->addFlash('info', 'Se han creado las plantas del inmueble.');
                     }
-                    return $this->redirectToRoute('app_floor_index', ['building' => $this->building->getId()], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToRoute('app_floor_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
 //                } else {
 //                    return null;
 //                }

@@ -137,6 +137,8 @@ class BuildingType extends AbstractType
             'input' => 'integer',
             'divisor' => 100,
             'grouping' => true,
+            'mapped' => false,
+            'data' => $building->getPrice()
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',

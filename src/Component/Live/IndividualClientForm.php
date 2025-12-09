@@ -116,7 +116,7 @@ final class IndividualClientForm extends AbstractController
                 if (isset($this->formValues['streetAddress']['address']['province'])) {
                     if ($this->formValues['streetAddress']['address']['municipality']) {
                         $mun = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
-                        if ((string)$mun->getProvince()->getId() !== $this->formValues['streetAddress']['address']['province']) {
+                        if ((string)$mun?->getProvince()?->getId() !== $this->formValues['streetAddress']['address']['province']) {
                             $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
                                 $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
@@ -141,7 +141,7 @@ final class IndividualClientForm extends AbstractController
     {
         $this->preValue();
 
-        if (!$this->ic->getId()) {
+        if (!$this->ic?->getId()) {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
                 $province = (int)$this->formValues['streetAddress']['address']['province'];
                 $municipality = (int)$this->formValues['streetAddress']['address']['municipality'];
@@ -151,8 +151,8 @@ final class IndividualClientForm extends AbstractController
                 $street = $this->formValues['streetAddress']['street'];
             }
         } else {
-            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $this->ic->getMunicipality()->getProvince()->getId() : (int)$this->formValues['streetAddress']['address']['province']);
-            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $this->ic->getMunicipality()->getId() : (int)$this->formValues['streetAddress']['address']['municipality']);
+            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $this->ic->getMunicipality()?->getProvince()?->getId() : (int)$this->formValues['streetAddress']['address']['province']);
+            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $this->ic->getMunicipality()?->getId() : (int)$this->formValues['streetAddress']['address']['municipality']);
             $street = (empty($this->formValues['streetAddress']['street']) ? $this->ic->getStreet() : $this->formValues['streetAddress']['street']);
         }
 
@@ -172,7 +172,7 @@ final class IndividualClientForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ic->getId())) ? 'Se ha agregado el cliente.' : 'Se ha modificado el cliente.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ic?->getId())) ? 'Se ha agregado el cliente.' : 'Se ha modificado el cliente.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

@@ -46,9 +46,9 @@ class Building implements MeasurementDataInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stopReason = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
-    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $estimatedValueConstruction = 0;
+//    #[ORM\Column(type: Types::BIGINT)]
+//    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+//    private ?int $estimatedValueConstruction = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
@@ -149,7 +149,7 @@ class Building implements MeasurementDataInterface
 
     public function __construct()
     {
-        $this->estimatedValueConstruction = 0;
+//        $this->estimatedValueConstruction = 0;
         $this->estimatedValueEquipment = 0;
         $this->estimatedValueOther = 0;
 
@@ -227,18 +227,18 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getEstimatedValueConstruction(): int|float
-    {
-        return $this->getPrice();
-        //return $this->estimatedValueConstruction;
-    }
-
-    public function setEstimatedValueConstruction(?int $estimatedValueConstruction): static
-    {
-        $this->estimatedValueConstruction = $estimatedValueConstruction;
-
-        return $this;
-    }
+//    public function getEstimatedValueConstruction(): int|float
+//    {
+//        return $this->getPrice();
+//        //return $this->estimatedValueConstruction;
+//    }
+//
+//    public function setEstimatedValueConstruction(?int $estimatedValueConstruction): static
+//    {
+//        $this->estimatedValueConstruction = $estimatedValueConstruction;
+//
+//        return $this;
+//    }
 
     public function getEstimatedValueEquipment(): ?int
     {
@@ -320,7 +320,7 @@ class Building implements MeasurementDataInterface
 
     public function getTotalEstimatedValue(): int|float
     {
-        return $this->getEstimatedValueConstruction() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther() + $this->projectPriceTechnicalPreparation;
+        return $this->getPrice() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther() + $this->projectPriceTechnicalPreparation;
     }
 
     public function getTotalApprovedValue(): ?int

@@ -96,7 +96,7 @@ final class InvestmentForm extends AbstractController
                 if (isset($this->formValues['streetAddress']['address']['province'])) {
                     if ($this->formValues['streetAddress']['address']['municipality']) {
                         $mun = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
-                        if ((string)$mun->getProvince()->getId() !== $this->formValues['streetAddress']['address']['province']) {
+                        if ((string)$mun?->getProvince()?->getId() !== $this->formValues['streetAddress']['address']['province']) {
                             $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
                                 $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
@@ -120,7 +120,7 @@ final class InvestmentForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
-        if (!$this->inv->getId()) {
+        if (!$this->inv?->getId()) {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
                 $province = (int)$this->formValues['streetAddress']['address']['province'];
                 $municipality = (int)$this->formValues['streetAddress']['address']['municipality'];
@@ -129,8 +129,9 @@ final class InvestmentForm extends AbstractController
                 $street = $this->formValues['streetAddress']['street'];
             }
         } else {
-            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $this->inv->getMunicipality()->getProvince()->getId() : (int)$this->formValues['streetAddress']['address']['province']);
-            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $this->inv->getMunicipality()->getId() : (int)$this->formValues['streetAddress']['address']['municipality']);
+            $mun = $this->inv->getMunicipality();
+            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $mun?->getProvince()?->getId() : (int)$this->formValues['streetAddress']['address']['province']);
+            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $mun?->getId() : (int)$this->formValues['streetAddress']['address']['municipality']);
             $street = (empty($this->formValues['streetAddress']['street']) ? $this->inv->getStreet() : $this->formValues['streetAddress']['street']);
         }
 
@@ -151,7 +152,7 @@ final class InvestmentForm extends AbstractController
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->inv->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->inv?->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.';//TODO: personalizar los mensajes
 
         $this->submitForm();
         if ($this->isSubmitAndValid()) {

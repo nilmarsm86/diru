@@ -54,13 +54,17 @@ final class FloorForm extends AbstractController
         $this->fl = (is_null($fl)) ? new Floor() : $fl;
         $this->entity = $this->fl;
         $this->building = $building;
-        $this->building->addFloor($this->fl);
+        if(!is_null($this->fl)){
+            $this->building?->addFloor($this->fl);
+        }
         $this->reply = $reply;
     }
 
     protected function instantiateForm(): FormInterface
     {
-        $this->building->addFloor($this->fl);
+        if(!is_null($this->fl)){
+            $this->building?->addFloor($this->fl);
+        }
         return $this->createForm(FloorType::class, $this->fl, [
             'reply' => $this->reply
         ]);
@@ -72,16 +76,17 @@ final class FloorForm extends AbstractController
     #[LiveAction]
     public function save(FloorRepository $floorRepository, EntityManagerInterface $entityManager): ?Response
     {
-        $successMsg = (is_null($this->fl->getId())) ? 'Se ha agregado la planta.' : 'Se ha modificado la planta.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->fl?->getId())) ? 'Se ha agregado la planta.' : 'Se ha modificado la planta.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var Floor $floor */
             $floor = $this->getForm()->getData();
-            $this->building->addFloor($floor);
+            $this->building?->addFloor($floor);
 
-            if (is_null($this->fl->getId())) {
+            if (is_null($this->fl?->getId())) {
+                assert($this->building instanceof Building);
                 $floor = Floor::createAutomatic($floor, $this->building, $this->formValues['name'], false, (int)$this->formValues['position'], $this->reply, $entityManager);
             }
             $floorRepository->save($floor, true);
@@ -102,7 +107,7 @@ final class FloorForm extends AbstractController
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_floor_index', ['building' => $this->building->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_floor_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

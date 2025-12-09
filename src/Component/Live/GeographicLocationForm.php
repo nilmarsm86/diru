@@ -57,7 +57,7 @@ final class GeographicLocationForm extends AbstractController
     #[LiveAction]
     public function save(GeographicLocationRepository $geographicLocationRepository): ?Response
     {
-        $successMsg = (is_null($this->gl->getId())) ? 'Se ha agregado la ubicación geográfica.' : 'Se ha modificado la ubicación geográfica.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->gl?->getId())) ? 'Se ha agregado la ubicación geográfica.' : 'Se ha modificado la ubicación geográfica.';//TODO: personalizar los mensajes
 
         $this->submitForm();
 

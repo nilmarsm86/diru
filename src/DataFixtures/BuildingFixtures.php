@@ -26,7 +26,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 $buildingEntity->setApprovedValueConstruction(1000000);
                 $buildingEntity->setApprovedValueEquipment(1000000);
                 $buildingEntity->setApprovedValueOther(1000000);
-                $buildingEntity->setEstimatedValueConstruction(0);
+//                $buildingEntity->setEstimatedValueConstruction(0);
                 $buildingEntity->setEstimatedValueEquipment(1000000);
                 $buildingEntity->setEstimatedValueOther(1000000);
                 $buildingEntity->setProjectPriceTechnicalPreparation(0);

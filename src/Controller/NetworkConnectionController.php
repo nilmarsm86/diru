@@ -40,7 +40,7 @@ final class NetworkConnectionController extends AbstractController
     {
         $networkConnection = new NetworkConnection();
         return $crudActionService->formLiveComponentAction($request, $networkConnection, 'network_connection', [
-            'title' => 'Nueva conexion de red',
+            'title' => 'Nueva conexión de red',
         ]);
     }
 

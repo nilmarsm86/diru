@@ -76,7 +76,8 @@ class LocalConstructiveActionType extends AbstractType
         }
 
         $form->add('price', MoneyType::class, [
-            'label' => 'Precio:',
+            'label' => 'Precio ($/m):',
+            'label_html' => true,
             'currency' => $currency,
 //            'html5' => true,
             'input' => 'integer',

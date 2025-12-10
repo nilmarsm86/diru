@@ -84,8 +84,9 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
         $builder = $this->createQueryBuilder('sst');
         $this->addClassification($builder, $classification);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('sst.classification', 'ASC')->getQuery();
-//        $query = $builder->orderBy('sst.id', 'ASC')->getQuery();
+        $builder->orderBy('sst.classification', 'ASC');
+        $query = $builder->addOrderBy('sst.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 

@@ -42,7 +42,7 @@ class Estimate
 
     public function __construct()
     {
-        $this->price = 0;
+        $this->price = '0';
     }
 
     public function getId(): ?int

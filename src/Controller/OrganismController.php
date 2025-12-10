@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Organism;
 use App\Entity\Role;
+use App\Repository\CorporateEntityRepository;
 use App\Repository\OrganismRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,9 +80,15 @@ final class OrganismController extends AbstractController
     #[IsGranted(Role::ROLE_ADMIN)]
     #[Route('/{id}', name: 'app_organism_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Request $request, Organism $organism, OrganismRepository $organismRepository, CrudActionService $crudActionService): Response
+    public function delete(Request $request, Organism $organism, OrganismRepository $organismRepository, CrudActionService $crudActionService, CorporateEntityRepository $corporateEntityRepository): Response
     {
         $successMsg = 'Se ha eliminado el organismo.';
+        $corporateEntities = $corporateEntityRepository->findBy(['organism' => $organism]);
+        if(count($corporateEntities)){
+            $template = ['id' => $organism->getId(), 'type' => 'text-bg-danger', 'message' => 'Este organismo esta relacionado con algunas entidades corportativas.'];
+            return $this->render("partials/_form_success.html.twig", $template);
+        }
+
         return $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');
     }
 

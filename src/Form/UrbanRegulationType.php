@@ -2,12 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\Enums\LocalType;
+use App\Entity\Enums\UrbanRegulationStructure;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType as Type;
 use App\Form\Types\EntityPlusType;
+use App\Form\Types\TechnicalStatusEnumType;
+use App\Form\Types\UrbanRegulationStructureEnumType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -81,6 +87,9 @@ class UrbanRegulationType extends AbstractType
 //                    new Assert\NotBlank(message: 'Seleccione o cree el tipo de regulación.')
 //                ]
             ])
+            ->add('structure', UrbanRegulationStructureEnumType::class, [
+                'label' => 'Estructura:'
+            ])
 //            ->add('projects', EntityType::class, [
 //                'class' => Project::class,
 //                'choice_label' => 'id',
@@ -95,6 +104,9 @@ class UrbanRegulationType extends AbstractType
             'data_class' => UrbanRegulation::class,
             'attr' => [
                 'novalidate' => 'novalidate'
+            ],
+            'error_mapping' => [
+                'enumStructure' => 'structure',
             ],
         ]);
     }

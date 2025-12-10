@@ -9,6 +9,7 @@ enum UrbanRegulationStructure: string
 {
     use EnumsTrait;
 
+    case Null = '';
     case Local = '0';
     case SubSystem = '1';
     case Floor = '2';

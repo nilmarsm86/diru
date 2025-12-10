@@ -7,6 +7,7 @@ use App\Entity\UrbanRegulation;
 use App\Repository\UrbanRegulationRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,6 +78,12 @@ final class UrbanRegulationController extends AbstractController
     public function delete(Request $request, UrbanRegulation $urbanRegulation, UrbanRegulationRepository $urbanRegulationRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la regulación urbana.';
-        return $crudActionService->deleteAction($request, $urbanRegulationRepository, $urbanRegulation, $successMsg, 'app_urban_regulation_index');
+        $response = $crudActionService->deleteAction($request, $urbanRegulationRepository, $urbanRegulation, $successMsg, 'app_urban_regulation_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

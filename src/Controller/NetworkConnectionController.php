@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Repository\NetworkConnectionRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,7 +78,13 @@ final class NetworkConnectionController extends AbstractController
     public function delete(Request $request, NetworkConnection $networkConnection, NetworkConnectionRepository $networkConnectionRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la conexión de red.';
-        return $crudActionService->deleteAction($request, $networkConnectionRepository, $networkConnection, $successMsg, 'app_network_connection_index');
+        $response = $crudActionService->deleteAction($request, $networkConnectionRepository, $networkConnection, $successMsg, 'app_network_connection_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
 }

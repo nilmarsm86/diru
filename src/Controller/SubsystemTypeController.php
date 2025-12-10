@@ -102,7 +102,13 @@ final class SubsystemTypeController extends AbstractController
     public function delete(Request $request, SubsystemType $subsystemType, SubsystemTypeRepository $subsystemTypeRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el tipo.';
-        return $crudActionService->deleteAction($request, $subsystemTypeRepository, $subsystemType, $successMsg, 'app_subsystem_type_index');
+        $response = $crudActionService->deleteAction($request, $subsystemTypeRepository, $subsystemType, $successMsg, 'app_subsystem_type_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/sub_type/{id}', name: 'type_subtype', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -112,8 +118,9 @@ final class SubsystemTypeController extends AbstractController
             $entities = [];
             /** @var SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType */
             foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
-                if(!is_null($subsystemTypeSubsystemSubType->getSubsystemSubType())){
-                    $entities[] = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+                $subsystemSubType = $subsystemTypeSubsystemSubType->getSubsystemSubType();
+                if(!is_null($subsystemSubType)){
+                    $entities[] = $subsystemSubType;
                 }
 
             }

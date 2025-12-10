@@ -9,6 +9,7 @@ use App\Repository\InvestmentRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -80,6 +81,12 @@ final class InvestmentController extends AbstractController
     public function delete(Request $request, Investment $investment, InvestmentRepository $investmentRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la inversión.';
-        return $crudActionService->deleteAction($request, $investmentRepository, $investment, $successMsg, 'app_investment_index');
+        $response = $crudActionService->deleteAction($request, $investmentRepository, $investment, $successMsg, 'app_investment_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

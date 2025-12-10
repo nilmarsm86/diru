@@ -63,7 +63,6 @@ final class CorporateEntityController extends AbstractController
         $corporateEntity = new CorporateEntity();
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Nueva entidad corporativa',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -88,7 +87,6 @@ final class CorporateEntityController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Editar entidad corporativa',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -102,7 +100,13 @@ final class CorporateEntityController extends AbstractController
     public function delete(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la entidad.';
-        return $crudActionService->deleteAction($request, $corporateEntityRepository, $corporateEntity, $successMsg, 'app_corporate_entity_index');
+        $response = $crudActionService->deleteAction($request, $corporateEntityRepository, $corporateEntity, $successMsg, 'app_corporate_entity_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
 //    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]

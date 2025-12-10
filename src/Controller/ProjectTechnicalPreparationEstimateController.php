@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Repository\ProjectTechnicalPreparationEstimateRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -79,6 +80,12 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
     public function delete(Request $request, ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el estimado de proyecto y preparación técnica.';
-        return $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_ptp_estimate_index');
+        $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_ptp_estimate_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

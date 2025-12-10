@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Repository\EnterpriseClientRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,7 +42,6 @@ final class EnterpriseClientController extends AbstractController
         $enterpriseClient = new EnterpriseClient();
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Nuevo cliente empresarial',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,6 @@ final class EnterpriseClientController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Modificar cliente empresarial',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -80,6 +79,12 @@ final class EnterpriseClientController extends AbstractController
     public function delete(Request $request, EnterpriseClient $enterpriseClient, EnterpriseClientRepository $enterpriseClientRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el cliente empresarial.';
-        return $crudActionService->deleteAction($request, $enterpriseClientRepository, $enterpriseClient, $successMsg, 'app_enterprise_client_index');
+        $response = $crudActionService->deleteAction($request, $enterpriseClientRepository, $enterpriseClient, $successMsg, 'app_enterprise_client_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

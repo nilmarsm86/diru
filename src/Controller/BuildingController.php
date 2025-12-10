@@ -58,9 +58,6 @@ final class BuildingController extends AbstractController
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
-//            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-//            $route = $request->attributes->get('_route');
-//            return new RedirectResponse($this->generateUrl(is_string($route) ? $route : '', [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
@@ -124,7 +121,13 @@ final class BuildingController extends AbstractController
     public function delete(Request $request, Building $building, BuildingRepository $buildingRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la obra.';
-        return $crudActionService->deleteAction($request, $buildingRepository, $building, $successMsg, 'app_building_index');
+        $response = $crudActionService->deleteAction($request, $buildingRepository, $building, $successMsg, 'app_building_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/reply/{id}', name: 'app_building_reply', methods: ['GET'])]

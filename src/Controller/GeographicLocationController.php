@@ -9,6 +9,7 @@ use App\Repository\GeographicLocationRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,7 +44,6 @@ final class GeographicLocationController extends AbstractController
         $geographicLocation = new GeographicLocation();
         return $crudActionService->formLiveComponentAction($request, $geographicLocation, 'geographic_location', [
             'title' => 'Nueva ubicación geográfica',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -68,7 +68,6 @@ final class GeographicLocationController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $geographicLocation, 'geographic_location', [
             'title' => 'Editar ubicación geográfica',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -82,6 +81,12 @@ final class GeographicLocationController extends AbstractController
     public function delete(Request $request, GeographicLocation $geographicLocation, GeographicLocationRepository $geographicLocationRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la ubicación geográfica.';
-        return $crudActionService->deleteAction($request, $geographicLocationRepository, $geographicLocation, $successMsg, 'app_location_zone_index');
+        $response = $crudActionService->deleteAction($request, $geographicLocationRepository, $geographicLocation, $successMsg, 'app_location_zone_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

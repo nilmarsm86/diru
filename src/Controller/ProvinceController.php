@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Repository\ProvinceRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -42,7 +43,6 @@ final class ProvinceController extends AbstractController
         $province = new Province();
         return $crudActionService->formLiveComponentAction($request, $province, 'province', [
             'title' => 'Nueva provincia',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -67,7 +67,6 @@ final class ProvinceController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $province, 'province', [
             'title' => 'Editar provincia',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -80,7 +79,13 @@ final class ProvinceController extends AbstractController
     public function delete(Request $request, Province $province, ProvinceRepository $provinceRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la provincia.';
-        return $crudActionService->deleteAction($request, $provinceRepository, $province, $successMsg, 'app_province_index');
+        $response = $crudActionService->deleteAction($request, $provinceRepository, $province, $successMsg, 'app_province_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/municipality/{id}', name: 'province_municipality', requirements: ['id' => '\d+'], methods: ['GET'])]

@@ -12,6 +12,7 @@ use App\Repository\NetworkConnectionRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -82,7 +83,13 @@ final class LandController extends AbstractController
     public function delete(Request $request, Land $land, LandRepository $landRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado los datos del terreno.';
-        return $crudActionService->deleteAction($request, $landRepository, $land, $successMsg, 'app_land_index');
+        $response = $crudActionService->deleteAction($request, $landRepository, $land, $successMsg, 'app_land_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/unassigned-free/{id}/{building}/{reply}', name: 'app_land_unassigned-free', methods: ['GET'])]

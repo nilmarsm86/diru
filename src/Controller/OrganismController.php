@@ -8,6 +8,7 @@ use App\Repository\CorporateEntityRepository;
 use App\Repository\OrganismRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -93,7 +94,13 @@ final class OrganismController extends AbstractController
             return new Response($this->renderView("partials/_form_success.html.twig", $template));
         }
 
-        return $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');
+        $response = $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
 //    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]

@@ -96,7 +96,13 @@ final class FloorController extends AbstractController
     public function delete(Request $request, Floor $floor, FloorRepository $floorRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la planta.';
-        return $crudActionService->deleteAction($request, $floorRepository, $floor, $successMsg, 'app_building_index');
+        $response = $crudActionService->deleteAction($request, $floorRepository, $floor, $successMsg, 'app_building_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/{id}/report/local', name: 'app_floor_report_local', methods: ['GET'])]

@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Repository\LocationZoneRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,7 +42,6 @@ final class LocationZoneController extends AbstractController
         $locationZone = new LocationZone();
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Nueva zona de ubicación',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,6 @@ final class LocationZoneController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Editar zona de ubicación',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -80,6 +79,12 @@ final class LocationZoneController extends AbstractController
     public function delete(Request $request, LocationZone $locationZone, LocationZoneRepository $locationZoneRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la zona de ubicación.';
-        return $crudActionService->deleteAction($request, $locationZoneRepository, $locationZone, $successMsg, 'app_location_zone_index');
+        $response = $crudActionService->deleteAction($request, $locationZoneRepository, $locationZone, $successMsg, 'app_location_zone_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Constructor;
 use App\Entity\Role;
-use App\Form\ConstructorType;
 use App\Repository\ConstructorRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,7 +42,6 @@ final class ConstructorController extends AbstractController
         $constructor = new Constructor();
         return $crudActionService->formLiveComponentAction($request, $constructor, 'constructor', [
             'title' => 'Nueva constructora',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -69,7 +67,6 @@ final class ConstructorController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $constructor, 'constructor', [
             'title' => 'Editar constructora',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -83,6 +80,12 @@ final class ConstructorController extends AbstractController
     public function delete(Request $request, Constructor $constructor, ConstructorRepository $constructorRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado la constructora.';
-        return $crudActionService->deleteAction($request, $constructorRepository, $constructor, $successMsg, 'app_constructor_index');
+        $response = $crudActionService->deleteAction($request, $constructorRepository, $constructor, $successMsg, 'app_constructor_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

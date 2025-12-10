@@ -25,9 +25,6 @@ use Twig\Error\SyntaxError;
 final class ProjectController extends AbstractController
 {
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
      */
     #[Route(name: 'app_project_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, ProjectRepository $projectRepository, CrudActionService $crudActionService): Response
@@ -103,6 +100,12 @@ final class ProjectController extends AbstractController
     public function delete(Request $request, Project $project, ProjectRepository $projectRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el proyecto.';
-        return $crudActionService->deleteAction($request, $projectRepository, $project, $successMsg, 'app_project_index');
+        $response = $crudActionService->deleteAction($request, $projectRepository, $project, $successMsg, 'app_project_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

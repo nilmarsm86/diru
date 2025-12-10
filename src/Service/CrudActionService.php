@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\DTO\Paginator;
 use App\Repository\FilterInterface;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,10 +22,7 @@ readonly class CrudActionService
     public function __construct(
         private Environment               $environment,
         private CsrfTokenManagerInterface $csrfTokenManager,
-//        private RequestStack              $requestStack,
         private RouterInterface           $router,
-//        private FormFactoryInterface      $formFactory,
-//        private FlashBagInterface         $flashBag
     )
     {
     }
@@ -50,13 +46,9 @@ readonly class CrudActionService
         array                   $vars = []
     ): Response
     {
-//        $filter = $request->query->get('filter', '');
-//        $amountPerPage = $request->query->get('amount', 10);
-//        $pageNumber = $request->query->get('page', 1);
-        /** @var string $filter */
-        /** @var int $amountPerPage */
-        /** @var int $pageNumber */
-        list($filter, $amountPerPage, $pageNumber) = $this->getManageQuerys($request);
+        /** @var array{string, int, int} $result */
+        $result = $this->getManageQuerys($request);
+        list($filter, $amountPerPage, $pageNumber) = $result;
 
         $callback = [$repository, $findMethod];
         assert(is_callable($callback));
@@ -65,8 +57,6 @@ readonly class CrudActionService
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->from() > $paginator->getTotal()) {
-//            $number = ($pageNumber === 1) ? 1 : ($pageNumber - 1);
-//            return new RedirectResponse($this->router->generate($request->attributes->get('_route'), [...$request->query->all(), 'page' => $number]), Response::HTTP_SEE_OTHER);
             return $paginator->greatherThanTotal($request, $this->router, $pageNumber);
         }
 
@@ -206,7 +196,6 @@ readonly class CrudActionService
             $callback = [$repository, 'remove'];
             assert(is_callable($callback));
 
-//            $repository->remove($entity, true);
             call_user_func_array($callback, [$entity, true]);
             $template = ['id' => $id, 'type' => 'text-bg-success', 'message' => $successMsg];
         } catch (Exception $exception) {

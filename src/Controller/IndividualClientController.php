@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Repository\IndividualClientRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,7 +45,6 @@ final class IndividualClientController extends AbstractController
         $individualClient = new IndividualClient();
         return $crudActionService->formLiveComponentAction($request, $individualClient, 'individual_client', [
             'title' => 'Nueva persona natural',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -69,7 +69,6 @@ final class IndividualClientController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $individualClient, 'individual_client', [
             'title' => 'Editar persona individual',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -83,6 +82,12 @@ final class IndividualClientController extends AbstractController
     public function delete(Request $request, IndividualClient $individualClient, IndividualClientRepository $individualClientRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el cliente.';
-        return $crudActionService->deleteAction($request, $individualClientRepository, $individualClient, $successMsg, 'app_enterprise_client_index');
+        $response = $crudActionService->deleteAction($request, $individualClientRepository, $individualClient, $successMsg, 'app_enterprise_client_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

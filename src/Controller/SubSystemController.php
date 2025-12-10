@@ -77,9 +77,15 @@ final class SubSystemController extends AbstractController
     public function delete(Request $request, SubSystem $subSystem, SubSystemRepository $subSystemRepository, CrudActionService $crudActionService, Floor $floor): Response
     {
         $successMsg = 'Se ha eliminado el subsistema.';
-        return $crudActionService->deleteAction($request, $subSystemRepository, $subSystem, $successMsg, 'app_sub_system_index', [
+        $response = $crudActionService->deleteAction($request, $subSystemRepository, $subSystem, $successMsg, 'app_sub_system_index', [
             'floor' => $floor->getId()
         ]);
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/{id}/report/local', name: 'app_sub_system_report_local', methods: ['GET'])]

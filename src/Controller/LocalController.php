@@ -97,9 +97,15 @@ final class LocalController extends AbstractController
     public function delete(Request $request, Local $local, LocalRepository $localRepository, CrudActionService $crudActionService, SubSystem $subSystem): Response
     {
         $successMsg = 'Se ha eliminado el local.';
-        return $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', [
+        $response = $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', [
             'subSystem' => $subSystem->getId()
         ]);
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
     #[Route('/wall/{subSystem}/{reply}', name: 'app_local_wall', methods: ['GET'])]
@@ -119,7 +125,6 @@ final class LocalController extends AbstractController
         $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se ha creado el área de muro del área restante.');
-//        return new RedirectResponse($this->generateUrl('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply]), Response::HTTP_SEE_OTHER);
         return $this->redirectToRoute('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 }

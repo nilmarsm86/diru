@@ -9,6 +9,7 @@ use App\Repository\PersonRepository;
 use App\Repository\RepresentativeRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -45,7 +46,6 @@ final class RepresentativeController extends AbstractController
         $representative = new Representative();
         return $crudActionService->formLiveComponentAction($request, $representative, 'representative', [
             'title' => 'Nuevo representante',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -72,7 +72,6 @@ final class RepresentativeController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $representative, 'representative', [
             'title' => 'Modificar representante',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -86,7 +85,13 @@ final class RepresentativeController extends AbstractController
     public function delete(Request $request, Representative $representative, RepresentativeRepository $representativeRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el representante.';
-        return $crudActionService->deleteAction($request, $representativeRepository, $representative, $successMsg, 'app_representative_index');
+        $response = $crudActionService->deleteAction($request, $representativeRepository, $representative, $successMsg, 'app_representative_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 
 //    #[Route('/options/{id}', name: 'app_representative_options', requirements: ['id' => '\d+'], methods: ['GET'])]

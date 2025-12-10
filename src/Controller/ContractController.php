@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Repository\ContractRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,7 +42,6 @@ final class ContractController extends AbstractController
         $contract = new Contract();
         return $crudActionService->formLiveComponentAction($request, $contract, 'contract', [
             'title' => 'Nuevo contrato',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -66,7 +66,6 @@ final class ContractController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $contract, 'contract', [
             'title' => 'Editar contrato',
-//            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -80,6 +79,12 @@ final class ContractController extends AbstractController
     public function delete(Request $request, Contract $contract, ContractRepository $contractRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el contrato.';
-        return $crudActionService->deleteAction($request, $contractRepository, $contract, $successMsg, 'app_contract_index');
+        $response = $crudActionService->deleteAction($request, $contractRepository, $contract, $successMsg, 'app_contract_index');
+        if($response instanceof RedirectResponse){
+            $this->addFlash('success', $successMsg);
+            return $response;
+        }
+
+        return $response;
     }
 }

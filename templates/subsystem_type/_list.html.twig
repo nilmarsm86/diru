@@ -69,13 +69,13 @@
                             {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})})) }}
                             {{ tableActionButton3(path('app_subsystem_type_edit', {'id': subsystemType.id}), 'fa:edit', '', 'Editar tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_edit', {'id': subsystemType.id})})) }}
 
-                            {{ component('DeleteForm', {
-                                path: path('app_subsystem_type_delete', {'id': subsystemType.id}),
-                                confirm: 'Está seguro que desea eliminar el tipo?',
-                                token: 'delete' ~ subsystemType.id,
-                                title: 'Eliminar tiopo',
-                                icon: 'bi:trash'
-                            }) }}
+{#                            {{ component('DeleteForm', {#}
+{#                                path: path('app_subsystem_type_delete', {'id': subsystemType.id}),#}
+{#                                confirm: 'Está seguro que desea eliminar el tipo?',#}
+{#                                token: 'delete' ~ subsystemType.id,#}
+{#                                title: 'Eliminar tiopo',#}
+{#                                icon: 'bi:trash'#}
+{#                            }) }}#}
                         </td>
                     </tr>
                 {% else %}

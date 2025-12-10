@@ -85,8 +85,12 @@ final class OrganismController extends AbstractController
         $successMsg = 'Se ha eliminado el organismo.';
         $corporateEntities = $corporateEntityRepository->findBy(['organism' => $organism]);
         if(count($corporateEntities)){
-            $template = ['id' => $organism->getId(), 'type' => 'text-bg-danger', 'message' => 'Este organismo esta relacionado con algunas entidades corportativas.'];
-            return new Response($this->render("partials/_form_success.html.twig", $template));
+            $template = [
+                'id' => 'delete_organism_' . $organism->getId(),
+                'type' => 'text-bg-danger',
+                'message' => 'Este organismo esta relacionado con algunas entidades corportativas.'
+            ];
+            return new Response($this->renderView("partials/_form_success.html.twig", $template));
         }
 
         return $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');

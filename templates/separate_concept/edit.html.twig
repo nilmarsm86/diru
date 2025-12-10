@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SeparateConcept{% endblock %}
+
+{% block body %}
+    <h1>Edit SeparateConcept</h1>
+
+    {{ include('separate_concept/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_separate_concept_index') }}">back to list</a>
+
+    {{ include('separate_concept/_delete_form.html.twig') }}
+{% endblock %}

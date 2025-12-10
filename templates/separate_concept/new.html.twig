@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SeparateConcept{% endblock %}
+
+{% block body %}
+    <h1>Create new SeparateConcept</h1>
+
+    {{ include('separate_concept/_form.html.twig') }}
+
+    <a href="{{ path('app_separate_concept_index') }}">back to list</a>
+{% endblock %}

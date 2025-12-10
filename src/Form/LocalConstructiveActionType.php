@@ -76,7 +76,7 @@ class LocalConstructiveActionType extends AbstractType
         }
 
         $form->add('price', MoneyType::class, [
-            'label' => 'Precio ($/m):',
+            'label' => 'Indicador técnico económico ($/m<sup>2</sup>):',
             'label_html' => true,
             'currency' => $currency,
 //            'html5' => true,

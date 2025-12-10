@@ -79,7 +79,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
 //            ->select(['ssst', 'sst'])
 //            ->leftJoin('ssst.subsystemTypes', 'sst');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ssst.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('ssst.name', 'ASC')->getQuery();
         return $this->paginate($query, $page, $amountPerPage);
     }
 
@@ -92,7 +92,11 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
     public function remove(SubsystemSubType $entity, bool $flush = false): void
     {
         if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
-            throw new Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
+            foreach ($entity->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubTypes){
+                if($subsystemTypeSubsystemSubTypes->getSubSystems()->count() > 0){
+                    throw new Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
+                }
+            }
         }
 
         $this->getEntityManager()->remove($entity);

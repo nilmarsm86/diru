@@ -2,6 +2,10 @@ parameters:
     bootstrapFiles:
         - vendor/autoload.php
     level: 6
+    #checkMissingIterableValueType: true
+    #checkGenericClassInNonGenericObjectType: true
+    #checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    #reportUnmatchedIgnoredErrors: true
     phpVersion: 80200
     paths:
         - src/

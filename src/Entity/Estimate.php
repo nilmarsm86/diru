@@ -40,6 +40,11 @@ class Estimate
     #[ORM\JoinColumn(nullable: false)]
     protected ?Building $building = null;
 
+    public function __construct()
+    {
+        $this->price = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

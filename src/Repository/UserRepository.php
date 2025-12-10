@@ -56,8 +56,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }*/
         if ($filter) {
             $predicate = "u.username LIKE :filter ";
-            $predicate .= "OR u.name LIKE :filter ";
-            $predicate .= "OR u.lastname LIKE :filter";
+            $predicate .= "OR p.name LIKE :filter ";
+            $predicate .= "OR p.lastname LIKE :filter";
 
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%' . $filter . '%');
@@ -72,7 +72,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function findUsers(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('u');
+        $builder = $this->createQueryBuilder('u')
+            ->leftJoin('u.person', 'p');
         /*if($filter){
             $predicate = "u.username LIKE :filter ";
             $predicate .= "OR u.name LIKE :filter ";

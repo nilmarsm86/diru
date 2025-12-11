@@ -3,17 +3,12 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
-use App\Entity\Enums\ProjectState;
-use App\Entity\Enums\ProjectType;
 use App\Entity\Enums\SubsystemFunctionalClassification;
-use App\Entity\Province;
 use App\Entity\Role;
 use App\Entity\SubsystemType;
 use App\Entity\SubsystemTypeSubsystemSubType;
-use App\Form\SubsystemTypeType;
 use App\Repository\SubsystemTypeRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +26,7 @@ use Twig\Error\SyntaxError;
 final class SubsystemTypeController extends AbstractController
 {
     #[Route(name: 'app_subsystem_type_index', methods: ['GET'])]
-    public function index(Request $request, RouterInterface $router, SubsystemTypeRepository $subsystemTypeRepository, CrudActionService $crudActionService): Response
+    public function index(Request $request, RouterInterface $router, SubsystemTypeRepository $subsystemTypeRepository): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int)$request->query->get('amount', '10');

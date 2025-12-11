@@ -21,7 +21,7 @@ use Twig\Error\SyntaxError;
 #[Route('/local')]
 final class LocalController extends AbstractController
 {
-    #[Route('/{subSystem}/{reply}', name: 'app_local_index', methods: ['GET'], requirements: ['subSystem' => '\d+'])]
+    #[Route('/{subSystem}/{reply}', name: 'app_local_index', requirements: ['subSystem' => '\d+'], methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
@@ -109,7 +109,7 @@ final class LocalController extends AbstractController
     }
 
     #[Route('/wall/{subSystem}/{reply}', name: 'app_local_wall', methods: ['GET'])]
-    public function wall(Request $request, EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
+    public function wall(EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $area = 0;
         if ($subSystem->getFloor()?->hasFreeArea()) {

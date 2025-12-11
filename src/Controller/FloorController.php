@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Floor;
-use App\Entity\SubSystem;
 use App\Repository\FloorRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -106,7 +105,7 @@ final class FloorController extends AbstractController
     }
 
     #[Route('/{id}/report/local', name: 'app_floor_report_local', methods: ['GET'])]
-    public function reportLocal(Request $request, Floor $floor): Response
+    public function reportLocal(Floor $floor): Response
     {
         return $this->render("floor/report.html.twig", [
             'local_status' => $floor->getAmountTechnicalStatus(),

@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
-use App\Entity\Enums\ProjectState;
 use App\Entity\Project;
 use App\Entity\Role;
-use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +39,6 @@ final class BuildingController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
     #[Route('/project/{project}', name: 'app_building_project', methods: ['GET'])]
     public function project(Request $request, RouterInterface $router, BuildingRepository $buildingRepository, Project $project): Response
     {
@@ -131,12 +125,12 @@ final class BuildingController extends AbstractController
     }
 
     #[Route('/reply/{id}', name: 'app_building_reply', methods: ['GET'])]
-    public function reply(Request $request, Building $building, EntityManagerInterface $entityManager): Response
+    public function reply(Building $building, EntityManagerInterface $entityManager): Response
     {
         try {
             $building->reply($entityManager);
             $this->addFlash('success', 'Se ha replicado la obra');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
         }
 
@@ -144,7 +138,7 @@ final class BuildingController extends AbstractController
     }
 
     #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]
-    public function reportLocal(Request $request, Building $building): Response
+    public function reportLocal(Building $building): Response
     {
         return $this->render("building/report.html.twig", [
             'local_status' => $building->getAmountTechnicalStatus(),

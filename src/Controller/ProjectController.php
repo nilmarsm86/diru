@@ -27,7 +27,7 @@ final class ProjectController extends AbstractController
     /**
      */
     #[Route(name: 'app_project_index', methods: ['GET'])]
-    public function index(Request $request, RouterInterface $router, ProjectRepository $projectRepository, CrudActionService $crudActionService): Response
+    public function index(Request $request, RouterInterface $router, ProjectRepository $projectRepository): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int)$request->query->get('amount', '10');

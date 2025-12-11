@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\GeographicLocation;
 use App\Entity\Role;
-use App\Form\GeographicLocationType;
 use App\Repository\GeographicLocationRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Investment;
 use App\Entity\Role;
-use App\Form\InvestmentType;
 use App\Repository\InvestmentRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,14 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Building;
-use App\Entity\Floor;
 use App\Entity\Land;
-use App\Entity\NetworkConnection;
-use App\Form\LandType;
 use App\Repository\LandRepository;
-use App\Repository\NetworkConnectionRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\Traits\MunicipalityTrait;
 use App\Entity\IndividualClient;
 use App\Entity\Role;
 use App\Repository\IndividualClientRepository;
@@ -21,7 +20,7 @@ use Twig\Error\SyntaxError;
 #[Route('/individual/client')]
 final class IndividualClientController extends AbstractController
 {
-    use MunicipalityTrait;
+//    use MunicipalityTrait;
 
     /**
      * @throws SyntaxError

@@ -3,14 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Building;
-use App\Entity\Organism;
 use App\Entity\Role;
 use App\Entity\UrbanizationEstimate;
-use App\Form\UrbanizationEstimateType;
-use App\Repository\OrganismRepository;
 use App\Repository\UrbanizationEstimateRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

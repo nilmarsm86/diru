@@ -3,21 +3,20 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
-use App\Entity\ConstructiveAction;
 use App\Entity\Floor;
 use App\Entity\SubSystem;
-use App\Form\SubSystemType;
 use App\Repository\ConstructiveActionRepository;
-use App\Repository\LocalRepository;
 use App\Repository\SubSystemRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route('/sub/system')]
 final class SubSystemController extends AbstractController
@@ -46,6 +45,11 @@ final class SubSystemController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/new/{floor}/{reply}', name: 'app_sub_system_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CrudActionService $crudActionService, Floor $floor, bool $reply = false): Response
     {
@@ -57,12 +61,22 @@ final class SubSystemController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_sub_system_show', methods: ['GET'])]
     public function show(Request $request, SubSystem $subSystem, CrudActionService $crudActionService): Response
     {
         return $crudActionService->showAction($request, $subSystem, 'sub_system', 'subSystem', 'Detalles del subsistema');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit/{floor}/{reply}', name: 'app_sub_system_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, SubSystem $subSystem, CrudActionService $crudActionService, Floor $floor, bool $reply = false): Response
     {
@@ -73,6 +87,11 @@ final class SubSystemController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_sub_system_delete', methods: ['POST'])]
     public function delete(Request $request, SubSystem $subSystem, SubSystemRepository $subSystemRepository, CrudActionService $crudActionService, Floor $floor): Response
     {

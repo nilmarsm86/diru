@@ -63,9 +63,6 @@ final class UrbanizationEstimateForm extends AbstractController
         return $this->createForm(UrbanizationEstimateType::class, $this->ue);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(UrbanizationEstimateRepository $urbanizationEstimateRepository): ?Response
     {

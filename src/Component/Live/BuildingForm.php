@@ -105,9 +105,6 @@ final class BuildingForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(
         BuildingRepository $buildingRepository,

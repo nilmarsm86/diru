@@ -127,9 +127,6 @@ final class CorporateEntityForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(CorporateEntityRepository $corporateEntityRepository, OrganismRepository $organismRepository): ?Response
     {

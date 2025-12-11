@@ -53,9 +53,6 @@ final class GeographicLocationForm extends AbstractController
         return $this->createForm(GeographicLocationType::class, $this->gl);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(GeographicLocationRepository $geographicLocationRepository): ?Response
     {

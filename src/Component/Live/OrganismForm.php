@@ -53,9 +53,6 @@ final class OrganismForm extends AbstractController
         return $this->createForm(OrganismType::class, $this->org);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(OrganismRepository $organismRepository): ?Response
     {

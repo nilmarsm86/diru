@@ -6,12 +6,10 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\Land;
 use App\Form\LandType;
-use App\Repository\FloorRepository;
 use App\Repository\LandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -66,11 +64,8 @@ final class LandForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
-    public function save(Request $request, LandRepository $landRepository, FloorRepository $floorRepository): ?Response
+    public function save(LandRepository $landRepository): ?Response
     {
         $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
 

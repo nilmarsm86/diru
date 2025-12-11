@@ -49,9 +49,6 @@ final class RepresentativeForm extends AbstractController
         return $this->createForm(RepresentativeType::class, $this->per);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(RepresentativeRepository $representativeRepository): ?Response
     {

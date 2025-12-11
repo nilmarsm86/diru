@@ -53,9 +53,6 @@ final class UrbanRegulationTypeForm extends AbstractController
         return $this->createForm(UrbanRegulationTypeType::class, $this->urt);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {

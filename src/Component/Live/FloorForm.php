@@ -72,9 +72,6 @@ final class FloorForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(FloorRepository $floorRepository, EntityManagerInterface $entityManager): ?Response
     {

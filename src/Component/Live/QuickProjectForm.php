@@ -4,17 +4,16 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Currency;
+use App\Entity\Enums\ProjectType;
 use App\Entity\Municipality;
 use App\Entity\Project;
 use App\Form\QuickProjectType;
 use App\Repository\ClientRepository;
 use App\Repository\CurrencyRepository;
-use App\Repository\DraftsmanRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -86,16 +85,11 @@ final class QuickProjectForm extends AbstractController
         return $this->createForm(QuickProjectType::class, $this->pro);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(
         ProjectRepository $projectRepository,
         ClientRepository $clientRepository,
         MunicipalityRepository $municipalityRepository,
-        DraftsmanRepository $draftsmanRepository,
-        Security $security,
         CurrencyRepository $currencyRepository,
     ): ?Response {
         $this->preValue();
@@ -119,7 +113,7 @@ final class QuickProjectForm extends AbstractController
             $client = $clientRepository->find((int) $this->formValues['client']);
             $project->setClient($client);
 
-            $project->setType(\App\Entity\Enums\ProjectType::Parcel);
+            $project->setType(ProjectType::Parcel);
 
             $municipality = $municipalityRepository->findOneBy(['name' => ucfirst('Sin Municipio')]);
 

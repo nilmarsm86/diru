@@ -53,9 +53,6 @@ final class NetworkConnectionForm extends AbstractController
         return $this->createForm(NetworkConnectionType::class, $this->nc);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(NetworkConnectionRepository $networkConnectionRepository): ?Response
     {

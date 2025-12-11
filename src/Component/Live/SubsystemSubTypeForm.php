@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\SubsystemSubType;
 use App\Form\SubsystemSubTypeType;
 use App\Repository\SubsystemSubTypeRepository;
-use App\Repository\SubsystemTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,18 +60,16 @@ final class SubsystemSubTypeForm extends AbstractController
         $this->ssst = $ssst;
         if (is_null($this->ssst)) {
             $this->ssst = new SubsystemSubType();
-        } else {
-            //            if (!is_null($this->ssst->getSubsystemType())) {
-            //                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
-            //            }
         }
+        //        else {
+        //            if (!is_null($this->ssst->getSubsystemType())) {
+        //                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
+        //            }
+        //        }
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
-    public function save(SubsystemSubTypeRepository $subsystemSubTypeRepository, SubsystemTypeRepository $subsystemTypeRepository): ?Response
+    public function save(SubsystemSubTypeRepository $subsystemSubTypeRepository): ?Response
     {
         $successMsg = (is_null($this->ssst?->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.'; // TODO: personalizar los mensajes
         $this->submitForm();

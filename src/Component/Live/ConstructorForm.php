@@ -8,7 +8,6 @@ use App\Form\ConstructorType;
 use App\Repository\ConstructorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -54,11 +53,8 @@ final class ConstructorForm extends AbstractController
         return $this->createForm(ConstructorType::class, $this->cons);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
-    public function save(RequestStack $request, ConstructorRepository $constructorRepository): ?Response
+    public function save(ConstructorRepository $constructorRepository): ?Response
     {
         $successMsg = (is_null($this->cons?->getId())) ? 'Se ha agregado la constructora.' : 'Se ha modificado la constructora.';
 

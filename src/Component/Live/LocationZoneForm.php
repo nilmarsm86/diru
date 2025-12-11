@@ -53,9 +53,6 @@ final class LocationZoneForm extends AbstractController
         return $this->createForm(LocationZoneType::class, $this->lz);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(LocationZoneRepository $locationZoneRepository): ?Response
     {

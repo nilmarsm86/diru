@@ -141,9 +141,6 @@ final class InvestmentForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(InvestmentRepository $investmentRepository, LocationZoneRepository $locationZoneRepository): ?Response
     {

@@ -7,14 +7,12 @@ use App\Entity\Floor;
 use App\Entity\SubSystem;
 use App\Entity\SubsystemTypeSubsystemSubType;
 use App\Form\SubSystemType;
-use App\Repository\ProvinceRepository;
 use App\Repository\SubSystemRepository;
 use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
 use App\Repository\SubsystemTypeSubsystemSubTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -155,9 +153,6 @@ final class SubSystemForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(SubSystemRepository $subSystemRepository, EntityManagerInterface $entityManager): ?Response
     {

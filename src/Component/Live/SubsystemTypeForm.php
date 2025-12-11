@@ -5,9 +5,7 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\SubsystemType;
 use App\Form\SubsystemTypeType;
-use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,8 +42,8 @@ final class SubsystemTypeForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $subsystemSubType = null;
 
-    #[LiveProp(writable: true)]
-    public ?string $subsystemSubTypePosition = null;
+    //    #[LiveProp(writable: true)]
+    //    public ?string $subsystemSubTypePosition = null;
 
     public function mount(?SubsystemType $sst = null): void
     {
@@ -62,16 +60,11 @@ final class SubsystemTypeForm extends AbstractController
             $this->formValues['subsystemTypeSubsystemSubTypes'][count($this->formValues['subsystemTypeSubsystemSubTypes']) - 1]['subsystemSubType'] = $this->subsystemSubType;
         }
 
-        return $this->createForm(SubsystemTypeType::class, $this->sst, [
-            //            'screen' => 'building'
-        ]);
+        return $this->createForm(SubsystemTypeType::class, $this->sst/* , ['screen' => 'building'] */);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
-    public function save(SubsystemTypeRepository $subsystemTypeRepository, SubsystemSubTypeRepository $subsystemSubTypeRepository, EntityManagerInterface $entityManager): ?Response
+    public function save(SubsystemTypeRepository $subsystemTypeRepository): ?Response
     {
         $successMsg = (is_null($this->sst?->getId())) ? 'Se ha agregado el tipo.' : 'Se ha modificado el tipo.'; // TODO: personalizar los mensajes
 

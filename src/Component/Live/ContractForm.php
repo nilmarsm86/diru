@@ -49,9 +49,6 @@ final class ContractForm extends AbstractController
         return $this->createForm(ContractType::class, $this->con);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(ContractRepository $contractRepository): ?Response
     {

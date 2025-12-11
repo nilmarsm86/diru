@@ -16,7 +16,6 @@ use App\Repository\IndividualClientRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -140,15 +139,11 @@ final class ProjectForm extends AbstractController
         return $this->createForm(ProjectType::class, $this->pro);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(
         ProjectRepository $projectRepository,
         ClientRepository $clientRepository,
         InvestmentRepository $investmentRepository,
-        Security $security,
         DraftsmanRepository $draftsmanRepository,
         ConstructorRepository $constructorRepository,
     ): ?Response {
@@ -173,7 +168,7 @@ final class ProjectForm extends AbstractController
                 $client = (int) $this->formValues['enterpriseClient'];
             }
 
-            $client = $clientRepository->find((int) $client);
+            $client = $clientRepository->find($client);
             $project->setClient($client);
 
             if (!empty($this->formValues['draftsman'])) {

@@ -49,9 +49,6 @@ final class PersonForm extends AbstractController
         return $this->createForm(PersonType::class, $this->per);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(PersonRepository $personRepository): ?Response
     {

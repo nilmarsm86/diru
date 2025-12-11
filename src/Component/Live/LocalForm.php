@@ -97,9 +97,6 @@ final class LocalForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(LocalRepository $localRepository): ?Response
     {

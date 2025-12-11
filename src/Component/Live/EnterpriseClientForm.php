@@ -148,9 +148,6 @@ final class EnterpriseClientForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(EnterpriseClientRepository $enterpriseClientRepository, RepresentativeRepository $representativeRepository): ?Response
     {

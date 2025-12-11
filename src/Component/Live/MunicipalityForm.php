@@ -67,9 +67,6 @@ final class MunicipalityForm extends AbstractController
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(MunicipalityRepository $municipalityRepository, ProvinceRepository $provinceRepository): ?Response
     {

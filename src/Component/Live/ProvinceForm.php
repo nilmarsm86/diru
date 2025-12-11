@@ -53,9 +53,6 @@ final class ProvinceForm extends AbstractController
         return $this->createForm(ProvinceType::class, $this->prov);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(ProvinceRepository $provinceRepository): ?Response
     {

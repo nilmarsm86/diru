@@ -8,7 +8,6 @@ use App\Entity\Person;
 use App\Form\IndividualClientType;
 use App\Repository\IndividualClientRepository;
 use App\Repository\MunicipalityRepository;
-use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
 use App\Repository\RepresentativeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -157,9 +156,6 @@ final class IndividualClientForm extends AbstractController
         ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(IndividualClientRepository $individualClientRepository, RepresentativeRepository $representativeRepository): ?Response
     {

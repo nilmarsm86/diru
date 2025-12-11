@@ -62,9 +62,6 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
         return $this->createForm(ProjectTechnicalPreparationEstimateType::class, $this->ptpe);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository): ?Response
     {

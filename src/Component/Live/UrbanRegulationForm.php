@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\UrbanRegulation;
+use App\Form\UrbanRegulationType;
 use App\Repository\UrbanRegulationRepository;
 use App\Repository\UrbanRegulationTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,12 +64,9 @@ final class UrbanRegulationForm extends AbstractController
     {
         $this->preValue();
 
-        return $this->createForm(\App\Form\UrbanRegulationType::class, $this->ur);
+        return $this->createForm(UrbanRegulationType::class, $this->ur);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[LiveAction]
     public function save(UrbanRegulationRepository $urbanRegulationRepository, UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {

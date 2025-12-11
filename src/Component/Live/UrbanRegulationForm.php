@@ -56,6 +56,9 @@ final class UrbanRegulationForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<UrbanRegulation>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

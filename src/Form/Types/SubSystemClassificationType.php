@@ -19,6 +19,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class SubSystemClassificationType extends AbstractType
 {
     public function __construct(

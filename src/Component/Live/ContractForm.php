@@ -41,6 +41,9 @@ final class ContractForm extends AbstractController
         $this->con = (is_null($con)) ? new Contract() : $con;
     }
 
+    /**
+     * @return FormInterface<Contract>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ContractType::class, $this->con);

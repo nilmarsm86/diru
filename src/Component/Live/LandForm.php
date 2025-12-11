@@ -56,6 +56,9 @@ final class LandForm extends AbstractController
         $this->building = $building;
     }
 
+    /**
+     * @return FormInterface<Land>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(LandType::class, $this->l, [

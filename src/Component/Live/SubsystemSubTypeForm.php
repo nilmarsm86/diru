@@ -40,6 +40,9 @@ final class SubsystemSubTypeForm extends AbstractController
     //    #[LiveProp(writable: true)]
     //    public ?string $subsystemType = null;
 
+    /**
+     * @return FormInterface<SubsystemSubType>
+     */
     protected function instantiateForm(): FormInterface
     {
         //        dump($this->formValues);

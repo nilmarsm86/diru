@@ -101,6 +101,9 @@ final class CorporateEntityForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<CorporateEntity>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

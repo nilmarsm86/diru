@@ -41,6 +41,9 @@ final class RepresentativeForm extends AbstractController
         $this->per = (is_null($per)) ? new Representative() : $per;
     }
 
+    /**
+     * @return FormInterface<Representative>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(RepresentativeType::class, $this->per);

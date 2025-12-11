@@ -126,6 +126,9 @@ final class SubSystemForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<SubSystem>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

@@ -41,6 +41,9 @@ final class PersonForm extends AbstractController
         $this->per = (is_null($per)) ? new Person() : $per;
     }
 
+    /**
+     * @return FormInterface<Person>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(PersonType::class, $this->per);

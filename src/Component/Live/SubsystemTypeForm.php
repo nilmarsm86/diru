@@ -53,6 +53,9 @@ final class SubsystemTypeForm extends AbstractController
         $this->entity = $this->sst;
     }
 
+    /**
+     * @return FormInterface<SubsystemType>
+     */
     protected function instantiateForm(): FormInterface
     {
         if (!is_null($this->subsystemSubType)) {

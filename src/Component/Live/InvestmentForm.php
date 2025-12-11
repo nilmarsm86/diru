@@ -111,6 +111,9 @@ final class InvestmentForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<Investment>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

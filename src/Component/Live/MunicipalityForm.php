@@ -40,6 +40,9 @@ final class MunicipalityForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $province = null;
 
+    /**
+     * @return FormInterface<Municipality>
+     */
     protected function instantiateForm(): FormInterface
     {
         //        dump($this->formValues);

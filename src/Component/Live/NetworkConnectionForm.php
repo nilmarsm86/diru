@@ -45,6 +45,9 @@ final class NetworkConnectionForm extends AbstractController
         $this->entity = $this->nc;
     }
 
+    /**
+     * @return FormInterface<NetworkConnection>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(NetworkConnectionType::class, $this->nc);

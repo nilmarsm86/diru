@@ -8,6 +8,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class StreetAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

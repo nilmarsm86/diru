@@ -8,6 +8,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class UnitMeasurementType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void

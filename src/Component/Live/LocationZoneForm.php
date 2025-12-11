@@ -45,6 +45,9 @@ final class LocationZoneForm extends AbstractController
         $this->entity = $this->lz;
     }
 
+    /**
+     * @return FormInterface<LocationZone>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(LocationZoneType::class, $this->lz);

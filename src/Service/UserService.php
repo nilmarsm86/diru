@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User Service.
@@ -89,7 +90,7 @@ readonly class UserService
     /**
      * Handle name and lastname form.
      *
-     * @return FormInterface<ProfileFullNameType>
+     * @return FormInterface<UserInterface|null>
      */
     public function handleNameForm(Request $request): FormInterface
     {
@@ -111,7 +112,7 @@ readonly class UserService
     /**
      * handle password form.
      *
-     * @return FormInterface<ProfilePasswordType>
+     * @return FormInterface<ProfilePasswordForm>
      */
     public function handlePassword(Request $request): FormInterface
     {

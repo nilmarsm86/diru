@@ -118,6 +118,9 @@ final class EnterpriseClientForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<EnterpriseClient>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

@@ -46,6 +46,9 @@ final class ConstructorForm extends AbstractController
         $this->screen = $screen;
     }
 
+    /**
+     * @return FormInterface<Constructor>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ConstructorType::class, $this->cons);

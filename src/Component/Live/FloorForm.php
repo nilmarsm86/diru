@@ -58,6 +58,9 @@ final class FloorForm extends AbstractController
         $this->reply = $reply;
     }
 
+    /**
+     * @return FormInterface<Floor>
+     */
     protected function instantiateForm(): FormInterface
     {
         if (!is_null($this->fl)) {

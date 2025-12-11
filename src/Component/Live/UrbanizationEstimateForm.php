@@ -51,6 +51,9 @@ final class UrbanizationEstimateForm extends AbstractController
         $this->building?->addUrbanizationEstimate($this->ue);
     }
 
+    /**
+     * @return FormInterface<UrbanizationEstimate>
+     */
     protected function instantiateForm(): FormInterface
     {
         if (!is_null($this->ue)) {

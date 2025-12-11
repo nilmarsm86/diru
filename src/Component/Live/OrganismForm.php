@@ -45,6 +45,9 @@ final class OrganismForm extends AbstractController
         $this->entity = $this->org;
     }
 
+    /**
+     * @return FormInterface<Organism>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(OrganismType::class, $this->org);

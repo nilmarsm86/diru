@@ -81,6 +81,9 @@ final class LocalForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<Local>
+     */
     protected function instantiateForm(): FormInterface
     {
         //        $this->subSystem->addLocal($this->l);

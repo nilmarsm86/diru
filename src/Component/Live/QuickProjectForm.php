@@ -74,6 +74,9 @@ final class QuickProjectForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<Project>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

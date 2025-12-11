@@ -7,11 +7,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @template TData of User
+ * @template TData of UserInterface|null
  *
- * @extends AbstractType<User>
+ * @extends AbstractType<UserInterface|null>
  */
 class ProfileFullNameType extends AbstractType
 {

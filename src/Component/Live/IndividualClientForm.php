@@ -127,6 +127,9 @@ final class IndividualClientForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<IndividualClient>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

@@ -51,6 +51,9 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
         $this->building?->addProjectTechnicalPreparationEstimate($this->ptpe);
     }
 
+    /**
+     * @return FormInterface<ProjectTechnicalPreparationEstimate>
+     */
     protected function instantiateForm(): FormInterface
     {
         assert($this->ptpe instanceof ProjectTechnicalPreparationEstimate);

@@ -45,6 +45,9 @@ final class GeographicLocationForm extends AbstractController
         $this->entity = $this->gl;
     }
 
+    /**
+     * @return FormInterface<GeographicLocation>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(GeographicLocationType::class, $this->gl);

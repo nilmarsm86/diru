@@ -45,6 +45,9 @@ final class ProvinceForm extends AbstractController
         $this->entity = $this->prov;
     }
 
+    /**
+     * @return FormInterface<Province>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ProvinceType::class, $this->prov);

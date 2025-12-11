@@ -8,6 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class UrbanRegulationStructureEnumType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void

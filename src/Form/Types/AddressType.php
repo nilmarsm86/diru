@@ -17,6 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class AddressType extends AbstractType
 {
     public function __construct(
@@ -26,6 +31,10 @@ class AddressType extends AbstractType
     ) {
     }
 
+    /**
+     * @param FormBuilderInterface<array|null> $builder
+     * @param array<string, mixed>             $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $province = $this->provinceRepository->find($options['province']);
@@ -92,6 +101,10 @@ class AddressType extends AbstractType
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
+    /**
+     * @param FormInterface<array> $form
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['row'] = $options['row'];

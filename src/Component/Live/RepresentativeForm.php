@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Representative;
 use App\Form\RepresentativeType;
 use App\Repository\RepresentativeRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +47,12 @@ final class RepresentativeForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(RepresentativeRepository $representativeRepository): ?Response
     {
-        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -66,21 +65,23 @@ final class RepresentativeForm extends AbstractController
             $this->per = new Representative();
             if (!is_null($this->modal)) {
                 $this->modalManage($representative, 'Se ha selecionado el representante agregado.', [
-                    'representative' => $representative->getId()
+                    'representative' => $representative->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($representative, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return null;
     }
-
 }

@@ -13,13 +13,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of Investment
+ *
  * @extends AbstractType<Investment>
  */
 class InvestmentType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -28,8 +28,8 @@ class InvestmentType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre de la inversión:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la inversión'
-                ]
+                    'placeholder' => 'Nombre de la inversión',
+                ],
             ])
             ->add('locationZone', EntityPlusType::class, [
                 'class' => LocationZone::class,
@@ -44,45 +44,45 @@ class InvestmentType extends AbstractType
             ->add('betweenStreets', null, [
                 'label' => 'Entre calles:',
                 'attr' => [
-                    'placeholder' => 'Entre calles'
-                ]
+                    'placeholder' => 'Entre calles',
+                ],
             ])
             ->add('town', null, [
                 'label' => 'Reparto/Pueblo:',
                 'attr' => [
-                    'placeholder' => 'Nombre del reparto o pueblo'
-                ]
+                    'placeholder' => 'Nombre del reparto o pueblo',
+                ],
             ])
             ->add('popularCouncil', null, [
                 'label' => 'Consejo popular:',
                 'attr' => [
-                    'placeholder' => 'Consejo popular'
-                ]
+                    'placeholder' => 'Consejo popular',
+                ],
             ])
             ->add('block', null, [
                 'label' => 'Manzana:',
                 'attr' => [
-                    'placeholder' => 'Manzana'
-                ]
+                    'placeholder' => 'Manzana',
+                ],
             ])
             ->add('district', null, [
                 'label' => 'Circunscripción:',
                 'attr' => [
-                    'placeholder' => 'Circunscripción'
-                ]
+                    'placeholder' => 'Circunscripción',
+                ],
             ])
             ->add('addressNumber', null, [
                 'label' => 'Número:',
                 'attr' => [
-                    'placeholder' => 'Número'
-                ]
+                    'placeholder' => 'Número',
+                ],
             ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
-                'live_form' => $options['live_form']
+                'live_form' => $options['live_form'],
             ])
 
         ;
@@ -93,13 +93,13 @@ class InvestmentType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Investment::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'province' => 0,
             'municipality' => 0,
             'street' => '',
             'live_form' => false,
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('province', 'int');

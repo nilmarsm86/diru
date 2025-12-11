@@ -3,13 +3,9 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Entity\LocationZone;
 use App\Entity\UrbanRegulationType;
-use App\Form\LocationZoneType;
 use App\Form\UrbanRegulationTypeType;
-use App\Repository\LocationZoneRepository;
 use App\Repository\UrbanRegulationTypeRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,12 +54,12 @@ final class UrbanRegulationTypeForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {
-        $successMsg = (is_null($this->urt?->getId())) ? 'Se ha agregado el tipo de regulación urbana.' : 'Se ha modificado el tipo de regulación urbana.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->urt?->getId())) ? 'Se ha agregado el tipo de regulación urbana.' : 'Se ha modificado el tipo de regulación urbana.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -77,17 +73,20 @@ final class UrbanRegulationTypeForm extends AbstractController
             $this->entity = $this->urt;
             if (!is_null($this->modal)) {
                 $this->modalManage($urt, 'Se ha seleccionado el tipo de regulación urbana.', [
-                    'type' => $urt->getId()
+                    'type' => $urt->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($urt, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_urban_regulation_type_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -98,5 +97,4 @@ final class UrbanRegulationTypeForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

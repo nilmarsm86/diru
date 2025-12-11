@@ -3,18 +3,18 @@
 namespace App\Entity;
 
 use App\Entity\Traits\PhoneAndEmailTrait;
+use App\Entity\Traits\StateTrait;
 use App\Repository\UserRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Exception;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use App\Validator\Username;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\Traits\StateTrait as StateTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -34,12 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Establezca el nombre de usuario.')]
-//    #[Assert\NotNull(message: 'El nombre de usuario no puede ser nulo.')]
+    //    #[Assert\NotNull(message: 'El nombre de usuario no puede ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     #[Username]
     private ?string $username = null;
 
-    /** @var Collection<int, Role>  */
+    /** @var Collection<int, Role> */
     #[ORM\ManyToMany(targetEntity: Role::class)]
     #[Assert\Count(
         min: 1,
@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Establezca la contraseña.')]
-//    #[Assert\NotNull(message: 'La contraseña no puede ser nula.')]
+    //    #[Assert\NotNull(message: 'La contraseña no puede ser nula.')]
     private ?string $password = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -61,15 +61,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
     private ?Person $person = null;
 
-//    private $isDraftsman = false;
+    //    private $isDraftsman = false;
 
     public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email, bool $isDraftsman = false)
     {
-//        if($isDraftsman){
-//            $this->person = new Draftsman();
-//        }else{
-//            $this->person = new Person();
-//        }
+        //        if($isDraftsman){
+        //            $this->person = new Draftsman();
+        //        }else{
+        //            $this->person = new Person();
+        //        }
         $this->person = ($isDraftsman) ? new Draftsman() : new Person();
         $this->person->setName($name);
         $this->person->setLastname($lastname);
@@ -102,10 +102,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUsername(): string
     {
-//        if(is_null($this->username)){
-//            return '';
-//        }
-//        return $this->username;
+        //        if(is_null($this->username)){
+        //            return '';
+        //        }
+        //        return $this->username;
 
         return (is_null($this->username)) ? '' : $this->username;
     }
@@ -121,30 +121,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
-     * @return string
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->username;
+        return (string) $this->username;
     }
 
     /**
      * @return array<string>
-     * @see UserInterface
      *
+     * @see UserInterface
      */
     public function getRoles(): array
     {
         $roles = [];
         foreach ($this->roles as $rol) {
-            /** @var Role $rol */
+            /* @var Role $rol */
             $roles[] = $rol->getName();
         }
+
         return array_unique($roles);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function addRole(Role $role): static
     {
@@ -160,21 +160,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function removeRole(Role $role, bool $secure = true): static
     {
         if (!$this->isActive()) {
-            throw new Exception('No puede eliminar rol de un usuario inactivo.', 1);
+            throw new \Exception('No puede eliminar rol de un usuario inactivo.', 1);
         }
 
-        if ($role->getName() === Role::ROLE_CLIENT) {
-            throw new Exception('No puede ser eliminado el rol de cliente.');
+        if (Role::ROLE_CLIENT === $role->getName()) {
+            throw new \Exception('No puede ser eliminado el rol de cliente.');
         }
 
         if ($secure) {
             if (in_array(Role::ROLE_ADMIN, $this->getRoles())) {
-                throw new Exception('No pueden ser eliminados los roles del administrador.');
+                throw new \Exception('No pueden ser eliminados los roles del administrador.');
             }
         }
 
@@ -204,7 +204,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function register(UserPasswordHasherInterface $userPasswordHasher, Role $baseRol): static
     {
@@ -220,6 +220,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $pass = (is_null($this->password)) ? '' : $this->password;
         $encodePassword = $userPasswordHasher->hashPassword($this, $pass);
         $this->setPassword($encodePassword);
+
         return $this;
     }
 
@@ -238,8 +239,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Can change this user roles
-     * @return bool
+     * Can change this user roles.
      */
     public function blockRoles(): bool
     {
@@ -247,8 +247,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Can change this user roles
-     * @return bool
+     * Can change this user roles.
      */
     public function isSuperAdmin(): bool
     {
@@ -256,44 +255,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Can change this user roles
-     * @return bool
+     * Can change this user roles.
      */
     public function isAdmin(): bool
     {
         return in_array(Role::ROLE_ADMIN, $this->getRoles());
     }
 
-    /**
-     * @return bool
-     */
     public function isDraftsman(): bool
     {
         return in_array(Role::ROLE_DRAFTSMAN, $this->getRoles());
     }
 
-    /**
-     * @return bool
-     */
     public function isClient(): bool
     {
         return in_array(Role::ROLE_CLIENT, $this->getRoles());
     }
 
-    /**
-     * @return bool
-     */
     public function isDirector(): bool
     {
         return in_array(Role::ROLE_DIRECTOR, $this->getRoles());
     }
 
-    /**
-     * @return bool
-     */
     public function isInvestor(): bool
     {
         return in_array(Role::ROLE_INVESTOR, $this->getRoles());
     }
-
 }

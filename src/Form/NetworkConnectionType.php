@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of NetworkConnection
+ *
  * @extends AbstractType<NetworkConnection>
  */
 class NetworkConnectionType extends AbstractType
@@ -29,8 +30,8 @@ class NetworkConnectionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => NetworkConnection::class,
             'attr' => [
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

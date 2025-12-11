@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Organism;
 use App\Form\OrganismType;
 use App\Repository\OrganismRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,12 +51,12 @@ final class OrganismForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(OrganismRepository $organismRepository): ?Response
     {
-        $successMsg = (is_null($this->org?->getId())) ? 'Se ha agregado el organismo.' : 'Se ha modificado el organismo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->org?->getId())) ? 'Se ha agregado el organismo.' : 'Se ha modificado el organismo.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -71,21 +70,23 @@ final class OrganismForm extends AbstractController
             $this->entity = $this->org;
             if (!is_null($this->modal)) {
                 $this->modalManage($organism, 'Se ha seleccionado el nuevo organismo agregado.', [
-                    'organism' => $organism->getId()
+                    'organism' => $organism->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($organism, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_organism_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return null;
     }
-
 }

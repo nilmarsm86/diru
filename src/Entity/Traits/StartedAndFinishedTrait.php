@@ -5,7 +5,7 @@ namespace App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 
 trait StartedAndFinishedTrait
- {
+{
     #[ORM\Column]
     private ?\DateTimeImmutable $startedAt = null;
 
@@ -35,4 +35,4 @@ trait StartedAndFinishedTrait
 
         return $this;
     }
- }
+}

@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\NetworkConnection;
 use App\Form\NetworkConnectionType;
 use App\Repository\NetworkConnectionRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,12 +51,12 @@ final class NetworkConnectionForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(NetworkConnectionRepository $networkConnectionRepository): ?Response
     {
-        $successMsg = (is_null($this->nc?->getId())) ? 'Se ha agregado la conexión de red.' : 'Se ha modificado la conexión de red.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->nc?->getId())) ? 'Se ha agregado la conexión de red.' : 'Se ha modificado la conexión de red.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -71,17 +70,20 @@ final class NetworkConnectionForm extends AbstractController
             $this->entity = $this->nc;
             if (!is_null($this->modal)) {
                 $this->modalManage($nc, 'Se ha seleccionado la nueva conexión de red.', [
-                    'locationZone' => $nc->getId()
+                    'locationZone' => $nc->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($nc, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_network_connection_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -92,5 +94,4 @@ final class NetworkConnectionForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

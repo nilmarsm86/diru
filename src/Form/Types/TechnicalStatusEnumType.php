@@ -23,6 +23,7 @@ class TechnicalStatusEnumType extends AbstractType
 
                 $cases = TechnicalStatus::cases();
                 unset($cases[1]);
+
                 return $cases;
             })
             ->setDefault('choice_label', TechnicalStatus::getLabel())

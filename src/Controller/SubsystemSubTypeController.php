@@ -40,6 +40,7 @@ final class SubsystemSubTypeController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $subsystemSubType = new SubsystemSubType();
+
         return $crudActionService->formLiveComponentAction($request, $subsystemSubType, 'subsystem_sub_type', [
             'title' => 'Nuevo sub tipo',
         ]);
@@ -79,8 +80,9 @@ final class SubsystemSubTypeController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el sub tipo.';
         $response = $crudActionService->deleteAction($request, $subsystemSubTypeRepository, $subsystemSubType, $successMsg, 'app_subsystem_sub_type_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

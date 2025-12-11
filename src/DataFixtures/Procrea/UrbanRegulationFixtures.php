@@ -71,7 +71,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'observation' => 'COMPARATIVA CON PLANTA',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Floor,
-                ]
+                ],
             ],
             UrbanRegulationTypeFixtures::TYPES[2] => [
                 [
@@ -100,7 +100,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'observation' => 'NO COMPARATIVA-VISUAL-JS',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Building,
-                ]
+                ],
             ],
             UrbanRegulationTypeFixtures::TYPES[3] => [
                 [
@@ -174,7 +174,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'observation' => 'NO COMPARATIVA-VISUAL-JS',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Local,
-                ]
+                ],
             ],
             UrbanRegulationTypeFixtures::TYPES[4] => [
                 [
@@ -230,7 +230,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'observation' => 'COMPARATIVA CON LOCAL (BALCONES, LOGGIAS, TERRAZAS)',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Local,
-                ]
+                ],
             ],
             UrbanRegulationTypeFixtures::TYPES[5] => [
                 [
@@ -412,7 +412,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'observation' => 'COMPARATIVA CON SUBSISTEMA',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::SubSystem,
-                ]
+                ],
             ],
         ];
 
@@ -428,7 +428,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                         $urbanRegulationEntity->setCode((string) rand(111111, 999999));
                         $urbanRegulationEntity->setType($urbanRegulationEntityType);
                         $urbanRegulationEntity->setComment($regulation['observation']);
-                        $urbanRegulationEntity->setData((string)$value);
+                        $urbanRegulationEntity->setData((string) $value);
                         $urbanRegulationEntity->setDescription($regulation['description']);
                         $urbanRegulationEntity->setMeasurementUnit($regulation['um']);
                         $urbanRegulationEntity->setStructure($regulation['structure']);
@@ -450,7 +450,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
     public function getDependencies(): array
     {
         return [
-            UrbanRegulationTypeFixtures::class
+            UrbanRegulationTypeFixtures::class,
         ];
     }
 }

@@ -7,14 +7,13 @@ use App\Repository\ConstructorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConstructorRepository::class)]
 #[ORM\UniqueConstraint(name: 'constructor_name', columns: ['name'])]
 #[DoctrineAssert\UniqueEntity('name', message: 'El nombre de la constructora debe ser único.')]
 #[DoctrineAssert\UniqueEntity('code', message: 'El código de la constructora debe ser único.')]
-
 class Constructor
 {
     use NameToStringTrait;
@@ -34,11 +33,11 @@ class Constructor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-//    /**
-//     * @var Collection<int, Building>
-//     */
-//    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
-//    private Collection $buildings;
+    //    /**
+    //     * @var Collection<int, Building>
+    //     */
+    //    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
+    //    private Collection $buildings;
 
     /**
      * @var Collection<int, ConstructorBuilding>
@@ -93,35 +92,35 @@ class Constructor
         return $this;
     }
 
-//    /**
-//     * @return Collection<int, Building>
-//     */
-//    public function getBuildings(): Collection
-//    {
-//        return $this->buildings;
-//    }
-//
-//    public function addBuilding(Building $building): static
-//    {
-//        if (!$this->buildings->contains($building)) {
-//            $this->buildings->add($building);
-//            $building->setConstructor($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeBuilding(Building $building): static
-//    {
-//        if ($this->buildings->removeElement($building)) {
-//            // set the owning side to null (unless already changed)
-//            if ($building->getConstructor() === $this) {
-//                $building->setConstructor(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    //    /**
+    //     * @return Collection<int, Building>
+    //     */
+    //    public function getBuildings(): Collection
+    //    {
+    //        return $this->buildings;
+    //    }
+    //
+    //    public function addBuilding(Building $building): static
+    //    {
+    //        if (!$this->buildings->contains($building)) {
+    //            $this->buildings->add($building);
+    //            $building->setConstructor($this);
+    //        }
+    //
+    //        return $this;
+    //    }
+    //
+    //    public function removeBuilding(Building $building): static
+    //    {
+    //        if ($this->buildings->removeElement($building)) {
+    //            // set the owning side to null (unless already changed)
+    //            if ($building->getConstructor() === $this) {
+    //                $building->setConstructor(null);
+    //            }
+    //        }
+    //
+    //        return $this;
+    //    }
 
     /**
      * @return Collection<int, ConstructorBuilding>
@@ -131,14 +130,10 @@ class Constructor
         return $this->constructorBuildings;
     }
 
-    /**
-     * @param Building $building
-     * @return ConstructorBuilding|null
-     */
     public function getConstructorBuildingByBuilding(Building $building): ?ConstructorBuilding
     {
-        foreach ($this->getConstructorBuildings() as $constructorBuilding){
-            if($constructorBuilding->getBuilding()?->getId() === $building->getId()){
+        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
+            if ($constructorBuilding->getBuilding()?->getId() === $building->getId()) {
                 return $constructorBuilding;
             }
         }
@@ -168,9 +163,10 @@ class Constructor
     public function getBuildings(): Collection
     {
         $buildings = new ArrayCollection();
-        foreach ($this->getConstructorBuildings() as $constructorBuilding){
+        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
             $buildings->add($constructorBuilding->getBuilding());
         }
+
         return $buildings;
     }
 
@@ -189,9 +185,10 @@ class Constructor
     {
         $constructorBuildings = $building->getConstructorBuildings();
         /** @var ConstructorBuilding $constructorBuilding */
-        foreach ($constructorBuildings as $constructorBuilding){
-            if($constructorBuilding->hasConstructor($this)){
+        foreach ($constructorBuildings as $constructorBuilding) {
+            if ($constructorBuilding->hasConstructor($this)) {
                 $this->removeConstructorBuilding($constructorBuilding);
+
                 return $this;
             }
         }

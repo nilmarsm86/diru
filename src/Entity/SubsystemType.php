@@ -8,13 +8,12 @@ use App\Repository\SubsystemTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubsystemTypeRepository::class)]
-//#[ORM\UniqueConstraint(name: 'subsystemtype_name', columns: ['name'])]
-//#[DoctrineAssert\UniqueEntity('name', message: 'El tipo de subsistema ya existe.')]
+// #[ORM\UniqueConstraint(name: 'subsystemtype_name', columns: ['name'])]
+// #[DoctrineAssert\UniqueEntity('name', message: 'El tipo de subsistema ya existe.')]
 #[ORM\HasLifecycleCallbacks]
 class SubsystemType
 {
@@ -25,14 +24,14 @@ class SubsystemType
     #[ORM\Column]
     private ?int $id = null;
 
-//    #[ORM\ManyToMany(targetEntity: SubsystemSubType::class, mappedBy: 'subsystemTypes')]
-//    #[Assert\Count(
-//        min: 1,
-//        minMessage: 'Debe establecer al menos 1 subtipo para este tipo.',
-//    )]
-//    #[Assert\Valid]
-//    #[ORM\OrderBy(["name" => "ASC"])]
-//    private Collection $subsystemSubTypes;
+    //    #[ORM\ManyToMany(targetEntity: SubsystemSubType::class, mappedBy: 'subsystemTypes')]
+    //    #[Assert\Count(
+    //        min: 1,
+    //        minMessage: 'Debe establecer al menos 1 subtipo para este tipo.',
+    //    )]
+    //    #[Assert\Valid]
+    //    #[ORM\OrderBy(["name" => "ASC"])]
+    //    private Collection $subsystemSubTypes;
 
     #[ORM\Column(length: 255)]
     private ?string $classification = null;
@@ -52,12 +51,12 @@ class SubsystemType
         minMessage: 'Debe establecer al menos 1 subtipo para este tipo.',
     )]
     #[Assert\Valid]
-//    #[ORM\OrderBy(["name" => "ASC"])]
+    //    #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $subsystemTypeSubsystemSubTypes;
 
     public function __construct()
     {
-//        $this->subsystemSubTypes = new ArrayCollection();
+        //        $this->subsystemSubTypes = new ArrayCollection();
         $this->subsystemTypeSubsystemSubTypes = new ArrayCollection();
     }
 
@@ -66,36 +65,36 @@ class SubsystemType
         return $this->id;
     }
 
-//    /**
-//     * @return Collection<int, SubsystemSubType>
-//     */
-//    public function getSubsystemSubTypes(): Collection
-//    {
-//        return $this->subsystemSubTypes;
-//    }
-//
-//    public function addSubsystemSubType(SubsystemSubType $subsystemSubType): static
-//    {
-//        if (!$this->subsystemSubTypes->contains($subsystemSubType)) {
-//            $this->subsystemSubTypes->add($subsystemSubType);
-//            $subsystemSubType->addSubsystemType($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeSubsystemSubType(SubsystemSubType $subsystemSubType): static
-//    {
-//        if ($this->subsystemSubTypes->removeElement($subsystemSubType)) {
-//            // set the owning side to null (unless already changed)
-////            if ($subsystemSubType->getSubsystemType() === $this) {
-////                $subsystemSubType->setSubsystemType(null);
-////            }
-//            $subsystemSubType->removeSubsystemType($this);
-//        }
-//
-//        return $this;
-//    }
+    //    /**
+    //     * @return Collection<int, SubsystemSubType>
+    //     */
+    //    public function getSubsystemSubTypes(): Collection
+    //    {
+    //        return $this->subsystemSubTypes;
+    //    }
+    //
+    //    public function addSubsystemSubType(SubsystemSubType $subsystemSubType): static
+    //    {
+    //        if (!$this->subsystemSubTypes->contains($subsystemSubType)) {
+    //            $this->subsystemSubTypes->add($subsystemSubType);
+    //            $subsystemSubType->addSubsystemType($this);
+    //        }
+    //
+    //        return $this;
+    //    }
+    //
+    //    public function removeSubsystemSubType(SubsystemSubType $subsystemSubType): static
+    //    {
+    //        if ($this->subsystemSubTypes->removeElement($subsystemSubType)) {
+    //            // set the owning side to null (unless already changed)
+    // //            if ($subsystemSubType->getSubsystemType() === $this) {
+    // //                $subsystemSubType->setSubsystemType(null);
+    // //            }
+    //            $subsystemSubType->removeSubsystemType($this);
+    //        }
+    //
+    //        return $this;
+    //    }
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
@@ -106,7 +105,7 @@ class SubsystemType
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[ORM\PostLoad]
     public function onLoad(): void
@@ -122,7 +121,7 @@ class SubsystemType
 
     public function setClassification(SubsystemFunctionalClassification $enumClassification): static
     {
-        $this->classification = "";
+        $this->classification = '';
         $this->enumClassification = $enumClassification;
 
         return $this;
@@ -157,5 +156,4 @@ class SubsystemType
 
         return $this;
     }
-
 }

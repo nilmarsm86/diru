@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
     'urbanization' => 'UrbanizationEstimate',
     'ptp' => 'ProjectTechnicalPreparationEstimate',
 ])]
-
 class Estimate
 {
     #[ORM\Id]
@@ -124,16 +123,16 @@ class Estimate
 
     public function getTotalPrice(): float
     {
-        return (float)$this->getPrice() * $this->getQuantity();
+        return (float) $this->getPrice() * $this->getQuantity();
     }
 
     public function getFormatedTotalPrice(): string
     {
-        return (number_format(((float)$this->getTotalPrice() / 100), 2)) . ' ' . $this->getBuilding()?->getProjectCurrency();
+        return number_format((float) $this->getTotalPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
     }
 
     public function getFormatedPrice(): string
     {
-        return (number_format(((float)$this->getPrice() / 100), 2)) . ' ' . $this->getBuilding()?->getProjectCurrency();
+        return number_format((float) $this->getPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
     }
 }

@@ -14,11 +14,10 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
     }
 
     /**
-     * @param string $controllerName the Stimulus controller name
-     * @param array<mixed> $controllerValues array of controller values
+     * @param string       $controllerName    the Stimulus controller name
+     * @param array<mixed> $controllerValues  array of controller values
      * @param array<mixed> $controllerClasses array of controller CSS classes
      * @param array<mixed> $controllerOutlets array of controller outlets
-     * @return StimulusAttributes
      */
     public function renderStimulusController(string $controllerName, array $controllerValues = [], array $controllerClasses = [], array $controllerOutlets = []): StimulusAttributes
     {
@@ -30,11 +29,7 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
     }
 
     /**
-     * @param string $controllerName
-     * @param string $actionName
-     * @param string|null $eventName
      * @param array<mixed> $parameters
-     * @return StimulusAttributes
      */
     public function renderStimulusAction(string $controllerName, string $actionName, ?string $eventName = null, array $parameters = []): StimulusAttributes
     {
@@ -46,9 +41,8 @@ readonly class StimulusControllerTwigExtensionRuntime implements RuntimeExtensio
     }
 
     /**
-     * @param string $controllerName the Stimulus controller name
-     * @param string|null $targetNames The space-separated list of target names if a string is passed to the 1st argument. Optional.
-     * @return StimulusAttributes
+     * @param string      $controllerName the Stimulus controller name
+     * @param string|null $targetNames    The space-separated list of target names if a string is passed to the 1st argument. Optional.
      */
     public function renderStimulusTarget(string $controllerName, ?string $targetNames = null): StimulusAttributes
     {

@@ -16,13 +16,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of SubsystemTypeSubsystemSubType
+ *
  * @extends AbstractType<SubsystemTypeSubsystemSubType>
  */
 class SubsystemTypeSubsystemSubTypeType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -51,10 +51,6 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
         ]);
     }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
         /** @var SubsystemTypeSubsystemSubType $stsst */
@@ -66,42 +62,42 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
                 ->add('subsystemSubType', EntityPlusType::class, [
                     'label' => 'Nombre:',
                     'attr' => [
-                        'placeholder' => 'Nombre del subtipo'
+                        'placeholder' => 'Nombre del subtipo',
                     ],
                     'class' => SubsystemSubType::class,
-//                'choice_label' => 'name',
-//                'choice_value' => 'id',
+                    //                'choice_label' => 'name',
+                    //                'choice_value' => 'id',
 
                     'add' => true,
                     'add_title' => 'Agregar Subtipo',
                     'add_id' => 'modal-load',
                     'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
 
-//                'data' => $stsst->getSubsystemSubType(),
-//                'row_attr' => [
-//                    'class' => 'mb-3 row'
-//                ]
+                    //                'data' => $stsst->getSubsystemSubType(),
+                    //                'row_attr' => [
+                    //                    'class' => 'mb-3 row'
+                    //                ]
                 ]);
         } else {
             $form
                 ->add('subsystemSubType', EntityType::class, [
                     'label' => 'Nombre:',
                     'attr' => [
-                        'placeholder' => 'Nombre del subtipo'
+                        'placeholder' => 'Nombre del subtipo',
                     ],
                     'class' => SubsystemSubType::class,
-//                'choice_label' => 'name',
-//                'choice_value' => 'id',
+                    //                'choice_label' => 'name',
+                    //                'choice_value' => 'id',
 
-//                    'add' => true,
-//                    'add_title' => 'Agregar Subtipo',
-//                    'add_id' => 'modal-load',
-//                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
+                    //                    'add' => true,
+                    //                    'add_title' => 'Agregar Subtipo',
+                    //                    'add_id' => 'modal-load',
+                    //                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
 
-//                'data' => $stsst->getSubsystemSubType(),
-//                'row_attr' => [
-//                    'class' => 'mb-3 row'
-//                ]
+                    //                'data' => $stsst->getSubsystemSubType(),
+                    //                'row_attr' => [
+                    //                    'class' => 'mb-3 row'
+                    //                ]
                 ]);
         }
 
@@ -109,21 +105,21 @@ class SubsystemTypeSubsystemSubTypeType extends AbstractType
             ->add('subsystemSubType', EntityPlusType::class, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del subtipo'
+                    'placeholder' => 'Nombre del subtipo',
                 ],
                 'class' => SubsystemSubType::class,
-//                'choice_label' => 'name',
-//                'choice_value' => 'id',
+                //                'choice_label' => 'name',
+                //                'choice_value' => 'id',
 
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/*, 'screen' => $options['screen'*/]),
+                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'/* , 'screen' => $options['screen' */]),
 
-//                'data' => $stsst->getSubsystemSubType(),
-//                'row_attr' => [
-//                    'class' => 'mb-3 row'
-//                ]
+                //                'data' => $stsst->getSubsystemSubType(),
+                //                'row_attr' => [
+                //                    'class' => 'mb-3 row'
+                //                ]
             ]);
     }
 }

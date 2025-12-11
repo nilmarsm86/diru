@@ -47,7 +47,6 @@ class EstimateRepository extends ServiceEntityRepository implements FilterInterf
     //        ;
     //    }
 
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         // TODO: Implement addFilter() method.

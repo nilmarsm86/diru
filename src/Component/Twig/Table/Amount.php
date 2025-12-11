@@ -8,7 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Amount
 {
     public string $label = 'Mostrar';
-    /** @var array<mixed>  */
+    /** @var array<mixed> */
     public array $options = [];
     public int $amount = 0;
     public string $queryName = 'amount';

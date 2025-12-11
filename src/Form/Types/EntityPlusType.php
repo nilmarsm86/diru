@@ -55,9 +55,6 @@ class EntityPlusType extends AbstractType
         $resolver->setAllowedTypes('modify_icon', 'string');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['add'] = $options['add'];

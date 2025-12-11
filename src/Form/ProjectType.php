@@ -2,13 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\CorporateEntity;
 use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
+use App\Entity\Enums\ProjectType as EnumProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
-use App\Entity\Person;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
@@ -24,21 +23,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
-use App\Entity\Enums\ProjectType as EnumProjectType;
 
 /**
  * @template TData of Project
+ *
  * @extends AbstractType<Project>
  */
 class ProjectType extends AbstractType
 {
     public function __construct(
-        private readonly RouterInterface            $router,
+        private readonly RouterInterface $router,
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
-    )
-    {
-
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -54,28 +51,28 @@ class ProjectType extends AbstractType
 
                 'detail' => true,
                 'detail_title' => 'Detalle de la Inversión',
-                'detail_id' => 'modal-load',//'detail_investment_entity',
+                'detail_id' => 'modal-load', // 'detail_investment_entity',
                 'detail_url' => $this->router->generate('app_investment_show', ['id' => 0, 'state' => 'modal']),
 
                 'add' => true,
                 'add_title' => 'Agregar Inversión',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_investment_new', ['modal' => 'modal-load']),
-//                'query_builder' => $this->getInvestmentQueryBuilder($options),
+                //                'query_builder' => $this->getInvestmentQueryBuilder($options),
                 'constraints' => [
-                    new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.')
-                ]
+                    new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.'),
+                ],
             ])
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,
                 'label' => 'Moneda:',
-                'choice_attr' => fn($choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
+                'choice_attr' => fn ($choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
                 'attr' => [
-                    'data-currency-target' => 'select'
-                ]
-//                'constraints' => [
-//                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
-//                ]
+                    'data-currency-target' => 'select',
+                ],
+                //                'constraints' => [
+                //                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
+                //                ]
             ])
             ->add('comment', null, [
                 'label' => false,
@@ -91,7 +88,7 @@ class ProjectType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Project::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'error_mapping' => [
                 'enumType' => 'type',
@@ -99,23 +96,19 @@ class ProjectType extends AbstractType
         ]);
     }
 
-//    /**
-//     * @param array<mixed> $options
-//     * @return Closure
-//     */
-//    private function getInvestmentQueryBuilder(array $options): Closure
-//    {
-//        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-//            return $er->createQueryBuilder('i')
-//                ->join('i.project', 'p')
-//                ->orderBy('i.name');
-//        };
-//    }
+    //    /**
+    //     * @param array<mixed> $options
+    //     * @return Closure
+    //     */
+    //    private function getInvestmentQueryBuilder(array $options): Closure
+    //    {
+    //        return function (EntityRepository $er) use ($options): QueryBuilder|array {
+    //            return $er->createQueryBuilder('i')
+    //                ->join('i.project', 'p')
+    //                ->orderBy('i.name');
+    //        };
+    //    }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
         /** @var Project $project */
@@ -129,32 +122,31 @@ class ProjectType extends AbstractType
             $form->add('state', ProjectStateEnumType::class, [
                 'label' => 'Estado del proyecto:',
                 'attr' => [
-                    'data-visibility-by-select-target' => 'select'
-                ]
+                    'data-visibility-by-select-target' => 'select',
+                ],
             ]);
         } else {
             $moreAttrDraftsman = ['required' => false];
             $form->add('draftsman', EntityType::class, [
-                    'mapped' => false,
-                    'class' => Draftsman::class,
-                    'placeholder' => '-Seleccione-',
-                    'label' => 'Proyectista:'
-                ] + $moreAttrDraftsman);
+                'mapped' => false,
+                'class' => Draftsman::class,
+                'placeholder' => '-Seleccione-',
+                'label' => 'Proyectista:',
+            ] + $moreAttrDraftsman);
         }
-
 
         $moreAttr = [];
         if (!is_null($project->getContract())) {
             $moreAttr = [
                 'constraints' => [
-                    new Assert\Valid()
+                    new Assert\Valid(),
                 ],
-                'error_bubbling' => false
+                'error_bubbling' => false,
             ];
         }
         $form->add('contract', ContractType::class, [
-                'required' => !is_null($project->getContract()),
-            ] + $moreAttr);
+            'required' => !is_null($project->getContract()),
+        ] + $moreAttr);
 
         $form->add('clientType', ChoiceType::class, [
             'label' => 'Tipo cliente:',
@@ -167,17 +159,18 @@ class ProjectType extends AbstractType
             'multiple' => false,
             'data' => (is_null($project->getClient())) ? 'individual' : ($project->isIndividualClient($this->individualClientRepository) ? 'individual' : 'enterprise'),
             'attr' => [
-                'data-action' => 'change->visibility#toggle'//show or hide representative field
+                'data-action' => 'change->visibility#toggle', // show or hide representative field
             ],
             'label_attr' => [
-                'class' => 'radio-inline'
-            ]
+                'class' => 'radio-inline',
+            ],
         ]);
 
         $form->add('individualClient', EntityPlusType::class, [
             'class' => IndividualClient::class,
             'choice_label' => function (IndividualClient $individualClient) {
                 $person = $individualClient->getPerson();
+
                 return $person?->getFullName();
             },
             'mapped' => false,
@@ -198,9 +191,10 @@ class ProjectType extends AbstractType
             'class' => EnterpriseClient::class,
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
                 $corporateEntity = $enterpriseClient->getCorporateEntity();
+
                 return $corporateEntity?->getName();
             },
-            'group_by' => fn(EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
+            'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
             'mapped' => false,
             'label' => 'Cliente empresarial-negocio',
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
@@ -232,21 +226,21 @@ class ProjectType extends AbstractType
             ],
             'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
             'label_attr' => [
-                'class' => 'radio-inline'
+                'class' => 'radio-inline',
             ],
-            'required' => false
+            'required' => false,
         ]);
 
         $form->add('buildings', LiveCollectionType::class, [
             'entry_type' => BuildingType::class,
             'button_delete_options' => [
-                'label_html' => true
+                'label_html' => true,
             ],
             'constraints' => [
                 new Assert\Count(
                     min: 1,
                     minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
-                )
+                ),
             ],
             'error_bubbling' => false,
         ]);

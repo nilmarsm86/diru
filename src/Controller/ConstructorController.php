@@ -40,6 +40,7 @@ final class ConstructorController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $constructor = new Constructor();
+
         return $crudActionService->formLiveComponentAction($request, $constructor, 'constructor', [
             'title' => 'Nueva constructora',
         ]);
@@ -61,7 +62,6 @@ final class ConstructorController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-
     #[Route('/{id}/edit', name: 'app_constructor_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Constructor $constructor, CrudActionService $crudActionService): Response
     {
@@ -81,8 +81,9 @@ final class ConstructorController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la constructora.';
         $response = $crudActionService->deleteAction($request, $constructorRepository, $constructor, $successMsg, 'app_constructor_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

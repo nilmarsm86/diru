@@ -5,22 +5,20 @@ namespace App\Entity;
 use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Interfaces\MoneyInterface;
-use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
-use App\Entity\Traits\OriginalTrait;
 use App\Entity\Traits\StructureStateTrait;
 use App\Repository\SubSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubSystemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name',)]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'floor'], message: 'Ya existe en la planta un subsistema con este nombre.', errorPath: 'name', )]
 class SubSystem implements MeasurementDataInterface, MoneyInterface
 {
     use NameToStringTrait;
@@ -41,8 +39,8 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     #[ORM\ManyToOne(inversedBy: 'subSystems')]
     #[ORM\JoinColumn(nullable: false)]
-//    #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
+    //    #[Assert\Valid]
+    //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
 
     #[ORM\ManyToOne(inversedBy: 'subSystems')]
@@ -120,7 +118,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getReplyLocals()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, bool $original = null): int|float
+    public function getMeasurementData(string $method, ?bool $original = null): int|float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
@@ -143,45 +141,45 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         $isNew = $this->getFloor()->getBuilding()->isNew();
         $landArea = $this->getFloor()->getBuilding()->getLandArea();
         $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-        if($this->getTotalArea() > $occupiedArea){
+        if ($this->getTotalArea() > $occupiedArea) {
             return $landArea - $this->getTotalArea();
-        }else{
+        } else {
             return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
         }
     }
 
-    public function getUnassignedArea(bool $original = null): ?float
+    public function getUnassignedArea(?bool $original = null): ?float
     {
-        if($this->getFloor()?->getBuilding()?->getLand()?->isBlocked()){
+        if ($this->getFloor()?->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
-//        if (is_null($this->getFloor()->getBuilding())) {
-//            return 1;
-//        }
-//
-//        $isNew = $this->getFloor()->getBuilding()->isNew();
-//        $landArea = $this->getFloor()->getBuilding()->getLandArea();
-//        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-////        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
-//        if($this->getTotalArea() > $occupiedArea){
-//            return $landArea - $this->getTotalArea();
-//        }else{
-//            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
-//        }
+        //        if (is_null($this->getFloor()->getBuilding())) {
+        //            return 1;
+        //        }
+        //
+        //        $isNew = $this->getFloor()->getBuilding()->isNew();
+        //        $landArea = $this->getFloor()->getBuilding()->getLandArea();
+        //        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
+        // //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        //        if($this->getTotalArea() > $occupiedArea){
+        //            return $landArea - $this->getTotalArea();
+        //        }else{
+        //            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        //        }
         return $this->unassignedOrFreeArea();
     }
 
-    public function getFreeArea(bool $original = null): ?float
+    public function getFreeArea(?bool $original = null): ?float
     {
-        if(!$this->getFloor()?->getBuilding()?->getLand()?->isBlocked()){
+        if (!$this->getFloor()?->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
         return $this->unassignedOrFreeArea();
     }
 
-    public function getMaxHeight(bool $original = null): float
+    public function getMaxHeight(?bool $original = null): float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         $maxHeight = 0;
@@ -194,24 +192,24 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $maxHeight;
     }
 
-    public function isFullyOccupied(bool $original = null): bool
+    public function isFullyOccupied(?bool $original = null): bool
     {
-//        throw new \Exception("Not need");
-//        if($this->getFloor()->getBuilding()->isNew()){
-//            return true;
-//        }
+        //        throw new \Exception("Not need");
+        //        if($this->getFloor()->getBuilding()->isNew()){
+        //            return true;
+        //        }
 
-        if(is_null($this->getFloor())){
+        if (is_null($this->getFloor())) {
             return false;
         }
 
         return $this->getFloor()->isFullyOccupied();
-
     }
 
     public function getLocalsAmount(): int
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
         return $locals->count();
     }
 
@@ -222,9 +220,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         /** @var Local $wall */
         foreach ($walls as $wall) {
             if ($wall->isWallType() && !is_null($wall->getId())) {
-                $wallsAmount++;
+                ++$wallsAmount;
             }
         }
+
         return $wallsAmount;
     }
 
@@ -233,11 +232,11 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getWallsAmount() > 0;
     }
 
-    public function reply(EntityManagerInterface $entityManager, Floor $parent = null): static
+    public function reply(EntityManagerInterface $entityManager, ?Floor $parent = null): static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
-        $replica->setName($replica->getName() . ' (R)');
+        $replica->setName($replica->getName().' (R)');
         $replica->setFloor($parent);
         $replica->setHasReply(false);
         $replica->replica();
@@ -256,13 +255,14 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function hasVariableHeights(): bool
     {
         $totalHeight = $this->getMeasurementData('getHeight');
+
         return ($totalHeight % $this->getLocalsAmount()) > 0;
     }
 
     public function allLocalsAreClassified(): bool
     {
-        //TODO: duda con esto
-        if ($this->getLocalsAmount() == 0) {
+        // TODO: duda con esto
+        if (0 == $this->getLocalsAmount()) {
             return true;
         }
 
@@ -276,9 +276,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return true;
     }
 
-    public function getUsefulArea(bool $original = null): float
+    public function getUsefulArea(?bool $original = null): float
     {
-        if ($this->getLocalsAmount() === 0) {
+        if (0 === $this->getLocalsAmount()) {
             return 0;
         }
 
@@ -295,9 +295,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $usefulArea;
     }
 
-    public function getWallArea(bool $original = null): float
+    public function getWallArea(?bool $original = null): float
     {
-        if ($this->getLocalsAmount() === 0) {
+        if (0 === $this->getLocalsAmount()) {
             return 0;
         }
 
@@ -314,9 +314,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $wallArea;
     }
 
-    public function getEmptyArea(bool $original = null): float
+    public function getEmptyArea(?bool $original = null): float
     {
-        if ($this->getLocalsAmount() === 0) {
+        if (0 === $this->getLocalsAmount()) {
             return 0;
         }
 
@@ -364,7 +364,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
                 TechnicalStatus::Bad => $bad++,
                 TechnicalStatus::Regular => $regular++,
                 TechnicalStatus::Good => $good++,
-                default => $undefined++
+                default => $undefined++,
             };
         }
 
@@ -373,7 +373,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             'regular' => $regular,
             'bad' => $bad,
             'critical' => $critical,
-            'undefined' => $undefined
+            'undefined' => $undefined,
         ];
     }
 
@@ -394,7 +394,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
                 TechnicalStatus::Bad => $bad += $local->getArea(),
                 TechnicalStatus::Regular => $regular += $local->getArea(),
                 TechnicalStatus::Good => $good += $local->getArea(),
-                default => $undefined += $local->getArea()
+                default => $undefined += $local->getArea(),
             };
         }
 
@@ -403,7 +403,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             'regular' => $regular,
             'bad' => $bad,
             'critical' => $critical,
-            'undefined' => $undefined
+            'undefined' => $undefined,
         ];
     }
 
@@ -418,7 +418,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         /** @var Local $local */
         foreach ($locals as $local) {
             $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
-            if(!is_null($key)){
+            if (!is_null($key)) {
                 $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + 1 : 1;
             }
         }
@@ -437,7 +437,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         /** @var Local $local */
         foreach ($locals as $local) {
             $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
-            if(!is_null($key)){
+            if (!is_null($key)) {
                 $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getConstructiveActionAmount() : $local->getConstructiveActionAmount();
             }
         }
@@ -456,7 +456,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         /** @var Local $local */
         foreach ($locals as $local) {
             $key = $local->getLocalConstructiveAction()?->getConstructiveAction()?->getName();
-            if(!is_null($key)){
+            if (!is_null($key)) {
                 $constructiveAction[$key] = array_key_exists($key, $constructiveAction) ? $constructiveAction[$key] + $local->getArea() : $local->getArea();
             }
         }
@@ -491,7 +491,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $maxLocalNumber;
     }
 
-    public function createInitialLocal(bool $reply = false, EntityManagerInterface $entityManager = null): void
+    public function createInitialLocal(bool $reply = false, ?EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {
             Local::createAutomaticLocal(null, $this, $this->getFloor()?->getUnassignedArea() - 1, 1, $reply, $entityManager);
@@ -499,7 +499,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
     }
 
-    public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, EntityManagerInterface $entityManager = null): self
+    public static function createAutomatic(?SubSystem $subSystem, Floor $floor, string $name, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
         if (is_null($subSystem)) {
             $subSystem = new SubSystem();
@@ -507,18 +507,18 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
         $floor->addSubSystem($subSystem);
 
-//        $subSystem->setFloor($floor);
+        //        $subSystem->setFloor($floor);
 
         $floor->inNewBuilding() ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         if ($reply) {
             $subSystem->setHasReply(false);
             $subSystem->recent();
         } else {
-//            if ($floor->inNewBuilding()) {
-//                $subSystem->recent();
-//            } else {
-//                $subSystem->existingWithoutReplicating();
-//            }
+            //            if ($floor->inNewBuilding()) {
+            //                $subSystem->recent();
+            //            } else {
+            //                $subSystem->existingWithoutReplicating();
+            //            }
             ($floor->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         }
         $subSystem->createInitialLocal($reply, $entityManager);
@@ -536,17 +536,18 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         if (!$this->inNewBuilding() && !$this->isOriginal()) {
             return false;
         }
+
         return $this->getFloor()?->hasReply();
     }
 
     public function hasErrors(): bool
     {
-        return ($this->allLocalsAreClassified() == false) || $this->notWallArea() || ($this->isFullyOccupied() == false);
+        return (false == $this->allLocalsAreClassified()) || $this->notWallArea() || (false == $this->isFullyOccupied());
     }
 
     public function isNewInReply(): bool
     {
-        return ($this->hasReply() === false) && (is_null($this->getOriginal()));
+        return (false === $this->hasReply()) && is_null($this->getOriginal());
     }
 
     public function hasChangesFromOriginal(): bool
@@ -582,9 +583,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return true;
     }
 
-    public function getPrice(bool $original = null): int|float
+    public function getPrice(?bool $original = null): int|float
     {
-        if ($this->getLocalsAmount() === 0) {
+        if (0 === $this->getLocalsAmount()) {
             return 0;
         }
 
@@ -603,6 +604,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     {
         $floor = $this->getFloor();
         $building = $floor?->getBuilding();
+
         return $building?->getProjectCurrency();
     }
 
@@ -617,5 +619,4 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         return $this;
     }
-
 }

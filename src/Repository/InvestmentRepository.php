@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<Investment>
@@ -52,25 +51,22 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "i.name LIKE :filter ";
-            $predicate .= "OR i.betweenStreets LIKE :filter ";
-            $predicate .= "OR i.town LIKE :filter ";
-            $predicate .= "OR i.popularCouncil LIKE :filter ";
-            $predicate .= "OR i.district LIKE :filter ";
-            $predicate .= "OR i.street LIKE :filter ";
+            $predicate = 'i.name LIKE :filter ';
+            $predicate .= 'OR i.betweenStreets LIKE :filter ';
+            $predicate .= 'OR i.town LIKE :filter ';
+            $predicate .= 'OR i.popularCouncil LIKE :filter ';
+            $predicate .= 'OR i.district LIKE :filter ';
+            $predicate .= 'OR i.street LIKE :filter ';
             if ($place) {
-                $predicate .= "OR mun.name LIKE :filter ";
-                $predicate .= "OR pro.name LIKE :filter ";
+                $predicate .= 'OR mun.name LIKE :filter ';
+                $predicate .= 'OR pro.name LIKE :filter ';
             }
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findInvestments(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -80,19 +76,17 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
             ->leftJoin('mun.province', 'pro');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('i.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 
     /**
-     * @param Investment $entity
-     * @param bool $flush
-     * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(Investment $entity, bool $flush = false): void
     {
         if ($entity->hasProjects()) {
-            throw new Exception('La inversión aun tiene proyectos asociados.', 1);
+            throw new \Exception('La inversión aun tiene proyectos asociados.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

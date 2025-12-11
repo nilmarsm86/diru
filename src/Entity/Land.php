@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\LandRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,7 +22,7 @@ class Land
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área ocupada está vacía.')]
     #[Assert\PositiveOrZero(message: 'El área ocupada debe ser positivo.')]
-//    #[Assert\Assert\LessThanOrEqual()]
+    //    #[Assert\Assert\LessThanOrEqual()]
     private ?float $occupiedArea = null;
 
     #[ORM\Column(nullable: true)]
@@ -150,5 +148,4 @@ class Land
 
         return $this;
     }
-
 }

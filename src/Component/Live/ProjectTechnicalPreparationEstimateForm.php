@@ -7,7 +7,6 @@ use App\Entity\Building;
 use App\Entity\ProjectTechnicalPreparationEstimate;
 use App\Form\ProjectTechnicalPreparationEstimateType;
 use App\Repository\ProjectTechnicalPreparationEstimateRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +43,7 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
     #[LiveProp]
     public ?Building $building = null;
 
-    public function mount(?ProjectTechnicalPreparationEstimate $ue = null, Building $building = null): void
+    public function mount(?ProjectTechnicalPreparationEstimate $ue = null, ?Building $building = null): void
     {
         $this->ptpe = (is_null($ue)) ? new ProjectTechnicalPreparationEstimate() : $ue;
         $this->entity = $this->ptpe;
@@ -56,16 +55,17 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
     {
         assert($this->ptpe instanceof ProjectTechnicalPreparationEstimate);
         $this->building?->addProjectTechnicalPreparationEstimate($this->ptpe);
+
         return $this->createForm(ProjectTechnicalPreparationEstimateType::class, $this->ptpe);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository): ?Response
     {
-        $successMsg = (is_null($this->ptpe?->getId())) ? 'Se ha agregado el estimado de proyecto y preparación técnica.' : 'Se ha modificado el estimado de proyecto y preparación técnica.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ptpe?->getId())) ? 'Se ha agregado el estimado de proyecto y preparación técnica.' : 'Se ha modificado el estimado de proyecto y preparación técnica.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -80,17 +80,20 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
             $this->entity = $this->ptpe;
             if (!is_null($this->modal)) {
                 $this->modalManage($ue, 'Se ha sumado el precio del nuevo estimado de proyecto y preparación técnica.', [
-                    'ptpEstimateTotalPrice' => $ue->getBuilding()?->getProjectTechnicalPreparationEstimateTotalPrice()
+                    'ptpEstimateTotalPrice' => $ue->getBuilding()?->getProjectTechnicalPreparationEstimateTotalPrice(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($ue, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_ptp_estimate_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -101,5 +104,4 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

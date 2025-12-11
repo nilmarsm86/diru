@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of RegistrationForm
+ *
  * @extends AbstractType<RegistrationForm>
  */
 class RegistrationFormType extends AbstractType
@@ -24,42 +25,42 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
                     'placeholder' => 'Nombres *',
-                    'autofocus' => true
-                ]
+                    'autofocus' => true,
+                ],
             ])
             ->add('lastname', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Apellidos *'
-                ]
+                    'placeholder' => 'Apellidos *',
+                ],
             ])
             ->add('identificationNumber', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Carnet de identidad *'
-                ]
+                    'placeholder' => 'Carnet de identidad *',
+                ],
             ])
             ->add('phone', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Teléfono *'
-                ]
+                    'placeholder' => 'Teléfono *',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
-                    'placeholder' => 'Correo *'
-                ]
+                    'placeholder' => 'Correo *',
+                ],
             ])
             ->add('username', null, [
                 'attr' => [
                     'class' => 'form-control form-control-user no-border-left',
                     'placeholder' => 'Usuario *',
-                    'aria-describedby' => 'usernameHelp'
-                ]
+                    'aria-describedby' => 'usernameHelp',
+                ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => false
+                'label' => false,
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordToggleType::class,
@@ -68,7 +69,7 @@ class RegistrationFormType extends AbstractType
                         'placeholder' => 'Contraseña *',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
-                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;',
                     ],
                 ],
                 'second_options' => [
@@ -76,10 +77,10 @@ class RegistrationFormType extends AbstractType
                         'placeholder' => 'Repetir Contraseña *',
                         'autocomplete' => 'new-password',
                         'class' => 'form-control form-control-user no-border-left',
-                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;'
+                        'style' => 'border-radius: var(--bs-border-radius); !important;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;',
                     ],
                 ],
-                'invalid_message' => 'Las contraseñas no coinciden.'
+                'invalid_message' => 'Las contraseñas no coinciden.',
             ]);
     }
 
@@ -89,8 +90,8 @@ class RegistrationFormType extends AbstractType
             'data_class' => RegistrationForm::class,
             'attr' => [
                 'class' => 'user register',
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

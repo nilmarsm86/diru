@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\NameToStringTrait;
 use App\Repository\IndividualClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

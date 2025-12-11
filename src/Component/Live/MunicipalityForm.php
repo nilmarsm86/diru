@@ -7,7 +7,6 @@ use App\Entity\Municipality;
 use App\Form\MunicipalityType;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProvinceRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,13 +42,13 @@ final class MunicipalityForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-//        dump($this->formValues);
-        if(!is_null($this->province)){
+        //        dump($this->formValues);
+        if (!is_null($this->province)) {
             $this->formValues['province'] = $this->province;
         }
 
         return $this->createForm(MunicipalityType::class, $this->mun, [
-            'modal' => $this->modal
+            'modal' => $this->modal,
         ]);
     }
 
@@ -60,18 +59,18 @@ final class MunicipalityForm extends AbstractController
             $this->mun = new Municipality();
         } else {
             if (!is_null($this->mun->getProvince())) {
-                $this->province = (string)$this->mun->getProvince()->getId();
+                $this->province = (string) $this->mun->getProvince()->getId();
             }
         }
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(MunicipalityRepository $municipalityRepository, ProvinceRepository $provinceRepository): ?Response
     {
-        $successMsg = (is_null($this->mun?->getId())) ? 'Se ha agregado el municipio.' : 'Se ha modificado el municipio.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->mun?->getId())) ? 'Se ha agregado el municipio.' : 'Se ha modificado el municipio.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -86,17 +85,20 @@ final class MunicipalityForm extends AbstractController
             $this->mun = new Municipality();
             if (!is_null($this->modal)) {
                 $this->modalManage($municipality, 'Se ha seleccionado el nuevo municipio agregado.', [
-                    'municipality' => $municipality->getId()
+                    'municipality' => $municipality->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($municipality, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_municipality_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,5 +109,4 @@ final class MunicipalityForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

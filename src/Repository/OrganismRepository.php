@@ -48,22 +48,16 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
     //        ;
     //    }
 
-    /**
-     * @inheritDoc
-     */
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "o.name LIKE :filter ";
+            $predicate = 'o.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findOrganisms(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -71,6 +65,7 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
         $builder = $this->createQueryBuilder('o');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('o.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

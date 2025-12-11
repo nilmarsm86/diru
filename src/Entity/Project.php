@@ -13,7 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
@@ -71,12 +70,12 @@ class Project
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Seleccione o cree un cliente para el proyecto.')]
+    //    #[Assert\NotBlank(message: 'Seleccione o cree un cliente para el proyecto.')]
     private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-//    #[Assert\Valid]
+    //    #[Assert\Valid]
     private ?Contract $contract = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -92,12 +91,12 @@ class Project
      */
     #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'project', cascade: ['persist'])]
     #[Assert\Valid]
-    #[ORM\OrderBy(["name" => "ASC"])]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     private Collection $buildings;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\OrderBy(["name" => "ASC"])]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
     private ?Currency $currency = null;
@@ -130,7 +129,7 @@ class Project
 
     public function setType(ProjectType $enumType): static
     {
-        $this->type = "";
+        $this->type = '';
         $this->enumType = $enumType;
 
         return $this;
@@ -142,7 +141,7 @@ class Project
     {
         $this->type = $this->getType()->value;
         $this->state = $this->getState()->value;
-        if(is_null($this->getId())){
+        if (is_null($this->getId())) {
             if (is_null($this->getContract()) || is_null($this->getContract()->getCode())) {
                 $this->setContract(null);
             }
@@ -150,7 +149,7 @@ class Project
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[ORM\PostLoad]
     public function onLoad(): void
@@ -166,10 +165,10 @@ class Project
 
     public function setState(ProjectState $enumState): static
     {
-        $this->state = "";
+        $this->state = '';
         $this->enumState = $enumState;
 
-        if($enumState === ProjectState::Stopped){
+        if (ProjectState::Stopped === $enumState) {
             $this->stopAllBuildings();
         }
 
@@ -178,7 +177,7 @@ class Project
 
     private function stopAllBuildings(): static
     {
-        foreach ($this->getBuildings() as $building){
+        foreach ($this->getBuildings() as $building) {
             $building->setState(BuildingState::Stopped);
         }
 
@@ -187,7 +186,7 @@ class Project
 
     public function isStopped(): bool
     {
-        return $this->getState() === ProjectState::Stopped;
+        return ProjectState::Stopped === $this->getState();
     }
 
     public function getStopReason(): ?string
@@ -293,13 +292,14 @@ class Project
 
     public function isIndividualClient(IndividualClientRepository $individualClientRepository): bool
     {
-        if(is_null($this->getId())){
+        if (is_null($this->getId())) {
             return true;
         }
 
         $client = $this->getClient();
         if (!is_null($client)) {
             $individual = $individualClientRepository->find($client->getId());
+
             return !is_null($individual);
         }
 
@@ -321,6 +321,7 @@ class Project
         $client = $this->getClient();
         if (!is_null($client)) {
             $enterprise = $enterpriseClientRepository->find($client->getId());
+
             return !is_null($enterprise);
         }
 
@@ -361,6 +362,7 @@ class Project
         if (!is_null($this->getContract()) && !is_null($this->getContract()->getId())) {
             return true;
         }
+
         return false;
     }
 
@@ -458,7 +460,7 @@ class Project
     public function createAutomaticInvestment(Municipality $municipality): static
     {
         $investment = new Investment();
-        $investment->setName('Inversión del proyecto ' . $this->getName());
+        $investment->setName('Inversión del proyecto '.$this->getName());
         $investment->setStreet('Direccion de la inversión');
         $investment->setMunicipality($municipality);
 
@@ -470,7 +472,7 @@ class Project
     public function createAutomaticBuilding(): static
     {
         $building = new Building();
-        $building->setName('Obra del proyecto ' . $this->getName());
+        $building->setName('Obra del proyecto '.$this->getName());
         $this->addBuilding($building);
 
         return $this;
@@ -479,7 +481,7 @@ class Project
     public function cancel(): void
     {
         $this->setState(ProjectState::Canceled);
-        foreach ($this->getBuildings() as $building){
+        foreach ($this->getBuildings() as $building) {
             $building->cancel();
         }
     }
@@ -507,6 +509,4 @@ class Project
 
         return $this;
     }
-
-
 }

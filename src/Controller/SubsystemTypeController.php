@@ -29,8 +29,8 @@ final class SubsystemTypeController extends AbstractController
     public function index(Request $request, RouterInterface $router, SubsystemTypeRepository $subsystemTypeRepository): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $classification = $request->query->get('classification', '');
 
@@ -46,7 +46,7 @@ final class SubsystemTypeController extends AbstractController
         return $this->render("subsystem_type/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'classifications' => SubsystemFunctionalClassification::cases()
+            'classifications' => SubsystemFunctionalClassification::cases(),
         ]);
     }
 
@@ -59,6 +59,7 @@ final class SubsystemTypeController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $subsystemType = new SubsystemType();
+
         return $crudActionService->formLiveComponentAction($request, $subsystemType, 'subsystem_type', [
             'title' => 'Nuevo tipo',
         ]);
@@ -98,8 +99,9 @@ final class SubsystemTypeController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el tipo.';
         $response = $crudActionService->deleteAction($request, $subsystemTypeRepository, $subsystemType, $successMsg, 'app_subsystem_type_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -112,18 +114,17 @@ final class SubsystemTypeController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $entities = [];
             /** @var SubsystemTypeSubsystemSubType $subsystemTypeSubsystemSubType */
-            foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
+            foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType) {
                 $subsystemSubType = $subsystemTypeSubsystemSubType->getSubsystemSubType();
-                if(!is_null($subsystemSubType)){
+                if (!is_null($subsystemSubType)) {
                     $entities[] = $subsystemSubType;
                 }
-
             }
 
             return $this->render('partials/_select_options.html.twig', [
                 'entities' => $entities,
                 'selected' => (count($entities)) ? $entities[0]->getId() : 0,
-                'empty' => '-Seleccione un tipo-'
+                'empty' => '-Seleccione un tipo-',
             ]);
         }
 

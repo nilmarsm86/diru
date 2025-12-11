@@ -16,11 +16,11 @@ class CurrencyFixtures extends Fixture implements FixtureGroupInterface
             $currency = $manager->getRepository(Currency::class)->findOneBy(['code' => $currencyCode]);
             if (is_null($currency)) {
                 $currency = new Currency();
-                if($currencyCode === 'CUP'){
+                if ('CUP' === $currencyCode) {
                     $currency->setName('Peso Cubano');
                 }
 
-                if($currencyCode === 'USD'){
+                if ('USD' === $currencyCode) {
                     $currency->setName('Dolar EEUU');
                 }
 
@@ -36,5 +36,4 @@ class CurrencyFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['default'];
     }
-
 }

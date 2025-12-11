@@ -40,6 +40,7 @@ final class InvestmentController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $investment = new Investment();
+
         return $crudActionService->formLiveComponentAction($request, $investment, 'investment', [
             'title' => 'Nuevo inversión',
         ]);
@@ -80,8 +81,9 @@ final class InvestmentController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la inversión.';
         $response = $crudActionService->deleteAction($request, $investmentRepository, $investment, $successMsg, 'app_investment_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

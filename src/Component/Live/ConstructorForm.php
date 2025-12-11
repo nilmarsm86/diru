@@ -4,13 +4,10 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Constructor;
-use App\Entity\Province;
 use App\Form\ConstructorType;
 use App\Repository\ConstructorRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -55,7 +52,7 @@ final class ConstructorForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(RequestStack $request, ConstructorRepository $constructorRepository): ?Response
@@ -72,15 +69,15 @@ final class ConstructorForm extends AbstractController
 
             $this->cons = new Constructor();
             if (!is_null($this->modal)) {
-                if ($this->screen === 'building') {
+                if ('building' === $this->screen) {
                     $this->modalManage($constructor, 'Se ha seleccionado la nueva constructora agregada.', [
-                        'constructor' => $constructor->getId()
+                        'constructor' => $constructor->getId(),
                     ]);
                 }
 
-                if ($this->screen === 'project') {
+                if ('project' === $this->screen) {
                     $this->modalManage($constructor, 'Se ha agregado una nueva constructora, seleccionela.', [
-                        'constructor' => $constructor->getId()
+                        'constructor' => $constructor->getId(),
                     ], 'text-bg-success');
                 }
 
@@ -89,10 +86,12 @@ final class ConstructorForm extends AbstractController
 
             if ($this->ajax) {
                 $this->ajaxManage($constructor, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_constructor_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -103,5 +102,4 @@ final class ConstructorForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

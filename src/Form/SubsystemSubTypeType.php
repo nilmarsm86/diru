@@ -13,30 +13,30 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of SubsystemSubType
+ *
  * @extends AbstractType<SubsystemSubType>
  */
 class SubsystemSubTypeType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['screen'] === 'type') {
+        if ('type' === $options['screen']) {
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $this->onPreSetData($event);
             });
         }
 
-        if ($options['screen'] === 'subtype') {
+        if ('subtype' === $options['screen']) {
             $builder
                 ->add('name', null, [
                     'label' => 'Nombre:',
                     'attr' => [
-                        'placeholder' => 'Nombre del subtipo'
-                    ]
+                        'placeholder' => 'Nombre del subtipo',
+                    ],
                 ]);
         }
     }
@@ -46,20 +46,16 @@ class SubsystemSubTypeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SubsystemSubType::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'modal' => null,
-            'screen' => 'type'//subtype || type
+            'screen' => 'type', // subtype || type
         ]);
 
         $resolver->setAllowedTypes('modal', ['null', 'string']);
         $resolver->setAllowedTypes('screen', 'string');
     }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
         $subsystemSubType = $event->getData();
@@ -69,11 +65,11 @@ class SubsystemSubTypeType extends AbstractType
             ->add('name', EntityPlusType::class, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del subtipo'
+                    'placeholder' => 'Nombre del subtipo',
                 ],
                 'class' => SubsystemSubType::class,
-//                'choice_label' => 'name',
-//                'choice_value' => 'id',
+                //                'choice_label' => 'name',
+                //                'choice_value' => 'id',
 
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',
@@ -81,9 +77,9 @@ class SubsystemSubTypeType extends AbstractType
                 'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
 
                 'data' => $subsystemSubType,
-//                'row_attr' => [
-//                    'class' => 'mb-3 row'
-//                ]
+                //                'row_attr' => [
+                //                    'class' => 'mb-3 row'
+                //                ]
             ]);
     }
 }

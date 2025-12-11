@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<NetworkConnection>
@@ -52,16 +51,13 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "nc.name LIKE :filter ";
+            $predicate = 'nc.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findNetworkConnections(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -69,19 +65,17 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
         $builder = $this->createQueryBuilder('nc');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('nc.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 
     /**
-     * @param NetworkConnection $entity
-     * @param bool $flush
-     * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(NetworkConnection $entity, bool $flush = false): void
     {
         if ($entity->isOnLand()) {
-            throw new Exception('La conexión de red esta asociada a una o varias obras.', 1);
+            throw new \Exception('La conexión de red esta asociada a una o varias obras.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

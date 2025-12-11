@@ -7,23 +7,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait StateTrait
- {
+{
     #[ORM\Column(length: 255)]
     protected ?string $state = null;
 
     #[Assert\Choice(choices: [StateEnum::Active, StateEnum::Inactive], message: 'Seleccione un estado válido.')]
     protected StateEnum $enumState;
 
-    /**
-     * @return StateEnum
-     */
     public function getState(): StateEnum
     {
         return $this->enumState;
     }
 
     /**
-     * @param StateEnum $state
      * @return $this
      */
     public function setState(StateEnum $state): static
@@ -48,27 +44,29 @@ trait StateTrait
     }
 
     /**
-     * Is active or not
-     * @return bool
+     * Is active or not.
      */
-    public function isActive():bool
+    public function isActive(): bool
     {
         return $this->enumState->name === StateEnum::Active->name;
     }
 
     /**
-     * Activate user
+     * Activate user.
+     *
      * @return $this
      */
     public function activate(): static
     {
         $this->state = null;
         $this->setState(StateEnum::Active);
+
         return $this;
     }
 
     /**
-     * Deactivate user
+     * Deactivate user.
+     *
      * @return $this
      */
     public function deactivate(): static
@@ -78,4 +76,4 @@ trait StateTrait
 
         return $this;
     }
- }
+}

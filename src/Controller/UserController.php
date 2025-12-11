@@ -38,7 +38,7 @@ class UserController extends AbstractController
     #[Route('/add_role', name: 'add_role', methods: ['POST'])]
     public function addRole(Request $request, UserService $userService): Response
     {
-        if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
+        if ($request->isXmlHttpRequest() && ('1' === $request->query->get('fetch'))) {
             /** @var array{User, Role, string, string, Response} $result */
             $result = $userService->addRole($request);
             list($user, $role, $type, $message, $response) = $result;
@@ -49,7 +49,7 @@ class UserController extends AbstractController
                 'user' => $user,
                 'action' => 'Establecido',
                 'type' => $type,
-                'message' => $message
+                'message' => $message,
             ], $response);
         }
 
@@ -59,19 +59,19 @@ class UserController extends AbstractController
     #[Route('/remove_role', name: 'remove_role', methods: ['POST'])]
     public function removeRole(Request $request, UserService $userService): Response
     {
-        if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
+        if ($request->isXmlHttpRequest() && ('1' === $request->query->get('fetch'))) {
             /** @var array{User, Role, string, string, Response} $result */
             $result = $userService->removeRole($request, $this->isGranted('ROLE_SUPER_ADMIN'));
             list($user, $role, $type, $message, $response) = $result;
 
             return $this->render('user/_add_remove_role.html.twig', [
-                    'id' => 'remove_'.$user->getId().'-'.$role->getId(),
-                    'role' => $role,
-                    'user' => $user,
-                    'action' => 'Eliminado',
-                    'type' => $type,
-                    'message' => $message
-                ], $response);
+                'id' => 'remove_'.$user->getId().'-'.$role->getId(),
+                'role' => $role,
+                'user' => $user,
+                'action' => 'Eliminado',
+                'type' => $type,
+                'message' => $message,
+            ], $response);
         }
 
         throw new BadRequestHttpException('Ajax request');
@@ -82,12 +82,12 @@ class UserController extends AbstractController
     public function profile(Request $request, RoleRepository $roleRepository, UserService $userService): Response
     {
         $formName = $userService->handleNameForm($request);
-        if($formName->isSubmitted() && $formName->isValid()){
+        if ($formName->isSubmitted() && $formName->isValid()) {
             $this->addFlash('success', 'Datos salvados.');
         }
 
         $formPassword = $userService->handlePassword($request);
-        if($formPassword->isSubmitted() && $formPassword->isValid()){
+        if ($formPassword->isSubmitted() && $formPassword->isValid()) {
             $this->addFlash('success', 'Contraseña cambiada.');
         }
 
@@ -101,7 +101,7 @@ class UserController extends AbstractController
     #[Route('/state', name: 'user_state', methods: ['POST'])]
     public function state(Request $request, UserService $userService): Response
     {
-        if($request->isXmlHttpRequest() && ($request->query->get('fetch') === '1')){
+        if ($request->isXmlHttpRequest() && ('1' === $request->query->get('fetch'))) {
             /** @var array{User, string} $result */
             $result = $userService->changeState($request);
             list($user, $action) = $result;
@@ -109,13 +109,12 @@ class UserController extends AbstractController
             return $this->render('user/_activate_deactivate_user.html.twig', [
                 'id' => $action.'_'.$user->getId(),
                 'user' => $user,
-                'action' => ($action === 'activate') ? 'Activado' : 'Inactivo',
+                'action' => ('activate' === $action) ? 'Activado' : 'Inactivo',
                 'type' => 'text-bg-success',
-                'message' => null
+                'message' => null,
             ]);
         }
 
         throw new BadRequestHttpException('Ajax request');
     }
-
 }

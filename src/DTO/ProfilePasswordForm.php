@@ -4,10 +4,8 @@ namespace App\DTO;
 
 use App\Entity\User;
 use App\Validator\Password;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final class ProfilePasswordForm
 {
@@ -15,17 +13,14 @@ final class ProfilePasswordForm
     public string $oldPassword;
 
     #[Assert\NotBlank(message: 'Establezca la nueva contraseña.')]
-//    #[Assert\NotNull(message: 'La nueva contraseña no puede ser nula.')]
+    //    #[Assert\NotNull(message: 'La nueva contraseña no puede ser nula.')]
     #[Password]
     public string $plainPassword;
 
-    /**
-     * @param User $user
-     * @return User
-     */
     public function toEntity(User $user): User
     {
         $user->setPassword($this->plainPassword);
+
         return $user;
     }
 }

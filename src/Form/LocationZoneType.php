@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @template TData of LocationZone
+ *
  * @extends AbstractType<LocationZone>
  */
 class LocationZoneType extends AbstractType
@@ -26,7 +27,7 @@ class LocationZoneType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Número de la zona de ubicación',
                     'min' => $this->min,
-                    'max' => $this->max
+                    'max' => $this->max,
                 ],
                 'constraints' => [
                     new Assert\Positive(message: 'El número debe ser positivo'),
@@ -34,8 +35,8 @@ class LocationZoneType extends AbstractType
                         notInRangeMessage: 'El rango debe estar entre {{ min }} y {{ max }}.',
                         min: $this->min,
                         max: $this->max,
-                    )
-                ]
+                    ),
+                ],
             ]);
     }
 
@@ -44,8 +45,8 @@ class LocationZoneType extends AbstractType
         $resolver->setDefaults([
             'data_class' => LocationZone::class,
             'attr' => [
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

@@ -4,14 +4,11 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
-use App\Entity\Floor;
 use App\Entity\Land;
 use App\Form\LandType;
-use App\Repository\BuildingRepository;
 use App\Repository\FloorRepository;
 use App\Repository\LandRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,10 +48,9 @@ final class LandForm extends AbstractController
 
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-
     }
 
-    public function mount(?Land $land = null, Building $building = null): void
+    public function mount(?Land $land = null, ?Building $building = null): void
     {
         $this->l = (is_null($land)) ? new Land() : $land;
         $this->building = $building;
@@ -63,34 +59,33 @@ final class LandForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(LandType::class, $this->l, [
-            'building' => $this->building
+            'building' => $this->building,
         ]);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(Request $request, LandRepository $landRepository, FloorRepository $floorRepository): ?Response
     {
-        $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-
             /** @var Land $land */
             $land = $this->getForm()->getData();
 
             $this->building?->setLand($land);
             $showFloorMessage = false;
-            //cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
+            // cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
                 $showFloorMessage = true;
-                if (empty($this->formValues['floor']) or $this->formValues['occupiedArea'] == 0) {
+                if (empty($this->formValues['floor']) or 0 == $this->formValues['occupiedArea']) {
                     $land->setFloor(1);
                     $this->building?->setIsNew(true);
-                }else{
+                } else {
                     $this->building?->setIsNew(false);
                 }
                 $this->building?->createFloors(false, $this->entityManager);
@@ -101,26 +96,29 @@ final class LandForm extends AbstractController
             $this->l = new Land();
             if (!is_null($this->modal)) {
                 $this->modalManage($land, 'Se han salvado los datos del terreno.', [
-                    'land' => $land->getId()
+                    'land' => $land->getId(),
                 ], 'text-bg-success');
 
-//                if ($land->hasFloors()) {
-                    $this->addFlash('success', 'Se han salvado los datos del terreno.');
-                    if($showFloorMessage){
-                        $this->addFlash('info', 'Se han creado las plantas del inmueble.');
-                    }
-                    return $this->redirectToRoute('app_floor_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
-//                } else {
-//                    return null;
-//                }
+                //                if ($land->hasFloors()) {
+                $this->addFlash('success', 'Se han salvado los datos del terreno.');
+                if ($showFloorMessage) {
+                    $this->addFlash('info', 'Se han creado las plantas del inmueble.');
+                }
+
+                return $this->redirectToRoute('app_floor_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
+                //                } else {
+                //                    return null;
+                //                }
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($land, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_land_edit', ['id' => $land->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -140,5 +138,4 @@ final class LandForm extends AbstractController
 
         return true;
     }
-
 }

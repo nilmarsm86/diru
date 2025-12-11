@@ -15,7 +15,6 @@ use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Repository\InvestmentRepository;
 use App\Repository\ProjectRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
@@ -66,10 +65,8 @@ final class ProjectForm extends AbstractController
     public function __construct(
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
-        private readonly RouterInterface            $router
-    )
-    {
-
+        private readonly RouterInterface $router,
+    ) {
     }
 
     public function mount(?Project $pro = null): void
@@ -78,83 +75,80 @@ final class ProjectForm extends AbstractController
         $this->contract = $this->pro->getContract();
     }
 
-    /**
-     * @return void
-     */
     public function preValue(): void
     {
-        if ($this->investment !== 0) {
-            $this->formValues['investment'] = (string)$this->investment;
+        if (0 !== $this->investment) {
+            $this->formValues['investment'] = (string) $this->investment;
             $this->investment = 0;
         }
 
-        if(!is_null($this->pro?->getId())){
-//            if ($this->individualClient !== 0) {
-//                $this->formValues['individualClient'] = (string)$this->individualClient;
-//                $this->individualClient = 0;
-//            }
-            if(!empty($this->formValues['individualClient'])){
+        if (!is_null($this->pro?->getId())) {
+            //            if ($this->individualClient !== 0) {
+            //                $this->formValues['individualClient'] = (string)$this->individualClient;
+            //                $this->individualClient = 0;
+            //            }
+            if (!empty($this->formValues['individualClient'])) {
                 $this->individualClient = $this->formValues['individualClient'];
             }
-        }else{
-            if(!empty($this->formValues['individualClient'])){
-                if((int)$this->individualClient > (int)$this->formValues['individualClient']){
-                    $this->formValues['individualClient'] = (string)$this->individualClient;
-                }else{
+        } else {
+            if (!empty($this->formValues['individualClient'])) {
+                if ((int) $this->individualClient > (int) $this->formValues['individualClient']) {
+                    $this->formValues['individualClient'] = (string) $this->individualClient;
+                } else {
                     $this->individualClient = $this->formValues['individualClient'];
                 }
             }
-//
-//            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
-//                $this->formValues['individualClient'] = (string)$this->individualClient;
-//            }
+            //
+            //            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
+            //                $this->formValues['individualClient'] = (string)$this->individualClient;
+            //            }
         }
 
-        if(!is_null($this->pro?->getId())){
-            if(!empty($this->formValues['enterpriseClient'])){
+        if (!is_null($this->pro?->getId())) {
+            if (!empty($this->formValues['enterpriseClient'])) {
                 $this->enterpriseClient = $this->formValues['enterpriseClient'];
             }
-        }else{
-            if(!empty($this->formValues['enterpriseClient'])){
-                if((int)$this->enterpriseClient > (int)$this->formValues['enterpriseClient']){
-                    $this->formValues['enterpriseClient'] = (string)$this->enterpriseClient;
+        } else {
+            if (!empty($this->formValues['enterpriseClient'])) {
+                if ((int) $this->enterpriseClient > (int) $this->formValues['enterpriseClient']) {
+                    $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
                     $this->formValues['individualClient'] = '0';
                     $this->individualClient = 0;
-                }else{
+                } else {
                     $this->enterpriseClient = $this->formValues['enterpriseClient'];
                 }
             }
 
-            if($this->enterpriseClient !== 0 && empty($this->formValues['enterpriseClient'])){
-                $this->formValues['enterpriseClient'] = (string)$this->enterpriseClient;
+            if (0 !== $this->enterpriseClient && empty($this->formValues['enterpriseClient'])) {
+                $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
             }
         }
 
-//        if ($this->client !== 0) {
-//            $this->formValues['client'] = (string)$this->client;
-//            $this->client = 0;
-//        }
+        //        if ($this->client !== 0) {
+        //            $this->formValues['client'] = (string)$this->client;
+        //            $this->client = 0;
+        //        }
     }
 
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+
         return $this->createForm(ProjectType::class, $this->pro);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(
-        ProjectRepository    $projectRepository,
-        ClientRepository     $clientRepository,
+        ProjectRepository $projectRepository,
+        ClientRepository $clientRepository,
         InvestmentRepository $investmentRepository,
-        Security             $security,
-        DraftsmanRepository  $draftsmanRepository,
-        ConstructorRepository $constructorRepository
-    ): ?Response
-    {
+        Security $security,
+        DraftsmanRepository $draftsmanRepository,
+        ConstructorRepository $constructorRepository,
+    ): ?Response {
         $this->preValue();
         $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
@@ -164,19 +158,19 @@ final class ProjectForm extends AbstractController
             /** @var Project $project */
             $project = $this->getForm()->getData();
 
-            $investment = $investmentRepository->find((int)$this->formValues['investment']);
+            $investment = $investmentRepository->find((int) $this->formValues['investment']);
             $project->setInvestment($investment);
 
             $client = 0;
-            if ($this->formValues['clientType'] === 'individual') {
-                $client = (int)$this->formValues['individualClient'];
+            if ('individual' === $this->formValues['clientType']) {
+                $client = (int) $this->formValues['individualClient'];
             }
 
-            if ($this->formValues['clientType'] === 'enterprise') {
-                $client = (int)$this->formValues['enterpriseClient'];
+            if ('enterprise' === $this->formValues['clientType']) {
+                $client = (int) $this->formValues['enterpriseClient'];
             }
 
-            $client = $clientRepository->find((int)$client);
+            $client = $clientRepository->find((int) $client);
             $project->setClient($client);
 
             if (!empty($this->formValues['draftsman'])) {
@@ -204,12 +198,12 @@ final class ProjectForm extends AbstractController
                     $project->setContract($this->contract);
                 }
 
-                //Change draftmans
+                // Change draftmans
                 /** @var Building[] $data */
                 $data = $this->getForm()->get('buildings')->getData();
                 foreach ($data as $key => $building) {
-                    if(isset($this->formValues['buildings'][$key]['draftsman'])){
-                        $draftsman = $draftsmanRepository->find((int)$this->formValues['buildings'][$key]['draftsman']);
+                    if (isset($this->formValues['buildings'][$key]['draftsman'])) {
+                        $draftsman = $draftsmanRepository->find((int) $this->formValues['buildings'][$key]['draftsman']);
                         if ($draftsman) {
                             $building->addDraftsman($draftsman);
                         }
@@ -217,13 +211,13 @@ final class ProjectForm extends AbstractController
                 }
             }
 
-            //fix constructor
+            // fix constructor
             /** @var Building[] $data */
             $data = $this->getForm()->get('buildings')->getData();
             foreach ($data as $key => $building) {
-                if(isset($this->formValues['buildings'][$key]['constructor'])){
-                    $constructor = $constructorRepository->find((int)$this->formValues['buildings'][$key]['constructor']);
-                    if($constructor){
+                if (isset($this->formValues['buildings'][$key]['constructor'])) {
+                    $constructor = $constructorRepository->find((int) $this->formValues['buildings'][$key]['constructor']);
+                    if ($constructor) {
                         $building->addConstructor($constructor);
                     }
                 }
@@ -234,18 +228,21 @@ final class ProjectForm extends AbstractController
             $this->pro = new Project();
             if (!is_null($this->modal)) {
                 $this->modalManage($project, 'Se ha seleccionado el nuevo proyecto agregado.', [
-                    'project' => $project->getId()
+                    'project' => $project->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($project, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
-            return $this->redirectToRoute('app_building_project', ['project'=>$project->getId()], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_building_project', ['project' => $project->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;
@@ -258,17 +255,19 @@ final class ProjectForm extends AbstractController
 
     public function isIndividualClient(): bool
     {
-        if(is_null($this->pro)){
+        if (is_null($this->pro)) {
             return false;
         }
+
         return $this->pro->isIndividualClient($this->individualClientRepository);
     }
 
     public function isEnterpriseClient(): bool
     {
-        if(is_null($this->pro)){
+        if (is_null($this->pro)) {
             return false;
         }
+
         return $this->pro->isEnterpriseClient($this->enterpriseClientRepository);
     }
 
@@ -285,5 +284,4 @@ final class ProjectForm extends AbstractController
             return $this->router->generate('app_land_edit', ['modal' => 'modal-load', 'building' => $building->getId(), 'id' => $building->getLand()->getId()]);
         }
     }
-
 }

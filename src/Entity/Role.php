@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\NameToStringTrait;
 use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\NameToStringTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
@@ -14,13 +14,13 @@ class Role
 {
     use NameToStringTrait;
 
-    const  ROLE_CLIENT = 'ROLE_CLIENT';
-    const  ROLE_DIRECTOR = 'ROLE_DIRECTOR';
-    const  ROLE_INVESTOR = 'ROLE_INVESTOR';
-    const  ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
-    const  ROLE_ADMIN = 'ROLE_ADMIN';
-    const  ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-    const  IS_AUTHENTICATED = 'IS_AUTHENTICATED';
+    public const ROLE_CLIENT = 'ROLE_CLIENT';
+    public const ROLE_DIRECTOR = 'ROLE_DIRECTOR';
+    public const ROLE_INVESTOR = 'ROLE_INVESTOR';
+    public const ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,10 +30,6 @@ class Role
     #[ORM\Column]
     private ?int $importance = null;
 
-    /**
-     * @param string $name
-     * @param int $importance
-     */
     public function __construct(string $name, int $importance)
     {
         $this->name = $name;
@@ -46,11 +42,9 @@ class Role
     }
 
     /**
-     * Return translate rol name
-     * @param string|null $role
-     * @return string
+     * Return translate rol name.
      */
-    public function capitalizeName(string $role = null): string
+    public function capitalizeName(?string $role = null): string
     {
         return match ($role ?: $this->getName()) {
             static::ROLE_CLIENT => 'Rol cliente',
@@ -68,7 +62,7 @@ class Role
         return $this->getName() === static::ROLE_SUPER_ADMIN;
     }
 
-    public function saveName(string $role = null): string
+    public function saveName(?string $role = null): string
     {
         return match ($role ?: $this->getName()) {
             static::ROLE_CLIENT => 'client',
@@ -82,8 +76,7 @@ class Role
     }
 
     /**
-     * Can change this role for all users
-     * @return bool
+     * Can change this role for all users.
      */
     public function blockChange(): bool
     {

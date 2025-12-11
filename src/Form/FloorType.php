@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Floor
+ *
  * @extends AbstractType<Floor>
  */
 class FloorType extends AbstractType
@@ -27,16 +28,14 @@ class FloorType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Floor::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'reply' => false,
         ]);
     }
 
     /**
-     * @param FormEvent $event
      * @param array<mixed> $options
-     * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -53,20 +52,20 @@ class FloorType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                        'placeholder' => 'Nombre de la planta'
-                    ] + $disabled
+                    'placeholder' => 'Nombre de la planta',
+                ] + $disabled,
             ]);
 
         $nextPosition = 0;
         if (!is_null($floor) && is_null($floor->getId()) && !is_null($floor->getBuilding())) {
-//            if ($options['reply']) {
-//                $floors = $floor->getBuilding()->getReplyExistsFloors();
-//            } else {
-//                $floors = $floor->getBuilding()->getOriginalExistsFloors();
-//            }
+            //            if ($options['reply']) {
+            //                $floors = $floor->getBuilding()->getReplyExistsFloors();
+            //            } else {
+            //                $floors = $floor->getBuilding()->getOriginalExistsFloors();
+            //            }
             $floors = ($options['reply']) ? $floor->getBuilding()->getReplyExistsFloors() : $floor->getBuilding()->getOriginalExistsFloors();
 
-            if($floors->count() && $floors->last()){
+            if ($floors->count() && $floors->last()) {
                 $nextPosition = $floors->last()->getPosition();
             }
 
@@ -74,15 +73,15 @@ class FloorType extends AbstractType
                 'label' => 'Posición:',
                 'data' => ($nextPosition + 1),
                 'attr' => [
-                        'placeholder' => 'Posición'
-                    ] + $disabled
+                    'placeholder' => 'Posición',
+                ] + $disabled,
             ];
-        }else{
+        } else {
             $fieldOptions = [
                 'label' => 'Posición:',
                 'attr' => [
-                        'placeholder' => 'Posición'
-                    ] + $disabled
+                    'placeholder' => 'Posición',
+                ] + $disabled,
             ];
         }
 

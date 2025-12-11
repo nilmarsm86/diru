@@ -8,5 +8,4 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent(template: 'component/twig/manage_page.html.twig')]
 final class ManagePage extends AbstractController
 {
-
 }

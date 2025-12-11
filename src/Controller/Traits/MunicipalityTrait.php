@@ -7,11 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait MunicipalityTrait
 {
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param int|null $municipalityId
-     * @return Municipality
-     */
     public function findMunicipality(EntityManagerInterface $entityManager, ?int $municipalityId): Municipality
     {
         if (!is_null($municipalityId)) {
@@ -22,9 +17,7 @@ trait MunicipalityTrait
     }
 
     /**
-     * @param object $entity
      * @param array<mixed> $data
-     * @return int
      */
     public function getMunicipalityId(object $entity, array $data): int
     {
@@ -37,5 +30,4 @@ trait MunicipalityTrait
 
         return $municipalityId;
     }
-
 }

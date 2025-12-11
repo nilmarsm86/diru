@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Building;
 use App\Entity\Constructor;
-use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
@@ -22,13 +21,13 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of Building
+ *
  * @extends AbstractType<Building>
  */
 class BuildingType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -37,21 +36,21 @@ class BuildingType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la obra'
-                ]
+                    'placeholder' => 'Nombre de la obra',
+                ],
             ])
             ->add('population', null, [
                 'label' => 'Cantidad de personas:',
                 'attr' => [
-                    'placeholder' => 'Cantidad de personas para la cual esta diseño'
+                    'placeholder' => 'Cantidad de personas para la cual esta diseño',
                 ],
-                'empty_data' => 1
+                'empty_data' => 1,
             ])
             ->add('constructionAssemblyComment', null, [
                 'label' => 'Comentario:',
                 'attr' => [
-                    'rows' => 1
-                ]
+                    'rows' => 1,
+                ],
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
@@ -64,18 +63,16 @@ class BuildingType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Building::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
-            'screen' => 'project',//building || project
+            'screen' => 'project', // building || project
             'urbanizationEstimate' => 0,
-            'ptpEstimate' => 0
+            'ptpEstimate' => 0,
         ]);
     }
 
     /**
-     * @param FormEvent $event
      * @param array<mixed> $options
-     * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -85,7 +82,7 @@ class BuildingType extends AbstractType
         $currency = 'CUP';
         $activeConstructor = null;
 
-        //TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
+        // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
         if (!is_null($building) && $building->getId()) {
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
@@ -93,7 +90,7 @@ class BuildingType extends AbstractType
                 'placeholder' => '-Seleccione-',
                 'label' => 'Proyectista:',
                 'required' => false,
-                'data' => $building->getActiveDraftsman()
+                'data' => $building->getActiveDraftsman(),
             ]);
 
             $project = $building->getProject();
@@ -107,7 +104,7 @@ class BuildingType extends AbstractType
             'choice_label' => 'name',
             'label' => 'Constructora:',
             'mapped' => false,
-//                'query_builder' => $this->getOrganismQueryBuilder($options),
+            //                'query_builder' => $this->getOrganismQueryBuilder($options),
 
             'detail' => true,
             'detail_title' => 'Detalle de la constructora',
@@ -120,7 +117,7 @@ class BuildingType extends AbstractType
             'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
 
             'required' => false,
-            'data' => $activeConstructor
+            'data' => $activeConstructor,
         ]);
 
         $form->add('estimatedValueConstruction', MoneyType::class, [
@@ -132,17 +129,17 @@ class BuildingType extends AbstractType
                 'data-currency-target' => 'field',
                 'data-vecpppt' => true,
                 'data-controller' => 'money',
-                'readonly' => 'readonly'
+                'readonly' => 'readonly',
             ],
             'empty_data' => 0,
             'required' => false,
             'currency' => $currency,
-//            'html5' => true,
+            //            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'grouping' => true,
             'mapped' => false,
-            'data' => $building->getPrice()
+            'data' => $building->getPrice(),
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',
@@ -151,12 +148,12 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -168,12 +165,12 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -185,12 +182,12 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -202,12 +199,12 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -219,12 +216,12 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -239,13 +236,13 @@ class BuildingType extends AbstractType
                     'data-vecpppt' => true,
                     'readonly' => 'readonly',
                     'data-controller' => 'money',
-                    'data-type--money-plus-target' => "field"
+                    'data-type--money-plus-target' => 'field',
                 ],
                 'data' => $options['ptpEstimate'],
-//                'empty_data' => 0,
+                //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -269,14 +266,14 @@ class BuildingType extends AbstractType
                     'data-currency-target' => 'field',
                     'data-vecpppt' => true,
                     'readonly' => 'readonly',
-                    'data-type--money-plus-target' => "field",
+                    'data-type--money-plus-target' => 'field',
                     'data-controller' => 'money',
                 ],
                 'data' => $options['urbanizationEstimate'],
-//                'empty_data' => 0,
+                //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
@@ -298,20 +295,20 @@ class BuildingType extends AbstractType
                     'placeholder' => '0',
                     'min' => 0,
                     'data-usd-currency-target' => 'field',
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
-                'grouping' => true
+                'grouping' => true,
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [
                 'entry_type' => LandNetworkConnectionType::class,
                 'button_delete_options' => [
-                    'label_html' => true
+                    'label_html' => true,
                 ],
                 'error_bubbling' => false,
             ])
@@ -323,12 +320,12 @@ class BuildingType extends AbstractType
                     'data-range-target' => 'range',
                     'min' => $building->getRangeMinPrice(),
                     'max' => $building->getRangeMaxPrice(),
-//                    'step' => 1000
+                    //                    'step' => 1000
                 ],
                 'data' => $building->getRangePrice(),
                 'row_attr' => [
                     'class' => 'mb-0',
-                ]
+                ],
             ])
         ;
     }

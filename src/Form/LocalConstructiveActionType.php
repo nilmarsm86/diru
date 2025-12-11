@@ -2,14 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
-use App\Entity\Currency;
-use App\Entity\Floor;
 use App\Entity\LocalConstructiveAction;
-use App\Entity\Project;
-use App\Entity\SubSystem;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -20,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of LocalConstructiveAction
+ *
  * @extends AbstractType<LocalConstructiveAction>
  */
 class LocalConstructiveActionType extends AbstractType
@@ -32,13 +28,13 @@ class LocalConstructiveActionType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Tipo:',
                 'placeholder' => '-Seleccione-',
-                'group_by' => fn(ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()->getLabelFrom($constructiveAction->getType()),
+                'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()->getLabelFrom($constructiveAction->getType()),
             ])
             ->add('constructiveSystem', EntityType::class, [
                 'class' => ConstructiveSystem::class,
                 'choice_label' => 'name',
                 'label' => 'Sistema constructivo:',
-                'placeholder' => '-Seleccione-'
+                'placeholder' => '-Seleccione-',
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -53,13 +49,9 @@ class LocalConstructiveActionType extends AbstractType
         ]);
     }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
-//        \Locale::setDefault('en');
+        //        \Locale::setDefault('en');
 
         /** @var LocalConstructiveAction $localConstructiveAction */
         $localConstructiveAction = $event->getData();
@@ -83,14 +75,14 @@ class LocalConstructiveActionType extends AbstractType
             'label' => 'Indicador técnico económico ($/m<sup>2</sup>):',
             'label_html' => true,
             'currency' => $currency,
-//            'html5' => true,
+            //            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [
                 'placeholder' => '0',
                 'min' => 0,
                 'data-usd-currency-target' => 'field',
-                'data-controller' => 'money'
+                'data-controller' => 'money',
             ],
             'data' => (!is_null($local)) ? $local->getPrice() : 0,
             'grouping' => true,

@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Building;
 use App\Entity\Client;
-use App\Entity\Constructor;
 use App\Entity\Contract;
 use App\Entity\Currency;
 use App\Entity\Draftsman;
@@ -15,7 +14,6 @@ use App\Entity\Enums\ProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
 use App\Entity\Project;
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -25,39 +23,39 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 {
     public function load(ObjectManager $manager): void
     {
-        $projects = ['Proyect1', 'Proyect2', 'Proyect3',];
+        $projects = ['Proyect1', 'Proyect2', 'Proyect3'];
         foreach ($projects as $project) {
             $projectEntity = $manager->getRepository(Project::class)->findOneBy(['name' => $project]);
             if (is_null($projectEntity)) {
                 $projectEntity = new Project();
                 $projectEntity->setName($project);
-                $projectEntity->setType(ProjectType::Parcel);//enum
-//                $projectEntity->setState(ProjectState::Registered);//enum
-//                $projectEntity->setHasOccupiedArea(false);
+                $projectEntity->setType(ProjectType::Parcel); // enum
+                //                $projectEntity->setState(ProjectState::Registered);//enum
+                //                $projectEntity->setHasOccupiedArea(false);
 
-                if ($project === 'Proyect1') {
+                if ('Proyect1' === $project) {
                     if ($investment = $this->findInvestment($manager, 'Inversion1')) {
-                        $investment->setName($investment->getName() . ' ' . $project);
+                        $investment->setName($investment->getName().' '.$project);
                         $projectEntity->setInvestment($investment);
                         $projectEntity->setClient($this->findClient($manager, true));
                         $projectEntity->setContract($this->findContract($manager, 'abc123'));
 
-                        //esto debe ser automatizado
-//                    $draftsmanProject = new DraftsmanProject();
-//                    $draftsmanProject->setProject($projectEntity);
-//                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
-//                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+                        // esto debe ser automatizado
+                        //                    $draftsmanProject = new DraftsmanProject();
+                        //                    $draftsmanProject->setProject($projectEntity);
+                        //                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
+                        //                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
 
-//                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
+                        //                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
                         if ($building = $this->findBuilding($manager, 'Obra1')) {
                             $projectEntity->addBuilding($building);
                         }
                     }
                 }
 
-                if ($project === 'Proyect2') {
+                if ('Proyect2' === $project) {
                     if ($investment = $this->findInvestment($manager, 'Inversion2')) {
-                        $investment->setName($investment->getName() . ' ' . $project);
+                        $investment->setName($investment->getName().' '.$project);
                         $projectEntity->setInvestment($investment);
                         $projectEntity->setClient($this->findClient($manager, false));
 
@@ -67,9 +65,9 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                     }
                 }
 
-                if ($project === 'Proyect3') {
+                if ('Proyect3' === $project) {
                     if ($investment = $this->findInvestment($manager, 'Inversion3')) {
-                        $investment->setName($investment->getName() . ' ' . $project);
+                        $investment->setName($investment->getName().' '.$project);
                         $projectEntity->setInvestment($investment);
                         $projectEntity->setClient($this->findClient($manager, true));
                         $projectEntity->setContract($this->findContract($manager, 'qaz753'));
@@ -103,6 +101,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
     {
         $entityClass = ($enterprise) ? EnterpriseClient::class : IndividualClient::class;
         $clients = $manager->getRepository($entityClass)->findAll();
+
         return $clients[0];
     }
 
@@ -111,10 +110,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         return $manager->getRepository(Contract::class)->findOneBy(['code' => $contract]);
     }
 
-//    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
-//    {
-//        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
-//    }
+    //    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
+    //    {
+    //        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
+    //    }
 
     private function findBuilding(ObjectManager $manager, string $building): ?Building
     {
@@ -130,7 +129,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
             ContractFixtures::class,
             UserFixtures::class,
             BuildingFixtures::class,
-            CurrencyFixtures::class
+            CurrencyFixtures::class,
         ];
     }
 

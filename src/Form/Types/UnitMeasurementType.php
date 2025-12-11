@@ -10,17 +10,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UnitMeasurementType extends AbstractType
 {
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefault('unit', '');
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['unit'] = $options['unit'];

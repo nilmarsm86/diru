@@ -31,14 +31,10 @@ class Draftsman extends Person
         return $this->draftsmansBuildings;
     }
 
-    /**
-     * @param Building $building
-     * @return DraftsmanBuilding|null
-     */
     public function getDraftsmanBuildingByBuilding(Building $building): ?DraftsmanBuilding
     {
-        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding){
-            if($draftsmansBuilding->getBuilding()?->getId() === $building->getId()){
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding) {
+            if ($draftsmansBuilding->getBuilding()?->getId() === $building->getId()) {
                 return $draftsmansBuilding;
             }
         }
@@ -68,9 +64,10 @@ class Draftsman extends Person
     public function getBuildings(): Collection
     {
         $buildings = new ArrayCollection();
-        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding){
+        foreach ($this->getDraftsmansBuildings() as $draftsmansBuilding) {
             $buildings->add($draftsmansBuilding->getBuilding());
         }
+
         return $buildings;
     }
 
@@ -88,9 +85,10 @@ class Draftsman extends Person
     public function removeBuilding(Building $building): static
     {
         $draftsmansBuildings = $building->getDraftsmansBuildings();
-        foreach ($draftsmansBuildings as $draftsmansBuilding){
-            if($draftsmansBuilding->hasDraftsman($this)){
+        foreach ($draftsmansBuildings as $draftsmansBuilding) {
+            if ($draftsmansBuilding->hasDraftsman($this)) {
                 $this->removeDraftsmansBuilding($draftsmansBuilding);
+
                 return $this;
             }
         }

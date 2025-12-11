@@ -52,18 +52,13 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "l.name LIKE :filter ";
+            $predicate = 'l.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param SubSystem $subSystem
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
-     * @param bool $reply
      * @return Paginator<mixed>
      */
     public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
@@ -71,14 +66,15 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
         $builder = $this->createQueryBuilder('l')->select(['l', 'ss'])
             ->leftJoin('l.subSystem', 'ss')
             ->andWhere('ss.id = :idSubSystem');
-//            ->andWhere('l.original IS NULL');
-        //TODO: tener en cuenta cuando es un subsistema nuevo dentro de la planta
+        //            ->andWhere('l.original IS NULL');
+        // TODO: tener en cuenta cuando es un subsistema nuevo dentro de la planta
         $dqlReply = ($reply) ? 'l.hasReply = false AND (l.state = 3 OR l.state = 0)' : 'l.original IS NULL AND (l.hasReply IS NULL OR l.hasReply = true) AND l.state != 3';
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('l.number', 'ASC')
             ->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\ConstructiveActionType;
-use App\Repository\LocalConstructiveActionRepository;
 use App\Repository\NetworkConnectionConstructiveActionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,11 +24,11 @@ class LandNetworkConnectionConstructiveAction
     private ?ConstructiveAction $constructiveAction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-//    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
+    //    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\NotBlank(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     #[Assert\Expression(
-        "this.validPrice()",
+        'this.validPrice()',
         message: 'El precio para esta acción constructiva debe ser mayor que 0.',
         negate: false
     )]
@@ -44,7 +42,7 @@ class LandNetworkConnectionConstructiveAction
     public function validPrice(): bool
     {
         return !in_array($this->constructiveAction?->getName(), ['', 'No es necesaria', 'Eliminación', 'Cambio de uso'])
-            && $this->getPrice() == 0;
+            && 0 == $this->getPrice();
     }
 
     public function __construct()
@@ -65,12 +63,12 @@ class LandNetworkConnectionConstructiveAction
     public function setLandNetworkConnection(?LandNetworkConnection $landNetworkConnection): static
     {
         // unset the owning side of the relation if necessary
-        if ($landNetworkConnection === null && $this->landNetworkConnection !== null) {
+        if (null === $landNetworkConnection && null !== $this->landNetworkConnection) {
             $this->landNetworkConnection->setLandNetworkConnectionConstructiveAction(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($landNetworkConnection !== null && $landNetworkConnection->getLandNetworkConnectionConstructiveAction() !== $this) {
+        if (null !== $landNetworkConnection && $landNetworkConnection->getLandNetworkConnectionConstructiveAction() !== $this) {
             $landNetworkConnection->setLandNetworkConnectionConstructiveAction($this);
         }
 

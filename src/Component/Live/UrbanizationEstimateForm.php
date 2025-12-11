@@ -4,14 +4,9 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
-use App\Entity\Organism;
 use App\Entity\UrbanizationEstimate;
-use App\Form\OrganismType;
 use App\Form\UrbanizationEstimateType;
-use App\Form\UrbanRegulationType;
-use App\Repository\OrganismRepository;
 use App\Repository\UrbanizationEstimateRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +43,7 @@ final class UrbanizationEstimateForm extends AbstractController
     #[LiveProp]
     public ?Building $building = null;
 
-    public function mount(?UrbanizationEstimate $ue = null, Building $building = null): void
+    public function mount(?UrbanizationEstimate $ue = null, ?Building $building = null): void
     {
         $this->ue = (is_null($ue)) ? new UrbanizationEstimate() : $ue;
         $this->entity = $this->ue;
@@ -58,7 +53,7 @@ final class UrbanizationEstimateForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        if(!is_null($this->ue)){
+        if (!is_null($this->ue)) {
             $this->building?->addUrbanizationEstimate($this->ue);
         }
 
@@ -66,12 +61,12 @@ final class UrbanizationEstimateForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(UrbanizationEstimateRepository $urbanizationEstimateRepository): ?Response
     {
-        $successMsg = (is_null($this->ue?->getId())) ? 'Se ha agregado el estimado de urbanización.' : 'Se ha modificado el estimado de urbanización.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ue?->getId())) ? 'Se ha agregado el estimado de urbanización.' : 'Se ha modificado el estimado de urbanización.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -86,17 +81,20 @@ final class UrbanizationEstimateForm extends AbstractController
             $this->entity = $this->ue;
             if (!is_null($this->modal)) {
                 $this->modalManage($ue, 'Se ha sumado el precio del nuevo estimado de urbanización.', [
-                    'urbanizationEstimateTotalPrice' => $ue->getBuilding()?->getUrbanizationEstimateTotalPrice()
+                    'urbanizationEstimateTotalPrice' => $ue->getBuilding()?->getUrbanizationEstimateTotalPrice(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($ue, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_urbanization_estimate_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,5 +105,4 @@ final class UrbanizationEstimateForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

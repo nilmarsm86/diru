@@ -41,6 +41,7 @@ final class ProvinceController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $province = new Province();
+
         return $crudActionService->formLiveComponentAction($request, $province, 'province', [
             'title' => 'Nueva provincia',
         ]);
@@ -80,8 +81,9 @@ final class ProvinceController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la provincia.';
         $response = $crudActionService->deleteAction($request, $provinceRepository, $province, $successMsg, 'app_province_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -94,30 +96,30 @@ final class ProvinceController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render('partials/_select_options.html.twig', [
                 'entities' => $province->getMunicipalities(),
-                'selected' => ($province->getMunicipalities()->count()) ? (($province->getMunicipalities()->first()) ?? $province->getMunicipalities()->first()->getId()) : 0,
-                'empty' => '-Seleccione una provincia-'
+                'selected' => ($province->getMunicipalities()->count()) ? ($province->getMunicipalities()->first() ?? $province->getMunicipalities()->first()->getId()) : 0,
+                'empty' => '-Seleccione una provincia-',
             ]);
         }
 
         throw new BadRequestHttpException('Ajax request');
     }
 
-//    /**
-//     * @throws SyntaxError
-//     * @throws RuntimeError
-//     * @throws LoaderError
-//     */
-//    #[Route('/options/{id}', name: 'app_province_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-//    public function options(Request $request, Province $province, ProvinceRepository $provinceRepository, CrudActionService $crudActionService): Response
-//    {
-////        if ($request->isXmlHttpRequest()) {
-////            return $this->render('partials/_select_options.html.twig', [
-////                'entities' => $provinceRepository->findBy([], ['name' => 'ASC']),
-////                'selected' => $province->getId()
-////            ]);
-////        }
-////
-//        throw new BadRequestHttpException('Ajax request');
-////        return $crudActionService->options($request, $province, $provinceRepository->findBy([], ['name' => 'DESC']));
-//    }
+    //    /**
+    //     * @throws SyntaxError
+    //     * @throws RuntimeError
+    //     * @throws LoaderError
+    //     */
+    //    #[Route('/options/{id}', name: 'app_province_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    //    public function options(Request $request, Province $province, ProvinceRepository $provinceRepository, CrudActionService $crudActionService): Response
+    //    {
+    // //        if ($request->isXmlHttpRequest()) {
+    // //            return $this->render('partials/_select_options.html.twig', [
+    // //                'entities' => $provinceRepository->findBy([], ['name' => 'ASC']),
+    // //                'selected' => $province->getId()
+    // //            ]);
+    // //        }
+    // //
+    //        throw new BadRequestHttpException('Ajax request');
+    // //        return $crudActionService->options($request, $province, $provinceRepository->findBy([], ['name' => 'DESC']));
+    //    }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of UrbanRegulationType
+ *
  * @extends AbstractType<UrbanRegulationType>
  */
 class UrbanRegulationTypeType extends AbstractType
@@ -29,7 +30,7 @@ class UrbanRegulationTypeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => UrbanRegulationType::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
         ]);
     }

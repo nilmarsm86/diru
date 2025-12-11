@@ -48,22 +48,16 @@ class UrbanizationEstimateRepository extends ServiceEntityRepository implements 
     //        ;
     //    }
 
-    /**
-     * @inheritDoc
-     */
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "o.concept LIKE :filter ";
+            $predicate = 'o.concept LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findUrbanizationEstimates(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -71,6 +65,7 @@ class UrbanizationEstimateRepository extends ServiceEntityRepository implements 
         $builder = $this->createQueryBuilder('ue');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('ue.concept', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

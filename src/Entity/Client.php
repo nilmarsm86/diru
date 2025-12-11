@@ -31,11 +31,11 @@ class Client
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Llene los datos del representante.')]
+    //    #[Assert\NotBlank(message: 'Llene los datos del representante.')]
     protected ?Representative $representative = null;
 
     #[ORM\Column(name: 'address', type: Types::TEXT)]
-//    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
+    //    #[Assert\NotBlank(message: 'La dirección no debe estar vacia.')]
     protected ?string $street = null;
 
     /**
@@ -113,5 +113,4 @@ class Client
     {
         return $this->getProjects()->count() > 0;
     }
-
 }

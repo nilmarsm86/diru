@@ -9,8 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
-
 
 #[ORM\Entity(repositoryClass: SeparateConceptRepository::class)]
 class SeparateConcept
@@ -72,6 +70,7 @@ class SeparateConcept
     {
         $this->type = '';
         $this->enumType = $enumType;
+
         return $this;
     }
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait TechnicalStatusTrait
- {
+{
     #[ORM\Column(length: 255)]
     private ?string $technicalStatus = null;
 
@@ -43,4 +43,4 @@ trait TechnicalStatusTrait
         $technicalStatus = (is_null($this->technicalStatus)) ? '' : $this->technicalStatus;
         $this->setTechnicalStatus(TechnicalStatus::from($technicalStatus));
     }
- }
+}

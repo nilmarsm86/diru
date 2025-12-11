@@ -40,6 +40,7 @@ final class LocationZoneController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $locationZone = new LocationZone();
+
         return $crudActionService->formLiveComponentAction($request, $locationZone, 'location_zone', [
             'title' => 'Nueva zona de ubicación',
         ]);
@@ -80,8 +81,9 @@ final class LocationZoneController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la zona de ubicación.';
         $response = $crudActionService->deleteAction($request, $locationZoneRepository, $locationZone, $successMsg, 'app_location_zone_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

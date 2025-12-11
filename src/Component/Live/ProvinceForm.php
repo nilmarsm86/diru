@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Province;
 use App\Form\ProvinceType;
 use App\Repository\ProvinceRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,12 +51,12 @@ final class ProvinceForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(ProvinceRepository $provinceRepository): ?Response
     {
-        $successMsg = (is_null($this->prov?->getId())) ? 'Se ha agregado la provincia.' : 'Se ha modificado la provincia.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->prov?->getId())) ? 'Se ha agregado la provincia.' : 'Se ha modificado la provincia.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -71,17 +70,20 @@ final class ProvinceForm extends AbstractController
             $this->entity = $this->prov;
             if (!is_null($this->modal)) {
                 $this->modalManage($province, 'Se ha seleccionado la nueva provincia agregada.', [
-                    'province' => $province->getId()
+                    'province' => $province->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($province, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_province_index', [], Response::HTTP_SEE_OTHER);
         }
 

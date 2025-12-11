@@ -3,7 +3,6 @@
 namespace App\Twig\Runtime;
 
 use Twig\Extension\RuntimeExtensionInterface;
-use InvalidArgumentException;
 
 class EnumTwigExtensionRuntime implements RuntimeExtensionInterface
 {
@@ -12,29 +11,25 @@ class EnumTwigExtensionRuntime implements RuntimeExtensionInterface
         // Inject dependencies if needed
     }
 
-    /**
-     * @param mixed $enum
-     * @param mixed|null $value
-     * @return string
-     */
     public function getLabelFrom(mixed $enum, mixed $value = null): string
     {
-//        if (gettype($enum) === 'string') {
-            $callback = [$enum, 'getLabelFrom'];
-            assert(is_callable($callback));
+        //        if (gettype($enum) === 'string') {
+        $callback = [$enum, 'getLabelFrom'];
+        assert(is_callable($callback));
 
-            if(gettype($enum) !== 'string'){
-                $value = $enum;
-            }
-            /** @var string $callbackResult */
-            $callbackResult = call_user_func_array($callback, [$value]);
-            return $callbackResult;
-//        } else {
-//            if(is_object($enum)){
-//                return $enum->getLabelFrom($enum);
-//            }
+        if ('string' !== gettype($enum)) {
+            $value = $enum;
+        }
+        /** @var string $callbackResult */
+        $callbackResult = call_user_func_array($callback, [$value]);
 
-//            return '';
-//        }
+        return $callbackResult;
+        //        } else {
+        //            if(is_object($enum)){
+        //                return $enum->getLabelFrom($enum);
+        //            }
+
+        //            return '';
+        //        }
     }
 }

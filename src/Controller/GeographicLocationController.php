@@ -40,6 +40,7 @@ final class GeographicLocationController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $geographicLocation = new GeographicLocation();
+
         return $crudActionService->formLiveComponentAction($request, $geographicLocation, 'geographic_location', [
             'title' => 'Nueva ubicación geográfica',
         ]);
@@ -80,8 +81,9 @@ final class GeographicLocationController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la ubicación geográfica.';
         $response = $crudActionService->deleteAction($request, $geographicLocationRepository, $geographicLocation, $successMsg, 'app_location_zone_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

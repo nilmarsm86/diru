@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<UrbanRegulationType>
@@ -52,16 +51,13 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "urt.name LIKE :filter ";
+            $predicate = 'urt.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findUrbanRegulationTypes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -69,14 +65,12 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
         $builder = $this->createQueryBuilder('urt');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('urt.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 
     /**
-     * @param UrbanRegulationType $entity
-     * @param bool $flush
-     * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(UrbanRegulationType $entity, bool $flush = false): void
     {

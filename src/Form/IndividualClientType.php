@@ -16,13 +16,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of IndividualClient
+ *
  * @extends AbstractType<IndividualClient>
  */
 class IndividualClientType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -32,21 +32,21 @@ class IndividualClientType extends AbstractType
             ->add('phone', null, [
                 'label' => 'Teléfono:',
                 'attr' => [
-                    'placeholder' => 'Teléfono del cliente'
-                ]
+                    'placeholder' => 'Teléfono del cliente',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo:',
                 'attr' => [
-                    'placeholder' => 'Correo del cliente'
-                ]
+                    'placeholder' => 'Correo del cliente',
+                ],
             ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
-                'live_form' => $options['live_form']
+                'live_form' => $options['live_form'],
             ])
         ;
 
@@ -60,13 +60,13 @@ class IndividualClientType extends AbstractType
         $resolver->setDefaults([
             'data_class' => IndividualClient::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'province' => 0,
             'municipality' => 0,
             'street' => '',
             'live_form' => false,
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('province', 'int');
@@ -76,36 +76,32 @@ class IndividualClientType extends AbstractType
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
-//    /**
-//     * @param Client $client
-//     * @return Closure
-//     */
-//    private function getPersonQueryBuilder(Client $client): Closure
-//    {
-//        return function (EntityRepository $er) use ($client): QueryBuilder|array {
-//            $qb = $er->createQueryBuilder('p');
-//            if (!$client->getId()) {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL');
-//            } else {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL')
-//                    ->orWhere('c.id = :id')
-//                    ->setParameter(':id', $client->getId());
-//            }
-//
-//            return $qb->orderBy('p.name', 'ASC');
-//        };
-//    }
+    //    /**
+    //     * @param Client $client
+    //     * @return Closure
+    //     */
+    //    private function getPersonQueryBuilder(Client $client): Closure
+    //    {
+    //        return function (EntityRepository $er) use ($client): QueryBuilder|array {
+    //            $qb = $er->createQueryBuilder('p');
+    //            if (!$client->getId()) {
+    //                $qb->leftJoin('p.client', 'c')
+    //                    ->where('c.person IS NULL');
+    //            } else {
+    //                $qb->leftJoin('p.client', 'c')
+    //                    ->where('c.person IS NULL')
+    //                    ->orWhere('c.id = :id')
+    //                    ->setParameter(':id', $client->getId());
+    //            }
+    //
+    //            return $qb->orderBy('p.name', 'ASC');
+    //        };
+    //    }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
-//        /** @var IndividualClient $ic */
-//        $ic = $event->getData();
+        //        /** @var IndividualClient $ic */
+        //        $ic = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [
@@ -123,14 +119,14 @@ class IndividualClientType extends AbstractType
             'add_url' => $this->router->generate('app_representative_new', ['modal' => 'modal-load']),
         ]);
 
-//        $form->add('hasRepresentative', CheckboxType::class, [
-//            'label' => 'Tiene representante',
-//            'mapped' => false,
-//            'required' => false,
-//            'attr' => [
-//                'data-action' => 'change->visibility#toggle'//show or hide representative field
-//            ],
-//            'data' => (bool)$ic->getRepresentative()
-//        ]);
+        //        $form->add('hasRepresentative', CheckboxType::class, [
+        //            'label' => 'Tiene representante',
+        //            'mapped' => false,
+        //            'required' => false,
+        //            'attr' => [
+        //                'data-action' => 'change->visibility#toggle'//show or hide representative field
+        //            ],
+        //            'data' => (bool)$ic->getRepresentative()
+        //        ]);
     }
 }

@@ -3,15 +3,11 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Entity\Province;
 use App\Entity\SubsystemType;
-use App\Form\ProvinceType;
 use App\Form\SubsystemTypeType;
-use App\Repository\ProvinceRepository;
 use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,22 +55,22 @@ final class SubsystemTypeForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        if(!is_null($this->subsystemSubType)){
-            $this->formValues['subsystemTypeSubsystemSubTypes'][(count($this->formValues['subsystemTypeSubsystemSubTypes']) - 1)]['subsystemSubType'] = $this->subsystemSubType;
+        if (!is_null($this->subsystemSubType)) {
+            $this->formValues['subsystemTypeSubsystemSubTypes'][count($this->formValues['subsystemTypeSubsystemSubTypes']) - 1]['subsystemSubType'] = $this->subsystemSubType;
         }
 
         return $this->createForm(SubsystemTypeType::class, $this->sst, [
-//            'screen' => 'building'
+            //            'screen' => 'building'
         ]);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(SubsystemTypeRepository $subsystemTypeRepository, SubsystemSubTypeRepository $subsystemSubTypeRepository, EntityManagerInterface $entityManager): ?Response
     {
-        $successMsg = (is_null($this->sst?->getId())) ? 'Se ha agregado el tipo.' : 'Se ha modificado el tipo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->sst?->getId())) ? 'Se ha agregado el tipo.' : 'Se ha modificado el tipo.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -82,31 +78,31 @@ final class SubsystemTypeForm extends AbstractController
             /** @var SubsystemType $subsystemType */
             $subsystemType = $this->getForm()->getData();
 
-//            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
-//                if(is_null($subsystemSubType->getId())){
-//                    $subsystemType->removeSubsystemSubType($subsystemSubType);
-//                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
-//                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
-//                        $subsystemType->addSubsystemSubType($subsystemSubType);
-////                        $subsystemSubType->addSubsystemType($subsystemType);
-//                    }
-//                }
-//            }
-//
-//            if(!is_null($subsystemType->getId())){
-//                foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
-//                    $subsystemType->removeSubsystemTypeSubsystemSubType($subsystemTypeSubsystemSubType);
-//                    $entityManager->remove($subsystemTypeSubsystemSubType);
-//                    $entityManager->flush();
-//                }
-////                $subsystemTypeRepository->save($subsystemType, true);
-//
-//
-//                foreach ($this->formValues['subsystemTypeSubsystemSubTypes'] as $subsystemTypeSubsystemSubType){
-////                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
-////                    dump($subsystemTypeSubsystemSubType);
-//                }
-//            }
+            //            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
+            //                if(is_null($subsystemSubType->getId())){
+            //                    $subsystemType->removeSubsystemSubType($subsystemSubType);
+            //                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
+            //                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
+            //                        $subsystemType->addSubsystemSubType($subsystemSubType);
+            // //                        $subsystemSubType->addSubsystemType($subsystemType);
+            //                    }
+            //                }
+            //            }
+            //
+            //            if(!is_null($subsystemType->getId())){
+            //                foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
+            //                    $subsystemType->removeSubsystemTypeSubsystemSubType($subsystemTypeSubsystemSubType);
+            //                    $entityManager->remove($subsystemTypeSubsystemSubType);
+            //                    $entityManager->flush();
+            //                }
+            // //                $subsystemTypeRepository->save($subsystemType, true);
+            //
+            //
+            //                foreach ($this->formValues['subsystemTypeSubsystemSubTypes'] as $subsystemTypeSubsystemSubType){
+            // //                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
+            // //                    dump($subsystemTypeSubsystemSubType);
+            //                }
+            //            }
 
             $subsystemTypeRepository->save($subsystemType, true);
 
@@ -114,17 +110,20 @@ final class SubsystemTypeForm extends AbstractController
             $this->entity = $this->sst;
             if (!is_null($this->modal)) {
                 $this->modalManage($subsystemType, 'Se ha seleccionado el nuevo tipo agregada.', [
-                    'subsystemType' => $subsystemType->getId()
+                    'subsystemType' => $subsystemType->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($subsystemType, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_subsystem_type_index', [], Response::HTTP_SEE_OTHER);
         }
 

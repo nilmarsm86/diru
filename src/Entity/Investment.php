@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\InvestmentRepository;
@@ -52,10 +51,10 @@ class Investment
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-//    #[Assert\NotBlank(message: 'Establezca el municipio.')]
+    //    #[Assert\NotBlank(message: 'Establezca el municipio.')]
     private ?Municipality $municipality = null;
 
-    /** @var Collection<int, Project>  */
+    /** @var Collection<int, Project> */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]
     #[Assert\Valid]
     private Collection $projects;
@@ -168,11 +167,11 @@ class Investment
 
     public function getLocationZoneName(): string
     {
-        if(!is_null($this->getLocationZone())){
+        if (!is_null($this->getLocationZone())) {
             return $this->getLocationZone()->getName();
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -208,9 +207,10 @@ class Investment
     public function getBuildingsAmount(): int
     {
         $totalBuildingsAmount = 0;
-        foreach ($this->getProjects() as $project){
+        foreach ($this->getProjects() as $project) {
             $totalBuildingsAmount += $project->getBuildingsAmount();
         }
+
         return $totalBuildingsAmount;
     }
 
@@ -218,5 +218,4 @@ class Investment
     {
         return $this->getProjects()->count() > 0;
     }
-
 }

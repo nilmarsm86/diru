@@ -2,12 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
-use App\Entity\Currency;
 use App\Entity\LandNetworkConnectionConstructiveAction;
-use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -18,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of LandNetworkConnectionConstructiveAction
+ *
  * @extends AbstractType<LandNetworkConnectionConstructiveAction>
  */
 class LandNetworkConnectionConstructiveActionType extends AbstractType
@@ -29,13 +27,13 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
                 'label' => 'Tipo:',
-                'placeholder' => '-Seleccione-'
+                'placeholder' => '-Seleccione-',
             ])
             ->add('constructiveSystem', EntityType::class, [
                 'class' => ConstructiveSystem::class,
                 'choice_label' => 'name',
                 'label' => 'Sistema constructivo:',
-                'placeholder' => '-Seleccione-'
+                'placeholder' => '-Seleccione-',
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -50,10 +48,6 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         ]);
     }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
         /** @var LandNetworkConnectionConstructiveAction $landNetworkConnectionConstructiveAction */
@@ -61,9 +55,9 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         $form = $event->getForm();
 
         $currency = 'CUP';
-        if($landNetworkConnectionConstructiveAction){
+        if ($landNetworkConnectionConstructiveAction) {
             $landNetworkConnection = $landNetworkConnectionConstructiveAction->getLandNetworkConnection();
-            if($landNetworkConnection){
+            if ($landNetworkConnection) {
                 $building = $landNetworkConnection->getBuilding();
                 $project = $building?->getProject();
                 $currency = $project?->getCurrency();
@@ -74,17 +68,17 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         $form->add('price', MoneyType::class, [
             'label' => 'Precio:',
             'currency' => $currency,
-//            'html5' => true,
+            //            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [
                 'placeholder' => 0,
                 'min' => 0,
                 'data-usd-currency-target' => 'field',
-                'data-controller' => 'money'
+                'data-controller' => 'money',
             ],
             'empty_data' => 0,
-            'grouping' => true
+            'grouping' => true,
         ]);
     }
 }

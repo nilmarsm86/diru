@@ -3,7 +3,6 @@
 namespace App\Entity\Enums;
 
 use App\Entity\Traits\EnumsTrait;
-use BackedEnum;
 
 enum TechnicalStatus: string
 {
@@ -16,26 +15,21 @@ enum TechnicalStatus: string
     case Regular = '3';
     case Good = '4';
 
-    const CHOICES = [self::Undefined, self::Critical, self::Bad, self::Regular, self::Good];
+    public const CHOICES = [self::Undefined, self::Critical, self::Bad, self::Regular, self::Good];
 
-    /**
-     * @param BackedEnum|string $enum
-     * @return string
-     */
-    public static function getLabelFrom(BackedEnum|string $enum): string
+    public static function getLabelFrom(\BackedEnum|string $enum): string
     {
-        if(is_string($enum)){
+        if (is_string($enum)) {
             $enum = self::from($enum);
         }
 
         return match ($enum) {
-            self::Undefined => 'Sin definir',//translate
-            self::Critical => 'Crítico',//translate
-            self::Bad => 'Malo',//translate
-            self::Regular => 'Regular',//translate
-            self::Good => 'Bueno',//translate
-            default => '-Seleccione-'//translate
+            self::Undefined => 'Sin definir',// translate
+            self::Critical => 'Crítico',// translate
+            self::Bad => 'Malo',// translate
+            self::Regular => 'Regular',// translate
+            self::Good => 'Bueno',// translate
+            default => '-Seleccione-',// translate
         };
     }
-
 }

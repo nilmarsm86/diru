@@ -2,14 +2,13 @@
 
 namespace App\Entity\Traits;
 
-use BackedEnum;
-use Closure;
 use Symfony\Component\OptionsResolver\Options;
 
 trait EnumsTrait
- {
+{
     /**
-     * Get all possible values
+     * Get all possible values.
+     *
      * @return array<mixed>
      */
     public static function values(): array
@@ -18,34 +17,33 @@ trait EnumsTrait
     }
 
     /**
-     * Get all values for select
+     * Get all values for select.
+     *
      * @return array<mixed>
      */
     public static function forSelect(): array
     {
         return array_combine(
-            array_column(self::cases(), 'name'),//option label
-            array_column(self::cases(), 'value')//option value
+            array_column(self::cases(), 'name'),// option label
+            array_column(self::cases(), 'value')// option value
         );
     }
 
     /**
-     * Function fot EnumType
-     * @return callable
+     * Function fot EnumType.
      */
     public static function getValue(): callable
     {
-        return static function (Options $options): Closure {
-            return fn (?BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
+        return static function (Options $options): \Closure {
+            return fn (?\BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
         };
     }
 
     /**
-     * Label tag for EnumType
-     * @return callable
+     * Label tag for EnumType.
      */
     public static function getLabel(): callable
     {
-        return fn (BackedEnum $choice) => self::getLabelFrom($choice);
+        return fn (\BackedEnum $choice) => self::getLabelFrom($choice);
     }
- }
+}

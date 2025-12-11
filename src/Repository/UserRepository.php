@@ -7,11 +7,11 @@ use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -40,9 +40,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         /*if($filter){
@@ -55,19 +52,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->setParameter(':filter','%'.$filter.'%');
         }*/
         if ($filter) {
-            $predicate = "u.username LIKE :filter ";
-            $predicate .= "OR p.name LIKE :filter ";
-            $predicate .= "OR p.lastname LIKE :filter";
+            $predicate = 'u.username LIKE :filter ';
+            $predicate .= 'OR p.name LIKE :filter ';
+            $predicate .= 'OR p.lastname LIKE :filter';
 
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed> Returns an array of User objects
      */
     public function findUsers(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -77,10 +71,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->addFilter($builder, $filter, false);
         $builder->andWhere('u.username <> :superadmin')
-            ->setParameter(':superadmin','superadmin');
+            ->setParameter(':superadmin', 'superadmin');
 
         $query = $builder->orderBy('u.id', 'ASC')
             ->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 

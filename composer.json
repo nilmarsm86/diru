@@ -83,7 +83,8 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpstan": "phpstan analyse"
+        "phpstan": "phpstan analyse",
+        "php-cs-fixer": ".\\vendor\\bin\\php-cs-fixer fix"
     },
     "conflict": {
         "symfony/symfony": "*"

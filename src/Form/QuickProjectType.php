@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
-use App\Entity\Person;
 use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,14 +14,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Project
+ *
  * @extends AbstractType<Project>
  */
 class QuickProjectType extends AbstractType
 {
-//    public function __construct(private readonly RouterInterface $router)
-//    {
-//
-//    }
+    //    public function __construct(private readonly RouterInterface $router)
+    //    {
+    //
+    //    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,7 +30,7 @@ class QuickProjectType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
             ])
-            //solo se muestra si el estado que se selecciona es el del parado
+            // solo se muestra si el estado que se selecciona es el del parado
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
                 'choices' => [
@@ -42,32 +42,33 @@ class QuickProjectType extends AbstractType
                 'multiple' => false,
                 'data' => 'individual_client',
                 'attr' => [
-                    'data-action' => 'change->visibility#toggle'//show or hide representative field
+                    'data-action' => 'change->visibility#toggle', // show or hide representative field
                 ],
             ])
             ->add('individualClient', EntityType::class, [
                 'class' => IndividualClient::class,
                 'choice_label' => function (IndividualClient $individualClient) {
-                $person = $individualClient->getPerson();
-                return $person?->getFullName();
+                    $person = $individualClient->getPerson();
+
+                    return $person?->getFullName();
                 },
                 'mapped' => false,
                 'label' => 'Persona natural',
-//                'placeholder' => '-Seleccione-'
+                //                'placeholder' => '-Seleccione-'
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
-//                'choice_label' => 'representative',
+                //                'choice_label' => 'representative',
                 'choice_label' => function (EnterpriseClient $enterpriseClient) {
                     return $enterpriseClient->getEmail();
                 },
-                'group_by' => fn(EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
+                'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
                 'mapped' => false,
                 'label' => 'Cliente empresarial-negocio',
-//                'placeholder' => '-Seleccione-'
+                //                'placeholder' => '-Seleccione-'
             ])
             ->add('button', HiddenType::class, [
-                'mapped' => false
+                'mapped' => false,
             ])
 //            ->add('moreData', SubmitType::class, [
 //                'label' => 'Llenar mas datos',
@@ -84,26 +85,25 @@ class QuickProjectType extends AbstractType
             'data_class' => Project::class,
             'attr' => [
                 'novalidate' => 'novalidate',
-                'id' => 'quick_project'
+                'id' => 'quick_project',
             ],
             'error_mapping' => [
                 'enumType' => 'type',
             ],
-
         ]);
     }
 
-//    /**
-//     * @param array<mixed> $options
-//     * @return Closure
-//     */
-//    private function getInvestmentQueryBuilder(array $options): \Closure
-//    {
-//        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-//            return $er->createQueryBuilder('i')
-//                ->join('i.project', 'p')
-////                ->where('i.project is null')
-//                ->orderBy('i.name');
-//        };
-//    }
+    //    /**
+    //     * @param array<mixed> $options
+    //     * @return Closure
+    //     */
+    //    private function getInvestmentQueryBuilder(array $options): \Closure
+    //    {
+    //        return function (EntityRepository $er) use ($options): QueryBuilder|array {
+    //            return $er->createQueryBuilder('i')
+    //                ->join('i.project', 'p')
+    // //                ->where('i.project is null')
+    //                ->orderBy('i.name');
+    //        };
+    //    }
 }

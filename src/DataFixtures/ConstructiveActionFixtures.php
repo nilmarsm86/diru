@@ -3,8 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\ConstructiveAction;
-use App\Entity\Constructor;
-use App\Entity\Contract;
 use App\Entity\Enums\ConstructiveActionType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -19,13 +17,13 @@ class ConstructiveActionFixtures extends Fixture implements FixtureGroupInterfac
             'Cambio de uso' => ConstructiveActionType::NoModifier,
             'Mantenimiento' => ConstructiveActionType::NoModifier,
             'Conservación' => ConstructiveActionType::NoModifier,
-            'Rehabilitación' => ConstructiveActionType::Modifier,//modificacion de los elementos constructivos sin demoler
+            'Rehabilitación' => ConstructiveActionType::Modifier, // modificacion de los elementos constructivos sin demoler
             'Demolición' => ConstructiveActionType::Modifier,
             'Escombreo y limpieza' => ConstructiveActionType::NoModifier,
             'Ampliación' => ConstructiveActionType::Modifier,
             'Obra nueva' => ConstructiveActionType::Modifier,
             'Eliminación' => ConstructiveActionType::Modifier,
-            'Remodelación' => ConstructiveActionType::Modifier,//implica demolicion de algo
+            'Remodelación' => ConstructiveActionType::Modifier, // implica demolicion de algo
         ];
         foreach ($actions as $name => $type) {
             $constructiveAction = $manager->getRepository(ConstructiveAction::class)->findOneBy(['name' => $name]);

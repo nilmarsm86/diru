@@ -22,7 +22,7 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
             'Para 5 personas (2Dd)', 'Para 5 personas (D3d)',
             'Para 6 personas (2D2d)', 'Para 6 personas (D4d)',
             'Para 7 personas (3Dd)', 'Para 7 personas (2D3d)',
-            'Para 8 personas (4D)', 'Para 8 personas (3d2D)', 'Para 8 personas (2d4D)'
+            'Para 8 personas (4D)', 'Para 8 personas (3d2D)', 'Para 8 personas (2d4D)',
         ];
 
         $types = [
@@ -34,7 +34,7 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
                 'Vivienda urbana unifamiliar de alto estandar' => $viviendaClasificacion,
                 'Vivienda urbana multifamiliar social' => $viviendaClasificacion,
                 'Vivienda urbana multifamiliar de mediano estandar' => $viviendaClasificacion,
-                'Vivienda urbana multifamiliar de alto estandar' => $viviendaClasificacion
+                'Vivienda urbana multifamiliar de alto estandar' => $viviendaClasificacion,
             ],
             '1' => [
                 'Salud' => ['Farmacia de Turno normal', 'Consultorios Médicos', 'Casa y Clubes de abuelos', 'Policlínicos (Sin Ingresos)', 'Hogar de ancianos pequeño'],
@@ -44,7 +44,7 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
                 'Socioculturales y Recreativos' => ['Sala de computacion (Joven Club)', 'Sala de video', 'Centro Cultural Polifuncional', 'Biblioteca Comunitaria Pequeña'],
                 'Deportivos' => ['Canchas deportivas mixtas', 'Gimnasios', 'Complejo de Piscinas', 'Salas Polivalentes'],
                 'Administrativos' => ['Administrativos', 'Oficina de correos', 'Oficina de cobros', 'Bancos pequeños', 'Centro Cívico y Asociativo', 'Cajeros automáticos', 'Servicio de telefonía, correos electrónicos', 'Salas de Navegacion de Internet'],
-                'Otros servicios urbanos' => ['Parqueos y Garajes Locales', 'Local de Zona administrativa', 'Punto de Gas', 'Centro de elaboración merienda escolar', 'Circulo de abuelos', 'Puntos para la recogida selectiva de residuos', 'Centro de Higiene', 'Baños públicos', 'Estación taxis', 'Parqueo de camiones']
+                'Otros servicios urbanos' => ['Parqueos y Garajes Locales', 'Local de Zona administrativa', 'Punto de Gas', 'Centro de elaboración merienda escolar', 'Circulo de abuelos', 'Puntos para la recogida selectiva de residuos', 'Centro de Higiene', 'Baños públicos', 'Estación taxis', 'Parqueo de camiones'],
             ],
             '2' => [
                 'Salud' => ['Farmacia de Turno permanente', 'Hospitales Generales y especializados', 'Estomatología y fisioterapia', 'Hogar de ancianos grande'],
@@ -55,7 +55,7 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
                 'Deportivos' => [],
                 'Administrativos' => [],
                 'Turismo' => [],
-                'Otros' => []
+                'Otros' => [],
             ],
             '3' => [
                 'Industria Alimentaria' => [],
@@ -70,40 +70,33 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 
         foreach ($types as $classification => $typeNames) {
             foreach ($typeNames as $typeName => $subs) {
-//                $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
-//                if (is_null($type)) {
-                    $type = new SubsystemType();
-                    $type->setName($typeName);
-                    $type->setClassification(SubsystemFunctionalClassification::from($classification));
+                //                $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
+                //                if (is_null($type)) {
+                $type = new SubsystemType();
+                $type->setName($typeName);
+                $type->setClassification(SubsystemFunctionalClassification::from($classification));
 
-                    $manager->persist($type);
-                    $manager->flush();
-//                }
+                $manager->persist($type);
+                $manager->flush();
+                //                }
 
                 $this->addSubType($manager, $type, $subs);
-
-
             }
         }
-
-
     }
 
     /**
-     * @param ObjectManager $manager
-     * @param SubsystemType $subsystemType
      * @param array<string> $subs
-     * @return void
      */
     public function addSubType(ObjectManager $manager, SubsystemType $subsystemType, array $subs): void
     {
         foreach ($subs as $subName) {
-//            $isNew = false;
+            //            $isNew = false;
             $subType = $manager->getRepository(SubsystemSubType::class)->findOneBy(['name' => $subName]);
             if (is_null($subType)) {
                 $subType = new SubsystemSubType();
                 $subType->setName($subName);
-//                $isNew = true;
+                //                $isNew = true;
                 $manager->persist($subType);
                 $manager->flush();
             }
@@ -114,11 +107,11 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 
             $manager->persist($stsst);
             $manager->flush();
-//            $subsystemType->addSubsystemSubType($subType);
-//            if ($isNew) {
-//                $manager->persist($subsystemType);
+            //            $subsystemType->addSubsystemSubType($subType);
+            //            if ($isNew) {
+            //                $manager->persist($subsystemType);
 
-//            }
+            //            }
         }
     }
 
@@ -126,5 +119,4 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['procrea'];
     }
-
 }

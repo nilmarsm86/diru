@@ -2,12 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
-use App\Entity\Floor;
 use App\Entity\Local;
 use App\Entity\SubSystem;
-use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\LocalTypeEnumType;
+use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -19,6 +17,7 @@ use Symfony\Component\Validator\Constraints\Range;
 
 /**
  * @template TData of Local
+ *
  * @extends AbstractType<Local>
  */
 class LocalType extends AbstractType
@@ -29,15 +28,15 @@ class LocalType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del local'
-                ]
+                    'placeholder' => 'Nombre del local',
+                ],
             ])
             ->add('number', IntegerType::class, [
                 'label' => 'Número:',
                 'attr' => [
                     'placeholder' => 'Número del local',
                     'min' => 1,
-                    'data-controller' => 'positive-zero'
+                    'data-controller' => 'positive-zero',
                 ],
             ])
             ->add('type', LocalTypeEnumType::class, [
@@ -49,13 +48,13 @@ class LocalType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Altura del local',
                     'data-controller' => 'positive-zero',
-                    'min' => 0
+                    'min' => 0,
                 ],
-//                'empty_data' => 0
+                //                'empty_data' => 0
             ])
             ->add('impactHigherLevels', null, [
                 'label' => 'Tiene impacto en niveles superiores:',
-                'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.'
+                'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.',
             ])
             ->add('comment', null, [
                 'label' => false,
@@ -71,7 +70,7 @@ class LocalType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Local::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'subSystem' => null,
             'reply' => false,
@@ -86,9 +85,7 @@ class LocalType extends AbstractType
     }
 
     /**
-     * @param FormEvent $event
      * @param array<mixed> $options
-     * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -99,10 +96,10 @@ class LocalType extends AbstractType
         $landArea = 0;
         $totalLocalsArea = 0;
         $subSystem = $options['subSystem'];
-        if($subSystem instanceof SubSystem){
+        if ($subSystem instanceof SubSystem) {
             $floor = $subSystem->getFloor();
             $landArea = $floor?->getBuilding()?->getMaxArea();
-            if($options['reply']){
+            if ($options['reply']) {
                 $landArea = $floor?->getBuilding()?->getLandArea();
             }
             $totalLocalsArea = $floor?->getTotalArea();
@@ -114,8 +111,8 @@ class LocalType extends AbstractType
         }*/
 
         $subSystem = $local->getSubSystem();
-        if (is_null($local->getId()) && $leftArea > 1 && $subSystem?->notWallArea() === true) {
-            $leftArea -= 1;
+        if (is_null($local->getId()) && $leftArea > 1 && true === $subSystem?->notWallArea()) {
+            --$leftArea;
         }
 
         if ($local->getId()) {
@@ -131,19 +128,19 @@ class LocalType extends AbstractType
         $attr = [
             'min' => 1,
             'max' => $leftArea,
-            'placeholder' => 'Área que ocupa el local'
+            'placeholder' => 'Área que ocupa el local',
         ];
 
-//        if (!$options['subSystem']->isOriginal()) {
-//            unset($attr['max']);
-//            $constraints = [
-//                new GreaterThan(value: 1)
-//            ];
-//        }
+        //        if (!$options['subSystem']->isOriginal()) {
+        //            unset($attr['max']);
+        //            $constraints = [
+        //                new GreaterThan(value: 1)
+        //            ];
+        //        }
 
         $form->add('area', UnitMeasurementFloatType::class, [
             'unit' => 'm<sup>2</sup>',
-            'label' => "Área:",
+            'label' => 'Área:',
             'attr' => $attr,
             'constraints' => $constraints,
         ]);
@@ -151,15 +148,15 @@ class LocalType extends AbstractType
         $subSystem = $local->getSubSystem();
         $floor = $subSystem?->getFloor();
 
-        if (!$floor?->isOriginal() ||
-            !$subSystem->isOriginal() ||
-            !$local->isOriginal() ||
-            $local->inNewBuilding() ||
-            ($local->getId() && $local->hasReply())
+        if (!$floor?->isOriginal()
+            || !$subSystem->isOriginal()
+            || !$local->isOriginal()
+            || $local->inNewBuilding()
+            || ($local->getId() && $local->hasReply())
         ) {
             $form->add('localConstructiveAction', LocalConstructiveActionType::class, [
                 'required' => true,
-                'error_bubbling' => false
+                'error_bubbling' => false,
             ]);
         }
 
@@ -168,9 +165,9 @@ class LocalType extends AbstractType
             'undefined_option' => $local->isOriginal(),
         ];
 
-//        if(is_null($local->getId()) /*&& $options['reply']*/){
-//            $technicalStatusOptions['data'] = TechnicalStatus::Good;
-//        }
+        //        if(is_null($local->getId()) /*&& $options['reply']*/){
+        //            $technicalStatusOptions['data'] = TechnicalStatus::Good;
+        //        }
 
         $form->add('technicalStatus', TechnicalStatusEnumType::class, $technicalStatusOptions);
     }

@@ -51,16 +51,13 @@ class UrbanRegulationRepository extends ServiceEntityRepository implements Filte
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "ur.code LIKE :filter ";
+            $predicate = 'ur.code LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findUrbanRegulations(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -68,6 +65,7 @@ class UrbanRegulationRepository extends ServiceEntityRepository implements Filte
         $builder = $this->createQueryBuilder('ur');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ur.code', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

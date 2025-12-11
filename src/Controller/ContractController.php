@@ -40,6 +40,7 @@ final class ContractController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $contract = new Contract();
+
         return $crudActionService->formLiveComponentAction($request, $contract, 'contract', [
             'title' => 'Nuevo contrato',
         ]);
@@ -80,8 +81,9 @@ final class ContractController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el contrato.';
         $response = $crudActionService->deleteAction($request, $contractRepository, $contract, $successMsg, 'app_contract_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

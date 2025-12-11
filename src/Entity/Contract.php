@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ContractRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContractRepository::class)]
 #[ORM\UniqueConstraint(name: 'contract_code', columns: ['code'])]

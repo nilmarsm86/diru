@@ -40,6 +40,7 @@ final class NetworkConnectionController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $networkConnection = new NetworkConnection();
+
         return $crudActionService->formLiveComponentAction($request, $networkConnection, 'network_connection', [
             'title' => 'Nueva conexión de red',
         ]);
@@ -79,12 +80,12 @@ final class NetworkConnectionController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la conexión de red.';
         $response = $crudActionService->deleteAction($request, $networkConnectionRepository, $networkConnection, $successMsg, 'app_network_connection_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
         return $response;
     }
-
 }

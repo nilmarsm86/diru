@@ -38,12 +38,13 @@ final class UrbanizationEstimateController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/new/{building}', name: 'app_urbanization_estimate_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Building $building = null): Response
+    public function new(Request $request, CrudActionService $crudActionService, ?Building $building = null): Response
     {
         $urbanizationEstimate = new UrbanizationEstimate();
+
         return $crudActionService->formLiveComponentAction($request, $urbanizationEstimate, 'urbanization_estimate', [
             'title' => 'Nuevo estimado de urbanización',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 
@@ -81,8 +82,9 @@ final class UrbanizationEstimateController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el estimado de urbanización.';
         $response = $crudActionService->deleteAction($request, $urbanizationEstimateRepository, $urbanizationEstimate, $successMsg, 'app_urbanization_estimate_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

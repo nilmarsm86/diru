@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Person
+ *
  * @extends AbstractType<Person>
  */
 class PersonType extends AbstractType
@@ -19,27 +20,27 @@ class PersonType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre'
-                ]
+                    'placeholder' => 'Nombre',
+                ],
             ])
             ->add('lastname', null, [
                 'label' => 'Apellidos:',
                 'attr' => [
-                    'placeholder' => 'Apellidos'
-                ]
+                    'placeholder' => 'Apellidos',
+                ],
             ])
             ->add('identificationNumber', null, [
                 'label' => 'Carnet de identidad:',
                 'attr' => [
-                    'placeholder' => 'Carnet de identidad'
-                ]
+                    'placeholder' => 'Carnet de identidad',
+                ],
             ]);
         if ($options['passport']) {
             $builder->add('passport', null, [
                 'label' => 'Pasaporte:',
                 'attr' => [
-                    'placeholder' => 'Pasaporte'
-                ]
+                    'placeholder' => 'Pasaporte',
+                ],
             ]);
         }
     }
@@ -49,9 +50,9 @@ class PersonType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Person::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
-            'passport' => true
+            'passport' => true,
         ]);
 
         $resolver->setAllowedTypes('passport', 'bool');

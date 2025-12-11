@@ -9,7 +9,6 @@ use App\Form\ProfileFullNameType;
 use App\Form\ProfilePasswordType;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
-use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,24 +20,23 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * User Service
+ * User Service.
  */
 readonly class UserService
 {
     public function __construct(
-        private UserRepository              $userRepository,
-        private RoleRepository              $roleRepository,
-        private FormFactoryInterface        $formFactory,
-        private Security                    $security,
+        private UserRepository $userRepository,
+        private RoleRepository $roleRepository,
+        private FormFactoryInterface $formFactory,
+        private Security $security,
         private UserPasswordHasherInterface $userPasswordHasher,
-//        private RequestStack                $requestStack
-    )
-    {
+        //        private RequestStack                $requestStack
+    ) {
     }
 
     /**
-     * Add role to user
-     * @param Request $request
+     * Add role to user.
+     *
      * @return array<mixed>
      */
     public function addRole(Request $request): array
@@ -54,17 +52,16 @@ readonly class UserService
             assert($role instanceof Role);
             $user->addRole($role);
             $this->userRepository->save($user, true);
+
             return [$user, $role, 'text-bg-success', '', new Response()];
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return [$user, $role, 'text-bg-danger', $exception->getMessage(), new Response('', Response::HTTP_UNPROCESSABLE_ENTITY)];
         }
     }
 
     /**
-     * Remove role from user
+     * Remove role from user.
      *
-     * @param Request $request
-     * @param bool $authorize
      * @return array<mixed>
      */
     public function removeRole(Request $request, bool $authorize): array
@@ -80,17 +77,18 @@ readonly class UserService
             assert($role instanceof Role);
             $user->removeRole($role, !$authorize);
             $this->userRepository->save($user, true);
+
             return [$user, $role, 'text-bg-success', '', new Response()];
-        } catch (Exception $exception) {
-            $code = ($exception->getCode() === 1) ? Response::HTTP_UNAUTHORIZED : Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (\Exception $exception) {
+            $code = (1 === $exception->getCode()) ? Response::HTTP_UNAUTHORIZED : Response::HTTP_UNPROCESSABLE_ENTITY;
+
             return [$user, $role, 'text-bg-danger', $exception->getMessage(), new Response('', $code)];
         }
     }
 
     /**
-     * Handle name and lastname form
+     * Handle name and lastname form.
      *
-     * @param Request $request
      * @return FormInterface<ProfileFullNameType>
      */
     public function handleNameForm(Request $request): FormInterface
@@ -104,16 +102,15 @@ readonly class UserService
             }
             $this->userRepository->save($user, true);
 
-//            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
+            //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
         }
 
         return $formName;
     }
 
     /**
-     * handle password form
+     * handle password form.
      *
-     * @param Request $request
      * @return FormInterface<ProfilePasswordType>
      */
     public function handlePassword(Request $request): FormInterface
@@ -130,16 +127,15 @@ readonly class UserService
             $user->changePassword($this->userPasswordHasher);
             $this->userRepository->save($user, true);
 
-//            $this->requestStack->getSession()->getFlashBag()->add('success', 'Contraseña cambiada.');
+            //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Contraseña cambiada.');
         }
 
         return $formPassword;
     }
 
     /**
-     * Change state user
+     * Change state user.
      *
-     * @param Request $request
      * @return array<mixed>
      */
     public function changeState(Request $request): array
@@ -150,11 +146,10 @@ readonly class UserService
         }
 
         $action = $request->request->get('action');
-        ($action === 'activate') ? $user->activate() : $user->deactivate();
+        ('activate' === $action) ? $user->activate() : $user->deactivate();
 
         $this->userRepository->save($user, true);
 
         return [$user, $action];
     }
-
 }

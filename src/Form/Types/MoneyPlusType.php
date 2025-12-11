@@ -51,17 +51,14 @@ class MoneyPlusType extends AbstractType
         $resolver->setAllowedTypes('list_url', 'string');
         $resolver->setAllowedTypes('list_icon', 'string');
 
-//        $resolver->setAllowedTypes('modify', 'bool');
-//        $resolver->setAllowedTypes('modify_title', 'string');
-//        $resolver->setAllowedTypes('modify_id', 'string');
-//        $resolver->setAllowedTypes('modify_placeholder', 'string');
-//        $resolver->setAllowedTypes('modify_url', 'string');
-//        $resolver->setAllowedTypes('modify_icon', 'string');
+        //        $resolver->setAllowedTypes('modify', 'bool');
+        //        $resolver->setAllowedTypes('modify_title', 'string');
+        //        $resolver->setAllowedTypes('modify_id', 'string');
+        //        $resolver->setAllowedTypes('modify_placeholder', 'string');
+        //        $resolver->setAllowedTypes('modify_url', 'string');
+        //        $resolver->setAllowedTypes('modify_icon', 'string');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['add'] = $options['add'];
@@ -78,12 +75,12 @@ class MoneyPlusType extends AbstractType
         $view->vars['list_url'] = $options['list_url'];
         $view->vars['list_icon'] = $options['list_icon'];
 
-//        $view->vars['modify'] = $options['modify'];
-//        $view->vars['modify_title'] = $options['modify_title'];
-//        $view->vars['modify_id'] = $options['modify_id'];
-//        $view->vars['modify_placeholder'] = $options['modify_placeholder'];
-//        $view->vars['modify_url'] = $options['modify_url'];
-//        $view->vars['modify_icon'] = $options['modify_icon'];
+        //        $view->vars['modify'] = $options['modify'];
+        //        $view->vars['modify_title'] = $options['modify_title'];
+        //        $view->vars['modify_id'] = $options['modify_id'];
+        //        $view->vars['modify_placeholder'] = $options['modify_placeholder'];
+        //        $view->vars['modify_url'] = $options['modify_url'];
+        //        $view->vars['modify_icon'] = $options['modify_icon'];
     }
 
     public function getParent(): string

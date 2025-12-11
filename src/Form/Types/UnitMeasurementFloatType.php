@@ -10,7 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UnitMeasurementFloatType extends AbstractType
 {
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -19,9 +18,6 @@ class UnitMeasurementFloatType extends AbstractType
             ->setDefault('scale', 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['unit'] = $options['unit'];

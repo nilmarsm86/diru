@@ -11,7 +11,6 @@ use App\Repository\MunicipalityRepository;
 use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
 use App\Repository\RepresentativeRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,12 +54,10 @@ final class IndividualClientForm extends AbstractController
     public int $representative = 0;
 
     public function __construct(
-        protected readonly ProvinceRepository     $provinceRepository,
+        protected readonly ProvinceRepository $provinceRepository,
         protected readonly MunicipalityRepository $municipalityRepository,
-//        protected readonly PersonRepository       $personRepository
-    )
-    {
-
+        //        protected readonly PersonRepository       $personRepository
+    ) {
     }
 
     public function mount(?IndividualClient $ic = null): void
@@ -71,10 +68,6 @@ final class IndividualClientForm extends AbstractController
         }
     }
 
-    /**
-     * @param IndividualClient $individualClient
-     * @return Person
-     */
     public function createPerson(IndividualClient $individualClient): Person
     {
         if (!$person = $individualClient->getPerson()) {
@@ -88,47 +81,44 @@ final class IndividualClientForm extends AbstractController
         return $person;
     }
 
-    /**
-     * @return void
-     */
     public function preValue(): void
     {
-        if ($this->representative !== 0) {
-            $this->formValues['representative'] = (string)$this->representative;
+        if (0 !== $this->representative) {
+            $this->formValues['representative'] = (string) $this->representative;
             $this->representative = 0;
         }
 
-        if ($this->street !== '') {
-            $this->formValues['streetAddress']['street'] = (string)$this->street;
+        if ('' !== $this->street) {
+            $this->formValues['streetAddress']['street'] = (string) $this->street;
             $this->street = '';
         }
 
-        if ($this->province !== 0) {
-            $this->formValues['streetAddress']['address']['province'] = (string)$this->province;
+        if (0 !== $this->province) {
+            $this->formValues['streetAddress']['address']['province'] = (string) $this->province;
             $this->province = 0;
         }
 
-        if ($this->municipality !== 0) {
-            $this->formValues['streetAddress']['address']['municipality'] = (string)$this->municipality;
+        if (0 !== $this->municipality) {
+            $this->formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
             $this->municipality = 0;
         } else {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
                 if (isset($this->formValues['streetAddress']['address']['province'])) {
                     if ($this->formValues['streetAddress']['address']['municipality']) {
-                        $mun = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
-                        if ((string)$mun?->getProvince()?->getId() !== $this->formValues['streetAddress']['address']['province']) {
-                            $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
+                        $mun = $this->municipalityRepository->find((int) $this->formValues['streetAddress']['address']['municipality']);
+                        if ((string) $mun?->getProvince()?->getId() !== $this->formValues['streetAddress']['address']['province']) {
+                            $prov = $this->provinceRepository->find((int) $this->formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
                                 $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
-                                    ? (string)$prov->getMunicipalities()->first()->getId()
+                                    ? (string) $prov->getMunicipalities()->first()->getId()
                                     : '';
                             }
                         }
                     } else {
-                        $prov = $this->provinceRepository->find((int)$this->formValues['streetAddress']['address']['province']);
+                        $prov = $this->provinceRepository->find((int) $this->formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
                             if ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first()) {
-                                $this->formValues['streetAddress']['address']['municipality'] = (string)$prov->getMunicipalities()->first()->getId();
+                                $this->formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
                             }
                         }
                     }
@@ -143,16 +133,16 @@ final class IndividualClientForm extends AbstractController
 
         if (!$this->ic?->getId()) {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
-                $province = (int)$this->formValues['streetAddress']['address']['province'];
-                $municipality = (int)$this->formValues['streetAddress']['address']['municipality'];
+                $province = (int) $this->formValues['streetAddress']['address']['province'];
+                $municipality = (int) $this->formValues['streetAddress']['address']['municipality'];
             }
 
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['street'])) {
                 $street = $this->formValues['streetAddress']['street'];
             }
         } else {
-            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $this->ic->getMunicipality()?->getProvince()?->getId() : (int)$this->formValues['streetAddress']['address']['province']);
-            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $this->ic->getMunicipality()?->getId() : (int)$this->formValues['streetAddress']['address']['municipality']);
+            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $this->ic->getMunicipality()?->getProvince()?->getId() : (int) $this->formValues['streetAddress']['address']['province']);
+            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $this->ic->getMunicipality()?->getId() : (int) $this->formValues['streetAddress']['address']['municipality']);
             $street = (empty($this->formValues['streetAddress']['street']) ? $this->ic->getStreet() : $this->formValues['streetAddress']['street']);
         }
 
@@ -160,19 +150,19 @@ final class IndividualClientForm extends AbstractController
             'street' => $street ?? '',
             'province' => $province ?? 0,
             'municipality' => $municipality ?? 0,
-            'live_form' => ($this->getDataModelValue() === 'on(change)|*')
+            'live_form' => ('on(change)|*' === $this->getDataModelValue()),
         ]);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(IndividualClientRepository $individualClientRepository, RepresentativeRepository $representativeRepository): ?Response
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ic?->getId())) ? 'Se ha agregado el cliente.' : 'Se ha modificado el cliente.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ic?->getId())) ? 'Se ha agregado el cliente.' : 'Se ha modificado el cliente.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -183,12 +173,12 @@ final class IndividualClientForm extends AbstractController
             $person = $this->createPerson($ic);
             $ic->setPerson($person);
 
-            $representative = $representativeRepository->find((int)$this->formValues['representative']);
+            $representative = $representativeRepository->find((int) $this->formValues['representative']);
             $ic->setRepresentative($representative);
 
             $ic->setStreet($this->formValues['streetAddress']['street']);
 
-            $municipality = $this->municipalityRepository->find((int)$this->formValues['streetAddress']['address']['municipality']);
+            $municipality = $this->municipalityRepository->find((int) $this->formValues['streetAddress']['address']['municipality']);
             $ic->setMunicipality($municipality);
 
             $individualClientRepository->save($ic, true);
@@ -196,17 +186,20 @@ final class IndividualClientForm extends AbstractController
             $this->ic = new IndividualClient();
             if (!is_null($this->modal)) {
                 $this->modalManage($ic, 'Se ha seleccionado el nuevo cliente personal agregado.', [
-                    'individualClient' => $ic->getId()
+                    'individualClient' => $ic->getId(),
                 ], 'text-bg-success');
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($ic, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_individual_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -217,5 +210,4 @@ final class IndividualClientForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

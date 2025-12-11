@@ -40,6 +40,7 @@ final class EnterpriseClientController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $enterpriseClient = new EnterpriseClient();
+
         return $crudActionService->formLiveComponentAction($request, $enterpriseClient, 'enterprise_client', [
             'title' => 'Nuevo cliente empresarial',
         ]);
@@ -80,8 +81,9 @@ final class EnterpriseClientController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el cliente empresarial.';
         $response = $crudActionService->deleteAction($request, $enterpriseClientRepository, $enterpriseClient, $successMsg, 'app_enterprise_client_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

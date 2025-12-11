@@ -3,7 +3,6 @@
 namespace App\Entity\Enums;
 
 use App\Entity\Traits\EnumsTrait;
-use BackedEnum;
 
 enum NetworkConnectionType: string
 {
@@ -13,23 +12,18 @@ enum NetworkConnectionType: string
     case Outside = '0';
     case Inside = '1';
 
-    const CHOICES = [self::Outside, self::Inside];
+    public const CHOICES = [self::Outside, self::Inside];
 
-    /**
-     * @param BackedEnum|string $enum
-     * @return string
-     */
-    public static function getLabelFrom(BackedEnum|string $enum): string
+    public static function getLabelFrom(\BackedEnum|string $enum): string
     {
-        if(is_string($enum)){
+        if (is_string($enum)) {
             $enum = self::from($enum);
         }
 
         return match ($enum) {
-            self::Outside => 'Externa',//translate
-            self::Inside => 'Interna',//translate
-            default => '-Seleccione-'//translate
+            self::Outside => 'Externa',// translate
+            self::Inside => 'Interna',// translate
+            default => '-Seleccione-',// translate
         };
     }
-
 }

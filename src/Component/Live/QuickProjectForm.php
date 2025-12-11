@@ -13,7 +13,6 @@ use App\Repository\DraftsmanRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
@@ -53,7 +52,6 @@ final class QuickProjectForm extends AbstractController
 
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-
     }
 
     public function mount(?Project $pro = null): void
@@ -63,18 +61,15 @@ final class QuickProjectForm extends AbstractController
         $this->pro->setCurrency($currency);
     }
 
-    /**
-     * @return void
-     */
     public function preValue(): void
     {
-        if ($this->investment !== 0) {
-            $this->formValues['investment'] = (string)$this->investment;
+        if (0 !== $this->investment) {
+            $this->formValues['investment'] = (string) $this->investment;
             $this->investment = 0;
         }
 
-        if ($this->client !== 0) {
-            $this->formValues['client'] = (string)$this->client;
+        if (0 !== $this->client) {
+            $this->formValues['client'] = (string) $this->client;
             $this->client = 0;
         }
     }
@@ -84,11 +79,12 @@ final class QuickProjectForm extends AbstractController
         $this->preValue();
         $currency = $this->entityManager->getRepository(Currency::class)->findOneBy(['code' => 'CUP']);
         $this->pro?->setCurrency($currency);
+
         return $this->createForm(QuickProjectType::class, $this->pro);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(
@@ -96,57 +92,58 @@ final class QuickProjectForm extends AbstractController
         ClientRepository $clientRepository,
         MunicipalityRepository $municipalityRepository,
         DraftsmanRepository $draftsmanRepository,
-        Security             $security,
-        CurrencyRepository $currencyRepository
-    ): ?Response
-    {
+        Security $security,
+        CurrencyRepository $currencyRepository,
+    ): ?Response {
         $this->preValue();
         $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
 
         $this->submitForm();
-//        $project = $this->getForm()->getData();
-//        $project->setCurrency($currencyRepository->findOneBy(['code'=>'CUP']));
+        //        $project = $this->getForm()->getData();
+        //        $project->setCurrency($currencyRepository->findOneBy(['code'=>'CUP']));
         if ($this->isSubmitAndValid()) {
             /** @var Project $project */
             $project = $this->getForm()->getData();
 
-            if($this->formValues['individualClient']){
-                $this->formValues['client'] = (int)$this->formValues['individualClient'];
+            if ($this->formValues['individualClient']) {
+                $this->formValues['client'] = (int) $this->formValues['individualClient'];
             }
 
-            if($this->formValues['enterpriseClient']){
-                $this->formValues['client'] = (int)$this->formValues['enterpriseClient'];
+            if ($this->formValues['enterpriseClient']) {
+                $this->formValues['client'] = (int) $this->formValues['enterpriseClient'];
             }
 
-            $client = $clientRepository->find((int)$this->formValues['client']);
+            $client = $clientRepository->find((int) $this->formValues['client']);
             $project->setClient($client);
 
             $project->setType(\App\Entity\Enums\ProjectType::Parcel);
 
-            $municipality = $municipalityRepository->findOneBy(['name'=>ucfirst('Sin Municipio')]);
+            $municipality = $municipalityRepository->findOneBy(['name' => ucfirst('Sin Municipio')]);
 
             assert($municipality instanceof Municipality);
             $project->createAutomaticInvestment($municipality);
             $project->createAutomaticBuilding();
-            $project->setCurrency($currencyRepository->findOneBy(['code'=>'CUP']));
+            $project->setCurrency($currencyRepository->findOneBy(['code' => 'CUP']));
 
             $projectRepository->save($project, true);
 
             $this->pro = new Project();
             if (!is_null($this->modal)) {
                 $this->modalManage($project, $successMsg, [
-                    'project' => $project->getId()
+                    'project' => $project->getId(),
                 ]);
 
-                return $this->redirectToRoute('app_project_edit', ['id'=>$project->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_project_edit', ['id' => $project->getId()], Response::HTTP_SEE_OTHER);
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($project, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -157,5 +154,4 @@ final class QuickProjectForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

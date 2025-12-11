@@ -24,8 +24,8 @@ final class FloorController extends AbstractController
     public function index(Request $request, RouterInterface $router, FloorRepository $floorRepository, Building $building, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $floorRepository->findBuildingFloors($building, $filter, $amountPerPage, $pageNumber, $reply);
 
@@ -40,7 +40,7 @@ final class FloorController extends AbstractController
             'filter' => $filter,
             'paginator' => $paginator,
             'building' => $building,
-            'reply' => $reply
+            'reply' => $reply,
         ]);
     }
 
@@ -53,6 +53,7 @@ final class FloorController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService, Building $building, bool $reply = false): Response
     {
         $floor = new Floor();
+
         return $crudActionService->formLiveComponentAction($request, $floor, 'floor', [
             'title' => 'Nueva Planta',
             'building' => $building,
@@ -96,8 +97,9 @@ final class FloorController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la planta.';
         $response = $crudActionService->deleteAction($request, $floorRepository, $floor, $successMsg, 'app_building_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -107,12 +109,11 @@ final class FloorController extends AbstractController
     #[Route('/{id}/report/local', name: 'app_floor_report_local', methods: ['GET'])]
     public function reportLocal(Floor $floor): Response
     {
-        return $this->render("floor/report.html.twig", [
+        return $this->render('floor/report.html.twig', [
             'local_status' => $floor->getAmountTechnicalStatus(),
             'meter_status' => $floor->getAmountMeterTechnicalStatus(),
             'title' => 'Estado técnico de los locales del piso',
-            'floor' => $floor
+            'floor' => $floor,
         ]);
     }
-
 }

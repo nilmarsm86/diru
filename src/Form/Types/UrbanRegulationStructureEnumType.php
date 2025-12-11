@@ -2,7 +2,6 @@
 
 namespace App\Form\Types;
 
-use App\Entity\Enums\LocalType;
 use App\Entity\Enums\UrbanRegulationStructure;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -15,10 +14,10 @@ class UrbanRegulationStructureEnumType extends AbstractType
     {
         $resolver
             ->setDefault('class', UrbanRegulationStructure::class)
-            ->setDefault('choices', static fn(Options $options): array => UrbanRegulationStructure::cases())
+            ->setDefault('choices', static fn (Options $options): array => UrbanRegulationStructure::cases())
             ->setDefault('choice_label', UrbanRegulationStructure::getLabel())
             ->setDefault('choice_value', UrbanRegulationStructure::getValue());
-//            ->setDefault('placeholder', '-Seleccionar-');
+        //            ->setDefault('placeholder', '-Seleccionar-');
     }
 
     public function getParent(): string

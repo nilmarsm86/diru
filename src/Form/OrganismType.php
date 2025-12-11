@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Organism
+ *
  * @extends AbstractType<Organism>
  */
 class OrganismType extends AbstractType
@@ -19,8 +20,8 @@ class OrganismType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del organismo'
-                ]
+                    'placeholder' => 'Nombre del organismo',
+                ],
             ]);
     }
 
@@ -29,8 +30,8 @@ class OrganismType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Organism::class,
             'attr' => [
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

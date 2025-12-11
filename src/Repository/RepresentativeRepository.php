@@ -51,18 +51,15 @@ class RepresentativeRepository extends ServiceEntityRepository implements Filter
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "r.name LIKE :filter ";
-            $predicate .= "OR r.identificationNumber LIKE :filter ";
-            $predicate .= "OR r.passport LIKE :filter ";
+            $predicate = 'r.name LIKE :filter ';
+            $predicate .= 'OR r.identificationNumber LIKE :filter ';
+            $predicate .= 'OR r.passport LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findRepresentatives(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -70,6 +67,7 @@ class RepresentativeRepository extends ServiceEntityRepository implements Filter
         $builder = $this->createQueryBuilder('r');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('r.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

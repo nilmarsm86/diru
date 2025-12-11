@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Land
+ *
  * @extends AbstractType<Land>
  */
 class LandType extends AbstractType
@@ -31,16 +32,14 @@ class LandType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Land::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'building' => null,
         ]);
     }
 
     /**
-     * @param FormEvent $event
      * @param array<mixed> $options
-     * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -50,7 +49,7 @@ class LandType extends AbstractType
 
         $disabled = [];
         $building = $options['building'];
-        if($building instanceof Building){
+        if ($building instanceof Building) {
             if (!is_null($land) && $land->getId() && !$building->isNew()) {
                 $disabled = ['disabled' => true, 'readonly' => true];
             }
@@ -59,43 +58,43 @@ class LandType extends AbstractType
         $form
             ->add('landArea', UnitMeasurementFloatType::class, [
                 'unit' => 'm<sup>2</sup>',
-                'label' => "Área de terreno:",
+                'label' => 'Área de terreno:',
                 'attr' => [
-                        'min' => 0
-                    ] + $disabled
+                    'min' => 0,
+                ] + $disabled,
             ])
             ->add('occupiedArea', UnitMeasurementFloatType::class, [
                 'unit' => 'm<sup>2</sup>',
-                'label' => "Área ocupada:",
+                'label' => 'Área ocupada:',
                 'attr' => [
-                        'min' => 0
-                    ] + $disabled,
-                'required' => false
+                    'min' => 0,
+                ] + $disabled,
+                'required' => false,
             ])
             ->add('perimeter', UnitMeasurementFloatType::class, [
                 'unit' => 'm',
-                'label' => "Perímetro:",
+                'label' => 'Perímetro:',
                 'attr' => [
-                        'min' => 0
-                    ] + $disabled,
-                'required' => false
+                    'min' => 0,
+                ] + $disabled,
+                'required' => false,
             ])
             ->add('photo', FileType::class, [
-                'label' => "Foto:",
+                'label' => 'Foto:',
                 'required' => false,
-                'attr' => [] + $disabled
+                'attr' => [] + $disabled,
             ])
             ->add('microlocalization', FileType::class, [
-                'label' => "Microlocalización:",
+                'label' => 'Microlocalización:',
                 'required' => false,
-                'attr' => [] + $disabled
+                'attr' => [] + $disabled,
             ])
             ->add('floor', ChoiceType::class, [
-                'label' => "Plantas:",
+                'label' => 'Plantas:',
                 'placeholder' => '-Seleccinar-',
                 'choices' => array_combine(range(1, 50), range(1, 50)),
                 'required' => false,
-                'attr' => [] + $disabled
+                'attr' => [] + $disabled,
             ]);
     }
 }

@@ -26,16 +26,12 @@ trait StructureStateTrait
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $original = null;
 
-    /**
-     * @return StructureState|null
-     */
     public function getState(): ?StructureState
     {
         return $this->enumState;
     }
 
     /**
-     * @param StructureState $state
      * @return $this
      */
     public function setState(StructureState $state): static
@@ -60,8 +56,7 @@ trait StructureStateTrait
     }
 
     /**
-     * Is recent or not
-     * @return bool
+     * Is recent or not.
      */
     public function isRecent(): bool
     {
@@ -69,8 +64,7 @@ trait StructureStateTrait
     }
 
     /**
-     * Is existing without replicating or not
-     * @return bool
+     * Is existing without replicating or not.
      */
     public function isExistingWithoutReplicating(): bool
     {
@@ -78,8 +72,7 @@ trait StructureStateTrait
     }
 
     /**
-     * Is existing replicated or not
-     * @return bool
+     * Is existing replicated or not.
      */
     public function isExistingReplicated(): bool
     {
@@ -87,8 +80,7 @@ trait StructureStateTrait
     }
 
     /**
-     * Is Replica or not
-     * @return bool
+     * Is Replica or not.
      */
     public function isReplica(): bool
     {
@@ -96,46 +88,54 @@ trait StructureStateTrait
     }
 
     /**
-     * Recent
+     * Recent.
+     *
      * @return $this
      */
     public function recent(): static
     {
         $this->state = null;
         $this->setState(StructureState::Recent);
+
         return $this;
     }
 
     /**
-     * ExistingWithoutReplicating
+     * ExistingWithoutReplicating.
+     *
      * @return $this
      */
     public function existingWithoutReplicating(): static
     {
         $this->state = null;
         $this->setState(StructureState::ExistingWithoutReplicating);
+
         return $this;
     }
 
     /**
-     * ExistingReplicated
+     * ExistingReplicated.
+     *
      * @return $this
      */
     public function existingReplicated(): static
     {
         $this->state = null;
         $this->setState(StructureState::ExistingReplicated);
+
         return $this;
     }
 
     /**
-     * Replica
+     * Replica.
+     *
      * @return $this
      */
     public function replica(): static
     {
         $this->state = null;
         $this->setState(StructureState::Replica);
+
         return $this;
     }
 
@@ -153,13 +153,14 @@ trait StructureStateTrait
 
     /**
      * @template T of SubSystem|Local
-     * @param EntityManagerInterface $entityManager
+     *
      * @param Collection<int, T> $items
+     *
      * @template S of Floor|SubSystem|null
+     *
      * @param S $parent
-     * @return void
      */
-    private function replySons(EntityManagerInterface $entityManager, Collection $items, object $parent = null): void
+    private function replySons(EntityManagerInterface $entityManager, Collection $items, ?object $parent = null): void
     {
         foreach ($items as $item) {
             $item->reply($entityManager, $parent);
@@ -168,30 +169,28 @@ trait StructureStateTrait
 
     public function isOriginal(): bool
     {
-        //TODO: ver la forma de poder decir que un local nuevo en la replica no es original
-//        if($this instanceof Local){
-//            if(is_null($this->getOriginal())){
-//                if(is_null($this->getSubSystem()->getOriginal())){
-//                    if(is_null($this->getSubSystem()->getFloor()->getOriginal())){
-//
-//                    }
-//                }
-//            }
-//            $this->getSubSystem()->getFloor()->isOriginal();
-//        }
+        // TODO: ver la forma de poder decir que un local nuevo en la replica no es original
+        //        if($this instanceof Local){
+        //            if(is_null($this->getOriginal())){
+        //                if(is_null($this->getSubSystem()->getOriginal())){
+        //                    if(is_null($this->getSubSystem()->getFloor()->getOriginal())){
+        //
+        //                    }
+        //                }
+        //            }
+        //            $this->getSubSystem()->getFloor()->isOriginal();
+        //        }
 
+        return is_null($this->getOriginal()) && (true === $this->hasReply || is_null($this->hasReply));
 
-
-        return (is_null($this->getOriginal()) && ($this->hasReply === true || is_null($this->hasReply)));
-
-//        return (is_null($this->getOriginal()) && is_null($this->hasReply())) || (is_null($this->getOriginal()) && $this->hasReply() === true);
-//        if(is_null($this->getOriginal())){
-//            if(){
-//
-//            }else{
-//
-//            }
-//        }
+        //        return (is_null($this->getOriginal()) && is_null($this->hasReply())) || (is_null($this->getOriginal()) && $this->hasReply() === true);
+        //        if(is_null($this->getOriginal())){
+        //            if(){
+        //
+        //            }else{
+        //
+        //            }
+        //        }
     }
 
     public function getOriginal(): ?self
@@ -206,20 +205,21 @@ trait StructureStateTrait
         return $this;
     }
 
-//    public function getOriginalItems(Collection $items): ArrayCollection
-//    {
-//        return $this->getItemsFilter($items, true);
-//    }
-//
-//    public function getReplyItems(Collection $items): ArrayCollection
-//    {
-//        return $this->getItemsFilter($items, false);
-//    }
+    //    public function getOriginalItems(Collection $items): ArrayCollection
+    //    {
+    //        return $this->getItemsFilter($items, true);
+    //    }
+    //
+    //    public function getReplyItems(Collection $items): ArrayCollection
+    //    {
+    //        return $this->getItemsFilter($items, false);
+    //    }
 
     /**
      * @template T of SubSystem|Local
+     *
      * @param Collection<int, T> $items
-     * @param bool $condition
+     *
      * @return ArrayCollection<int, T>
      */
     private function getItemsFilter(Collection $items, bool $condition): ArrayCollection

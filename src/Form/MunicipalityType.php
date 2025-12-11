@@ -6,7 +6,6 @@ use App\Entity\Municipality;
 use App\Entity\Province;
 use App\Form\Types\EntityPlusType;
 use App\Repository\ProvinceRepository;
-use Closure;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,13 +15,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of Municipality
+ *
  * @extends AbstractType<Municipality>
  */
 class MunicipalityType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -41,17 +40,17 @@ class MunicipalityType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del municipio'
-                ]
+                    'placeholder' => 'Nombre del municipio',
+                ],
             ]);
 
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
-                    'add' => true,
-                    'add_title' => 'Agregar Provincia',
-                    'add_id' => 'modal-load',
-                    'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
-                ] + $provinceAttr);
+                'add' => true,
+                'add_title' => 'Agregar Provincia',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
+            ] + $provinceAttr);
         } else {
             $builder->add('province', EntityType::class, [] + $provinceAttr);
         }
@@ -62,19 +61,16 @@ class MunicipalityType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Municipality::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
-    /**
-     * @return Closure
-     */
-    private function getProvinceQueryBuilder(): Closure
+    private function getProvinceQueryBuilder(): \Closure
     {
-        return fn(ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
+        return fn (ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
     }
 }

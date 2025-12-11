@@ -41,6 +41,7 @@ final class PersonController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $person = new Person();
+
         return $crudActionService->formLiveComponentAction($request, $person, 'person', [
             'title' => 'Nuevo representante',
         ]);
@@ -83,24 +84,25 @@ final class PersonController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el representante.';
         $response = $crudActionService->deleteAction($request, $personRepository, $person, $successMsg, 'app_person_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
         return $response;
     }
 
-//    #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-//    public function options(Request $request, Person $person, PersonRepository $personRepository): Response
-//    {
-////        if ($request->isXmlHttpRequest()) {
-////            return $this->render('partials/_select_options.html.twig', [
-////                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
-////                'selected' => $person->getId()
-////            ]);
-////        }
-//
-//        throw new BadRequestHttpException('Ajax request');
-//    }
+    //    #[Route('/options/{id}', name: 'app_person_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    //    public function options(Request $request, Person $person, PersonRepository $personRepository): Response
+    //    {
+    // //        if ($request->isXmlHttpRequest()) {
+    // //            return $this->render('partials/_select_options.html.twig', [
+    // //                'entities' => $personRepository->findBy([], ['name' => 'ASC']),
+    // //                'selected' => $person->getId()
+    // //            ]);
+    // //        }
+    //
+    //        throw new BadRequestHttpException('Ajax request');
+    //    }
 }

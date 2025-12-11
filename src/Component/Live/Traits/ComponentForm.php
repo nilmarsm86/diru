@@ -6,19 +6,15 @@ use App\Component\Twig\Modal\Modal;
 
 trait ComponentForm
 {
-    /**
-     * @return bool
-     */
     public function hasValidationErrors(): bool
     {
         return $this->getForm()->isSubmitted() && !$this->getForm()->isValid();
     }
 
-//    abstract protected function getSuccessFormEventName(): string;
+    //    abstract protected function getSuccessFormEventName(): string;
 
     /**
-     * Get form success event name
-     * @return string
+     * Get form success event name.
      */
     protected function getSuccessFormEventName(): string
     {
@@ -31,9 +27,9 @@ trait ComponentForm
     }
 
     /**
-     * Emit success event for all
+     * Emit success event for all.
+     *
      * @param array<mixed> $eventData
-     * @return void
      */
     protected function emitSuccess(array $eventData): void
     {
@@ -41,22 +37,15 @@ trait ComponentForm
         $this->resetForm();
     }
 
-    /**
-     * @param string $classname
-     * @return false|int|string
-     */
     protected function getClassName(string $classname): false|int|string
     {
-        if ($pos = strrpos($classname, '\\')) return substr($classname, $pos + 1);
+        if ($pos = strrpos($classname, '\\')) {
+            return substr($classname, $pos + 1);
+        }
+
         return $pos;
     }
 
-    /**
-     * @param object $entity
-     * @param string $message
-     * @param string $type
-     * @return string
-     */
     private function getSuccessTemplate(object $entity, string $message, string $type = 'text-bg-success'): string
     {
         $callback = [$entity, 'getId'];
@@ -65,19 +54,15 @@ trait ComponentForm
         /** @var string $callbackResult */
         $callbackResult = call_user_func_array($callback, []);
 
-        return $this->renderView("partials/_form_success.html.twig", [
-            'id' => 'new_' . $this->getClassName($entity::class) . '_' . $callbackResult . '_' . time(),
+        return $this->renderView('partials/_form_success.html.twig', [
+            'id' => 'new_'.$this->getClassName($entity::class).'_'.$callbackResult.'_'.time(),
             'type' => $type,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 
     /**
-     * @param object $entity
-     * @param string $message
      * @param array<mixed> $updateEventData
-     * @param string $mssageType
-     * @return void
      */
     public function modalManage(object $entity, string $message, array $updateEventData, string $mssageType = 'text-bg-primary'): void
     {
@@ -86,7 +71,7 @@ trait ComponentForm
         $eventData = [
             'response' => $template,
             'modal' => $this->modal,
-            'data' => $updateEventData
+            'data' => $updateEventData,
         ];
         $this->dispatchBrowserEvent('type--entity-plus:update', $eventData);
         $this->dispatchBrowserEvent(Modal::MODAL_CLOSE);
@@ -94,17 +79,12 @@ trait ComponentForm
         $this->resetForm();
     }
 
-    /**
-     * @param object $entity
-     * @param string $message
-     * @return void
-     */
     public function ajaxManage(object $entity, string $message = ''): void
     {
         $template = $this->getSuccessTemplate($entity, $message);
 
         $this->dispatchBrowserEvent($this->getSuccessFormEventName(), [
-            'response' => $template
+            'response' => $template,
         ]);
 
         $this->resetForm();

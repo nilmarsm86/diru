@@ -51,16 +51,13 @@ class GeographicLocationRepository extends ServiceEntityRepository implements Fi
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "gl.name LIKE :filter ";
+            $predicate = 'gl.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findGeographicLocations(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -68,6 +65,7 @@ class GeographicLocationRepository extends ServiceEntityRepository implements Fi
         $builder = $this->createQueryBuilder('gl');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('gl.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

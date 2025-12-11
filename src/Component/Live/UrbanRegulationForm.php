@@ -4,10 +4,8 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\UrbanRegulation;
-use App\Entity\UrbanRegulationType;
 use App\Repository\UrbanRegulationRepository;
 use App\Repository\UrbanRegulationTypeRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,13 +48,10 @@ final class UrbanRegulationForm extends AbstractController
         $this->entity = $this->ur;
     }
 
-    /**
-     * @return void
-     */
     public function preValue(): void
     {
-        if ($this->type !== 0) {
-            $this->formValues['type'] = (string)$this->type;
+        if (0 !== $this->type) {
+            $this->formValues['type'] = (string) $this->type;
             $this->type = 0;
         }
     }
@@ -64,18 +59,19 @@ final class UrbanRegulationForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+
         return $this->createForm(\App\Form\UrbanRegulationType::class, $this->ur);
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(UrbanRegulationRepository $urbanRegulationRepository, UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
     {
         $this->preValue();
 
-        $successMsg = (is_null($this->ur?->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ur?->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -84,7 +80,7 @@ final class UrbanRegulationForm extends AbstractController
             $ur = $this->getForm()->getData();
 
             if (!empty($this->formValues['type'])) {
-                $type = $urbanRegulationTypeRepository->find((int)$this->formValues['type']);
+                $type = $urbanRegulationTypeRepository->find((int) $this->formValues['type']);
                 $ur->setType($type);
             }
 
@@ -94,17 +90,20 @@ final class UrbanRegulationForm extends AbstractController
             $this->entity = $this->ur;
             if (!is_null($this->modal)) {
                 $this->modalManage($ur, 'Se ha seleccionado la regulación urbana.', [
-                    'urbanRegulation' => $ur->getId()
+                    'urbanRegulation' => $ur->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($ur, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_urban_regulation_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -115,5 +114,4 @@ final class UrbanRegulationForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

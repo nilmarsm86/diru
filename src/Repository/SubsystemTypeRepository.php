@@ -10,7 +10,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<SubsystemType>
@@ -30,53 +29,49 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
         parent::__construct($registry, SubsystemType::class);
     }
 
-//    /**
-//     * @return SubsystemType[] Returns an array of SubsystemType objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return SubsystemType[] Returns an array of SubsystemType objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?SubsystemType
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?SubsystemType
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "sst.name LIKE :filter ";
+            $predicate = 'sst.name LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     private function addClassification(QueryBuilder $builder, string $classification): void
     {
-        if ($classification !== '') {
+        if ('' !== $classification) {
             $classification = SubsystemFunctionalClassification::from($classification);
-            $builder->andWhere("sst.classification = :classification ")->setParameter(':classification', $classification);
+            $builder->andWhere('sst.classification = :classification ')->setParameter(':classification', $classification);
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
-     * @param string $classification
      * @return Paginator<mixed>
      */
     public function findSubsystemsType(string $filter = '', int $amountPerPage = 10, int $page = 1, string $classification = ''): Paginator
@@ -91,15 +86,12 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
     }
 
     /**
-     * @param SubsystemType $entity
-     * @param bool $flush
-     * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(SubsystemType $entity, bool $flush = false): void
     {
         if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
-            throw new Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
+            throw new \Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
         }
 
         $this->getEntityManager()->remove($entity);
@@ -112,7 +104,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
     public function findSubsystemTypeForForm(?SubsystemFunctionalClassification $subsystemFunctionalClassification): QueryBuilder
     {
         return $this->createQueryBuilder('sst')
-            ->where("sst.classification = :classification")
+            ->where('sst.classification = :classification')
             ->setParameter('classification', $subsystemFunctionalClassification?->value)
             ->orderBy('sst.name');
     }

@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\LandNetworkConnection;
 use App\Entity\NetworkConnection;
-use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\NetworkConnectionEnumType;
+use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of LandNetworkConnection
+ *
  * @extends AbstractType<LandNetworkConnection>
  */
 class LandNetworkConnectionType extends AbstractType
@@ -23,8 +24,8 @@ class LandNetworkConnectionType extends AbstractType
         $builder->add('explanation', null, [
             'label' => 'Explicación:',
             'attr' => [
-                'rows' => 4
-            ]
+                'rows' => 4,
+            ],
         ])
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,
@@ -39,20 +40,20 @@ class LandNetworkConnectionType extends AbstractType
                 'label' => 'Longitud:',
                 'unit' => 'm',
                 'attr' => [
-                    'min' => 0
+                    'min' => 0,
                 ],
-                'empty_data' => 0
+                'empty_data' => 0,
             ])
             ->add('technicalStatus', TechnicalStatusEnumType::class, [
-                'label' => 'Estado técnico:'
+                'label' => 'Estado técnico:',
             ])
             ->add('landNetworkConnectionConstructiveAction', LandNetworkConnectionConstructiveActionType::class, [
                 'required' => true,
-                'error_bubbling' => false
+                'error_bubbling' => false,
             ]);
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-//            $this->onPreSetData($event, $options);
-//        });
+        //        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
+        //            $this->onPreSetData($event, $options);
+        //        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -66,27 +67,27 @@ class LandNetworkConnectionType extends AbstractType
         ]);
     }
 
-//    /**
-//     * @param FormEvent $event
-//     * @param array<mixed> $options
-//     * @return void
-//     */
-//    private function onPreSetData(FormEvent $event, array $options): void
-//    {
-//        /** @var LandNetworkConnection $landNetworkConnection */
-//        $landNetworkConnection = $event->getData();
-//        $form = $event->getForm();
-//
-//
-//        $form
-//            ->add('explanation', null, [
-//                'label' => 'Explicación:',
-//            ])
-//            ->add('networkConnection', EntityType::class, [
-//                'class' => NetworkConnection::class,
-//                'choice_label' => 'name',
-//                'label' => 'Tipo:',
-//                'placeholder' => '-Seleccinar-',
-//            ]);
-//    }
+    //    /**
+    //     * @param FormEvent $event
+    //     * @param array<mixed> $options
+    //     * @return void
+    //     */
+    //    private function onPreSetData(FormEvent $event, array $options): void
+    //    {
+    //        /** @var LandNetworkConnection $landNetworkConnection */
+    //        $landNetworkConnection = $event->getData();
+    //        $form = $event->getForm();
+    //
+    //
+    //        $form
+    //            ->add('explanation', null, [
+    //                'label' => 'Explicación:',
+    //            ])
+    //            ->add('networkConnection', EntityType::class, [
+    //                'class' => NetworkConnection::class,
+    //                'choice_label' => 'name',
+    //                'label' => 'Tipo:',
+    //                'placeholder' => '-Seleccinar-',
+    //            ]);
+    //    }
 }

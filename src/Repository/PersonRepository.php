@@ -51,18 +51,15 @@ class PersonRepository extends ServiceEntityRepository implements FilterInterfac
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ($filter) {
-            $predicate = "p.name LIKE :filter ";
-            $predicate .= "OR p.identificationNumber LIKE :filter ";
-            $predicate .= "OR p.passport LIKE :filter ";
+            $predicate = 'p.name LIKE :filter ';
+            $predicate .= 'OR p.identificationNumber LIKE :filter ';
+            $predicate .= 'OR p.passport LIKE :filter ';
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findPersons(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -70,6 +67,7 @@ class PersonRepository extends ServiceEntityRepository implements FilterInterfac
         $builder = $this->createQueryBuilder('p');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('p.name', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 }

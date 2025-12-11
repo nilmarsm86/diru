@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Contract;
 use App\Form\ContractType;
 use App\Repository\ContractRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +47,12 @@ final class ContractForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(ContractRepository $contractRepository): ?Response
     {
-        $successMsg = (is_null($this->con?->getId())) ? 'Se ha agregado el contrato.' : 'Se ha modificado el contrato.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->con?->getId())) ? 'Se ha agregado el contrato.' : 'Se ha modificado el contrato.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -66,21 +65,23 @@ final class ContractForm extends AbstractController
             $this->con = new Contract();
             if (!is_null($this->modal)) {
                 $this->modalManage($contract, 'Se ha seleccionado el nuevo contrato agregado.', [
-                    'contract' => $contract->getId()
+                    'contract' => $contract->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($contract, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_contract_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return null;
     }
-
 }

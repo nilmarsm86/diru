@@ -11,12 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @template TData of GeographicLocation
+ *
  * @extends AbstractType<GeographicLocation>
  */
 class GeographicLocationType extends AbstractType
 {
     private int $min = 1;
     private int $max = 100;
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -25,7 +27,7 @@ class GeographicLocationType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Número de la ubicación geográfica',
                     'min' => $this->min,
-                    'max' => $this->max
+                    'max' => $this->max,
                 ],
                 'constraints' => [
                     new Assert\Positive(message: 'El número debe ser positivo'),
@@ -33,8 +35,8 @@ class GeographicLocationType extends AbstractType
                         notInRangeMessage: 'El rango debe estar entre {{ min }} y {{ max }}.',
                         min: $this->min,
                         max: $this->max,
-                    )
-                ]
+                    ),
+                ],
             ])
         ;
     }
@@ -44,8 +46,8 @@ class GeographicLocationType extends AbstractType
         $resolver->setDefaults([
             'data_class' => GeographicLocation::class,
             'attr' => [
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

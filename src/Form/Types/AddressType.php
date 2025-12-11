@@ -6,7 +6,6 @@ use App\Entity\Municipality;
 use App\Entity\Province;
 use App\Repository\MunicipalityRepository;
 use App\Repository\ProvinceRepository;
-use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,11 +20,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AddressType extends AbstractType
 {
     public function __construct(
-        private readonly ProvinceRepository     $provinceRepository,
+        private readonly ProvinceRepository $provinceRepository,
         private readonly MunicipalityRepository $municipalityRepository,
-        private readonly RouterInterface        $router
-    )
-    {
+        private readonly RouterInterface $router,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -45,11 +43,11 @@ class AddressType extends AbstractType
 
         if (is_null($options['modal'])) {
             $builder->add('province', EntityPlusType::class, [
-                    'add' => true,
-                    'add_title' => 'Agregar Provincia',
-                    'add_id' => 'modal-load',
-                    'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
-                ] + $provinceAttr);
+                'add' => true,
+                'add_title' => 'Agregar Provincia',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_province_new', ['modal' => 'modal-load']),
+            ] + $provinceAttr);
         } else {
             $builder->add('province', EntityType::class, [] + $provinceAttr);
         }
@@ -65,11 +63,11 @@ class AddressType extends AbstractType
 
         if (is_null($options['modal'])) {
             $builder->add('municipality', EntityPlusType::class, [
-                    'add' => true,
-                    'add_title' => 'Agregar Municipio',
-                    'add_id' => 'modal-load',
-                    'add_url' => $this->router->generate('app_municipality_new', ['modal' => 'modal-load']),
-                ] + $municipalityAttr);
+                'add' => true,
+                'add_title' => 'Agregar Municipio',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_municipality_new', ['modal' => 'modal-load']),
+            ] + $municipalityAttr);
         } else {
             $builder->add('municipality', EntityType::class, [] + $municipalityAttr);
         }
@@ -83,7 +81,7 @@ class AddressType extends AbstractType
             'row' => false,
             'col' => true,
             'live_form' => false,
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('province', ['int']);
@@ -94,9 +92,6 @@ class AddressType extends AbstractType
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['row'] = $options['row'];
@@ -106,14 +101,15 @@ class AddressType extends AbstractType
 
     /**
      * @param array<mixed> $options
+     *
      * @return array<mixed>|NotBlank[]
      */
     private function getMunicipalityConstraints(array $options): array
     {
         $municipalityConstraints = [];
-        if ($options['municipality'] === 0) {
+        if (0 === $options['municipality']) {
             $municipalityConstraints = [
-                new NotBlank(message: 'Seleccione un municipio.')
+                new NotBlank(message: 'Seleccione un municipio.'),
             ];
         }
 
@@ -122,37 +118,34 @@ class AddressType extends AbstractType
 
     /**
      * @param array<mixed> $options
+     *
      * @return array<mixed>|NotBlank[]
      */
     private function getProvinceConstraints(array $options): array
     {
         $provinceConstraints = [];
-        if ($options['province'] === 0) {
+        if (0 === $options['province']) {
             $provinceConstraints = [
-                new NotBlank(message: 'Seleccione una provincia.')
+                new NotBlank(message: 'Seleccione una provincia.'),
             ];
         }
 
         return $provinceConstraints;
     }
 
-    /**
-     * @return Closure
-     */
-    private function getProvinceQueryBuilder(): Closure
+    private function getProvinceQueryBuilder(): \Closure
     {
-        return fn(ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
+        return fn (ProvinceRepository $provinceRepository): QueryBuilder => $provinceRepository->findProvincesForForm();
     }
 
     /**
      * @param array<mixed> $options
-     * @return Closure
      */
-    private function getMunicipalityQueryBuilder(array $options): Closure
+    private function getMunicipalityQueryBuilder(array $options): \Closure
     {
         /** @var string $province */
         $province = $options['province'];
-        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('m')->where('m.province = ' . $province);
-    }
 
+        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('m')->where('m.province = '.$province);
+    }
 }

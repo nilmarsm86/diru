@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\ConstructiveActionType;
 use App\Repository\LocalConstructiveActionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,11 +24,11 @@ class LocalConstructiveAction
     private ?ConstructiveAction $constructiveAction = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-//    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
+    //    #[Assert\NotNull(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\NotBlank(message: 'Establezca el precio de la acción constructiva.')]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     #[Assert\Expression(
-        "this.validPrice()",
+        'this.validPrice()',
         message: 'El precio para esta acción constructiva debe ser mayor que 0.',
         negate: false
     )]
@@ -43,7 +42,7 @@ class LocalConstructiveAction
     public function validPrice(): bool
     {
         return !in_array($this->constructiveAction?->getName(), ['', 'No es necesaria', 'Eliminación', 'Cambio de uso'])
-            && $this->getPrice() == 0;
+            && 0 == $this->getPrice();
     }
 
     public function __construct()
@@ -64,12 +63,12 @@ class LocalConstructiveAction
     public function setLocal(?Local $local): static
     {
         // unset the owning side of the relation if necessary
-        if ($local === null && $this->local !== null) {
+        if (null === $local && null !== $this->local) {
             $this->local->setLocalConstructiveAction(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($local !== null && $local->getLocalConstructiveAction() !== $this) {
+        if (null !== $local && $local->getLocalConstructiveAction() !== $this) {
             $local->setLocalConstructiveAction($this);
         }
 

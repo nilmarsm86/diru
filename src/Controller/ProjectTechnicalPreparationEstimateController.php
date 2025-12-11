@@ -38,12 +38,13 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
      * @throws LoaderError
      */
     #[Route('/new/{building}', name: 'app_ptp_estimate_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Building $building = null): Response
+    public function new(Request $request, CrudActionService $crudActionService, ?Building $building = null): Response
     {
         $ptpe = new ProjectTechnicalPreparationEstimate();
+
         return $crudActionService->formLiveComponentAction($request, $ptpe, 'ptp_estimate', [
             'title' => 'Nuevo estimado de proyecto y preparación técnica',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 
@@ -81,8 +82,9 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
     {
         $successMsg = 'Se ha eliminado el estimado de proyecto y preparación técnica.';
         $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_ptp_estimate_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

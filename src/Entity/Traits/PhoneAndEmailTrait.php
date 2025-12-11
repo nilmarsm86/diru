@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait PhoneAndEmailTrait
- {
+{
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El teléfono está vacío.')]
     protected ?string $phone = null;
@@ -38,4 +38,4 @@ trait PhoneAndEmailTrait
 
         return $this;
     }
- }
+}

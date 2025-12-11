@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of User
+ *
  * @extends AbstractType<User>
  */
 class ProfileFullNameType extends AbstractType
@@ -18,29 +19,29 @@ class ProfileFullNameType extends AbstractType
     {
         $builder
             ->add('person', PersonType::class, [
-                'passport' => false
+                'passport' => false,
             ])
             ->add('phone', null, [
                 'label_html' => true,
                 'label' => '<strong>Teléfono: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label col-sm-12'
+                    'class' => 'form-label col-sm-12',
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',
-                    'placeholder' => 'Teléfono del usuario'
-                ]
+                    'placeholder' => 'Teléfono del usuario',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label_html' => true,
                 'label' => '<strong>Correo: </strong>',
                 'label_attr' => [
-                    'class' => 'form-label col-sm-12'
+                    'class' => 'form-label col-sm-12',
                 ],
                 'attr' => [
                     'class' => 'form-control no-border-left',
-                    'placeholder' => 'Correo del usuario'
-                ]
+                    'placeholder' => 'Correo del usuario',
+                ],
             ]);
     }
 
@@ -50,8 +51,8 @@ class ProfileFullNameType extends AbstractType
             'data_class' => User::class,
             'attr' => [
                 'class' => 'profile_name',
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

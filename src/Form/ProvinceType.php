@@ -10,6 +10,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of Province
+ *
  * @extends AbstractType<Province>
  */
 class ProvinceType extends AbstractType
@@ -20,15 +21,15 @@ class ProvinceType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la provincia'
-                ]
+                    'placeholder' => 'Nombre de la provincia',
+                ],
             ])
             ->add('municipalities', LiveCollectionType::class, [
                 'entry_type' => MunicipalityType::class,
                 'button_delete_options' => [
-                    'label_html' => true
+                    'label_html' => true,
                 ],
-                'error_bubbling' => false
+                'error_bubbling' => false,
             ]);
     }
 
@@ -37,7 +38,7 @@ class ProvinceType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Province::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
         ]);
     }

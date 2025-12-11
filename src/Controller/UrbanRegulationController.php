@@ -40,6 +40,7 @@ final class UrbanRegulationController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $urbanRegulation = new UrbanRegulation();
+
         return $crudActionService->formLiveComponentAction($request, $urbanRegulation, 'urban_regulation', [
             'title' => 'Nueva regulación urbana',
         ]);
@@ -79,8 +80,9 @@ final class UrbanRegulationController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la regulación urbana.';
         $response = $crudActionService->deleteAction($request, $urbanRegulationRepository, $urbanRegulation, $successMsg, 'app_urban_regulation_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

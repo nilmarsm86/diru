@@ -46,16 +46,12 @@ final class RegistrationForm
     #[Assert\NotBlank(message: 'El teléfono está vacío.')]
     public string $phone = '';
 
-    /**
-     * @param User|null $user
-     * @return User
-     */
     public function toEntity(?User $user = null): User
     {
         if (is_null($user)) {
             $user = new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber, $this->phone, $this->email);
-//            $user->setEmail($this->email);
-//            $user->setPhone($this->phone);
+            //            $user->setEmail($this->email);
+            //            $user->setPhone($this->phone);
         }
 
         return $user;

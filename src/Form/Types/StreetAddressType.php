@@ -15,19 +15,19 @@ class StreetAddressType extends AbstractType
         $builder
             ->add('street', TextareaType::class, [
                 'label' => 'Dirección:',
-//                'mapped' => false,
+                //                'mapped' => false,
                 'data' => $options['street'],
                 'constraints' => $this->getStreetConstraints($options),
-//                'property_path' => '[address]'
+                //                'property_path' => '[address]'
                 'attr' => [
-                    'placeholder' => 'Escriba la dirección'
-                ]
+                    'placeholder' => 'Escriba la dirección',
+                ],
             ])
             ->add('address', AddressType::class, [
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
-                'live_form' => $options['live_form']
+                'live_form' => $options['live_form'],
             ]);
     }
 
@@ -35,12 +35,12 @@ class StreetAddressType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'province' => 0,
             'municipality' => 0,
             'street' => '',
-            'live_form' => false
+            'live_form' => false,
         ]);
 
         $resolver->setAllowedTypes('province', ['int']);
@@ -51,19 +51,19 @@ class StreetAddressType extends AbstractType
 
     /**
      * @param array<mixed> $options
+     *
      * @return array<mixed>|NotBlank[]
      */
     private function getStreetConstraints(array $options): array
     {
         $constraints = [];
 
-        if ($options['street'] === '') {
+        if ('' === $options['street']) {
             $constraints = [
-                new NotBlank(message: 'La dirección está vacía.')
+                new NotBlank(message: 'La dirección está vacía.'),
             ];
         }
 
         return $constraints;
     }
-
 }

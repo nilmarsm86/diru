@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorMap([
     'representative' => 'Representative',
     'draftsman' => 'Draftsman',
-    'user' => 'Person'
+    'user' => 'Person',
 ])]
 #[ORM\UniqueConstraint(name: 'person_identification_number', columns: ['identification_number'])]
 #[ORM\UniqueConstraint(name: 'person_passport', columns: ['passport'])]
@@ -46,16 +46,12 @@ class Person
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
     /**
-     * @param string|null $lastname
      * @return $this
      */
     public function setLastname(?string $lastname): static
@@ -64,7 +60,6 @@ class Person
 
         return $this;
     }
-
 
     public function getIdentificationNumber(): ?string
     {
@@ -97,7 +92,6 @@ class Person
 
     public function getFullName(): string
     {
-        return $this->getName() . ' ' . $this->getLastname();
+        return $this->getName().' '.$this->getLastname();
     }
-
 }

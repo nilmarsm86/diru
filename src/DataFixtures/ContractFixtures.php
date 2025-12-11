@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Constructor;
 use App\Entity\Contract;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;

@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Constructor
+ *
  * @extends AbstractType<Constructor>
  */
 class ConstructorType extends AbstractType
@@ -21,26 +22,26 @@ class ConstructorType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre de la constructora'
-                ]
+                    'placeholder' => 'Nombre de la constructora',
+                ],
             ])
             ->add('code', null, [
                 'label' => 'Código:',
                 'attr' => [
-                    'placeholder' => 'Código de la constructora'
-                ]
+                    'placeholder' => 'Código de la constructora',
+                ],
             ])
             ->add('country', ChoiceType::class, [
                 'label' => 'País:',
                 'placeholder' => '-Seleccione-',
                 'choices' => [
-                    'Cuba' => 'CU'
+                    'Cuba' => 'CU',
                 ],
-                'data' => 'CU'
+                'data' => 'CU',
             ])
             ->add('logo', FileType::class, [
                 'label' => 'Logo:',
-                'required' => false
+                'required' => false,
             ])
 
         ;
@@ -51,8 +52,8 @@ class ConstructorType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Constructor::class,
             'attr' => [
-                'novalidate' => 'novalidate'
-            ]
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

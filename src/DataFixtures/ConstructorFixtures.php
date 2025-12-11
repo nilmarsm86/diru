@@ -11,7 +11,7 @@ class ConstructorFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $constructors = ['Constructora1', 'Constructora2', 'Constructora3',];
+        $constructors = ['Constructora1', 'Constructora2', 'Constructora3'];
         foreach ($constructors as $constructor) {
             $constructorEntity = $manager->getRepository(Constructor::class)->findOneBy(['name' => $constructor]);
             if (is_null($constructorEntity)) {

@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\LocationZone;
 use App\Form\LocationZoneType;
 use App\Repository\LocationZoneRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,12 +51,12 @@ final class LocationZoneForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(LocationZoneRepository $locationZoneRepository): ?Response
     {
-        $successMsg = (is_null($this->lz?->getId())) ? 'Se ha agregado la zona de ubicación.' : 'Se ha modificado la zona de ubicación.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->lz?->getId())) ? 'Se ha agregado la zona de ubicación.' : 'Se ha modificado la zona de ubicación.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -71,17 +70,20 @@ final class LocationZoneForm extends AbstractController
             $this->entity = $this->lz;
             if (!is_null($this->modal)) {
                 $this->modalManage($lz, 'Se ha seleccionado la nueva zona de ubicación.', [
-                    'locationZone' => $lz->getId()
+                    'locationZone' => $lz->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($lz, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_location_zone_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -92,5 +94,4 @@ final class LocationZoneForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

@@ -18,18 +18,18 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
         $clients = ['Cliente Individual 1', 'Cliente Individual 2'];
         $persons = ['Person 1', 'Person 2', 'Person 3', 'Person 4'];
         $representatives = ['Representante 1', 'Representante 2', 'Representante 3', 'Representante 4'];
-        foreach ($clients as $key => $client){
-                $individualClient = new IndividualClient();
-                $individualClient->setPerson($this->findPerson($manager, $persons[$key]));
-                $individualClient->setStreet('direccion de la calle');
-                $individualClient->setMunicipality($this->findMunicipality($manager));
-                $individualClient->setEmail($client.'@gmail.com');
-                $individualClient->setPhone((string) rand(55555555, 66666666));
-                if($client === end($clients)){
-                    $individualClient->setRepresentative($this->findRepresentative($manager, $representatives[$key]));
-                }
+        foreach ($clients as $key => $client) {
+            $individualClient = new IndividualClient();
+            $individualClient->setPerson($this->findPerson($manager, $persons[$key]));
+            $individualClient->setStreet('direccion de la calle');
+            $individualClient->setMunicipality($this->findMunicipality($manager));
+            $individualClient->setEmail($client.'@gmail.com');
+            $individualClient->setPhone((string) rand(55555555, 66666666));
+            if ($client === end($clients)) {
+                $individualClient->setRepresentative($this->findRepresentative($manager, $representatives[$key]));
+            }
 
-                $manager->persist($individualClient);
+            $manager->persist($individualClient);
         }
         $manager->flush();
     }
@@ -54,7 +54,7 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
         return [
             PersonFixtures::class,
             RepresentativeFixtures::class,
-            ProvinceFixtures::class
+            ProvinceFixtures::class,
         ];
     }
 

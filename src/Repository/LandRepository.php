@@ -49,9 +49,6 @@ class LandRepository extends ServiceEntityRepository implements FilterInterface
     //    }
 
     /**
-     * @param string $filter
-     * @param int $amountPerPage
-     * @param int $page
      * @return Paginator<mixed>
      */
     public function findLands(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
@@ -59,6 +56,7 @@ class LandRepository extends ServiceEntityRepository implements FilterInterface
         $builder = $this->createQueryBuilder('l')->select(['l']);
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('l.id', 'ASC')->getQuery();
+
         return $this->paginate($query, $page, $amountPerPage);
     }
 

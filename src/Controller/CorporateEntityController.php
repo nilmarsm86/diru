@@ -23,14 +23,14 @@ use Twig\Error\SyntaxError;
 #[Route('/corporate/entity')]
 final class CorporateEntityController extends AbstractController
 {
-//    use MunicipalityTrait;
+    //    use MunicipalityTrait;
 
     #[Route(name: 'app_corporate_entity_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, CorporateEntityRepository $corporateEntityRepository): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $type = $request->query->get('entity', '');
 
@@ -46,7 +46,7 @@ final class CorporateEntityController extends AbstractController
         return $this->render("corporate_entity/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'types' => CorporateEntityType::cases()
+            'types' => CorporateEntityType::cases(),
         ]);
     }
 
@@ -59,6 +59,7 @@ final class CorporateEntityController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $corporateEntity = new CorporateEntity();
+
         return $crudActionService->formLiveComponentAction($request, $corporateEntity, 'corporate_entity', [
             'title' => 'Nueva entidad corporativa',
         ]);
@@ -99,24 +100,25 @@ final class CorporateEntityController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la entidad.';
         $response = $crudActionService->deleteAction($request, $corporateEntityRepository, $corporateEntity, $successMsg, 'app_corporate_entity_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
         return $response;
     }
 
-//    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-//    public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
-//    {
-////        if ($request->isXmlHttpRequest()) {
-////            return $this->render('partials/_select_options.html.twig', [
-////                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
-////                'selected' => $corporateEntity->getId()
-////            ]);
-////        }
-//
-//        throw new BadRequestHttpException('Ajax request');
-//    }
+    //    #[Route('/options/{id}', name: 'app_corporate_entity_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    //    public function options(Request $request, CorporateEntity $corporateEntity, CorporateEntityRepository $corporateEntityRepository): Response
+    //    {
+    // //        if ($request->isXmlHttpRequest()) {
+    // //            return $this->render('partials/_select_options.html.twig', [
+    // //                'entities' => $corporateEntityRepository->findBy([], ['name' => 'ASC']),
+    // //                'selected' => $corporateEntity->getId()
+    // //            ]);
+    // //        }
+    //
+    //        throw new BadRequestHttpException('Ajax request');
+    //    }
 }

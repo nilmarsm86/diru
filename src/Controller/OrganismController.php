@@ -41,9 +41,10 @@ final class OrganismController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $organism = new Organism();
+
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Nuevo organismo',
-//            'ajax' => $request->isXmlHttpRequest()
+            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -68,7 +69,7 @@ final class OrganismController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Editar organismo',
-//            'ajax' => $request->isXmlHttpRequest()
+            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -84,34 +85,36 @@ final class OrganismController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el organismo.';
         $corporateEntities = $corporateEntityRepository->findBy(['organism' => $organism]);
-        if(count($corporateEntities)){
+        if (count($corporateEntities)) {
             $template = [
-                'id' => 'delete_organism_' . $organism->getId(),
+                'id' => 'delete_organism_'.$organism->getId(),
                 'type' => 'text-bg-danger',
-                'message' => 'Este organismo esta relacionado con algunas entidades corportativas.'
+                'message' => 'Este organismo esta relacionado con algunas entidades corportativas.',
             ];
-            return new Response($this->renderView("partials/_form_success.html.twig", $template));
+
+            return new Response($this->renderView('partials/_form_success.html.twig', $template));
         }
 
         $response = $crudActionService->deleteAction($request, $organismRepository, $organism, $successMsg, 'app_organism_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
         return $response;
     }
 
-//    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-//    public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
-//    {
-////        if ($request->isXmlHttpRequest()) {
-////            return $this->render('partials/_select_options.html.twig', [
-////                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
-////                'selected' => $organism->getId()
-////            ]);
-////        }
-//
-//        throw new BadRequestHttpException('Ajax request');
-//    }
+    //    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
+    //    public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
+    //    {
+    // //        if ($request->isXmlHttpRequest()) {
+    // //            return $this->render('partials/_select_options.html.twig', [
+    // //                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
+    // //                'selected' => $organism->getId()
+    // //            ]);
+    // //        }
+    //
+    //        throw new BadRequestHttpException('Ajax request');
+    //    }
 }

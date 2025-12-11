@@ -11,6 +11,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of SubsystemType
+ *
  * @extends AbstractType<SubsystemType>
  */
 class SubsystemTypeType extends AbstractType
@@ -21,15 +22,15 @@ class SubsystemTypeType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del tipo'
-                ]
+                    'placeholder' => 'Nombre del tipo',
+                ],
             ])
             ->add('subsystemTypeSubsystemSubTypes', LiveCollectionType::class, [
                 'entry_type' => SubsystemTypeSubsystemSubTypeType::class,
                 'button_delete_options' => [
-                    'label_html' => true
+                    'label_html' => true,
                 ],
-                'error_bubbling' => false
+                'error_bubbling' => false,
             ])
             ->add('classification', SubsystemFunctionalClassificationEnumType::class, [
                 'label' => 'Clasificación:',
@@ -42,7 +43,7 @@ class SubsystemTypeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SubsystemType::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'error_mapping' => [
                 'enumClassification' => 'classification',

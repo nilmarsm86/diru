@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\CorporateEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Enums\CorporateEntityType;
-use Exception;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CorporateEntityRepository::class)]
 #[ORM\UniqueConstraint(name: 'corporate_entity_name', columns: ['name'])]
@@ -31,7 +30,7 @@ class CorporateEntity
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El código de empresa está vacío.')]
-//    #[Assert\NotNull(message: 'El codigo de empresa no debe ser nulo.')]
+    //    #[Assert\NotNull(message: 'El codigo de empresa no debe ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     private ?string $code = null;
 
@@ -114,7 +113,7 @@ class CorporateEntity
 
     public function setType(CorporateEntityType $enumType): static
     {
-        $this->type = "";
+        $this->type = '';
         $this->enumType = $enumType;
 
         return $this;
@@ -128,7 +127,7 @@ class CorporateEntity
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[ORM\PostLoad]
     public function onLoad(): void

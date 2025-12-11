@@ -8,8 +8,6 @@ use App\Form\RegistrationFormType;
 use App\Repository\PersonRepository;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
-use Exception;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,11 +40,11 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository, RoleRepository $rolRepository, PersonRepository $personRepository): Response
@@ -85,18 +83,17 @@ class SecurityController extends AbstractController
                     $this->addFlash('info', 'Espere que le activen el usuario para autenticarse.');
 
                     return $this->redirectToRoute('app_login');
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
                     $error = true;
                     $message = 'Ha ocurrido un error al registrar al usuario. Revise bien los datos.';
                 }
-
             }
         }
 
         return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
             'error' => $error,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 }

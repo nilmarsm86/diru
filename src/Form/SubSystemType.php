@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\SubSystem;
-use App\Entity\SubsystemSubType;
-use App\Entity\SubsystemTypeSubsystemSubType;
 use App\Form\Types\SubSystemClassificationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of SubSystem
+ *
  * @extends AbstractType<SubSystem>
  */
 class SubSystemType extends AbstractType
@@ -24,8 +23,8 @@ class SubSystemType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre del subsistema'
-                ]
+                    'placeholder' => 'Nombre del subsistema',
+                ],
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
@@ -38,7 +37,7 @@ class SubSystemType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SubSystem::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'type' => 0,
             'subType' => 0,
@@ -53,9 +52,7 @@ class SubSystemType extends AbstractType
     }
 
     /**
-     * @param FormEvent $event
      * @param array<mixed> $options
-     * @return void
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -68,10 +65,10 @@ class SubSystemType extends AbstractType
         if ($subSystem && $subSystem->getId()) {
             $subsystemTypeSubsystemSubType = $subSystem->getSubsystemTypeSubsystemSubType();
             $subsystemType = $subsystemTypeSubsystemSubType?->getSubsystemType();
-            if(!is_null($subsystemType)){
+            if (!is_null($subsystemType)) {
                 $type = $subsystemType->getId();
                 $subsystemSubType = $subsystemTypeSubsystemSubType->getSubsystemSubType();
-                if(!is_null($subsystemSubType)){
+                if (!is_null($subsystemSubType)) {
                     $subType = $subsystemSubType->getId();
                 }
             }
@@ -82,7 +79,7 @@ class SubSystemType extends AbstractType
             'type' => $type,
             'subType' => $subType,
             'live_form' => $options['live_form'],
-            'modal' => $options['modal']
+            'modal' => $options['modal'],
         ]);
     }
 }

@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of Representative
+ *
  * @extends AbstractType<Representative>
  */
 class RepresentativeType extends AbstractType
@@ -20,38 +21,38 @@ class RepresentativeType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nombre:',
                 'attr' => [
-                    'placeholder' => 'Nombre'
-                ]
+                    'placeholder' => 'Nombre',
+                ],
             ])
             ->add('lastname', null, [
                 'label' => 'Apellidos:',
                 'attr' => [
-                    'placeholder' => 'Apellidos'
-                ]
+                    'placeholder' => 'Apellidos',
+                ],
             ])
             ->add('identificationNumber', null, [
                 'label' => 'Carnet de identidad:',
                 'attr' => [
-                    'placeholder' => 'Carnet de identidad'
-                ]
+                    'placeholder' => 'Carnet de identidad',
+                ],
             ])
             ->add('passport', null, [
                 'label' => 'Pasaporte:',
                 'attr' => [
-                    'placeholder' => 'Pasaporte'
-                ]
+                    'placeholder' => 'Pasaporte',
+                ],
             ])
             ->add('phone', null, [
                 'label' => 'Teléfono:',
                 'attr' => [
-                    'placeholder' => 'Teléfono del representante'
-                ]
+                    'placeholder' => 'Teléfono del representante',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo:',
                 'attr' => [
-                    'placeholder' => 'Correo del representante'
-                ]
+                    'placeholder' => 'Correo del representante',
+                ],
             ]);
     }
 
@@ -60,7 +61,7 @@ class RepresentativeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Representative::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
         ]);
     }

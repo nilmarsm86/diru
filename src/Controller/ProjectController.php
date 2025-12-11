@@ -24,14 +24,12 @@ use Twig\Error\SyntaxError;
 #[Route('/project')]
 final class ProjectController extends AbstractController
 {
-    /**
-     */
     #[Route(name: 'app_project_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, ProjectRepository $projectRepository): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $type = $request->query->get('type', '');
         $state = $request->query->get('state', '');
@@ -62,6 +60,7 @@ final class ProjectController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $project = new Project();
+
         return $crudActionService->formLiveComponentAction($request, $project, 'project', [
             'title' => 'Nuevo proyecto',
         ]);
@@ -73,7 +72,7 @@ final class ProjectController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
-    public function show(Request $request,Project $project, CrudActionService $crudActionService): Response
+    public function show(Request $request, Project $project, CrudActionService $crudActionService): Response
     {
         return $crudActionService->showAction($request, $project, 'project', 'project', 'Detalles del proyecto');
     }
@@ -101,8 +100,9 @@ final class ProjectController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el proyecto.';
         $response = $crudActionService->deleteAction($request, $projectRepository, $project, $successMsg, 'app_project_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

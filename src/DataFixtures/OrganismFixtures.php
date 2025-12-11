@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Organism;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Organism;
 
 class OrganismFixtures extends Fixture implements FixtureGroupInterface
 {

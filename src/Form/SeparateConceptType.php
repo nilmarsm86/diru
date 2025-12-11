@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of SeparateConcept
+ *
  * @extends AbstractType<SeparateConcept>
  */
 class SeparateConceptType extends AbstractType

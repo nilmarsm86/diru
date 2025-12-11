@@ -6,7 +6,6 @@ use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +47,12 @@ final class PersonForm extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(PersonRepository $personRepository): ?Response
     {
-        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->per?->getId())) ? 'Se ha agregado el representante.' : 'Se ha modificado el representante.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -66,21 +65,23 @@ final class PersonForm extends AbstractController
             $this->per = new Person();
             if (!is_null($this->modal)) {
                 $this->modalManage($person, 'Se ha selecionado la persona agregada.', [
-                    'person' => $person->getId()
+                    'person' => $person->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($person, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return null;
     }
-
 }

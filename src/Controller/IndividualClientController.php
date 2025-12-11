@@ -20,7 +20,7 @@ use Twig\Error\SyntaxError;
 #[Route('/individual/client')]
 final class IndividualClientController extends AbstractController
 {
-//    use MunicipalityTrait;
+    //    use MunicipalityTrait;
 
     /**
      * @throws SyntaxError
@@ -42,6 +42,7 @@ final class IndividualClientController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $individualClient = new IndividualClient();
+
         return $crudActionService->formLiveComponentAction($request, $individualClient, 'individual_client', [
             'title' => 'Nueva persona natural',
         ]);
@@ -82,8 +83,9 @@ final class IndividualClientController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el cliente.';
         $response = $crudActionService->deleteAction($request, $individualClientRepository, $individualClient, $successMsg, 'app_enterprise_client_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 

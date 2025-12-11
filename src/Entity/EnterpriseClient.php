@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EnterpriseClientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnterpriseClientRepository::class)]
 #[DoctrineAssert\UniqueEntity(fields: ['email'], message: 'Ya existe un cliente con este correo.')]
@@ -31,29 +31,28 @@ class EnterpriseClient extends Client
 
     public function getRepresentativeName(): ?string
     {
-        if(!is_null($this->getRepresentative())){
+        if (!is_null($this->getRepresentative())) {
             return $this->getRepresentative()->getName();
         }
 
-        return "";
+        return '';
     }
 
     public function getRepresentativeIdentificationNumber(): ?string
     {
-        if(!is_null($this->getRepresentative())){
+        if (!is_null($this->getRepresentative())) {
             return $this->getRepresentative()->getIdentificationNumber();
         }
 
-        return "";
+        return '';
     }
 
     public function getRepresentativePassport(): ?string
     {
-        if(!is_null($this->getRepresentative())){
+        if (!is_null($this->getRepresentative())) {
             return $this->getRepresentative()->getPassport();
         }
 
-        return "";
+        return '';
     }
-
 }

@@ -5,7 +5,6 @@ namespace App\Entity\Traits;
 use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Interfaces\MeasurementDataInterface;
-use App\Entity\Local;
 use App\Entity\SubSystem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,43 +12,43 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait MeasurementDataTrait
 {
-    public function getTotalArea(bool $original = null): float
+    public function getTotalArea(?bool $original = null): float
     {
         return $this->getUsefulArea($original) + $this->getWallArea($original) + $this->getEmptyArea($original);
     }
 
-    public function getUsefulArea(bool $original = null): float
+    public function getUsefulArea(?bool $original = null): float
     {
-//        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
+        //        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
         return $this->getMeasurementData('getUsefulArea', $original);
     }
 
-    public function getWallArea(bool $original = null): float
+    public function getWallArea(?bool $original = null): float
     {
         return $this->getMeasurementData('getWallArea', $original);
     }
 
-    public function getEmptyArea(bool $original = null): float
+    public function getEmptyArea(?bool $original = null): float
     {
         return $this->getMeasurementData('getEmptyArea', $original);
     }
 
-//    public function getUnassignedArea(bool $original = null): ?float
-//    {
-//        return $this->getMeasurementData('getUnassignedArea');
-//    }
+    //    public function getUnassignedArea(bool $original = null): ?float
+    //    {
+    //        return $this->getMeasurementData('getUnassignedArea');
+    //    }
 
     /**
      * @template T of Floor|SubSystem
+     *
      * @param Collection<int, T> $items
-     * @return float
      */
     private function calculateMaxHeight(Collection $items): float
     {
         $maxHeight = 0;
         /** @var MeasurementDataInterface $item */
-        foreach ($items as $item){
-            if($item->getMaxHeight() > $maxHeight){
+        foreach ($items as $item) {
+            if ($item->getMaxHeight() > $maxHeight) {
                 $maxHeight = $item->getMaxHeight();
             }
         }
@@ -59,21 +58,21 @@ trait MeasurementDataTrait
 
     /**
      * @template T of Floor|SubSystem
+     *
      * @param ArrayCollection<int, T> $items
-     * @return bool
      */
     public function calculateAllLocalsAreClassified(ArrayCollection $items): bool
     {
-//        if((!$this instanceof Building) && !$this->isOriginal()){
-//            return true;
-//        }
+        //        if((!$this instanceof Building) && !$this->isOriginal()){
+        //            return true;
+        //        }
 
-        if($items->count() == 0){
+        if (0 == $items->count()) {
             return false;
         }
 
-        foreach ($items as $item){
-            if(!$item->allLocalsAreClassified()){
+        foreach ($items as $item) {
+            if (!$item->allLocalsAreClassified()) {
                 return false;
             }
         }
@@ -81,27 +80,27 @@ trait MeasurementDataTrait
         return true;
     }
 
-    public function getVolume(bool $original = null): float|int
+    public function getVolume(?bool $original = null): float|int
     {
         return $this->getTotalArea($original) * $this->getMaxHeight($original);
     }
 
     public function notWallArea(): bool
     {
-        return $this->getWallArea() == 0;
+        return 0 == $this->getWallArea();
     }
 
-//    public function makeReply(EntityManagerInterface $entityManager, Collection $items, object $parent = null): static
-//    {
-//        $replica = clone $this;
-//        $replica->setOriginal($this);
-//
-//        $entityManager->persist($replica);
-//
-//        foreach ($items as $item){
-//            $item->reply($entityManager);
-//        }
-//
-//        return $replica;
-//    }
+    //    public function makeReply(EntityManagerInterface $entityManager, Collection $items, object $parent = null): static
+    //    {
+    //        $replica = clone $this;
+    //        $replica->setOriginal($this);
+    //
+    //        $entityManager->persist($replica);
+    //
+    //        foreach ($items as $item){
+    //            $item->reply($entityManager);
+    //        }
+    //
+    //        return $replica;
+    //    }
 }

@@ -21,13 +21,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @template TData of EnterpriseClient
+ *
  * @extends AbstractType<EnterpriseClient>
  */
 class EnterpriseClientType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)
     {
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -36,25 +36,25 @@ class EnterpriseClientType extends AbstractType
             ->add('phone', null, [
                 'label' => 'Teléfono:',
                 'attr' => [
-                    'placeholder' => 'Teléfono de la empresa'
-                ]
+                    'placeholder' => 'Teléfono de la empresa',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo:',
                 'attr' => [
-                    'placeholder' => 'Correo de la empresa'
-                ]
+                    'placeholder' => 'Correo de la empresa',
+                ],
             ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
-                'live_form' => $options['live_form']
+                'live_form' => $options['live_form'],
             ])
             ->add('corporateEntity', EntityPlusType::class, [
                 'class' => CorporateEntity::class,
-//                'placeholder' => '-Seleccione-',
+                //                'placeholder' => '-Seleccione-',
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
                 'detail' => true,
@@ -80,13 +80,13 @@ class EnterpriseClientType extends AbstractType
         $resolver->setDefaults([
             'data_class' => EnterpriseClient::class,
             'attr' => [
-                'novalidate' => 'novalidate'
+                'novalidate' => 'novalidate',
             ],
             'province' => 0,
             'municipality' => 0,
             'street' => '',
             'live_form' => false,
-            'modal' => null
+            'modal' => null,
         ]);
 
         $resolver->setAllowedTypes('province', 'int');
@@ -96,49 +96,42 @@ class EnterpriseClientType extends AbstractType
         $resolver->setAllowedTypes('street', 'string');
     }
 
-//    /**
-//     * @param Client $client
-//     * @return Closure
-//     */
-//    private function getPersonQueryBuilder(Client $client): Closure
-//    {
-//        return function (EntityRepository $er) use ($client): QueryBuilder|array {
-//            $qb = $er->createQueryBuilder('p');
-//            if (!$client->getId()) {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL');
-//            } else {
-//                $qb->leftJoin('p.client', 'c')
-//                    ->where('c.person IS NULL')
-//                    ->orWhere('c.id = :id')
-//                    ->setParameter(':id', $client->getId());
-//            }
-//
-//            return $qb->orderBy('p.name', 'ASC');
-//        };
-//    }
+    //    /**
+    //     * @param Client $client
+    //     * @return Closure
+    //     */
+    //    private function getPersonQueryBuilder(Client $client): Closure
+    //    {
+    //        return function (EntityRepository $er) use ($client): QueryBuilder|array {
+    //            $qb = $er->createQueryBuilder('p');
+    //            if (!$client->getId()) {
+    //                $qb->leftJoin('p.client', 'c')
+    //                    ->where('c.person IS NULL');
+    //            } else {
+    //                $qb->leftJoin('p.client', 'c')
+    //                    ->where('c.person IS NULL')
+    //                    ->orWhere('c.id = :id')
+    //                    ->setParameter(':id', $client->getId());
+    //            }
+    //
+    //            return $qb->orderBy('p.name', 'ASC');
+    //        };
+    //    }
 
-    /**
-     * @return Closure
-     */
-    private function getEntityQueryBuilder(): Closure
+    private function getEntityQueryBuilder(): \Closure
     {
-        return fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
+        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
             ->orderBy('ce.name', 'ASC');
     }
 
-    /**
-     * @param FormEvent $event
-     * @return void
-     */
     private function onPreSetData(FormEvent $event): void
     {
-//        $ec = $event->getData();
+        //        $ec = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [
             'class' => Representative::class,
-//            'placeholder' => '-Seleccione-',
+            //            'placeholder' => '-Seleccione-',
             'label' => 'Representante:',
             'detail' => true,
             'detail_title' => 'Detalle del representante',

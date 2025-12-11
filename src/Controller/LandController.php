@@ -38,9 +38,10 @@ final class LandController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService, Building $building): Response
     {
         $land = new Land();
+
         return $crudActionService->formLiveComponentAction($request, $land, 'land', [
             'title' => 'Nuevos datos generales del terreno',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 
@@ -65,7 +66,7 @@ final class LandController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $land, 'land', [
             'title' => 'Editar datos generales del terreno',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 
@@ -79,8 +80,9 @@ final class LandController extends AbstractController
     {
         $successMsg = 'Se ha eliminado los datos del terreno.';
         $response = $crudActionService->deleteAction($request, $landRepository, $land, $successMsg, 'app_land_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -94,6 +96,7 @@ final class LandController extends AbstractController
         $landRepository->save($land, true);
 
         $this->addFlash('success', 'Se ha transformado el área.');
+
         return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 }

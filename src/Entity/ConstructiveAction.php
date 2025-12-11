@@ -8,7 +8,6 @@ use App\Repository\ConstructiveActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConstructiveActionRepository::class)]
@@ -66,7 +65,7 @@ class ConstructiveAction
 
     public function setType(ConstructiveActionType $enumType): static
     {
-        $this->type = "";
+        $this->type = '';
         $this->enumType = $enumType;
 
         return $this;
@@ -80,7 +79,7 @@ class ConstructiveAction
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[ORM\PostLoad]
     public function onLoad(): void

@@ -7,7 +7,6 @@ use App\Entity\SubsystemSubType;
 use App\Form\SubsystemSubTypeType;
 use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,19 +37,19 @@ final class SubsystemSubTypeForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
-//    #[LiveProp(writable: true)]
-//    public ?string $subsystemType = null;
+    //    #[LiveProp(writable: true)]
+    //    public ?string $subsystemType = null;
 
     protected function instantiateForm(): FormInterface
     {
-//        dump($this->formValues);
-//        if(!is_null($this->subsystemType)){
-//            $this->formValues['subsystemType'] = $this->subsystemType;
-//        }
+        //        dump($this->formValues);
+        //        if(!is_null($this->subsystemType)){
+        //            $this->formValues['subsystemType'] = $this->subsystemType;
+        //        }
 
         return $this->createForm(SubsystemSubTypeType::class, $this->ssst, [
             'modal' => $this->modal,
-            'screen' => 'subtype'
+            'screen' => 'subtype',
         ]);
     }
 
@@ -60,27 +59,27 @@ final class SubsystemSubTypeForm extends AbstractController
         if (is_null($this->ssst)) {
             $this->ssst = new SubsystemSubType();
         } else {
-//            if (!is_null($this->ssst->getSubsystemType())) {
-//                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
-//            }
+            //            if (!is_null($this->ssst->getSubsystemType())) {
+            //                $this->subsystemType = (string)$this->ssst->getSubSystemType()->getId();
+            //            }
         }
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[LiveAction]
     public function save(SubsystemSubTypeRepository $subsystemSubTypeRepository, SubsystemTypeRepository $subsystemTypeRepository): ?Response
     {
-        $successMsg = (is_null($this->ssst?->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.';//TODO: personalizar los mensajes
+        $successMsg = (is_null($this->ssst?->getId())) ? 'Se ha agregado el sub tipo.' : 'Se ha modificado el sub tipo.'; // TODO: personalizar los mensajes
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var SubsystemSubType $subsystemSubType */
             $subsystemSubType = $this->getForm()->getData();
 
-//            $subsystemType = $subsystemTypeRepository->find($this->subsystemType);
-//            $subsystemSubType->setSubsystemType($subsystemType);
+            //            $subsystemType = $subsystemTypeRepository->find($this->subsystemType);
+            //            $subsystemSubType->setSubsystemType($subsystemType);
 
             $subsystemSubTypeRepository->save($subsystemSubType, true);
 
@@ -89,15 +88,18 @@ final class SubsystemSubTypeForm extends AbstractController
                 $this->modalManage($subsystemSubType, 'Se ha seleccionado el nuevo subtipo agregado.', [
                     'subsystemSubType' => $subsystemSubType->getId(),
                 ]);
+
                 return null;
             }
 
             if ($this->ajax) {
                 $this->ajaxManage($subsystemSubType, $successMsg);
+
                 return null;
             }
 
             $this->addFlash('success', $successMsg);
+
             return $this->redirectToRoute('app_subsystem_sub_type_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -108,5 +110,4 @@ final class SubsystemSubTypeForm extends AbstractController
     {
         return 'norender|*';
     }
-
 }

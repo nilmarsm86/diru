@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template TData of ProjectTechnicalPreparationEstimate
+ *
  * @extends AbstractType<ProjectTechnicalPreparationEstimate>
  */
 class ProjectTechnicalPreparationEstimateType extends AbstractType
@@ -20,31 +21,31 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
 
         $builder
             ->add('concept', null, [
-                'label' => 'Por concepto de:'
+                'label' => 'Por concepto de:',
             ])
             ->add('measurementUnit', null, [
-                'label' => 'Unidad de medida:'
+                'label' => 'Unidad de medida:',
             ])
             ->add('price', MoneyType::class, [
                 'label' => 'Precio:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
-                    'data-controller' => 'money'
+                    'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-//                'html5' => true,
+                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
-                'grouping' => true
+                'grouping' => true,
             ])
             ->add('quantity', null, [
-                'label' => 'Cantidad:'
+                'label' => 'Cantidad:',
             ])
             ->add('comment', null, [
-                'label' => 'Comentario:'
+                'label' => 'Comentario:',
             ]);
     }
 

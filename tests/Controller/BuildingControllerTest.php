@@ -67,7 +67,7 @@ final class BuildingControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Building();
-//        $fixture->setEstimatedValueConstruction('My Title');
+        //        $fixture->setEstimatedValueConstruction('My Title');
         $fixture->setEstimatedValueEquipment('My Title');
         $fixture->setEstimatedValueOther('My Title');
         $fixture->setApprovedValueConstruction('My Title');
@@ -91,7 +91,7 @@ final class BuildingControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Building();
-//        $fixture->setEstimatedValueConstruction('Value');
+        //        $fixture->setEstimatedValueConstruction('Value');
         $fixture->setEstimatedValueEquipment('Value');
         $fixture->setEstimatedValueOther('Value');
         $fixture->setApprovedValueConstruction('Value');
@@ -134,7 +134,7 @@ final class BuildingControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Building();
-//        $fixture->setEstimatedValueConstruction('Value');
+        //        $fixture->setEstimatedValueConstruction('Value');
         $fixture->setEstimatedValueEquipment('Value');
         $fixture->setEstimatedValueOther('Value');
         $fixture->setApprovedValueConstruction('Value');

@@ -114,6 +114,7 @@ class LandNetworkConnection
         $type = (is_null($this->type)) ? '' : $this->type;
         $this->setType(NetworkConnectionType::from($type));
     }
+
     public function getType(): NetworkConnectionType
     {
         return $this->enumType;
@@ -123,6 +124,7 @@ class LandNetworkConnection
     {
         $this->type = '';
         $this->enumType = $enumType;
+
         return $this;
     }
 
@@ -154,5 +156,4 @@ class LandNetworkConnection
 
         return $this;
     }
-
 }

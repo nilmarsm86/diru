@@ -8,10 +8,10 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class FilterDropDown
 {
     public string $path = '';
-    /** @var array<mixed>  */
+    /** @var array<mixed> */
     public array $pathParams = [];
     public string $label = '';
-    /** @var array<string>  */
+    /** @var array<string> */
     public array $options = [];
     public string $data = '';
     public string $queryName = 'type';

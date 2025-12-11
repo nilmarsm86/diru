@@ -19,12 +19,10 @@ final class Navigation
 
     public function __construct(private readonly RequestStack $requestStack, private readonly RouterInterface $router)
     {
-
     }
 
     /**
-     * cuando se monta por primera vez el componete
-     * @return void
+     * cuando se monta por primera vez el componete.
      */
     public function mount(): void
     {
@@ -33,15 +31,13 @@ final class Navigation
     }
 
     /**
-     * Generate path in number route
-     * @param int $item
-     * @return string
+     * Generate path in number route.
      */
     public function getNumberPath(int $item): string
     {
         $this->queryStrings[$this->queryName] = $item;
-        $routeParams = (array)$this->requestStack->getMainRequest()?->attributes->get('_route_params');
+        $routeParams = (array) $this->requestStack->getMainRequest()?->attributes->get('_route_params');
+
         return $this->router->generate($this->path, $routeParams + $this->queryStrings);
     }
-
 }

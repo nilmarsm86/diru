@@ -41,7 +41,7 @@ final class SubSystemController extends AbstractController
             'filter' => $filter,
             'paginator' => $paginator,
             'floor' => $floor,
-            'reply' => $reply
+            'reply' => $reply,
         ]);
     }
 
@@ -54,6 +54,7 @@ final class SubSystemController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService, Floor $floor, bool $reply = false): Response
     {
         $subSystem = new SubSystem();
+
         return $crudActionService->formLiveComponentAction($request, $subSystem, 'sub_system', [
             'title' => 'Nuevo Subsistema',
             'floor' => $floor,
@@ -97,10 +98,11 @@ final class SubSystemController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el subsistema.';
         $response = $crudActionService->deleteAction($request, $subSystemRepository, $subSystem, $successMsg, 'app_sub_system_index', [
-            'floor' => $floor->getId()
+            'floor' => $floor->getId(),
         ]);
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -132,12 +134,12 @@ final class SubSystemController extends AbstractController
             }
         }
 
-        return $this->render("sub_system/report.html.twig", [
+        return $this->render('sub_system/report.html.twig', [
             'local_status' => $subSystem->getAmountTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
             'constructive_action' => $ca,
             'title' => 'Estado técnico de los locales del subsistema',
-            'sub_system' => $subSystem
+            'sub_system' => $subSystem,
         ]);
     }
 }

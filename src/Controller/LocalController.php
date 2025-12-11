@@ -25,8 +25,8 @@ final class LocalController extends AbstractController
     public function index(Request $request, RouterInterface $router, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
 
@@ -41,7 +41,7 @@ final class LocalController extends AbstractController
             'filter' => $filter,
             'paginator' => $paginator,
             'sub_system' => $subSystem,
-            'reply' => $reply
+            'reply' => $reply,
         ]);
     }
 
@@ -54,11 +54,12 @@ final class LocalController extends AbstractController
     public function new(Request $request, CrudActionService $crudActionService, SubSystem $subSystem, bool $reply = false): Response
     {
         $local = new Local();
+
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Nuevo Local',
             'sub_system' => $subSystem,
             'reply' => $reply,
-            'local' => $local
+            'local' => $local,
         ]);
     }
 
@@ -84,7 +85,7 @@ final class LocalController extends AbstractController
         return $crudActionService->formLiveComponentAction($request, $local, 'local', [
             'title' => 'Editar Local',
             'sub_system' => $subSystem,
-            'reply' => $reply
+            'reply' => $reply,
         ]);
     }
 
@@ -98,10 +99,11 @@ final class LocalController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el local.';
         $response = $crudActionService->deleteAction($request, $localRepository, $local, $successMsg, 'app_local_index', [
-            'subSystem' => $subSystem->getId()
+            'subSystem' => $subSystem->getId(),
         ]);
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -113,18 +115,19 @@ final class LocalController extends AbstractController
     {
         $area = 0;
         if ($subSystem->getFloor()?->hasFreeArea()) {
-            $area = (float)$subSystem->getFloor()->getFreeArea();
+            $area = (float) $subSystem->getFloor()->getFreeArea();
         }
 
         if ($subSystem->getFloor()?->hasUnassignedArea()) {
-            $area = (float)$subSystem->getFloor()->getUnassignedArea();
+            $area = (float) $subSystem->getFloor()->getUnassignedArea();
         }
 
-        $automaticWall = Local::createAutomaticWall($subSystem, $area, ($subSystem->getMaxLocalNumber() + 1), $reply, $entityManager);
+        $automaticWall = Local::createAutomaticWall($subSystem, $area, $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);
 
         $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se ha creado el área de muro del área restante.');
+
         return $this->redirectToRoute('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 }

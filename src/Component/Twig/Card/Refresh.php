@@ -14,14 +14,13 @@ final class Refresh
 
     public function __construct(private readonly RequestStack $requestStack)
     {
-
     }
 
     public function showRefresh(): bool
     {
         foreach ($this->queryNames as $q) {
             $currentRequest = $this->requestStack->getCurrentRequest();
-            if ($currentRequest?->query->has($q) && strlen((string)$currentRequest->query->get($q)) > 0) {
+            if ($currentRequest?->query->has($q) && strlen((string) $currentRequest->query->get($q)) > 0) {
                 return true;
             }
         }

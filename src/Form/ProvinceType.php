@@ -8,6 +8,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
+/**
+ * @template TData of Province
+ * @extends AbstractType<Province>
+ */
 class ProvinceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

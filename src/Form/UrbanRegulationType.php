@@ -17,6 +17,10 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of UrbanRegulation
+ * @extends AbstractType<UrbanRegulation>
+ */
 class UrbanRegulationType extends AbstractType
 {
     public function __construct(

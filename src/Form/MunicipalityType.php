@@ -14,6 +14,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of Municipality
+ * @extends AbstractType<Municipality>
+ */
 class MunicipalityType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

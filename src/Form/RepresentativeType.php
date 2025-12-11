@@ -8,6 +8,10 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of Representative
+ * @extends AbstractType<Representative>
+ */
 class RepresentativeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

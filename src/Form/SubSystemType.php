@@ -12,6 +12,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of SubSystem
+ * @extends AbstractType<SubSystem>
+ */
 class SubSystemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

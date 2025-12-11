@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\Local;
 use App\Entity\SubSystem;
@@ -16,6 +17,10 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Range;
 
+/**
+ * @template TData of Local
+ * @extends AbstractType<Local>
+ */
 class LocalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

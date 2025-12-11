@@ -9,6 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
+/**
+ * @template TData of SubsystemType
+ * @extends AbstractType<SubsystemType>
+ */
 class SubsystemTypeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

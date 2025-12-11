@@ -14,6 +14,10 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of SubsystemTypeSubsystemSubType
+ * @extends AbstractType<SubsystemTypeSubsystemSubType>
+ */
 class SubsystemTypeSubsystemSubTypeType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

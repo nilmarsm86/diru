@@ -11,6 +11,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of Investment
+ * @extends AbstractType<Investment>
+ */
 class InvestmentType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

@@ -7,6 +7,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of Person
+ * @extends AbstractType<Person>
+ */
 class PersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

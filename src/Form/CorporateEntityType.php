@@ -15,6 +15,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of CorporateEntity
+ * @extends AbstractType<CorporateEntity>
+ */
 class CorporateEntityType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

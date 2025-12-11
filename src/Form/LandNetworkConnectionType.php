@@ -12,6 +12,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of LandNetworkConnection
+ * @extends AbstractType<LandNetworkConnection>
+ */
 class LandNetworkConnectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

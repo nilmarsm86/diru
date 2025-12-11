@@ -10,7 +10,6 @@ use App\Entity\Role;
 use App\Repository\BuildingRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +34,7 @@ final class BuildingController extends AbstractController
     public function index(Request $request, BuildingRepository $buildingRepository, CrudActionService $crudActionService): Response
     {
         return $crudActionService->indexAction($request, $buildingRepository, 'findBuildings', 'building', [
-            'project' => null
+            'project' => null,
         ]);
     }
 
@@ -43,8 +42,8 @@ final class BuildingController extends AbstractController
     public function project(Request $request, RouterInterface $router, BuildingRepository $buildingRepository, Project $project): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int)$request->query->get('amount', '10');
-        $pageNumber = (int)$request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         $state = $request->query->get('state', '');
 
@@ -71,12 +70,13 @@ final class BuildingController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/new/{project}', name: 'app_building_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService, Project $project = null): Response
+    public function new(Request $request, CrudActionService $crudActionService, ?Project $project = null): Response
     {
         $building = new Building();
+
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Nueva Obra',
-            'project' => $project
+            'project' => $project,
         ]);
     }
 
@@ -101,7 +101,7 @@ final class BuildingController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Editar Obra',
-            'project' => null
+            'project' => null,
         ]);
     }
 
@@ -116,8 +116,9 @@ final class BuildingController extends AbstractController
     {
         $successMsg = 'Se ha eliminado la obra.';
         $response = $crudActionService->deleteAction($request, $buildingRepository, $building, $successMsg, 'app_building_index');
-        if($response instanceof RedirectResponse){
+        if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
+
             return $response;
         }
 
@@ -130,7 +131,7 @@ final class BuildingController extends AbstractController
         try {
             $building->reply($entityManager);
             $this->addFlash('success', 'Se ha replicado la obra');
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
         }
 
@@ -140,11 +141,11 @@ final class BuildingController extends AbstractController
     #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]
     public function reportLocal(Building $building): Response
     {
-        return $this->render("building/report.html.twig", [
+        return $this->render('building/report.html.twig', [
             'local_status' => $building->getAmountTechnicalStatus(),
             'meter_status' => $building->getAmountMeterTechnicalStatus(),
             'title' => 'Estado técnico de los locales de la obra',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 }

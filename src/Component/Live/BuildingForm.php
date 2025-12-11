@@ -4,7 +4,6 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
-use App\Entity\Constructor;
 use App\Entity\Project;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
@@ -97,6 +96,9 @@ final class BuildingForm extends AbstractController
         }
     }
 
+    /**
+     * @return FormInterface<Building>
+     */
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();

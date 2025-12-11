@@ -19,6 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @template TData of EnterpriseClient
+ * @extends AbstractType<EnterpriseClient>
+ */
 class EnterpriseClientType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

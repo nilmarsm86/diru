@@ -13,6 +13,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of Land
+ * @extends AbstractType<Land>
+ */
 class LandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

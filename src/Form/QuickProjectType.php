@@ -13,6 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of Project
+ * @extends AbstractType<Project>
+ */
 class QuickProjectType extends AbstractType
 {
 //    public function __construct(private readonly RouterInterface $router)

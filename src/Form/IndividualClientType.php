@@ -14,6 +14,10 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @template TData of IndividualClient
+ * @extends AbstractType<IndividualClient>
+ */
 class IndividualClientType extends AbstractType
 {
     public function __construct(private readonly RouterInterface $router)

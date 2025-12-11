@@ -9,6 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @template TData of LocationZone
+ * @extends AbstractType<LocationZone>
+ */
 class LocationZoneType extends AbstractType
 {
     private int $min = 1;

@@ -26,6 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use App\Entity\Enums\ProjectType as EnumProjectType;
 
+/**
+ * @template TData of Project
+ * @extends AbstractType<Project>
+ */
 class ProjectType extends AbstractType
 {
     public function __construct(

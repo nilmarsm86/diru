@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use LogicException;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -126,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         if ('' === $this->username || null === $this->username) {
-            throw new LogicException('El identificador del usuario no puede estar vacio');
+            throw new \LogicException('El identificador del usuario no puede estar vacio');
         }
 
         return (string) $this->username;
@@ -149,7 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function addRole(Role $role): static
     {
@@ -165,21 +164,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function removeRole(Role $role, bool $secure = true): static
     {
         if (!$this->isActive()) {
-            throw new Exception('No puede eliminar rol de un usuario inactivo.', 1);
+            throw new \Exception('No puede eliminar rol de un usuario inactivo.', 1);
         }
 
         if (Role::ROLE_CLIENT === $role->getName()) {
-            throw new Exception('No puede ser eliminado el rol de cliente.');
+            throw new \Exception('No puede ser eliminado el rol de cliente.');
         }
 
         if ($secure) {
             if (in_array(Role::ROLE_ADMIN, $this->getRoles())) {
-                throw new Exception('No pueden ser eliminados los roles del administrador.');
+                throw new \Exception('No pueden ser eliminados los roles del administrador.');
             }
         }
 
@@ -209,7 +208,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function register(UserPasswordHasherInterface $userPasswordHasher, Role $baseRol): static
     {

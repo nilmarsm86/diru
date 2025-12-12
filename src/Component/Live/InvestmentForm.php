@@ -67,47 +67,88 @@ final class InvestmentForm extends AbstractController
 
     public function preValue(): void
     {
+        /** @var array<string, array<string, mixed>> $formValues */
+        $formValues = $this->formValues;
+
         if (0 !== $this->locationZone) {
-            $this->formValues['locationZone'] = (string) $this->locationZone;
+            $formValues['locationZone'] = (string) $this->locationZone;
             $this->locationZone = 0;
+            $this->formValues = $formValues;
         }
 
+        //        if ('' !== $this->street) {
+        //            $formValues['streetAddress']['street'] = (string) $this->street;
+        //            $this->street = '';
+        //            $this->formValues = $formValues;
+        //        }
         if ('' !== $this->street) {
-            $this->formValues['streetAddress']['street'] = (string) $this->street;
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
+            $streetAddress['street'] = (string) $this->street;
+            $formValues['streetAddress'] = $streetAddress;
             $this->street = '';
+            $this->formValues = $formValues;
         }
 
+        //        if (0 !== $this->province) {
+        //            $formValues['streetAddress']['address']['province'] = (string) $this->province;
+        //            $this->province = 0;
+        //            $this->formValues = $formValues;
+        //        }
         if (0 !== $this->province) {
-            $this->formValues['streetAddress']['address']['province'] = (string) $this->province;
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
+            /** @var array<string, mixed> $address */
+            $address = $streetAddress['address'] ?? [];
+            $address['province'] = (string) $this->province;
+            $streetAddress['address'] = $address;
+            $formValues['streetAddress'] = $streetAddress;
             $this->province = 0;
+            $this->formValues = $formValues;
         }
 
+        //        if (0 !== $this->municipality) {
+        //            $formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
+        //            $this->municipality = 0;
+        //            $this->formValues = $formValues;
+        //        }
         if (0 !== $this->municipality) {
-            $this->formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
+            /** @var array<string, mixed> $address */
+            $address = $streetAddress['address'] ?? [];
+            $address['municipality'] = (string) $this->municipality;
+            $streetAddress['address'] = $address;
+            $formValues['streetAddress'] = $streetAddress;
             $this->municipality = 0;
+            $this->formValues = $formValues;
         } else {
-            if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
-                if (isset($this->formValues['streetAddress']['address']['province'])) {
-                    if ($this->formValues['streetAddress']['address']['municipality']) {
-                        $mun = $this->municipalityRepository->find((int) $this->formValues['streetAddress']['address']['municipality']);
-                        if ((string) $mun?->getProvince()?->getId() !== $this->formValues['streetAddress']['address']['province']) {
-                            $prov = $this->provinceRepository->find((int) $this->formValues['streetAddress']['address']['province']);
+            /** @var array<string, array<string, array<int, mixed>>> $formValues */
+            $formValues = $this->formValues;
+            if (isset($formValues['streetAddress']['address'])) {
+                if (isset($formValues['streetAddress']['address']['province'])) {
+                    if ($formValues['streetAddress']['address']['municipality']) {
+                        $mun = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
+                        if ((string) $mun?->getProvince()?->getId() !== $formValues['streetAddress']['address']['province']) {
+                            $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
-                                $this->formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
+                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
                                     ? (string) $prov->getMunicipalities()->first()->getId()
                                     : '';
                             }
                         }
                     } else {
-                        $prov = $this->provinceRepository->find((int) $this->formValues['streetAddress']['address']['province']);
+                        $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
                             if ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first()) {
-                                $this->formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
+                                $formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
                             }
                         }
                     }
                 }
             }
+
+            $this->formValues = $formValues;
         }
     }
 
@@ -117,19 +158,26 @@ final class InvestmentForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        $formValues = $this->formValues;
         if (!$this->inv?->getId()) {
-            if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
-                $province = (int) $this->formValues['streetAddress']['address']['province'];
-                $municipality = (int) $this->formValues['streetAddress']['address']['municipality'];
+            if (isset($formValues['streetAddress']['address'])) {
+                /** @var int $province */
+                $province = $formValues['streetAddress']['address']['province'];
+                /** @var int $municipality */
+                $municipality = $formValues['streetAddress']['address']['municipality'];
             }
-            if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['street'])) {
-                $street = $this->formValues['streetAddress']['street'];
+            if (isset($formValues['streetAddress']['street'])) {
+                $street = $formValues['streetAddress']['street'];
             }
         } else {
             $mun = $this->inv->getMunicipality();
-            $province = (empty($this->formValues['streetAddress']['address']['province']) ? $mun?->getProvince()?->getId() : (int) $this->formValues['streetAddress']['address']['province']);
-            $municipality = (empty($this->formValues['streetAddress']['address']['municipality']) ? $mun?->getId() : (int) $this->formValues['streetAddress']['address']['municipality']);
-            $street = (empty($this->formValues['streetAddress']['street']) ? $this->inv->getStreet() : $this->formValues['streetAddress']['street']);
+            /** @var int $province */
+            $province = (empty($formValues['streetAddress']['address']['province']) ? $mun?->getProvince()?->getId() : $formValues['streetAddress']['address']['province']);
+            /** @var int $municipality */
+            $municipality = (empty($formValues['streetAddress']['address']['municipality']) ? $mun?->getId() : $formValues['streetAddress']['address']['municipality']);
+            /** @var string $street */
+            $street = (empty($formValues['streetAddress']['street']) ? $this->inv->getStreet() : $formValues['streetAddress']['street']);
         }
 
         return $this->createForm(InvestmentType::class, $this->inv, [
@@ -146,6 +194,9 @@ final class InvestmentForm extends AbstractController
     {
         $this->preValue();
 
+        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        $formValues = $this->formValues;
+
         $successMsg = (is_null($this->inv?->getId())) ? 'Se ha agregado la inversión.' : 'Se ha modificado la inversión.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
@@ -153,12 +204,16 @@ final class InvestmentForm extends AbstractController
             /** @var Investment $inv */
             $inv = $this->getForm()->getData();
 
-            $inv->setStreet($this->formValues['streetAddress']['street']);
+            /** @var string $street */
+            $street = $formValues['streetAddress']['street'];
+            $inv->setStreet($street);
 
-            $locationZone = $locationZoneRepository->find((int) $this->formValues['locationZone']);
+            $locationZone = $locationZoneRepository->find((int) $formValues['locationZone']);
             $inv->setLocationZone($locationZone);
 
-            $municipality = $this->municipalityRepository->find((int) $this->formValues['streetAddress']['address']['municipality']);
+            /** @var int $mun */
+            $mun = $formValues['streetAddress']['address']['municipality'];
+            $municipality = $this->municipalityRepository->find((int) $mun);
             $inv->setMunicipality($municipality);
 
             $investmentRepository->save($inv, true);

@@ -126,7 +126,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         foreach ($locals as $local) {
             $callback = [$local, $method];
             assert(is_callable($callback));
-            $data += call_user_func($callback, $this->isOriginal());
+            /** @var int $callbackResult */
+            $callbackResult = call_user_func($callback, $this->isOriginal());
+            $data += $callbackResult;
         }
 
         return $data;

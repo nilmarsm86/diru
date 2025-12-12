@@ -103,14 +103,18 @@ final class QuickProjectForm extends AbstractController
             $project = $this->getForm()->getData();
 
             if ($this->formValues['individualClient']) {
-                $this->formValues['client'] = (int) $this->formValues['individualClient'];
+                /** @var int $individualClient */
+                $individualClient = $this->formValues['individualClient'];
+                $this->formValues['client'] = $individualClient;
             }
 
             if ($this->formValues['enterpriseClient']) {
-                $this->formValues['client'] = (int) $this->formValues['enterpriseClient'];
+                /** @var int $enterpriseClient */
+                $enterpriseClient = $this->formValues['enterpriseClient'];
+                $this->formValues['client'] = $enterpriseClient;
             }
 
-            $client = $clientRepository->find((int) $this->formValues['client']);
+            $client = $clientRepository->find($this->formValues['client']);
             $project->setClient($client);
 
             $project->setType(ProjectType::Parcel);

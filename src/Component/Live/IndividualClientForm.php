@@ -69,37 +69,58 @@ final class IndividualClientForm extends AbstractController
 
     public function createPerson(IndividualClient $individualClient): Person
     {
+        /** @var array<string, array<string, mixed>> $formValues */
+        $formValues = $this->formValues;
         if (!$person = $individualClient->getPerson()) {
             $person = new Person();
         }
-        $person->setName($this->formValues['person']['name']);
-        $person->setLastname($this->formValues['person']['lastname']);
-        $person->setIdentificationNumber($this->formValues['person']['identificationNumber']);
-        $person->setPassport(empty($this->formValues['person']['passport']) ? null : $this->formValues['person']['passport']);
+
+        /** @var string $name */
+        $name = $formValues['person']['name'];
+        $person->setName($name);
+
+        /** @var string $lastname */
+        $lastname = $formValues['person']['lastname'];
+        $person->setLastname($lastname);
+
+        /** @var string $identificationNumber */
+        $identificationNumber = $formValues['person']['identificationNumber'];
+        $person->setIdentificationNumber($identificationNumber);
+
+        /** @var string $passport */
+        $passport = $formValues['person']['passport'];
+        $person->setPassport(empty($passport) ? null : $passport);
 
         return $person;
     }
 
     public function preValue(): void
     {
+        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        $formValues = $this->formValues;
+
         if (0 !== $this->representative) {
-            $this->formValues['representative'] = (string) $this->representative;
+            $formValues['representative'] = (string) $this->representative;
             $this->representative = 0;
+            $this->formValues = $formValues;
         }
 
         if ('' !== $this->street) {
-            $this->formValues['streetAddress']['street'] = (string) $this->street;
+            $formValues['streetAddress']['street'] = (string) $this->street;
             $this->street = '';
+            $this->formValues = $formValues;
         }
 
         if (0 !== $this->province) {
-            $this->formValues['streetAddress']['address']['province'] = (string) $this->province;
+            $formValues['streetAddress']['address']['province'] = (string) $this->province;
             $this->province = 0;
+            $this->formValues = $formValues;
         }
 
         if (0 !== $this->municipality) {
-            $this->formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
+            $formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
             $this->municipality = 0;
+            $this->formValues = $formValues;
         } else {
             if (isset($this->formValues['streetAddress']) && isset($this->formValues['streetAddress']['address'])) {
                 if (isset($this->formValues['streetAddress']['address']['province'])) {

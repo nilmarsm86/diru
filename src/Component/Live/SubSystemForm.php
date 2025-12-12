@@ -77,21 +77,35 @@ final class SubSystemForm extends AbstractController
     public function preValue(): void
     {
         if (0 !== $this->type) {
-            $this->formValues['subsystemClassification']['type'] = (string) $this->type;
+            //            $this->formValues['subsystemClassification']['type'] = (string) $this->type;
+            /** @var array<string, array<int, mixed>> $formValues */
+            $formValues = $this->formValues;
+            $formValues['subsystemClassification']['type'] = (string) $this->type;
+            $this->formValues = $formValues;
             $this->type = 0;
         }
 
         if (0 !== $this->subType) {
-            $this->formValues['subsystemClassification']['subType'] = (string) $this->subType;
+            /** @var array<string, array<int, mixed>> $formValues */
+            $formValues = $this->formValues;
+            $formValues['subsystemClassification']['subType'] = (string) $this->subType;
+            $this->formValues = $formValues;
             $this->subType = 0;
         } else {
             if (isset($this->formValues['subsystemClassification'])) {
-                if (isset($this->formValues['subsystemClassification']['type'])) {
-                    if ($this->formValues['subsystemClassification']['subType']) {
+                /** @var array<string, array<int, mixed>> $formValues */
+                $formValues = $this->formValues;
+                if (isset($formValues['subsystemClassification']['type'])) {
+                    if ($formValues['subsystemClassification']['subType']) {
                         //                        $subType = $this->subsystemSubTypeRepository->find((int)$this->formValues['subsystemClassification']['subType']);
+                        $this->formValues = $formValues;
+                        /** @var int $type */
+                        $type = $this->formValues['subsystemClassification']['type'];
+                        /** @var int $subType */
+                        $subType = $this->formValues['subsystemClassification']['subType'];
                         $subsystemTypeSubsystemSubType = $this->subsystemTypeSubsystemSubTypeRepository->findOneBy([
-                            'subsystemType' => (int) $this->formValues['subsystemClassification']['type'],
-                            'subsystemSubType' => (int) $this->formValues['subsystemClassification']['subType'],
+                            'subsystemType' => $type,
+                            'subsystemSubType' => $subType,
                         ]);
 
                         if (!is_null($subsystemTypeSubsystemSubType)) {
@@ -105,17 +119,21 @@ final class SubSystemForm extends AbstractController
                             //                                        : '';
                             //                                }
                             //                            }
-                            $this->formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
+                            $formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
+                            $this->formValues = $formValues;
                         }
                     } else {
                         //                        $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
+                        /** @var int $type */
+                        $type = $formValues['subsystemClassification']['type'];
                         $subsystemTypeSubsystemSubType = $this->subsystemTypeSubsystemSubTypeRepository->findOneBy([
-                            'subsystemType' => (int) $this->formValues['subsystemClassification']['type'],
+                            'subsystemType' => $type,
                             //                            'subsystemSubType' => (int)$this->formValues['subsystemClassification']['subType'],
                         ]);
                         if (!is_null($subsystemTypeSubsystemSubType)) {
                             //                            if ($prov->getMunicipalities()->count()) {
-                            $this->formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
+                            $formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
+                            $this->formValues = $formValues;
                             //                            }
                         }
                     }
@@ -131,15 +149,22 @@ final class SubSystemForm extends AbstractController
     {
         $this->preValue();
 
+        /** @var array<string, array<string, mixed>> $formValues */
+        $formValues = $this->formValues;
+
         if (!$this->ss?->getId()) {
-            if (isset($this->formValues['subsystemClassification'])) {
-                $type = (int) $this->formValues['subsystemClassification']['type'];
-                $subType = (int) $this->formValues['subsystemClassification']['subType'];
+            if (isset($formValues['subsystemClassification'])) {
+                /** @var int $type */
+                $type = $formValues['subsystemClassification']['type'];
+                /** @var int $subType */
+                $subType = $formValues['subsystemClassification']['subType'];
             }
         } else {
             $subsystemTypeSubsystemSubType = $this->ss->getSubsystemTypeSubsystemSubType();
-            $type = (empty($this->formValues['subsystemClassification']['type']) ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : (int) $this->formValues['subsystemClassification']['type']);
-            $subType = (empty($this->formValues['subsystemClassification']['subType']) ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : (int) $this->formValues['subsystemClassification']['subType']);
+            /** @var int $type */
+            $type = (empty($formValues['subsystemClassification']['type']) ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : $formValues['subsystemClassification']['type']);
+            /** @var int $subType */
+            $subType = (empty($formValues['subsystemClassification']['subType']) ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : $formValues['subsystemClassification']['subType']);
         }
 
         assert($this->ss instanceof SubSystem);
@@ -202,21 +227,33 @@ final class SubSystemForm extends AbstractController
             //            }
             if (is_null($this->ss?->getId())) {
                 assert($this->floor instanceof Floor);
-                $subSystem = SubSystem::createAutomatic($subSystem, $this->floor, $this->formValues['name'], $this->reply, $entityManager);
+                /** @var string $name */
+                $name = $this->formValues['name'];
+                $subSystem = SubSystem::createAutomatic($subSystem, $this->floor, $name, $this->reply, $entityManager);
             }
 
+            /** @var array<string, array<string, mixed>> $formValues */
+            $formValues = $this->formValues;
             // tomar los datos del tipo y subtipo y buscar esa combinacion
-            $type = $this->formValues['subsystemClassification']['type'];
-            $subType = $this->formValues['subsystemClassification']['subType'];
+            $type = $formValues['subsystemClassification']['type'];
+            $subType = $formValues['subsystemClassification']['subType'];
             $subsystemTypeSubsystemSubType = $entityManager->getRepository(SubsystemTypeSubsystemSubType::class)->findOneBy([
                 'subsystemType' => $type,
                 'subsystemSubType' => $subType,
             ]);
             if (is_null($subsystemTypeSubsystemSubType)) {
+                $type = $entityManager->getRepository(\App\Entity\SubsystemType::class)->find($type);
+                $subType = $entityManager->getRepository(\App\Entity\SubsystemSubType::class)->find($subType);
+
                 // si la combinacion no existe, crearla nueva
                 $subsystemTypeSubsystemSubType = new SubsystemTypeSubsystemSubType();
-                $subsystemTypeSubsystemSubType->setSubsystemType($type);
-                $subsystemTypeSubsystemSubType->setSubsystemSubType($subType);
+                if (!is_null($type)) {
+                    $subsystemTypeSubsystemSubType->setSubsystemType($type);
+                }
+
+                if (!is_null($subType)) {
+                    $subsystemTypeSubsystemSubType->setSubsystemSubType($subType);
+                }
 
                 $entityManager->persist($subsystemTypeSubsystemSubType);
             }

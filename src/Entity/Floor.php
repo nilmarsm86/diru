@@ -130,7 +130,9 @@ class Floor implements MeasurementDataInterface
         foreach ($subsystems as $subsystem) {
             $callback = [$subsystem, $method];
             assert(is_callable($callback));
-            $data += call_user_func($callback, $this->isOriginal());
+            /** @var int $callbackResult */
+            $callbackResult = call_user_func($callback, $this->isOriginal());
+            $data += $callbackResult;
         }
 
         return $data;

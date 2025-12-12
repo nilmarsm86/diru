@@ -57,7 +57,18 @@ final class SubsystemTypeForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         if (!is_null($this->subsystemSubType)) {
-            $this->formValues['subsystemTypeSubsystemSubTypes'][count($this->formValues['subsystemTypeSubsystemSubTypes']) - 1]['subsystemSubType'] = $this->subsystemSubType;
+            /** @var array<mixed> $subsystemTypeSubsystemSubTypes */
+            $subsystemTypeSubsystemSubTypes = $this->formValues['subsystemTypeSubsystemSubTypes'];
+            $pos = 0;
+            if (count($subsystemTypeSubsystemSubTypes) > 0) {
+                $pos = count($subsystemTypeSubsystemSubTypes) - 1;
+            }
+
+//            $this->formValues['subsystemTypeSubsystemSubTypes'][$pos]['subsystemSubType'] = $this->subsystemSubType;
+            /** @var array<string, array<int, array<string, mixed>>> $formValues */
+            $formValues = $this->formValues;
+            $formValues['subsystemTypeSubsystemSubTypes'][$pos]['subsystemSubType'] = $this->subsystemSubType;
+            $this->formValues = $formValues;
         }
 
         return $this->createForm(SubsystemTypeType::class, $this->sst/* , ['screen' => 'building'] */);

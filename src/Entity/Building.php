@@ -741,7 +741,9 @@ class Building implements MeasurementDataInterface
         foreach ($floors as $floor) {
             $callback = [$floor, $method];
             assert(is_callable($callback));
-            $data += call_user_func($callback, $original);
+            /** @var int $callbackResult */
+            $callbackResult = call_user_func($callback, $original);
+            $data += $callbackResult;
         }
 
         return $data;

@@ -110,7 +110,11 @@ final class LocalForm extends AbstractController
 
             if (is_null($this->l?->getId())) {
                 assert($this->subSystem instanceof SubSystem);
-                $local = Local::createAutomaticLocal($local, $this->subSystem, $this->formValues['area'], $this->formValues['number'], $this->reply, $this->entityManager);
+                /** @var float $area */
+                $area = $this->formValues['area'];
+                /** @var int $number */
+                $number = $this->formValues['number'];
+                $local = Local::createAutomaticLocal($local, $this->subSystem, $area, $number, $this->reply, $this->entityManager);
             }
 
             $localRepository->save($local, true);

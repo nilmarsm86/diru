@@ -74,9 +74,13 @@ final class EnterpriseClientForm extends AbstractController
 
     public function preValue(): void
     {
+        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        $formValues = $this->formValues;
+
         if (0 !== $this->corporateEntity) {
-            $this->formValues['corporateEntity'] = (string) $this->corporateEntity;
+            $formValues['corporateEntity'] = (string) $this->corporateEntity;
             $this->corporateEntity = 0;
+            $this->formValues = $formValues;
         }
 
         if (0 !== $this->representative) {

@@ -86,7 +86,11 @@ final class FloorForm extends AbstractController
 
             if (is_null($this->fl?->getId())) {
                 assert($this->building instanceof Building);
-                $floor = Floor::createAutomatic($floor, $this->building, $this->formValues['name'], false, (int) $this->formValues['position'], $this->reply, $entityManager);
+                /** @var int $position */
+                $position = $this->formValues['position'];
+                /** @var string $name */
+                $name = $this->formValues['name'];
+                $floor = Floor::createAutomatic($floor, $this->building, $name, false, $position , $this->reply, $entityManager);
             }
             $floorRepository->save($floor, true);
 

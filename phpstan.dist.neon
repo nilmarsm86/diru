@@ -1,7 +1,7 @@
 parameters:
     bootstrapFiles:
         - vendor/autoload.php
-    level: 7
+    level: 10
     #checkMissingIterableValueType: true
     #checkGenericClassInNonGenericObjectType: true
     #checkTooWideReturnTypesInProtectedAndPublicMethods: true

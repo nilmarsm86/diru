@@ -123,7 +123,7 @@ final class SubsystemTypeController extends AbstractController
 
             return $this->render('partials/_select_options.html.twig', [
                 'entities' => $entities,
-                'selected' => (count($entities)) ? $entities[0]->getId() : 0,
+                'selected' => (count($entities) > 0) ? $entities[0]->getId() : 0,
                 'empty' => '-Seleccione un tipo-',
             ]);
         }

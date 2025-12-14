@@ -123,12 +123,12 @@ class Estimate
 
     public function getTotalPrice(): float
     {
-        return (float) $this->getPrice() * $this->getQuantity();
+        return (float) $this->getPrice() * (float) $this->getQuantity();
     }
 
     public function getFormatedTotalPrice(): string
     {
-        return number_format((float) $this->getTotalPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
+        return number_format($this->getTotalPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
     }
 
     public function getFormatedPrice(): string

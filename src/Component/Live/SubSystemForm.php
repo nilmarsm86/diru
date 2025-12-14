@@ -152,7 +152,7 @@ final class SubSystemForm extends AbstractController
         /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
 
-        if (!$this->ss?->getId()) {
+        if (null === $this->ss?->getId()) {
             if (isset($formValues['subsystemClassification'])) {
                 /** @var int $type */
                 $type = $formValues['subsystemClassification']['type'];
@@ -162,9 +162,9 @@ final class SubSystemForm extends AbstractController
         } else {
             $subsystemTypeSubsystemSubType = $this->ss->getSubsystemTypeSubsystemSubType();
             /** @var int $type */
-            $type = (empty($formValues['subsystemClassification']['type']) ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : $formValues['subsystemClassification']['type']);
+            $type = ('' === $formValues['subsystemClassification']['type'] ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : $formValues['subsystemClassification']['type']);
             /** @var int $subType */
-            $subType = (empty($formValues['subsystemClassification']['subType']) ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : $formValues['subsystemClassification']['subType']);
+            $subType = ('' === $formValues['subsystemClassification']['subType'] ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : $formValues['subsystemClassification']['subType']);
         }
 
         assert($this->ss instanceof SubSystem);

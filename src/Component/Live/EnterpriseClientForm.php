@@ -74,7 +74,7 @@ final class EnterpriseClientForm extends AbstractController
 
     public function preValue(): void
     {
-        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
 
         if (0 !== $this->corporateEntity) {
@@ -130,7 +130,7 @@ final class EnterpriseClientForm extends AbstractController
                         if ((string) $mun?->getProvince()?->getId() !== $formValues['streetAddress']['address']['province']) {
                             $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
-                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first())
+                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first())
                                     ? (string) $prov->getMunicipalities()->first()->getId()
                                     : '';
                             }
@@ -138,7 +138,7 @@ final class EnterpriseClientForm extends AbstractController
                     } else {
                         $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
-                            if ($prov->getMunicipalities()->count() && $prov->getMunicipalities()->first()) {
+                            if ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first()) {
                                 $formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
                             }
                         }
@@ -159,7 +159,7 @@ final class EnterpriseClientForm extends AbstractController
         /** @var array<string, array<string, array<string, mixed>>> $formValues */
         $formValues = $this->formValues;
 
-        if (!$this->ec?->getId()) {
+        if (null === $this->ec?->getId()) {
             if (isset($formValues['streetAddress']['address'])) {
                 /** @var int $province */
                 $province = $formValues['streetAddress']['address']['province'];
@@ -172,11 +172,11 @@ final class EnterpriseClientForm extends AbstractController
         } else {
             $mun = $this->ec->getMunicipality();
             /** @var int $province */
-            $province = (empty($formValues['streetAddress']['address']['province']) ? $mun?->getProvince()?->getId() : $formValues['streetAddress']['address']['province']);
+            $province = (false === (bool) $formValues['streetAddress']['address']['province'] ? $mun?->getProvince()?->getId() : $formValues['streetAddress']['address']['province']);
             /** @var int $municipality */
-            $municipality = (empty($formValues['streetAddress']['address']['municipality']) ? $mun?->getId() : $formValues['streetAddress']['address']['municipality']);
+            $municipality = (false === (bool) $formValues['streetAddress']['address']['municipality'] ? $mun?->getId() : $formValues['streetAddress']['address']['municipality']);
             /** @var string $street */
-            $street = (empty($formValues['streetAddress']['street']) ? $this->ec->getStreet() : $formValues['streetAddress']['street']);
+            $street = (false === (bool) $formValues['streetAddress']['street'] ? $this->ec->getStreet() : $formValues['streetAddress']['street']);
         }
 
         return $this->createForm(EnterpriseClientType::class, $this->ec, [
@@ -192,7 +192,7 @@ final class EnterpriseClientForm extends AbstractController
     {
         $this->preValue();
 
-        /** @var array<string, array<string, array<string, mixed>>> $formValues */
+        /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
 
         $successMsg = (is_null($this->ec?->getId())) ? 'Se ha agregado el cliente.' : 'Se ha modificado el cliente.'; // TODO: personalizar los mensajes
@@ -202,12 +202,14 @@ final class EnterpriseClientForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var EnterpriseClient $ec */
             $ec = $this->getForm()->getData();
-            $msgEntityPlus = ($ec->getId()) ? 'Se a modificado el cliente empresarial.' : 'Se ha seleccionado el nuevo cliente empresarial.';
+            $msgEntityPlus = (null !== $ec->getId()) ? 'Se a modificado el cliente empresarial.' : 'Se ha seleccionado el nuevo cliente empresarial.';
 
             /** @var string $street */
             $street = $formValues['streetAddress']['street'];
             $ec->setStreet($street);
 
+            /** @var array<string, array<string, array<string, mixed>>> $formValues */
+            $formValues = $this->formValues;
             $municipality = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
             $ec->setMunicipality($municipality);
 

@@ -128,7 +128,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             throw new \LogicException('El identificador del usuario no puede estar vacio');
         }
 
-        return (string) $this->username;
+        return $this->username;
     }
 
     /**
@@ -177,7 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         if ($secure) {
-            if (in_array(Role::ROLE_ADMIN, $this->getRoles())) {
+            if (in_array(Role::ROLE_ADMIN, $this->getRoles(), true)) {
                 throw new \Exception('No pueden ser eliminados los roles del administrador.');
             }
         }
@@ -255,7 +255,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function isSuperAdmin(): bool
     {
-        return in_array(Role::ROLE_SUPER_ADMIN, $this->getRoles());
+        return in_array(Role::ROLE_SUPER_ADMIN, $this->getRoles(), true);
     }
 
     /**
@@ -263,26 +263,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function isAdmin(): bool
     {
-        return in_array(Role::ROLE_ADMIN, $this->getRoles());
+        return in_array(Role::ROLE_ADMIN, $this->getRoles(), true);
     }
 
     public function isDraftsman(): bool
     {
-        return in_array(Role::ROLE_DRAFTSMAN, $this->getRoles());
+        return in_array(Role::ROLE_DRAFTSMAN, $this->getRoles(), true);
     }
 
     public function isClient(): bool
     {
-        return in_array(Role::ROLE_CLIENT, $this->getRoles());
+        return in_array(Role::ROLE_CLIENT, $this->getRoles(), true);
     }
 
     public function isDirector(): bool
     {
-        return in_array(Role::ROLE_DIRECTOR, $this->getRoles());
+        return in_array(Role::ROLE_DIRECTOR, $this->getRoles(), true);
     }
 
     public function isInvestor(): bool
     {
-        return in_array(Role::ROLE_INVESTOR, $this->getRoles());
+        return in_array(Role::ROLE_INVESTOR, $this->getRoles(), true);
     }
 }

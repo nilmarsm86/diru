@@ -4,7 +4,6 @@ namespace App\Entity\Traits;
 
 use App\Entity\Building;
 use App\Entity\Floor;
-use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\SubSystem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -39,14 +38,13 @@ trait MeasurementDataTrait
     //    }
 
     /**
-     * @template T of Floor|SubSystem
+     * @template T of SubSystem|Floor
      *
      * @param Collection<int, T> $items
      */
     private function calculateMaxHeight(Collection $items): float
     {
         $maxHeight = 0;
-        /** @var MeasurementDataInterface $item */
         foreach ($items as $item) {
             if ($item->getMaxHeight() > $maxHeight) {
                 $maxHeight = $item->getMaxHeight();
@@ -67,7 +65,7 @@ trait MeasurementDataTrait
         //            return true;
         //        }
 
-        if (0 == $items->count()) {
+        if (0 === $items->count()) {
             return false;
         }
 
@@ -87,7 +85,7 @@ trait MeasurementDataTrait
 
     public function notWallArea(): bool
     {
-        return 0 == $this->getWallArea();
+        return 0.0 === $this->getWallArea();
     }
 
     //    public function makeReply(EntityManagerInterface $entityManager, Collection $items, object $parent = null): static

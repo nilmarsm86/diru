@@ -73,7 +73,7 @@ class BuildingSeparateConcept implements MoneyInterface
 
     public function getPrice(): int|float
     {
-        return $this->getBuilding()?->getPrice() * $this->getPercent() / 100;
+        return (float) $this->getBuilding()?->getPrice() * (float) $this->getPercent() / 100;
     }
 
     public function getCurrency(): ?string

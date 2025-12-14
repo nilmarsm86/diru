@@ -92,7 +92,7 @@ final class LandController extends AbstractController
     #[Route('/unassigned-free/{id}/{building}/{reply}', name: 'app_land_unassigned-free', methods: ['GET'])]
     public function unassignedOrFree(Land $land, LandRepository $landRepository, Building $building, bool $reply = false): Response
     {
-        $land->setIsBlocked(!$land->isBlocked());
+        $land->setIsBlocked(!(bool) $land->isBlocked());
         $landRepository->save($land, true);
 
         $this->addFlash('success', 'Se ha transformado el área.');

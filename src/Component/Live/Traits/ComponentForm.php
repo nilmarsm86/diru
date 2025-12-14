@@ -37,13 +37,15 @@ trait ComponentForm
         $this->resetForm();
     }
 
-    protected function getClassName(string $classname): false|int|string
+    private function getClassName(string $classname): string
     {
-        if ($pos = strrpos($classname, '\\')) {
+        $pos = strrpos($classname, '\\');
+
+        if (false !== $pos) {
             return substr($classname, $pos + 1);
         }
 
-        return $pos;
+        return $classname;
     }
 
     private function getSuccessTemplate(object $entity, string $message, string $type = 'text-bg-success'): string

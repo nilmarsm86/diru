@@ -144,9 +144,9 @@ class Floor implements MeasurementDataInterface
             return 1;
         }
 
-        $isNew = $this->getBuilding()->isNew();
-        $landArea = $this->getBuilding()->getLandArea();
-        $occupiedArea = $this->getBuilding()->getOccupiedArea();
+        $isNew = (bool) $this->getBuilding()->isNew();
+        $landArea = (float) $this->getBuilding()->getLandArea();
+        $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
         if ($this->getTotalArea() > $occupiedArea) {
             return $landArea - $this->getTotalArea();
         } else {
@@ -162,7 +162,7 @@ class Floor implements MeasurementDataInterface
         //            return $this->getBuilding()->getOccupiedArea() - $this->getTotalArea();
         //        }
 
-        if ($this->getBuilding()?->getLand()?->isBlocked()) {
+        if (true === $this->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
@@ -183,7 +183,7 @@ class Floor implements MeasurementDataInterface
 
     public function getFreeArea(?bool $original = null): ?float
     {
-        if (!$this->getBuilding()?->getLand()?->isBlocked()) {
+        if (false === $this->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
         }
 
@@ -413,7 +413,7 @@ class Floor implements MeasurementDataInterface
             $floor->setGroundFloor($isGroundFloor);
         }
         $building->addFloor($floor);
-        $floor->inNewBuilding() ? $floor->recent() : $floor->existingWithoutReplicating();
+        true === $floor->inNewBuilding() ? $floor->recent() : $floor->existingWithoutReplicating();
         if ($reply) {
             $floor->setHasReply(false);
             $floor->recent();
@@ -423,7 +423,7 @@ class Floor implements MeasurementDataInterface
             //            }else{
             //                $floor->existingWithoutReplicating();
             //            }
-            ($floor->inNewBuilding()) ? $floor->recent() : $floor->existingWithoutReplicating();
+            (true === $floor->inNewBuilding()) ? $floor->recent() : $floor->existingWithoutReplicating();
         }
         $floor->createAutomaticSubsystem($reply, $entityManager);
 
@@ -456,10 +456,11 @@ class Floor implements MeasurementDataInterface
 
     public function hasErrors(): bool
     {
+        $share = (true === $this->notWallArea()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
         if ($this->isOriginal()) {
-            return (true == $this->notWallArea()) || (false == $this->hasOriginalLocals()) || (false == $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
+            return $share || false === $this->hasOriginalLocals();
         } else {
-            return (true == $this->notWallArea()) || (false == $this->hasReplyLocals()) || (false == $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
+            return $share || false === $this->hasReplyLocals();
         }
     }
 
@@ -548,7 +549,7 @@ class Floor implements MeasurementDataInterface
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
         /** @var SubSystem $subsystem */
         foreach ($subsystems as $subsystem) {
-            $total += $subsystem->getAmountMeters();
+            $total += (float) $subsystem->getAmountMeters();
         }
 
         return $total;

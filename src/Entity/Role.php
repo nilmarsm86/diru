@@ -46,7 +46,7 @@ class Role
      */
     public function capitalizeName(?string $role = null): string
     {
-        return match ($role ?: $this->getName()) {
+        return match ($role ?? $this->getName()) {
             static::ROLE_CLIENT => 'Rol cliente',
             static::ROLE_DIRECTOR => 'Rol director',
             static::ROLE_INVESTOR => 'Rol inversionista',
@@ -64,7 +64,7 @@ class Role
 
     public function saveName(?string $role = null): string
     {
-        return match ($role ?: $this->getName()) {
+        return match ($role ?? $this->getName()) {
             static::ROLE_CLIENT => 'client',
             static::ROLE_DIRECTOR => 'director',
             static::ROLE_INVESTOR => 'investor',

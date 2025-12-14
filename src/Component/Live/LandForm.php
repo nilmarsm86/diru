@@ -80,7 +80,7 @@ final class LandForm extends AbstractController
             // cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
                 $showFloorMessage = true;
-                if (empty($this->formValues['floor']) or 0 == $this->formValues['occupiedArea']) {
+                if (false === (bool) $this->formValues['floor'] || 0 === $this->formValues['occupiedArea']) {
                     $land->setFloor(1);
                     $this->building?->setIsNew(true);
                 } else {

@@ -114,11 +114,11 @@ final class LocalController extends AbstractController
     public function wall(EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $area = 0;
-        if ($subSystem->getFloor()?->hasFreeArea()) {
+        if (true === $subSystem->getFloor()?->hasFreeArea()) {
             $area = (float) $subSystem->getFloor()->getFreeArea();
         }
 
-        if ($subSystem->getFloor()?->hasUnassignedArea()) {
+        if (true === $subSystem->getFloor()?->hasUnassignedArea()) {
             $area = (float) $subSystem->getFloor()->getUnassignedArea();
         }
 

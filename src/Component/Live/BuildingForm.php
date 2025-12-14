@@ -82,11 +82,11 @@ final class BuildingForm extends AbstractController
             //            $this->project = 0;
         }
 
-        if (0 != $this->urbanizationEstimateTotalPrice) {
+        if (0.0 !== $this->urbanizationEstimateTotalPrice) {
             $this->formValues['estimatedValueUrbanization'] = (float) $this->urbanizationEstimateTotalPrice / 100;
         }
 
-        if (0 != $this->ptpEstimateTotalPrice) {
+        if (0.0 !== $this->ptpEstimateTotalPrice) {
             $this->formValues['projectPriceTechnicalPreparation'] = (float) $this->ptpEstimateTotalPrice / 100;
         }
     }
@@ -122,22 +122,22 @@ final class BuildingForm extends AbstractController
             /** @var Building $building */
             $building = $this->getForm()->getData();
 
-            if (!empty($this->formValues['constructor'])) {
+            if (false !== (bool)$this->formValues['constructor']) {
                 $constructor = $constructorRepository->find($this->formValues['constructor']);
-                if ($constructor) {
+                if (null !== $constructor) {
                     $building->addConstructor($constructor);
                 }
             }
 
-            if (0 != $this->project) {
+            if (0 !== $this->project) {
                 $project = $projectRepository->find((int) $this->project);
                 assert($project instanceof Project);
                 $building->setProject($project);
             }
 
-            if (!empty($this->formValues['draftsman'])) {
+            if (false !== (bool)$this->formValues['draftsman']) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
-                if ($draftsman) {
+                if (null !== $draftsman) {
                     $building->addDraftsman($draftsman);
                 }
             }

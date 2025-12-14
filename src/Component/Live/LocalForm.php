@@ -72,7 +72,7 @@ final class LocalForm extends AbstractController
 
     public function setDefaultConstructiveAction(): void
     {
-        if (is_null($this->l?->getLocalConstructiveAction()) && (true === $this->reply || $this->l?->inNewBuilding()) && is_null($this->l?->getOriginal())) {
+        if (is_null($this->l?->getLocalConstructiveAction()) && (true === $this->reply || true === $this->l?->inNewBuilding()) && is_null($this->l?->getOriginal())) {
             $constructiveAction = $this->entityManager->getRepository(ConstructiveAction::class)->findOneBy(['name' => 'Obra nueva']);
 
             $localConstructiveAction = new LocalConstructiveAction();

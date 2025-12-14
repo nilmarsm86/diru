@@ -83,7 +83,7 @@ class BuildingType extends AbstractType
         $activeConstructor = null;
 
         // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
-        if (!is_null($building) && $building->getId()) {
+        if (null !== $building && $building->getId() === true) {
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
                 'class' => Draftsman::class,

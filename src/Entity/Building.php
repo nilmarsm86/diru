@@ -317,12 +317,12 @@ class Building implements MeasurementDataInterface
 
     public function getTotalEstimatedValue(): int|float
     {
-        return $this->getPrice() + $this->getEstimatedValueEquipment() + $this->getEstimatedValueOther() + $this->projectPriceTechnicalPreparation;
+        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->projectPriceTechnicalPreparation;
     }
 
     public function getTotalApprovedValue(): ?int
     {
-        return $this->getApprovedValueConstruction() + $this->getApprovedValueEquipment() + $this->getApprovedValueOther();
+        return (int) $this->getApprovedValueConstruction() + (int) $this->getApprovedValueEquipment() + (int) $this->getApprovedValueOther();
     }
 
     // debo convertir el dinero en centavos, valores estimados y valores aprobados
@@ -716,7 +716,7 @@ class Building implements MeasurementDataInterface
 
     public function getMaxArea(): ?float
     {
-        return ($this->isNew) ? $this->getLandArea() : $this->getOccupiedArea();
+        return (true === $this->isNew) ? $this->getLandArea() : $this->getOccupiedArea();
     }
 
     public function shortName(): ?string
@@ -731,8 +731,8 @@ class Building implements MeasurementDataInterface
     public function getMeasurementData(string $method, ?bool $original = null): int|float
     {
         if (is_null($original)) {
-            $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
-            $original = !$this->hasReply();
+            $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+            $original = !(bool) $this->hasReply();
         } else {
             $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
         }
@@ -772,7 +772,7 @@ class Building implements MeasurementDataInterface
     public function getMaxHeight(?bool $original = null): float
     {
         if (is_null($original)) {
-            $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+            $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
         } else {
             $floors = ($original) ? $this->getOriginalFloors() : $this->getReplyFloors();
         }
@@ -796,7 +796,7 @@ class Building implements MeasurementDataInterface
 
     private function getFloorAmount(): int
     {
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         return $floors->count();
     }
@@ -809,21 +809,21 @@ class Building implements MeasurementDataInterface
 
     public function getCus(?bool $original = null): float|int
     {
-        return $this->getTotalArea($original) / $this->getLandArea();
+        return $this->getTotalArea($original) / (float) $this->getLandArea();
     }
 
     public function getCos(?bool $original = null): string
     {
-        return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / $this->getLand()?->getLandArea(), 2);
+        return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / (float) $this->getLand()?->getLandArea(), 2);
     }
 
     public function canReply(): bool
     {
-        if ($this->isNew()) {
+        if (true === $this->isNew()) {
             return false;
         }
 
-        return !$this->notWallArea() && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied() && !$this->hasReply();
+        return !$this->notWallArea() && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied() && false === $this->hasReply();
     }
 
     public function reply(EntityManagerInterface $entityManager, ?Building $parent = null): static
@@ -858,7 +858,7 @@ class Building implements MeasurementDataInterface
         $regular = 0;
         $good = 0;
 
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
             //            list($goodState, $regularState, $badState, $crititalState, $undefinedState) = $floor->getAmountTechnicalStatus(!$this->hasReply());
@@ -896,7 +896,7 @@ class Building implements MeasurementDataInterface
         $regular = 0;
         $good = 0;
 
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         foreach ($floors as $floor) {
             $buildingAmountMeterTechnicalStatus = $floor->getAmountMeterTechnicalStatus();
@@ -952,7 +952,7 @@ class Building implements MeasurementDataInterface
 
     public function hasErrors(?bool $original = null): bool
     {
-        if ($original) {
+        if (true === $original) {
             foreach ($this->getOriginalFloors() as $floor) {
                 if ($floor->hasErrors()) {
                     return true;
@@ -966,7 +966,7 @@ class Building implements MeasurementDataInterface
             }
         }
 
-        return $this->notWallArea() || (false == $this->hasOriginalLocals()) || (false == $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original));
+        return $this->notWallArea() || (false === $this->hasOriginalLocals()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original));
     }
 
     //    public function getUsefulArea(?bool $original = null): int
@@ -1080,11 +1080,11 @@ class Building implements MeasurementDataInterface
     public function getAmountMeters(): ?float
     {
         $total = 0;
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {
-            $total += $floor->getAmountMeters();
+            $total += (float) $floor->getAmountMeters();
         }
 
         return $total;
@@ -1092,7 +1092,7 @@ class Building implements MeasurementDataInterface
 
     public function getFloorsAmount(): int
     {
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         return $floors->count();
     }
@@ -1100,7 +1100,7 @@ class Building implements MeasurementDataInterface
     public function getSubsystemsAmount(): int
     {
         $subsystems = 0;
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {
@@ -1196,7 +1196,7 @@ class Building implements MeasurementDataInterface
             return 0;
         }
 
-        $floors = (!$this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         $price = 0;
         /** @var Floor $floor */

@@ -20,7 +20,8 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             if (is_null($buildingEntity)) {
                 $buildingEntity = new Building();
                 $buildingEntity->setName($building);
-                if ($constructor = $this->findConstructor($manager)) {
+                $constructor = $this->findConstructor($manager);
+                if (null !== $constructor) {
                     $buildingEntity->addConstructor($constructor);
                 }
                 $buildingEntity->setApprovedValueConstruction(1000000);
@@ -33,7 +34,8 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 $buildingEntity->setPopulation(1);
 
                 if ('Obra1' === $building) {
-                    if ($draftsman = $this->findDraftsman($manager, 'Draftsman')) {
+                    $draftsman = $this->findDraftsman($manager, 'Draftsman');
+                    if (null !== $draftsman) {
                         $buildingEntity->addDraftsman($draftsman);
                     }
                 }

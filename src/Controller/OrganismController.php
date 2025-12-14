@@ -85,7 +85,7 @@ final class OrganismController extends AbstractController
     {
         $successMsg = 'Se ha eliminado el organismo.';
         $corporateEntities = $corporateEntityRepository->findBy(['organism' => $organism]);
-        if (count($corporateEntities)) {
+        if (count($corporateEntities) > 0) {
             $template = [
                 'id' => 'delete_organism_'.$organism->getId(),
                 'type' => 'text-bg-danger',

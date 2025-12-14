@@ -34,48 +34,36 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 //                $projectEntity->setHasOccupiedArea(false);
 
                 if ('Proyect1' === $project) {
-                    if ($investment = $this->findInvestment($manager, 'Inversion1')) {
-                        $investment->setName($investment->getName().' '.$project);
-                        $projectEntity->setInvestment($investment);
-                        $projectEntity->setClient($this->findClient($manager, true));
-                        $projectEntity->setContract($this->findContract($manager, 'abc123'));
-
-                        // esto debe ser automatizado
-                        //                    $draftsmanProject = new DraftsmanProject();
-                        //                    $draftsmanProject->setProject($projectEntity);
-                        //                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
-                        //                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
-
-                        //                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
-                        if ($building = $this->findBuilding($manager, 'Obra1')) {
-                            $projectEntity->addBuilding($building);
-                        }
-                    }
+                    $this->addInvestment($manager, $project, $projectEntity, 'Inversion1', true, true, 'Obra1');
                 }
 
                 if ('Proyect2' === $project) {
-                    if ($investment = $this->findInvestment($manager, 'Inversion2')) {
-                        $investment->setName($investment->getName().' '.$project);
-                        $projectEntity->setInvestment($investment);
-                        $projectEntity->setClient($this->findClient($manager, false));
-
-                        if ($building = $this->findBuilding($manager, 'Obra2')) {
-                            $projectEntity->addBuilding($building);
-                        }
-                    }
+                    //                    if ($investment = $this->findInvestment($manager, 'Inversion2')) {
+                    //                        $investment->setName($investment->getName().' '.$project);
+                    //                        $projectEntity->setInvestment($investment);
+                    //                        $projectEntity->setClient($this->findClient($manager, false));
+                    //
+                    //                        $building = $this->findBuilding($manager, 'Obra2');
+                    //                        if (null !== $building) {
+                    //                            $projectEntity->addBuilding($building);
+                    //                        }
+                    //                    }
+                    $this->addInvestment($manager, $project, $projectEntity, 'Inversion2', false, false, 'Obra2');
                 }
 
                 if ('Proyect3' === $project) {
-                    if ($investment = $this->findInvestment($manager, 'Inversion3')) {
-                        $investment->setName($investment->getName().' '.$project);
-                        $projectEntity->setInvestment($investment);
-                        $projectEntity->setClient($this->findClient($manager, true));
-                        $projectEntity->setContract($this->findContract($manager, 'qaz753'));
-
-                        if ($building = $this->findBuilding($manager, 'Obra3')) {
-                            $projectEntity->addBuilding($building);
-                        }
-                    }
+                    //                    if ($investment = $this->findInvestment($manager, 'Inversion3')) {
+                    //                        $investment->setName($investment->getName().' '.$project);
+                    //                        $projectEntity->setInvestment($investment);
+                    //                        $projectEntity->setClient($this->findClient($manager, true));
+                    //                        $projectEntity->setContract($this->findContract($manager, 'qaz753'));
+                    //
+                    //                        $building = $this->findBuilding($manager, 'Obra3');
+                    //                        if (null !== $building) {
+                    //                            $projectEntity->addBuilding($building);
+                    //                        }
+                    //                    }
+                    $this->addInvestment($manager, $project, $projectEntity, 'Inversion3', true, true, 'Obra3');
                 }
 
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
@@ -136,5 +124,33 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
     public static function getGroups(): array
     {
         return ['default'];
+    }
+
+    public function addInvestment(ObjectManager $manager, string $project, Project $projectEntity, string $investmentName, bool $contract, bool $clientEnterprise, string $buildName): void
+    {
+        $investment = $this->findInvestment($manager, $investmentName);
+        if (null !== $investment) {
+            $investment->setName($investment->getName().' '.$project);
+            $projectEntity->setInvestment($investment);
+            $projectEntity->setClient($this->findClient($manager, $clientEnterprise));
+            if (true === $contract) {
+                $contract = $this->findContract($manager, 'abc123');
+                if (null === $contract) {
+                    $projectEntity->setContract($contract);
+                }
+            }
+
+            // esto debe ser automatizado
+            //                    $draftsmanProject = new DraftsmanProject();
+            //                    $draftsmanProject->setProject($projectEntity);
+            //                    $draftsmanProject->setDraftsman($this->findDraftsman($manager, 'Draftsman'));
+            //                    $draftsmanProject->setStartedAt(new \DateTimeImmutable());
+
+            //                    $projectEntity->addDraftsman($this->findDraftsman($manager, 'Draftsman'));
+            $building = $this->findBuilding($manager, $buildName);
+            if (null !== $building) {
+                $projectEntity->addBuilding($building);
+            }
+        }
     }
 }

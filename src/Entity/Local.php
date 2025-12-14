@@ -108,12 +108,12 @@ class Local implements MoneyInterface
 
     public function validHeightInEmptyArea(): bool
     {
-        return '0' == $this->enumType->value && $this->getHeight() > 0;
+        return '0' === $this->enumType->value && $this->getHeight() > 0;
     }
 
     public function validHeightInOtherArea(): bool
     {
-        return '0' != $this->enumType->value && '' != $this->enumType->value && 0 == $this->getHeight();
+        return '0' !== $this->enumType->value && '' !== $this->enumType->value && 0.0 === $this->getHeight();
     }
 
     public function getId(): ?int
@@ -198,19 +198,19 @@ class Local implements MoneyInterface
         $this->type = $this->getType()->value;
         //        $this->technicalStatus = $this->getTechnicalStatus()->value;
 
-        if (LocalType::WallArea == $this->getType() && is_null($this->getId())) {
-            if (!$this->getSubSystem()?->hasWalls()) {
+        if (LocalType::WallArea === $this->getType() && null === $this->getId()) {
+            if (false === $this->getSubSystem()?->hasWalls()) {
                 $this->setName('Área de muro');
             } else {
-                $this->setName('Área de muro '.$this->getSubSystem()->getMaxLocalNumber() + 1);
+                $this->setName('Área de muro '.(int) $this->getSubSystem()?->getMaxLocalNumber() + 1);
             }
 
             if (is_null($this->getId())) {
-                $this->setNumber($this->getSubSystem()?->getMaxLocalNumber() + 1);
+                $this->setNumber((int) $this->getSubSystem()?->getMaxLocalNumber() + 1);
             }
         }
 
-        if (LocalType::EmptyArea == $this->getType() /* || $this->getType() == LocalType::WallArea */) {
+        if (LocalType::EmptyArea === $this->getType() /* || $this->getType() == LocalType::WallArea */) {
             $this->setHeight(0);
         }
 
@@ -235,7 +235,7 @@ class Local implements MoneyInterface
 
     public function getVolume(): float|int
     {
-        return $this->getArea() * $this->getHeight();
+        return (float) $this->getArea() * (float) $this->getHeight();
     }
 
     public static function createAutomaticWall(SubSystem $subSystem, float $area, int $number = 0, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
@@ -258,7 +258,7 @@ class Local implements MoneyInterface
 
     public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, int $number, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
-        $technicalStatus = ($subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
+        $technicalStatus = (true === $subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 
         $local = self::createAutomatic($local, $subSystem, LocalType::Local, $technicalStatus, 'Local', $area, 2.40, $number, $entityManager);
 
@@ -281,11 +281,12 @@ class Local implements MoneyInterface
                 $local->recent();
             }
         } else {
-            if ($subSystem->inNewBuilding()) {
-                $subSystem->recent();
-            } else {
-                $subSystem->existingWithoutReplicating();
-            }
+            //            if (true === $subSystem->inNewBuilding()) {
+            //                $subSystem->recent();
+            //            } else {
+            //                $subSystem->existingWithoutReplicating();
+            //            }
+            (true === $subSystem->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         }
 
         return $local;
@@ -305,7 +306,7 @@ class Local implements MoneyInterface
 
         $subSystem->addLocal($local);
         // TODO: esto del estado y el sistema constructivo ver si realmente necesito repetirlo
-        if ($subSystem->inNewBuilding()) {
+        if (true === $subSystem->inNewBuilding()) {
             $local->recent();
             if (!is_null($entityManager) && is_null($local->getLocalConstructiveAction())) {
                 self::setDefaultConstructiveAction($entityManager, $local);
@@ -541,7 +542,7 @@ class Local implements MoneyInterface
 
     public function showConstructiveActionInList(bool $reply): bool
     {
-        return $reply || $this->inNewBuilding();
+        return $reply || (true === $this->inNewBuilding());
     }
 
     public function hasBackgroundColorOfChange(): bool
@@ -551,12 +552,12 @@ class Local implements MoneyInterface
 
     public function hasRemoveConstructiveAction(): bool
     {
-        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::REMOVE_ACTIONS);
+        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::REMOVE_ACTIONS, true);
     }
 
     public function hasStructuralChange(): bool
     {
-        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::STRUCTURAL_CHANGE_ACTIONS);
+        return in_array($this->getConstructiveAction()?->getName(), ConstructiveAction::STRUCTURAL_CHANGE_ACTIONS, true);
     }
 
     public function getConstructiveActionAmount(): float
@@ -565,6 +566,6 @@ class Local implements MoneyInterface
             return 0;
         }
 
-        return $this->getLocalConstructiveAction()?->getPrice() * $this->getArea();
+        return (int) $this->getLocalConstructiveAction()?->getPrice() * (float) $this->getArea();
     }
 }

@@ -86,13 +86,13 @@ final class ProjectForm extends AbstractController
             //                $this->formValues['individualClient'] = (string)$this->individualClient;
             //                $this->individualClient = 0;
             //            }
-            if (!empty($this->formValues['individualClient'])) {
+            if ('' !== $this->formValues['individualClient']) {
                 /** @var int $individualClient */
                 $individualClient = $this->formValues['individualClient'];
                 $this->individualClient = $individualClient;
             }
         } else {
-            if (!empty($this->formValues['individualClient'])) {
+            if ('' !== $this->formValues['individualClient']) {
                 /** @var int $individualClient */
                 $individualClient = $this->formValues['individualClient'];
                 if ((int) $this->individualClient > $individualClient) {
@@ -108,13 +108,13 @@ final class ProjectForm extends AbstractController
         }
 
         if (!is_null($this->pro?->getId())) {
-            if (!empty($this->formValues['enterpriseClient'])) {
+            if ('' !== $this->formValues['enterpriseClient']) {
                 /** @var int $enterpriseClient */
                 $enterpriseClient = $this->formValues['enterpriseClient'];
                 $this->enterpriseClient = $enterpriseClient;
             }
         } else {
-            if (!empty($this->formValues['enterpriseClient'])) {
+            if ('' !== $this->formValues['enterpriseClient']) {
                 /** @var int $enterpriseClient */
                 $enterpriseClient = $this->formValues['enterpriseClient'];
                 if ((int) $this->enterpriseClient > $enterpriseClient) {
@@ -126,7 +126,7 @@ final class ProjectForm extends AbstractController
                 }
             }
 
-            if (0 !== $this->enterpriseClient && empty($this->formValues['enterpriseClient'])) {
+            if (0 !== $this->enterpriseClient && '' === $this->formValues['enterpriseClient']) {
                 $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
             }
         }
@@ -181,7 +181,7 @@ final class ProjectForm extends AbstractController
             $client = $clientRepository->find($client);
             $project->setClient($client);
 
-            if (!empty($this->formValues['draftsman'])) {
+            if ('' !== $this->formValues['draftsman']) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
 
                 if (is_null($project->getId())) {
@@ -194,17 +194,21 @@ final class ProjectForm extends AbstractController
                 }
             }
 
-            /** @var array<string, array<int, array<string, mixed>>> $formValues */
+            /** @var array<string, array<string, mixed>|null> $formValues */
             $formValues = $this->formValues;
-            if (is_null($this->pro?->getId())) {
-                if ($formValues['contract'] && empty($formValues['contract']['code'])) {
+            if ($this->pro?->getId() === null) {
+                /** @var array<string, mixed>|null $contract */
+                $contract = $formValues['contract'] ?? null;
+                if ($contract !== null && ($contract['code'] ?? '') === '') {
                     $formValues['contract'] = null;
                     $project->setContract(null);
                 }
 
                 $this->formValues = $formValues;
             } else {
-                if ($formValues['contract'] && empty($formValues['contract']['code'])) {
+                /** @var array<string, mixed>|null $contract */
+                $contract = $formValues['contract'] ?? null;
+                if (is_array($contract) && ($contract['code'] ?? '') === '') {
                     $formValues['contract']['code'] = $this->pro->getContract()?->getCode();
                     $formValues['contract']['year'] = $this->pro->getContract()?->getYear();
                     $project->setContract($this->contract);
@@ -218,7 +222,7 @@ final class ProjectForm extends AbstractController
                 foreach ($data as $key => $building) {
                     if (isset($fv['buildings'][$key]['draftsman'])) {
                         $draftsman = $draftsmanRepository->find($fv['buildings'][$key]['draftsman']);
-                        if ($draftsman) {
+                        if (null !== $draftsman) {
                             $building->addDraftsman($draftsman);
                         }
                     }
@@ -230,12 +234,13 @@ final class ProjectForm extends AbstractController
             // fix constructor
             /** @var Building[] $data */
             $data = $this->getForm()->get('buildings')->getData();
+
             /** @var array<string, array<string, array<string, mixed>>> $fv */
             $fv = $this->formValues;
             foreach ($data as $key => $building) {
                 if (isset($fv['buildings'][$key]['constructor'])) {
                     $constructor = $constructorRepository->find($fv['buildings'][$key]['constructor']);
-                    if ($constructor) {
+                    if (null !== $constructor) {
                         $building->addConstructor($constructor);
                     }
                 }

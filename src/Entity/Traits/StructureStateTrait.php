@@ -236,6 +236,6 @@ trait StructureStateTrait
 
     public function isNewStructure(): bool
     {
-        return $this->inNewBuilding() || $this->isNewInReply();
+        return (bool) $this->inNewBuilding() || $this->isNewInReply();
     }
 }

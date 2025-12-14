@@ -20,7 +20,7 @@ final class Refresh
     {
         foreach ($this->queryNames as $q) {
             $currentRequest = $this->requestStack->getCurrentRequest();
-            if ($currentRequest?->query->has($q) && strlen((string) $currentRequest->query->get($q)) > 0) {
+            if (true === $currentRequest?->query->has($q) && strlen((string) $currentRequest->query->get($q)) > 0) {
                 return true;
             }
         }

@@ -168,7 +168,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $inactiveUser = $manager->getRepository(User::class)->findOneBy(['username' => 'inactive']);
         if (is_null($inactiveUser)) {
             $role = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
-            if ($role) {
+            if (null !== $role) {
                 $user = new User('Inactive', 'User', 'inactive', 'inactive', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'inactive@diru.com');
                 $this->register($this->userPasswordHasher, $user, $role);
                 $user->addRole($role);

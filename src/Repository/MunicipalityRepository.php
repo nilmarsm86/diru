@@ -56,7 +56,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'm.name LIKE :filter ';
             if ($place) {
                 $predicate .= 'OR p.name LIKE :filter ';

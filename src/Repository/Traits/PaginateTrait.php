@@ -8,6 +8,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 trait PaginateTrait
 {
     /**
+     * @param Query<mixed> $dql
+     *
      * @return Paginator<mixed>
      */
     private function paginate(Query $dql, int $page, int $limit): Paginator

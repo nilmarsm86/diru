@@ -42,7 +42,7 @@ class AddressType extends AbstractType
 
         $provinceAttr = [
             'class' => Province::class,
-            'placeholder' => $options['province'] ? null : '-Seleccione-',
+            'placeholder' => (bool) $options['province'] ? null : '-Seleccione-',
             'label' => 'Provincia:',
             'mapped' => false,
             'constraints' => $this->getProvinceConstraints($options),
@@ -63,7 +63,7 @@ class AddressType extends AbstractType
 
         $municipalityAttr = [
             'class' => Municipality::class,
-            'placeholder' => $options['municipality'] ? null : '-Seleccione una provincia-',
+            'placeholder' => (bool) $options['municipality'] ? null : '-Seleccione una provincia-',
             'label' => 'Municipio:',
             'constraints' => $this->getMunicipalityConstraints($options),
             'data' => $municipality,

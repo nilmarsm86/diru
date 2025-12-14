@@ -123,7 +123,7 @@ final class BuildingForm extends AbstractController
             $building = $this->getForm()->getData();
 
             if (!empty($this->formValues['constructor'])) {
-                $constructor = $constructorRepository->find((int) $this->formValues['constructor']);
+                $constructor = $constructorRepository->find($this->formValues['constructor']);
                 if ($constructor) {
                     $building->addConstructor($constructor);
                 }

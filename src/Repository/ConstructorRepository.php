@@ -50,7 +50,7 @@ class ConstructorRepository extends ServiceEntityRepository implements FilterInt
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'c.name LIKE :filter ';
             $predicate .= 'OR c.code LIKE :filter ';
             $predicate .= 'OR c.country LIKE :filter ';

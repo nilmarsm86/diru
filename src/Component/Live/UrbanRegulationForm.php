@@ -81,9 +81,7 @@ final class UrbanRegulationForm extends AbstractController
             $ur = $this->getForm()->getData();
 
             if (!empty($this->formValues['type'])) {
-                /** @var int $type */
-                $type = $this->formValues['type'];
-                $type = $urbanRegulationTypeRepository->find($type);
+                $type = $urbanRegulationTypeRepository->find($this->formValues['type']);
                 $ur->setType($type);
             }
 

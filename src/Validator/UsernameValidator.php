@@ -19,18 +19,18 @@ final class UsernameValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Username::class);
         }
 
-        if ('' == $value) {
+        if ('' === $value) {
             return;
         }
 
         // strange characters
-        if (!preg_match('/^[a-zA-Z0-9_\-.]+$/', $value)) {
+        if (false === preg_match('/^[a-zA-Z0-9_\-.]+$/', $value)) {
             $this->context->buildViolation('El nombre de usuario debe contener solo caracteres válidos.')
                 ->addViolation();
         }
 
         // uppercase characters
-        if (preg_match('/[A-Z]/', $value)) {
+        if (false !== preg_match('/[A-Z]/', $value)) {
             $this->context->buildViolation('El nombre de usuario debe contener solo minúsculas.')
                 ->addViolation();
         }

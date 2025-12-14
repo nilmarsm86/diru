@@ -98,10 +98,13 @@ class LocalType extends AbstractType
         $subSystem = $options['subSystem'];
         if ($subSystem instanceof SubSystem) {
             $floor = $subSystem->getFloor();
+            /** @var float $landArea */
             $landArea = $floor?->getBuilding()?->getMaxArea();
-            if ($options['reply']) {
+            if ((bool) $options['reply']) {
+                /** @var float $landArea */
                 $landArea = $floor?->getBuilding()?->getLandArea();
             }
+            /** @var float $totalLocalsArea */
             $totalLocalsArea = $floor?->getTotalArea();
         }
 
@@ -115,7 +118,7 @@ class LocalType extends AbstractType
             --$leftArea;
         }
 
-        if ($local->getId()) {
+        if (null !== $local->getId()) {
             if ($local->getArea() > $leftArea) {
                 $leftArea += $local->getArea();
             }
@@ -148,11 +151,11 @@ class LocalType extends AbstractType
         $subSystem = $local->getSubSystem();
         $floor = $subSystem?->getFloor();
 
-        if (!$floor?->isOriginal()
-            || !$subSystem->isOriginal()
-            || !$local->isOriginal()
-            || $local->inNewBuilding()
-            || ($local->getId() && $local->hasReply())
+        if (false === $floor?->isOriginal()
+            || false === $subSystem?->isOriginal()
+            || false === $local->isOriginal()
+            || true === $local->inNewBuilding()
+            || (true === $local->getId() && true === $local->hasReply())
         ) {
             $form->add('localConstructiveAction', LocalConstructiveActionType::class, [
                 'required' => true,

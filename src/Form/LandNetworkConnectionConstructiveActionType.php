@@ -55,9 +55,9 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         $form = $event->getForm();
 
         $currency = 'CUP';
-        if ($landNetworkConnectionConstructiveAction) {
+        if (null !== $landNetworkConnectionConstructiveAction) {
             $landNetworkConnection = $landNetworkConnectionConstructiveAction->getLandNetworkConnection();
-            if ($landNetworkConnection) {
+            if (null !== $landNetworkConnection) {
                 $building = $landNetworkConnection->getBuilding();
                 $project = $building?->getProject();
                 $currency = $project?->getCurrency();

@@ -38,7 +38,7 @@ class SubSystemClassificationType extends AbstractType
         $builder = new DynamicFormBuilder($builder);
 
         $classification = [];
-        if (0 != $options['type']) {
+        if (0 !== $options['type']) {
             $type = $this->subsystemTypeRepository->find($options['type']);
             $classification['data'] = $type?->getClassification();
         }
@@ -49,7 +49,7 @@ class SubSystemClassificationType extends AbstractType
         ] + $classification);
 
         $builder->addDependent('type', 'classification', function (DependentField $field, ?SubsystemFunctionalClassification $subsystemFunctionalClassification) use ($options) {
-            $isValid = (!is_null($subsystemFunctionalClassification) && ('' != $subsystemFunctionalClassification->value));
+            $isValid = (!is_null($subsystemFunctionalClassification) && ('' !== $subsystemFunctionalClassification->value));
             $typeAttr = [
                 'class' => SubsystemType::class,
                 'placeholder' => $isValid ? '-Seleccione-' : '-Seleccione una clasificación-',
@@ -60,7 +60,7 @@ class SubSystemClassificationType extends AbstractType
                 'attr' => ['disabled' => !$isValid],
             ];
 
-            if (0 != $options['type']) {
+            if (0 !== $options['type']) {
                 $type = $this->subsystemTypeRepository->find($options['type']);
                 $typeAttr['data'] = $type;
             }

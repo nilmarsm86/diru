@@ -20,7 +20,7 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
         $user = $this->userRepository->findOneBy(['username' => $request->request->get('_username', '')]);
-        if (!$user?->isActive()) {
+        if (false === $user?->isActive()) {
             $this->security->logout();
 
             return new RedirectResponse($this->urlGenerator->generate('app_login', ['inactive' => true]));

@@ -51,7 +51,7 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'l.name LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');

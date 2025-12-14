@@ -44,7 +44,7 @@ class FloorType extends AbstractType
         $form = $event->getForm();
 
         $disabled = [];
-        if (!is_null($floor) && $floor->getId() && $floor->isGroundFloor()) {
+        if (null !== $floor && null !== $floor->getId() && true === $floor->isGroundFloor()) {
             $disabled = ['disabled' => true, 'readonly' => true];
         }
 
@@ -63,9 +63,10 @@ class FloorType extends AbstractType
             //            } else {
             //                $floors = $floor->getBuilding()->getOriginalExistsFloors();
             //            }
-            $floors = ($options['reply']) ? $floor->getBuilding()->getReplyExistsFloors() : $floor->getBuilding()->getOriginalExistsFloors();
+            $floors = ((bool) $options['reply']) ? $floor->getBuilding()->getReplyExistsFloors() : $floor->getBuilding()->getOriginalExistsFloors();
 
-            if ($floors->count() && $floors->last()) {
+            if ($floors->count() > 0 && false !== $floors->last()) {
+                /** @var int $nextPosition */
                 $nextPosition = $floors->last()->getPosition();
             }
 

@@ -208,12 +208,10 @@ final class InvestmentForm extends AbstractController
             $street = $formValues['streetAddress']['street'];
             $inv->setStreet($street);
 
-            $locationZone = $locationZoneRepository->find((int) $formValues['locationZone']);
+            $locationZone = $locationZoneRepository->find($formValues['locationZone']);
             $inv->setLocationZone($locationZone);
 
-            /** @var int $mun */
-            $mun = $formValues['streetAddress']['address']['municipality'];
-            $municipality = $this->municipalityRepository->find((int) $mun);
+            $municipality = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
             $inv->setMunicipality($municipality);
 
             $investmentRepository->save($inv, true);

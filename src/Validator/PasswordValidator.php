@@ -20,29 +20,29 @@ final class PasswordValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Password::class);
         }
 
-        if ('' == $value) {
+        if ('' === $value) {
             return;
         }
 
-        if (!preg_match('/^.{6,}$/', $value)) {
+        if (false === preg_match('/^.{6,}$/', $value)) {
             $this->context->buildViolation('La contraseña debe tener como mínimo {{ limit }} caracteres')
                 ->setParameter('{{ limit }}', '6')
                 ->addViolation();
         }
 
-        if (!preg_match('/^(?=.*[A-Z]).{6,}$/', $value)) {
+        if (false === preg_match('/^(?=.*[A-Z]).{6,}$/', $value)) {
             $this->context->buildViolation('La contraseña debe tener como mínimo {{ limit }} caracter en mayúscula')
                 ->setParameter('{{ limit }}', '1')
                 ->addViolation();
         }
 
-        if (!preg_match('/^(?=.*[0-9])(?=.*[A-Z]).{6,20}$/', $value)) {
+        if (false === preg_match('/^(?=.*[0-9])(?=.*[A-Z]).{6,20}$/', $value)) {
             $this->context->buildViolation('La contraseña debe tener como mínimo {{ limit }} número.')
                 ->setParameter('{{ limit }}', '1')
                 ->addViolation();
         }
 
-        if (!preg_match('/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{6,20}$/', $value)) {
+        if (false === preg_match('/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{6,20}$/', $value)) {
             $this->context->buildViolation('La contraseña debe tener como mínimo {{ limit }} caracter especial.')
                 ->setParameter('{{ limit }}', '1')
                 ->addViolation();

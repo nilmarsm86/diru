@@ -184,7 +184,6 @@ final class IndividualClientForm extends AbstractController
             if (isset($formValues['streetAddress']['street'])) {
                 $street = $formValues['streetAddress']['street'];
             }
-
         } else {
             $mun = $this->ic->getMunicipality();
             /** @var int $province */
@@ -229,9 +228,7 @@ final class IndividualClientForm extends AbstractController
             $street = $formValues['streetAddress']['street'];
             $ic->setStreet($street);
 
-            /** @var int $mun */
-            $mun = $formValues['streetAddress']['address']['municipality'];
-            $municipality = $this->municipalityRepository->find($mun);
+            $municipality = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
             $ic->setMunicipality($municipality);
 
             $individualClientRepository->save($ic, true);

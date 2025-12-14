@@ -52,7 +52,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'b.name LIKE :filter ';
             //            $predicate .= "OR c.name LIKE :filter ";
             //            $predicate .= "OR c.code LIKE :filter ";

@@ -51,7 +51,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'ce.name LIKE :filter ';
             $predicate .= 'OR o.name LIKE :filter ';
             if ($place) {

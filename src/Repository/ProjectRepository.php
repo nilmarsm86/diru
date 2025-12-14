@@ -52,7 +52,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'p.name LIKE :filter ';
             $predicate .= 'OR i.name LIKE :filter ';
             //            $predicate .= "OR c.code LIKE :filter ";

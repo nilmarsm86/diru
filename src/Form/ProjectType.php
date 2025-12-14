@@ -115,7 +115,7 @@ class ProjectType extends AbstractType
         $project = $event->getData();
         $form = $event->getForm();
 
-        if ($project->getId()) {
+        if ($project->getId() !== null) {
             $form->add('stopReason', null, [
                 'label' => false,
             ]);

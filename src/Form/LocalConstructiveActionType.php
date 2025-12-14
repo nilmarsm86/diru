@@ -28,7 +28,7 @@ class LocalConstructiveActionType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Tipo:',
                 'placeholder' => '-Seleccione-',
-                'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()->getLabelFrom($constructiveAction->getType()),
+                'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
             ])
             ->add('constructiveSystem', EntityType::class, [
                 'class' => ConstructiveSystem::class,
@@ -59,9 +59,9 @@ class LocalConstructiveActionType extends AbstractType
 
         $currency = 'CUP';
         $local = null;
-        if ($localConstructiveAction) {
+        if (null !== $localConstructiveAction) {
             $local = $localConstructiveAction->getLocal();
-            if ($local) {
+            if (null !== $local) {
                 $subSystem = $local->getSubSystem();
                 $floor = $subSystem?->getFloor();
                 $building = $floor?->getBuilding();

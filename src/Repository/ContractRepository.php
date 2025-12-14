@@ -50,7 +50,7 @@ class ContractRepository extends ServiceEntityRepository implements FilterInterf
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'c.code LIKE :filter ';
             $predicate .= 'OR c.year LIKE :filter ';
             $builder->andWhere($predicate)

@@ -50,7 +50,7 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'i.name LIKE :filter ';
             $predicate .= 'OR i.betweenStreets LIKE :filter ';
             $predicate .= 'OR i.town LIKE :filter ';

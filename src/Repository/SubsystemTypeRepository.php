@@ -56,7 +56,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'sst.name LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');

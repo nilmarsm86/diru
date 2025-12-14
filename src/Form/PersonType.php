@@ -35,7 +35,7 @@ class PersonType extends AbstractType
                     'placeholder' => 'Carnet de identidad',
                 ],
             ]);
-        if ($options['passport']) {
+        if ((bool) $options['passport']) {
             $builder->add('passport', null, [
                 'label' => 'Pasaporte:',
                 'attr' => [

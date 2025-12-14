@@ -50,7 +50,7 @@ class LandType extends AbstractType
         $disabled = [];
         $building = $options['building'];
         if ($building instanceof Building) {
-            if (!is_null($land) && $land->getId() && !$building->isNew()) {
+            if (null !== $land && null !== $land->getId() && false === $building->isNew()) {
                 $disabled = ['disabled' => true, 'readonly' => true];
             }
         }

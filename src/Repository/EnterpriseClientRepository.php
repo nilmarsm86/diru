@@ -51,7 +51,7 @@ class EnterpriseClientRepository extends ServiceEntityRepository implements Filt
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'r.name LIKE :filter ';
             $predicate .= 'OR r.lastname LIKE :filter ';
             $predicate .= 'OR r.identificationNumber LIKE :filter ';

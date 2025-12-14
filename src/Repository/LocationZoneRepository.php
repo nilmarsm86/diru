@@ -50,7 +50,7 @@ class LocationZoneRepository extends ServiceEntityRepository implements FilterIn
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'lz.name LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');

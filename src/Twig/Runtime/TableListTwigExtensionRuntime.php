@@ -12,12 +12,10 @@ class TableListTwigExtensionRuntime implements RuntimeExtensionInterface
      */
     public function showReload(Request $request): bool
     {
-        $filter = $request->query->get('filter', '');
-        /** @var int $amountPerPage */
-        $amountPerPage = $request->query->get('amount', '10');
-        /** @var int $pageNumber */
-        $pageNumber = $request->query->get('page', '1');
+        $filter = (string) $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
-        return !empty($filter) || 10 !== $amountPerPage || 1 !== $pageNumber;
+        return '' !== $filter || 10 !== $amountPerPage || 1 !== $pageNumber;
     }
 }

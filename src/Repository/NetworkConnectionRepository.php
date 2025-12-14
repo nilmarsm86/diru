@@ -50,7 +50,7 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'nc.name LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');

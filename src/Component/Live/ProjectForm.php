@@ -164,9 +164,7 @@ final class ProjectForm extends AbstractController
             /** @var Project $project */
             $project = $this->getForm()->getData();
 
-            /** @var int $investment */
-            $investment = $this->formValues['investment'];
-            $investment = $investmentRepository->find($investment);
+            $investment = $investmentRepository->find($this->formValues['investment']);
             $project->setInvestment($investment);
 
             $client = 0;

@@ -50,7 +50,7 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'p.name LIKE :filter ';
             $predicate .= 'OR p.lastname LIKE :filter ';
             $predicate .= 'OR p.identificationNumber LIKE :filter ';

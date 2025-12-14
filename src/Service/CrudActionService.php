@@ -70,10 +70,8 @@ readonly class CrudActionService
     {
         /** @var string $filter */
         $filter = $request->query->get('filter', '');
-        /** @var int $amountPerPage */
-        $amountPerPage = $request->query->get('amount', '10');
-        /** @var int $pageNumber */
-        $pageNumber = $request->query->get('page', '1');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
         return [$filter, $amountPerPage, $pageNumber];
     }
@@ -325,8 +323,9 @@ readonly class CrudActionService
     ): Response {
         $callback = [$entity, 'getId'];
         assert(is_callable($callback));
+        $callbackResult = call_user_func_array($callback, []);
 
-        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : (call_user_func_array($callback, []) ? 'edit.html.twig' : 'new.html.twig')); // comportamiento por controlador
+        $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : ((null !== $callbackResult) ? 'edit.html.twig' : 'new.html.twig')); // comportamiento por controlador
 
         return new Response($this->environment->render("$templateDir/$template", [
             $templateDir => $entity,
@@ -357,12 +356,14 @@ readonly class CrudActionService
         throw new BadRequestHttpException('Ajax request');
     }
 
-    private function getClassName(string $classname): false|int|string
+    private function getClassName(string $classname): string
     {
-        if ($pos = strrpos($classname, '\\')) {
+        $pos = strrpos($classname, '\\');
+
+        if (false !== $pos) {
             return substr($classname, $pos + 1);
         }
 
-        return $pos;
+        return $classname;
     }
 }

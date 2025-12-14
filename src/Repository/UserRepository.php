@@ -42,16 +42,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
-        /*if($filter){
-            $predicate = "m.name LIKE :filter ";
-            if($place){
-                $predicate .= "OR p.name LIKE :filter ";
-            }
-
-            $builder->andWhere($predicate)
-                ->setParameter(':filter','%'.$filter.'%');
-        }*/
-        if ($filter) {
+        if ('' !== $filter) {
             $predicate = 'u.username LIKE :filter ';
             $predicate .= 'OR p.name LIKE :filter ';
             $predicate .= 'OR p.lastname LIKE :filter';

@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface MeasurementDataInterface
 {
-    public function getMeasurementData(string $method, ?bool $original = null): int|float;
+    public function getMeasurementData(string $method, ?bool $original = null): float;
 
     public function getUnassignedArea(?bool $original = null): ?float;
 

@@ -2,15 +2,13 @@ parameters:
     bootstrapFiles:
         - vendor/autoload.php
     level: 10
-    #checkMissingIterableValueType: true
-    #checkGenericClassInNonGenericObjectType: true
-    #checkTooWideReturnTypesInProtectedAndPublicMethods: true
-    #reportUnmatchedIgnoredErrors: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    reportUnmatchedIgnoredErrors: true
     phpVersion: 80200
     paths:
         - src/
     ignoreErrors:
-        - '#Property .+::\$id \(int\|null\) is never assigned int#'
+        #- '#Property .+::\$id \(int\|null\) is never assigned int#'
         - '#Method App\\Component\\Live\\.+::.+ is unused#'
         - '#Method .+::.+\(\) should return Symfony\\Component\\Form\\FormInterface<.+> but returns Symfony\\Component\\Form\\FormInterface<.+>#'
         - '#Method .+::buildForm\(\) has parameter \$builder with no value type specified#'
@@ -20,5 +18,5 @@ parameters:
     treatPhpDocTypesAsCertain: false
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
-    #- vendor/phpstan/phpstan-doctrine/extension.neon
-    #- vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon

@@ -92,7 +92,7 @@ final class CorporateEntityForm extends AbstractController
             $formValues = $this->formValues;
             if (isset($formValues['address'])) {
                 if (isset($formValues['address']['province'])) {
-                    if (true === (bool)$formValues['address']['municipality']) {
+                    if (true === (bool) $formValues['address']['municipality']) {
                         $mun = $this->municipalityRepository->find($formValues['address']['municipality']);
                         if ((string) $mun?->getProvince()?->getId() !== $formValues['address']['province']) {
                             $prov = $this->provinceRepository->find($formValues['address']['province']);

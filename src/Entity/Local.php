@@ -362,7 +362,7 @@ class Local implements MoneyInterface
         return $this;
     }
 
-    public function getPrice(): int|float
+    public function getPrice(): int
     {
         if (is_null($this->getLocalConstructiveAction())) {
             return 0;

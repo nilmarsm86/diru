@@ -42,6 +42,7 @@ class LocalConstructiveAction
     public function validPrice(): bool
     {
         $values = ['', 'No es necesaria', 'Eliminación', 'Cambio de uso'];
+
         return false === in_array($this->constructiveAction?->getName(), $values, true) && 0 === $this->getPrice();
     }
 

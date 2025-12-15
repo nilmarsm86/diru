@@ -196,10 +196,10 @@ final class ProjectForm extends AbstractController
 
             /** @var array<string, array<string, mixed>|null> $formValues */
             $formValues = $this->formValues;
-            if ($this->pro?->getId() === null) {
+            if (null === $this->pro?->getId()) {
                 /** @var array<string, mixed>|null $contract */
                 $contract = $formValues['contract'] ?? null;
-                if ($contract !== null && ($contract['code'] ?? '') === '') {
+                if (null !== $contract && ($contract['code'] ?? '') === '') {
                     $formValues['contract'] = null;
                     $project->setContract(null);
                 }

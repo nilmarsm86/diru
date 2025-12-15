@@ -728,7 +728,7 @@ class Building implements MeasurementDataInterface
         return $this->getName();
     }
 
-    public function getMeasurementData(string $method, ?bool $original = null): int|float
+    public function getMeasurementData(string $method, ?bool $original = null): float
     {
         if (is_null($original)) {
             $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
@@ -749,12 +749,12 @@ class Building implements MeasurementDataInterface
         return $data;
     }
 
-    public function getUnassignedArea(?bool $original = null): ?float
+    public function getUnassignedArea(?bool $original = null): float
     {
         return $this->getMeasurementData('getUnassignedArea', $original);
     }
 
-    public function getFreeArea(?bool $original = null): ?float
+    public function getFreeArea(?bool $original = null): float
     {
         return $this->getMeasurementData('getFreeArea', $original);
     }

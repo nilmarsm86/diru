@@ -122,7 +122,7 @@ class Floor implements MeasurementDataInterface
         return $this->getReplySubsystems()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, ?bool $original = null): int|float
+    public function getMeasurementData(string $method, ?bool $original = null): float
     {
         $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
 
@@ -154,7 +154,7 @@ class Floor implements MeasurementDataInterface
         }
     }
 
-    public function getUnassignedArea(?bool $original = null): ?float
+    public function getUnassignedArea(?bool $original = null): float
     {
         //        if($this->getBuilding()->isNew()){
         //            return $this->getBuilding()->getLandArea() - $this->getTotalArea();
@@ -181,7 +181,7 @@ class Floor implements MeasurementDataInterface
         return $this->unassignedOrFreeArea();
     }
 
-    public function getFreeArea(?bool $original = null): ?float
+    public function getFreeArea(?bool $original = null): float
     {
         if (false === $this->getBuilding()?->getLand()?->isBlocked()) {
             return 0;

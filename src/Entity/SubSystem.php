@@ -118,11 +118,11 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getReplyLocals()->count() > 0;
     }
 
-    public function getMeasurementData(string $method, ?bool $original = null): int|float
+    public function getMeasurementData(string $method, ?bool $original = null): float
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
-        $data = 0;
+        $data = 0.0;
         foreach ($locals as $local) {
             $callback = [$local, $method];
             assert(is_callable($callback));
@@ -134,7 +134,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $data;
     }
 
-    private function unassignedOrFreeArea(): float|int
+    private function unassignedOrFreeArea(): float
     {
         if (is_null($this->getFloor()?->getBuilding())) {
             return 1;
@@ -150,7 +150,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
     }
 
-    public function getUnassignedArea(?bool $original = null): ?float
+    public function getUnassignedArea(?bool $original = null): float
     {
         if (true === $this->getFloor()?->getBuilding()?->getLand()?->isBlocked()) {
             return 0;
@@ -172,7 +172,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->unassignedOrFreeArea();
     }
 
-    public function getFreeArea(?bool $original = null): ?float
+    public function getFreeArea(?bool $original = null): float
     {
         if (false === $this->getFloor()?->getBuilding()?->getLand()?->isBlocked()) {
             return 0;

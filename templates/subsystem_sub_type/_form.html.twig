@@ -12,7 +12,7 @@
             {{ include('partials/_card_header_options.html.twig', {
                 goTo: 'app_subsystem_sub_type_new',
                 label: 'Nuevo',
-                title: 'Nuevo sub tipo',
+                title: 'Nuevo subtipo',
                 entity: subsystem_sub_type,
                 state: 'form',
                 showButton: (showButton is defined and showButton == true) ? true : false
@@ -26,9 +26,9 @@
         {% block footer %}
             {{ include('partials/_card_footer.html.twig', {
                 list: {href: 'app_subsystem_sub_type_index', label: 'Listado', title:'Volver al listado'},
-                delete: {href: 'app_subsystem_sub_type_delete', label: 'Eliminar', title:'Eliminar sub tipo'},
+                delete: {href: 'app_subsystem_sub_type_delete', label: 'Eliminar', title:'Eliminar subtipo'},
                 id: subsystem_sub_type.id,
-                message: 'Está seguro que desea eliminar el sub tipo?',
+                message: 'Está seguro que desea eliminar el subtipo?',
                 state: 'form',
                 showButton: (showButton is defined and showButton == true) ? true : false,
                 entity: subsystem_sub_type

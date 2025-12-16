@@ -91,7 +91,7 @@ class SubsystemTypeRepository extends ServiceEntityRepository implements FilterI
     public function remove(SubsystemType $entity, bool $flush = false): void
     {
         if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
-            throw new \Exception('El tipo de subsistema aun tiene sub tipos asociados.', 1);
+            throw new \Exception('El tipo de subsistema aun tiene subtipos asociados.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

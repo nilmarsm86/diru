@@ -19,7 +19,7 @@
         }) }}
     {% else %}
         {{ form_row(form.subsystemTypeSubsystemSubTypes.vars.button_add, {
-            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar sub tipo',
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar subtipo',
             attr: { class: 'btn btn-outline-nav-link btn-sm' }
         }) }}
     {% endif %}
@@ -38,7 +38,7 @@
             <summary class="collection">
                 <div class="row summary-btn-lis">
                     <div class="col">
-                        Sub tipo de subsistema:
+                        Subtipo de subsistema:
                         {% if form_errors(subsystemTypeSubsystemSubType.subsystemSubType) %}
                             <div class="invalid-feedback d-inline">Revise los errores.</div>
                         {% endif %}

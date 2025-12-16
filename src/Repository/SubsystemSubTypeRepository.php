@@ -85,7 +85,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
         if ($entity->getSubsystemTypeSubsystemSubTypes()->count() > 0) {
             foreach ($entity->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubTypes) {
                 if ($subsystemTypeSubsystemSubTypes->getSubSystems()->count() > 0) {
-                    throw new \Exception('El sub tipo de subsistema aun esta en algunos tipos de subsistema.', 1);
+                    throw new \Exception('El subtipo de subsistema aun esta en algunos tipos de subsistema.', 1);
                 }
             }
         }

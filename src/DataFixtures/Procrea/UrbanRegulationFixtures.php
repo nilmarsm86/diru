@@ -418,7 +418,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
 
         foreach ($datas as $type => $data) {
             $urbanRegulationEntityType = $manager->getRepository(UrbanRegulationType::class)->findOneBy(['name' => $type]);
-            if (null === $urbanRegulationEntityType) {
+            if (null !== $urbanRegulationEntityType) {
                 foreach ($data as $regulation) {
                     $urbanRegulation = $manager->getRepository(UrbanRegulation::class)->findOneBy(['description' => $regulation['description']]);
                     if (is_null($urbanRegulation)) {

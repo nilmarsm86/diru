@@ -7,16 +7,16 @@
 
 {% block content %}
     <div class="row">
-        {{ h1('Sub tipos') }}
+        {{ h1('Subtipos') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Sub tipos', href: path('app_subsystem_sub_type_index')},
+            {label: 'Subtipos', href: path('app_subsystem_sub_type_index')},
             {label: 'Nuevo'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Agregar sub tipo</h2>
+    <h2 class="mb-4">Agregar subtipo</h2>
 
     {{ include('subsystem_sub_type/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

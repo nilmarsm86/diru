@@ -126,6 +126,8 @@ final class CorporateEntityForm extends AbstractController
 
         /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
+        $province = 0;
+        $municipality = 0;
 
         if (null === $this->ce?->getId()) {
             if (isset($formValues['address'])) {
@@ -135,15 +137,16 @@ final class CorporateEntityForm extends AbstractController
                 $municipality = $formValues['address']['municipality'];
             }
         } else {
-            $municipality = $this->ce->getMunicipality();
+            $mun = $this->ce->getMunicipality();
             /** @var int $province */
-            $province = (false === (bool) $formValues['address']['province'] ? $municipality?->getProvince()?->getId() : $formValues['address']['province']);
-            $municipality = (false === (bool) $formValues['address']['municipality'] ? $municipality?->getId() : $formValues['address']['municipality']);
+            $province = $formValues['address']['province'] ?? $mun?->getProvince()?->getId();
+            /** @var int $municipality */
+            $municipality = $formValues['address']['municipality'] ?? $mun?->getId();
         }
 
         return $this->createForm(CorporateEntityType::class, $this->ce, [
-            'province' => $province ?? 0,
-            'municipality' => $municipality ?? 0,
+            'province' => (int) $province,
+            'municipality' => (int) $municipality,
             'live_form' => ('on(change)|*' === $this->getDataModelValue()),
             'modal' => $this->modal,
         ]);

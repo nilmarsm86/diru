@@ -3,20 +3,20 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Editar Sub tipo{% endblock %}
+{% block title %}Editar Subtipo{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Sub tipo') }}
+        {{ h1('Subtipo') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Sub tipo', href: path('app_subsystem_sub_type_index')},
+            {label: 'Subtipo', href: path('app_subsystem_sub_type_index')},
             {label: 'Editar'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Editar sub tipo</h2>
+    <h2 class="mb-4">Editar subtipo</h2>
 
     {{ include('subsystem_sub_type/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

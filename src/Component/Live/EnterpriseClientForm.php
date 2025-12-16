@@ -162,12 +162,11 @@ final class EnterpriseClientForm extends AbstractController
         $province = 0;
         $municipality = 0;
         if (null === $this->ec?->getId()) {
-            if (isset($formValues['streetAddress']['address'])) {
+            if (isset($formValues['streetAddress']) && isset($formValues['streetAddress']['address'])) {
                 /** @var int $province */
-                $province = '' === $formValues['streetAddress']['address']['province'] ? 0 : $formValues['streetAddress']['address']['province'];
-
+                $province = $formValues['streetAddress']['address']['province'] ?? 0;
                 /** @var int $municipality */
-                $municipality = '' === $formValues['streetAddress']['address']['municipality'] ? 0 : $formValues['streetAddress']['address']['municipality'];
+                $municipality = $formValues['streetAddress']['address']['municipality'] ?? 0;
             }
             if (isset($formValues['streetAddress']['street'])) {
                 $street = $formValues['streetAddress']['street'];
@@ -175,11 +174,11 @@ final class EnterpriseClientForm extends AbstractController
         } else {
             $mun = $this->ec->getMunicipality();
             /** @var int $province */
-            $province = (false === (bool) $formValues['streetAddress']['address']['province'] ? $mun?->getProvince()?->getId() : $formValues['streetAddress']['address']['province']);
+            $province = $formValues['streetAddress']['address']['province'] ?? $mun?->getProvince()?->getId();
             /** @var int $municipality */
-            $municipality = (false === (bool) $formValues['streetAddress']['address']['municipality'] ? $mun?->getId() : $formValues['streetAddress']['address']['municipality']);
+            $municipality = $formValues['streetAddress']['address']['municipality'] ?? $mun?->getId();
             /** @var string $street */
-            $street = (false === (bool) $formValues['streetAddress']['street'] ? $this->ec->getStreet() : $formValues['streetAddress']['street']);
+            $street = $formValues['streetAddress']['street'] ?? $this->ec->getStreet();
         }
 
         return $this->createForm(EnterpriseClientType::class, $this->ec, [

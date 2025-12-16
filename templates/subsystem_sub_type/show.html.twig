@@ -3,7 +3,7 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Sub tipo: {{ subsystem_sub_type.name }}{% endblock %}
+{% block title %}Subtipo: {{ subsystem_sub_type.name }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -11,12 +11,12 @@
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Sub tipos', href: path('app_subsystem_sub_type_index')},
+            {label: 'Subtipos', href: path('app_subsystem_sub_type_index')},
             {label: 'Detalle'},
         ]) }}
     </div>
 
-    <h2 class="mb-4">Sub tipo: {{ subsystem_sub_type.name }}</h2>
+    <h2 class="mb-4">Subtipo: {{ subsystem_sub_type.name }}</h2>
 
     {{ include('subsystem_sub_type/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

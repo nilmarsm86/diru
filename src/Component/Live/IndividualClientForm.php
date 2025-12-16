@@ -173,14 +173,16 @@ final class IndividualClientForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+        $province = 0;
+        $municipality = 0;
         /** @var array<string, array<string, array<string, mixed>>> $formValues */
         $formValues = $this->formValues;
         if (null === $this->ic?->getId()) {
             if (isset($formValues['streetAddress']['address'])) {
                 /** @var int $province */
-                $province = $formValues['streetAddress']['address']['province'];
+                $province = '' === $formValues['streetAddress']['address']['province'] ? 0 : $formValues['streetAddress']['address']['province'];
                 /** @var int $municipality */
-                $municipality = $formValues['streetAddress']['address']['municipality'];
+                $municipality = '' === $formValues['streetAddress']['address']['municipality'] ? 0 : $formValues['streetAddress']['address']['municipality'];
             }
             if (isset($formValues['streetAddress']['street'])) {
                 $street = $formValues['streetAddress']['street'];
@@ -197,8 +199,8 @@ final class IndividualClientForm extends AbstractController
 
         return $this->createForm(IndividualClientType::class, $this->ic, [
             'street' => $street ?? '',
-            'province' => $province ?? 0,
-            'municipality' => $municipality ?? 0,
+            'province' => (int) $province,
+            'municipality' => (int) $municipality,
             'live_form' => ('on(change)|*' === $this->getDataModelValue()),
         ]);
     }

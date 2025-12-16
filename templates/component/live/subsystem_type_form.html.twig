@@ -14,7 +14,7 @@
 
     {% if form_errors(form.subsystemTypeSubsystemSubTypes) %}
         {{ form_row(form.subsystemTypeSubsystemSubTypes.vars.button_add, {
-            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar sub tipo',
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar subtipo',
             attr: { class: 'btn btn-outline-nav-link btn-sm', style: 'border-color: var(--bs-form-invalid-border-color);color: var(--bs-form-invalid-border-color);' }
         }) }}
     {% else %}

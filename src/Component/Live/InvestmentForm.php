@@ -76,11 +76,6 @@ final class InvestmentForm extends AbstractController
             $this->formValues = $formValues;
         }
 
-        //        if ('' !== $this->street) {
-        //            $formValues['streetAddress']['street'] = (string) $this->street;
-        //            $this->street = '';
-        //            $this->formValues = $formValues;
-        //        }
         if ('' !== $this->street) {
             /** @var array<string, mixed> $streetAddress */
             $streetAddress = $formValues['streetAddress'] ?? [];
@@ -90,11 +85,6 @@ final class InvestmentForm extends AbstractController
             $this->formValues = $formValues;
         }
 
-        //        if (0 !== $this->province) {
-        //            $formValues['streetAddress']['address']['province'] = (string) $this->province;
-        //            $this->province = 0;
-        //            $this->formValues = $formValues;
-        //        }
         if (0 !== $this->province) {
             /** @var array<string, mixed> $streetAddress */
             $streetAddress = $formValues['streetAddress'] ?? [];
@@ -107,11 +97,6 @@ final class InvestmentForm extends AbstractController
             $this->formValues = $formValues;
         }
 
-        //        if (0 !== $this->municipality) {
-        //            $formValues['streetAddress']['address']['municipality'] = (string) $this->municipality;
-        //            $this->municipality = 0;
-        //            $this->formValues = $formValues;
-        //        }
         if (0 !== $this->municipality) {
             /** @var array<string, mixed> $streetAddress */
             $streetAddress = $formValues['streetAddress'] ?? [];
@@ -158,14 +143,16 @@ final class InvestmentForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $this->preValue();
+        $province = 0;
+        $municipality = 0;
         /** @var array<string, array<string, array<string, mixed>>> $formValues */
         $formValues = $this->formValues;
         if (null === $this->inv?->getId()) {
             if (isset($formValues['streetAddress']['address'])) {
                 /** @var int $province */
-                $province = $formValues['streetAddress']['address']['province'];
+                $province = '' === $formValues['streetAddress']['address']['province'] ? 0 : $formValues['streetAddress']['address']['province'];
                 /** @var int $municipality */
-                $municipality = $formValues['streetAddress']['address']['municipality'];
+                $municipality = '' === $formValues['streetAddress']['address']['municipality'] ? 0 : $formValues['streetAddress']['address']['municipality'];
             }
             if (isset($formValues['streetAddress']['street'])) {
                 $street = $formValues['streetAddress']['street'];
@@ -182,8 +169,8 @@ final class InvestmentForm extends AbstractController
 
         return $this->createForm(InvestmentType::class, $this->inv, [
             'street' => $street ?? '',
-            'province' => $province ?? 0,
-            'municipality' => $municipality ?? 0,
+            'province' => (int) $province,
+            'municipality' => (int) $municipality,
             'live_form' => ('on(change)|*' === $this->getDataModelValue()),
             'modal' => $this->modal,
         ]);

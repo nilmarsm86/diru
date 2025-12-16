@@ -32,14 +32,15 @@
                         <td>{{ location_zone.name }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_location_zone_show', {'id': location_zone.id}), 'bi:eye', '', 'Detalle de la zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_show', {'id': location_zone.id})})) }}#}
-                            {{ tableActionButton3(path('app_location_zone_edit', {'id': location_zone.id}), 'fa:edit', '', 'Editar zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_edit', {'id': location_zone.id})})) }}
+                            {{ tableActionButton3(path('app_location_zone_edit', {'id': location_zone.id}), 'fa:edit', '', 'Editar zona', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_location_zone_edit', {'id': location_zone.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_location_zone_delete', {'id': location_zone.id}),
                                 confirm: 'Está seguro que desea eliminar la zona?',
                                 token: 'delete' ~ location_zone.id,
                                 title: 'Eliminar zona',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

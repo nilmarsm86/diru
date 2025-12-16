@@ -41,14 +41,15 @@
                         </td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }}#}
-                            {{ tableActionButton3(path('app_municipality_edit', {'id': municipality.id}), 'fa:edit', '', 'Editar municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_edit', {'id': municipality.id})})) }}
+                            {{ tableActionButton3(path('app_municipality_edit', {'id': municipality.id}), 'fa:edit', '', 'Editar municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_edit', {'id': municipality.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_municipality_delete', {'id': municipality.id}),
                                 confirm: 'Está seguro que desea eliminar el municipio?',
                                 token: 'delete' ~ municipality.id,
                                 title: 'Eliminar municipio',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

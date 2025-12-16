@@ -1,41 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}SeparateConcept index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>SeparateConcept index</h1>
+{% block title %}Conceptos{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Number</th>
-                <th>Formula</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for separate_concept in separate_concepts %}
-            <tr>
-                <td>{{ separate_concept.id }}</td>
-                <td>{{ separate_concept.type }}</td>
-                <td>{{ separate_concept.number }}</td>
-                <td>{{ separate_concept.formula }}</td>
-                <td>{{ separate_concept.name }}</td>
-                <td>
-                    <a href="{{ path('app_separate_concept_show', {'id': separate_concept.id}) }}">show</a>
-                    <a href="{{ path('app_separate_concept_edit', {'id': separate_concept.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Conceptos') }}
 
-    <a href="{{ path('app_separate_concept_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Conceptos'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de conceptos</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('separate_concept/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

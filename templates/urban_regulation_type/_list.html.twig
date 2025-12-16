@@ -31,14 +31,15 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ urban_regulation_type.name }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id}), 'fa:edit', '', 'Editar tipo de regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id})})) }}
+                            {{ tableActionButton3(path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id}), 'fa:edit', '', 'Editar tipo de regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_urban_regulation_type_edit', {'id': urban_regulation_type.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_urban_regulation_type_delete', {'id': urban_regulation_type.id}),
                                 confirm: 'Está seguro que desea eliminar el tipo de regulación urbana?',
                                 token: 'delete' ~ urban_regulation_type.id,
                                 title: 'Eliminar tipo de regulación urbana',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

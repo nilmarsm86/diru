@@ -1,38 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}SeparateConcept{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 
-{% block body %}
-    <h1>SeparateConcept</h1>
+{% block title %}Concepto: {{ separate_concept.number }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ separate_concept.id }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ separate_concept.type }}</td>
-            </tr>
-            <tr>
-                <th>Number</th>
-                <td>{{ separate_concept.number }}</td>
-            </tr>
-            <tr>
-                <th>Formula</th>
-                <td>{{ separate_concept.formula }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ separate_concept.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Conceptos') }}
 
-    <a href="{{ path('app_separate_concept_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Conceptos', href: path('app_separate_concept_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
 
-    <a href="{{ path('app_separate_concept_edit', {'id': separate_concept.id}) }}">edit</a>
+    <h2 class="mb-4">Concepto: {{ representative.number }}</h2>
 
-    {{ include('separate_concept/_delete_form.html.twig') }}
+    {{ include('separate_concept/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

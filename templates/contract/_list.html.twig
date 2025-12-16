@@ -34,14 +34,15 @@
                         <td>{{ contract.year }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_contract_show', {'id': contract.id}), 'bi:eye', '', 'Detalle del contrato', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_contract_show', {'id': contract.id})})) }}#}
-                            {{ tableActionButton3(path('app_contract_edit', {'id': contract.id}), 'fa:edit', '', 'Editar contrato', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_contract_edit', {'id': contract.id})})) }}
+                            {{ tableActionButton3(path('app_contract_edit', {'id': contract.id}), 'fa:edit', '', 'Editar contrato', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_contract_edit', {'id': contract.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_contract_delete', {'id': contract.id}),
                                 confirm: 'Está seguro que desea eliminar el contrato?',
                                 token: 'delete' ~ contract.id,
                                 title: 'Eliminar contrato',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

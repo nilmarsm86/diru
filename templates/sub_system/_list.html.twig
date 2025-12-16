@@ -73,24 +73,6 @@
             paginator: paginator,
         } %}
 
-{#            {% block message %}#}
-{#                {% if floor.building.isNew() %}#}
-{#                    Área de terreno de la obra: {{ floor.building.getLandArea()|number_format(2) }}m<sup>2</sup>,#}
-{#                {% else %}#}
-{#                    Área ocupada de la obra: {{ floor.building.getOccupiedArea()|number_format(2) }}m#}
-{#                    <sup>2</sup> de un área de terreno de {{ floor.building.getLandArea()|number_format(2) }}m#}
-{#                    <sup>2</sup>,#}
-{#                {% endif %}#}
-{#                #}{#                <br> #}
-{#                {% if floor.isFullyOccupied() %}#}
-{#                    ocupados totalmente.#}
-{#                {% else %}#}
-{#                    <br>#}
-{#                    quedan {{ floor.getUnassignedArea()|number_format(2) }}m<sup>2</sup> por ocupar en esta planta.#}
-{#                {% endif %}#}
-
-{#            {% endblock %}#}
-
             {% block message %}
                 {{ include('structure/_table_message.html.twig', {
                     isNew: floor.building.isNew(),
@@ -339,17 +321,3 @@
     {% endblock %}
 
 {% endcomponent %}
-
-{# {% component 'Card:Card' with { #}
-{#    cssClass: 'mb-4', #}
-{#    extra: '', #}
-{#    headerCssClass: 'd-flex justify-content-between align-items-center', #}
-{#    title: 'Detalles de la planta', #}
-{# } %} #}
-{#    {% block body %} #}
-{#        <table class="table table-hover"> #}
-{#            {{ include('floor/_data.html.twig') }} #}
-{#        </table> #}
-{#    {% endblock %} #}
-
-{# {% endcomponent %} #}

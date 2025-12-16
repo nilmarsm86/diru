@@ -49,14 +49,15 @@
                 <td class="text-end">
                     {% if not app.request.query.get('modal') %}
                         {#                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }} #}
-                        {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id}), 'fa:edit', '', 'Editar estimado de proyecto y preparación técnica', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ptp_estimate_edit', {'id': ptp_estimate.id})})) }}
+                        {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id}), 'fa:edit', '', 'Editar estimado de proyecto y preparación técnica', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ptp_estimate_edit', {'id': ptp_estimate.id})}), 'btn-link') }}
                     {% endif %}
                     {{ component('DeleteForm', {
                         path: path('app_ptp_estimate_delete', {'id': ptp_estimate.id}),
                         confirm: 'Está seguro que desea eliminar el estimado de proyecto y preparación técnica?',
                         token: 'delete' ~ ptp_estimate.id,
                         title: 'Eliminar estimado de proyecto y preparación técnica',
-                        icon: 'bi:trash'
+                        icon: 'bi:trash',
+                        cssClass: 'btn-link text-danger'
                     }) }}
 
                 </td>

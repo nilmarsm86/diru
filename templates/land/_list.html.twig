@@ -40,15 +40,16 @@
                         <td>{{ land.photo }}</td>
                         <td>{{ land.microlocalization }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_land_show', {'id': land.id}), 'bi:eye', '', 'Detalle del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_show', {'id': land.id})})) }}
-                            {{ tableActionButton3(path('app_land_edit', {'id': land.id}), 'fa:edit', '', 'Editar datos del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_edit', {'id': land.id})})) }}
+                            {{ tableActionButton3(path('app_land_show', {'id': land.id}), 'bi:eye', '', 'Detalle del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_show', {'id': land.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_land_edit', {'id': land.id}), 'fa:edit', '', 'Editar datos del terreno', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_land_edit', {'id': land.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_land_delete', {'id': land.id}),
                                 confirm: 'Está seguro que desea eliminar los datos del terreno?',
                                 token: 'delete' ~ land.id,
                                 title: 'Eliminar datos del terreno',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

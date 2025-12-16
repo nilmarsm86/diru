@@ -66,8 +66,8 @@
                             <td>{{ subsystemType.classification.getLabelFrom(subsystemType.classification) }}</td>
                         {% endif %}
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})})) }}
-                            {{ tableActionButton3(path('app_subsystem_type_edit', {'id': subsystemType.id}), 'fa:edit', '', 'Editar tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_edit', {'id': subsystemType.id})})) }}
+                            {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_subsystem_type_edit', {'id': subsystemType.id}), 'fa:edit', '', 'Editar tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_edit', {'id': subsystemType.id})}), 'btn-link') }}
 
 {#                            {{ component('DeleteForm', {#}
 {#                                path: path('app_subsystem_type_delete', {'id': subsystemType.id}),#}

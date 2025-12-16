@@ -49,12 +49,12 @@
                                 {% if app.user.isAdmin() %}
                                     <div class="form-check form-switch">
                                         <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                {{ stimulus_action('user-role', 'onChangeState', 'change') }}
-                                                role="switch"
-                                                title="{% if user.isActive() %}activo{% else %}inactivo{% endif %}"
-                                                {% if user.isActive() %}checked{% endif %}
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            {{ stimulus_action('user-role', 'onChangeState', 'change') }}
+                                            role="switch"
+                                            title="{% if user.isActive() %}activo{% else %}inactivo{% endif %}"
+                                            {% if user.isActive() %}checked{% endif %}
                                         >
                                     </div>
                                 {% endif %}
@@ -66,19 +66,19 @@
                                     <td>
                                         <div class="form-check">
                                             <input
-                                                    type="checkbox"
-                                                    title="{% if user.isActive() %}quitar{% else %}asignar{% endif %} permisos"
-                                                    {{ stimulus_action('user-role', 'onChangeRole', 'change') }}
-                                                    {% if role.name is same as constant('ROLE_CLIENT', role) %}
-                                                        class="client"
-                                                    {% endif %}
-                                                    {% if user.isActive == false or (role.name is same as constant('ROLE_CLIENT', role)) %}
-                                                        disabled
-                                                    {% else %}
-                                                        {% if app.user.isSuperAdmin() == false and (role.blockChange() or user.blockRoles()) %}disabled{% endif %}
-                                                    {% endif %}
-                                                    {% if user.hasRole(role) %}checked{% endif %}
-                                                    value="{{ role.id }}"
+                                                type="checkbox"
+                                                title="{% if user.isActive() %}quitar{% else %}asignar{% endif %} permisos"
+                                                {{ stimulus_action('user-role', 'onChangeRole', 'change') }}
+                                                {% if role.name is same as constant('ROLE_CLIENT', role) %}
+                                                    class="client"
+                                                {% endif %}
+                                                {% if user.isActive == false or (role.name is same as constant('ROLE_CLIENT', role)) %}
+                                                    disabled
+                                                {% else %}
+                                                    {% if app.user.isSuperAdmin() == false and (role.blockChange() or user.blockRoles()) %}disabled{% endif %}
+                                                {% endif %}
+                                                {% if user.hasRole(role) %}checked{% endif %}
+                                                value="{{ role.id }}"
                                             >
                                         </div>
                                     </td>

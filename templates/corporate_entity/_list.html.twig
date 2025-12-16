@@ -89,15 +89,16 @@
 {#                            </a>#}
 {#                        </td>#}
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_corporate_entity_show', {'id': corporateEntity.id}), 'bi:eye', '', 'Detalle de la entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_show', {'id': corporateEntity.id})})) }}
-                            {{ tableActionButton3(path('app_corporate_entity_edit', {'id': corporateEntity.id}), 'fa:edit', '', 'Editar entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_edit', {'id': corporateEntity.id})})) }}
+                            {{ tableActionButton3(path('app_corporate_entity_show', {'id': corporateEntity.id}), 'bi:eye', '', 'Detalle de la entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_show', {'id': corporateEntity.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_corporate_entity_edit', {'id': corporateEntity.id}), 'fa:edit', '', 'Editar entidad corporativa', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_corporate_entity_edit', {'id': corporateEntity.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_corporate_entity_delete', {'id': corporateEntity.id}),
                                 confirm: 'Está seguro que desea eliminar la entidad corporativa?',
                                 token: 'delete' ~ corporateEntity.id,
                                 title: 'Eliminar entidad corporativa',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

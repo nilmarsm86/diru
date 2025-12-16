@@ -11,7 +11,7 @@
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Subsistemas', href: path('app_sub_system_index', 'floor':floor.id)},
+            {label: 'Subsistemas', href: path('app_sub_system_index', {'floor':floor.id})},
             {label: 'Editar'},
         ]) }}
     </div>

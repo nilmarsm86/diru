@@ -70,15 +70,16 @@
 {#                            </a>#}
 {#                        </td>#}
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_show', {'id': client.id})})) }}
-                            {{ tableActionButton3(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_edit', {'id': client.id})})) }}
+                            {{ tableActionButton3(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_show', {'id': client.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_edit', {'id': client.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_individual_client_delete', {'id': client.id}),
                                 confirm: 'Está seguro que desea eliminar el cliente?',
                                 token: 'delete' ~ client.id,
                                 title: 'Eliminar cliente',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

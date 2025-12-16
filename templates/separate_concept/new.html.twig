@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}New SeparateConcept{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Create new SeparateConcept</h1>
+{% block title %}Nuevo concepto{% endblock %}
 
-    {{ include('separate_concept/_form.html.twig') }}
+{% block content %}
+    <div class="row">
+        {{ h1('Nuevo concepto') }}
 
-    <a href="{{ path('app_separate_concept_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Nuevo concepto', href: path('app_separate_concept_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar concepto</h2>
+
+    {{ include('separate_concept/_form.html.twig', {showButton: true, title: title}) }}
 {% endblock %}

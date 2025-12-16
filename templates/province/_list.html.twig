@@ -39,15 +39,16 @@
 {#                        </td>#}
                         <td>{{ province.name }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_province_show', {'id': province.id}), 'bi:eye', '', 'Detalle de la provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_province_show', {'id': province.id})})) }}
-                            {{ tableActionButton3(path('app_province_edit', {'id': province.id}), 'fa:edit', '', 'Editar provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_province_edit', {'id': province.id})})) }}
+                            {{ tableActionButton3(path('app_province_show', {'id': province.id}), 'bi:eye', '', 'Detalle de la provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_province_show', {'id': province.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_province_edit', {'id': province.id}), 'fa:edit', '', 'Editar provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_province_edit', {'id': province.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_province_delete', {'id': province.id}),
                                 confirm: 'Está seguro que desea eliminar la provincia?',
                                 token: 'delete' ~ province.id,
                                 title: 'Eliminar provincia',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

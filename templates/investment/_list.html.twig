@@ -57,15 +57,16 @@
                         </td>
                         <td>{{ investment.town }}</td>
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_investment_show', {'id': investment.id}), 'bi:eye', '', 'Detalle de la inversión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_show', {'id': investment.id})})) }}
-                            {{ tableActionButton3(path('app_investment_edit', {'id': investment.id}), 'fa:edit', '', 'Editar inveersión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_edit', {'id': investment.id})})) }}
+                            {{ tableActionButton3(path('app_investment_show', {'id': investment.id}), 'bi:eye', '', 'Detalle de la inversión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_show', {'id': investment.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_investment_edit', {'id': investment.id}), 'fa:edit', '', 'Editar inveersión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_investment_edit', {'id': investment.id})}), 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_investment_delete', {'id': investment.id}),
                                 confirm: 'Está seguro que desea eliminar la inversión?',
                                 token: 'delete' ~ investment.id,
                                 title: 'Eliminar inersión',
-                                icon: 'bi:trash'
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
                             }) }}
                         </td>
                     </tr>

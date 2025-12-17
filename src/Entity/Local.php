@@ -566,6 +566,12 @@ class Local implements MoneyInterface
             return 0;
         }
 
-        return (int) $this->getLocalConstructiveAction()?->getPrice() * (float) $this->getArea();
+        $area = (float) $this->getArea();
+        // TODO: poner la categoria de eliminacion a la de modificacion y no modificacion
+        if (in_array($this->getLocalConstructiveAction()?->getConstructiveAction()?->getName(), ['Eliminación', 'Demolición'], true)) {
+            $area = (float) $this->getOriginal()?->getArea();
+        }
+
+        return (int) $this->getLocalConstructiveAction()?->getPrice() * $area;
     }
 }

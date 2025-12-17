@@ -1070,7 +1070,8 @@ class Building implements MeasurementDataInterface
     {
         $locals = 0;
 
-        $floors = ($this->hasReply() !== $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        //        $floors = (false === $this->hasReply() && false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $floors = (false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {
@@ -1242,7 +1243,7 @@ class Building implements MeasurementDataInterface
 
     public function getRangePrice(): int|float
     {
-        return $this->getPrice() + $this->getUrbanizationEstimateTotalPrice() + $this->getProjectTechnicalPreparationEstimateTotalPrice();
+        return $this->getEstimatedConstructionAndNetworkConnection() + $this->getEstimatedUrbanizationAndNetworkConnection() + $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }
 
     public function getRangeMinPrice(): int|float
@@ -1276,6 +1277,6 @@ class Building implements MeasurementDataInterface
             }
         }
 
-        return $this->getPrice() + $priceLandNetworkConnection;
+        return $this->getUrbanizationEstimateTotalPrice() + $priceLandNetworkConnection;
     }
 }

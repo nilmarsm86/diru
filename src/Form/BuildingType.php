@@ -155,7 +155,7 @@ class BuildingType extends AbstractType
             'divisor' => 100,
             'grouping' => true,
             'mapped' => false,
-            'data' => (null !== $building) ? $building->getPrice() : 0,
+            'data' => (null !== $building) ? $building->getEstimatedConstructionAndNetworkConnection() : 0,
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',
@@ -281,7 +281,7 @@ class BuildingType extends AbstractType
                     'data-type--money-plus-target' => 'field',
                     'data-controller' => 'money',
                 ],
-                'data' => (null !== $building && null !== $building->getId()) ? $building->getUrbanizationEstimateTotalPrice() : $options['urbanizationEstimate'],
+                'data' => (null !== $building && null !== $building->getId()) ? $building->getEstimatedUrbanizationAndNetworkConnection() : $options['urbanizationEstimate'],
                 //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,

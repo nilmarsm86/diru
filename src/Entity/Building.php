@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
+use App\Entity\Enums\NetworkConnectionType;
 use App\Entity\Interfaces\MeasurementDataInterface;
 // use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\MeasurementDataTrait;
@@ -1252,5 +1253,29 @@ class Building implements MeasurementDataInterface
     public function getRangeMaxPrice(): int|float
     {
         return $this->getRangePrice() + ($this->getRangePrice() * 20 / 100);
+    }
+
+    public function getEstimatedConstructionAndNetworkConnection(): float|int
+    {
+        $priceLandNetworkConnection = 0;
+        foreach ($this->getLandNetworkConnections() as $landNetworkConnection) {
+            if (NetworkConnectionType::Inside === $landNetworkConnection->getType()) {
+                $priceLandNetworkConnection += $landNetworkConnection->getTotalPrice();
+            }
+        }
+
+        return $this->getPrice() + $priceLandNetworkConnection;
+    }
+
+    public function getEstimatedUrbanizationAndNetworkConnection(): float|int
+    {
+        $priceLandNetworkConnection = 0;
+        foreach ($this->getLandNetworkConnections() as $landNetworkConnection) {
+            if (NetworkConnectionType::Outside === $landNetworkConnection->getType()) {
+                $priceLandNetworkConnection += $landNetworkConnection->getTotalPrice();
+            }
+        }
+
+        return $this->getPrice() + $priceLandNetworkConnection;
     }
 }

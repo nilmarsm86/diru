@@ -44,10 +44,10 @@ class LandNetworkConnection
     )]
     public NetworkConnectionType $enumType;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column]
     #[Assert\NotBlank(message: 'Establezca la longitud.')]
     #[Assert\Positive(message: 'La longitud debe ser positiva.')]
-    private ?string $longitude = '0';
+    private float $longitude = 0;
 
     #[ORM\OneToOne(inversedBy: 'landNetworkConnection', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -57,7 +57,7 @@ class LandNetworkConnection
     public function __construct()
     {
         $this->landNetworkConnectionConstructiveAction = null;
-        $this->longitude = '0';
+        $this->longitude = 0;
     }
 
     public function getId(): ?int
@@ -128,12 +128,12 @@ class LandNetworkConnection
         return $this;
     }
 
-    public function getLongitude(): ?string
+    public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    public function setLongitude(?string $longitude): static
+    public function setLongitude(float $longitude): static
     {
         $this->longitude = $longitude;
 
@@ -155,5 +155,12 @@ class LandNetworkConnection
         $this->landNetworkConnectionConstructiveAction = $landNetworkConnectionConstructiveAction;
 
         return $this;
+    }
+
+    public function getTotalPrice(): float|int
+    {
+        $landNetworkConnectionConstructiveAction = $this->getLandNetworkConnectionConstructiveAction();
+
+        return $this->getLongitude() * ((null !== $landNetworkConnectionConstructiveAction) ? $landNetworkConnectionConstructiveAction->getPrice() : 0);
     }
 }

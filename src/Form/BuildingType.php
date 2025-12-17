@@ -81,6 +81,8 @@ class BuildingType extends AbstractType
         $form = $event->getForm();
         $currency = 'CUP';
         $activeConstructor = null;
+        $projectPriceTechnicalPreparationAddConfig = [];
+        $estimatedValueUrbanizationAddConfig = [];
 
         // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
         if (null !== $building && null !== $building->getId()) {
@@ -97,6 +99,20 @@ class BuildingType extends AbstractType
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
             $activeConstructor = $building->getActiveConstructor();
+
+            $projectPriceTechnicalPreparationAddConfig = [
+                'add' => true,
+                'add_title' => 'Agregar estimado de proyecto y preparación técnica',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+            ];
+
+            $estimatedValueUrbanizationAddConfig = [
+                'add' => true,
+                'add_title' => 'Agregar estimado de urbanización',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+            ];
         }
 
         $form->add('constructor', EntityPlusType::class, [
@@ -252,13 +268,7 @@ class BuildingType extends AbstractType
                 'list_title' => 'Listado de estimados de proyecto y preparación técnica',
                 'list_id' => 'modal-load',
                 'list_url' => $this->router->generate('app_ptp_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
-
-                //TODO: solo se agregaran estos valores si la obra ya existe
-                'add' => true,
-                'add_title' => 'Agregar estimado de proyecto y preparación técnica',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
-            ])
+            ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Urbanización:',
                 'attr' => [
@@ -285,13 +295,7 @@ class BuildingType extends AbstractType
                 'list_title' => 'Listado de estimados de urbanización',
                 'list_id' => 'modal-load',
                 'list_url' => $this->router->generate('app_urbanization_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
-
-                //TODO: solo se agregaran estos valores si la obra ya existe
-                'add' => true,
-                'add_title' => 'Agregar estimado de urbanización',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
-            ])
+            ] + $estimatedValueUrbanizationAddConfig)
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',
                 'attr' => [

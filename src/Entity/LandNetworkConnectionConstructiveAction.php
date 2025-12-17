@@ -32,7 +32,7 @@ class LandNetworkConnectionConstructiveAction
         message: 'El precio para esta acción constructiva debe ser mayor que 0.',
         negate: false
     )]
-    private ?int $price = 0;
+    private int $price = 0;
 
     #[ORM\ManyToOne(inversedBy: 'landNetworkConnectionsConstructiveAction')]
     #[Assert\Valid]
@@ -90,12 +90,12 @@ class LandNetworkConnectionConstructiveAction
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
         return $this->price;
     }
 
-    public function setPrice(?int $price): static
+    public function setPrice(int $price): static
     {
         $this->price = $price;
 

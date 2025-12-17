@@ -8,7 +8,7 @@ use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,12 +31,12 @@ class LocalType extends AbstractType
                     'placeholder' => 'Nombre del local',
                 ],
             ])
-            ->add('number', IntegerType::class, [
+            ->add('number', TextType::class, [
                 'label' => 'Número:',
                 'attr' => [
                     'placeholder' => 'Número del local',
                     'min' => 1,
-                    'data-controller' => 'positive-zero',
+                    //                    'data-controller' => 'positive-zero',
                 ],
             ])
             ->add('type', LocalTypeEnumType::class, [

@@ -122,7 +122,7 @@ final class LocalController extends AbstractController
             $area = $subSystem->getFloor()->getUnassignedArea();
         }
 
-        $automaticWall = Local::createAutomaticWall($subSystem, $area, $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);
+        $automaticWall = Local::createAutomaticWall($subSystem, $area, (int) $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);
 
         $localRepository->save($automaticWall, true);
 

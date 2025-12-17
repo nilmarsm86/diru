@@ -478,7 +478,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $total;
     }
 
-    public function getMaxLocalNumber(): int
+    public function getMaxLocalNumber(): int|string
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 

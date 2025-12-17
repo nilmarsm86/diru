@@ -32,12 +32,12 @@ class Local implements MoneyInterface
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El número del local está vacío.')]
-    #[Assert\PositiveOrZero(message: 'El número del local debe ser mayor que 0.')]
-    private ?int $number = null;
+    //    #[Assert\PositiveOrZero(message: 'El número del local debe ser mayor que 0.')]
+    private ?string $number = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área está vacía.')]
-    #[Assert\Positive(message: 'El área debe ser mayor que 0.')]
+    //    #[Assert\Positive(message: 'El área debe ser mayor que 0.')]
     //    #[Assert\Expression(
     //        "this.getFloor().getBuilding().getLandArea() < value",
     //        message: 'No debe ser mayor que el area de la obra.',
@@ -121,12 +121,12 @@ class Local implements MoneyInterface
         return $this->id;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): static
+    public function setNumber(string $number): static
     {
         $this->number = $number;
 
@@ -206,7 +206,7 @@ class Local implements MoneyInterface
             }
 
             if (is_null($this->getId())) {
-                $this->setNumber((int) $this->getSubSystem()?->getMaxLocalNumber() + 1);
+                $this->setNumber((string) ((int) $this->getSubSystem()?->getMaxLocalNumber() + 1));
             }
         }
 
@@ -300,7 +300,7 @@ class Local implements MoneyInterface
             $local->setType($type);
             $local->setArea($area);
             $local->setHeight($height);
-            $local->setNumber($number);
+            $local->setNumber((string) $number);
             $local->setTechnicalStatus($technicalStatus);
         }
 

@@ -14,12 +14,14 @@
             Reportes
         </button>
         <ul class="dropdown-menu" data-bs-theme="light">
+            {% if building is not empty %}
             <li>
                 <a class="dropdown-item"
                    href="{{ path('app_building_report_local', {'id': building.id}) }}" title="">
                     Reporte de estado técnico por locales
                 </a>
             </li>
+            {% endif %}
             <li>
                 <a class="dropdown-item"
                    href="" title="">

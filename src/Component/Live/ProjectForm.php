@@ -86,13 +86,13 @@ final class ProjectForm extends AbstractController
             //                $this->formValues['individualClient'] = (string)$this->individualClient;
             //                $this->individualClient = 0;
             //            }
-            if ('' !== $this->formValues['individualClient']) {
+            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
                 /** @var int $individualClient */
                 $individualClient = $this->formValues['individualClient'];
                 $this->individualClient = $individualClient;
             }
         } else {
-            if ('' !== $this->formValues['individualClient']) {
+            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
                 /** @var int $individualClient */
                 $individualClient = $this->formValues['individualClient'];
                 if ((int) $this->individualClient > $individualClient) {
@@ -108,13 +108,13 @@ final class ProjectForm extends AbstractController
         }
 
         if (!is_null($this->pro?->getId())) {
-            if ('' !== $this->formValues['enterpriseClient']) {
+            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
                 /** @var int $enterpriseClient */
                 $enterpriseClient = $this->formValues['enterpriseClient'];
                 $this->enterpriseClient = $enterpriseClient;
             }
         } else {
-            if ('' !== $this->formValues['enterpriseClient']) {
+            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
                 /** @var int $enterpriseClient */
                 $enterpriseClient = $this->formValues['enterpriseClient'];
                 if ((int) $this->enterpriseClient > $enterpriseClient) {

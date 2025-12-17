@@ -135,7 +135,7 @@ final class BuildingForm extends AbstractController
                 $building->setProject($project);
             }
 
-            if (false !== (bool) $this->formValues['draftsman']) {
+            if (isset($this->formValues['draftsman']) && false !== (bool) $this->formValues['draftsman']) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
                 if (null !== $draftsman) {
                     $building->addDraftsman($draftsman);

@@ -67,9 +67,9 @@ class Building implements MeasurementDataInterface
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueOther = 0;
 
-    #[ORM\Column(type: Types::BIGINT)]
-    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    private ?int $projectPriceTechnicalPreparation = 0;
+    //    #[ORM\Column(type: Types::BIGINT)]
+    //    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+    //    private ?int $projectPriceTechnicalPreparation = 0;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
@@ -154,7 +154,7 @@ class Building implements MeasurementDataInterface
         $this->approvedValueEquipment = 0;
         $this->approvedValueOther = 0;
 
-        $this->projectPriceTechnicalPreparation = 0;
+        //        $this->projectPriceTechnicalPreparation = 0;
 
         $this->setState(BuildingState::Registered);
         $this->draftsmansBuildings = new ArrayCollection();
@@ -305,19 +305,21 @@ class Building implements MeasurementDataInterface
 
     public function getProjectPriceTechnicalPreparation(): ?int
     {
-        return $this->projectPriceTechnicalPreparation;
+        //        return $this->projectPriceTechnicalPreparation;
+        return 0;
     }
 
-    public function setProjectPriceTechnicalPreparation(?int $projectPriceTechnicalPreparation): static
-    {
-        $this->projectPriceTechnicalPreparation = $projectPriceTechnicalPreparation;
-
-        return $this;
-    }
+    //    public function setProjectPriceTechnicalPreparation(?int $projectPriceTechnicalPreparation): static
+    //    {
+    //        $this->projectPriceTechnicalPreparation = $projectPriceTechnicalPreparation;
+    //
+    //        return $this;
+    //    }
 
     public function getTotalEstimatedValue(): int|float
     {
-        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->projectPriceTechnicalPreparation;
+        //        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->projectPriceTechnicalPreparation;
+        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }
 
     public function getTotalApprovedValue(): ?int

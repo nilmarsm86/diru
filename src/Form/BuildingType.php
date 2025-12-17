@@ -83,7 +83,7 @@ class BuildingType extends AbstractType
         $activeConstructor = null;
 
         // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
-        if (null !== $building && true === $building->getId()) {
+        if (null !== $building && null !== $building->getId()) {
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
                 'class' => Draftsman::class,
@@ -139,7 +139,7 @@ class BuildingType extends AbstractType
             'divisor' => 100,
             'grouping' => true,
             'mapped' => false,
-            'data' => $building->getPrice(),
+            'data' => (null !== $building) ? $building->getPrice() : 0,
         ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',
@@ -238,13 +238,14 @@ class BuildingType extends AbstractType
                     'data-controller' => 'money',
                     'data-type--money-plus-target' => 'field',
                 ],
-                'data' => $options['ptpEstimate'],
+                'data' => (null !== $building && null !== $building->getId()) ? $building->getProjectTechnicalPreparationEstimateTotalPrice() : $options['ptpEstimate'],
                 //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
                 //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
+                'mapped' => false,
                 'grouping' => true,
 
                 'list' => true,
@@ -252,10 +253,11 @@ class BuildingType extends AbstractType
                 'list_id' => 'modal-load',
                 'list_url' => $this->router->generate('app_ptp_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
 
+                //TODO: solo se agregaran estos valores si la obra ya existe
                 'add' => true,
                 'add_title' => 'Agregar estimado de proyecto y preparación técnica',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => $building->getId(), 'modal' => 'modal-load', 'screen' => $options['screen']]),
+                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
             ])
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Urbanización:',
@@ -269,7 +271,7 @@ class BuildingType extends AbstractType
                     'data-type--money-plus-target' => 'field',
                     'data-controller' => 'money',
                 ],
-                'data' => $options['urbanizationEstimate'],
+                'data' => (null !== $building && null !== $building->getId()) ? $building->getUrbanizationEstimateTotalPrice() : $options['urbanizationEstimate'],
                 //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
@@ -284,10 +286,11 @@ class BuildingType extends AbstractType
                 'list_id' => 'modal-load',
                 'list_url' => $this->router->generate('app_urbanization_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
 
+                //TODO: solo se agregaran estos valores si la obra ya existe
                 'add' => true,
                 'add_title' => 'Agregar estimado de urbanización',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => $building->getId(), 'modal' => 'modal-load', 'screen' => $options['screen']]),
+                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
             ])
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',
@@ -318,11 +321,11 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'class' => 'vecpppt',
                     'data-range-target' => 'range',
-                    'min' => $building->getRangeMinPrice(),
-                    'max' => $building->getRangeMaxPrice(),
+                    'min' => (null === $building) ? 0 : $building->getRangeMinPrice(),
+                    'max' => (null === $building) ? 0 : $building->getRangeMaxPrice(),
                     //                    'step' => 1000
                 ],
-                'data' => $building->getRangePrice(),
+                'data' => (null === $building) ? 0 : $building->getRangePrice(),
                 'row_attr' => [
                     'class' => 'mb-0',
                 ],

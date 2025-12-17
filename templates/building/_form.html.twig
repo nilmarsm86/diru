@@ -6,7 +6,7 @@
 } %}
 
     {% block header %}
-        {{ include('building/_buttons_header.html.twig') }}
+        {{ include('building/_buttons_header.html.twig', {'building': building}) }}
     {% endblock %}
 
     {% block body %}

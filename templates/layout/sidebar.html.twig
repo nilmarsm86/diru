@@ -31,15 +31,16 @@
                 {#                </li> #}
                 <li class="nav-item">
                     <button
-                            class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#locations-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left"
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#locations-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left"
                     >
                         <span class="d-inline-flex align-items-center">Ubicaciones</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}"
-                         id="locations-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}"
+                        id="locations-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -84,13 +85,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#places-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#places-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Organizaciones</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}show{% else %}hide{% endif %}" id="places-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}show{% else %}hide{% endif %}"
+                        id="places-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -120,24 +124,27 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#subsystem-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#subsystem-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Subsistemas</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}show{% else %}hide{% endif %}" id="subsystem-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}show{% else %}hide{% endif %}"
+                        id="subsystem-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-{#                            <li>#}
-{#                                <a class="dropdown-item d-flex gap-2 align-items-center "#}
-{#                                   href=""#}
-{#                                >#}
-{#                                    {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }}#}
-{#                                    Clasificación#}
-{#                                </a>#}
-{#                            </li>#}
+                            {#                            <li> #}
+                            {#                                <a class="dropdown-item d-flex gap-2 align-items-center " #}
+                            {#                                   href="" #}
+                            {#                                > #}
+                            {#                                    {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }} #}
+                            {#                                    Clasificación #}
+                            {#                                </a> #}
+                            {#                            </li> #}
                             <li>
                                 <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_subsystem_type_index') }}"
                                    href="{{ path('app_subsystem_type_index') }}"
@@ -157,13 +164,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#regulation-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#regulation-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Regulaciones urbanas</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}show{% else %}hide{% endif %}" id="regulation-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}show{% else %}hide{% endif %}"
+                        id="regulation-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -186,13 +196,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#edification-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_network_connection_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#edification-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_network_connection_index'] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Edificación</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in ['app_network_connection_index'] %}show{% else %}hide{% endif %}" id="edification-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_network_connection_index'] %}show{% else %}hide{% endif %}"
+                        id="edification-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -204,19 +217,19 @@
                                     Conexiones de red
                                 </a>
                             </li>
-{#                            <li>#}
-{#                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urbanization_estimate_index') }}"#}
-{#                                   href="{{ path('app_urbanization_estimate_index') }}"#}
-{#                                >#}
-{#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
-{#                                    Estimados de urbanización#}
-{#                                </a>#}
-{#                            </li>#}
+                            {#                            <li> #}
+                            {#                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urbanization_estimate_index') }}" #}
+                            {#                                   href="{{ path('app_urbanization_estimate_index') }}" #}
+                            {#                                > #}
+                            {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
+                            {#                                    Estimados de urbanización #}
+                            {#                                </a> #}
+                            {#                            </li> #}
                             <li>
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-{#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {{ ux_icon('mdi:construction-outline', {class:'bi'}) }}
                                     Acc. Constructivas
                                 </a>
                             </li>
@@ -224,7 +237,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {{ ux_icon('roentgen:building-construction', {class:'bi'}) }}
                                     Sistema Constructivo
                                 </a>
                             </li>
@@ -232,13 +245,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#other-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#other-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Otros</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}" id="other-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}"
+                        id="other-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -246,7 +262,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Monedas
                                 </a>
                             </li>
@@ -254,7 +270,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Unidad de medida
                                 </a>
                             </li>
@@ -262,7 +278,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href="{{ path('app_separate_concept_index') }}"
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Concepto
                                 </a>
                             </li>
@@ -270,13 +286,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#history-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left">
+                    <button
+                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                        data-bs-toggle="collapse" data-bs-target="#history-collapse"
+                        aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
+                        style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Histórico</span>
                     </button>
-                    <div class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}" id="history-collapse">
+                    <div
+                        class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}"
+                        id="history-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
@@ -284,7 +303,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Subsistema
                                 </a>
                             </li>
@@ -292,7 +311,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Coeficientes Obra
                                 </a>
                             </li>
@@ -300,7 +319,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href="{{ path('app_separate_concept_index') }}"
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Obra desgloce estimado
                                 </a>
                             </li>
@@ -308,7 +327,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Obra presupuesto detallado
                                 </a>
                             </li>
@@ -316,7 +335,7 @@
                                 <a class="dropdown-item d-flex gap-2 align-items-center"
                                    href=""
                                 >
-                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }} #}
                                     Obra presupuesto real
                                 </a>
                             </li>
@@ -325,7 +344,8 @@
                 </li>
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     <li>
-                        <a href="{{ path('user_list') }}" class="nav-link link-body-emphasis {{ activeLink('user_list') }}">
+                        <a href="{{ path('user_list') }}"
+                           class="nav-link link-body-emphasis {{ activeLink('user_list') }}">
                             {{ ux_icon('bi:lock', {class:'bi'}) }}
                             Seguridad
                         </a>

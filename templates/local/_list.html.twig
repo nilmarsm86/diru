@@ -199,6 +199,24 @@
                     </tr>
                 {% endfor %}
             {% endblock %}
+
+            {% block tableFooter %}
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    {% if reply or sub_system.inNewBuilding() %}
+                        <th></th>
+                        <th>{{ money(sub_system.getPrice()) }}</th>
+                    {% endif %}
+                    <th></th>
+                </tr>
+            {% endblock %}
         {% endcomponent %}
     {% endblock %}
 

@@ -269,6 +269,60 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <button class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+                            data-bs-toggle="collapse" data-bs-target="#history-collapse"
+                            aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
+                            style="width:100%;text-align:left">
+                        <span class="d-inline-flex align-items-center">Histórico</span>
+                    </button>
+                    <div class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}" id="history-collapse">
+                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
+                            data-bs-theme="light"
+                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center"
+                                   href=""
+                                >
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    Subsistema
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center"
+                                   href=""
+                                >
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    Coeficientes Obra
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center"
+                                   href="{{ path('app_separate_concept_index') }}"
+                                >
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    Obra desgloce estimado
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center"
+                                   href=""
+                                >
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    Obra presupuesto detallado
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex gap-2 align-items-center"
+                                   href=""
+                                >
+                                    {#                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}#}
+                                    Obra presupuesto real
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     <li>
                         <a href="{{ path('user_list') }}" class="nav-link link-body-emphasis {{ activeLink('user_list') }}">

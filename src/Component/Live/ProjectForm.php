@@ -181,7 +181,7 @@ final class ProjectForm extends AbstractController
             $client = $clientRepository->find($client);
             $project->setClient($client);
 
-            if ('' !== $this->formValues['draftsman']) {
+            if (isset($this->formValues['draftsman']) && '' !== $this->formValues['draftsman']) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
 
                 if (is_null($project->getId())) {

@@ -152,6 +152,8 @@ final class SubSystemForm extends AbstractController
         /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
 
+        $type = 0;
+        $subType = 0;
         if (null === $this->ss?->getId()) {
             if (isset($formValues['subsystemClassification'])) {
                 /** @var int $type */
@@ -160,19 +162,21 @@ final class SubSystemForm extends AbstractController
                 $subType = $formValues['subsystemClassification']['subType'];
             }
         } else {
-            $subsystemTypeSubsystemSubType = $this->ss->getSubsystemTypeSubsystemSubType();
-            /** @var int $type */
-            $type = ('' === $formValues['subsystemClassification']['type'] ? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId() : $formValues['subsystemClassification']['type']);
-            /** @var int $subType */
-            $subType = ('' === $formValues['subsystemClassification']['subType'] ? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId() : $formValues['subsystemClassification']['subType']);
+//            if (isset($formValues['subsystemClassification'])) {
+                $subsystemTypeSubsystemSubType = $this->ss->getSubsystemTypeSubsystemSubType();
+//                /** @var int $type */
+                $type = $formValues['subsystemClassification']['type'] ?? $subsystemTypeSubsystemSubType?->getSubsystemType()?->getId();
+//                /** @var int $subType */
+                $subType = $formValues['subsystemClassification']['subType'] ?? $subsystemTypeSubsystemSubType?->getSubsystemSubType()?->getId();
+//            }
         }
 
         assert($this->ss instanceof SubSystem);
         $this->floor?->addSubSystem($this->ss);
 
         return $this->createForm(SubSystemType::class, $this->ss, [
-            'type' => $type ?? 0,
-            'subType' => $subType ?? 0,
+            'type' => (int) $type,
+            'subType' => (int) $subType,
             'live_form' => ('on(change)|*' === $this->getDataModelValue()),
             'modal' => $this->modal,
         ]);

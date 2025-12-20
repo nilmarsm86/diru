@@ -248,12 +248,12 @@
                     <button
                         class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                         data-bs-toggle="collapse" data-bs-target="#other-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
+                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_separate_concept_index'] %}true{% else %}false{% endif %}"
                         style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Otros</span>
                     </button>
                     <div
-                        class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}"
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_separate_concept_index'] %}show{% else %}hide{% endif %}"
                         id="other-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"

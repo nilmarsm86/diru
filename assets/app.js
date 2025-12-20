@@ -1,4 +1,5 @@
-import './bootstrap.js';
+import './stimulus_bootstrap.js';
+
 
 // import './js/color-modes.js';
 /*

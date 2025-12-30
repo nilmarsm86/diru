@@ -52,6 +52,9 @@ final class TogglePasswordTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('use_toggle_form_theme', ['bool']);
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['toggle'] = $options['toggle'];
@@ -67,8 +70,8 @@ final class TogglePasswordTypeExtension extends AbstractTypeExtension
         $controllerName = 'toggle-password';
         $attr = is_array($view->vars['attr']) ? $view->vars['attr'] : [];
         /** @var string $dataController */
-        $dataController = $attr['data-controller'];
-        $attr['data-controller'] = trim(sprintf('%s %s', $dataController ?? '', $controllerName));
+        $dataController = $attr['data-controller'] ?? '';
+        $attr['data-controller'] = trim(\sprintf('%s %s', $dataController, $controllerName));
         $view->vars['attr'] = $attr;
 
         $controllerValues = [];

@@ -57,6 +57,7 @@ class EnterpriseClientType extends AbstractType
                 //                'placeholder' => '-Seleccione-',
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
+
                 'detail' => true,
                 'detail_title' => 'Detalle de la entidad',
                 'detail_id' => 'modal-load',
@@ -121,6 +122,7 @@ class EnterpriseClientType extends AbstractType
     private function getEntityQueryBuilder(): \Closure
     {
         return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
+            ->andWhere('ce.type <> '.\App\Entity\Enums\CorporateEntityType::Constructor->value)
             ->orderBy('ce.name', 'ASC');
     }
 

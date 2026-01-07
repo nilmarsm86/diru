@@ -95,6 +95,18 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     }
 
     /**
+     * @return array<Project>
+     */
+    public function lastThree(): array
+    {
+        $builder = $this->createQueryBuilder('p')->select(['p', 'i'])
+            ->innerJoin('p.investment', 'i');
+        $query = $builder->orderBy('p.id', 'DESC')->setMaxResults(3)->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * @throws \Exception
      */
     public function remove(Project $entity, bool $flush = false): void

@@ -61,6 +61,7 @@
                     {% endif %}
                     {#                    <th>Area ocupada</th> #}
                     <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
+                    <th data-bs-toggle="tooltip" title="Costo de construcción">Monto (CUP)</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -99,6 +100,7 @@
                                 {{ project.investment }}
                             </a>
                         </td>
+                        <td>{{ money(project.getPrice()) }}</td>
                         <td class="text-end">
                             <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Obras del proyecto">
                                 <button type="button"

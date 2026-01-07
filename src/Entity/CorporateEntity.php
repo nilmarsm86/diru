@@ -8,6 +8,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\CorporateEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,6 +60,9 @@ class CorporateEntity
     #[ORM\OneToMany(targetEntity: EnterpriseClient::class, mappedBy: 'corporateEntity')]
     #[Assert\Valid]
     private Collection $enterpriseClients;
+
+    #[ORM\Column(name: 'address', type: Types::TEXT)]
+    protected ?string $street = null;
 
     public function __construct()
     {
@@ -173,5 +177,17 @@ class CorporateEntity
     public function hasEnterpriseClients(): bool
     {
         return $this->getEnterpriseClients()->count() > 0;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(string $street): static
+    {
+        $this->street = $street;
+
+        return $this;
     }
 }

@@ -42,6 +42,8 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
                     $corporate->setType(CorporateEntityType::ClientAndConstructor);
                 }
 
+                $corporate->setStreet('direccion de la calle de la entidad corporativa');
+
                 $manager->persist($corporate);
             }
         }

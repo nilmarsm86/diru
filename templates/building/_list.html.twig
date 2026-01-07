@@ -52,6 +52,7 @@
                     <th>Constructora {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     {#                    <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th> #}
+                    <th data-bs-toggle="tooltip" title="Costo de construcción">Monto (CUP)</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -102,6 +103,7 @@
                         {#                                {{ building.investment.project.name }} #}
                         {#                            </a> #}
                         {#                        </td> #}
+                        <td>{{ money(building.getPrice()) }}</td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})}), 'btn-link') }}
                             {#                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }} #}

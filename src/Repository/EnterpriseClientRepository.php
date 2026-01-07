@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\EnterpriseClient;
+use App\Form\CorporateEntityType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -80,6 +81,7 @@ class EnterpriseClientRepository extends ServiceEntityRepository implements Filt
             ->leftJoin('ec.representative', 'r')
             ->leftJoin('ec.corporateEntity', 'ce');
         $this->addFilter($builder, $filter);
+        $builder->andWhere('ce.type <> '.\App\Entity\Enums\CorporateEntityType::Constructor->value);
         $query = $builder->orderBy('ec.id', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

@@ -10,9 +10,11 @@
     {{ form_row(form.name) }}
 
     <div class="mb-0 row">
+        {% if form.type is defined %}
         <div class="col">
             {{ form_row(form.type) }}
         </div>
+        {% endif %}
         <div class="col">
             {{ form_row(form.investment) }}
         </div>

@@ -190,13 +190,14 @@ class ProjectType extends AbstractType
         $form->add('enterpriseClient', EntityPlusType::class, [
             'class' => EnterpriseClient::class,
             'choice_label' => function (EnterpriseClient $enterpriseClient) {
+                $representative = $enterpriseClient->getRepresentative();
                 $corporateEntity = $enterpriseClient->getCorporateEntity();
 
-                return $corporateEntity?->getName();
+                return $corporateEntity->getName().' ('.$representative->getName().')';
             },
-            'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
+            'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getCorporateEntity(),
             'mapped' => false,
-            'label' => 'Cliente empresarial-negocio',
+            'label' => 'Cliente empresarial-negocio (representante)',
             'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
 
             'detail' => true,
@@ -215,21 +216,24 @@ class ProjectType extends AbstractType
             'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
         ]);
 
-        $form->add('type', ChoiceType::class, [
-            'label' => 'Tipo de proyecto:',
-            'expanded' => true,
-            'multiple' => false,
-            'placeholder' => null,
-            'choices' => [
-                EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
-                EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
-            ],
-            'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
-            'label_attr' => [
-                'class' => 'radio-inline',
-            ],
-            'required' => false,
-        ]);
+        if(null === $project->getId()){
+            $form->add('type', ChoiceType::class, [
+                'label' => 'Tipo de proyecto:',
+                'expanded' => true,
+                'multiple' => false,
+                'placeholder' => null,
+                'choices' => [
+                    EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
+                    EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
+                ],
+                'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
+                'label_attr' => [
+                    'class' => 'radio-inline',
+                ],
+                'required' => false,
+            ]);
+        }
+
 
         $form->add('buildings', LiveCollectionType::class, [
             'entry_type' => BuildingType::class,

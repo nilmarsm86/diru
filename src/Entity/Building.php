@@ -320,7 +320,7 @@ class Building implements MeasurementDataInterface
     public function getTotalEstimatedValue(): int|float
     {
         //        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->projectPriceTechnicalPreparation;
-        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->getProjectTechnicalPreparationEstimateTotalPrice();
+        return (float) $this->getConstructivePrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }
 
     public function getTotalApprovedValue(): ?int
@@ -1194,7 +1194,7 @@ class Building implements MeasurementDataInterface
         return $price;
     }
 
-    public function getPrice(?bool $original = null): int|float
+    public function getConstructivePrice(?bool $original = null): int|float
     {
         if (0 === $this->getFloorsAmount()) {
             return 0;
@@ -1265,7 +1265,7 @@ class Building implements MeasurementDataInterface
             }
         }
 
-        return $this->getPrice() + $priceLandNetworkConnection;
+        return $this->getConstructivePrice() + $priceLandNetworkConnection;
     }
 
     public function getEstimatedUrbanizationAndNetworkConnection(): float|int
@@ -1278,5 +1278,10 @@ class Building implements MeasurementDataInterface
         }
 
         return $this->getUrbanizationEstimateTotalPrice() + $priceLandNetworkConnection;
+    }
+
+    public function getPrice(): float
+    {
+        return (float) $this->getRangePrice() + (float) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther();
     }
 }

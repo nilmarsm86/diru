@@ -271,6 +271,7 @@ class BuildingType extends AbstractType
             ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Urbanización:',
+                'help' => 'Urbanizacion + conexiones de red externa.',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,

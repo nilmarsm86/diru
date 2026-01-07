@@ -509,4 +509,22 @@ class Project
 
         return $this;
     }
+
+    public function getPrice(?bool $original = null): int|float
+    {
+        if (0 === $this->getBuildingsAmount()) {
+            return 0;
+        }
+
+//        $buildings = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        $price = 0;
+        /** @var Building $building */
+        foreach ($this->getBuildings() as $building) {
+//            dump($building->getPrice());
+            $price += $building->getPrice();
+        }
+
+        return $price;
+    }
 }

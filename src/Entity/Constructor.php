@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\ConstructorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,6 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Constructor
 {
     use NameToStringTrait;
+    use AddressTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -45,6 +49,9 @@ class Constructor
     #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'constructor', cascade: ['persist'])]
     #[Assert\Valid]
     private Collection $constructorBuildings;
+
+    #[ORM\Column(name: 'address', type: Types::TEXT)]
+    protected ?string $street = null;
 
     public function __construct()
     {
@@ -204,5 +211,17 @@ class Constructor
     public function hasBuildings(): bool
     {
         return $this->getBuildings()->count() > 0;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(string $street): static
+    {
+        $this->street = $street;
+
+        return $this;
     }
 }

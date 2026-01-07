@@ -193,7 +193,7 @@ class ProjectType extends AbstractType
                 $representative = $enterpriseClient->getRepresentative();
                 $corporateEntity = $enterpriseClient->getCorporateEntity();
 
-                return $corporateEntity->getName().' ('.$representative->getName().')';
+                return $corporateEntity?->getName().' ('.$representative?->getName().')';
             },
             'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getCorporateEntity(),
             'mapped' => false,
@@ -216,7 +216,7 @@ class ProjectType extends AbstractType
             'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
         ]);
 
-        if(null === $project->getId()){
+        if (null === $project->getId()) {
             $form->add('type', ChoiceType::class, [
                 'label' => 'Tipo de proyecto:',
                 'expanded' => true,
@@ -233,7 +233,6 @@ class ProjectType extends AbstractType
                 'required' => false,
             ]);
         }
-
 
         $form->add('buildings', LiveCollectionType::class, [
             'entry_type' => BuildingType::class,

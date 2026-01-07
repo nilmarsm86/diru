@@ -95,7 +95,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     }
 
     /**
-     * @return array<Project>
+     * @return array<mixed>
      */
     public function lastThree(): array
     {

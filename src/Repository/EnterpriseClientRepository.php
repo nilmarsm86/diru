@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\EnterpriseClient;
-use App\Form\CorporateEntityType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

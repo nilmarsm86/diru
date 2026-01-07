@@ -106,23 +106,23 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
      */
     public function remove(Building $entity, bool $flush = false): void
     {
-//        $msg = 'Si desea podría cambiarle el estado a la obra a: Cancelada.';
-//
-//        if (!is_null($entity->getProject())) {
-//            throw new \Exception('La obra aun esta asignada a un proyecto. '.$msg, 1);
-//        }
-//
-//        if ($entity->hasConstructor()) {
-//            throw new \Exception('La obra aun tiene una constructora a cargo. '.$msg, 1);
-//        }
-//
-//        if ($entity->hasDraftsman()) {
-//            throw new \Exception('La obra aun tiene un proyectista a cargo. '.$msg, 1);
-//        }
-//
-//        if ($entity->hasFloors()) {
-//            throw new \Exception('La obra aun tiene plantas asociadas. '.$msg, 1);
-//        }
+        //        $msg = 'Si desea podría cambiarle el estado a la obra a: Cancelada.';
+        //
+        //        if (!is_null($entity->getProject())) {
+        //            throw new \Exception('La obra aun esta asignada a un proyecto. '.$msg, 1);
+        //        }
+        //
+        //        if ($entity->hasConstructor()) {
+        //            throw new \Exception('La obra aun tiene una constructora a cargo. '.$msg, 1);
+        //        }
+        //
+        //        if ($entity->hasDraftsman()) {
+        //            throw new \Exception('La obra aun tiene un proyectista a cargo. '.$msg, 1);
+        //        }
+        //
+        //        if ($entity->hasFloors()) {
+        //            throw new \Exception('La obra aun tiene plantas asociadas. '.$msg, 1);
+        //        }
 
         $this->getEntityManager()->remove($entity);
 

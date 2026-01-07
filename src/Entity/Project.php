@@ -516,12 +516,12 @@ class Project
             return 0;
         }
 
-//        $buildings = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        //        $buildings = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         $price = 0;
         /** @var Building $building */
         foreach ($this->getBuildings() as $building) {
-//            dump($building->getPrice());
+            //            dump($building->getPrice());
             $price += $building->getPrice();
         }
 

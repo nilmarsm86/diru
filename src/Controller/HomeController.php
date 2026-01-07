@@ -17,7 +17,7 @@ final class HomeController extends AbstractController
     {
         $lastThree = $projectRepository->lastThree();
         $amount = 0;
-        foreach ($projectRepository->findAll() as $project){
+        foreach ($projectRepository->findAll() as $project) {
             $amount += $project->getPrice();
         }
 
@@ -25,7 +25,7 @@ final class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'last_three' => $lastThree,
             'amount' => $amount,
-            'project_amount' => count($projectRepository->findAll())
+            'project_amount' => count($projectRepository->findAll()),
         ]);
     }
 }

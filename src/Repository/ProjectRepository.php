@@ -94,10 +94,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         return $this->paginate($query, $page, $amountPerPage);
     }
 
-    /**
-     * @return array<mixed>
-     */
-    public function lastThree(): array
+    public function lastThree(): mixed
     {
         $builder = $this->createQueryBuilder('p')->select(['p', 'i'])
             ->innerJoin('p.investment', 'i');

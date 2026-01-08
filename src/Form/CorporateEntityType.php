@@ -7,6 +7,7 @@ use App\Entity\Organism;
 use App\Form\Types\AddressType;
 use App\Form\Types\CorporateEntityTypeEnumType;
 use App\Form\Types\EntityPlusType;
+use App\Form\Types\StreetAddressType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
@@ -50,13 +51,21 @@ class CorporateEntityType extends AbstractType
             ->add('type', CorporateEntityTypeEnumType::class, [
                 'label' => 'Tipo de entidad:',
             ])
-            ->add('address', AddressType::class, [
+//            ->add('address', AddressType::class, [
+//                'province' => $options['province'],
+//                'municipality' => $options['municipality'],
+//                'mapped' => false,
+//                'live_form' => $options['live_form'],
+//                //                'modal' => $options['modal']
+//            ])
+            ->add('streetAddress', StreetAddressType::class, [
+                'street' => $options['street'],
                 'province' => $options['province'],
                 'municipality' => $options['municipality'],
                 'mapped' => false,
                 'live_form' => $options['live_form'],
-                //                'modal' => $options['modal']
-            ]);
+            ])
+        ;
 
         $organismAttr = [
             'class' => Organism::class,
@@ -91,6 +100,7 @@ class CorporateEntityType extends AbstractType
             ],
             'province' => 0,
             'municipality' => 0,
+            'street' => '',
             'error_mapping' => [
                 'enumType' => 'type',
             ],
@@ -100,6 +110,7 @@ class CorporateEntityType extends AbstractType
 
         $resolver->setAllowedTypes('province', 'int');
         $resolver->setAllowedTypes('municipality', 'int');
+        $resolver->setAllowedTypes('street', 'string');
         $resolver->setAllowedTypes('live_form', 'bool');
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }

@@ -43,13 +43,18 @@ final class CorporateEntityForm extends AbstractController
     public ?int $organism = 0;
 
     #[LiveProp(writable: true)]
+    public ?string $street = '';
+
+    #[LiveProp(writable: true)]
     public int $province = 0;
 
     #[LiveProp(writable: true)]
     public int $municipality = 0;
 
-    public function __construct(protected readonly ProvinceRepository $provinceRepository, protected readonly MunicipalityRepository $municipalityRepository)
-    {
+    public function __construct(
+        protected readonly ProvinceRepository $provinceRepository,
+        protected readonly MunicipalityRepository $municipalityRepository,
+    ) {
     }
 
     public function mount(?CorporateEntity $ce = null): void
@@ -71,42 +76,57 @@ final class CorporateEntityForm extends AbstractController
             $this->formValues = $formValues;
         }
 
+        if ('' !== $this->street) {
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
+            $streetAddress['street'] = (string) $this->street;
+            $formValues['streetAddress'] = $streetAddress;
+            $this->street = '';
+            $this->formValues = $formValues;
+        }
+
         if (0 !== $this->province) {
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
             /** @var array<string, mixed> $address */
-            $address = $formValues['address'] ?? [];
+            $address = $streetAddress['address'] ?? [];
             $address['province'] = (string) $this->province;
-            $formValues['address'] = $address;
+            $streetAddress['address'] = $address;
+            $formValues['streetAddress'] = $streetAddress;
             $this->province = 0;
             $this->formValues = $formValues;
         }
 
         if (0 !== $this->municipality) {
+            /** @var array<string, mixed> $streetAddress */
+            $streetAddress = $formValues['streetAddress'] ?? [];
             /** @var array<string, mixed> $address */
-            $address = $formValues['address'] ?? [];
+            $address = $streetAddress['address'] ?? [];
             $address['municipality'] = (string) $this->municipality;
-            $formValues['address'] = $address;
+            $streetAddress['address'] = $address;
+            $formValues['streetAddress'] = $streetAddress;
             $this->municipality = 0;
             $this->formValues = $formValues;
         } else {
-            /** @var array<string, array<string, mixed>> $formValues */
+            /** @var array<string, array<string, array<int, mixed>>> $formValues */
             $formValues = $this->formValues;
-            if (isset($formValues['address'])) {
-                if (isset($formValues['address']['province'])) {
-                    if (true === (bool) $formValues['address']['municipality']) {
-                        $mun = $this->municipalityRepository->find($formValues['address']['municipality']);
-                        if ((string) $mun?->getProvince()?->getId() !== $formValues['address']['province']) {
-                            $prov = $this->provinceRepository->find($formValues['address']['province']);
+            if (isset($formValues['streetAddress']['address'])) {
+                if (isset($formValues['streetAddress']['address']['province'])) {
+                    if ($formValues['streetAddress']['address']['municipality']) {
+                        $mun = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
+                        if ((string) $mun?->getProvince()?->getId() !== $formValues['streetAddress']['address']['province']) {
+                            $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                             if (!is_null($prov)) {
-                                $formValues['address']['municipality'] = ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first())
+                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first())
                                     ? (string) $prov->getMunicipalities()->first()->getId()
                                     : '';
                             }
                         }
                     } else {
-                        $prov = $this->provinceRepository->find($formValues['address']['province']);
+                        $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
                         if (!is_null($prov)) {
                             if ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first()) {
-                                $formValues['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
+                                $formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
                             }
                         }
                     }
@@ -124,27 +144,34 @@ final class CorporateEntityForm extends AbstractController
     {
         $this->preValue();
 
-        /** @var array<string, array<string, mixed>> $formValues */
+        // /** @var array<string, array<string, mixed>> $formValues */
+        /** @var array<string, array<string, array<string, mixed>>> $formValues */
         $formValues = $this->formValues;
         $province = 0;
         $municipality = 0;
 
         if (null === $this->ce?->getId()) {
-            if (isset($formValues['address'])) {
+            if (isset($formValues['streetAddress']['address'])) {
                 /** @var int $province */
-                $province = $formValues['address']['province'];
+                $province = $formValues['streetAddress']['address']['province'] ?? 0;
                 /** @var int $municipality */
-                $municipality = $formValues['address']['municipality'];
+                $municipality = $formValues['streetAddress']['address']['municipality'] ?? 0;
+            }
+            if (isset($formValues['streetAddress']['street'])) {
+                $street = $formValues['streetAddress']['street'];
             }
         } else {
             $mun = $this->ce->getMunicipality();
             /** @var int $province */
-            $province = $formValues['address']['province'] ?? $mun?->getProvince()?->getId();
+            $province = $formValues['streetAddress']['address']['province'] ?? $mun?->getProvince()?->getId();
             /** @var int $municipality */
-            $municipality = $formValues['address']['municipality'] ?? $mun?->getId();
+            $municipality = $formValues['streetAddress']['address']['municipality'] ?? $mun?->getId();
+            /** @var string $street */
+            $street = $formValues['streetAddress']['street'] ?? $this->ce->getStreet();
         }
 
         return $this->createForm(CorporateEntityType::class, $this->ce, [
+            'street' => $street ?? '',
             'province' => (int) $province,
             'municipality' => (int) $municipality,
             'live_form' => ('on(change)|*' === $this->getDataModelValue()),
@@ -171,7 +198,13 @@ final class CorporateEntityForm extends AbstractController
             $organism = $organismRepository->find($formValues['organism']);
             $ce->setOrganism($organism);
 
-            $municipality = $this->municipalityRepository->find($formValues['address']['municipality']);
+            /** @var string $street */
+            $street = $formValues['streetAddress']['street'];
+            $ce->setStreet($street);
+
+            /** @var array<string, array<string, array<string, mixed>>> $formValues */
+            $formValues = $this->formValues;
+            $municipality = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
             $ce->setMunicipality($municipality);
 
             $corporateEntityRepository->save($ce, true);

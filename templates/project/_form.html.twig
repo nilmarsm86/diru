@@ -15,6 +15,32 @@
 
             {% if project.id is not null %}
                 <div class="dropdown d-inline-block">
+                    <div class="btn-group" role="group" aria-label="Regulaciones Urbanas">
+                        <button
+                            class="btn text-decoration-none btn-sm btn-primary"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_project_urban_regulation_index', {'project': project.id, 'state':'modal', 'modal':'modal-load'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Regulaciones aplicadas',
+                            }) }}
+                            {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
+                            Regulaciones
+                        </button>
+                        <button
+                            class="btn text-decoration-none btn-sm btn-primary show"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_project_urban_regulation_new', {'project': project.id, 'state':'modal', 'modal':'modal-load'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Agregar regulación al proyecto',
+                            }) }}
+                            {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
+                            {{ ux_icon('bi:plus-lg', {'class':'bi'}) }}
+                        </button>
+                    </div>
                     <button type="button"
                             class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
                             data-bs-toggle="dropdown"

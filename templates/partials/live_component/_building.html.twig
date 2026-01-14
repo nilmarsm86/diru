@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="col text-start">
                         <output data-range-target="min"></output>
-                        <span style="font-size: 0.75em">(-20%)</span>
+                        <span style="font-size: 0.75em">(-30%)</span>
                     </div>
                     <div class="col text-center">
                         <output
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col text-end">
                         <output data-range-target="max"></output>
-                        <span style="font-size: 0.75em">(+20%)</span>
+                        <span style="font-size: 0.75em">(+30%)</span>
                     </div>
                 </div>
             </div>
@@ -148,6 +148,77 @@
         </div>
     </div>
 </details>
+
+<details class="collection" open>
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Presupusto estimado:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row">
+        <div class="col-sm-3">
+            <div class="mb-3"><label for="building_constructionAssembly" class="form-label">Coeficiente de ajuste:</label>
+                <div class="input-group "><input type="text"
+                                                                                         id="building_constructionAssembly"
+                                                                                         name="building[constructionAssembly]"
+                                                                                         placeholder="0" min="0"
+                                                                                         data-usd-currency-target="field"
+                                                                                         data-controller="money"
+                                                                                         inputmode="decimal"
+                                                                                         class="form-control"
+                                                                                         value="0.00"></div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="mb-3" data-controller="type--money-plus"
+                 data-type--money-plus-add-url-value="/ptp/estimate/new/1?modal=modal-load&amp;screen=building"
+                 data-type--money-plus-add-id-value="modal-load"
+                 data-type--money-plus-add-placeholder-value="Cargando..."
+                 data-type--money-plus-add-title-value="Agregar estimado de proyecto y preparación técnica"
+                 data-type--money-plus-list-url-value="/ptp/estimate?modal=modal-load&amp;screen=building&amp;amount=100"
+                 data-type--money-plus-list-id-value="modal-load"
+                 data-type--money-plus-list-placeholder-value="Cargando..."
+                 data-type--money-plus-list-title-value="Listado de estimados de proyecto y preparación técnica"><label
+                    for="building_projectPriceTechnicalPreparation" class="form-label">Valor estimado ajustado:</label>
+                <div class="input-group "><span class="input-group-text prepend">$ </span><input type="text"
+                                                                                                 id="building_projectPriceTechnicalPreparation"
+                                                                                                 name="building[projectPriceTechnicalPreparation]"
+                                                                                                 placeholder="0" min="0"
+                                                                                                 data-summation-values-target="field"
+                                                                                                 data-currency-target="field"
+                                                                                                 data-vecpppt="data-vecpppt"
+                                                                                                 readonly="readonly"
+                                                                                                 data-controller="money"
+                                                                                                 data-type--money-plus-target="field"
+                                                                                                 inputmode="decimal"
+                                                                                                 class="form-control"
+                                                                                                 value="0.00">
+                    <button class="btn btn_detail btn-outline-secondary " type="button"
+                            data-type--money-plus-target="list">
+                        <svg viewBox="0 0 16 16" fill="currentColor" height="1em" width="1em" class="bi"
+                             style="color:white" aria-hidden="true">
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path>
+                        </svg>
+                    </button>
+
+                    <button class="btn btn-outline-secondary " type="button" data-type--money-plus-target="add">
+                        <svg viewBox="0 0 16 16" fill="currentColor" height="1em" width="1em" class="bi"
+                             style="color:white" aria-hidden="true">
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</details>
+
 
 {{ form_row(landNetworkConnections.vars.button_add, {
     label: 'Agregar conexion de red',

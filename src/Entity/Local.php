@@ -62,7 +62,7 @@ class Local implements MoneyInterface
     )]
     #[Assert\Expression(
         'this.validHeightInOtherArea()',
-        message: 'La altura de un local o área de muro debe ser mayor que 0.',
+        message: 'La altura de un local(AU) o área de elementos verticales(AEV) debe ser mayor que 0.',
         negate: false
     )]
     private ?float $height = null;
@@ -200,9 +200,9 @@ class Local implements MoneyInterface
 
         if (LocalType::WallArea === $this->getType() && null === $this->getId()) {
             if (false === $this->getSubSystem()?->hasWalls()) {
-                $this->setName('Área de muro');
+                $this->setName('Área de elementos verticales');
             } else {
-                $this->setName('Área de muro '.(int) $this->getSubSystem()?->getMaxLocalNumber() + 1);
+                $this->setName('Área de elementos verticales '.(int) $this->getSubSystem()?->getMaxLocalNumber() + 1);
             }
 
             if (is_null($this->getId())) {
@@ -240,7 +240,7 @@ class Local implements MoneyInterface
 
     public static function createAutomaticWall(SubSystem $subSystem, float $area, int $number = 0, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
-        $name = ($reply) ? 'Área de muro (R)' : 'Área de muro';
+        $name = ($reply) ? 'Área de elementos verticales (R)' : 'Área de elementos verticales';
         $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 2.40, $number, $entityManager);
         if ($reply) {
             $wall->setHasReply(false);

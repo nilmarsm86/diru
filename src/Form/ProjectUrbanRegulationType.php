@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Project;
 use App\Entity\ProjectUrbanRegulation;
 use App\Entity\UrbanRegulation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,14 +19,22 @@ class ProjectUrbanRegulationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('data')
+            ->add('urbanRegulationType', EntityType::class, [
+                'class' => \App\Entity\UrbanRegulationType::class,
+                'choice_label' => 'name',
+                'mapped' => false,
+                'label' => 'Tipo de regulación:',
+            ])
             ->add('urbanRegulation', EntityType::class, [
                 'class' => UrbanRegulation::class,
-                'choice_label' => 'id',
+                'choice_label' => 'description',
+                'label' => 'Regulación:',
             ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'choice_label' => 'id',
+            ->add('data', null, [
+                'label' => 'Dato:',
+            ])
+            ->add('reference', null, [
+                'label' => 'Referencia:',
             ])
         ;
     }

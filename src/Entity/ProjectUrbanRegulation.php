@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ConstructorBuildingRepository;
+use App\Repository\ProjectUrbanRegulationRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ConstructorBuildingRepository::class)]
+#[ORM\Entity(repositoryClass: ProjectUrbanRegulationRepository::class)]
+#[DoctrineAssert\UniqueEntity(fields: ['urbanRegulation', 'project'], message: 'Ya existe en el proyecto esta regulacion.', errorPath: 'urbanRegulation')]
 class ProjectUrbanRegulation
 {
     #[ORM\Id]
@@ -28,6 +31,9 @@ class ProjectUrbanRegulation
 
     #[ORM\Column]
     private ?string $data;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $reference = null;
 
     public function getId(): ?int
     {
@@ -66,6 +72,18 @@ class ProjectUrbanRegulation
     public function setData(?string $data): static
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

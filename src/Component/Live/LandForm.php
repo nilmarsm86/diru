@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
+use App\Entity\Enums\BuildingState;
 use App\Entity\Land;
 use App\Form\LandType;
 use App\Repository\LandRepository;
@@ -83,8 +84,10 @@ final class LandForm extends AbstractController
                 if (false === (bool) $this->formValues['floor'] || 0 === $this->formValues['occupiedArea']) {
                     $land->setFloor(1);
                     $this->building?->setIsNew(true);
+                    $this->building?->setState(BuildingState::Design);
                 } else {
                     $this->building?->setIsNew(false);
+                    $this->building?->setState(BuildingState::Diagnosis);
                 }
                 $this->building?->createFloors(false, $this->entityManager);
             }

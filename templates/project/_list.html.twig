@@ -71,18 +71,21 @@
 
                 {% for project in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ project.name }}</td>
+                        <td>
+                            <a href="{{ path('app_project_edit', {'id': project.id}) }}">{{ project.name }}</a>
+                        </td>
                         <td class="text-center">
                             <a href="{{ path('app_building_project', {'project':project.id}) }}">
                                 <span
-                                        class="badge rounded-pill bg-success"
-                                        title="Obras del proyecto"
-                                        style="cursor: pointer"
-                                        data-bs-toggle="tooltip"
+                                    class="badge rounded-pill bg-success"
+                                    title="Obras del proyecto"
+                                    style="cursor: pointer"
+                                    data-bs-toggle="tooltip"
                                 >
                                 {{ project.getBuildingsAmount() }}
                                 <span class="visually-hidden">Obras</span>
-                                </span></a>
+                                </span>
+                            </a>
                         </td>
                         {% if app.request.query.get('type') == '' %}
                             <td>{{ project.type.getLabelFrom(project.type) }}</td>

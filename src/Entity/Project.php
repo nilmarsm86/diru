@@ -179,7 +179,8 @@ class Project
     private function stopAllBuildings(): static
     {
         foreach ($this->getBuildings() as $building) {
-            $building->setState(BuildingState::Stopped);
+            // se deben parar todas las obras del proyecto
+            //            $building->setState(BuildingState::Stopped);
         }
 
         return $this;
@@ -483,7 +484,7 @@ class Project
     {
         $this->setState(ProjectState::Canceled);
         foreach ($this->getBuildings() as $building) {
-            $building->cancel();
+            //            $building->cancel();
         }
     }
 

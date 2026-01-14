@@ -145,6 +145,26 @@ class Building implements MeasurementDataInterface
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
     private Collection $buildingSeparateConcepts;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $registerAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $diagnosisAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $designAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisionAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisedAt = null;
+
+    #[ORM\Column]
+    //    #[Assert\NotBlank(message: 'El área de terreno está vacía.')]
+    #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
+    private ?float $coefficient = 0;
+
     public function __construct()
     {
         //        $this->estimatedValueConstruction = 0;
@@ -157,7 +177,10 @@ class Building implements MeasurementDataInterface
 
         //        $this->projectPriceTechnicalPreparation = 0;
 
+        // esto debe ir de la mano
         $this->setState(BuildingState::Registered);
+        $this->registerAt = new \DateTimeImmutable();
+
         $this->draftsmansBuildings = new ArrayCollection();
         $this->constructorBuildings = new ArrayCollection();
         $this->floors = new ArrayCollection();
@@ -172,6 +195,7 @@ class Building implements MeasurementDataInterface
         $this->urbanizationEstimates = new ArrayCollection();
         $this->projectTechnicalPreparationEstimates = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
+        $this->coefficient = 0;
     }
 
     public function getId(): ?int
@@ -208,10 +232,10 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function isStopped(): bool
-    {
-        return BuildingState::Stopped === $this->getState();
-    }
+    //    public function isStopped(): bool
+    //    {
+    //        return BuildingState::Stopped === $this->getState();
+    //    }
 
     public function getStopReason(): ?string
     {
@@ -665,12 +689,12 @@ class Building implements MeasurementDataInterface
         return false === $this->hasOriginalFloors();
     }
 
-    public function cancel(): static
-    {
-        $this->setState(BuildingState::Canceled);
-
-        return $this;
-    }
+    //    public function cancel(): static
+    //    {
+    //        $this->setState(BuildingState::Canceled);
+    //
+    //        return $this;
+    //    }
 
     public function getLandArea(): int|float|null
     {
@@ -1248,12 +1272,12 @@ class Building implements MeasurementDataInterface
 
     public function getRangeMinPrice(): int|float
     {
-        return $this->getRangePrice() - ($this->getRangePrice() * 20 / 100);
+        return $this->getRangePrice() - ($this->getRangePrice() * 30 / 100);
     }
 
     public function getRangeMaxPrice(): int|float
     {
-        return $this->getRangePrice() + ($this->getRangePrice() * 20 / 100);
+        return $this->getRangePrice() + ($this->getRangePrice() * 30 / 100);
     }
 
     public function getEstimatedConstructionAndNetworkConnection(): float|int
@@ -1283,5 +1307,77 @@ class Building implements MeasurementDataInterface
     public function getPrice(): float
     {
         return (float) $this->getRangePrice() + (float) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther();
+    }
+
+    public function getRegisterAt(): ?\DateTimeImmutable
+    {
+        return $this->registerAt;
+    }
+
+    public function setRegisterAt(?\DateTimeImmutable $registerAt): static
+    {
+        $this->registerAt = $registerAt;
+
+        return $this;
+    }
+
+    public function getDiagnosisAt(): ?\DateTimeImmutable
+    {
+        return $this->diagnosisAt;
+    }
+
+    public function setDiagnosisAt(?\DateTimeImmutable $diagnosisAt): static
+    {
+        $this->diagnosisAt = $diagnosisAt;
+
+        return $this;
+    }
+
+    public function getDesignAt(): ?\DateTimeImmutable
+    {
+        return $this->designAt;
+    }
+
+    public function setDesignAt(?\DateTimeImmutable $designAt): static
+    {
+        $this->designAt = $designAt;
+
+        return $this;
+    }
+
+    public function getRevisionAt(): ?\DateTimeImmutable
+    {
+        return $this->revisionAt;
+    }
+
+    public function setRevisionAt(?\DateTimeImmutable $revisionAt): static
+    {
+        $this->revisionAt = $revisionAt;
+
+        return $this;
+    }
+
+    public function getRevisedAt(): ?\DateTimeImmutable
+    {
+        return $this->revisedAt;
+    }
+
+    public function setRevisedAt(?\DateTimeImmutable $revisedAt): static
+    {
+        $this->revisedAt = $revisedAt;
+
+        return $this;
+    }
+
+    public function getCoefficient(): ?float
+    {
+        return $this->coefficient;
+    }
+
+    public function setCoefficient(float $coefficient): static
+    {
+        $this->coefficient = $coefficient;
+
+        return $this;
     }
 }

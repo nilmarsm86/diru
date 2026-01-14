@@ -8,7 +8,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_project_urban_regulation_new'), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new')})) }}
+            {{ tableActionButton3(path('app_project_urban_regulation_new', {'project' : project}), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new', {'project':project})})) }}
         </div>
     {% endblock %}
 
@@ -20,6 +20,8 @@
             {% block tableHead %}
                 <tr>
                     <th>Dato</th>
+                    <th>Medida</th>
+                    <th>Descripción</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -29,16 +31,13 @@
 
                 {% for project_urban_regulation in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td data-bs-toggle="tooltip"
-                            data-bs-title="{{ project_urban_regulation.urban_regulation.description }}">
-                            {{ project_urban_regulation.data }}
-                        </td>
-                        <td>{{ project_urban_regulation.measurementUnit }}</td>
-                        <td>{{ project_urban_regulation.type }}</td>
-                        <td>{{ get_label_from(project_urban_regulation.structure) }}</td>
+                        <td>{{ project_urban_regulation.data }}</td>
+                        <td>{{ project_urban_regulation.urbanRegulation.measurementUnit }}</td>
+                        <td>{{ project_urban_regulation.urbanRegulation.description }}</td>
+{#                        <td>{{ get_label_from(project_urban_regulation.urbanRegulation.structure) }}</td>#}
                         <td class="text-end">
-                            {{ tableActionButton3(path('app_project_urban_regulation_show', {'id': project_urban_regulation.id}), 'bi:eye', '', 'Detalle de la regulación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_urban_regulation_show', {'id': project_urban_regulation.id})}), 'btn-link') }}
-                            {{ tableActionButton3(path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id})}), 'btn-link') }}
+{#                            {{ tableActionButton3(path('app_project_urban_regulation_show', {'id': project_urban_regulation.id, 'project':project}), 'bi:eye', '', 'Detalle de la regulación', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_urban_regulation_show', {'id': project_urban_regulation.id, 'project':project})}), 'btn-link') }}#}
+{#                            {{ tableActionButton3(path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id, 'project':project}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id, 'project':project})}), 'btn-link') }}#}
 
                             {{ component('DeleteForm', {
                                 path: path('app_project_urban_regulation_delete', {'id': project_urban_regulation.id}),

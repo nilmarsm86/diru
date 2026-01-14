@@ -46,8 +46,8 @@ export default class extends AbstractController {
         this.totalTarget.innerText = USDollar.format(this.fieldTargets.reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0));
         if (this.element.querySelector('.vecpppt')) {
             let cleanTotal = document.querySelectorAll("[data-vecpppt]").values().reduce((accumulator, field) => accumulator + this.clearNumber(field.value), 0);
-            let up = cleanTotal + (cleanTotal * 20 / 100);
-            let down = cleanTotal - (cleanTotal * 20 / 100);
+            let up = cleanTotal + (cleanTotal * 30 / 100);
+            let down = cleanTotal - (cleanTotal * 30 / 100);
             if(this.element.querySelector('.vecpppt') instanceof HTMLInputElement){
                 // this.element.querySelector('.vecpppt').value = cleanTotal;
                 // this.element.querySelector('.vecpppt').setAttribute('min', down);

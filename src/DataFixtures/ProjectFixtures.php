@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Procrea\UrbanRegulationFixtures;
 use App\Entity\Building;
 use App\Entity\Client;
 use App\Entity\Contract;
@@ -14,6 +15,8 @@ use App\Entity\Enums\ProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
 use App\Entity\Project;
+use App\Entity\ProjectUrbanRegulation;
+use App\Entity\UrbanRegulation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -35,6 +38,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 
                 if ('Proyect1' === $project) {
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion1', true, true, 'Obra1');
+
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Máx. ocupación en parcela (COS)', '50');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Puntal mínimo general', '2.5');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Parqueos Construidos', 'Obligatorio');
                 }
 
                 if ('Proyect2' === $project) {
@@ -49,6 +56,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                     //                        }
                     //                    }
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion2', false, false, 'Obra2');
+
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Patios Interiores', '100');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Pasillo lateral', '1');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Portal y Medioportal', '2.5');
                 }
 
                 if ('Proyect3' === $project) {
@@ -64,6 +75,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                     //                        }
                     //                    }
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion3', true, true, 'Obra3');
+
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Cercado', '1');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Portales', 'Preferente');
+                    $this->addUrbanRegulation($manager, $projectEntity, 'Retranqueos', '1.5');
                 }
 
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
@@ -73,6 +88,17 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         }
 
         $manager->flush();
+    }
+
+    private function addUrbanRegulation(ObjectManager $manager, Project $project, string $urbanRegulationDescription, string $data): void
+    {
+        $projectUrbanRegulation = new ProjectUrbanRegulation();
+        $projectUrbanRegulation->setProject($project);
+        $projectUrbanRegulation->setUrbanRegulation($this->findUrbanRegulation($manager, $urbanRegulationDescription));
+        $projectUrbanRegulation->setData($data);
+        $projectUrbanRegulation->setReference('Referencia de la regulacion');
+
+        $project->addProjectUrbanRegulation($projectUrbanRegulation);
     }
 
     private function findCurrency(ObjectManager $manager, string $code): ?Currency
@@ -108,6 +134,11 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         return $manager->getRepository(Building::class)->findOneBy(['name' => $building]);
     }
 
+    private function findUrbanRegulation(ObjectManager $manager, string $urbanRegulationDescription): ?UrbanRegulation
+    {
+        return $manager->getRepository(UrbanRegulation::class)->findOneBy(['description' => $urbanRegulationDescription]);
+    }
+
     public function getDependencies(): array
     {
         return [
@@ -118,6 +149,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
             UserFixtures::class,
             BuildingFixtures::class,
             CurrencyFixtures::class,
+            UrbanRegulationFixtures::class,
         ];
     }
 

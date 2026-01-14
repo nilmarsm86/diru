@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Project;
 use App\Entity\ProjectUrbanRegulation;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -55,10 +56,12 @@ class ProjectUrbanRegulationRepository extends ServiceEntityRepository implement
     /**
      * @return Paginator<mixed>
      */
-    public function findUrbanRegulationsInProject(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findUrbanRegulationsInProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('pur');
         //        $this->addFilter($builder, $filter);
+        $builder->andWhere('pur.project  = :project');
+        $builder->setParameter('project', $project->getId());
         $query = $builder->orderBy('pur.id', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251217042434 extends AbstractMigration
+final class Version20260114113954 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,7 +31,8 @@ final class Version20251217042434 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_C7440455AE6F181C ON client (municipality_id)');
         $this->addSql('CREATE TABLE constructive_action (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE constructive_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE constructor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, code VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE constructor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, municipality_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, address CLOB NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_7DD91A39AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_7DD91A39AE6F181C ON constructor (municipality_id)');
         $this->addSql('CREATE UNIQUE INDEX constructor_name ON constructor (name)');
         $this->addSql('CREATE TABLE constructor_building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, constructor_id INTEGER NOT NULL, building_id INTEGER NOT NULL, started_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , finished_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
@@ -40,7 +41,7 @@ final class Version20251217042434 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_29A127574D2A7E12 ON constructor_building (building_id)');
         $this->addSql('CREATE TABLE contract (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, code VARCHAR(255) NOT NULL, year INTEGER NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX contract_code ON contract (code)');
-        $this->addSql('CREATE TABLE corporate_entity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, organism_id INTEGER NOT NULL, municipality_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, nit VARCHAR(255) DEFAULT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_C6EFC8A464180A36 FOREIGN KEY (organism_id) REFERENCES organism (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C6EFC8A4AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE corporate_entity (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, organism_id INTEGER NOT NULL, municipality_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, nit VARCHAR(255) DEFAULT NULL, type VARCHAR(255) NOT NULL, address CLOB NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_C6EFC8A464180A36 FOREIGN KEY (organism_id) REFERENCES organism (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C6EFC8A4AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_C6EFC8A464180A36 ON corporate_entity (organism_id)');
         $this->addSql('CREATE INDEX IDX_C6EFC8A4AE6F181C ON corporate_entity (municipality_id)');
         $this->addSql('CREATE UNIQUE INDEX corporate_entity_name ON corporate_entity (name)');
@@ -65,14 +66,14 @@ final class Version20251217042434 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_43CA0AD671692C0F ON investment (location_zone_id)');
         $this->addSql('CREATE INDEX IDX_43CA0AD6AE6F181C ON investment (municipality_id)');
         $this->addSql('CREATE TABLE land (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, land_area DOUBLE PRECISION NOT NULL, occupied_area DOUBLE PRECISION NOT NULL, perimeter DOUBLE PRECISION DEFAULT NULL, photo VARCHAR(255) DEFAULT NULL, microlocalization VARCHAR(255) DEFAULT NULL, floor INTEGER NOT NULL, is_blocked BOOLEAN DEFAULT NULL)');
-        $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, land_network_connection_constructive_action_id INTEGER DEFAULT NULL, explanation CLOB DEFAULT NULL, type VARCHAR(255) NOT NULL, longitude NUMERIC(10, 2) NOT NULL, technical_status VARCHAR(255) NOT NULL, CONSTRAINT FK_7BF47B3B4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B754933F6 FOREIGN KEY (land_network_connection_constructive_action_id) REFERENCES land_network_connection_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE land_network_connection (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, network_connection_id INTEGER NOT NULL, land_network_connection_constructive_action_id INTEGER DEFAULT NULL, explanation CLOB DEFAULT NULL, type VARCHAR(255) NOT NULL, longitude DOUBLE PRECISION NOT NULL, technical_status VARCHAR(255) NOT NULL, CONSTRAINT FK_7BF47B3B4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B4EDCA4BC FOREIGN KEY (network_connection_id) REFERENCES network_connection (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BF47B3B754933F6 FOREIGN KEY (land_network_connection_constructive_action_id) REFERENCES land_network_connection_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4D2A7E12 ON land_network_connection (building_id)');
         $this->addSql('CREATE INDEX IDX_7BF47B3B4EDCA4BC ON land_network_connection (network_connection_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7BF47B3B754933F6 ON land_network_connection (land_network_connection_constructive_action_id)');
         $this->addSql('CREATE TABLE land_network_connection_constructive_action (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, constructive_action_id INTEGER DEFAULT NULL, constructive_system_id INTEGER DEFAULT NULL, price BIGINT NOT NULL, CONSTRAINT FK_388F0AC7369941F1 FOREIGN KEY (constructive_action_id) REFERENCES constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_388F0AC77B3E9E61 FOREIGN KEY (constructive_system_id) REFERENCES constructive_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_388F0AC7369941F1 ON land_network_connection_constructive_action (constructive_action_id)');
         $this->addSql('CREATE INDEX IDX_388F0AC77B3E9E61 ON land_network_connection_constructive_action (constructive_system_id)');
-        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, sub_system_id INTEGER NOT NULL, local_constructive_action_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, number INTEGER NOT NULL, area DOUBLE PRECISION NOT NULL, type VARCHAR(255) NOT NULL, height DOUBLE PRECISION NOT NULL, impact_higher_levels BOOLEAN NOT NULL, comment CLOB DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, technical_status VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8C298691B FOREIGN KEY (sub_system_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8460C8FAC FOREIGN KEY (local_constructive_action_id) REFERENCES local_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8108B7592 FOREIGN KEY (original_id) REFERENCES local (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE local (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, sub_system_id INTEGER NOT NULL, local_constructive_action_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, number VARCHAR(255) NOT NULL, area DOUBLE PRECISION NOT NULL, type VARCHAR(255) NOT NULL, height DOUBLE PRECISION NOT NULL, impact_higher_levels BOOLEAN NOT NULL, comment CLOB DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, technical_status VARCHAR(255) NOT NULL, CONSTRAINT FK_8BD688E8C298691B FOREIGN KEY (sub_system_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8460C8FAC FOREIGN KEY (local_constructive_action_id) REFERENCES local_constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8BD688E8108B7592 FOREIGN KEY (original_id) REFERENCES local (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_8BD688E8C298691B ON local (sub_system_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8BD688E8460C8FAC ON local (local_constructive_action_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8BD688E8108B7592 ON local (original_id)');
@@ -100,10 +101,10 @@ final class Version20251217042434 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2FB3D0EE2576E0FD ON project (contract_id)');
         $this->addSql('CREATE INDEX IDX_2FB3D0EE6E1B4FD5 ON project (investment_id)');
         $this->addSql('CREATE INDEX IDX_2FB3D0EE38248176 ON project (currency_id)');
-        $this->addSql('CREATE TABLE project_urban_regulation (project_id INTEGER NOT NULL, urban_regulation_id INTEGER NOT NULL, PRIMARY KEY(project_id, urban_regulation_id), CONSTRAINT FK_7E4EF94A166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4EF94A7555F80B FOREIGN KEY (urban_regulation_id) REFERENCES urban_regulation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_7E4EF94A166D1F9C ON project_urban_regulation (project_id)');
-        $this->addSql('CREATE INDEX IDX_7E4EF94A7555F80B ON project_urban_regulation (urban_regulation_id)');
         $this->addSql('CREATE TABLE project_technical_preparation_estimate (id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_39DA26B1BF396750 FOREIGN KEY (id) REFERENCES estimate (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE project_urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, urban_regulation_id INTEGER NOT NULL, project_id INTEGER NOT NULL, data VARCHAR(255) NOT NULL, CONSTRAINT FK_7E4EF94A7555F80B FOREIGN KEY (urban_regulation_id) REFERENCES urban_regulation (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4EF94A166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_7E4EF94A7555F80B ON project_urban_regulation (urban_regulation_id)');
+        $this->addSql('CREATE INDEX IDX_7E4EF94A166D1F9C ON project_urban_regulation (project_id)');
         $this->addSql('CREATE TABLE province (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX province_name ON province (name)');
         $this->addSql('CREATE TABLE representative (id INTEGER NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_2507390EBF396750 FOREIGN KEY (id) REFERENCES person (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -164,8 +165,8 @@ final class Version20251217042434 extends AbstractMigration
         $this->addSql('DROP TABLE organism');
         $this->addSql('DROP TABLE person');
         $this->addSql('DROP TABLE project');
-        $this->addSql('DROP TABLE project_urban_regulation');
         $this->addSql('DROP TABLE project_technical_preparation_estimate');
+        $this->addSql('DROP TABLE project_urban_regulation');
         $this->addSql('DROP TABLE province');
         $this->addSql('DROP TABLE representative');
         $this->addSql('DROP TABLE role');

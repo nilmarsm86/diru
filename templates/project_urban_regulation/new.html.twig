@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Agregar regulación al proyecto{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Regulaciones del proyecto', 'lets-icons:paper') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Regulaciones', href: path('app_project_urban_regulation_index')},
+            {label: 'Agregar'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar regulación al proyecto</h2>
+
+    {{ include('project_urban_regulation/_form.html.twig', {showButton: true, title: title}) }}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Regulaciones del proyecto{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Regulaciones del proyecto', 'lets-icons:paper') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Regulaciones del proyecto'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de regulaciones del proyecto</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('project_urban_regulation/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

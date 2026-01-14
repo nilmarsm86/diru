@@ -1,0 +1,41 @@
+{% if app.request.query.get('modal') %}
+{#    {{ component('UrbanRegulationForm', {modal:app.request.query.get('modal'), ur: urban_regulation, ajax: ajax}) }}#}
+{% else %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
+
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_project_urban_regulation_new',
+                label: 'Agregar',
+                title: 'Agregar regulación urbana',
+                entity: project_urban_regulation,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
+
+        {% block body %}
+{#            {{ component('UrbanRegulationForm', {modal:null, ur: urban_regulation, ajax: ajax}) }}#}
+        {% endblock %}
+
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_project_urban_regulation_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_project_urban_regulation_delete', label: 'Eliminar', title:'Eliminar regulación urbana del proyecto'},
+                id: project_urban_regulation.id,
+                message: 'Está seguro que desea eliminar la regulación urbana del proyecto?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: project_urban_regulation
+            }) }}
+        {% endblock %}
+
+    {% endcomponent %}
+{% endif %}
+
+{{ include('partials/modal/_modal_load.html.twig') }}

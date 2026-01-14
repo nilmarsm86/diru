@@ -102,10 +102,11 @@ class Project
     private ?Currency $currency = null;
 
     /**
-     * @var Collection<int, UrbanRegulation>
+     * @var Collection<int, ProjectUrbanRegulation>
      */
-    #[ORM\ManyToMany(targetEntity: UrbanRegulation::class, inversedBy: 'projects')]
-    private Collection $urbanRegulations;
+    #[ORM\OneToMany(targetEntity: ProjectUrbanRegulation::class, mappedBy: 'project', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $projectUrbanRegulations;
 
     public function __construct()
     {
@@ -114,7 +115,7 @@ class Project
         $this->registerAt = new \DateTimeImmutable();
         $this->buildings = new ArrayCollection();
         $this->contract = null;
-        $this->urbanRegulations = new ArrayCollection();
+        $this->projectUrbanRegulations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -487,25 +488,25 @@ class Project
     }
 
     /**
-     * @return Collection<int, UrbanRegulation>
+     * @return Collection<int, ProjectUrbanRegulation>
      */
-    public function getUrbanRegulations(): Collection
+    public function getProjectUrbanRegulations(): Collection
     {
-        return $this->urbanRegulations;
+        return $this->projectUrbanRegulations;
     }
 
-    public function addUrbanRegulation(UrbanRegulation $urbanRegulation): static
+    public function addProjectUrbanRegulation(ProjectUrbanRegulation $projectUrbanRegulation): static
     {
-        if (!$this->urbanRegulations->contains($urbanRegulation)) {
-            $this->urbanRegulations->add($urbanRegulation);
+        if (!$this->projectUrbanRegulations->contains($projectUrbanRegulation)) {
+            $this->projectUrbanRegulations->add($projectUrbanRegulation);
         }
 
         return $this;
     }
 
-    public function removeUrbanRegulation(UrbanRegulation $urbanRegulation): static
+    public function removeProjectUrbanRegulation(ProjectUrbanRegulation $projectUrbanRegulation): static
     {
-        $this->urbanRegulations->removeElement($urbanRegulation);
+        $this->projectUrbanRegulations->removeElement($projectUrbanRegulation);
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Constructor;
+use App\Form\Types\StreetAddressType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -43,7 +44,13 @@ class ConstructorType extends AbstractType
                 'label' => 'Logo:',
                 'required' => false,
             ])
-
+            ->add('streetAddress', StreetAddressType::class, [
+                'street' => $options['street'],
+                'province' => $options['province'],
+                'municipality' => $options['municipality'],
+                'mapped' => false,
+                'live_form' => $options['live_form'],
+            ])
         ;
     }
 
@@ -54,6 +61,15 @@ class ConstructorType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
+            'province' => 0,
+            'municipality' => 0,
+            'live_form' => false,
+            'street' => '',
         ]);
+
+        $resolver->setAllowedTypes('province', 'int');
+        $resolver->setAllowedTypes('municipality', 'int');
+        $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('street', 'string');
     }
 }

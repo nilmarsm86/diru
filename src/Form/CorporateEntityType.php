@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\CorporateEntity;
 use App\Entity\Organism;
-use App\Form\Types\AddressType;
 use App\Form\Types\CorporateEntityTypeEnumType;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;

@@ -33,6 +33,28 @@
                     <td>{{ constructor.country }}</td>
                 </tr>
                 <tr>
+                    <th>Provincia:</th>
+                    <td>
+                        {# TODO: refactoraizar #}
+                        <a href="{{ path('app_province_show', {'id': constructor.municipality.province.id }) }}">
+                            {{ constructor.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Municipio:</th>
+                    <td>
+                        {# TODO: refactoraizar #}
+                        <a href="{{ path('app_municipality_show', {'id': constructor.municipality.id }) }}">
+                            {{ constructor.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dirección:</th>
+                    <td>{{ constructor.street }}</td>
+                </tr>
+                <tr>
                     <th>Logo:</th>
                     <td>{{ constructor.logo }}</td>
                 </tr>

@@ -53,10 +53,11 @@ class UrbanRegulation
     private ?UrbanRegulationType $type = null;
 
     /**
-     * @var Collection<int, Project>
+     * @var Collection<int, ProjectUrbanRegulation>
      */
-    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'urbanRegulations')]
-    private Collection $projects;
+    #[ORM\OneToMany(targetEntity: ProjectUrbanRegulation::class, mappedBy: 'urbanRegulation', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $projectUrbanRegulations;
 
     #[ORM\Column(length: 255)]
     private string $structure;
@@ -69,7 +70,7 @@ class UrbanRegulation
 
     public function __construct()
     {
-        $this->projects = new ArrayCollection();
+        $this->projectUrbanRegulations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,28 +175,25 @@ class UrbanRegulation
     }
 
     /**
-     * @return Collection<int, Project>
+     * @return Collection<int, ProjectUrbanRegulation>
      */
-    public function getProjects(): Collection
+    public function getProjectUrbanRegulations(): Collection
     {
-        return $this->projects;
+        return $this->projectUrbanRegulations;
     }
 
-    public function addProject(Project $project): static
+    public function addProjectUrbanRegulation(ProjectUrbanRegulation $projectUrbanRegulation): static
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->addUrbanRegulation($this);
+        if (!$this->projectUrbanRegulations->contains($projectUrbanRegulation)) {
+            $this->projectUrbanRegulations->add($projectUrbanRegulation);
         }
 
         return $this;
     }
 
-    public function removeProject(Project $project): static
+    public function removeProjectUrbanRegulation(ProjectUrbanRegulation $projectUrbanRegulation): static
     {
-        if ($this->projects->removeElement($project)) {
-            $project->removeUrbanRegulation($this);
-        }
+        $this->projectUrbanRegulations->removeElement($projectUrbanRegulation);
 
         return $this;
     }

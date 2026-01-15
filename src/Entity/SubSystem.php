@@ -510,18 +510,11 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
         $floor->addSubSystem($subSystem);
 
-        //        $subSystem->setFloor($floor);
-
         (true === $floor->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         if ($reply) {
             $subSystem->setHasReply(false);
             $subSystem->recent();
         } else {
-            //            if ($floor->inNewBuilding()) {
-            //                $subSystem->recent();
-            //            } else {
-            //                $subSystem->existingWithoutReplicating();
-            //            }
             (true === $floor->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         }
         $subSystem->createInitialLocal($reply, $entityManager);
@@ -597,7 +590,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         $price = 0;
         /** @var Local $local */
         foreach ($locals as $local) {
-            $price += $local->getConstructiveActionAmount();
+            if ($local->isLocalType() || $local->isWallType()) {
+                $price += $local->getConstructiveActionAmount();
+            }
         }
 
         return $price;

@@ -866,6 +866,8 @@ class Building implements MeasurementDataInterface
 
         $entityManager->flush();
 
+        $this->setState(BuildingState::Design);
+
         return $this;
     }
 

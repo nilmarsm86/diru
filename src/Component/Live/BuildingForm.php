@@ -61,7 +61,6 @@ final class BuildingForm extends AbstractController
     public function mount(?Building $bui = null): void
     {
         $this->bui = (is_null($bui)) ? new Building() : $bui;
-        //        $this->project = $project;
         if (!is_null($this->bui->getId())) {
             $this->urbanizationEstimateTotalPrice = $this->bui->getUrbanizationEstimateTotalPrice();
             $this->ptpEstimateTotalPrice = $this->bui->getProjectTechnicalPreparationEstimateTotalPrice();
@@ -76,10 +75,8 @@ final class BuildingForm extends AbstractController
         }
 
         if (0 !== $this->project) {
-            //            $this->formValues['project'] = (string)$this->project;
             $project = $this->projectRepository->find((int) $this->project);
             $this->bui?->setProject($project);
-            //            $this->project = 0;
         }
 
         if (0.0 !== $this->urbanizationEstimateTotalPrice) {

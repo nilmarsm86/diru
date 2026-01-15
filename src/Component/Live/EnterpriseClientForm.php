@@ -8,7 +8,6 @@ use App\Form\EnterpriseClientType;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\MunicipalityRepository;
-use App\Repository\PersonRepository;
 use App\Repository\ProvinceRepository;
 use App\Repository\RepresentativeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +59,6 @@ final class EnterpriseClientForm extends AbstractController
         protected readonly ProvinceRepository $provinceRepository,
         protected readonly MunicipalityRepository $municipalityRepository,
         protected readonly CorporateEntityRepository $corporateEntityRepository,
-        //        protected readonly PersonRepository $personRepository
     ) {
     }
 

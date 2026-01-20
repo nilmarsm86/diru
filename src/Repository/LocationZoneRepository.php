@@ -23,31 +23,6 @@ class LocationZoneRepository extends ServiceEntityRepository implements FilterIn
         parent::__construct($registry, LocationZone::class);
     }
 
-    //    /**
-    //     * @return LocationZone[] Returns an array of LocationZone objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?LocationZone
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {

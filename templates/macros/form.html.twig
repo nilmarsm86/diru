@@ -20,22 +20,17 @@
 
 {% macro formAddressCol(form) %}
     <div class="mb-3 row" data-controller="address"
-{#         data-action="address:onSelectProvince->content-loader#refreshContent"#}
          data-address-url-value="{{ path('province_municipality', {'id': 0}) }}"
     >
-        {#        {{ form_row(form.address.province) }} #}
         {{ _self.formCol(form.address.province) }}
-        {#        {{ form_row(form.address.municipality) }} #}
         {{ _self.formCol(form.address.municipality) }}
     </div>
 {% endmacro %}
 
 {% macro formStreetAddressCol(form) %}
     <div class="mb-3 row" data-controller="address"
-{#         data-action="address:onSelectProvince->content-loader#refreshContent"#}
          data-address-url-value="{{ path('province_municipality', {'id': 0}) }}"
     >
-{#        {{ _self.formCol(form.streetAddress.street) }}#}
         <div class="col {% if form_errors(form.streetAddress.street) %}is-invalid{% endif %}">
             <div class="mb-0 row">
                 {{ form_label(form.streetAddress.street, null, {label_attr:{'class':'col-sm-6'}}) }}

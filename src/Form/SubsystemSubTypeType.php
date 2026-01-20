@@ -68,8 +68,6 @@ class SubsystemSubTypeType extends AbstractType
                     'placeholder' => 'Nombre del subtipo',
                 ],
                 'class' => SubsystemSubType::class,
-                //                'choice_label' => 'name',
-                //                'choice_value' => 'id',
 
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',
@@ -77,9 +75,6 @@ class SubsystemSubTypeType extends AbstractType
                 'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
 
                 'data' => $subsystemSubType,
-                //                'row_attr' => [
-                //                    'class' => 'mb-3 row'
-                //                ]
             ]);
     }
 }

@@ -36,7 +36,6 @@ class UrbanizationEstimateType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,

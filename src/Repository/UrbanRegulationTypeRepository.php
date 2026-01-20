@@ -23,31 +23,6 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
         parent::__construct($registry, UrbanRegulationType::class);
     }
 
-    //    /**
-    //     * @return UrbanRegulationType[] Returns an array of UrbanRegulationType objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?UrbanRegulationType
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {

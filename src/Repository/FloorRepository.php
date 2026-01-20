@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Floor>
@@ -23,31 +24,6 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
     {
         parent::__construct($registry, Floor::class);
     }
-
-    //    /**
-    //     * @return Floor[] Returns an array of Floor objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Floor
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
@@ -80,12 +56,12 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function remove(Floor $entity, bool $flush = false): void
     {
         if ($entity->hasSubSystems()) {
-            throw new \Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
+            throw new Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

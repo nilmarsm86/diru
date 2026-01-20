@@ -50,10 +50,7 @@
                         <td>{{ project.stopReason }}</td>
                     </tr>
                 {% endif %}
-                {#                <tr> #}
-                {#                    <th>Tiene área ocupada:</th> #}
-                {#                    <td>{{ project.hasOccupiedArea }}</td> #}
-                {#                </tr> #}
+
                 <tr>
                     <th>Registrado:</th>
                     <td>{{ project.registerAt is not null ? project.registerAt|date('D, d M Y H:i:s') : '' }}</td>

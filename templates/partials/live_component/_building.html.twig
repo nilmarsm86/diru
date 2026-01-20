@@ -75,14 +75,7 @@
             <div class="col">
                 {{ form_row(estimatedValueUrbanization) }}
             </div>
-            {#            <div class="col-2"> #}
-            {#                <p class="text-end">VEC + PPPT + VEU:</p> #}
-            {#                <h5 class="text-end"> #}{# $ #}
-            {#                    <span class="badge text-bg-info vecpppt"> #}
-            {#                        {{ 0|number_format(2) }} #}
-            {#                    </span> #}
-            {#                </h5> #}
-            {#            </div> #}
+
         </div>
         <div class="mb-3 row">
             <div class="col-12 text-center" {{ stimulusController('range') }}>
@@ -161,16 +154,17 @@
     <br>
     <div class="mb-0 row">
         <div class="col-sm-3">
-            <div class="mb-3"><label for="building_constructionAssembly" class="form-label">Coeficiente de ajuste:</label>
+            <div class="mb-3"><label for="building_constructionAssembly" class="form-label">Coeficiente de
+                    ajuste:</label>
                 <div class="input-group "><input type="text"
-                                                                                         id="building_constructionAssembly"
-                                                                                         name="building[constructionAssembly]"
-                                                                                         placeholder="0" min="0"
-                                                                                         data-usd-currency-target="field"
-                                                                                         data-controller="money"
-                                                                                         inputmode="decimal"
-                                                                                         class="form-control"
-                                                                                         value="0.00"></div>
+                                                 id="building_constructionAssembly"
+                                                 name="building[constructionAssembly]"
+                                                 placeholder="0" min="0"
+                                                 data-usd-currency-target="field"
+                                                 data-controller="money"
+                                                 inputmode="decimal"
+                                                 class="form-control"
+                                                 value="0.00"></div>
             </div>
         </div>
         <div class="col-sm-9">

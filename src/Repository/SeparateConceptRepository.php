@@ -23,30 +23,6 @@ class SeparateConceptRepository extends ServiceEntityRepository implements Filte
         parent::__construct($registry, SeparateConcept::class);
     }
 
-    //    /**
-    //     * @return SepareteConcept[] Returns an array of SeparateConcept objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?SeparateConcept
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {

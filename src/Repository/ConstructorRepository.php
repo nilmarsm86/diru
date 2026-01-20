@@ -23,31 +23,6 @@ class ConstructorRepository extends ServiceEntityRepository implements FilterInt
         parent::__construct($registry, Constructor::class);
     }
 
-    //    /**
-    //     * @return Constructor[] Returns an array of Constructor objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Constructor
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {

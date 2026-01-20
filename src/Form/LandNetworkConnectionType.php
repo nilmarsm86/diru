@@ -51,9 +51,6 @@ class LandNetworkConnectionType extends AbstractType
                 'required' => true,
                 'error_bubbling' => false,
             ]);
-        //        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
-        //            $this->onPreSetData($event, $options);
-        //        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -66,28 +63,4 @@ class LandNetworkConnectionType extends AbstractType
             ],
         ]);
     }
-
-    //    /**
-    //     * @param FormEvent $event
-    //     * @param array<mixed> $options
-    //     * @return void
-    //     */
-    //    private function onPreSetData(FormEvent $event, array $options): void
-    //    {
-    //        /** @var LandNetworkConnection $landNetworkConnection */
-    //        $landNetworkConnection = $event->getData();
-    //        $form = $event->getForm();
-    //
-    //
-    //        $form
-    //            ->add('explanation', null, [
-    //                'label' => 'Explicación:',
-    //            ])
-    //            ->add('networkConnection', EntityType::class, [
-    //                'class' => NetworkConnection::class,
-    //                'choice_label' => 'name',
-    //                'label' => 'Tipo:',
-    //                'placeholder' => '-Seleccinar-',
-    //            ]);
-    //    }
 }

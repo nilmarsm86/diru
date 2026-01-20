@@ -1,13 +1,9 @@
 <div {{ attributes.defaults(stimulusController('live/land-form', {modal:modal})) }}>
 
-    {#    {% form_theme form 'form/bootstrap_5_horizontal_layout_sm.html.twig' %} #}
-
     {% if this.isNew() == true %}
         {% set msg = 'Para un inmueble existente una vez creada la información de los datos del terreno, la misma <strong>NO</strong> podrá ser modificada.' %}
     {% else %}
-        {#        {% if this.building.isNew() == false %} #}
         {% set msg = 'Esta información no puede ser modificada.' %}
-        {#        {% endif %} #}
     {% endif %}
 
     {% if msg is defined %}

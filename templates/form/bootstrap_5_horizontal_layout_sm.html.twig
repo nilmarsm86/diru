@@ -65,16 +65,6 @@
                 <div class="{% if label_attr.class is defined and label_attr.class == 'col-sm-4' %}col-sm-8{% else %}{{ block('form_group_class') }}{% endif %}">
                     <div class="input-group">
                         {{- form_widget(form, widget_attr) -}}
-{#                        <button#}
-{#                                class="btn btn_detail btn-outline-secondary"#}
-{#                                type="button"#}
-{#                                data-action="live#action"#}
-{#                                data-live-action-param="removeItem"#}
-{#                                data-live-index-param="{{ row_key }}"#}
-{#                        >#}
-{#                            {{ ux_icon('bi:trash', {class:'bi', style:'color:white'}) }}#}
-{#                        </button>#}
-{#                        {{ form_widget(form.vars.button_delete, { label: 'X', attr: { class: 'btn btn-outline-danger' } }) }}#}
                     </div>
                     {{- form_help(form) -}}
                     {{- form_errors(form) -}}
@@ -158,61 +148,7 @@
     {%- endif %}
 {%- endblock form_errors %}
 
-{#{%- block live_collection_widget -%}#}
-{#    {%- if button_add is defined and not button_add.rendered -%}#}
-{#        {{ form_row(button_add) }}#}
-{#    {%- endif -%}#}
-{#    {{ block('form_widget') }}#}
-{#{%- endblock -%}#}
-
-{#{%- block live_collection_entry_row -%}#}
-{#    <div>#}
-{#        {{ block('form_row') }}#}
-{#        {%- if button_delete is defined and not button_delete.rendered -%}#}
-{#            {{ form_row(button_delete) }}#}
-{#        {%- endif -%}#}
-{#    </div>#}
-{#{%- endblock -%}#}
-
 {% block live_collection_button_add_widget %}
-{#    {% set attr = attr|merge({'class': attr.class|default('btn btn-ghost')}) %}#}
-{#    {% set translation_domain = false %}#}
     {% set label_html = true %}
-{#    {%- set label -%}#}
-{#        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">#}
-{#            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>#}
-{#        </svg>#}
-{#        {{ 'form.collection.button.add.label'|trans({}, 'forms') }}#}
-{#    {%- endset -%}#}
     {{ block('button_widget') }}
 {% endblock live_collection_button_add_widget %}
-
-{#{%- block live_collection_widget -%}#}
-{#    <table class="table table-borderless form-no-mb">#}
-{#        <thead>#}
-{#        <tr>#}
-{#            {% for child in form|last %}#}
-{#                <td>{{ form_label(child) }}</td>#}
-{#            {% endfor %}#}
-{#            <td></td>#}
-{#        </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#        {{ block('form_widget') }}#}
-{#        </tbody>#}
-{#    </table>#}
-{#    {%- if skip_add_button|default(false) is same as(false) and button_add is defined and not button_add.rendered -%}#}
-{#        {{ form_widget(button_add, { label: '+ Add Item', attr: { class: 'btn btn-outline-primary' } }) }}#}
-{#    {%- endif -%}#}
-{#{%- endblock -%}#}
-
-{#{%- block live_collection_entry_row -%}#}
-{#    <tr>#}
-{#        {% for child in form %}#}
-{#            <td>{{- form_row(child, { label: false }) -}}</td>#}
-{#        {% endfor %}#}
-{#        <td>#}
-{#            {{- form_row(button_delete, { label: 'X', attr: { class: 'btn btn-outline-danger' } }) -}}#}
-{#        </td>#}
-{#    </tr>#}
-{#{%- endblock -%}#}

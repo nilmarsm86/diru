@@ -19,11 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class QuickProjectType extends AbstractType
 {
-    //    public function __construct(private readonly RouterInterface $router)
-    //    {
-    //
-    //    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -54,28 +49,19 @@ class QuickProjectType extends AbstractType
                 },
                 'mapped' => false,
                 'label' => 'Persona natural',
-                //                'placeholder' => '-Seleccione-'
             ])
             ->add('enterpriseClient', EntityType::class, [
                 'class' => EnterpriseClient::class,
-                //                'choice_label' => 'representative',
                 'choice_label' => function (EnterpriseClient $enterpriseClient) {
                     return $enterpriseClient->getEmail();
                 },
                 'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getRepresentative(),
                 'mapped' => false,
                 'label' => 'Cliente empresarial-negocio',
-                //                'placeholder' => '-Seleccione-'
             ])
             ->add('button', HiddenType::class, [
                 'mapped' => false,
             ])
-//            ->add('moreData', SubmitType::class, [
-//                'label' => 'Llenar mas datos',
-//            ])
-//            ->add('landData', SubmitType::class, [
-//                'label' => 'Datos del terreno'
-//            ])
         ;
     }
 
@@ -93,17 +79,4 @@ class QuickProjectType extends AbstractType
         ]);
     }
 
-    //    /**
-    //     * @param array<mixed> $options
-    //     * @return Closure
-    //     */
-    //    private function getInvestmentQueryBuilder(array $options): \Closure
-    //    {
-    //        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-    //            return $er->createQueryBuilder('i')
-    //                ->join('i.project', 'p')
-    // //                ->where('i.project is null')
-    //                ->orderBy('i.name');
-    //        };
-    //    }
 }

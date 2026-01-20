@@ -68,7 +68,6 @@ class LandNetworkConnectionConstructiveActionType extends AbstractType
         $form->add('price', MoneyType::class, [
             'label' => 'Precio:',
             'currency' => $currency,
-            //            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [

@@ -19,7 +19,6 @@
 
             {% block tableHead %}
                 <tr>
-{#                    <th style="width: 1em"></th>#}
                     <th>Nombre</th>
                     <th></th>
                 </tr>
@@ -30,13 +29,6 @@
 
                 {% for province in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-{#                        <td style="width: 1em">#}
-{#                            <input#}
-{#                                    class="form-check-input"#}
-{#                                    type="checkbox"#}
-{#                                    id="{{ province.id }}"#}
-{#                            >#}
-{#                        </td>#}
                         <td>{{ province.name }}</td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_province_show', {'id': province.id}), 'bi:eye', '', 'Detalle de la provincia', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_province_show', {'id': province.id})}), 'btn-link') }}

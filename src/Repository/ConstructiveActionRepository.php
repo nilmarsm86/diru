@@ -17,30 +17,6 @@ class ConstructiveActionRepository extends ServiceEntityRepository implements Fi
         parent::__construct($registry, ConstructiveAction::class);
     }
 
-    //    /**
-    //     * @return ConstructiveAction[] Returns an array of ConstructiveAction objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ConstructiveAction
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         // TODO: Implement addFilter() method.

@@ -23,31 +23,6 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
         parent::__construct($registry, IndividualClient::class);
     }
 
-    //    /**
-    //     * @return IndividualClient[] Returns an array of IndividualClient objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?IndividualClient
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {

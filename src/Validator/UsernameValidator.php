@@ -34,11 +34,5 @@ final class UsernameValidator extends ConstraintValidator
             $this->context->buildViolation('El nombre de usuario debe contener solo minúsculas.')
                 ->addViolation();
         }
-
-        /*// TODO: implement the validation here
-        $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', $value)
-            ->addViolation()
-        ;*/
     }
 }

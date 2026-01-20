@@ -20,7 +20,6 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-{#                    <th>Tipo {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -32,24 +31,10 @@
                 {% for subsystem_sub_type in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ subsystem_sub_type.name }}</td>
-{#                        <td>#}
-{#                            <a href="{{ filterLink(subsystem_sub_type.subsystemType) }}"#}
-{#                               class="text-decoration-none"#}
-{#                            >#}
-{#                                {{ subsystem_sub_type.subsystemType }}#}
-{#                            </a>#}
-{#                        </td>#}
                         <td class="text-end">
-{#                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }}#}
+                            {#                            {{ tableActionButton3(path('app_municipality_show', {'id': municipality.id}), 'bi:eye', '', 'Detalle del municipio', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_municipality_show', {'id': municipality.id})})) }} #}
                             {{ tableActionButton3(path('app_subsystem_sub_type_edit', {'id': subsystem_sub_type.id}), 'fa:edit', '', 'Editar subtipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_sub_type_edit', {'id': subsystem_sub_type.id})}), 'btn-link') }}
 
-{#                            {{ component('DeleteForm', {#}
-{#                                path: path('app_subsystem_sub_type_delete', {'id': subsystem_sub_type.id}),#}
-{#                                confirm: 'Está seguro que desea eliminar el sub tipo?',#}
-{#                                token: 'delete' ~ subsystem_sub_type.id,#}
-{#                                title: 'Eliminar sub tipo',#}
-{#                                icon: 'bi:trash'#}
-{#                            }) }}#}
                         </td>
                     </tr>
                 {% else %}

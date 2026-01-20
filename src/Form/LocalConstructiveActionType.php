@@ -51,8 +51,6 @@ class LocalConstructiveActionType extends AbstractType
 
     private function onPreSetData(FormEvent $event): void
     {
-        //        \Locale::setDefault('en');
-
         /** @var LocalConstructiveAction $localConstructiveAction */
         $localConstructiveAction = $event->getData();
         $form = $event->getForm();
@@ -75,7 +73,6 @@ class LocalConstructiveActionType extends AbstractType
             'label' => 'Indicador técnico económico ($/m<sup>2</sup>):',
             'label_html' => true,
             'currency' => $currency,
-            //            'html5' => true,
             'input' => 'integer',
             'divisor' => 100,
             'attr' => [

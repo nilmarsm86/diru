@@ -6,11 +6,6 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class EnumTwigExtensionRuntime implements RuntimeExtensionInterface
 {
-    public function __construct()
-    {
-        // Inject dependencies if needed
-    }
-
     public function getLabelFrom(mixed $enum, mixed $value = null): string
     {
         //        if (gettype($enum) === 'string') {
@@ -24,12 +19,5 @@ class EnumTwigExtensionRuntime implements RuntimeExtensionInterface
         $callbackResult = call_user_func_array($callback, [$value]);
 
         return $callbackResult;
-        //        } else {
-        //            if(is_object($enum)){
-        //                return $enum->getLabelFrom($enum);
-        //            }
-
-        //            return '';
-        //        }
     }
 }

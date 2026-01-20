@@ -59,11 +59,7 @@
                 {{ tableActionButton3(path, 'bi:plus-lg', 'Nuevo', 'Nuevo subsistema', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path })) }}
             {% endif %}
 
-            {#            {% if reply %} #}
             {{ tableActionButton3(path('app_floor_index', {'building':floor.building.id, 'reply': reply}), 'dinkie-icons:house-buildings-small', reply ? 'Plantas replicadas' : 'Plantas', reply ? 'Listado de plantas replicadas' : 'Listado de plantas') }}
-            {#            {% else %} #}
-            {#                {{ tableActionButton3(path('app_floor_index', {building:floor.building.id}), 'dinkie-icons:house-buildings-small', 'Plantas', 'Listado de plantas') }} #}
-            {#            {% endif %} #}
             {{ tableActionButton3(path('app_building_edit', {id:floor.building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
         </div>
     {% endblock %}
@@ -216,12 +212,7 @@
                                             Reporte de estado técnico
                                         </a>
                                     </li>
-                                    {#                                    <li> #}
-                                    {#                                        <a class="dropdown-item" #}
-                                    {#                                           href="" title=""> #}
-                                    {#                                            Reporte de estado técnico por metros cuadrados #}
-                                    {#                                        </a> #}
-                                    {#                                    </li> #}
+
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -286,13 +277,7 @@
                     <th>{{ floor.getTotalArea()|number_format(2) }}</th>
                     <th>
                         {{ floor.getMaxHeight()|number_format(2) }}
-                        {#                        {% if floor.hasVariableHeights() %} #}
-                        {#                            <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Alturas variables. Queda áreas de vacio no definidas." data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
-                        {#                                {{ floor.getMaxHeight() }} #}
-                        {#                            </span> #}
-                        {#                        {% else %} #}
-                        {#                            {{ floor.getMaxHeight() }} #}
-                        {#                        {% endif %} #}
+
                     </th>
                     <th>{{ floor.getVolume()|number_format(2) }}</th>
                     <th>

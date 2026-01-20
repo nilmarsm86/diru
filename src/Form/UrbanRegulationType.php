@@ -81,18 +81,10 @@ class UrbanRegulationType extends AbstractType
                 'add_title' => 'Agregar tipo',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_urban_regulation_type_new', ['modal' => 'modal-load']),
-                //                'constraints' => [
-                //                    new Assert\NotBlank(message: 'Seleccione o cree el tipo de regulación.')
-                //                ]
             ])
             ->add('structure', UrbanRegulationStructureEnumType::class, [
                 'label' => 'Estructura:',
             ])
-//            ->add('projects', EntityType::class, [
-//                'class' => Project::class,
-//                'choice_label' => 'id',
-//                'multiple' => true,
-//            ])
         ;
     }
 

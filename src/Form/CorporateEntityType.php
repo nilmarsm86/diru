@@ -50,13 +50,6 @@ class CorporateEntityType extends AbstractType
             ->add('type', CorporateEntityTypeEnumType::class, [
                 'label' => 'Tipo de entidad:',
             ])
-//            ->add('address', AddressType::class, [
-//                'province' => $options['province'],
-//                'municipality' => $options['municipality'],
-//                'mapped' => false,
-//                'live_form' => $options['live_form'],
-//                //                'modal' => $options['modal']
-//            ])
             ->add('streetAddress', StreetAddressType::class, [
                 'street' => $options['street'],
                 'province' => $options['province'],
@@ -72,7 +65,6 @@ class CorporateEntityType extends AbstractType
             'label' => 'Organismo:',
             'placeholder' => '-Seleccione-',
             'attr' => [
-                //                    'data-model' => 'norender|organism',
             ],
             'query_builder' => $this->getOrganismQueryBuilder(),
         ];
@@ -85,9 +77,6 @@ class CorporateEntityType extends AbstractType
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_organism_new', ['modal' => 'modal-load']),
             ] + $organismAttr);
-        //        } else {
-        //            $builder->add('organism', EntityType::class, [] + $organismAttr);
-        //        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

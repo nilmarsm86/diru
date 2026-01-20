@@ -39,7 +39,7 @@
 
             {% block tableHead %}
                 <tr>
-{#                    <th style="width: 1em"></th>#}
+                    {#                    <th style="width: 1em"></th> #}
                     <th>Nombre</th>
                     {% if app.request.query.get('classification') == '' %}
                         <th>Sistemas</th>
@@ -54,13 +54,6 @@
 
                 {% for subsystemType in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-{#                        <td style="width: 1em">#}
-{#                            <input#}
-{#                                    class="form-check-input"#}
-{#                                    type="checkbox"#}
-{#                                    id="{{ province.id }}"#}
-{#                            >#}
-{#                        </td>#}
                         <td>{{ subsystemType.name }}</td>
                         {% if app.request.query.get('classification') == '' %}
                             <td>{{ subsystemType.classification.getLabelFrom(subsystemType.classification) }}</td>
@@ -69,13 +62,6 @@
                             {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_subsystem_type_edit', {'id': subsystemType.id}), 'fa:edit', '', 'Editar tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_edit', {'id': subsystemType.id})}), 'btn-link') }}
 
-{#                            {{ component('DeleteForm', {#}
-{#                                path: path('app_subsystem_type_delete', {'id': subsystemType.id}),#}
-{#                                confirm: 'Está seguro que desea eliminar el tipo?',#}
-{#                                token: 'delete' ~ subsystemType.id,#}
-{#                                title: 'Eliminar tiopo',#}
-{#                                icon: 'bi:trash'#}
-{#                            }) }}#}
                         </td>
                     </tr>
                 {% else %}

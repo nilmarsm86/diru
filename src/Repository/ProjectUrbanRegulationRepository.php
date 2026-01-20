@@ -24,30 +24,6 @@ class ProjectUrbanRegulationRepository extends ServiceEntityRepository implement
         parent::__construct($registry, ProjectUrbanRegulation::class);
     }
 
-    //    /**
-    //     * @return ProjectUrbanRegulation[] Returns an array of ProjectUrbanRegulation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ProjectUrbanRegulation
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         // TODO: Implement addFilter() method.

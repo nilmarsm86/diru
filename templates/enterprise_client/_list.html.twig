@@ -22,9 +22,7 @@
                     <th>Entidad {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th>Representante {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th>Teléfono {{ ux_icon('bi:telephone', {class:'bi'}) }}</th>
-{#                    <th>Correo {{ ux_icon('bi:envelope', {class:'bi'}) }}</th>#}
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-{#                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -60,18 +58,11 @@
                             {% endif %}
                         </td>
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
-{#                        <td><a href="mailto:{{ client.email }}">{{ client.email }}</a></td>#}
-
                         <td>
                             <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
                                 {{ client.getProvinceName() }}
                             </a>
                         </td>
-{#                        <td>#}
-{#                            <a href="{{ filterLink(client.getMunicipalityName()) }}" class="text-decoration-none">#}
-{#                                {{ client.getMunicipalityName() }}#}
-{#                            </a>#}
-{#                        </td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_enterprise_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_enterprise_client_show', {'id': client.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_enterprise_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_enterprise_client_edit', {'id': client.id})}), 'btn-link') }}

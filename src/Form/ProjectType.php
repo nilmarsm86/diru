@@ -58,7 +58,6 @@ class ProjectType extends AbstractType
                 'add_title' => 'Agregar Inversión',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_investment_new', ['modal' => 'modal-load']),
-                //                'query_builder' => $this->getInvestmentQueryBuilder($options),
                 'constraints' => [
                     new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.'),
                 ],
@@ -70,9 +69,6 @@ class ProjectType extends AbstractType
                 'attr' => [
                     'data-currency-target' => 'select',
                 ],
-                //                'constraints' => [
-                //                    new Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')
-                //                ]
             ])
             ->add('comment', null, [
                 'label' => false,
@@ -95,19 +91,6 @@ class ProjectType extends AbstractType
             ],
         ]);
     }
-
-    //    /**
-    //     * @param array<mixed> $options
-    //     * @return Closure
-    //     */
-    //    private function getInvestmentQueryBuilder(array $options): Closure
-    //    {
-    //        return function (EntityRepository $er) use ($options): QueryBuilder|array {
-    //            return $er->createQueryBuilder('i')
-    //                ->join('i.project', 'p')
-    //                ->orderBy('i.name');
-    //        };
-    //    }
 
     private function onPreSetData(FormEvent $event): void
     {

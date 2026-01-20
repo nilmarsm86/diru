@@ -11,28 +11,10 @@
 
     <div class="mb-0 row">
         <div class="col">
-{#            {{ form_row(form.type) }}#}
         </div>
         <div class="col">
-{#            {{ form_row(form.state) }}#}
-{#            {{ form_row(form.investment) }}#}
         </div>
     </div>
-
-{#    <div class="mb-0 row">#}
-{#        <div class="col">#}
-{#            <div {{ stimulusController('visibility') }}>#}
-{#                {{ form_row(form.isStopped) }}#}
-
-{#                <div {{ stimulusTarget('visibility', 'target') }} style="display: none">#}
-{#                    {{ form_row(form.stopReason) }}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col">#}
-{#            {{ form_row(form.hasOccupiedArea) }}#}
-{#        </div>#}
-{#    </div>#}
 
     <div class="mb-0 row" {{ stimulusController('visibility') }}>
         <div class="col">
@@ -65,17 +47,6 @@
                 component: this,
                 name: 'more_data'
             }) }}
-{#            {{ form_widget(form.moreData) }}#}
-{#            <button type="submit" class="btn btn-sm btn-success" onclick="document.querySelector('#quick_project_button').value = 'data';">Llenar más datos</button>#}
-
-{#            {{ component('button:submit', {#}
-{#                icon: (this.pro.id is null) ? 'bi:plus-lg' : 'fa:edit',#}
-{#                label: (this.pro.id is null) ? 'Datos generales del terreno' : 'Modificar',#}
-{#                component: this,#}
-{#                name: 'land_data'#}
-{#            }) }}#}
-{#            {{ form_widget(form.landData) }}#}
-{#            <button type="submit" class="btn btn-sm btn-success" onclick="document.querySelector('#quick_project_button').value = 'land';">Llenar más datos</button>#}
         </div>
     </div>
     {{ form_end(form) }}

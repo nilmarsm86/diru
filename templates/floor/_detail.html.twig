@@ -6,14 +6,6 @@
 } %}
 
     {% block header %}
-{#        {{ include('partials/_card_header_options.html.twig', {#}
-{#            goTo: 'app_building_new',#}
-{#            label: 'Nueva',#}
-{#            title: 'Nueva obra',#}
-{#            entity: building,#}
-{#            state: 'detail',#}
-{#            showButton: (showButton is defined and showButton == true) ? true : false#}
-{#        }) }}#}
     {% endblock %}
 
     {% block body %}
@@ -25,15 +17,6 @@
     {% endblock %}
 
     {% block footer %}
-{#        {{ include('partials/_card_footer.html.twig', {#}
-{#            list: {href: 'app_building_index', label: 'Listado', title:'Volver al listado'},#}
-{#            edit: {href: 'app_building_edit', label: 'Editar', title:'Editar obra'},#}
-{#            delete: {href: 'app_building_delete', label: 'Eliminar', title:'Eliminar obra'},#}
-{#            id: building.id,#}
-{#            message: 'Está seguro que desea eliminar la obra?',#}
-{#            state: 'detail',#}
-{#            showButton: (showButton is defined and showButton == true) ? true : false#}
-{#        }) }}#}
     {% endblock %}
 
 {% endcomponent %}

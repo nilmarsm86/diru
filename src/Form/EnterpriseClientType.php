@@ -54,7 +54,6 @@ class EnterpriseClientType extends AbstractType
             ])
             ->add('corporateEntity', EntityPlusType::class, [
                 'class' => CorporateEntity::class,
-                //                'placeholder' => '-Seleccione-',
                 'label' => 'Entidad corporativa:',
                 'query_builder' => $this->getEntityQueryBuilder(),
 
@@ -97,28 +96,6 @@ class EnterpriseClientType extends AbstractType
         $resolver->setAllowedTypes('street', 'string');
     }
 
-    //    /**
-    //     * @param Client $client
-    //     * @return Closure
-    //     */
-    //    private function getPersonQueryBuilder(Client $client): Closure
-    //    {
-    //        return function (EntityRepository $er) use ($client): QueryBuilder|array {
-    //            $qb = $er->createQueryBuilder('p');
-    //            if (!$client->getId()) {
-    //                $qb->leftJoin('p.client', 'c')
-    //                    ->where('c.person IS NULL');
-    //            } else {
-    //                $qb->leftJoin('p.client', 'c')
-    //                    ->where('c.person IS NULL')
-    //                    ->orWhere('c.id = :id')
-    //                    ->setParameter(':id', $client->getId());
-    //            }
-    //
-    //            return $qb->orderBy('p.name', 'ASC');
-    //        };
-    //    }
-
     private function getEntityQueryBuilder(): \Closure
     {
         return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
@@ -128,12 +105,10 @@ class EnterpriseClientType extends AbstractType
 
     private function onPreSetData(FormEvent $event): void
     {
-        //        $ec = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [
             'class' => Representative::class,
-            //            'placeholder' => '-Seleccione-',
             'label' => 'Representante:',
             'detail' => true,
             'detail_title' => 'Detalle del representante',

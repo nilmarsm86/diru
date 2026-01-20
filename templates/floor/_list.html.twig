@@ -1,3 +1,5 @@
+{# TODO: refactorizar #}
+
 {% if building.hasErrors(not reply) %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
@@ -66,7 +68,6 @@
                 </ul>
             </div>
 
-            {#            {% if (building.isNew() or building.hasReplyFloors()) or reply %} #}
             {% if building.isNew() or reply %}
                 {% set path = path('app_floor_new', {'building':building.id, 'reply': reply}) %}
                 {{ tableActionButton3(path, 'bi:plus-lg', 'Nueva', 'Nueva planta', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
@@ -92,19 +93,6 @@
                     landArea: building.getLandArea(),
                 }) }}
 
-{#                {% if building.hasFreeArea() %}#}
-{#                    <br>#}
-{#                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">#}
-{#                        Convertir en área sin asignar#}
-{#                    </a>#}
-{#                {% endif %}#}
-
-{#                {% if building.hasUnassignedArea() %}#}
-{#                    <br>#}
-{#                    <a href="{{ path('app_land_unassigned-free', {'id': building.land.id, 'building': building.id, 'reply': reply }) }}">#}
-{#                        Convertir en área libre#}
-{#                    </a>#}
-{#                {% endif %}#}
             {% endblock %}
 
             {% block tableHead %}
@@ -241,12 +229,7 @@
                                             Reporte de estado técnico
                                         </a>
                                     </li>
-                                    {#                                    <li> #}
-                                    {#                                        <a class="dropdown-item" #}
-                                    {#                                           href="" title=""> #}
-                                    {#                                            Reporte de estado técnico por metros cuadrados #}
-                                    {#                                        </a> #}
-                                    {#                                    </li> #}
+
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

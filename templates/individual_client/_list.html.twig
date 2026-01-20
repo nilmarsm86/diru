@@ -20,13 +20,10 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-{#                    <th>Carnet</th>#}
-                    {#                    <th>Pasaporte</th> #}
                     <th>Teléfono {{ ux_icon('bi:telephone', {class:'bi'}) }}</th>
                     <th>Correo {{ ux_icon('bi:envelope', {class:'bi'}) }}</th>
                     <th>Inversiones {{ ux_icon('bi:currency-dollar', {class:'bi'}) }}</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-{#                    <th>Municipio {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -48,8 +45,6 @@
                                 {{ client.person.getFullName() }}
                             {% endif %}
                         </td>
-{#                        <td>{{ client.person.identificationNumber }}</td>#}
-                        {#                        <td>{{ client.person.passport }}</td> #}
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
                         <td>
                             <a href="mailto:{{ client.email }}">{{ client.email }}</a>
@@ -64,11 +59,6 @@
                                 {{ client.getProvinceName() }}
                             </a>
                         </td>
-{#                        <td>#}
-{#                            <a href="{{ filterLink(client.getMunicipalityName()) }}" class="text-decoration-none">#}
-{#                                {{ client.getMunicipalityName() }}#}
-{#                            </a>#}
-{#                        </td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_individual_client_show', {'id': client.id}), 'bi:eye', '', 'Detalle del cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_show', {'id': client.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_individual_client_edit', {'id': client.id}), 'fa:edit', '', 'Editar cliente', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_individual_client_edit', {'id': client.id})}), 'btn-link') }}

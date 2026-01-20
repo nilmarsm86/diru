@@ -43,51 +43,45 @@
         {% endif %}
     </div>
 
-{#    <div class="mb-0 row">#}
-        {% if form.localConstructiveAction is defined %}
-{#            <div class="col">#}
-                <details class="collection" open>
-                    <summary class="collection">
-                        <div class="row summary-btn-lis">
-                            <div class="col">Acción constructiva:</div>
-                            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+    {% if form.localConstructiveAction is defined %}
+        <details class="collection" open>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">Acción constructiva:</div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
-                            </div>
-                        </div>
-                    </summary>
-                    <br>
-                    <div class="mb-0 row">
-                        <div class="col">
-                            {{ form_row(form.localConstructiveAction.constructiveAction) }}
-                        </div>
-                        {% if form.localConstructiveAction.price is defined %}
-                            <div class="col" {{ stimulusController('usd-currency') }}>
-                                {{ form_row(form.localConstructiveAction.price) }}
-                            </div>
-                        {% endif %}
-                        <div class="col">
-                            {{ form_row(form.localConstructiveAction.constructiveSystem) }}
-                        </div>
                     </div>
-                </details>
-{#            </div>#}
-        {% endif %}
-
-{#        <div class="col">#}
-            <details class="collection">
-                <summary class="collection">
-                    <div class="row summary-btn-lis">
-                        <div class="col">Comentario:</div>
-                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-                        </div>
+                </div>
+            </summary>
+            <br>
+            <div class="mb-0 row">
+                <div class="col">
+                    {{ form_row(form.localConstructiveAction.constructiveAction) }}
+                </div>
+                {% if form.localConstructiveAction.price is defined %}
+                    <div class="col" {{ stimulusController('usd-currency') }}>
+                        {{ form_row(form.localConstructiveAction.price) }}
                     </div>
-                </summary>
-                <br>
-                {{ form_row(form.comment) }}
-            </details>
-{#        </div>#}
-{#    </div>#}
+                {% endif %}
+                <div class="col">
+                    {{ form_row(form.localConstructiveAction.constructiveSystem) }}
+                </div>
+            </div>
+        </details>
+    {% endif %}
+
+    <details class="collection">
+        <summary class="collection">
+            <div class="row summary-btn-lis">
+                <div class="col">Comentario:</div>
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+                </div>
+            </div>
+        </summary>
+        <br>
+        {{ form_row(form.comment) }}
+    </details>
 
     {% if form.technicalStatus is defined %}
         <div class="mb-0 row">

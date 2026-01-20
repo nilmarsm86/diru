@@ -41,7 +41,6 @@
                         </td>
                         <td>{{ constructor.code }}</td>
                         <td>{{ constructor.country }}</td>
-{#                        <td>{{ constructor.logo }}</td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_constructor_show', {'id': constructor.id}), 'bi:eye', '', 'Detalle de la constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_show', {'id': constructor.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_constructor_edit', {'id': constructor.id}), 'fa:edit', '', 'Editar constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_edit', {'id': constructor.id})}), 'btn-link') }}

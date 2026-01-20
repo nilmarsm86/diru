@@ -5,29 +5,6 @@
     showPage: app.request.query.get('modal') ? false : true,
     navigation: app.request.query.get('modal') ? false : true,
 } %}
-{#    {% block amount %}#}
-{#        {% if not app.request.query.get('modal') %}#}
-{#            {{ parent() }}#}
-{#        {% endif %}#}
-{#    {% endblock %}#}
-
-{#    {% block filter %}#}
-{#        {% if not app.request.query.get('modal') %}#}
-{#            {{ parent() }}#}
-{#        {% endif %}#}
-{#    {% endblock %}#}
-
-{#    {% block show_page %}#}
-{#        {% if not app.request.query.get('modal') %}#}
-{#            {{ parent() }}#}
-{#        {% endif %}#}
-{#    {% endblock %}#}
-
-{#    {% block navigation %}#}
-{#        {% if not app.request.query.get('modal') %}#}
-{#            {{ parent() }}#}
-{#        {% endif %}#}
-{#    {% endblock %}#}
 
     {% block tableHead %}
         <tr>

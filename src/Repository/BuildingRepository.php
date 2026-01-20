@@ -25,31 +25,6 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
         parent::__construct($registry, Building::class);
     }
 
-    //    /**
-    //     * @return Building[] Returns an array of Building objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Building
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         if ('' !== $filter) {
@@ -68,7 +43,6 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     public function findBuildings(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
-//            ->leftJoin('b.constructor', 'c')
             ->leftJoin('b.project', 'p');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();
@@ -90,7 +64,6 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     public function findBuildingsByProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1, string $state = ''): Paginator
     {
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
-//            ->leftJoin('b.constructor', 'c')
             ->leftJoin('b.project', 'p')
             ->where('p.id = :project')
             ->setParameter(':project', $project->getId());

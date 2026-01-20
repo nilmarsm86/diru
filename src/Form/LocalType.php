@@ -36,7 +36,6 @@ class LocalType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Número del local',
                     'min' => 1,
-                    //                    'data-controller' => 'positive-zero',
                 ],
             ])
             ->add('type', LocalTypeEnumType::class, [
@@ -50,7 +49,6 @@ class LocalType extends AbstractType
                     'data-controller' => 'positive-zero',
                     'min' => 0,
                 ],
-                //                'empty_data' => 0
             ])
             ->add('impactHigherLevels', null, [
                 'label' => 'Tiene impacto en niveles superiores:',
@@ -109,9 +107,6 @@ class LocalType extends AbstractType
         }
 
         $leftArea = $landArea - $totalLocalsArea;
-        /*if ($local && $local->getId()) {
-            $leftArea = $local->getArea();
-        }*/
 
         $subSystem = $local->getSubSystem();
         if (is_null($local->getId()) && $leftArea > 1 && true === $subSystem?->notWallArea()) {
@@ -133,13 +128,6 @@ class LocalType extends AbstractType
             'max' => $leftArea,
             'placeholder' => 'Área que ocupa el local',
         ];
-
-        //        if (!$options['subSystem']->isOriginal()) {
-        //            unset($attr['max']);
-        //            $constraints = [
-        //                new GreaterThan(value: 1)
-        //            ];
-        //        }
 
         $form->add('area', UnitMeasurementFloatType::class, [
             'unit' => 'm<sup>2</sup>',
@@ -167,10 +155,6 @@ class LocalType extends AbstractType
             'label' => 'Estado técnico:',
             'undefined_option' => $local->isOriginal(),
         ];
-
-        //        if(is_null($local->getId()) /*&& $options['reply']*/){
-        //            $technicalStatusOptions['data'] = TechnicalStatus::Good;
-        //        }
 
         $form->add('technicalStatus', TechnicalStatusEnumType::class, $technicalStatusOptions);
     }

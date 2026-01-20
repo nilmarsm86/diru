@@ -7,11 +7,6 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
 {
-    public function __construct()
-    {
-        // Inject dependencies if needed
-    }
-
     public function money(MoneyInterface|string $price, ?string $currency = null): string
     {
         if (!is_string($price)) {

@@ -17,30 +17,6 @@ class CurrencyRepository extends ServiceEntityRepository implements FilterInterf
         parent::__construct($registry, Currency::class);
     }
 
-    //    /**
-    //     * @return Currency[] Returns an array of Currency objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Currency
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
     {
         // TODO: Implement addFilter() method.

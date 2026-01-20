@@ -179,22 +179,6 @@
 
                         {% if this.pro.id is not null %}
                             {% if building.vars.data.id %}
-                                {#                                <a class="btn btn-outline-info btn-sm" #}
-                                {#                                   href="{{ path('app_floor_index', {building: building.vars.data.id}) }}"> #}
-                                {#                                    Gestionar plantas #}
-                                {#                                </a> #}
-                                {#                                <button class="btn btn-sm btn-outline-info" #}
-                                {#                                        title="Datos generales del terreno" #}
-                                {#                                        {{ stimulusTarget('modal-content-loader', 'button') }} #}
-                                {#                                        {{ stimulusController('modal-content-loader', { #}
-                                {#                                            url: this.getUrl(building.vars.data), #}
-                                {#                                            id: 'modal-load', #}
-                                {#                                            placeholder: 'Cargando...', #}
-                                {#                                            title: 'Datos generales del terreno', #}
-                                {#                                        }) }} #}
-                                {#                                > #}
-                                {#                                    Datos generales del terreno #}
-                                {#                                </button> #}
                                 <a class="btn btn-outline-info btn-sm"
                                    href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">
                                     {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
@@ -236,10 +220,6 @@
             }) }}
         </details>
     {% endfor %}
-
-    {# avoid an extra label for this field #}
-    {#        {% do form.municipalities.setRendered %} #}
-    {#    </details> #}
 
     <div class="row mb-3">
         <div class="col-sm-12">

@@ -21,7 +21,6 @@
                 <tr>
                     <th>Nombre y Apellidos</th>
                     <th>Carnet de identidad {{ ux_icon('bi:person-vcard-fill', {class:'bi'}) }}</th>
-{#                    <th>Pasaporte</th>#}
                     <th>Teléfono {{ ux_icon('bi:telephone', {class:'bi'}) }}</th>
                     <th>Correo {{ ux_icon('bi:envelope', {class:'bi'}) }}</th>
                     <th></th>
@@ -35,7 +34,6 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ representative.getFullName() }}</td>
                         <td>{{ representative.identificationNumber }}</td>
-{#                        <td>{{ representative.passport }}</td>#}
                         <td>
                             <a href="phone:{{ representative.phone }}">
                                 {{ representative.phone }}

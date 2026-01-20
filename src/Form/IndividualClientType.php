@@ -76,32 +76,8 @@ class IndividualClientType extends AbstractType
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
-    //    /**
-    //     * @param Client $client
-    //     * @return Closure
-    //     */
-    //    private function getPersonQueryBuilder(Client $client): Closure
-    //    {
-    //        return function (EntityRepository $er) use ($client): QueryBuilder|array {
-    //            $qb = $er->createQueryBuilder('p');
-    //            if (!$client->getId()) {
-    //                $qb->leftJoin('p.client', 'c')
-    //                    ->where('c.person IS NULL');
-    //            } else {
-    //                $qb->leftJoin('p.client', 'c')
-    //                    ->where('c.person IS NULL')
-    //                    ->orWhere('c.id = :id')
-    //                    ->setParameter(':id', $client->getId());
-    //            }
-    //
-    //            return $qb->orderBy('p.name', 'ASC');
-    //        };
-    //    }
-
     private function onPreSetData(FormEvent $event): void
     {
-        //        /** @var IndividualClient $ic */
-        //        $ic = $event->getData();
         $form = $event->getForm();
 
         $form->add('representative', EntityPlusType::class, [
@@ -118,15 +94,5 @@ class IndividualClientType extends AbstractType
             'add_id' => 'modal-load',
             'add_url' => $this->router->generate('app_representative_new', ['modal' => 'modal-load']),
         ]);
-
-        //        $form->add('hasRepresentative', CheckboxType::class, [
-        //            'label' => 'Tiene representante',
-        //            'mapped' => false,
-        //            'required' => false,
-        //            'attr' => [
-        //                'data-action' => 'change->visibility#toggle'//show or hide representative field
-        //            ],
-        //            'data' => (bool)$ic->getRepresentative()
-        //        ]);
     }
 }

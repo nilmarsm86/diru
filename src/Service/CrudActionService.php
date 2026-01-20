@@ -19,10 +19,11 @@ use Twig\Error\SyntaxError;
 readonly class CrudActionService
 {
     public function __construct(
-        private Environment $environment,
+        private Environment               $environment,
         private CsrfTokenManagerInterface $csrfTokenManager,
-        private RouterInterface $router,
-    ) {
+        private RouterInterface           $router,
+    )
+    {
     }
 
     /**
@@ -33,12 +34,13 @@ readonly class CrudActionService
      * @throws SyntaxError
      */
     public function indexAction(
-        Request $request,
+        Request         $request,
         FilterInterface $repository,
-        string $findMethod,
-        string $templateDir,
-        array $vars = [],
-    ): Response {
+        string          $findMethod,
+        string          $templateDir,
+        array           $vars = [],
+    ): Response
+    {
         /** @var array{string, int, int} $result */
         $result = $this->getManageQuerys($request);
         list($filter, $amountPerPage, $pageNumber) = $result;
@@ -56,9 +58,9 @@ readonly class CrudActionService
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
 
         $template = $this->environment->render("$templateDir/$template", [
-            'filter' => $filter,
-            'paginator' => $paginator,
-        ] + $vars);
+                'filter' => $filter,
+                'paginator' => $paginator,
+            ] + $vars);
 
         return new Response($template);
     }
@@ -70,8 +72,8 @@ readonly class CrudActionService
     {
         /** @var string $filter */
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
-        $pageNumber = (int) $request->query->get('page', '1');
+        $amountPerPage = (int)$request->query->get('amount', '10');
+        $pageNumber = (int)$request->query->get('page', '1');
 
         return [$filter, $amountPerPage, $pageNumber];
     }
@@ -85,17 +87,18 @@ readonly class CrudActionService
      */
     public function showAction(
         Request $request,
-        object $entity,
-        string $templateDir,
-        string $type,
-        string $title,
-        array $vars = [],
-    ): Response {
+        object  $entity,
+        string  $templateDir,
+        string  $type,
+        string  $title,
+        array   $vars = [],
+    ): Response
+    {
         $template = ($request->isXmlHttpRequest()) ? '_detail.html.twig' : 'show.html.twig';
         $parseTemplate = $this->environment->render("$templateDir/$template", [
-            $type => $entity,
-            'title' => $title,
-        ] + $vars);
+                $type => $entity,
+                'title' => $title,
+            ] + $vars);
 
         return new Response($parseTemplate);
     }
@@ -147,21 +150,22 @@ readonly class CrudActionService
 
     public function deleteAction(
         Request $request,
-        object $repository,
-        object $entity,
-        string $successMsg,
-        string $gotTo,
-        array $goToParams = [],
-    ): Response {
+        object  $repository,
+        object  $entity,
+        string  $successMsg,
+        string  $gotTo,
+        array   $goToParams = [],
+    ): Response
+    {
         $callback = [$entity, 'getId'];
         assert(is_callable($callback));
         /** @var string $entityId */
         $entityId = call_user_func_array($callback, []);
 
         $isAjax = $request->isXmlHttpRequest();
-        $id = 'delete_'.$this->getClassName($entity::class).'_'.$entityId;
+        $id = 'delete_' . $this->getClassName($entity::class) . '_' . $entityId;
 
-        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete'.$entityId, $request->getPayload()->getString('_token')))) {
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $entityId, $request->getPayload()->getString('_token')))) {
             if ($isAjax) {
                 return new Response($this->environment->render('partials/_form_success.html.twig', [
                     'id' => $id,
@@ -316,11 +320,12 @@ readonly class CrudActionService
      */
     public function formLiveComponentAction(
         Request $request,
-        object $entity,
-        string $templateDir,
-        array $vars = [],
-        bool $modal = false,
-    ): Response {
+        object  $entity,
+        string  $templateDir,
+        array   $vars = [],
+        bool    $modal = false,
+    ): Response
+    {
         $callback = [$entity, 'getId'];
         assert(is_callable($callback));
         $callbackResult = call_user_func_array($callback, []);
@@ -328,10 +333,10 @@ readonly class CrudActionService
         $template = ($request->isXmlHttpRequest()) ? '_form.html.twig' : (($modal) ? '_form.html.twig' : ((null !== $callbackResult) ? 'edit.html.twig' : 'new.html.twig')); // comportamiento por controlador
 
         return new Response($this->environment->render("$templateDir/$template", [
-            $templateDir => $entity,
-            'ajax' => $request->isXmlHttpRequest(),
-            //                'modal' => ($modal == false) ? $request->query->get('modal', '') : null
-        ] + $vars));
+                $templateDir => $entity,
+                'ajax' => $request->isXmlHttpRequest(),
+                //                'modal' => ($modal == false) ? $request->query->get('modal', '') : null
+            ] + $vars));
     }
 
     /**

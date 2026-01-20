@@ -59,7 +59,6 @@
                     {% if app.request.query.get('state') == '' %}
                         <th>Estado</th>
                     {% endif %}
-                    {#                    <th>Area ocupada</th> #}
                     <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th data-bs-toggle="tooltip" title="Costo de construcción">Monto (CUP)</th>
                     <th></th>
@@ -157,15 +156,6 @@
             {% endblock %}
 
         {% endcomponent %}
-
-        {#        {% component 'Modal:Modal' with { #}
-        {#            title: 'Detalle de la constructora', #}
-        {#            id: 'detail-constructor', #}
-        {#        } %} #}
-        {#            {% block body %} #}
-        {#                Cargando datos de la constructora... #}
-        {#            {% endblock %} #}
-        {#        {% endcomponent %} #}
 
         {% component 'Modal:Modal' with {
             title: 'Detalle de la inversión',

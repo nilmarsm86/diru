@@ -19,8 +19,6 @@
 
             {% block tableHead %}
                 <tr>
-                    {#                    <th>Id</th> #}
-                    {#                    <th>Type</th> #}
                     <th>Número</th>
                     <th>Nombre</th>
 {#                    <th>Fórmula</th>#}
@@ -33,11 +31,8 @@
 
                 {% for separate_concept in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        {#                        <td>{{ separate_concept.id }}</td> #}
-                        {#                        <td>{{ separate_concept.type }}</td> #}
                         <td>{{ separate_concept.number }}</td>
                         <td>{{ separate_concept.name }}</td>
-{#                        <td>{{ separate_concept.formula }}</td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_separate_concept_show', {'id': separate_concept.id}), 'bi:eye', '', 'Detalle del concepto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_separate_concept_show', {'id': separate_concept.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_separate_concept_edit', {'id': separate_concept.id}), 'fa:edit', '', 'Editar concepto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_separate_concept_edit', {'id': separate_concept.id})}), 'btn-link') }}

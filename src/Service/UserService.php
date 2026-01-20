@@ -26,13 +26,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 readonly class UserService
 {
     public function __construct(
-        private UserRepository $userRepository,
-        private RoleRepository $roleRepository,
-        private FormFactoryInterface $formFactory,
-        private Security $security,
+        private UserRepository              $userRepository,
+        private RoleRepository              $roleRepository,
+        private FormFactoryInterface        $formFactory,
+        private Security                    $security,
         private UserPasswordHasherInterface $userPasswordHasher,
-        //        private RequestStack                $requestStack
-    ) {
+    )
+    {
     }
 
     /**
@@ -102,8 +102,6 @@ readonly class UserService
                 throw new AccessDeniedException('Usuario no autenticado');
             }
             $this->userRepository->save($user, true);
-
-            //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Datos salvados.');
         }
 
         return $formName;
@@ -127,8 +125,6 @@ readonly class UserService
             $user = $dto->toEntity($user);
             $user->changePassword($this->userPasswordHasher);
             $this->userRepository->save($user, true);
-
-            //            $this->requestStack->getSession()->getFlashBag()->add('success', 'Contraseña cambiada.');
         }
 
         return $formPassword;

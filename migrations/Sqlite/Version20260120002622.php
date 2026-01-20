@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260114113954 extends AbstractMigration
+final class Version20260120002622 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,9 +20,17 @@ final class Version20260114113954 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER DEFAULT NULL, land_id INTEGER DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason CLOB DEFAULT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, is_new BOOLEAN DEFAULT NULL, population INTEGER NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment CLOB DEFAULT NULL, has_reply BOOLEAN DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER DEFAULT NULL, land_id INTEGER DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason CLOB DEFAULT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, is_new BOOLEAN DEFAULT NULL, population INTEGER NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment CLOB DEFAULT NULL, has_reply BOOLEAN DEFAULT NULL, register_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , diagnosis_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , design_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revision_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revised_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , coefficient DOUBLE PRECISION NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E16F61D4166D1F9C ON building (project_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E16F61D41994904A ON building (land_id)');
+        $this->addSql('CREATE TABLE building_revision (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+        , comment CLOB NOT NULL, CONSTRAINT FK_B6EF14974D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_B6EF14974D2A7E12 ON building_revision (building_id)');
         $this->addSql('CREATE TABLE building_separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, separate_concept_id INTEGER NOT NULL, percent DOUBLE PRECISION NOT NULL, CONSTRAINT FK_2D9790594D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2D979059754DF490 FOREIGN KEY (separate_concept_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_2D9790594D2A7E12 ON building_separate_concept (building_id)');
         $this->addSql('CREATE INDEX IDX_2D979059754DF490 ON building_separate_concept (separate_concept_id)');
@@ -102,7 +110,7 @@ final class Version20260114113954 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2FB3D0EE6E1B4FD5 ON project (investment_id)');
         $this->addSql('CREATE INDEX IDX_2FB3D0EE38248176 ON project (currency_id)');
         $this->addSql('CREATE TABLE project_technical_preparation_estimate (id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_39DA26B1BF396750 FOREIGN KEY (id) REFERENCES estimate (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE TABLE project_urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, urban_regulation_id INTEGER NOT NULL, project_id INTEGER NOT NULL, data VARCHAR(255) NOT NULL, CONSTRAINT FK_7E4EF94A7555F80B FOREIGN KEY (urban_regulation_id) REFERENCES urban_regulation (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4EF94A166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE project_urban_regulation (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, urban_regulation_id INTEGER NOT NULL, project_id INTEGER NOT NULL, data VARCHAR(255) NOT NULL, reference CLOB DEFAULT NULL, CONSTRAINT FK_7E4EF94A7555F80B FOREIGN KEY (urban_regulation_id) REFERENCES urban_regulation (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7E4EF94A166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7E4EF94A7555F80B ON project_urban_regulation (urban_regulation_id)');
         $this->addSql('CREATE INDEX IDX_7E4EF94A166D1F9C ON project_urban_regulation (project_id)');
         $this->addSql('CREATE TABLE province (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
@@ -137,6 +145,7 @@ final class Version20260114113954 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE building');
+        $this->addSql('DROP TABLE building_revision');
         $this->addSql('DROP TABLE building_separate_concept');
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE constructive_action');

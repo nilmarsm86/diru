@@ -12,11 +12,15 @@ final class Table
 
     public ?Paginator $paginator = null;
     public string $tableContainer = '';
+    public bool $amount = true;
+    public bool $filter = true;
+    public bool $showPage = true;
+    public bool $navigation = true;
 
     /**
      * cuando se monta por primera vez el componete.
      */
-    public function mount(Paginator $paginator): void
+    public function mount(?Paginator $paginator = null): void
     {
         $this->paginator = $paginator;
     }

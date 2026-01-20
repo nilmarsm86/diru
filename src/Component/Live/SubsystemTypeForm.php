@@ -42,9 +42,6 @@ final class SubsystemTypeForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $subsystemSubType = null;
 
-    //    #[LiveProp(writable: true)]
-    //    public ?string $subsystemSubTypePosition = null;
-
     public function mount(?SubsystemType $sst = null): void
     {
         $this->sst = (is_null($sst)) ? new SubsystemType() : $sst;
@@ -64,7 +61,6 @@ final class SubsystemTypeForm extends AbstractController
                 $pos = count($subsystemTypeSubsystemSubTypes) - 1;
             }
 
-            //            $this->formValues['subsystemTypeSubsystemSubTypes'][$pos]['subsystemSubType'] = $this->subsystemSubType;
             /** @var array<string, array<int, array<string, mixed>>> $formValues */
             $formValues = $this->formValues;
             $formValues['subsystemTypeSubsystemSubTypes'][$pos]['subsystemSubType'] = $this->subsystemSubType;
@@ -84,32 +80,6 @@ final class SubsystemTypeForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var SubsystemType $subsystemType */
             $subsystemType = $this->getForm()->getData();
-
-            //            foreach ($subsystemType->getSubsystemSubTypes() as $subsystemSubType){
-            //                if(is_null($subsystemSubType->getId())){
-            //                    $subsystemType->removeSubsystemSubType($subsystemSubType);
-            //                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
-            //                    if(!$subsystemType->getSubsystemSubTypes()->contains($subsystemSubType)){
-            //                        $subsystemType->addSubsystemSubType($subsystemSubType);
-            // //                        $subsystemSubType->addSubsystemType($subsystemType);
-            //                    }
-            //                }
-            //            }
-            //
-            //            if(!is_null($subsystemType->getId())){
-            //                foreach ($subsystemType->getSubsystemTypeSubsystemSubTypes() as $subsystemTypeSubsystemSubType){
-            //                    $subsystemType->removeSubsystemTypeSubsystemSubType($subsystemTypeSubsystemSubType);
-            //                    $entityManager->remove($subsystemTypeSubsystemSubType);
-            //                    $entityManager->flush();
-            //                }
-            // //                $subsystemTypeRepository->save($subsystemType, true);
-            //
-            //
-            //                foreach ($this->formValues['subsystemTypeSubsystemSubTypes'] as $subsystemTypeSubsystemSubType){
-            // //                    $subsystemSubType = $subsystemSubTypeRepository->findOneBy(['name' => $subsystemSubType->getName()]);
-            // //                    dump($subsystemTypeSubsystemSubType);
-            //                }
-            //            }
 
             $subsystemTypeRepository->save($subsystemType, true);
 

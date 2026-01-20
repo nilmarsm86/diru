@@ -31,7 +31,6 @@ class CorporateEntity
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'El código de empresa está vacío.')]
-    //    #[Assert\NotNull(message: 'El codigo de empresa no debe ser nulo.')]
     #[Assert\NoSuspiciousCharacters]
     private ?string $code = null;
 

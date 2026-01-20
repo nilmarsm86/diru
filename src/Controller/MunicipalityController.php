@@ -43,7 +43,6 @@ final class MunicipalityController extends AbstractController
 
         return $crudActionService->formLiveComponentAction($request, $municipality, 'municipality', [
             'title' => 'Nuevo municipio',
-            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -68,7 +67,6 @@ final class MunicipalityController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $municipality, 'municipality', [
             'title' => 'Editar municipio',
-            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -90,17 +88,4 @@ final class MunicipalityController extends AbstractController
 
         return $response;
     }
-
-    //    #[Route('/options/{id}', name: 'app_municipality_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    //    public function options(Request $request, Municipality $municipality, MunicipalityRepository $municipalityRepository): Response
-    //    {
-    // //        if ($request->isXmlHttpRequest()) {
-    // //            return $this->render('partials/_select_options.html.twig', [
-    // //                'entities' => $municipalityRepository->findBy([], ['name' => 'ASC']),
-    // //                'selected' => $municipality->getId()
-    // //            ]);
-    // //        }
-    //
-    //        throw new BadRequestHttpException('Ajax request');
-    //    }
 }

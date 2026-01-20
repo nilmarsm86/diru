@@ -50,8 +50,6 @@ final class RegistrationForm
     {
         if (is_null($user)) {
             $user = new User($this->name, $this->lastname, $this->username, $this->plainPassword, $this->identificationNumber, $this->phone, $this->email);
-            //            $user->setEmail($this->email);
-            //            $user->setPhone($this->phone);
         }
 
         return $user;

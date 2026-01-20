@@ -29,7 +29,6 @@ class SubSystemClassificationType extends AbstractType
     public function __construct(
         private readonly SubsystemTypeRepository $subsystemTypeRepository,
         private readonly SubsystemSubTypeRepository $subsystemSubTypeRepository,
-        //        private readonly RouterInterface            $router
     ) {
     }
 
@@ -65,28 +64,9 @@ class SubSystemClassificationType extends AbstractType
                 $typeAttr['data'] = $type;
             }
 
-            //        if (is_null($options['modal'])) {
-            //            $builder->add('type', EntityPlusType::class, [
-            //                    'add' => true,
-            //                    'add_title' => 'Agregar Tipo',
-            //                    'add_id' => 'modal-load',
-            //                    'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load']),
-            //                ] + $typeAttr);
-            //        } else {
-
             $field->add(EntityType::class, [] + $typeAttr);
         });
 
-        //        }
-
-        //        if (is_null($options['modal'])) {
-        //            $builder->add('subType', EntityPlusType::class, [
-        //                    'add' => true,
-        //                    'add_title' => 'Agregar sub tipo',
-        //                    'add_id' => 'modal-load',
-        //                    'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
-        //                ] + $subTypeAttr);
-        //        } else {
         $builder->addDependent('subType', 'type', function (DependentField $field, ?SubsystemType $subsystemType) use ($options) {
             $subType = $this->subsystemSubTypeRepository->find($options['subType']);
             $subTypeAttr = [

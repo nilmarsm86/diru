@@ -28,12 +28,4 @@ enum CorporateEntityType: string
             default => '-Seleccione-',// translate
         };
     }
-
-    //    /**
-    //     * @return CorporateEntityType[]
-    //     */
-    //    public static function getChoices(): array
-    //    {
-    //        return [self::Client, self::Constructor, self::ClientAndConstructor];
-    //    }
 }

@@ -77,7 +77,6 @@ final class SubSystemForm extends AbstractController
     public function preValue(): void
     {
         if (0 !== $this->type) {
-            //            $this->formValues['subsystemClassification']['type'] = (string) $this->type;
             /** @var array<string, array<int, mixed>> $formValues */
             $formValues = $this->formValues;
             $formValues['subsystemClassification']['type'] = (string) $this->type;
@@ -109,32 +108,19 @@ final class SubSystemForm extends AbstractController
                         ]);
 
                         if (!is_null($subsystemTypeSubsystemSubType)) {
-                            //                            $subType = $subsystemTypeSubsystemSubType->getSubsystemSubType();
-                            //                            $type = $subsystemTypeSubsystemSubType->getSubsystemType();
-                            //                            if ((string)$type->getId() !== $this->formValues['subsystemClassification']['type']) {
-                            //                                $type = $this->subsystemTypeRepository->find((int)$this->formValues['subsystemClassification']['type']);
-                            //                                if (!is_null($type)) {
-                            //                                    $this->formValues['subsystemClassification']['subType'] = ($type->getMunicipalities()->count())
-                            //                                        ? (string)$prov->getMunicipalities()->first()->getId()
-                            //                                        : '';
-                            //                                }
-                            //                            }
                             $formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
                             $this->formValues = $formValues;
                         }
                     } else {
-                        //                        $prov = $this->provinceRepository->find((int)$this->formValues['address']['province']);
                         /** @var int $type */
                         $type = $formValues['subsystemClassification']['type'];
                         $subsystemTypeSubsystemSubType = $this->subsystemTypeSubsystemSubTypeRepository->findOneBy([
                             'subsystemType' => $type,
-                            //                            'subsystemSubType' => (int)$this->formValues['subsystemClassification']['subType'],
                         ]);
+
                         if (!is_null($subsystemTypeSubsystemSubType)) {
-                            //                            if ($prov->getMunicipalities()->count()) {
                             $formValues['subsystemClassification']['subType'] = (string) $subsystemTypeSubsystemSubType->getSubsystemSubType()?->getId();
                             $this->formValues = $formValues;
-                            //                            }
                         }
                     }
                 }
@@ -187,46 +173,11 @@ final class SubSystemForm extends AbstractController
 
         $successMsg = (is_null($this->ss?->getId())) ? 'Se ha agregado el subsistema.' : 'Se ha modificado el subsistema.'; // TODO: personalizar los mensajes
 
-        //        if(is_null($this->ss->getId())){
-        //            $subSystem = $subSystemRepository->findBy([
-        //                'name' => $this->formValues['name'],
-        //                'floor' => $this->floor
-        //            ]);
-        //
-        //            if(count($subSystem) > 0){
-        // //                dump("Error");
-        //                $errorMessage = new FormError('Ya existe una subsistema con este nombre en esta planta.');
-        //                $this->getForm()->get
-        //            }
-        //        }
-        //
-        //        //die();
-
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
             /** @var SubSystem $subSystem */
             $subSystem = $this->getForm()->getData();
-            //            $this->floor->addSubSystem($subSystem);
-            //            $this->ss->setFloor($this->floor);
-            //            $subSystem->setFloor($this->floor);
-            //            $subSystem->createInitialLocal($this->reply, $entityManager);
-
-            //            if($this->floor->inNewBuilding()){
-            //                $subSystem->recent();
-            //            }
-
-            //            $local->setOriginal(0);
-            //            if($this->reply){
-            //                $subSystem->setHasReply(false);
-            //                $subSystem->recent();
-            //            }else{
-            //                if($this->floor->inNewBuilding()){
-            //                    $subSystem->recent();
-            //                }else{
-            //                    $subSystem->existingWithoutReplicating();
-            //                }
-            //            }
             if (is_null($this->ss?->getId())) {
                 assert($this->floor instanceof Floor);
                 /** @var string $name */
@@ -298,9 +249,4 @@ final class SubSystemForm extends AbstractController
 
         return true;
     }
-
-    //    private function getDataModelValue(): ?string
-    //    {
-    //        return 'norender|*';
-    //    }
 }

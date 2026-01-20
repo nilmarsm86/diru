@@ -182,15 +182,6 @@ trait StructureStateTrait
         //        }
 
         return is_null($this->getOriginal()) && (true === $this->hasReply || is_null($this->hasReply));
-
-        //        return (is_null($this->getOriginal()) && is_null($this->hasReply())) || (is_null($this->getOriginal()) && $this->hasReply() === true);
-        //        if(is_null($this->getOriginal())){
-        //            if(){
-        //
-        //            }else{
-        //
-        //            }
-        //        }
     }
 
     public function getOriginal(): ?self
@@ -204,16 +195,6 @@ trait StructureStateTrait
 
         return $this;
     }
-
-    //    public function getOriginalItems(Collection $items): ArrayCollection
-    //    {
-    //        return $this->getItemsFilter($items, true);
-    //    }
-    //
-    //    public function getReplyItems(Collection $items): ArrayCollection
-    //    {
-    //        return $this->getItemsFilter($items, false);
-    //    }
 
     /**
      * @template T of SubSystem|Local

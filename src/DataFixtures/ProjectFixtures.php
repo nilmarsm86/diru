@@ -10,7 +10,6 @@ use App\Entity\Currency;
 use App\Entity\Draftsman;
 use App\Entity\DraftsmanProject;
 use App\Entity\EnterpriseClient;
-use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
@@ -33,8 +32,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 $projectEntity = new Project();
                 $projectEntity->setName($project);
                 $projectEntity->setType(ProjectType::Parcel); // enum
-                //                $projectEntity->setState(ProjectState::Registered);//enum
-                //                $projectEntity->setHasOccupiedArea(false);
 
                 if ('Proyect1' === $project) {
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion1', true, true, 'Obra1');
@@ -45,16 +42,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 }
 
                 if ('Proyect2' === $project) {
-                    //                    if ($investment = $this->findInvestment($manager, 'Inversion2')) {
-                    //                        $investment->setName($investment->getName().' '.$project);
-                    //                        $projectEntity->setInvestment($investment);
-                    //                        $projectEntity->setClient($this->findClient($manager, false));
-                    //
-                    //                        $building = $this->findBuilding($manager, 'Obra2');
-                    //                        if (null !== $building) {
-                    //                            $projectEntity->addBuilding($building);
-                    //                        }
-                    //                    }
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion2', false, false, 'Obra2');
 
                     $this->addUrbanRegulation($manager, $projectEntity, 'Patios Interiores', '100');
@@ -63,17 +50,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 }
 
                 if ('Proyect3' === $project) {
-                    //                    if ($investment = $this->findInvestment($manager, 'Inversion3')) {
-                    //                        $investment->setName($investment->getName().' '.$project);
-                    //                        $projectEntity->setInvestment($investment);
-                    //                        $projectEntity->setClient($this->findClient($manager, true));
-                    //                        $projectEntity->setContract($this->findContract($manager, 'qaz753'));
-                    //
-                    //                        $building = $this->findBuilding($manager, 'Obra3');
-                    //                        if (null !== $building) {
-                    //                            $projectEntity->addBuilding($building);
-                    //                        }
-                    //                    }
                     $this->addInvestment($manager, $project, $projectEntity, 'Inversion3', true, true, 'Obra3');
 
                     $this->addUrbanRegulation($manager, $projectEntity, 'Cercado', '1');
@@ -123,11 +99,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
     {
         return $manager->getRepository(Contract::class)->findOneBy(['code' => $contract]);
     }
-
-    //    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
-    //    {
-    //        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
-    //    }
 
     private function findBuilding(ObjectManager $manager, string $building): ?Building
     {

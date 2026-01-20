@@ -20,8 +20,6 @@ use Twig\Error\SyntaxError;
 #[Route('/individual/client')]
 final class IndividualClientController extends AbstractController
 {
-    //    use MunicipalityTrait;
-
     /**
      * @throws SyntaxError
      * @throws RuntimeError

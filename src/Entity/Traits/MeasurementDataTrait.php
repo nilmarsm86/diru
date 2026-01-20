@@ -2,12 +2,10 @@
 
 namespace App\Entity\Traits;
 
-use App\Entity\Building;
 use App\Entity\Floor;
 use App\Entity\SubSystem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 
 trait MeasurementDataTrait
 {
@@ -18,7 +16,6 @@ trait MeasurementDataTrait
 
     public function getUsefulArea(?bool $original = null): float
     {
-        //        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
         return $this->getMeasurementData('getUsefulArea', $original);
     }
 
@@ -31,11 +28,6 @@ trait MeasurementDataTrait
     {
         return $this->getMeasurementData('getEmptyArea', $original);
     }
-
-    //    public function getUnassignedArea(bool $original = null): ?float
-    //    {
-    //        return $this->getMeasurementData('getUnassignedArea');
-    //    }
 
     /**
      * @template T of SubSystem|Floor
@@ -61,10 +53,6 @@ trait MeasurementDataTrait
      */
     public function calculateAllLocalsAreClassified(ArrayCollection $items): bool
     {
-        //        if((!$this instanceof Building) && !$this->isOriginal()){
-        //            return true;
-        //        }
-
         if (0 === $items->count()) {
             return false;
         }
@@ -87,18 +75,4 @@ trait MeasurementDataTrait
     {
         return 0.0 === $this->getWallArea();
     }
-
-    //    public function makeReply(EntityManagerInterface $entityManager, Collection $items, object $parent = null): static
-    //    {
-    //        $replica = clone $this;
-    //        $replica->setOriginal($this);
-    //
-    //        $entityManager->persist($replica);
-    //
-    //        foreach ($items as $item){
-    //            $item->reply($entityManager);
-    //        }
-    //
-    //        return $replica;
-    //    }
 }

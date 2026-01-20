@@ -22,7 +22,6 @@ class UrbanRegulationStructureEnumType extends AbstractType
             ->setDefault('choices', static fn (Options $options): array => UrbanRegulationStructure::cases())
             ->setDefault('choice_label', UrbanRegulationStructure::getLabel())
             ->setDefault('choice_value', UrbanRegulationStructure::getValue());
-        //            ->setDefault('placeholder', '-Seleccionar-');
     }
 
     public function getParent(): string

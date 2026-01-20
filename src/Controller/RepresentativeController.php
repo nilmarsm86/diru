@@ -92,17 +92,4 @@ final class RepresentativeController extends AbstractController
 
         return $response;
     }
-
-    //    #[Route('/options/{id}', name: 'app_representative_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    //    public function options(Request $request, Representative $representative, RepresentativeRepository $representativeRepository): Response
-    //    {
-    // //        if ($request->isXmlHttpRequest()) {
-    // //            return $this->render('partials/_select_options.html.twig', [
-    // //                'entities' => $representativeRepository->findBy([], ['name' => 'ASC']),
-    // //                'selected' => $representative->getId()
-    // //            ]);
-    // //        }
-    //
-    //        throw new BadRequestHttpException('Ajax request');
-    //    }
 }

@@ -52,7 +52,6 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface, F
         return [
             LocationZoneFixtures::class,
             ProvinceFixtures::class,
-            //            BuildingFixtures::class
         ];
     }
 

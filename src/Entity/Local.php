@@ -37,11 +37,6 @@ class Local implements MoneyInterface
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área está vacía.')]
-    //    #[Assert\Positive(message: 'El área debe ser mayor que 0.')]
-    //    #[Assert\Expression(
-    //        "this.getFloor().getBuilding().getLandArea() < value",
-    //        message: 'No debe ser mayor que el area de la obra.',
-    //    )]
     private ?float $area = null;
 
     #[ORM\Column(length: 255)]
@@ -69,8 +64,6 @@ class Local implements MoneyInterface
 
     #[ORM\ManyToOne(inversedBy: 'locals')]
     #[ORM\JoinColumn(nullable: false)]
-    //    #[Assert\Valid]
-    //    #[Assert\NotBlank(message: 'Establezca el subsistema.')]
     private ?SubSystem $subSystem = null;
 
     #[ORM\Column]
@@ -167,11 +160,6 @@ class Local implements MoneyInterface
         return $this->height;
     }
 
-    //    public function getFormatedHeight(): ?float
-    //    {
-    //        return number_format(((float) $this->getHeight()), 2);
-    //    }
-
     public function setHeight(float $height): static
     {
         $this->height = $height;
@@ -196,7 +184,6 @@ class Local implements MoneyInterface
     public function onSave(): void
     {
         $this->type = $this->getType()->value;
-        //        $this->technicalStatus = $this->getTechnicalStatus()->value;
 
         if (LocalType::WallArea === $this->getType() && null === $this->getId()) {
             if (false === $this->getSubSystem()?->hasWalls()) {
@@ -230,7 +217,6 @@ class Local implements MoneyInterface
     {
         $type = (is_null($this->type)) ? '' : $this->type;
         $this->setType(LocalType::from($type));
-        //        $this->setTechnicalStatus(TechnicalStatus::from($this->technicalStatus));
     }
 
     public function getVolume(): float|int
@@ -268,24 +254,9 @@ class Local implements MoneyInterface
             // TODO: esto del estado y el sistema constructivo ver si realmente necesito repetirlo
             if (!is_null($entityManager)) {
                 self::setDefaultConstructiveAction($entityManager, $local);
-                //                if ($subSystem->isRecent()) {
-                //                    $local->recent();
-                //                } else {
-                //                    $local->replica();
-                //                }
-                //                if($subSystem->isReplica() and !is_null($subSystem->getOriginal())){
-                //                    $local->replica();
-                //                } else {
-                //                    $local->recent();
-                //                }
                 $local->recent();
             }
         } else {
-            //            if (true === $subSystem->inNewBuilding()) {
-            //                $subSystem->recent();
-            //            } else {
-            //                $subSystem->existingWithoutReplicating();
-            //            }
             (true === $subSystem->inNewBuilding()) ? $subSystem->recent() : $subSystem->existingWithoutReplicating();
         }
 
@@ -312,11 +283,7 @@ class Local implements MoneyInterface
                 self::setDefaultConstructiveAction($entityManager, $local);
             }
         } else {
-            //            if($subSystem->isRecent()){
-            //                $local->recent();
-            //            }else{
             $local->existingWithoutReplicating();
-            //            }
         }
 
         return $local;
@@ -401,14 +368,6 @@ class Local implements MoneyInterface
     {
         return $this->getSubSystem()?->inNewBuilding();
     }
-
-    //    public function hasReply(): ?bool
-    //    {
-    //        if(!$this->inNewBuilding() && !$this->isOriginal()){
-    //            return false;
-    //        }
-    //        return $this->getSubSystem()->hasReply();
-    //    }
 
     public function getComment(): ?string
     {
@@ -509,11 +468,6 @@ class Local implements MoneyInterface
     {
         return $this->getSubSystem()?->getFloor()?->getBuilding()?->getProjectCurrency();
     }
-
-    /*public function getFormatedPrice(): string
-    {
-        return (number_format(((float)$this->getPrice() / 100), 2)) . ' ' . $this->getCurrency();
-    }*/
 
     public function isLocalType(): bool
     {

@@ -101,11 +101,6 @@ class Paginator
     public function getTotal(): int
     {
         if (is_null($this->fake)) {
-            //            if(is_array($this->data)){
-            //                return count($this->data);
-            //            }else{
-            //                return $this->data->count();
-            //            }
             return (is_array($this->data)) ? count($this->data) : $this->data->count();
         } else {
             return $this->fake;

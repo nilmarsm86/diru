@@ -9,7 +9,6 @@ use App\Validator\Username;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -61,15 +60,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
     private ?Person $person = null;
 
-    //    private $isDraftsman = false;
-
     public function __construct(string $name, string $lastname, string $username, string $password, string $identificationNumber, string $phone, string $email, bool $isDraftsman = false)
     {
-        //        if($isDraftsman){
-        //            $this->person = new Draftsman();
-        //        }else{
-        //            $this->person = new Person();
-        //        }
         $this->person = ($isDraftsman) ? new Draftsman() : new Person();
         $this->person->setName($name);
         $this->person->setLastname($lastname);
@@ -102,11 +94,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUsername(): string
     {
-        //        if(is_null($this->username)){
-        //            return '';
-        //        }
-        //        return $this->username;
-
         return (is_null($this->username)) ? '' : $this->username;
     }
 
@@ -152,10 +139,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function addRole(Role $role): static
     {
-        /*if(!$this->isActive()){
-            throw new Exception('No puede agregar rol a un usuario inactivo.');
-        }*/
-
         if (!$this->roles->contains($role)) {
             $this->roles->add($role);
         }

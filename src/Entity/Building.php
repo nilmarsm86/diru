@@ -25,8 +25,6 @@ class Building implements MeasurementDataInterface
     use NameToStringTrait;
     use MeasurementDataTrait;
 
-    //    use HasReplyTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,10 +41,6 @@ class Building implements MeasurementDataInterface
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stopReason = null;
-
-    //    #[ORM\Column(type: Types::BIGINT)]
-    //    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    //    private ?int $estimatedValueConstruction = 0;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
@@ -67,10 +61,6 @@ class Building implements MeasurementDataInterface
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     private ?int $approvedValueOther = 0;
-
-    //    #[ORM\Column(type: Types::BIGINT)]
-    //    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
-    //    private ?int $projectPriceTechnicalPreparation = 0;
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: true)]
@@ -161,21 +151,23 @@ class Building implements MeasurementDataInterface
     private ?\DateTimeImmutable $revisedAt = null;
 
     #[ORM\Column]
-    //    #[Assert\NotBlank(message: 'El área de terreno está vacía.')]
     #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
     private ?float $coefficient = 0;
 
+    /**
+     * @var Collection<int, BuildingRevision>
+     */
+    #[ORM\OneToMany(targetEntity: BuildingRevision::class, mappedBy: 'building')]
+    private Collection $buildingRevisions;
+
     public function __construct()
     {
-        //        $this->estimatedValueConstruction = 0;
         $this->estimatedValueEquipment = 0;
         $this->estimatedValueOther = 0;
 
         $this->approvedValueConstruction = 0;
         $this->approvedValueEquipment = 0;
         $this->approvedValueOther = 0;
-
-        //        $this->projectPriceTechnicalPreparation = 0;
 
         // esto debe ir de la mano
         $this->setState(BuildingState::Registered);
@@ -184,8 +176,6 @@ class Building implements MeasurementDataInterface
         $this->draftsmansBuildings = new ArrayCollection();
         $this->constructorBuildings = new ArrayCollection();
         $this->floors = new ArrayCollection();
-
-        //        $this->isNew = false;
 
         $this->hasReply = false;
 
@@ -196,6 +186,7 @@ class Building implements MeasurementDataInterface
         $this->projectTechnicalPreparationEstimates = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
         $this->coefficient = 0;
+        $this->buildingRevisions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,11 +223,6 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    //    public function isStopped(): bool
-    //    {
-    //        return BuildingState::Stopped === $this->getState();
-    //    }
-
     public function getStopReason(): ?string
     {
         return $this->stopReason;
@@ -248,19 +234,6 @@ class Building implements MeasurementDataInterface
 
         return $this;
     }
-
-    //    public function getEstimatedValueConstruction(): int|float
-    //    {
-    //        return $this->getPrice();
-    //        //return $this->estimatedValueConstruction;
-    //    }
-    //
-    //    public function setEstimatedValueConstruction(?int $estimatedValueConstruction): static
-    //    {
-    //        $this->estimatedValueConstruction = $estimatedValueConstruction;
-    //
-    //        return $this;
-    //    }
 
     public function getEstimatedValueEquipment(): ?int
     {
@@ -330,20 +303,11 @@ class Building implements MeasurementDataInterface
 
     public function getProjectPriceTechnicalPreparation(): ?int
     {
-        //        return $this->projectPriceTechnicalPreparation;
         return 0;
     }
 
-    //    public function setProjectPriceTechnicalPreparation(?int $projectPriceTechnicalPreparation): static
-    //    {
-    //        $this->projectPriceTechnicalPreparation = $projectPriceTechnicalPreparation;
-    //
-    //        return $this;
-    //    }
-
     public function getTotalEstimatedValue(): int|float
     {
-        //        return (float) $this->getPrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->projectPriceTechnicalPreparation;
         return (float) $this->getConstructivePrice() + (int) $this->getEstimatedValueEquipment() + (int) $this->getEstimatedValueOther() + (int) $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }
 
@@ -809,15 +773,6 @@ class Building implements MeasurementDataInterface
 
     public function isFullyOccupied(?bool $original = null): bool
     {
-        //        if($this->isNew()){
-        //            return $this->getLandArea() <= $this->getTotalArea($original);
-        //        }else{
-        //            return $this->getOccupiedArea() <= $this->getTotalArea($original);
-        //        }
-
-        //        if($this->isNew()){
-        //            return true;
-        //        }
         return $this->getTotalArea($original) >= $this->getMaxArea();
     }
 
@@ -855,18 +810,23 @@ class Building implements MeasurementDataInterface
 
     public function reply(EntityManagerInterface $entityManager, ?Building $parent = null): static
     {
-        //        /** @var Floor $floor */
-        //        foreach ($this->getOriginalFloors() as $floor) {
-        //            $floor->reply($entityManager, $parent);
-        //        }
         $this->replySons($entityManager, $this->getOriginalFloors(), $parent);
 
         $this->setHasReply(true);
+        $this->setState(BuildingState::Design);
         $entityManager->persist($this);
 
         $entityManager->flush();
 
-        $this->setState(BuildingState::Design);
+        return $this;
+    }
+
+    public function review(EntityManagerInterface $entityManager): static
+    {
+        $this->setState(BuildingState::Revision);
+        $entityManager->persist($this);
+
+        $entityManager->flush();
 
         return $this;
     }
@@ -998,12 +958,6 @@ class Building implements MeasurementDataInterface
         return $this->notWallArea() || (false === $this->hasOriginalLocals()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original));
     }
 
-    //    public function getUsefulArea(?bool $original = null): int
-    //    {
-    // //        $original = ($this instanceof Building) ? !$this->hasReply() : $this->isOriginal();
-    //        return $this->getMeasurementData('getUsefulArea', $original);
-    //    }
-
     public function getPopulation(): ?int
     {
         return $this->population;
@@ -1096,7 +1050,6 @@ class Building implements MeasurementDataInterface
     {
         $locals = 0;
 
-        //        $floors = (false === $this->hasReply() && false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
         $floors = (false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
@@ -1382,4 +1335,34 @@ class Building implements MeasurementDataInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, BuildingRevision>
+     */
+    public function getBuildingRevisions(): Collection
+    {
+        return $this->buildingRevisions;
+    }
+
+    public function addBuildingRevision(BuildingRevision $buildingRevision): static
+    {
+        if (!$this->buildingRevisions->contains($buildingRevision)) {
+            $this->buildingRevisions->add($buildingRevision);
+            $buildingRevision->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    //    public function removeBuildingRevision(BuildingRevision $buildingRevision): static
+    //    {
+    //        if ($this->buildingRevisions->removeElement($buildingRevision)) {
+    //            // set the owning side to null (unless already changed)
+    //            if ($buildingRevision->getBuilding() === $this) {
+    //                $buildingRevision->setBuilding(null);
+    //            }
+    //        }
+    //
+    //        return $this;
+    //    }
 }

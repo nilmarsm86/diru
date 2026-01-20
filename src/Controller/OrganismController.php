@@ -44,7 +44,6 @@ final class OrganismController extends AbstractController
 
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Nuevo organismo',
-            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -69,7 +68,6 @@ final class OrganismController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $organism, 'organism', [
             'title' => 'Editar organismo',
-            //            'ajax' => $request->isXmlHttpRequest()
         ]);
     }
 
@@ -104,17 +102,4 @@ final class OrganismController extends AbstractController
 
         return $response;
     }
-
-    //    #[Route('/options/{id}', name: 'app_organism_options', requirements: ['id' => '\d+'], methods: ['GET'])]
-    //    public function options(Request $request, Organism $organism, OrganismRepository $organismRepository): Response
-    //    {
-    // //        if ($request->isXmlHttpRequest()) {
-    // //            return $this->render('partials/_select_options.html.twig', [
-    // //                'entities' => $organismRepository->findBy([], ['name' => 'ASC']),
-    // //                'selected' => $organism->getId()
-    // //            ]);
-    // //        }
-    //
-    //        throw new BadRequestHttpException('Ajax request');
-    //    }
 }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BuildingRevision{% endblock %}
+
+{% block body %}
+    <h1>Create new BuildingRevision</h1>
+
+    {{ include('building_revision/_form.html.twig') }}
+
+    <a href="{{ path('app_building_revision_index') }}">back to list</a>
+{% endblock %}

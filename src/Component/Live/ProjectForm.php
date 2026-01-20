@@ -82,10 +82,6 @@ final class ProjectForm extends AbstractController
         }
 
         if (!is_null($this->pro?->getId())) {
-            //            if ($this->individualClient !== 0) {
-            //                $this->formValues['individualClient'] = (string)$this->individualClient;
-            //                $this->individualClient = 0;
-            //            }
             if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
                 /** @var int $individualClient */
                 $individualClient = $this->formValues['individualClient'];
@@ -101,10 +97,6 @@ final class ProjectForm extends AbstractController
                     $this->individualClient = $individualClient;
                 }
             }
-            //
-            //            if($this->individualClient !== 0 && empty($this->formValues['individualClient'])){
-            //                $this->formValues['individualClient'] = (string)$this->individualClient;
-            //            }
         }
 
         if (!is_null($this->pro?->getId())) {
@@ -130,11 +122,6 @@ final class ProjectForm extends AbstractController
                 $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
             }
         }
-
-        //        if ($this->client !== 0) {
-        //            $this->formValues['client'] = (string)$this->client;
-        //            $this->client = 0;
-        //        }
     }
 
     /**

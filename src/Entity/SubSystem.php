@@ -39,8 +39,6 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     #[ORM\ManyToOne(inversedBy: 'subSystems')]
     #[ORM\JoinColumn(nullable: false)]
-    //    #[Assert\Valid]
-    //    #[Assert\NotBlank(message: 'Establezca la planta para el subsistema.')]
     private ?Floor $floor = null;
 
     #[ORM\ManyToOne(inversedBy: 'subSystems')]
@@ -156,19 +154,6 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             return 0;
         }
 
-        //        if (is_null($this->getFloor()->getBuilding())) {
-        //            return 1;
-        //        }
-        //
-        //        $isNew = $this->getFloor()->getBuilding()->isNew();
-        //        $landArea = $this->getFloor()->getBuilding()->getLandArea();
-        //        $occupiedArea = $this->getFloor()->getBuilding()->getOccupiedArea();
-        // //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
-        //        if($this->getTotalArea() > $occupiedArea){
-        //            return $landArea - $this->getTotalArea();
-        //        }else{
-        //            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
-        //        }
         return $this->unassignedOrFreeArea();
     }
 
@@ -196,11 +181,6 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function isFullyOccupied(?bool $original = null): bool
     {
-        //        throw new \Exception("Not need");
-        //        if($this->getFloor()->getBuilding()->isNew()){
-        //            return true;
-        //        }
-
         if (is_null($this->getFloor())) {
             return false;
         }

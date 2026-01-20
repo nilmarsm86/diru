@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
-use App\Entity\Enums\ProjectState;
-use App\Entity\Enums\ProjectType;
 use App\Entity\Project;
 use App\Entity\ProjectUrbanRegulation;
 use App\Repository\ProjectUrbanRegulationRepository;
@@ -26,9 +24,6 @@ final class ProjectUrbanRegulationController extends AbstractController
         $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
-        //        $type = $request->query->get('type', '');
-        //        $state = $request->query->get('state', '');
-
         $data = $projectUrbanRegulationRepository->findUrbanRegulationsInProject($project, $filter, $amountPerPage, $pageNumber);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
@@ -42,8 +37,6 @@ final class ProjectUrbanRegulationController extends AbstractController
             'filter' => $filter,
             'paginator' => $paginator,
             'project' => $project->getId(),
-            //            'types' => ProjectType::cases(),
-            //            'states' => ProjectState::cases(),
         ]);
     }
 

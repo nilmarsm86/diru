@@ -3,7 +3,7 @@
 >
     <div class="row">
         <div class="col-md-3 text-nowrap">
-            {% if paginator is not null %}
+            {% if paginator is not null and amount %}
                 {% block amount %}
                     {{ component('Table:Amount', {
                         label: 'Mostrar',
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-md-6">
-            {% if paginator is not null %}
+            {% if paginator is not null and filter %}
                 {% block filter %}
                     {{ component('Table:Filter', {
                         filter: app.request.query.get('filter', ''),
@@ -48,27 +48,31 @@
 
     {% if paginator is not null %}
         <div class="row">
-            {% block show_page %}
-                <div class="col-md-6 align-self-center">
-                    <p class="dataTables_info" role="status" aria-live="polite">
-                        Mostrar <strong>{{ paginator.from }}</strong> al <strong>{{ paginator.to }}</strong> de
-                        <strong>{{ paginator.total }}</strong>
-                    </p>
-                </div>
-            {% endblock %}
+            <div class="col-md-6 align-self-center">
+                {% if showPage %}
+                    {% block show_page %}
+                        <p class="dataTables_info" role="status" aria-live="polite">
+                            Mostrar <strong>{{ paginator.from }}</strong> al <strong>{{ paginator.to }}</strong> de
+                            <strong>{{ paginator.total }}</strong>
+                        </p>
+                    {% endblock %}
+                {% endif %}
+            </div>
 
             <div class="col-md-6">
-                {% block navigation %}
-                    {{ component('Table:Navigation', {
-                        page: app.request.query.get('page', 1),
-                        paginator: paginator,
-                        queryName: 'page',
-                        queryStrings: {
-                            'amount':app.request.query.get('amount'),
-                            'filter':app.request.query.get('filter')
-                        },
-                    }) }}
-                {% endblock %}
+                {% if navigation %}
+                    {% block navigation %}
+                        {{ component('Table:Navigation', {
+                            page: app.request.query.get('page', 1),
+                            paginator: paginator,
+                            queryName: 'page',
+                            queryStrings: {
+                                'amount':app.request.query.get('amount'),
+                                'filter':app.request.query.get('filter')
+                            },
+                        }) }}
+                    {% endblock %}
+                {% endif %}
             </div>
         </div>
     {% endif %}

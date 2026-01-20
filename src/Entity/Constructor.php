@@ -37,12 +37,6 @@ class Constructor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-    //    /**
-    //     * @var Collection<int, Building>
-    //     */
-    //    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'constructor')]
-    //    private Collection $buildings;
-
     /**
      * @var Collection<int, ConstructorBuilding>
      */
@@ -98,36 +92,6 @@ class Constructor
 
         return $this;
     }
-
-    //    /**
-    //     * @return Collection<int, Building>
-    //     */
-    //    public function getBuildings(): Collection
-    //    {
-    //        return $this->buildings;
-    //    }
-    //
-    //    public function addBuilding(Building $building): static
-    //    {
-    //        if (!$this->buildings->contains($building)) {
-    //            $this->buildings->add($building);
-    //            $building->setConstructor($this);
-    //        }
-    //
-    //        return $this;
-    //    }
-    //
-    //    public function removeBuilding(Building $building): static
-    //    {
-    //        if ($this->buildings->removeElement($building)) {
-    //            // set the owning side to null (unless already changed)
-    //            if ($building->getConstructor() === $this) {
-    //                $building->setConstructor(null);
-    //            }
-    //        }
-    //
-    //        return $this;
-    //    }
 
     /**
      * @return Collection<int, ConstructorBuilding>

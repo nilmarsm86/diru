@@ -100,16 +100,12 @@ final class LandForm extends AbstractController
                     'land' => $land->getId(),
                 ], 'text-bg-success');
 
-                //                if ($land->hasFloors()) {
                 $this->addFlash('success', 'Se han salvado los datos del terreno.');
                 if ($showFloorMessage) {
                     $this->addFlash('info', 'Se han creado las plantas del inmueble.');
                 }
 
                 return $this->redirectToRoute('app_floor_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
-                //                } else {
-                //                    return null;
-                //                }
             }
 
             if ($this->ajax) {

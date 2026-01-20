@@ -57,11 +57,6 @@ final class ProjectUrbanRegulationForm extends AbstractController
 
     public function preValue(): void
     {
-        //        if (0 !== $this->type) {
-        //            $this->formValues['type'] = (string) $this->type;
-        //            $this->type = 0;
-        //        }
-
         if (0 !== $this->project) {
             $project = $this->projectRepository->find((int) $this->project);
             $this->pur?->setProject($project);
@@ -90,11 +85,6 @@ final class ProjectUrbanRegulationForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var ProjectUrbanRegulation $pur */
             $pur = $this->getForm()->getData();
-
-            //            if ('' !== $this->formValues['type']) {
-            //                $type = $urbanRegulationTypeRepository->find($this->formValues['type']);
-            //                $ur->setType($type);
-            //            }
 
             if (0 !== $this->project) {
                 $project = $this->projectRepository->find((int) $this->project);

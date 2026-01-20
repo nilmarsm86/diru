@@ -70,15 +70,12 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 
         foreach ($types as $classification => $typeNames) {
             foreach ($typeNames as $typeName => $subs) {
-                //                $type = $manager->getRepository(SubsystemType::class)->findOneBy(['name' => $typeName]);
-                //                if (is_null($type)) {
                 $type = new SubsystemType();
                 $type->setName($typeName);
                 $type->setClassification(SubsystemFunctionalClassification::from($classification));
 
                 $manager->persist($type);
                 $manager->flush();
-                //                }
 
                 $this->addSubType($manager, $type, $subs);
             }
@@ -91,12 +88,10 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
     public function addSubType(ObjectManager $manager, SubsystemType $subsystemType, array $subs): void
     {
         foreach ($subs as $subName) {
-            //            $isNew = false;
             $subType = $manager->getRepository(SubsystemSubType::class)->findOneBy(['name' => $subName]);
             if (is_null($subType)) {
                 $subType = new SubsystemSubType();
                 $subType->setName($subName);
-                //                $isNew = true;
                 $manager->persist($subType);
                 $manager->flush();
             }
@@ -107,11 +102,6 @@ class SubsystemTypeFixtures extends Fixture implements FixtureGroupInterface
 
             $manager->persist($stsst);
             $manager->flush();
-            //            $subsystemType->addSubsystemSubType($subType);
-            //            if ($isNew) {
-            //                $manager->persist($subsystemType);
-
-            //            }
         }
     }
 

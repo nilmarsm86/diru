@@ -18,9 +18,6 @@ class MoneyPlusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-
-//            ->setDefault('placeholder', '-Seleccione-')
-
             ->setDefault('add', false)
             ->setDefault('add_title', 'Agregar')
             ->setDefault('add_id', '')
@@ -33,13 +30,6 @@ class MoneyPlusType extends AbstractType
             ->setDefault('list_placeholder', 'Cargando...')
             ->setDefault('list_url', '')
             ->setDefault('list_icon', 'bi:list')
-
-//            ->setDefault('modify', false)
-//            ->setDefault('modify_title', 'Modificar')
-//            ->setDefault('modify_id', '')
-//            ->setDefault('modify_placeholder', 'Cargando...')
-//            ->setDefault('modify_url', '')
-//            ->setDefault('modify_icon', 'fa:edit')
         ;
 
         $resolver->setAllowedTypes('add', 'bool');
@@ -55,13 +45,6 @@ class MoneyPlusType extends AbstractType
         $resolver->setAllowedTypes('list_placeholder', 'string');
         $resolver->setAllowedTypes('list_url', 'string');
         $resolver->setAllowedTypes('list_icon', 'string');
-
-        //        $resolver->setAllowedTypes('modify', 'bool');
-        //        $resolver->setAllowedTypes('modify_title', 'string');
-        //        $resolver->setAllowedTypes('modify_id', 'string');
-        //        $resolver->setAllowedTypes('modify_placeholder', 'string');
-        //        $resolver->setAllowedTypes('modify_url', 'string');
-        //        $resolver->setAllowedTypes('modify_icon', 'string');
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -79,13 +62,6 @@ class MoneyPlusType extends AbstractType
         $view->vars['list_placeholder'] = $options['list_placeholder'];
         $view->vars['list_url'] = $options['list_url'];
         $view->vars['list_icon'] = $options['list_icon'];
-
-        //        $view->vars['modify'] = $options['modify'];
-        //        $view->vars['modify_title'] = $options['modify_title'];
-        //        $view->vars['modify_id'] = $options['modify_id'];
-        //        $view->vars['modify_placeholder'] = $options['modify_placeholder'];
-        //        $view->vars['modify_url'] = $options['modify_url'];
-        //        $view->vars['modify_icon'] = $options['modify_icon'];
     }
 
     public function getParent(): string

@@ -20,10 +20,8 @@ class StreetAddressType extends AbstractType
         $builder
             ->add('street', TextareaType::class, [
                 'label' => 'Dirección:',
-                //                'mapped' => false,
                 'data' => $options['street'],
                 'constraints' => $this->getStreetConstraints($options),
-                //                'property_path' => '[address]'
                 'attr' => [
                     'placeholder' => 'Escriba la dirección',
                 ],

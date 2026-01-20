@@ -1,9 +1,9 @@
 {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-    {% if building.hasReply() %}
-        {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply': true}), 'dinkie-icons:house-buildings-small', 'Inmueble a modificar', 'Inmueble a modificar') }}
-    {% endif %}
+    {#    {% if building.hasReply() %} #}
+    {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply': true}), 'dinkie-icons:house-buildings-small', 'Inmueble a modificar', 'Inmueble a modificar') }} #}
+    {#    {% endif %} #}
 
     <div class="dropdown d-inline-block">
         <button type="button"
@@ -15,12 +15,12 @@
         </button>
         <ul class="dropdown-menu" data-bs-theme="light">
             {% if building is not empty %}
-            <li>
-                <a class="dropdown-item"
-                   href="{{ path('app_building_report_local', {'id': building.id}) }}" title="">
-                    Reporte de estado técnico por locales
-                </a>
-            </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_building_report_local', {'id': building.id}) }}" title="">
+                        Reporte de estado técnico por locales
+                    </a>
+                </li>
             {% endif %}
             <li>
                 <a class="dropdown-item"
@@ -39,15 +39,81 @@
             </li>
         </ul>
     </div>
-    {% if building.isNew() is not null %}
-        {% if building.isNew() == false %}
-            {% set labelAndTitle = 'Inmueble existente' %}
-        {% else %}
-            {% set labelAndTitle = 'Inmueble nuevo' %}
-        {% endif %}
-        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', labelAndTitle, labelAndTitle) }}
-        {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }} #}
+
+    <div class="btn-group" role="group" aria-label="Revisiones">
+        <button
+            class="btn text-decoration-none btn-sm btn-primary"
+            {{ stimulusController('modal-content-loader', {
+                url: '',
+                id: 'modal-load',
+                placeholder: 'Cargando...',
+                title: 'Revisiones realizadas',
+            }) }}
+            {{ stimulusTarget('modal-content-loader', 'button') }}
+        >
+            Revisiones
+        </button>
+        <button
+            class="btn text-decoration-none btn-sm btn-primary show"
+            {{ stimulusController('modal-content-loader', {
+                url: '',
+                id: 'modal-load',
+                placeholder: 'Cargando...',
+                title: 'Agregar revisión',
+            }) }}
+            {{ stimulusTarget('modal-content-loader', 'button') }}
+        >
+            {{ ux_icon('bi:plus-lg', {'class':'bi'}) }}
+        </button>
+    </div>
+
+    {% if building.state.value is same as '3' %}
+        {{ tableActionButton3(path('app_building_review', {'id': building.id}), '', 'Revisar', 'Pasar a estado de revisión') }}
     {% endif %}
+
+    {% if building.canReply() and building.hasErrors() == false %}
+        {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
+    {% endif %}
+
+    {% if building.isNew() is not null %}
+    <div class="dropdown d-inline-block">
+        <button type="button"
+                class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                data-bs-toggle="dropdown"
+                aria-expanded="false" title="Obras del proyecto"
+        >
+            {{ ux_icon('dinkie-icons:house-buildings-small', {'class':'bi'}) }}
+            Inmueble
+        </button>
+        <ul class="dropdown-menu" data-bs-theme="light">
+            <li>
+                <a class="dropdown-item"
+                   href="{{ path('app_floor_index', {'building': building.id}) }}" title="">
+                    {% if building.isNew() == false %}Existente{% else %}Nuevo{% endif %}
+                </a>
+            </li>
+
+            {% if building.hasReply() %}
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_floor_index', {'building': building.id, 'reply': true}) }}" title="">
+                        A modificar
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+{#    {% if building.isNew() is not null %}#}
+{#        {% if building.isNew() == false %}#}
+{#            {% set labelAndTitle = 'Inmueble existente' %}#}
+{#        {% else %}#}
+{#            {% set labelAndTitle = 'Inmueble nuevo' %}#}
+{#        {% endif %}#}
+{#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', labelAndTitle, labelAndTitle) }}#}
+{#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }}#}
+{#    {% endif %}#}
 
     {% if building.id is not null %}
         {% if building.land is null %}
@@ -58,13 +124,13 @@
 
         <button class="btn btn-sm btn-primary"
                 title="Datos generales del terreno"
-                {{ stimulusTarget('modal-content-loader', 'button') }}
-                {{ stimulusController('modal-content-loader', {
-                    url: urlPath,
-                    id: 'modal-load',
-                    placeholder: 'Cargando...',
-                    title: 'Datos generales del terreno',
-                }) }}
+            {{ stimulusTarget('modal-content-loader', 'button') }}
+            {{ stimulusController('modal-content-loader', {
+                url: urlPath,
+                id: 'modal-load',
+                placeholder: 'Cargando...',
+                title: 'Datos generales del terreno',
+            }) }}
         >
             {{ ux_icon('mdi:land-plots-marker', {'class':'bi'}) }}
             Datos generales del terreno

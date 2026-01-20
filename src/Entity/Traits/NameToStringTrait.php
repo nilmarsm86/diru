@@ -15,7 +15,6 @@ trait NameToStringTrait
 
     public function getName(): string
     {
-        //        return $this->name;
         return (is_null($this->name)) ? '' : $this->name;
     }
 

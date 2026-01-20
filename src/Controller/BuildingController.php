@@ -138,6 +138,19 @@ final class BuildingController extends AbstractController
         return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
     }
 
+    #[Route('/review/{id}', name: 'app_building_review', methods: ['GET'])]
+    public function review(Building $building, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $building->review($entityManager);
+            $this->addFlash('success', 'Se ha pasado a estado de revisión');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('app_building_project', ['project' => $building->getProject()?->getId()]);
+    }
+
     #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]
     public function reportLocal(Building $building): Response
     {

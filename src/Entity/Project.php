@@ -70,12 +70,10 @@ class Project
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[Assert\Valid]
-    //    #[Assert\NotBlank(message: 'Seleccione o cree un cliente para el proyecto.')]
     private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    //    #[Assert\Valid]
     private ?Contract $contract = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -518,12 +516,9 @@ class Project
             return 0;
         }
 
-        //        $buildings = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
-
         $price = 0;
         /** @var Building $building */
         foreach ($this->getBuildings() as $building) {
-            //            dump($building->getPrice());
             $price += $building->getPrice();
         }
 

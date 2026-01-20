@@ -2,8 +2,6 @@
 
 namespace App\Entity\Interfaces;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 interface MeasurementDataInterface
 {
     public function getMeasurementData(string $method, ?bool $original = null): float;
@@ -22,8 +20,6 @@ interface MeasurementDataInterface
     public function getMaxHeight(?bool $original = null): float;
 
     public function isFullyOccupied(?bool $original = null): bool;
-
-    //    public function reply(EntityManagerInterface $entityManager, object $parent = null): static;
 
     public function allLocalsAreClassified(): bool;
 

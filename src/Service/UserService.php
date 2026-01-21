@@ -14,7 +14,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -26,13 +25,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 readonly class UserService
 {
     public function __construct(
-        private UserRepository              $userRepository,
-        private RoleRepository              $roleRepository,
-        private FormFactoryInterface        $formFactory,
-        private Security                    $security,
+        private UserRepository $userRepository,
+        private RoleRepository $roleRepository,
+        private FormFactoryInterface $formFactory,
+        private Security $security,
         private UserPasswordHasherInterface $userPasswordHasher,
-    )
-    {
+    ) {
     }
 
     /**

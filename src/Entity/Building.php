@@ -151,7 +151,7 @@ class Building implements MeasurementDataInterface
     private ?\DateTimeImmutable $revisedAt = null;
 
     #[ORM\Column]
-    #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
+    #[Assert\Positive(message: 'El coeficiente debe ser un número positivo.')]
     private ?float $coefficient = 0;
 
     /**

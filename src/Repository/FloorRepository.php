@@ -10,7 +10,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<Floor>
@@ -56,12 +55,12 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(Floor $entity, bool $flush = false): void
     {
         if ($entity->hasSubSystems()) {
-            throw new Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
+            throw new \Exception('La planta aun tiene locales asociados. Elimine los mismos primero.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

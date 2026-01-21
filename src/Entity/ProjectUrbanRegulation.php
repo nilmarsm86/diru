@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectUrbanRegulationRepository::class)]
-#[DoctrineAssert\UniqueEntity(fields: ['urbanRegulation', 'project'], message: 'Ya existe en el proyecto esta regulacion.', errorPath: 'urbanRegulation')]
+#[DoctrineAssert\UniqueEntity(fields: ['urbanRegulation', 'project'], message: 'Ya existe en el proyecto esta regulación.', errorPath: 'urbanRegulation')]
 class ProjectUrbanRegulation
 {
     #[ORM\Id]
@@ -25,7 +25,7 @@ class ProjectUrbanRegulation
 
     #[ORM\ManyToOne(inversedBy: 'projectUrbanRegulations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
+//    #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca el proyecto.')]
     private ?Project $project = null;
 

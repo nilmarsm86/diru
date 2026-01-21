@@ -78,5 +78,4 @@ class QuickProjectType extends AbstractType
             ],
         ]);
     }
-
 }

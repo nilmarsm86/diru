@@ -7,7 +7,6 @@ use App\Entity\EnterpriseClient;
 use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
-use Closure;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;

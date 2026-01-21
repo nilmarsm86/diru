@@ -26,10 +26,10 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route(name: 'app_ptp_estimate_index', methods: ['GET'])]
-    public function index(Request $request, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService): Response
+    #[Route('/{building}', name: 'app_ptp_estimate_index', methods: ['GET'])]
+    public function index(Request $request, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
-        return $crudActionService->indexAction($request, $projectTechnicalPreparationEstimateRepository, 'findProjectTechnicalPreparationEstimate', 'ptp_estimate');
+        return $crudActionService->indexAction($request, $projectTechnicalPreparationEstimateRepository, 'findProjectTechnicalPreparationEstimate', 'ptp_estimate', ['building' => $building->getId()]);
     }
 
     /**
@@ -77,11 +77,11 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_ptp_estimate_delete', methods: ['POST'])]
-    public function delete(Request $request, ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService): Response
+    #[Route('/{id}/{building}', name: 'app_ptp_estimate_delete', methods: ['POST'])]
+    public function delete(Request $request, ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado el estimado de proyecto y preparación técnica.';
-        $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_ptp_estimate_index');
+        $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_building_edit', ['id'=>$building->getId()]);
         if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
 

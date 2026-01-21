@@ -25,7 +25,7 @@ class ProjectUrbanRegulation
 
     #[ORM\ManyToOne(inversedBy: 'projectUrbanRegulations')]
     #[ORM\JoinColumn(nullable: false)]
-//    #[Assert\Valid]
+    //    #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca el proyecto.')]
     private ?Project $project = null;
 

@@ -21,7 +21,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
         {% for ptp_estimate in paginator.getData() %}
-            <tr {{ stimulusController('delete-form-container') }}>
+            <tr {# stimulusController('delete-form-container') #}>
                 <td>{{ ptp_estimate.concept }}</td>
                 <td>{{ ptp_estimate.quantity }}</td>
                 <td>{{ ptp_estimate.measurementUnit }}</td>
@@ -33,7 +33,7 @@
                         {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id}), 'fa:edit', '', 'Editar estimado de proyecto y preparación técnica', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ptp_estimate_edit', {'id': ptp_estimate.id})}), 'btn-link') }}
                     {% endif %}
                     {{ component('DeleteForm', {
-                        path: path('app_ptp_estimate_delete', {'id': ptp_estimate.id}),
+                        path: path('app_ptp_estimate_delete', {'id': ptp_estimate.id, 'building': building}),
                         confirm: 'Está seguro que desea eliminar el estimado de proyecto y preparación técnica?',
                         token: 'delete' ~ ptp_estimate.id,
                         title: 'Eliminar estimado de proyecto y preparación técnica',

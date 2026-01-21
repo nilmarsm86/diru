@@ -18,7 +18,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
         {% for project_urban_regulation in paginator.getData() %}
-            <tr {{ stimulusController('delete-form-container') }}>
+            <tr {# stimulusController('delete-form-container') #}>
                 <td>{{ project_urban_regulation.data }}</td>
                 <td>{{ project_urban_regulation.urbanRegulation.measurementUnit }}</td>
                 <td>{{ project_urban_regulation.urbanRegulation.description }}</td>
@@ -27,7 +27,7 @@
                     {#                            {{ tableActionButton3(path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id, 'project':project}), 'fa:edit', '', 'Editar regulación urbana', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_urban_regulation_edit', {'id': project_urban_regulation.id, 'project':project})}), 'btn-link') }}#}
 
                     {{ component('DeleteForm', {
-                        path: path('app_project_urban_regulation_delete', {'id': project_urban_regulation.id}),
+                        path: path('app_project_urban_regulation_delete', {'id': project_urban_regulation.id, 'project': project}),
                         confirm: 'Está seguro que desea eliminar la regulación urbana del proyecto?',
                         token: 'delete' ~ project_urban_regulation.id,
                         title: 'Eliminar regulación urbana del proyecto',

@@ -267,7 +267,12 @@ class BuildingType extends AbstractType
                 'list' => true,
                 'list_title' => 'Listado de estimados de proyecto y preparación técnica',
                 'list_id' => 'modal-load',
-                'list_url' => $this->router->generate('app_ptp_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
+                'list_url' => $this->router->generate('app_ptp_estimate_index', [
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                    'amount' => 100,
+                    'building' => $building->getId()
+                ]),
             ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
                 'label' => 'Urbanización:',
@@ -295,7 +300,12 @@ class BuildingType extends AbstractType
                 'list' => true,
                 'list_title' => 'Listado de estimados de urbanización',
                 'list_id' => 'modal-load',
-                'list_url' => $this->router->generate('app_urbanization_estimate_index', ['modal' => 'modal-load', 'screen' => $options['screen'], 'amount' => 100]),
+                'list_url' => $this->router->generate('app_urbanization_estimate_index', [
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                    'amount' => 100,
+                    'building' => $building->getId()
+                ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',

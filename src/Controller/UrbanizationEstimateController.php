@@ -26,10 +26,10 @@ final class UrbanizationEstimateController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route(name: 'app_urbanization_estimate_index', methods: ['GET'])]
-    public function index(Request $request, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService): Response
+    #[Route('/{building}', name: 'app_urbanization_estimate_index', methods: ['GET'])]
+    public function index(Request $request, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
-        return $crudActionService->indexAction($request, $urbanizationEstimateRepository, 'findUrbanizationEstimates', 'urbanization_estimate');
+        return $crudActionService->indexAction($request, $urbanizationEstimateRepository, 'findUrbanizationEstimates', 'urbanization_estimate', ['building' => $building->getId()]);
     }
 
     /**
@@ -77,11 +77,11 @@ final class UrbanizationEstimateController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_urbanization_estimate_delete', methods: ['POST'])]
-    public function delete(Request $request, UrbanizationEstimate $urbanizationEstimate, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService): Response
+    #[Route('/{id}/{building}', name: 'app_urbanization_estimate_delete', methods: ['POST'])]
+    public function delete(Request $request, UrbanizationEstimate $urbanizationEstimate, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado el estimado de urbanización.';
-        $response = $crudActionService->deleteAction($request, $urbanizationEstimateRepository, $urbanizationEstimate, $successMsg, 'app_urbanization_estimate_index');
+        $response = $crudActionService->deleteAction($request, $urbanizationEstimateRepository, $urbanizationEstimate, $successMsg, 'app_building_edit', ['id' => $building->getId()]);
         if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
 

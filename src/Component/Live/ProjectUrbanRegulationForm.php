@@ -97,7 +97,7 @@ final class ProjectUrbanRegulationForm extends AbstractController
             $this->pur = new ProjectUrbanRegulation();
             $this->entity = $this->pur;
             if (!is_null($this->modal)) {
-                $this->modalManage($pur, 'Se ha seleccionado la regulación del proyecto.', [
+                $this->modalManage($pur, 'Se ha agregado la regulación al proyecto.', [
                     'projectUrbanRegulation' => $pur->getId(),
                 ]);
 

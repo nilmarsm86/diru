@@ -19,14 +19,14 @@ class BuildingRevisionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
+//            ->add('createdAt', null, [
+//                'widget' => 'single_text',
+//            ])
             ->add('comment')
-            ->add('building', EntityType::class, [
-                'class' => Building::class,
-                'choice_label' => 'id',
-            ])
+//            ->add('building', EntityType::class, [
+//                'class' => Building::class,
+//                'choice_label' => 'id',
+//            ])
         ;
     }
 

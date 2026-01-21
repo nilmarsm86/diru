@@ -81,7 +81,7 @@ final class ProjectTechnicalPreparationEstimateController extends AbstractContro
     public function delete(Request $request, ProjectTechnicalPreparationEstimate $projectTechnicalPreparationEstimate, ProjectTechnicalPreparationEstimateRepository $projectTechnicalPreparationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado el estimado de proyecto y preparación técnica.';
-        $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_building_edit', ['id'=>$building->getId()]);
+        $response = $crudActionService->deleteAction($request, $projectTechnicalPreparationEstimateRepository, $projectTechnicalPreparationEstimate, $successMsg, 'app_building_edit', ['id' => $building->getId()]);
         if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
 

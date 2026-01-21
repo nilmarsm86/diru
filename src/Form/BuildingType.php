@@ -271,7 +271,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => $building->getId()
+                    'building' => $building->getId(),
                 ]),
             ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
@@ -304,7 +304,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => $building->getId()
+                    'building' => $building->getId(),
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('constructionAssembly', MoneyType::class, [

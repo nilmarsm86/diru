@@ -44,7 +44,7 @@
         <button
             class="btn text-decoration-none btn-sm btn-primary"
             {{ stimulusController('modal-content-loader', {
-                url: '',
+                url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
                 id: 'modal-load',
                 placeholder: 'Cargando...',
                 title: 'Revisiones realizadas',
@@ -56,7 +56,7 @@
         <button
             class="btn text-decoration-none btn-sm btn-primary show"
             {{ stimulusController('modal-content-loader', {
-                url: '',
+                url: path('app_building_revision_new', {'building': building.id, 'state':'modal', 'modal':'modal-load'}),
                 id: 'modal-load',
                 placeholder: 'Cargando...',
                 title: 'Agregar revisión',

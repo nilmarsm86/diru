@@ -26,6 +26,11 @@ class BuildingRevision
     #[Assert\Valid]
     private ?Building $building = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;

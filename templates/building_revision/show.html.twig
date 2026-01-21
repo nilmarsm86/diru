@@ -1,30 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}BuildingRevision{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 
-{% block body %}
-    <h1>BuildingRevision</h1>
+{% block title %}Revisión: {{ building_revision.id }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ building_revision.id }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ building_revision.createdAt ? building_revision.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Comment</th>
-                <td>{{ building_revision.comment }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Revisiones') }}
 
-    <a href="{{ path('app_building_revision_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Revisiones', href: path('app_building_revision_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
 
-    <a href="{{ path('app_building_revision_edit', {'id': building_revision.id}) }}">edit</a>
+    <h2 class="mb-4">Revisión: {{ building_revision.id }}</h2>
 
-    {{ include('building_revision/_delete_form.html.twig') }}
+    {{ include('building_revision/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

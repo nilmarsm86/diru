@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}New BuildingRevision{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Create new BuildingRevision</h1>
+{% block title %}Nueva Revisión{% endblock %}
 
-    {{ include('building_revision/_form.html.twig') }}
+{% block content %}
+    <div class="row">
+        {{ h1('Revisiones') }}
 
-    <a href="{{ path('app_building_revision_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Revisiones', href: path('app_building_revision_index')},
+            {label: 'Nueva'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar Revisión</h2>
+
+    {{ include('building_revision/_form.html.twig', {'showButton': true, title: title}) }}
 {% endblock %}

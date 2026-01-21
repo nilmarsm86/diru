@@ -1,0 +1,45 @@
+{% component 'Table:Table' with {
+    paginator: paginator,
+    amount: app.request.query.get('modal') ? false : true,
+    filter: app.request.query.get('modal') ? false : true,
+    showPage: app.request.query.get('modal') ? false : true,
+    navigation: app.request.query.get('modal') ? false : true,
+} %}
+
+    {% block tableHead %}
+        <tr>
+            <th>Comentario</th>
+            <th>Fecha</th>
+            <th></th>
+        </tr>
+    {% endblock %}
+
+    {% block tableBody %}
+        {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+        {% for building_revision in paginator.getData() %}
+            <tr {# stimulusController('delete-form-container') #}>
+                <td>{{ building_revision.comment }}</td>
+                <td>{{ building_revision.createdAt|date('d-m-Y') }}</td>
+                <td class="text-end">
+                    {#                            {{ tableActionButton3(path('app_constructor_show', {'id': constructor.id}), 'bi:eye', '', 'Detalle de la constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_show', {'id': constructor.id})}), 'btn-link') }}#}
+                    {{ tableActionButton3(path('app_building_revision_edit', {'id': building_revision.id, 'building': building.id}), 'fa:edit', '', 'Editar revisión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_revision_edit', {'id': building_revision.id, 'building': building.id})}), 'btn-link') }}
+
+                    {{ component('DeleteForm', {
+                        path: path('app_building_revision_delete', {'id': building_revision.id, 'building': building.id}),
+                        confirm: 'Está seguro que desea eliminar la revisión?',
+                        token: 'delete' ~ building_revision.id,
+                        title: 'Eliminar revisión',
+                        icon: 'bi:trash',
+                        cssClass: 'btn-link text-danger'
+                    }) }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No se encontraron revisiones.</td>
+            </tr>
+        {% endfor %}
+    {% endblock %}
+
+{% endcomponent %}

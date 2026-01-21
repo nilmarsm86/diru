@@ -1,0 +1,24 @@
+{% if not app.request.query.get('modal') %}
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de revisiones',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {% set path = path('app_building_revision_new') %}
+            {{ tableActionButton3(path, 'bi:plus-lg', 'Nueva', 'Nueva revisión', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {{ include('building_revision/_table.html.twig') }}
+    {% endblock %}
+
+{% endcomponent %}
+{% else %}
+    {{ include('building_revision/_table.html.twig') }}
+{% endif %}

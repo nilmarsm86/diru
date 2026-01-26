@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of SubsystemSubType
@@ -37,7 +38,15 @@ class SubsystemSubTypeType extends AbstractType
                     'attr' => [
                         'placeholder' => 'Nombre del subtipo',
                     ],
-                ]);
+                ])
+                ->add('subsystemTypeSubsystemSubTypes', LiveCollectionType::class, [
+                    'entry_type' => SubsystemTypeSubsystemSubTypeType::class,
+                    'button_delete_options' => [
+                        'label_html' => true,
+                    ],
+                    'error_bubbling' => false,
+                ])
+            ;
         }
     }
 

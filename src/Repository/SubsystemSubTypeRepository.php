@@ -43,9 +43,9 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
      */
     public function findSubsystemSubtypes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('ssst');
-        //            ->select(['ssst', 'sst'])
-        //            ->leftJoin('ssst.subsystemTypes', 'sst');
+        $builder = $this->createQueryBuilder('ssst')
+                    ->select(['ssst', 'sst'])
+                    ->leftJoin('ssst.subsystemTypeSubsystemSubTypes', 'sst');
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ssst.name', 'ASC')->getQuery();
 

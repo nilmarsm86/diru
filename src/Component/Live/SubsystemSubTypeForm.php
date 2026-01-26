@@ -15,6 +15,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
 #[AsLiveComponent(template: 'component/live/subsystem_sub_type_form.html.twig')]
 final class SubsystemSubTypeForm extends AbstractController
@@ -23,6 +24,7 @@ final class SubsystemSubTypeForm extends AbstractController
     use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
+    use LiveCollectionTrait;
 
     /**
      * The initial data used to create the form.
@@ -36,11 +38,28 @@ final class SubsystemSubTypeForm extends AbstractController
     #[LiveProp]
     public bool $ajax = false;
 
+    #[LiveProp(writable: true)]
+    public ?string $subsystemType = null;
+
     /**
      * @return FormInterface<SubsystemSubType>
      */
     protected function instantiateForm(): FormInterface
     {
+        if (!is_null($this->subsystemType)) {
+            /** @var array<mixed> $subsystemTypeSubsystemSubTypes */
+            $subsystemTypeSubsystemSubTypes = $this->formValues['subsystemTypeSubsystemSubTypes'];
+            $pos = 0;
+            if (count($subsystemTypeSubsystemSubTypes) > 0) {
+                $pos = count($subsystemTypeSubsystemSubTypes) - 1;
+            }
+
+            /** @var array<string, array<int, array<string, mixed>>> $formValues */
+            $formValues = $this->formValues;
+            $formValues['subsystemTypeSubsystemSubTypes'][$pos]['subsystemType'] = $this->subsystemType;
+            $this->formValues = $formValues;
+        }
+
         return $this->createForm(SubsystemSubTypeType::class, $this->ssst, [
             'modal' => $this->modal,
             'screen' => 'subtype',

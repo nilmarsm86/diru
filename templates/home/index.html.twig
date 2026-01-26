@@ -43,7 +43,7 @@
                         <ul class="list-group list-group-flush">
                             {% for project in last_three %}
                                 <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    {{ project.name }}
+                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a>
                                     <span
                                         class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span>
                                 </li>

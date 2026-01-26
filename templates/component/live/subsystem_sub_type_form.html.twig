@@ -11,6 +11,49 @@
 
     {{ form_row(form.name) }}
 
+    {% if form_errors(form.subsystemTypeSubsystemSubTypes) %}
+        {{ form_row(form.subsystemTypeSubsystemSubTypes.vars.button_add, {
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar en',
+            attr: { class: 'btn btn-outline-nav-link btn-sm', style: 'border-color: var(--bs-form-invalid-border-color);color: var(--bs-form-invalid-border-color);' }
+        }) }}
+    {% else %}
+        {{ form_row(form.subsystemTypeSubsystemSubTypes.vars.button_add, {
+            label: ux_icon('bi:plus-lg', {class:'bi'}) ~ 'Agregar en',
+            attr: { class: 'btn btn-outline-nav-link btn-sm' }
+        }) }}
+    {% endif %}
+
+    {% if form_errors(form.subsystemTypeSubsystemSubTypes) %}
+        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
+            <div class="col-sm-2 col-form-label-sm fw-bold"></div>
+            <div class="col-sm-10">
+                {{ form_errors(form.subsystemTypeSubsystemSubTypes) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% for key, subsystemTypeSubsystemSubType in form.subsystemTypeSubsystemSubTypes %}
+        <details class="offset-sm-2 collection" open>
+            <summary class="collection">
+                <div class="row summary-btn-lis">
+                    <div class="col">
+                        Tipo de subsistema:
+                        {% if form_errors(subsystemTypeSubsystemSubType.subsystemType) %}
+                            <div class="invalid-feedback d-inline">Revise los errores.</div>
+                        {% endif %}
+                    </div>
+                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        {{ form_widget(subsystemTypeSubsystemSubType.vars.button_delete, {
+                            label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
+                            attr: { class: 'btn btn-outline-danger btn-sm' }
+                        }) }}
+                    </div>
+                </div>
+            </summary>
+            {{ form_row(subsystemTypeSubsystemSubType.subsystemType) }}
+        </details>
+    {% endfor %}
+
     <div class="row mb-3">
         <div class="col-sm-12">
             {{ component('button:submit', {
@@ -20,5 +63,6 @@
             }) }}
         </div>
     </div>
-    {{ form_end(form) }}
+    {{ form_row(form._token) }}
+    {{ form_end(form, {render_rest:false}) }}
 </div>

@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Building;
 use App\Entity\BuildingRevision;
-use App\Form\BuildingRevisionType;
-use App\Repository\BuildingRepository;
 use App\Repository\BuildingRevisionRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +43,7 @@ final class BuildingRevisionController extends AbstractController
 
         return $crudActionService->formLiveComponentAction($request, $buildingRevision, 'building_revision', [
             'title' => 'Nueva Revisión',
-            'building' => $building
+            'building' => $building,
         ]);
     }
 
@@ -71,7 +68,7 @@ final class BuildingRevisionController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $buildingRevision, 'buibuilding_revisionlding', [
             'title' => 'Editar Revisión',
-            'building' => $building->getId()
+            'building' => $building->getId(),
         ]);
     }
 

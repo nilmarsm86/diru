@@ -86,7 +86,7 @@ final class SubsystemTypeForm extends AbstractController
             $this->sst = new SubsystemType();
             $this->entity = $this->sst;
             if (!is_null($this->modal)) {
-                $this->modalManage($subsystemType, 'Se ha seleccionado el nuevo tipo agregada.', [
+                $this->modalManage($subsystemType, 'Se ha seleccionado el nuevo tipo agregado.', [
                     'subsystemType' => $subsystemType->getId(),
                 ]);
 

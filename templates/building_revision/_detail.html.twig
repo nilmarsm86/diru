@@ -25,25 +25,29 @@
                     <td>{{ building_revision.comment }}</td>
                 </tr>
                 <tr>
-                    <th>Fecha:</th>
-                    <td>{{ building_revision.createdAt }}</td>
+                    <th>Creada:</th>
+                    <td>{{ building_revision.createdAt|date('d-m-Y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Modificada:</th>
+                    <td>{{ building_revision.modifiedAt|date('d-m-Y H:i') }}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
     {% endblock %}
 
-    {% block footer %}
-        {{ include('partials/_card_footer.html.twig', {
-            list: {href: 'app_building_revision_index', label: 'Listado', title:'Volver al listado'},
-            edit: {href: 'app_building_revision_edit', label: 'Editar', title:'Editar revisión'},
-            delete: {href: 'app_building_revision_delete', label: 'Eliminar', title:'Eliminar revisión'},
-            id: building_revision.id,
-            message: 'Está seguro que desea eliminar la revisión?',
-            state: 'detail',
-            showButton: (showButton is defined and showButton == true) ? true : false
-        }) }}
-    {% endblock %}
+{#    {% block footer %}#}
+{#        {{ include('partials/_card_footer.html.twig', {#}
+{#            list: {href: 'app_building_revision_index', label: 'Listado', title:'Volver al listado'},#}
+{#            edit: {href: 'app_building_revision_edit', label: 'Editar', title:'Editar revisión'},#}
+{#            delete: {href: 'app_building_revision_delete', label: 'Eliminar', title:'Eliminar revisión'},#}
+{#            id: building_revision.id,#}
+{#            message: 'Está seguro que desea eliminar la revisión?',#}
+{#            state: 'detail',#}
+{#            showButton: (showButton is defined and showButton == true) ? true : false#}
+{#        }) }}#}
+{#    {% endblock %}#}
 
 {% endcomponent %}
 

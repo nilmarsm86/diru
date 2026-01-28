@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\BuildingRevision;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -26,10 +27,12 @@ class BuildingRevisionRepository extends ServiceEntityRepository implements Filt
     /**
      * @return Paginator<mixed>
      */
-    public function findRevisions(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findRevisions(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('br')->select(['br', 'b'])
-            ->leftJoin('br.building', 'b');
+            ->leftJoin('br.building', 'b')
+            ->where('b.id = :building')
+            ->setParameter('building', $building);
         //        $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('br.createdAt', 'ASC')->getQuery();
 

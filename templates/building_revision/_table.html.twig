@@ -9,7 +9,8 @@
     {% block tableHead %}
         <tr>
             <th>Comentario</th>
-            <th>Fecha</th>
+            <th>Creado</th>
+            <th>Modificado</th>
             <th></th>
         </tr>
     {% endblock %}
@@ -19,20 +20,38 @@
 
         {% for building_revision in paginator.getData() %}
             <tr {# stimulusController('delete-form-container') #}>
-                <td>{{ building_revision.comment }}</td>
-                <td>{{ building_revision.createdAt|date('d-m-Y') }}</td>
-                <td class="text-end">
-                    {#                            {{ tableActionButton3(path('app_constructor_show', {'id': constructor.id}), 'bi:eye', '', 'Detalle de la constructora', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructor_show', {'id': constructor.id})}), 'btn-link') }}#}
-                    {{ tableActionButton3(path('app_building_revision_edit', {'id': building_revision.id, 'building': building.id}), 'fa:edit', '', 'Editar revisión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_revision_edit', {'id': building_revision.id, 'building': building.id})}), 'btn-link') }}
+                                <td>{{ building_revision.comment|u.truncate(100, '...') }}</td>
+{#                <td>{{ building_revision.comment|slice(0, 50) ~ '...' }}</td>#}
+                <td>{{ building_revision.createdAt|date('d-m-Y H:i') }}</td>
+                <td>{{ building_revision.modifiedAt|date('d-m-Y H:i') }}</td>
 
-                    {{ component('DeleteForm', {
-                        path: path('app_building_revision_delete', {'id': building_revision.id, 'building': building.id}),
-                        confirm: 'Está seguro que desea eliminar la revisión?',
-                        token: 'delete' ~ building_revision.id,
-                        title: 'Eliminar revisión',
-                        icon: 'bi:trash',
-                        cssClass: 'btn-link text-danger'
-                    }) }}
+                <td class="text-end">
+                    {% set action_show = stimulusController('modal-content-loader', {
+                        url: path('app_building_revision_show', {'id': building_revision.id, 'modal':'modal-load', 'state':'modal', 'building' : building.id}),
+                        id: 'modal-load',
+                        placeholder: 'Cargando...',
+                        title: 'Detalle de revisión',
+                    }) ~ stimulusTarget('modal-content-loader', 'button') %}
+                    {{ tableActionButton3(path('app_building_revision_show', {'id': building_revision.id, 'building' : building.id}), 'bi:eye', '', 'Detalle de la revisión', action_show, 'btn-link') }}
+
+                    {% if building_revision.isActive() and building_revision.building.state.value is same as '4' %}
+                        {% set action = stimulusController('modal-content-loader', {
+                            url: path('app_building_revision_edit', {'building': building.id, 'id': building_revision.id, 'modal':'modal-load', 'state':'modal'}),
+                            id: 'modal-load',
+                            placeholder: 'Cargando...',
+                            title: 'Editar revisión',
+                        }) ~ stimulusTarget('modal-content-loader', 'button') %}
+                        {{ tableActionButton3(path('app_building_revision_edit', {'id': building_revision.id, 'building': building.id}), 'fa:edit', '', 'Editar revisión', action, 'btn-link') }}
+
+                        {{ component('DeleteForm', {
+                            path: path('app_building_revision_delete', {'id': building_revision.id, 'building': building.id}),
+                            confirm: 'Está seguro que desea eliminar la revisión?',
+                            token: 'delete' ~ building_revision.id,
+                            title: 'Eliminar revisión',
+                            icon: 'bi:trash',
+                            cssClass: 'btn-link text-danger'
+                        }) }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

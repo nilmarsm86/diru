@@ -76,7 +76,7 @@ final class BuildingRevisionForm extends AbstractController
             $this->br = new BuildingRevision();
             $this->entity = $this->br;
             if (!is_null($this->modal)) {
-                $this->modalManage($br, 'Se ha agregado la nueva revisión.', [
+                $this->modalManage($br, 'Se ha guardado la revisión.', [
                     'buildingRevision' => $br->getId(),
                 ]);
 

@@ -143,9 +143,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         $occupiedArea = (float) $this->getFloor()->getBuilding()->getOccupiedArea();
         if ($this->getTotalArea() > $occupiedArea) {
             return $landArea - $this->getTotalArea();
-        } else {
-            return ((bool) $isNew ? $landArea : $occupiedArea) - $this->getTotalArea();
         }
+
+        return ((bool) $isNew ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
     public function getUnassignedArea(?bool $original = null): float

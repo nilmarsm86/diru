@@ -13,10 +13,11 @@ enum BuildingState: string
     //    case Initiated = '2'; // cuando se le pone los datos del terreno
     //    case TerrainDiagnosis = '3';
     //    case UrbanRegulation = '4';
+    case Diagnosis = '2';
     case Design = '3';
     //    case Stopped = '0';
     //    case Canceled = '1';
-    case Diagnosis = '2';
+
     case Revision = '4';
     case Revised = '5';
     //    case PresupuestoEstiamdo = '10';

@@ -148,9 +148,9 @@ class Floor implements MeasurementDataInterface
         $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
         if ($this->getTotalArea() > $occupiedArea) {
             return $landArea - $this->getTotalArea();
-        } else {
-            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
         }
+
+        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
     }
 
     public function getUnassignedArea(?bool $original = null): float
@@ -218,9 +218,9 @@ class Floor implements MeasurementDataInterface
     {
         if ($this->isOriginal()) {
             return $this->hasOriginalSubSystems() && ($this->getUsefulArea() > 0);
-        } else {
-            return $this->hasReplySubSystems() && ($this->getUsefulArea() > 0);
         }
+
+        return $this->hasReplySubSystems() && ($this->getUsefulArea() > 0);
     }
 
     public function reply(EntityManagerInterface $entityManager, ?object $parent = null): static
@@ -406,9 +406,9 @@ class Floor implements MeasurementDataInterface
         $share = (true === $this->notWallArea()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
         if ($this->isOriginal()) {
             return $share || false === $this->hasOriginalLocals();
-        } else {
-            return $share || false === $this->hasReplyLocals();
         }
+
+        return $share || false === $this->hasReplyLocals();
     }
 
     public function hasFreeArea(): bool

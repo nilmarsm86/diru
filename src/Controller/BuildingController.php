@@ -138,6 +138,7 @@ final class BuildingController extends AbstractController
         return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
     }
 
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
     #[Route('/review/{id}', name: 'app_building_review', methods: ['GET'])]
     public function review(Building $building, EntityManagerInterface $entityManager): Response
     {
@@ -148,7 +149,35 @@ final class BuildingController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
         }
 
-        return $this->redirectToRoute('app_building_project', ['project' => $building->getProject()?->getId()]);
+        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
+    }
+
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+    #[Route('/design/{id}', name: 'app_building_design', methods: ['GET'])]
+    public function design(Building $building, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $building->design($entityManager);
+            $this->addFlash('success', 'Se ha pasado a estado de diseño');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
+    }
+
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+    #[Route('/revised/{id}', name: 'app_building_revised', methods: ['GET'])]
+    public function revised(Building $building, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $building->revised($entityManager);
+            $this->addFlash('success', 'Se ha pasado a estado de revisado');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
     }
 
     #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]

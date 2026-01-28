@@ -102,9 +102,9 @@ class Paginator
     {
         if (is_null($this->fake)) {
             return (is_array($this->data)) ? count($this->data) : $this->data->count();
-        } else {
-            return $this->fake;
         }
+
+        return $this->fake;
     }
 
     /**

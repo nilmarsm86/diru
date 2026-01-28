@@ -151,7 +151,7 @@ class Building implements MeasurementDataInterface
     private ?\DateTimeImmutable $revisedAt = null;
 
     #[ORM\Column]
-    #[Assert\Positive(message: 'El coeficiente debe ser un número positivo.')]
+    #[Assert\PositiveOrZero(message: 'El coeficiente debe ser un número positivo.')]
     private ?float $coefficient = 0;
 
     /**
@@ -821,10 +821,45 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
     public function review(EntityManagerInterface $entityManager): static
     {
         $this->setState(BuildingState::Revision);
         $entityManager->persist($this);
+
+        foreach ($this->buildingRevisions as $buildingRevision) {
+            if ($buildingRevision->isActive()) {
+                $buildingRevision->deactivate();
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this;
+    }
+
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+    public function design(EntityManagerInterface $entityManager): static
+    {
+        $this->setState(BuildingState::Design);
+        $entityManager->persist($this);
+
+        $entityManager->flush();
+
+        return $this;
+    }
+
+    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+    public function revised(EntityManagerInterface $entityManager): static
+    {
+        $this->setState(BuildingState::Revised);
+        $entityManager->persist($this);
+
+        foreach ($this->buildingRevisions as $buildingRevision) {
+            if ($buildingRevision->isActive()) {
+                $buildingRevision->deactivate();
+            }
+        }
 
         $entityManager->flush();
 

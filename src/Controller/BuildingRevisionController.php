@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\BuildingRevision;
 use App\Repository\BuildingRevisionRepository;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -18,16 +20,27 @@ use Twig\Error\SyntaxError;
 #[Route('/building/revision')]
 final class BuildingRevisionController extends AbstractController
 {
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
     #[Route('/{building}', name: 'app_building_revision_index', methods: ['GET'])]
-    public function index(Request $request, BuildingRevisionRepository $buildingRevisionRepository, CrudActionService $crudActionService, Building $building): Response
+    public function index(Request $request, RouterInterface $router, BuildingRevisionRepository $buildingRevisionRepository, Building $building): Response
     {
-        return $crudActionService->indexAction($request, $buildingRevisionRepository, 'findRevisions', 'building_revision', [
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $buildingRevisionRepository->findRevisions($building, $filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("building_revision/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
             'building' => $building,
+            'title' => 'Revisiones',
         ]);
     }
 
@@ -52,10 +65,13 @@ final class BuildingRevisionController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_building_revision_show', methods: ['GET'])]
-    public function show(Request $request, BuildingRevision $buildingRevision, CrudActionService $crudActionService): Response
+    #[Route('/show/{id}/{building}', name: 'app_building_revision_show', methods: ['GET'])]
+    public function show(Request $request, BuildingRevision $buildingRevision, CrudActionService $crudActionService, Building $building): Response
     {
-        return $crudActionService->showAction($request, $buildingRevision, 'building_revision', 'building_revision', 'Detalles de la Revisión');
+        return $crudActionService->showAction($request, $buildingRevision, 'building_revision', 'building_revision', 'Detalles de la Revisión', [
+            'building' => $building,
+            'title' => 'Detalle de la revisión',
+        ]);
     }
 
     /**
@@ -66,9 +82,9 @@ final class BuildingRevisionController extends AbstractController
     #[Route('/{id}/edit/{building}', name: 'app_building_revision_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, BuildingRevision $buildingRevision, CrudActionService $crudActionService, Building $building): Response
     {
-        return $crudActionService->formLiveComponentAction($request, $buildingRevision, 'buibuilding_revisionlding', [
+        return $crudActionService->formLiveComponentAction($request, $buildingRevision, 'building_revision', [
             'title' => 'Editar Revisión',
-            'building' => $building->getId(),
+            'building' => $building,
         ]);
     }
 

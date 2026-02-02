@@ -17,7 +17,7 @@
     {{ form_start(form, {
         attr: {
             'data-action': 'live#action:prevent',
-            'data-live-action-param': 'save'
+            'data-live-action-param': 'files|save',
         }
     }) }}
 
@@ -75,7 +75,13 @@
             {{ form_row(form.microlocalization) }}
         </div>
         <div class="col">
-            {{ form_row(form.photo) }}
+            {{ form_row(form.picture) }}
+            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+            {% if pictureErrors is not empty %}
+                {% for error in pictureErrors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 

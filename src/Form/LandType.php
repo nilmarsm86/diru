@@ -79,10 +79,11 @@ class LandType extends AbstractType
                 ] + $disabled,
                 'required' => false,
             ])
-            ->add('photo', FileType::class, [
+            ->add('picture', FileType::class, [
                 'label' => 'Foto:',
                 'required' => false,
                 'attr' => [] + $disabled,
+                'mapped' => false,
             ])
             ->add('microlocalization', FileType::class, [
                 'label' => 'Microlocalización:',

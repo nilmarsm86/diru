@@ -10,8 +10,15 @@ use App\Form\LandType;
 use App\Repository\LandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -45,6 +52,10 @@ final class LandForm extends AbstractController
     #[LiveProp]
     public ?string $route = null;
 
+    /** @var string[] */
+    #[LiveProp]
+    public array $pictureErrors = [];
+
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
     }
@@ -66,8 +77,14 @@ final class LandForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(LandRepository $landRepository): ?Response
-    {
+    public function save(
+        Request $request,
+        LandRepository $landRepository,
+        SluggerInterface $slugger,
+        ValidatorInterface $validator,
+        #[Autowire('%kernel.project_dir%/public/uploads/land/photo')] string $landPhotoDirectory,
+    ): ?Response {
+        $this->pictureErrors = []; // Limpiar errores previos
         $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
@@ -75,6 +92,47 @@ final class LandForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var Land $land */
             $land = $this->getForm()->getData();
+
+            /** @var UploadedFile|null $photoFile */
+            $photoFile = $request->files->all('land')['picture'] ?? null;
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if (true === (bool) $photoFile) {
+                $errors = $validator->validate($photoFile, [
+                    new Assert\File(
+                        maxSize: '5M',
+                        mimeTypes: ['image/jpeg', 'image/png'],
+                        mimeTypesMessage: 'Formato no válido. Usa JPG o PNG.',
+                        extensions: ['jpg', 'jpeg', 'png'],
+                        extensionsMessage: 'Por favor suba una imagen válida (JPG, JPEG o PNG).',
+                    ),
+                ]);
+
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) {
+                        $this->pictureErrors[] = $error->getMessage();
+                    }
+
+                    return null;
+                }
+
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+
+                // Move the file to the directory where photo are stored
+                try {
+                    $photoFile->move($landPhotoDirectory, $newFilename);
+                } catch (FileException $e) {
+                    $this->pictureErrors[] = 'Ha ocurrido un error al intentar subir el archivo.';
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $land->setPhoto($newFilename);
+            }
 
             $this->building?->setLand($land);
             $showFloorMessage = false;

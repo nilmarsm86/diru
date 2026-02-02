@@ -20,8 +20,7 @@
 
         {% for building_revision in paginator.getData() %}
             <tr {# stimulusController('delete-form-container') #}>
-                                <td>{{ building_revision.comment|u.truncate(100, '...') }}</td>
-{#                <td>{{ building_revision.comment|slice(0, 50) ~ '...' }}</td>#}
+                <td>{{ building_revision.comment|u.truncate(100, '...')|raw }}</td>
                 <td>{{ building_revision.createdAt|date('d-m-Y H:i') }}</td>
                 <td>{{ building_revision.modifiedAt|date('d-m-Y H:i') }}</td>
 

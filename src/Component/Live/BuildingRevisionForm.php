@@ -63,7 +63,6 @@ final class BuildingRevisionForm extends AbstractController
     public function save(BuildingRevisionRepository $buildingRevisionRepository): ?Response
     {
         $successMsg = (is_null($this->br?->getId())) ? 'Se ha agregado la revisión.' : 'Se ha modificado la revisión.'; // TODO: personalizar los mensajes
-
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {

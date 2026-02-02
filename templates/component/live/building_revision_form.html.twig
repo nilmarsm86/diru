@@ -1,15 +1,13 @@
 <div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
-
     {{ form_start(form, {
         attr: {
             'data-action': 'live#action:prevent',
             'data-live-action-param': 'save'
         }
     }) }}
-
     {{ form_row(form.comment) }}
 
-    <div class="row mb-3">
+    <div class="row mb-3 mt-3">
         <div class="col-sm-12">
             {{ component('button:submit', {
                 icon: (this.br.id is null) ? 'bi:plus-lg' : 'fa:edit',

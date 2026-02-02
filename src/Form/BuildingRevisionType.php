@@ -2,9 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Building;
 use App\Entity\BuildingRevision;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\Types\TrixEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,21 +18,18 @@ class BuildingRevisionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('createdAt', null, [
-//                'widget' => 'single_text',
-//            ])
-            ->add('comment')
-//            ->add('building', EntityType::class, [
-//                'class' => Building::class,
-//                'choice_label' => 'id',
-//            ])
-        ;
+            ->add('comment', TrixEditorType::class, [
+                'label' => 'Contenido',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => BuildingRevision::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

@@ -39,4 +39,11 @@ return [
     '@symfony/ux-live-component' => [
         'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
+    'trix' => [
+        'version' => '2.1.16',
+    ],
+    'trix/dist/trix.min.css' => [
+        'version' => '2.1.16',
+        'type' => 'css',
+    ],
 ];

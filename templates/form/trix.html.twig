@@ -1,0 +1,20 @@
+{% block trix_widget %}
+    {% set id = id ?? 'trix_' ~ form.vars.id %} {# id único #}
+
+    <div class="trix-editor-wrapper" data-live-ignore data-controller="type--trix">
+        <trix-editor
+            input="{{ id }}"
+            class="trix-content"
+            {%- if attr.placeholder is defined -%}placeholder="{{ attr.placeholder }}"{%- endif -%}
+        {% for key, value in attr %}
+            {% if key starts with 'data-' or key starts with 'aria-' %}
+                {{ key }}="{{ value }}"
+            {% endif %}
+        {% endfor %}
+        ></trix-editor>
+
+        {# El textarea real queda hidden y es el que Symfony usa para value y name #}
+        {{- block('textarea_widget') -}}
+    </div>
+
+{% endblock %}

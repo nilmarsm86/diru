@@ -26,6 +26,7 @@ class BuildingRevision
     private ?\DateTimeImmutable $modifiedAt = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    //    #[Assert\NotBlank(message: 'La revisión no puede estar vacía.')]
     private ?string $comment = null;
 
     #[ORM\ManyToOne(inversedBy: 'buildingRevisions')]

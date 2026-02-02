@@ -310,3 +310,16 @@ div#project_clientType label::after{
     top: 25% !important;
     left: 75% !important;
 }
+
+.trix-button{
+    background-color: #0dcaf0 !important;
+    border-color: #0dcaf0 !important;
+}
+
+.trix-button-group{
+    border-color: #0dcaf0 !important;
+}
+
+trix-editor{
+    border-color: var(--bs-border-color) !important;
+}

@@ -107,7 +107,7 @@
                         <td class="text-end">
                             {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})}), 'btn-link') }}
                             {#                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }} #}
-                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', '', 'btn-link') }}
+                            {{ tableActionButton3(path('app_building_edit', {'id': building.id, 'project': building.project.id}), 'fa:edit', '', 'Editar obra', '', 'btn-link') }}
 
                             {{ component('DeleteForm', {
                                 path: path('app_building_delete', {'id': building.id}),

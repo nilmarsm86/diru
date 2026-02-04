@@ -10,6 +10,7 @@ use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ClientRepository;
 use App\Repository\ConstructorRepository;
+use App\Repository\CorporateEntityRepository;
 use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
@@ -141,6 +142,7 @@ final class ProjectForm extends AbstractController
         InvestmentRepository $investmentRepository,
         DraftsmanRepository $draftsmanRepository,
         ConstructorRepository $constructorRepository,
+        CorporateEntityRepository $corporateEntityRepository,
     ): ?Response {
         $this->preValue();
         $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';
@@ -224,11 +226,23 @@ final class ProjectForm extends AbstractController
 
             /** @var array<string, array<string, array<string, mixed>>> $fv */
             $fv = $this->formValues;
+
+            // constructor
             foreach ($data as $key => $building) {
                 if (isset($fv['buildings'][$key]['constructor'])) {
                     $constructor = $constructorRepository->find($fv['buildings'][$key]['constructor']);
                     if (null !== $constructor) {
                         $building->addConstructor($constructor);
+                    }
+                }
+            }
+
+            // corpoate entities
+            foreach ($data as $key => $building) {
+                if (isset($fv['buildings'][$key]['corporateEntity'])) {
+                    $corporateEntity = $corporateEntityRepository->find($fv['buildings'][$key]['corporateEntity']);
+                    if (null !== $corporateEntity) {
+                        $building->addCorporateEntity($corporateEntity);
                     }
                 }
             }

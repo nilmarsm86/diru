@@ -180,7 +180,7 @@
                         {% if this.pro.id is not null %}
                             {% if building.vars.data.id %}
                                 <a class="btn btn-outline-info btn-sm"
-                                   href="{{ path('app_building_edit', {id: building.vars.data.id}) }}">
+                                   href="{{ path('app_building_edit', {id: building.vars.data.id, 'project':this.pro.id}) }}">
                                     {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
                                     Información de la obra
                                 </a>

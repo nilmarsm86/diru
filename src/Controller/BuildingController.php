@@ -96,12 +96,12 @@ final class BuildingController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit', name: 'app_building_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Building $building, CrudActionService $crudActionService): Response
+    #[Route('/{id}/edit/{project}', name: 'app_building_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Building $building, CrudActionService $crudActionService, ?Project $project = null): Response
     {
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Editar Obra',
-            'project' => null,
+            'project' => $project,
         ]);
     }
 

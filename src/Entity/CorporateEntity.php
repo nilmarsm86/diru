@@ -63,9 +63,20 @@ class CorporateEntity
     #[ORM\Column(name: 'address', type: Types::TEXT)]
     protected ?string $street = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logo = null;
+
+    /**
+     * @var Collection<int, CorporateEntityBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: CorporateEntityBuilding::class, mappedBy: 'corporateEntity', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $corporateEntityBuildings;
+
     public function __construct()
     {
         $this->enterpriseClients = new ArrayCollection();
+        $this->corporateEntityBuildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +197,53 @@ class CorporateEntity
     public function setStreet(string $street): static
     {
         $this->street = $street;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CorporateEntityBuilding>
+     */
+    public function getCorporateEntityBuildings(): Collection
+    {
+        return $this->corporateEntityBuildings;
+    }
+
+    public function getCorporateEntityBuildingByBuilding(Building $building): ?CorporateEntityBuilding
+    {
+        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
+            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId()) {
+                return $corporateEntityBuilding;
+            }
+        }
+
+        return null;
+    }
+
+    public function addCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        if (!$this->corporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->corporateEntityBuildings->add($corporateEntityBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        $this->corporateEntityBuildings->removeElement($corporateEntityBuilding);
 
         return $this;
     }

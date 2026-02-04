@@ -15,7 +15,7 @@ class ProvinceFixtures extends Fixture implements FixtureGroupInterface
         $provincesWithMunicipalities = [
             'Sin provincia' => ['Sin municipio'],
             'Pinar del Río' => ['Candelaria'],
-            'La Habana' => ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa'],
+            'La Habana' => ['Arroyo Naranjo', '10 de Octubre', 'Playa', 'Cerro', 'La Lisa', 'Boyeros', 'Habana del Este', 'Marianao', 'Plaza', 'Habana Vieja', 'Centro Habana', 'Guanabacoa', 'Cotorro', 'San Miguel del Padrón'],
             'Artemisa' => ['Artemisa'],
             'Mayabeque' => ['San Antonio'],
             'Matanzas' => ['Varadero', 'Cárdenas'],

@@ -82,6 +82,13 @@ class Building implements MeasurementDataInterface
     #[Assert\Valid]
     private Collection $constructorBuildings;
 
+    /**
+     * @var Collection<int, CorporateEntityBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: CorporateEntityBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $corporateEntityBuildings;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[Assert\Valid]
     private ?Land $land = null;
@@ -175,6 +182,7 @@ class Building implements MeasurementDataInterface
 
         $this->draftsmansBuildings = new ArrayCollection();
         $this->constructorBuildings = new ArrayCollection();
+        $this->corporateEntityBuildings = new ArrayCollection();
         $this->floors = new ArrayCollection();
 
         $this->hasReply = false;
@@ -527,6 +535,115 @@ class Building implements MeasurementDataInterface
     public function removeConstructorBuilding(ConstructorBuilding $constructorBuilding): static
     {
         $this->constructorBuildings->removeElement($constructorBuilding);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CorporateEntity>
+     */
+    public function getCorporateEntities(): Collection
+    {
+        $corporateEntities = new ArrayCollection();
+        /** @var CorporateEntityBuilding $corporateEntityBuilding */
+        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
+            $corporateEntities->add($corporateEntityBuilding->getCorporateEntity());
+        }
+
+        return $corporateEntities;
+    }
+
+    public function getActiveCorporateEntity(): ?CorporateEntity
+    {
+        /** @var CorporateEntityBuilding $corporateEntityBuilding */
+        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
+            if (is_null($corporateEntityBuilding->getFinishedAt())) {
+                return $corporateEntityBuilding->getCorporateEntity();
+            }
+        }
+
+        return null;
+    }
+
+    public function addCorporateEntity(CorporateEntity $corporateEntity): static
+    {
+        $actualCorporateEntity = $this->getActiveCorporateEntity();
+        if (!is_null($actualCorporateEntity)) {
+            if ($actualCorporateEntity->getId() !== $corporateEntity->getId()) {
+                $actualCorporateEntityBuilding = $actualCorporateEntity->getCorporateEntityBuildingByBuilding($this);
+                $actualCorporateEntityBuilding?->setFinishedAt(new \DateTimeImmutable());
+
+                $corporateEntityBuilding = new CorporateEntityBuilding();
+                $corporateEntityBuilding->setBuilding($this);
+                $corporateEntityBuilding->setCorporateEntity($corporateEntity);
+
+                $this->addCorporateEntityBuilding($corporateEntityBuilding);
+            }
+        } else {
+            $corporateEntityBuilding = new CorporateEntityBuilding();
+            $corporateEntityBuilding->setBuilding($this);
+            $corporateEntityBuilding->setCorporateEntity($corporateEntity);
+
+            $this->addCorporateEntityBuilding($corporateEntityBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeCorporateEntity(CorporateEntity $corporateEntity): static
+    {
+        $corporateEntityBuildings = $corporateEntity->getCorporateEntityBuildings();
+        foreach ($corporateEntityBuildings as $corporateEntityBuilding) {
+            if ($corporateEntityBuilding->hasBuilding($this)) {
+                $this->removeCorporateEntityBuilding($corporateEntityBuilding);
+
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasCorporateEntity(): bool
+    {
+        return $this->getCorporateEntities()->count() > 0;
+    }
+
+    public function hasActiveCorporateEntity(): bool
+    {
+        return !is_null($this->getActiveCorporateEntity());
+    }
+
+    public function getActiveCorporateEntityName(): ?string
+    {
+        return $this->getActiveCorporateEntity()?->getName();
+    }
+
+    public function getActiveCorporateEntityId(): ?int
+    {
+        return $this->getActiveCorporateEntity()?->getId();
+    }
+
+    /**
+     * @return Collection<int, CorporateEntityBuilding>
+     */
+    public function getCorporateEntityBuildings(): Collection
+    {
+        return $this->corporateEntityBuildings;
+    }
+
+    public function addCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        if (!$this->corporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->corporateEntityBuildings->add($corporateEntityBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        $this->corporateEntityBuildings->removeElement($corporateEntityBuilding);
 
         return $this;
     }

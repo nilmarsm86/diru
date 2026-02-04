@@ -8,6 +8,7 @@ use App\Entity\Project;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
 use App\Repository\ConstructorRepository;
+use App\Repository\CorporateEntityRepository;
 use App\Repository\DraftsmanRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +47,9 @@ final class BuildingForm extends AbstractController
     public ?int $constructor = 0;
 
     #[LiveProp(writable: true)]
+    public ?int $corporateEntity = 0;
+
+    #[LiveProp(writable: true)]
     public ?int $project = 0;
 
     #[LiveProp(writable: true)]
@@ -72,6 +76,11 @@ final class BuildingForm extends AbstractController
         if (0 !== $this->constructor) {
             $this->formValues['constructor'] = (string) $this->constructor;
             $this->constructor = 0;
+        }
+
+        if (0 !== $this->corporateEntity) {
+            $this->formValues['corporateEntity'] = (string) $this->corporateEntity;
+            $this->corporateEntity = 0;
         }
 
         if (0 !== $this->project) {
@@ -106,6 +115,7 @@ final class BuildingForm extends AbstractController
     public function save(
         BuildingRepository $buildingRepository,
         ConstructorRepository $constructorRepository,
+        CorporateEntityRepository $corporateEntityRepository,
         ProjectRepository $projectRepository,
         DraftsmanRepository $draftsmanRepository,
     ): ?Response {
@@ -123,6 +133,13 @@ final class BuildingForm extends AbstractController
                 $constructor = $constructorRepository->find($this->formValues['constructor']);
                 if (null !== $constructor) {
                     $building->addConstructor($constructor);
+                }
+            }
+
+            if (false !== (bool) $this->formValues['corporateEntity']) {
+                $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);
+                if (null !== $corporateEntity) {
+                    $building->addCorporateEntity($corporateEntity);
                 }
             }
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Building;
 use App\Entity\Constructor;
+use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
@@ -81,6 +82,7 @@ class BuildingType extends AbstractType
         $form = $event->getForm();
         $currency = 'CUP';
         $activeConstructor = null;
+        $activeCorporateEntity = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
 
@@ -99,6 +101,7 @@ class BuildingType extends AbstractType
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
             $activeConstructor = $building->getActiveConstructor();
+            $activeCorporateEntity = $building->getActiveCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [
                 'add' => true,
@@ -134,6 +137,27 @@ class BuildingType extends AbstractType
 
             'required' => false,
             'data' => $activeConstructor,
+        ]);
+
+        $form->add('corporateEntity', EntityPlusType::class, [
+            'class' => CorporateEntity::class,
+            'choice_label' => 'name',
+            'label' => 'Entidad corporativa:',
+            'mapped' => false,
+            //                'query_builder' => $this->getOrganismQueryBuilder($options),
+
+            'detail' => true,
+            'detail_title' => 'Detalle de la entidad corporativa de tipo constructora',
+            'detail_id' => 'modal-load',
+            'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal']),
+
+            'add' => true,
+            'add_title' => 'Agregar Entidad corporativa de tipo constructora',
+            'add_id' => 'modal-load',
+            'add_url' => $this->router->generate('app_corporate_entity_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
+
+            'required' => false,
+            'data' => $activeCorporateEntity,
         ]);
 
         $form->add('estimatedValueConstruction', MoneyType::class, [
@@ -271,7 +295,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => $building->getId(),
+                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
@@ -304,7 +328,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => $building->getId(),
+                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('constructionAssembly', MoneyType::class, [

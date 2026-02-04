@@ -10,6 +10,7 @@ use App\Form\Types\StreetAddressType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -56,6 +57,10 @@ class CorporateEntityType extends AbstractType
                 'municipality' => $options['municipality'],
                 'mapped' => false,
                 'live_form' => $options['live_form'],
+            ])
+            ->add('logo', FileType::class, [
+                'label' => 'Logo:',
+                'required' => false,
             ])
         ;
 

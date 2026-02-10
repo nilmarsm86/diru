@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\ProjectUrbanRegulation;
 use App\Entity\UrbanRegulation;
+use App\Form\Types\TrixEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,8 +34,9 @@ class ProjectUrbanRegulationType extends AbstractType
             ->add('data', null, [
                 'label' => 'Dato:',
             ])
-            ->add('reference', null, [
+            ->add('reference', TrixEditorType::class, [
                 'label' => 'Referencia:',
+                'required' => false,
             ])
         ;
     }
@@ -43,6 +45,9 @@ class ProjectUrbanRegulationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProjectUrbanRegulation::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

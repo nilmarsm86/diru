@@ -57,10 +57,11 @@ class UrbanRegulationType extends AbstractType
                 'label' => 'Foto:',
                 'required' => false,
             ])
-            ->add('comment', null, [
+            ->add('comment', TrixEditorType::class, [
                 'label' => 'Comentario:',
                 'attr' => [
                     'placeholder' => 'Comentario de ayuda',
+                    'hidden' => null,
                 ],
             ])
             ->add('legalReference', null, [
@@ -86,8 +87,7 @@ class UrbanRegulationType extends AbstractType
             ])
             ->add('structure', UrbanRegulationStructureEnumType::class, [
                 'label' => 'Estructura:',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

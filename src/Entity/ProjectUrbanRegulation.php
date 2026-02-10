@@ -30,6 +30,7 @@ class ProjectUrbanRegulation
     private ?Project $project = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Dato de la regulación aplicada.')]
     private ?string $data;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

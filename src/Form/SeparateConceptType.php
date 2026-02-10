@@ -41,6 +41,12 @@ class SeparateConceptType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SeparateConcept::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
+            'error_mapping' => [
+                'enumType' => 'type',
+            ],
         ]);
     }
 }

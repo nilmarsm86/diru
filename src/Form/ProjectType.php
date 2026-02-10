@@ -11,6 +11,7 @@ use App\Entity\Investment;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
+use App\Form\Types\TrixEditorType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -70,7 +71,7 @@ class ProjectType extends AbstractType
                     'data-currency-target' => 'select',
                 ],
             ])
-            ->add('comment', null, [
+            ->add('comment', TrixEditorType::class, [
                 'label' => false,
             ]);
 
@@ -99,7 +100,7 @@ class ProjectType extends AbstractType
         $form = $event->getForm();
 
         if (null !== $project->getId()) {
-            $form->add('stopReason', null, [
+            $form->add('stopReason', TrixEditorType::class, [
                 'label' => false,
             ]);
             $form->add('state', ProjectStateEnumType::class, [

@@ -30,6 +30,7 @@ class SeparateConcept
     private SeparateConceptType $enumType;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Numeración del concepto')]
     private ?string $number = null;
 
     #[ORM\Column(length: 255, nullable: true)]

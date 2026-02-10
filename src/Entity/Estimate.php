@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EstimateRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EstimateRepository::class)]
 #[ORM\InheritanceType('JOINED')]
@@ -21,15 +22,21 @@ class Estimate
     protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Escriba el concepto para el cual se aplica.')]
     protected ?string $concept = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Escriba la unidad de medida a utilizar.')]
     protected ?string $measurementUnit = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\NotBlank(message: 'Escriba el precio.')]
+    #[Assert\Positive(message: 'El precio debe ser mayor que 0.')]
     protected ?string $price = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Escriba la cantidad.')]
+    #[Assert\Positive(message: 'La cantidad debe ser un número positivo.')]
     protected ?float $quantity = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

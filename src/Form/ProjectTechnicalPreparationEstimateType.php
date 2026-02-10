@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ProjectTechnicalPreparationEstimate;
+use App\Form\Types\TrixEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,7 +35,7 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
                     'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
-                'required' => false,
+                //                'required' => false,
                 'currency' => $currency,
                 //                'html5' => true,
                 'input' => 'integer',
@@ -44,8 +45,9 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
             ->add('quantity', null, [
                 'label' => 'Cantidad:',
             ])
-            ->add('comment', null, [
+            ->add('comment', TrixEditorType::class, [
                 'label' => 'Comentario:',
+                'required' => false,
             ]);
     }
 
@@ -53,6 +55,9 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProjectTechnicalPreparationEstimate::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

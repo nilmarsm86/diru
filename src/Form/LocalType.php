@@ -6,6 +6,7 @@ use App\Entity\Local;
 use App\Entity\SubSystem;
 use App\Form\Types\LocalTypeEnumType;
 use App\Form\Types\TechnicalStatusEnumType;
+use App\Form\Types\TrixEditorType;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -54,7 +55,7 @@ class LocalType extends AbstractType
                 'label' => 'Tiene impacto en niveles superiores:',
                 'help' => 'Al marcar esta opción, la altura de este local tendrá impacto en niveles superiores.',
             ])
-            ->add('comment', null, [
+            ->add('comment', TrixEditorType::class, [
                 'label' => false,
             ]);
 

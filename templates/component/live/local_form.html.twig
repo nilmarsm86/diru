@@ -70,7 +70,7 @@
         </details>
     {% endif %}
 
-    <details class="collection">
+    <details class="collection" {% if this.l.id is not null and this.l.comment is not empty %}open{% endif %}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Comentario:</div>

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType as Type;
 use App\Form\Types\EntityPlusType;
+use App\Form\Types\TrixEditorType;
 use App\Form\Types\UrbanRegulationStructureEnumType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -33,10 +34,11 @@ class UrbanRegulationType extends AbstractType
                     'placeholder' => 'Código de la regulación',
                 ],
             ])
-            ->add('description', null, [
+            ->add('description', TrixEditorType::class, [
                 'label' => 'Descripción:',
                 'attr' => [
                     'placeholder' => 'Descripción de la regulación',
+                    'hidden' => null,
                 ],
             ])
             ->add('data', null, [

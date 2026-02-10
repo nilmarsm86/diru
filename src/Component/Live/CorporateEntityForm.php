@@ -9,9 +9,14 @@ use App\Repository\CorporateEntityRepository;
 use App\Repository\MunicipalityRepository;
 use App\Repository\OrganismRepository;
 use App\Repository\ProvinceRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -50,6 +55,10 @@ final class CorporateEntityForm extends AbstractController
 
     #[LiveProp(writable: true)]
     public int $municipality = 0;
+
+    /** @var string[] */
+    #[LiveProp]
+    public array $pictureErrors = [];
 
     public function __construct(
         protected readonly ProvinceRepository $provinceRepository,
@@ -179,8 +188,13 @@ final class CorporateEntityForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(CorporateEntityRepository $corporateEntityRepository, OrganismRepository $organismRepository): ?Response
-    {
+    public function save(
+        CorporateEntityRepository $corporateEntityRepository,
+        OrganismRepository $organismRepository,
+        ValidatorInterface $validator,
+        FileUploader $fileUploader,
+        Request $request,
+    ): ?Response {
         $this->preValue();
 
         /** @var array<string, array<string, mixed>> $formValues */
@@ -191,8 +205,13 @@ final class CorporateEntityForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var CorporateEntity $ce */
-            $ce = $this->getForm()->getData();
+            //            /** @var CorporateEntity $ce */
+            //            $ce = $this->getForm()->getData();
+
+            $ce = $this->uploadPhoto($request, $validator, $fileUploader);
+            if (null === $ce) {
+                return null;
+            }
 
             $organism = $organismRepository->find($formValues['organism']);
             $ce->setOrganism($organism);
@@ -234,5 +253,49 @@ final class CorporateEntityForm extends AbstractController
     private function getDataModelValue(): string
     {
         return 'norender|*';
+    }
+
+    private function uploadPhoto(Request $request, ValidatorInterface $validator, FileUploader $fileUploader, ?CorporateEntity $ce = null): ?CorporateEntity
+    {
+        if (null === $ce) {
+            /** @var CorporateEntity $ce */
+            $ce = $this->getForm()->getData();
+        }
+
+        /** @var UploadedFile|null $photoFile */
+        $photoFile = $request->files->all('corporate_entity')['picture'] ?? null;
+
+        // this condition is needed because the 'brochure' field is not required
+        // so the PDF file must be processed only when a file is uploaded
+        if (true === (bool) $photoFile) {
+            $errors = $validator->validate($photoFile, [
+                new Assert\File(
+                    maxSize: '5M',
+                    mimeTypes: ['image/jpeg', 'image/png'],
+                    mimeTypesMessage: 'Formato no válido. Usa JPG o PNG.',
+                    extensions: ['jpg', 'jpeg', 'png'],
+                    extensionsMessage: 'Por favor suba una imagen válida (JPG, JPEG o PNG).',
+                ),
+            ]);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->pictureErrors[] = $error->getMessage();
+                }
+
+                return null;
+            }
+
+            $newFilename = $fileUploader->upload($photoFile, '/corporate_entity/logo');
+            if (null !== $newFilename) {
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $ce->setLogo($newFilename);
+            } else {
+                $this->pictureErrors[] = 'Ha ocurrido un error al intentar subir el archivo.';
+            }
+        }
+
+        return $ce;
     }
 }

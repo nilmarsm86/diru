@@ -58,11 +58,14 @@ class CorporateEntityType extends AbstractType
                 'mapped' => false,
                 'live_form' => $options['live_form'],
             ])
-            ->add('logo', FileType::class, [
+            ->add('picture', FileType::class, [
                 'label' => 'Logo:',
                 'required' => false,
-            ])
-        ;
+                'attr' => [
+                    'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
+                ],
+                'mapped' => false,
+            ]);
 
         $organismAttr = [
             'class' => Organism::class,

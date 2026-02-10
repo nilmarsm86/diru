@@ -8,14 +8,12 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture implements FixtureGroupInterface
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%/public/uploads')] private string $uploadsDirectory,
-    )
-    {
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -28,7 +26,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
         try {
             $filesystem->mkdir($this->uploadsDirectory);
         } catch (IOExceptionInterface $exception) {
-            echo "An error occurred while creating your directory at ".$exception->getPath();
+            echo 'An error occurred while creating your directory at '.$exception->getPath();
         }
     }
 

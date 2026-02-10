@@ -60,7 +60,7 @@
             {% endif %}
 
             {{ tableActionButton3(path('app_floor_index', {'building':floor.building.id, 'reply': reply}), 'dinkie-icons:house-buildings-small', reply ? 'Plantas replicadas' : 'Plantas', reply ? 'Listado de plantas replicadas' : 'Listado de plantas') }}
-            {{ tableActionButton3(path('app_building_edit', {id:floor.building.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
+            {{ tableActionButton3(path('app_building_edit', {'id':floor.building.id, 'project': floor.building.project.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
         </div>
     {% endblock %}
 

@@ -67,7 +67,7 @@
                             </li>
                             {% for building in project.buildings %}
                                 <li>
-                                    <a class="dropdown-item" href="{{ path('app_building_edit', {id: building.id}) }}">
+                                    <a class="dropdown-item" href="{{ path('app_building_edit', {'id': building.id, 'project': project.id}) }}">
                                         {{ building.name }}
                                     </a>
                                 </li>

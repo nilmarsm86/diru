@@ -149,7 +149,10 @@ final class BuildingController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
         }
 
-        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
+        return $this->redirectToRoute('app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
+        ]);
     }
 
     // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
@@ -163,7 +166,10 @@ final class BuildingController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
         }
 
-        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
+        return $this->redirectToRoute('app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
+        ]);
     }
 
     // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
@@ -177,7 +183,10 @@ final class BuildingController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
         }
 
-        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()]);
+        return $this->redirectToRoute('app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
+        ]);
     }
 
     #[Route('/{id}/report/local', name: 'app_building_report_local', methods: ['GET'])]

@@ -72,7 +72,13 @@
 
     <div class="mb-0 row">
         <div class="col">
-            {{ form_row(form.microlocalization) }}
+            {{ form_row(form.micro) }}
+            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+            {% if pdfErrors is not empty %}
+                {% for error in pdfErrors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="col">
             {{ form_row(form.picture) }}

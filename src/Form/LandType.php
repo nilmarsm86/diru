@@ -82,13 +82,18 @@ class LandType extends AbstractType
             ->add('picture', FileType::class, [
                 'label' => 'Foto:',
                 'required' => false,
-                'attr' => [] + $disabled,
+                'attr' => [
+                    'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
+                ] + $disabled,
                 'mapped' => false,
             ])
-            ->add('microlocalization', FileType::class, [
+            ->add('micro', FileType::class, [
                 'label' => 'Microlocalización:',
                 'required' => false,
-                'attr' => [] + $disabled,
+                'attr' => [
+                    'accept' => '.pdf,application/pdf',
+                ] + $disabled,
+                'mapped' => false,
             ])
             ->add('floor', ChoiceType::class, [
                 'label' => 'Plantas:',

@@ -1,2 +1,0 @@
-Necesitamos que los alumnos que salgan en la lista consultada sean clicables y nos lleve a su ficha (valorar que costaria)
-el clicable da igual donde, nombre, carnet...lo que sea mas facil

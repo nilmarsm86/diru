@@ -3,7 +3,7 @@ import {Controller} from '@hotwired/stimulus';
 export default class extends Controller {
     connect() {
         // Configuración antes de inicializar
-        document.addEventListener('trix-before-initialize', () => {
+        this.element.addEventListener('trix-before-initialize', () => {
             // 1. Cambiar toolbar (minimalista)
             Trix.config.toolbar.getDefaultHTML = () => `
                 <div class="trix-button-row">
@@ -38,14 +38,12 @@ export default class extends Controller {
             `;
         });
 
-        document.addEventListener('trix-change', function (event) {
-            document.querySelectorAll('trix-editor').forEach(editor => {
-                editor.editor.element.focus();
-                let textarea = document.getElementById(editor.getAttribute('input'));
-                textarea.value = editor.value;
-                console.log(textarea.value);
-                textarea.dispatchEvent(new Event('change', {bubbles: true}));
-            });
+        this.element.addEventListener('trix-change', (event) => {
+            let editor = this.element.querySelector('trix-editor');
+            editor.editor.element.focus();
+            let textarea = this.element.querySelector('#'+editor.getAttribute('input'));
+            textarea.value = editor.value;
+            textarea.dispatchEvent(new Event('change', {bubbles: true}));
         });
 
         import('trix').then(({default: Trix}) => {

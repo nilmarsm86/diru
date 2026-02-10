@@ -86,6 +86,7 @@ final class LandForm extends AbstractController
         FileUploader $fileUploader,
     ): ?Response {
         $this->pictureErrors = []; // Limpiar errores previos
+        $this->pdfErrors = []; // Limpiar errores previos
         $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
 
         $this->submitForm();

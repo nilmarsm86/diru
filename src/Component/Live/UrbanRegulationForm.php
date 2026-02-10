@@ -7,9 +7,14 @@ use App\Entity\UrbanRegulation;
 use App\Form\UrbanRegulationType;
 use App\Repository\UrbanRegulationRepository;
 use App\Repository\UrbanRegulationTypeRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -43,6 +48,10 @@ final class UrbanRegulationForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?int $type = 0;
 
+    /** @var string[] */
+    #[LiveProp]
+    public array $pictureErrors = [];
+
     public function mount(?UrbanRegulation $ur = null): void
     {
         $this->ur = (is_null($ur)) ? new UrbanRegulation() : $ur;
@@ -68,8 +77,14 @@ final class UrbanRegulationForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(UrbanRegulationRepository $urbanRegulationRepository, UrbanRegulationTypeRepository $urbanRegulationTypeRepository): ?Response
-    {
+    public function save(
+        UrbanRegulationRepository $urbanRegulationRepository,
+        UrbanRegulationTypeRepository $urbanRegulationTypeRepository,
+        ValidatorInterface $validator,
+        FileUploader $fileUploader,
+        Request $request,
+    ): ?Response {
+        $this->pictureErrors = []; // Limpiar errores previos
         $this->preValue();
 
         $successMsg = (is_null($this->ur?->getId())) ? 'Se ha agregado la regulación urbana.' : 'Se ha modificado la regulación urbana.'; // TODO: personalizar los mensajes
@@ -77,8 +92,10 @@ final class UrbanRegulationForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var UrbanRegulation $ur */
-            $ur = $this->getForm()->getData();
+            $ur = $this->uploadPhoto($request, $validator, $fileUploader);
+            if (null === $ur) {
+                return null;
+            }
 
             if ('' !== $this->formValues['type']) {
                 $type = $urbanRegulationTypeRepository->find($this->formValues['type']);
@@ -114,5 +131,49 @@ final class UrbanRegulationForm extends AbstractController
     private function getDataModelValue(): string
     {
         return 'norender|*';
+    }
+
+    private function uploadPhoto(Request $request, ValidatorInterface $validator, FileUploader $fileUploader, ?UrbanRegulation $ur = null): ?UrbanRegulation
+    {
+        if (null === $ur) {
+            /** @var UrbanRegulation $ur */
+            $ur = $this->getForm()->getData();
+        }
+
+        /** @var UploadedFile|null $photoFile */
+        $photoFile = $request->files->all('urban_regulation')['picture'] ?? null;
+
+        // this condition is needed because the 'brochure' field is not required
+        // so the PDF file must be processed only when a file is uploaded
+        if (true === (bool) $photoFile) {
+            $errors = $validator->validate($photoFile, [
+                new Assert\File(
+                    maxSize: '5M',
+                    mimeTypes: ['image/jpeg', 'image/png'],
+                    mimeTypesMessage: 'Formato no válido. Usa JPG o PNG.',
+                    extensions: ['jpg', 'jpeg', 'png'],
+                    extensionsMessage: 'Por favor suba una imagen válida (JPG, JPEG o PNG).',
+                ),
+            ]);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->pictureErrors[] = $error->getMessage();
+                }
+
+                return null;
+            }
+
+            $newFilename = $fileUploader->upload($photoFile, '/urban_regulation/photo');
+            if (null !== $newFilename) {
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $ur->setPhoto($newFilename);
+            } else {
+                $this->pictureErrors[] = 'Ha ocurrido un error al intentar subir el archivo.';
+            }
+        }
+
+        return $ur;
     }
 }

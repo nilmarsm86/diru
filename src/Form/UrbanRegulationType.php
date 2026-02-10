@@ -53,9 +53,13 @@ class UrbanRegulationType extends AbstractType
                     'placeholder' => 'Unidad de medida del dato',
                 ],
             ])
-            ->add('photo', FileType::class, [
+            ->add('picture', FileType::class, [
                 'label' => 'Foto:',
                 'required' => false,
+                'attr' => [
+                    'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
+                ],
+                'mapped' => false,
             ])
             ->add('comment', TrixEditorType::class, [
                 'label' => 'Comentario:',

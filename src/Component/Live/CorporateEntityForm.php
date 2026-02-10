@@ -195,6 +195,7 @@ final class CorporateEntityForm extends AbstractController
         FileUploader $fileUploader,
         Request $request,
     ): ?Response {
+        $this->pictureErrors = []; // Limpiar errores previos
         $this->preValue();
 
         /** @var array<string, array<string, mixed>> $formValues */

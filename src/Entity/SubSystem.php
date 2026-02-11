@@ -195,6 +195,34 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $locals->count();
     }
 
+    public function getUsefullAreaLocalsAmount(): int
+    {
+        $usefullAreaLocalsAmount = 0;
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        foreach ($locals as $local) {
+            if ($local->isLocalType()) {
+                ++$usefullAreaLocalsAmount;
+            }
+        }
+
+        return $usefullAreaLocalsAmount;
+    }
+
+    public function getWallAreaLocalsAmount(): int
+    {
+        $wallAreaLocalsAmount = 0;
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        foreach ($locals as $local) {
+            if ($local->isWallType()) {
+                ++$wallAreaLocalsAmount;
+            }
+        }
+
+        return $wallAreaLocalsAmount;
+    }
+
     public function getWallsAmount(): int
     {
         $walls = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
@@ -477,7 +505,8 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     {
         if (is_null($this->getId())) {
             $unassignedArea = (float) $this->getFloor()?->getUnassignedArea() - 1;
-            Local::createAutomaticLocal(null, $this, $unassignedArea, 1, $reply, $entityManager);
+            //            Local::createAutomaticLocal(null, $this, $unassignedArea, 1, $reply, $entityManager);
+            Local::createAutomaticLocal(null, $this, 1, 1, $reply, $entityManager);
             Local::createAutomaticWall($this, 1, 0, $reply, $entityManager);
         }
     }

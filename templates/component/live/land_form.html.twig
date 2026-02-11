@@ -21,6 +21,8 @@
         }
     }) }}
 
+    {{ form_row(form.isNew) }}
+
     <div class="mb-0 row">
         <div class="col">
             <div class="mb-0 row">
@@ -37,8 +39,11 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-sm-4">
             {{ form_row(form.perimeter, {attr:{'data-live--land-form-target':'perimeter'}}) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(form.floor, {attr:{'data-live--land-form-target':'floor'}}) }}
         </div>
     </div>
 
@@ -53,7 +58,7 @@
         </summary>
         <br>
         <div class="mb-0 row">
-            <div class="col">
+            <div class="col-sm-10">
                 {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
             </div>
             <div class="col-sm-2">
@@ -63,9 +68,6 @@
                         <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span>
                     </h5>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                {{ form_row(form.floor, {attr:{'data-live--land-form-target':'floor'}}) }}
             </div>
         </div>
     </details>

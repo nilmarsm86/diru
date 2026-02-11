@@ -472,6 +472,32 @@ class Floor implements MeasurementDataInterface
         return $locals;
     }
 
+    public function getUsefullAreaLocalsAmount(): int
+    {
+        $locals = 0;
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            $locals += $subsystem->getUsefullAreaLocalsAmount();
+        }
+
+        return $locals;
+    }
+
+    public function getWallAreaLocalsAmount(): int
+    {
+        $locals = 0;
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            $locals += $subsystem->getWallAreaLocalsAmount();
+        }
+
+        return $locals;
+    }
+
     public function getAmountMeters(): ?float
     {
         $total = 0;

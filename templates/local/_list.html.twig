@@ -73,7 +73,7 @@
                     <th>Impacta</th>
                     {% if reply or sub_system.inNewBuilding() %}
                         <th>Acción. C</th>
-                        <th>Importe (CUP)</th>
+                        <th>Importe ({{ sub_system.floor.building.getProjectCurrency() }})</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -146,7 +146,7 @@
 
                                 {% if local.hasLocalConstructiveAction() %}
                                     {% if local.getConstructiveSystem() %}
-                                        {{ local.getConstructiveAction()~' ('~local.constructiveSystem.name~')' }}
+                                        {{ local.getConstructiveAction() }} <br> {{ '('~local.constructiveSystem.name~')' }}
                                     {% else %}
                                         {{ local.getConstructiveAction() }}
                                     {% endif %}
@@ -160,13 +160,15 @@
                                 {% endif %}
                             {% endif %}
                         </td>
-                        <td>
-                            {% if local.hasLocalConstructiveAction() %}
-                                {{ money(local.getConstructiveActionAmount()) }}
-                            {% else %}
-                                {{ money(0) }}
-                            {% endif %}
-                        </td>
+                        {% if reply or sub_system.inNewBuilding() %}
+                            <td>
+                                {% if local.hasLocalConstructiveAction() %}
+                                    {{ money(local.getConstructiveActionAmount()) }}
+                                {% else %}
+                                    {{ money(0) }}
+                                {% endif %}
+                            </td>
+                        {% endif %}
 
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}

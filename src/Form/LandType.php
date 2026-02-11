@@ -6,6 +6,7 @@ use App\Entity\Building;
 use App\Entity\Land;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -101,6 +102,12 @@ class LandType extends AbstractType
                 'choices' => array_combine(range(1, 50), range(1, 50)),
                 'required' => false,
                 'attr' => [] + $disabled,
-            ]);
+            ])
+            ->add('isNew', CheckboxType::class, [
+                'label' => 'Es una obra nueva?',
+                'mapped' => false,
+                'required' => false,
+            ])
+        ;
     }
 }

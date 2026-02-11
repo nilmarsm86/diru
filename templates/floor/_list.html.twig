@@ -101,15 +101,15 @@
                     <th>Nombre</th>
                     <th></th>
                     <th>Á. Util (m<sup>2</sup>)</th>
-                    <th title="Área de Muro y Columna">Á.M.C (m<sup>2</sup>)</th>
+                    <th title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
                     <th>Á. Vacío (m<sup>2</sup>)</th>
                     <th title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
-                    <th>Altura (m)</th>
-                    <th>Volumen (m<sup>3</sup>)</th>
+                    <th>Alt. (m)</th>
+                    <th>Vol. (m<sup>3</sup>)</th>
                     <th>Sin asignar (m<sup>2</sup>)</th>
                     <th>Libre (m<sup>2</sup>)</th>
                     {% if reply or building.isNew() %}
-                        <th>Importe (CUP)</th>
+                        <th>Importe ({{ building.getProjectCurrency() }})</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -311,10 +311,10 @@
 
              <tr>
                  <th>Locales:</th>
-                 <td>{{ building.getLocalsAmount(reply) }}</td>
+                 <td>{{ building.getUsefullAreaLocalsAmount(reply) }}</td>
 
-                 <th></th>
-                 <td></td>
+                 <th>Area de Elementos Verticales</th>
+                 <td>{{ building.getWallAreaLocalsAmount(reply) }}</td>
              </tr>
 
              <tr>

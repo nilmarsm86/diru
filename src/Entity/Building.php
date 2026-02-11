@@ -1212,6 +1212,34 @@ class Building implements MeasurementDataInterface
         return $locals;
     }
 
+    public function getUsefullAreaLocalsAmount(bool $reply = false): int
+    {
+        $locals = 0;
+
+        $floors = (false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $locals += $floor->getUsefullAreaLocalsAmount();
+        }
+
+        return $locals;
+    }
+
+    public function getWallAreaLocalsAmount(bool $reply = false): int
+    {
+        $locals = 0;
+
+        $floors = (false === $reply) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $locals += $floor->getWallAreaLocalsAmount();
+        }
+
+        return $locals;
+    }
+
     public function getAmountMeters(): ?float
     {
         $total = 0;

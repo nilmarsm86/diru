@@ -125,30 +125,10 @@
     </div>
 </details>
 
-<details class="collection">
-    <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Valor de construcción y montaje:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
-    </summary>
-    <br>
-    <div class="mb-0 row">
-        <div class="col-sm-3">
-            {{ form_row(constructionAssembly) }}
-        </div>
-        <div class="col-sm-9">
-            {{ form_row(constructionAssemblyComment) }}
-        </div>
-    </div>
-</details>
-
 <details class="collection" open>
     <summary class="collection">
         <div class="row summary-btn-lis">
-            <div class="col">Presupusto estimado:</div>
+            <div class="col">Presupusto estimado (<span style="color:red">aun por trabajar</span>):</div>
             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
             </div>
@@ -216,6 +196,25 @@
     </div>
 </details>
 
+<details class="collection">
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Valor de construcción y montaje:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row">
+        <div class="col-sm-3">
+            {{ form_row(constructionAssembly) }}
+        </div>
+        <div class="col-sm-9">
+            {{ form_row(constructionAssemblyComment) }}
+        </div>
+    </div>
+</details>
 
 {{ form_row(landNetworkConnections.vars.button_add, {
     label: 'Agregar conexion de red',

@@ -8,20 +8,26 @@ import AbstractController from "./AbstractController.js";
 export default class extends AbstractController {
 
     static targets = ["range", "min", "max", "actual"];
+    uSDollar = null;
 
     connect() {
-        let USDollar = new Intl.NumberFormat('es-CU', {
+        this.uSDollar = new Intl.NumberFormat('es-CU', {
             style: 'currency',
             currency: 'CUP',
         });
 
-        this.actualTarget.textContent = USDollar.format(this.rangeTarget.value / 100);
-        this.minTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('min') / 100);
-        this.maxTarget.textContent = USDollar.format(this.rangeTarget.getAttribute('max') / 100);
+        this.actualTarget.textContent = this.uSDollar.format(this.rangeTarget.value / 100);
+        this.minTarget.textContent = this.uSDollar.format(this.rangeTarget.getAttribute('min') / 100);
+        this.maxTarget.textContent = this.uSDollar.format(this.rangeTarget.getAttribute('max') / 100);
 
-        this.rangeTarget.addEventListener('input', function() {
-            this.actualTarget.textContent = USDollar.format(this.rangeTarget.value / 100);
-        }.bind(this));
+        this.rangeTarget.addEventListener('input', () => {
+            this.actualTarget.textContent = this.uSDollar.format(this.rangeTarget.value / 100);
+        });
+    }
+
+    reset(){
+        this.rangeTarget.value = this.rangeTarget.defaultValue;
+        this.actualTarget.textContent = this.uSDollar.format(this.rangeTarget.value / 100);
     }
 
 }

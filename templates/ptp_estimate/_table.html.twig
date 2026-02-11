@@ -28,10 +28,26 @@
                 <td>{{ ptp_estimate.getFormatedPrice() }}</td>
                 <td>{{ ptp_estimate.getFormatedTotalPrice() }}</td>
                 <td class="text-end">
-                    {% if not app.request.query.get('modal') %}
-                        {#                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }} #}
-                        {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id}), 'fa:edit', '', 'Editar estimado de proyecto y preparación técnica', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ptp_estimate_edit', {'id': ptp_estimate.id})}), 'btn-link') }}
-                    {% endif %}
+                    {% set action_show = stimulusController('modal-content-loader', {
+                        url: path('app_ptp_estimate_show', {'id': ptp_estimate.id, 'modal':'modal-load', 'state':'modal', 'building' : building}),
+                        id: 'modal-load',
+                        placeholder: 'Cargando...',
+                        title: 'Detalle de la preparación técnica',
+                    }) ~ stimulusTarget('modal-content-loader', 'button') %}
+                    {{ tableActionButton3(path('app_ptp_estimate_show', {'id': ptp_estimate.id, 'building' : building}), 'bi:eye', '', 'Detalle de la preparación técnica', action_show, 'btn-link') }}
+
+{#                    {% if not app.request.query.get('modal') %}#}
+{#                        #}{#                            {{ tableActionButton3(path('app_organism_show', {'id': organism.id}), 'bi:eye', '', 'Detalle del organismo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_organism_show', {'id': organism.id})})) }} #}
+{#                        {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id}), 'fa:edit', '', 'Editar estimado de proyecto y preparación técnica', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ptp_estimate_edit', {'id': ptp_estimate.id})}), 'btn-link') }}#}
+{#                    {% endif %}#}
+                    {% set action = stimulusController('modal-content-loader', {
+                        url: path('app_ptp_estimate_edit', {'building': building, 'id': ptp_estimate.id, 'modal':'modal-load', 'state':'modal'}),
+                        id: 'modal-load',
+                        placeholder: 'Cargando...',
+                        title: 'Editar preparación técnica',
+                    }) ~ stimulusTarget('modal-content-loader', 'button') %}
+                    {{ tableActionButton3(path('app_ptp_estimate_edit', {'id': ptp_estimate.id, 'building': building}), 'fa:edit', '', 'Editar preparación técnica', action, 'btn-link') }}
+
                     {{ component('DeleteForm', {
                         path: path('app_ptp_estimate_delete', {'id': ptp_estimate.id, 'building': building}),
                         confirm: 'Está seguro que desea eliminar el estimado de proyecto y preparación técnica?',

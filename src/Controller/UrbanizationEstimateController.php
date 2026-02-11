@@ -53,10 +53,12 @@ final class UrbanizationEstimateController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_urbanization_estimate_show', methods: ['GET'])]
-    public function show(Request $request, UrbanizationEstimate $urbanizationEstimate, CrudActionService $crudActionService): Response
+    #[Route('/{id}/{building}', name: 'app_urbanization_estimate_show', methods: ['GET'])]
+    public function show(Request $request, UrbanizationEstimate $urbanizationEstimate, CrudActionService $crudActionService, ?Building $building = null): Response
     {
-        return $crudActionService->showAction($request, $urbanizationEstimate, 'urbanization_estimate', 'urbanization_estimate', 'Detalles del estimado de urbanización');
+        return $crudActionService->showAction($request, $urbanizationEstimate, 'urbanization_estimate', 'urbanization_estimate', 'Detalles del estimado de urbanización', [
+            'building' => $building,
+        ]);
     }
 
     /**
@@ -64,11 +66,12 @@ final class UrbanizationEstimateController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit', name: 'app_urbanization_estimate_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, UrbanizationEstimate $urbanizationEstimate, CrudActionService $crudActionService): Response
+    #[Route('/{id}/edit/{building}', name: 'app_urbanization_estimate_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, UrbanizationEstimate $urbanizationEstimate, CrudActionService $crudActionService, ?Building $building = null): Response
     {
         return $crudActionService->formLiveComponentAction($request, $urbanizationEstimate, 'urbanization_estimate', [
             'title' => 'Editar estimado de urbanización',
+            'building' => $building,
         ]);
     }
 
@@ -81,7 +84,10 @@ final class UrbanizationEstimateController extends AbstractController
     public function delete(Request $request, UrbanizationEstimate $urbanizationEstimate, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado el estimado de urbanización.';
-        $response = $crudActionService->deleteAction($request, $urbanizationEstimateRepository, $urbanizationEstimate, $successMsg, 'app_building_edit', ['id' => $building->getId()]);
+        $response = $crudActionService->deleteAction($request, $urbanizationEstimateRepository, $urbanizationEstimate, $successMsg, 'app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
+        ]);
         if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
 

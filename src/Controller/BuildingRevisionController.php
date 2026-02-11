@@ -97,7 +97,10 @@ final class BuildingRevisionController extends AbstractController
     public function delete(Request $request, BuildingRevision $buildingRevision, BuildingRevisionRepository $buildingRevisionRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado la revisión.';
-        $response = $crudActionService->deleteAction($request, $buildingRevisionRepository, $buildingRevision, $successMsg, 'app_building_edit', ['id' => $building->getId()]);
+        $response = $crudActionService->deleteAction($request, $buildingRevisionRepository, $buildingRevision, $successMsg, 'app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
+        ]);
         if ($response instanceof RedirectResponse) {
             $this->addFlash('success', $successMsg);
 

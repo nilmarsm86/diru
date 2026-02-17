@@ -100,14 +100,14 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th></th>
-                    <th>Á. Util (m<sup>2</sup>)</th>
-                    <th title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
-                    <th>Á. Vacío (m<sup>2</sup>)</th>
-                    <th title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
-                    <th>Alt. (m)</th>
-                    <th>Vol. (m<sup>3</sup>)</th>
-                    <th>Sin asignar (m<sup>2</sup>)</th>
-                    <th>Libre (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacio">Á. Vacío (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Espacio sin asignar">Sin asignar (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Espacio libre">Libre (m<sup>2</sup>)</th>
                     {% if reply or building.isNew() %}
                         <th>Importe ({{ building.getProjectCurrency() }})</th>
                     {% endif %}

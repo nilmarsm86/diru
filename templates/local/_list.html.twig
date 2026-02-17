@@ -67,9 +67,9 @@
                     <th>#</th>
                     <th>Área (m<sup>2</sup>)</th>
                     <th>Tipo</th>
-                    <th>Alt. (m)</th>
-                    <th>Vol. (m<sup>3</sup>)</th>
-                    <th>Est. Tec</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Estado técnico">Est. Tec</th>
                     <th>Impacta</th>
                     {% if reply or sub_system.inNewBuilding() %}
                         <th>Acción. C</th>
@@ -146,7 +146,8 @@
 
                                 {% if local.hasLocalConstructiveAction() %}
                                     {% if local.getConstructiveSystem() %}
-                                        {{ local.getConstructiveAction() }} <br> {{ '('~local.constructiveSystem.name~')' }}
+                                        {{ local.getConstructiveAction() }}
+                                        <br> {{ '('~local.constructiveSystem.name~')' }}
                                     {% else %}
                                         {{ local.getConstructiveAction() }}
                                     {% endif %}

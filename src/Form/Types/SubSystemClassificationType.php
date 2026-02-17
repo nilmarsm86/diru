@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
@@ -29,6 +30,7 @@ class SubSystemClassificationType extends AbstractType
     public function __construct(
         private readonly SubsystemTypeRepository $subsystemTypeRepository,
         private readonly SubsystemSubTypeRepository $subsystemSubTypeRepository,
+        private readonly RouterInterface $router
     ) {
     }
 
@@ -57,6 +59,11 @@ class SubSystemClassificationType extends AbstractType
                 'constraints' => $this->getTypeConstraints($options),
                 'query_builder' => $this->getTypeQueryBuilder($subsystemFunctionalClassification),
                 'attr' => ['disabled' => !$isValid],
+
+                'add' => true,
+                'add_title' => 'Agregar Tipo',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load'])
             ];
 
             if (0 !== $options['type']) {
@@ -64,7 +71,7 @@ class SubSystemClassificationType extends AbstractType
                 $typeAttr['data'] = $type;
             }
 
-            $field->add(EntityType::class, [] + $typeAttr);
+            $field->add(EntityPlusType::class, [] + $typeAttr);
         });
 
         $builder->addDependent('subType', 'type', function (DependentField $field, ?SubsystemType $subsystemType) use ($options) {
@@ -77,9 +84,14 @@ class SubSystemClassificationType extends AbstractType
                 'data' => $subType,
                 'query_builder' => $this->getSubTypeQueryBuilder($subsystemType),
                 'attr' => ['disabled' => is_null($subsystemType)],
+
+                'add' => true,
+                'add_title' => 'Agregar Subtipo',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'])
             ];
 
-            $field->add(EntityType::class, $subTypeAttr);
+            $field->add(EntityPlusType::class, $subTypeAttr);
         });
     }
 

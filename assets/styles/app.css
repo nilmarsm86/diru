@@ -222,7 +222,8 @@ form div.help-text {
 .bg-register-image, .bg-login-image{
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 86%;
+    background-color: #f7f7f7;
 }
 
 /*details.not-summary summary{*/

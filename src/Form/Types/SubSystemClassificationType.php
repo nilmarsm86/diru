@@ -9,7 +9,6 @@ use App\Repository\SubsystemSubTypeRepository;
 use App\Repository\SubsystemTypeRepository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -30,7 +29,7 @@ class SubSystemClassificationType extends AbstractType
     public function __construct(
         private readonly SubsystemTypeRepository $subsystemTypeRepository,
         private readonly SubsystemSubTypeRepository $subsystemSubTypeRepository,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
     ) {
     }
 
@@ -63,7 +62,7 @@ class SubSystemClassificationType extends AbstractType
                 'add' => true,
                 'add_title' => 'Agregar Tipo',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load'])
+                'add_url' => $this->router->generate('app_subsystem_type_new', ['modal' => 'modal-load']),
             ];
 
             if (0 !== $options['type']) {
@@ -88,7 +87,7 @@ class SubSystemClassificationType extends AbstractType
                 'add' => true,
                 'add_title' => 'Agregar Subtipo',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load'])
+                'add_url' => $this->router->generate('app_subsystem_sub_type_new', ['modal' => 'modal-load']),
             ];
 
             $field->add(EntityPlusType::class, $subTypeAttr);

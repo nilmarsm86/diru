@@ -24,15 +24,15 @@ final class UsernameValidator extends ConstraintValidator
         }
 
         // strange characters
-        if (false === preg_match('/^[a-zA-Z0-9_\-.]+$/', $value)) {
+        if (false === preg_match('/^[a-z0-9_\-.]+$/', $value)) {
             $this->context->buildViolation('El nombre de usuario debe contener solo caracteres válidos.')
                 ->addViolation();
         }
 
-        // uppercase characters
-        if (false !== preg_match('/[A-Z]/', $value)) {
+        /*// uppercase characters
+        if (false !== preg_match('/[a-z]/', $value)) {
             $this->context->buildViolation('El nombre de usuario debe contener solo minúsculas.')
                 ->addViolation();
-        }
+        }*/
     }
 }

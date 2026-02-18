@@ -5,9 +5,8 @@ namespace App\Entity;
 use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
+use App\Entity\Traits\ClientTrait;
 use App\Entity\Traits\NameToStringTrait;
-use App\Repository\EnterpriseClientRepository;
-use App\Repository\IndividualClientRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Project
 {
     use NameToStringTrait;
+    use ClientTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -67,10 +67,6 @@ class Project
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $designAt = null;
-
-    #[ORM\ManyToOne(inversedBy: 'projects')]
-    #[Assert\Valid]
-    private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'project', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
@@ -285,66 +281,6 @@ class Project
         return $this;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function isIndividualClient(IndividualClientRepository $individualClientRepository): bool
-    {
-        if (is_null($this->getId())) {
-            return true;
-        }
-
-        $client = $this->getClient();
-        if (!is_null($client)) {
-            $individual = $individualClientRepository->find($client->getId());
-
-            return !is_null($individual);
-        }
-
-        return false;
-    }
-
-    public function getIndividualClient(IndividualClientRepository $individualClientRepository): ?IndividualClient
-    {
-        $client = $this->getClient();
-        if (!is_null($client)) {
-            return $individualClientRepository->find($client->getId());
-        }
-
-        return null;
-    }
-
-    public function isEnterpriseClient(EnterpriseClientRepository $enterpriseClientRepository): bool
-    {
-        $client = $this->getClient();
-        if (!is_null($client)) {
-            $enterprise = $enterpriseClientRepository->find($client->getId());
-
-            return !is_null($enterprise);
-        }
-
-        return false;
-    }
-
-    public function getEnterpriseClient(EnterpriseClientRepository $enterpriseClientRepository): ?EnterpriseClient
-    {
-        $client = $this->getClient();
-        if (!is_null($client)) {
-            return $enterpriseClientRepository->find($client->getId());
-        }
-
-        return null;
-    }
-
-    public function setClient(?Client $client): static
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
     public function getContract(): ?Contract
     {
         return $this->contract;
@@ -393,16 +329,6 @@ class Project
         $this->investment = $investment;
 
         return $this;
-    }
-
-    public function isFromEnterpriseClient(): bool
-    {
-        return $this->getClient() instanceof EnterpriseClient;
-    }
-
-    public function isFromIndividualClient(): bool
-    {
-        return $this->getClient() instanceof IndividualClient;
     }
 
     /**

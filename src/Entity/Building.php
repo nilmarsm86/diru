@@ -6,6 +6,7 @@ use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\NetworkConnectionType;
 use App\Entity\Interfaces\MeasurementDataInterface;
 // use App\Entity\Traits\HasReplyTrait;
+use App\Entity\Traits\ClientTrait;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\BuildingRepository;
@@ -24,6 +25,7 @@ class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
     use MeasurementDataTrait;
+    use ClientTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

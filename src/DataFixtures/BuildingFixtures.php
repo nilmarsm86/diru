@@ -3,9 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Building;
+use App\Entity\Client;
 use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
+use App\Entity\EnterpriseClient;
+use App\Entity\IndividualClient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -44,6 +47,10 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                     if (null !== $draftsman) {
                         $buildingEntity->addDraftsman($draftsman);
                     }
+
+                    $buildingEntity->setClient($this->findClient($manager));
+                } else {
+                    $buildingEntity->setClient($this->findClient($manager, false));
                 }
 
                 $manager->persist($buildingEntity);
@@ -66,6 +73,14 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
     private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
     {
         return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
+    }
+
+    private function findClient(ObjectManager $manager, bool $enterprise = true): Client
+    {
+        $entityClass = ($enterprise) ? EnterpriseClient::class : IndividualClient::class;
+        $clients = $manager->getRepository($entityClass)->findAll();
+
+        return $clients[0];
     }
 
     public function getDependencies(): array

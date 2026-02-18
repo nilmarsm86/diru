@@ -6,11 +6,16 @@ use App\Entity\Building;
 use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
+use App\Entity\EnterpriseClient;
+use App\Entity\IndividualClient;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\IndividualClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,8 +32,11 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 class BuildingType extends AbstractType
 {
-    public function __construct(private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly IndividualClientRepository $individualClientRepository,
+        private readonly EnterpriseClientRepository $enterpriseClientRepository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -371,6 +379,71 @@ class BuildingType extends AbstractType
                     'class' => 'mb-0',
                 ],
             ])
-        ;
+            ->add('clientType', ChoiceType::class, [
+                'label' => 'Tipo cliente:',
+                'choices' => [
+                    'Persona natural' => 'individual',
+                    'Cliente Empresarial-Negocio' => 'enterprise',
+                ],
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'data' => (is_null($building->getClient())) ? 'individual' : ($building->isIndividualClient($this->individualClientRepository) ? 'individual' : 'enterprise'),
+                'attr' => [
+                    'data-action' => 'change->visibility#toggle', // show or hide representative field
+                ],
+                'label_attr' => [
+                    'class' => 'radio-inline',
+                ],
+            ])
+            ->add('individualClient', EntityPlusType::class, [
+                'class' => IndividualClient::class,
+                'choice_label' => function (IndividualClient $individualClient) {
+                    $person = $individualClient->getPerson();
+
+                    return $person?->getFullName();
+                },
+                'mapped' => false,
+                'label' => 'Persona natural',
+                'data' => $building->getIndividualClient($this->individualClientRepository),
+
+                'detail' => true,
+                'detail_title' => 'Detalle del cliente individual',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar cliente individual',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
+            ])
+            ->add('enterpriseClient', EntityPlusType::class, [
+                'class' => EnterpriseClient::class,
+                'choice_label' => function (EnterpriseClient $enterpriseClient) {
+                    $representative = $enterpriseClient->getRepresentative();
+                    $corporateEntity = $enterpriseClient->getCorporateEntity();
+
+                    return $corporateEntity?->getName().' ('.$representative?->getName().')';
+                },
+                'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getCorporateEntity(),
+                'mapped' => false,
+                'label' => 'Cliente empresarial-negocio (representante)',
+                'data' => $building->getEnterpriseClient($this->enterpriseClientRepository),
+
+                'detail' => true,
+                'detail_title' => 'Detalle del cliente empresarial',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
+
+                'add' => true,
+                'add_title' => 'Agregar cliente empresarial-negocio',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
+
+                'modify' => true,
+                'modify_title' => 'Detalle del cliente empresarial',
+                'modify_id' => 'modal-load',
+                'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
+            ]);
     }
 }

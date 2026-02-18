@@ -22,6 +22,22 @@
     {% endif %}
 </div>
 
+<div class="mb-0 row" {{ stimulusController('visibility') }}>
+    <div class="col">
+        {{ form_row(clientType) }}
+    </div>
+    <div class="col">
+        <div {{ stimulusTarget('visibility', 'target') }}
+            style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
+            {{ form_row(individualClient) }}
+        </div>
+        <div {{ stimulusTarget('visibility', 'target') }}
+            style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
+            {{ form_row(enterpriseClient) }}
+        </div>
+    </div>
+</div>
+
 <details class="collection"
          {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther.vars.data > 0 %}open{% endif %}>
     <summary class="collection">

@@ -156,71 +156,74 @@
         </div>
     </div>
 
-    {{ form_row(form.buildings.vars.button_add, {
-        label: 'Agregar obra',
-        attr: { class: 'btn btn-outline-nav-link btn-sm' }
-    }) }}
+{#    {{ form_row(form.buildings.vars.button_add, {#}
+{#        label: 'Agregar obra',#}
+{#        attr: { class: 'btn btn-outline-nav-link btn-sm' }#}
+{#    }) }}#}
 
-    {% if form_errors(form.buildings) %}
-        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">
-            <div class="col-sm-12">
-                {{ form_errors(form.buildings) }}
-            </div>
-        </div>
-    {% endif %}
+{#    {% if form_errors(form.buildings) %}#}
+{#        <div class="mb-3 mt-0 row" style="margin-top: -1rem !important;">#}
+{#            <div class="col-sm-12">#}
+{#                {{ form_errors(form.buildings) }}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
 
-    {% for key, building in form.buildings %}
-        <details class="collection" {% if form_errors(building.name) %}open{% endif %}>
-            <summary class="collection">
-                <div class="row summary-btn-lis">
-                    <div class="col">Obra: {% if this.isNew == false %}{{ building.vars.data.name }}{% endif %}</div>
-                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-                        {#                        <button class="btn btn-primary btn-sm" type="button">Reporte</button> #}
+{#    {% for key, building in form.buildings %}#}
+{#        <details class="collection" {% if form_errors(building.name) %}open{% endif %}>#}
+{#            <summary class="collection">#}
+{#                <div class="row summary-btn-lis">#}
+{#                    <div class="col">Obra: {% if this.isNew == false %}{{ building.vars.data.name }}{% endif %}</div>#}
+{#                    <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">#}
+{#                        #}{#                        <button class="btn btn-primary btn-sm" type="button">Reporte</button> #}
 
-                        {% if this.pro.id is not null %}
-                            {% if building.vars.data.id %}
-                                <a class="btn btn-outline-info btn-sm"
-                                   href="{{ path('app_building_edit', {id: building.vars.data.id, 'project':this.pro.id}) }}">
-                                    {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
-                                    Información de la obra
-                                </a>
-                            {% else %}
-                                {{ form_widget(building.vars.button_delete, {
-                                    label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
-                                    attr: { class: 'btn btn-outline-danger btn-sm' }
-                                }) }}
-                            {% endif %}
-                        {% else %}
-                            {{ form_widget(building.vars.button_delete, {
-                                label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',
-                                attr: { class: 'btn btn-outline-danger btn-sm' }
-                            }) }}
-                        {% endif %}
-                    </div>
-                </div>
-            </summary>
+{#                        {% if this.pro.id is not null %}#}
+{#                            {% if building.vars.data.id %}#}
+{#                                <a class="btn btn-outline-info btn-sm"#}
+{#                                   href="{{ path('app_building_edit', {id: building.vars.data.id, 'project':this.pro.id}) }}">#}
+{#                                    {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}#}
+{#                                    Información de la obra#}
+{#                                </a>#}
+{#                            {% else %}#}
+{#                                {{ form_widget(building.vars.button_delete, {#}
+{#                                    label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',#}
+{#                                    attr: { class: 'btn btn-outline-danger btn-sm' }#}
+{#                                }) }}#}
+{#                            {% endif %}#}
+{#                        {% else %}#}
+{#                            {{ form_widget(building.vars.button_delete, {#}
+{#                                label: ux_icon('bi:trash', {class:'bi'}) ~ 'Eliminar',#}
+{#                                attr: { class: 'btn btn-outline-danger btn-sm' }#}
+{#                            }) }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </summary>#}
 
-            {{ include('partials/live_component/_building.html.twig', {
-                'name' : building.name,
-                'population' : building.population,
-                'constructor' : building.constructor,
-                'corporateEntity' : building.corporateEntity,
-                'draftsman' : (building.draftsman is defined) ? building.draftsman : null,
-                'approvedValueConstruction' : building.approvedValueConstruction,
-                'approvedValueEquipment' : building.approvedValueEquipment,
-                'approvedValueOther' : building.approvedValueOther,
-                'estimatedValueConstruction' : building.estimatedValueConstruction,
-                'estimatedValueEquipment' : building.estimatedValueEquipment,
-                'estimatedValueOther' : building.estimatedValueOther,
-                'projectPriceTechnicalPreparation' : building.projectPriceTechnicalPreparation,
-                'estimatedValueUrbanization' : building.estimatedValueUrbanization,
-                'constructionAssembly' : building.constructionAssembly,
-                'constructionAssemblyComment' : building.constructionAssemblyComment,
-                'landNetworkConnections' : building.landNetworkConnections,
-                'range' : building.range
-            }) }}
-        </details>
-    {% endfor %}
+{#            {{ include('partials/live_component/_building.html.twig', {#}
+{#                'name' : building.name,#}
+{#                'population' : building.population,#}
+{#                'constructor' : building.constructor,#}
+{#                'corporateEntity' : building.corporateEntity,#}
+{#                'draftsman' : (building.draftsman is defined) ? building.draftsman : null,#}
+{#                'approvedValueConstruction' : building.approvedValueConstruction,#}
+{#                'approvedValueEquipment' : building.approvedValueEquipment,#}
+{#                'approvedValueOther' : building.approvedValueOther,#}
+{#                'estimatedValueConstruction' : building.estimatedValueConstruction,#}
+{#                'estimatedValueEquipment' : building.estimatedValueEquipment,#}
+{#                'estimatedValueOther' : building.estimatedValueOther,#}
+{#                'projectPriceTechnicalPreparation' : building.projectPriceTechnicalPreparation,#}
+{#                'estimatedValueUrbanization' : building.estimatedValueUrbanization,#}
+{#                'constructionAssembly' : building.constructionAssembly,#}
+{#                'constructionAssemblyComment' : building.constructionAssemblyComment,#}
+{#                'landNetworkConnections' : building.landNetworkConnections,#}
+{#                'range' : building.range,#}
+{#                'clientType': building.clientType,#}
+{#                'individualClient' : building.individualClient,#}
+{#                'enterpriseClient' : building.enterpriseClient#}
+{#            }) }}#}
+{#        </details>#}
+{#    {% endfor %}#}
 
     <div class="row mb-3">
         <div class="col-sm-12">

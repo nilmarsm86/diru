@@ -7,9 +7,12 @@ use App\Entity\Building;
 use App\Entity\Project;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
+use App\Repository\ClientRepository;
 use App\Repository\ConstructorRepository;
 use App\Repository\CorporateEntityRepository;
 use App\Repository\DraftsmanRepository;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\IndividualClientRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -58,8 +61,20 @@ final class BuildingForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?float $ptpEstimateTotalPrice = 0;
 
-    public function __construct(private readonly ProjectRepository $projectRepository)
-    {
+    #[LiveProp(writable: true)]
+    public ?int $client = 0;
+
+    #[LiveProp(writable: true)]
+    public ?int $individualClient = 0;
+
+    #[LiveProp(writable: true)]
+    public ?int $enterpriseClient = 0;
+
+    public function __construct(
+        private readonly ProjectRepository $projectRepository,
+        private readonly IndividualClientRepository $individualClientRepository,
+        private readonly EnterpriseClientRepository $enterpriseClientRepository,
+    ) {
     }
 
     public function mount(?Building $bui = null): void
@@ -95,6 +110,48 @@ final class BuildingForm extends AbstractController
         if (0.0 !== $this->ptpEstimateTotalPrice) {
             $this->formValues['projectPriceTechnicalPreparation'] = (float) $this->ptpEstimateTotalPrice / 100;
         }
+
+        if (!is_null($this->bui?->getId())) {
+            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
+                /** @var int $individualClient */
+                $individualClient = $this->formValues['individualClient'];
+                $this->individualClient = $individualClient;
+            }
+        } else {
+            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
+                /** @var int $individualClient */
+                $individualClient = $this->formValues['individualClient'];
+                if ((int) $this->individualClient > $individualClient) {
+                    $this->formValues['individualClient'] = (string) $this->individualClient;
+                } else {
+                    $this->individualClient = $individualClient;
+                }
+            }
+        }
+
+        if (!is_null($this->bui?->getId())) {
+            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
+                /** @var int $enterpriseClient */
+                $enterpriseClient = $this->formValues['enterpriseClient'];
+                $this->enterpriseClient = $enterpriseClient;
+            }
+        } else {
+            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
+                /** @var int $enterpriseClient */
+                $enterpriseClient = $this->formValues['enterpriseClient'];
+                if ((int) $this->enterpriseClient > $enterpriseClient) {
+                    $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
+                    $this->formValues['individualClient'] = '0';
+                    $this->individualClient = 0;
+                } else {
+                    $this->enterpriseClient = $enterpriseClient;
+                }
+            }
+
+            if (0 !== $this->enterpriseClient && '' === $this->formValues['enterpriseClient']) {
+                $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
+            }
+        }
     }
 
     /**
@@ -118,6 +175,7 @@ final class BuildingForm extends AbstractController
         CorporateEntityRepository $corporateEntityRepository,
         ProjectRepository $projectRepository,
         DraftsmanRepository $draftsmanRepository,
+        ClientRepository $clientRepository,
     ): ?Response {
         $this->preValue();
 
@@ -128,6 +186,20 @@ final class BuildingForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var Building $building */
             $building = $this->getForm()->getData();
+
+            $client = 0;
+            if ('individual' === $this->formValues['clientType']) {
+                /** @var int $client */
+                $client = $this->formValues['individualClient'];
+            }
+
+            if ('enterprise' === $this->formValues['clientType']) {
+                /** @var int $client */
+                $client = $this->formValues['enterpriseClient'];
+            }
+
+            $client = $clientRepository->find($client);
+            $building->setClient($client);
 
             if (false !== (bool) $this->formValues['constructor']) {
                 $constructor = $constructorRepository->find($this->formValues['constructor']);
@@ -175,7 +247,7 @@ final class BuildingForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_building_edit', ['id' => $building->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_building_edit', ['id' => $building->getId(), 'project' => $building->getProject()?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;
@@ -184,5 +256,23 @@ final class BuildingForm extends AbstractController
     private function getDataModelValue(): string
     {
         return 'norender|*';
+    }
+
+    public function isIndividualClient(): bool
+    {
+        if (is_null($this->bui)) {
+            return false;
+        }
+
+        return $this->bui->isIndividualClient($this->individualClientRepository);
+    }
+
+    public function isEnterpriseClient(): bool
+    {
+        if (is_null($this->bui)) {
+            return false;
+        }
+
+        return $this->bui->isEnterpriseClient($this->enterpriseClientRepository);
     }
 }

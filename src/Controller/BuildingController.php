@@ -155,16 +155,13 @@ final class BuildingController extends AbstractController
 
             try {
                 $building->reply($entityManager);
-                // crear la cantidad de pisos que se paso
                 if ($floor > 0) {
                     $lastPosition = 0;
                     if ($building->getFloors()->count() > 0) {
                         $floors = $building->getFloors();
                         /** @var Floor $last */
                         $last = $floors->last();
-                        //                        if(){
                         $lastPosition = $last->getPosition() ?? 0;
-                        //                        }
                     }
 
                     for ($i = $lastPosition + 1; $i <= ($floor + $lastPosition); ++$i) {

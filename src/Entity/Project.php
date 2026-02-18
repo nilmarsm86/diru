@@ -102,6 +102,13 @@ class Project
     #[Assert\Valid]
     private Collection $projectUrbanRegulations;
 
+    /**
+     * @var Collection<int, DraftsmanProject>
+     */
+    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'building', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $draftsmansProjects;
+
     public function __construct()
     {
         $this->setState(ProjectState::Registered);
@@ -110,6 +117,7 @@ class Project
         $this->buildings = new ArrayCollection();
         $this->contract = null;
         $this->projectUrbanRegulations = new ArrayCollection();
+        $this->draftsmansProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -449,5 +457,97 @@ class Project
         }
 
         return $price;
+    }
+
+    /**
+     * @return Collection<int, Draftsman>
+     */
+    public function getDraftsmans(): Collection
+    {
+        $draftsman = new ArrayCollection();
+        foreach ($this->getDraftsmansProjects() as $draftsmansProject) {
+            $draftsman->add($draftsmansProject->getDraftsman());
+        }
+
+        return $draftsman;
+    }
+
+    public function getActiveDraftsman(): ?Draftsman
+    {
+        foreach ($this->getDraftsmansProjects() as $draftsmansProject) {
+            if (is_null($draftsmansProject->getFinishedAt())) {
+                return $draftsmansProject->getDraftsman();
+            }
+        }
+
+        return null;
+    }
+
+    public function addDraftsman(Draftsman $draftsman): static
+    {
+        $actualDraftsman = $this->getActiveDraftsman();
+        if (!is_null($actualDraftsman)) {
+            if ($actualDraftsman->getId() !== $draftsman->getId()) {
+                $actualDraftsmanProject = $actualDraftsman->getDraftsmanProjectByProject($this);
+                $actualDraftsmanProject?->setFinishedAt(new \DateTimeImmutable());
+
+                $draftsmanProject = new DraftsmanProject();
+                $draftsmanProject->setProject($this);
+                $draftsmanProject->setDraftsman($draftsman);
+
+                $this->addDraftsmanProject($draftsmanProject);
+            }
+        } else {
+            $draftsmanProject = new DraftsmanProject();
+            $draftsmanProject->setProject($this);
+            $draftsmanProject->setDraftsman($draftsman);
+
+            $this->addDraftsmanProject($draftsmanProject);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftsman(Draftsman $draftsman): static
+    {
+        $draftsmansProjects = $draftsman->getDraftsmansProjects();
+        foreach ($draftsmansProjects as $draftsmansProject) {
+            if ($draftsmansProject->hasProject($this)) {
+                $this->removeDraftsmansProject($draftsmansProject);
+
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasDraftsman(): bool
+    {
+        return $this->getDraftsmans()->count() > 0;
+    }
+
+    /**
+     * @return Collection<int, DraftsmanProject>
+     */
+    public function getDraftsmansProjects(): Collection
+    {
+        return $this->draftsmansProjects;
+    }
+
+    public function addDraftsmanProject(DraftsmanProject $draftsmanProject): static
+    {
+        if (!$this->draftsmansProjects->contains($draftsmanProject)) {
+            $this->draftsmansProjects->add($draftsmanProject);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftsmansProject(DraftsmanProject $draftsmanProject): static
+    {
+        $this->draftsmansProjects->removeElement($draftsmanProject);
+
+        return $this;
     }
 }

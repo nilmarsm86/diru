@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+
+{{ form_row(form.floor) }}
+
+<div class="row mb-3">
+    <div class="col-sm-12">
+        {{ component('button:submit', {icon: 'bi:plus-lg',label: 'Agregar',component:null}) }}
+    </div>
+</div>
+
+{{ form_end(form) }}
+

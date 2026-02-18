@@ -32,7 +32,7 @@
             {% endif %}
 
             {% if building.canReply() and building.hasErrors(not reply) == false %}
-                {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
+                {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', ) }}
             {% endif %}
 
             <div class="dropdown d-inline-block">
@@ -292,7 +292,7 @@
 
 {% endcomponent %}
 
- {% component 'Card:Card' with {
+{% component 'Card:Card' with {
      cssClass: 'mb-4',
      extra: '',
      headerCssClass: 'd-flex justify-content-between align-items-center',
@@ -328,4 +328,6 @@
          </table>
      {% endblock %}
 
- {% endcomponent %}
+{% endcomponent %}
+
+{{ include('partials/modal/_modal_load.html.twig') }}

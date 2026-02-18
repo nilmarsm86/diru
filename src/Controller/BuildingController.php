@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
+use App\Entity\Floor;
 use App\Entity\Project;
 use App\Entity\Role;
+use App\Form\ExtraFloorForReplyType;
 use App\Repository\BuildingRepository;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -125,17 +127,61 @@ final class BuildingController extends AbstractController
         return $response;
     }
 
-    #[Route('/reply/{id}', name: 'app_building_reply', methods: ['GET'])]
-    public function reply(Building $building, EntityManagerInterface $entityManager): Response
+    #[Route('/more_floors/{id}', name: 'app_building_more_floors', methods: ['GET'])]
+    public function moreFloors(Building $building): Response
     {
-        try {
-            $building->reply($entityManager);
-            $this->addFlash('success', 'Se ha replicado la obra');
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
+        $form = $this->createForm(ExtraFloorForReplyType::class, null, [
+            'action' => $this->generateUrl('app_building_reply', ['id' => $building->getId()]),
+        ]);
+
+        return $this->render('building/more_floors.html.twig', [
+            'building' => $building,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/reply/{id}', name: 'app_building_reply', methods: ['POST'])]
+    public function reply(Request $request, Building $building, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ExtraFloorForReplyType::class, null, [
+            'action' => $this->generateUrl('app_building_reply', ['id' => $building->getId()]),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var int $floor */
+            $floor = $form->get('floor')->getData();
+
+            try {
+                $building->reply($entityManager);
+                // crear la cantidad de pisos que se paso
+                if ($floor > 0) {
+                    $lastPosition = 0;
+                    if ($building->getFloors()->count() > 0) {
+                        $floors = $building->getFloors();
+                        /** @var Floor $last */
+                        $last = $floors->last();
+                        //                        if(){
+                        $lastPosition = $last->getPosition() ?? 0;
+                        //                        }
+                    }
+
+                    for ($i = $lastPosition + 1; $i <= ($floor + $lastPosition); ++$i) {
+                        $building->createAutomaticFloor('Planta '.$i, false, $i, true, $entityManager);
+                    }
+                    $entityManager->persist($building);
+                    $entityManager->flush();
+                }
+                $this->addFlash('success', 'Se ha replicado la obra');
+            } catch (\Exception $exception) {
+                $this->addFlash('error', $exception->getMessage());
+            }
+
+            return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
         }
 
-        return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => true]);
+        return $this->redirectToRoute('app_building_edit', ['id' => $building->getId(), 'project' => $building->getProject()?->getId()]);
     }
 
     // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones

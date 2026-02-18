@@ -805,7 +805,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    private function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, ?EntityManagerInterface $entityManager = null): void
+    public function createAutomaticFloor(string $name, bool $isGroundFloor = false, int $position = 0, bool $reply = false, ?EntityManagerInterface $entityManager = null): void
     {
         Floor::createAutomatic(null, $this, $name, $isGroundFloor, $position, $reply, $entityManager);
     }

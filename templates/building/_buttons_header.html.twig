@@ -81,7 +81,13 @@
     {% endif %}
 
     {% if building.canReply() and building.hasErrors() == false %}
-        {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar') }}
+        {% set action_save = stimulusController('modal-content-loader', {
+            url: path('app_building_more_floors', {'id':building.id, 'modal':'modal-load', 'state':'modal'}),
+            id: 'modal-load',
+            placeholder: 'Cargando...',
+            title: 'Replicar obra',
+        }) ~ stimulusTarget('modal-content-loader', 'button') %}
+        {{ tableActionButton3(path('app_building_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
     {% endif %}
 
     {% if building.isNew() is not null %}

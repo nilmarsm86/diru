@@ -57,6 +57,11 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                     $this->addUrbanRegulation($manager, $projectEntity, 'Retranqueos', '1.5');
                 }
 
+                $draftsman = $this->findDraftsman($manager, 'Draftsman');
+                if (null !== $draftsman) {
+                    $projectEntity->addDraftsman($draftsman);
+                }
+
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
 
                 $manager->persist($projectEntity);
@@ -64,6 +69,11 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         }
 
         $manager->flush();
+    }
+
+    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
+    {
+        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
     }
 
     private function addUrbanRegulation(ObjectManager $manager, Project $project, string $urbanRegulationDescription, string $data): void

@@ -109,15 +109,16 @@ class ProjectType extends AbstractType
                     'data-visibility-by-select-target' => 'select',
                 ],
             ]);
-        } else {
-            $moreAttrDraftsman = ['required' => false];
-            $form->add('draftsman', EntityType::class, [
-                'mapped' => false,
-                'class' => Draftsman::class,
-                'placeholder' => '-Seleccione-',
-                'label' => 'Proyectista:',
-            ] + $moreAttrDraftsman);
         }
+
+        $form->add('draftsman', EntityType::class, [
+            'mapped' => false,
+            'class' => Draftsman::class,
+            'placeholder' => '-Seleccione-',
+            'label' => 'Proyectista:',
+            'required' => false,
+            'data' => $project->getActiveDraftsman(),
+        ]);
 
         $moreAttr = [];
         if (!is_null($project->getContract())) {
@@ -218,18 +219,18 @@ class ProjectType extends AbstractType
             ]);
         }
 
-        $form->add('buildings', LiveCollectionType::class, [
-            'entry_type' => BuildingType::class,
-            'button_delete_options' => [
-                'label_html' => true,
-            ],
-            'constraints' => [
-                new Assert\Count(
-                    min: 1,
-                    minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
-                ),
-            ],
-            'error_bubbling' => false,
-        ]);
+        //        $form->add('buildings', LiveCollectionType::class, [
+        //            'entry_type' => BuildingType::class,
+        //            'button_delete_options' => [
+        //                'label_html' => true,
+        //            ],
+        //            'constraints' => [
+        //                new Assert\Count(
+        //                    min: 1,
+        //                    minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
+        //                ),
+        //            ],
+        //            'error_bubbling' => false,
+        //        ])
     }
 }

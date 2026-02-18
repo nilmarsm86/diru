@@ -172,6 +172,9 @@ final class ProjectForm extends AbstractController
 
             if (isset($this->formValues['draftsman']) && '' !== $this->formValues['draftsman']) {
                 $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
+                if (null !== $draftsman) {
+                    $project->addDraftsman($draftsman);
+                }
 
                 if (is_null($project->getId())) {
                     /** @var Building[] $data */
@@ -203,49 +206,49 @@ final class ProjectForm extends AbstractController
                     $project->setContract($this->contract);
                 }
 
-                // Change draftmans
-                /** @var Building[] $data */
-                $data = $this->getForm()->get('buildings')->getData();
-                /** @var array<string, array<string, array<string, mixed>>> $fv */
-                $fv = $this->formValues;
-                foreach ($data as $key => $building) {
-                    if (isset($fv['buildings'][$key]['draftsman'])) {
-                        $draftsman = $draftsmanRepository->find($fv['buildings'][$key]['draftsman']);
-                        if (null !== $draftsman) {
-                            $building->addDraftsman($draftsman);
-                        }
-                    }
-                }
+                //                // Change draftmans
+                //                /** @var Building[] $data */
+                //                $data = $this->getForm()->get('buildings')->getData();
+                //                /** @var array<string, array<string, array<string, mixed>>> $fv */
+                //                $fv = $this->formValues;
+                //                foreach ($data as $key => $building) {
+                //                    if (isset($fv['buildings'][$key]['draftsman'])) {
+                //                        $draftsman = $draftsmanRepository->find($fv['buildings'][$key]['draftsman']);
+                //                        if (null !== $draftsman) {
+                //                            $building->addDraftsman($draftsman);
+                //                        }
+                //                    }
+                //                }
 
                 $this->formValues = $formValues;
             }
 
-            // fix constructor
-            /** @var Building[] $data */
-            $data = $this->getForm()->get('buildings')->getData();
+            //            // fix constructor
+            //            /** @var Building[] $data */
+            //            $data = $this->getForm()->get('buildings')->getData();
+            //
+            //            /** @var array<string, array<string, array<string, mixed>>> $fv */
+            //            $fv = $this->formValues;
+            //
+            //            // constructor
+            //            foreach ($data as $key => $building) {
+            //                if (isset($fv['buildings'][$key]['constructor'])) {
+            //                    $constructor = $constructorRepository->find($fv['buildings'][$key]['constructor']);
+            //                    if (null !== $constructor) {
+            //                        $building->addConstructor($constructor);
+            //                    }
+            //                }
+            //            }
 
-            /** @var array<string, array<string, array<string, mixed>>> $fv */
-            $fv = $this->formValues;
-
-            // constructor
-            foreach ($data as $key => $building) {
-                if (isset($fv['buildings'][$key]['constructor'])) {
-                    $constructor = $constructorRepository->find($fv['buildings'][$key]['constructor']);
-                    if (null !== $constructor) {
-                        $building->addConstructor($constructor);
-                    }
-                }
-            }
-
-            // corpoate entities
-            foreach ($data as $key => $building) {
-                if (isset($fv['buildings'][$key]['corporateEntity'])) {
-                    $corporateEntity = $corporateEntityRepository->find($fv['buildings'][$key]['corporateEntity']);
-                    if (null !== $corporateEntity) {
-                        $building->addCorporateEntity($corporateEntity);
-                    }
-                }
-            }
+            //            // corpoate entities
+            //            foreach ($data as $key => $building) {
+            //                if (isset($fv['buildings'][$key]['corporateEntity'])) {
+            //                    $corporateEntity = $corporateEntityRepository->find($fv['buildings'][$key]['corporateEntity']);
+            //                    if (null !== $corporateEntity) {
+            //                        $building->addCorporateEntity($corporateEntity);
+            //                    }
+            //                }
+            //            }
 
             $projectRepository->save($project, true);
 

@@ -105,7 +105,7 @@ class Project
     /**
      * @var Collection<int, DraftsmanProject>
      */
-    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'building', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'project', cascade: ['persist'])]
     #[Assert\Valid]
     private Collection $draftsmansProjects;
 

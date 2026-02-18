@@ -13,6 +13,8 @@ use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -126,33 +128,33 @@ class BuildingType extends AbstractType
             ];
         }
 
-        $form->add('constructor', EntityPlusType::class, [
-            'class' => Constructor::class,
-            'choice_label' => 'name',
-            'label' => 'Constructora:',
-            'mapped' => false,
-            //                'query_builder' => $this->getOrganismQueryBuilder($options),
-
-            'detail' => true,
-            'detail_title' => 'Detalle de la constructora',
-            'detail_id' => 'modal-load',
-            'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
-
-            'add' => true,
-            'add_title' => 'Agregar Constructora',
-            'add_id' => 'modal-load',
-            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
-
-            'required' => false,
-            'data' => $activeConstructor,
-        ]);
+        //        $form->add('constructor', EntityPlusType::class, [
+        //            'class' => Constructor::class,
+        //            'choice_label' => 'name',
+        //            'label' => 'Constructora:',
+        //            'mapped' => false,
+        //            //                'query_builder' => $this->getOrganismQueryBuilder($options),
+        //
+        //            'detail' => true,
+        //            'detail_title' => 'Detalle de la constructora',
+        //            'detail_id' => 'modal-load',
+        //            'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
+        //
+        //            'add' => true,
+        //            'add_title' => 'Agregar Constructora',
+        //            'add_id' => 'modal-load',
+        //            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
+        //
+        //            'required' => false,
+        //            'data' => $activeConstructor,
+        //        ]);
 
         $form->add('corporateEntity', EntityPlusType::class, [
             'class' => CorporateEntity::class,
             'choice_label' => 'name',
-            'label' => 'Entidad corporativa:',
+            'label' => 'Entidad corporativa de tipo constructora:',
             'mapped' => false,
-            //                'query_builder' => $this->getOrganismQueryBuilder($options),
+            'query_builder' => $this->getCorporateEntityConstructor(),
 
             'detail' => true,
             'detail_title' => 'Detalle de la entidad corporativa de tipo constructora',
@@ -445,5 +447,13 @@ class BuildingType extends AbstractType
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ]);
+    }
+
+    private function getCorporateEntityConstructor(): \Closure
+    {
+        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
+            ->andWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::Constructor->value)
+            ->orWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::ClientAndConstructor->value)
+            ->orderBy('ce.name', 'ASC');
     }
 }

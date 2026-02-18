@@ -201,12 +201,12 @@ final class BuildingForm extends AbstractController
             $client = $clientRepository->find($client);
             $building->setClient($client);
 
-            if (false !== (bool) $this->formValues['constructor']) {
-                $constructor = $constructorRepository->find($this->formValues['constructor']);
-                if (null !== $constructor) {
-                    $building->addConstructor($constructor);
-                }
-            }
+            //            if (false !== (bool) $this->formValues['constructor']) {
+            //                $constructor = $constructorRepository->find($this->formValues['constructor']);
+            //                if (null !== $constructor) {
+            //                    $building->addConstructor($constructor);
+            //                }
+            //            }
 
             if (false !== (bool) $this->formValues['corporateEntity']) {
                 $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);

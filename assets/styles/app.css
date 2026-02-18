@@ -324,3 +324,7 @@ div#project_clientType label::after{
 trix-editor{
     border-color: var(--bs-border-color) !important;
 }
+
+.text-end{
+    width: 120px;
+}

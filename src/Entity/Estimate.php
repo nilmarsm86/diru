@@ -42,10 +42,6 @@ class Estimate
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     protected ?string $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'urbanizationEstimates')]
-    #[ORM\JoinColumn(nullable: false)]
-    protected ?Building $building = null;
-
     public function __construct()
     {
         $this->price = '0';
@@ -116,30 +112,8 @@ class Estimate
         return $this;
     }
 
-    public function getBuilding(): ?Building
-    {
-        return $this->building;
-    }
-
-    public function setBuilding(?Building $building): static
-    {
-        $this->building = $building;
-
-        return $this;
-    }
-
     public function getTotalPrice(): float
     {
         return (float) $this->getPrice() * (float) $this->getQuantity();
-    }
-
-    public function getFormatedTotalPrice(): string
-    {
-        return number_format($this->getTotalPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
-    }
-
-    public function getFormatedPrice(): string
-    {
-        return number_format((float) $this->getPrice() / 100, 2).' '.$this->getBuilding()?->getProjectCurrency();
     }
 }

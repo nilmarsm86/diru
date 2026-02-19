@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\ClientTrait;
@@ -109,6 +108,13 @@ class Project
     #[Assert\Valid]
     private Collection $draftsmansProjects;
 
+    /**
+     * @var Collection<int, ConstructorProject>
+     */
+    #[ORM\OneToMany(targetEntity: ConstructorProject::class, mappedBy: 'project', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $constructorProjects;
+
     public function __construct()
     {
         $this->setState(ProjectState::Registered);
@@ -118,6 +124,7 @@ class Project
         $this->contract = null;
         $this->projectUrbanRegulations = new ArrayCollection();
         $this->draftsmansProjects = new ArrayCollection();
+        $this->constructorProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,6 +183,15 @@ class Project
         }
 
         return $this;
+    }
+
+    public function makeAddConstructorProject(Constructor $constructor): void
+    {
+        $constructorProject = new ConstructorProject();
+        $constructorProject->setProject($this);
+        $constructorProject->setConstructor($constructor);
+
+        $this->addConstructorProject($constructorProject);
     }
 
     private function stopAllBuildings(): static
@@ -547,6 +563,107 @@ class Project
     public function removeDraftsmansProject(DraftsmanProject $draftsmanProject): static
     {
         $this->draftsmansProjects->removeElement($draftsmanProject);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Constructor>
+     */
+    public function getConstructors(): Collection
+    {
+        $constructors = new ArrayCollection();
+        /** @var ConstructorProject $constructorProject */
+        foreach ($this->getConstructorProjects() as $constructorProject) {
+            $constructors->add($constructorProject->getConstructor());
+        }
+
+        return $constructors;
+    }
+
+    public function getActiveConstructor(): ?Constructor
+    {
+        /** @var ConstructorProject $constructorProject */
+        foreach ($this->getConstructorProjects() as $constructorProject) {
+            if (is_null($constructorProject->getFinishedAt())) {
+                return $constructorProject->getConstructor();
+            }
+        }
+
+        return null;
+    }
+
+    public function addConstructor(Constructor $constructor): static
+    {
+        $actualConstructor = $this->getActiveConstructor();
+        if (!is_null($actualConstructor)) {
+            if ($actualConstructor->getId() !== $constructor->getId()) {
+                $actualConstrcutorProject = $actualConstructor->getConstructorProjectByProject($this);
+                $actualConstrcutorProject?->setFinishedAt(new \DateTimeImmutable());
+
+                $this->makeAddConstructorProject($constructor);
+            }
+        } else {
+            $this->makeAddConstructorProject($constructor);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructor(Constructor $constructor): static
+    {
+        $constructorProjects = $constructor->getConstructorProjects();
+        foreach ($constructorProjects as $constructorProject) {
+            if ($constructorProject->hasProject($this)) {
+                $this->removeConstructorProject($constructorProject);
+
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasConstructor(): bool
+    {
+        return $this->getConstructors()->count() > 0;
+    }
+
+    public function hasActiveConstructor(): bool
+    {
+        return !is_null($this->getActiveConstructor());
+    }
+
+    public function getActiveConstructorName(): ?string
+    {
+        return $this->getActiveConstructor()?->getName();
+    }
+
+    public function getActiveConstructorId(): ?int
+    {
+        return $this->getActiveConstructor()?->getId();
+    }
+
+    /**
+     * @return Collection<int, ConstructorProject>
+     */
+    public function getConstructorProjects(): Collection
+    {
+        return $this->constructorProjects;
+    }
+
+    public function addConstructorProject(ConstructorProject $constructorProject): static
+    {
+        if (!$this->constructorProjects->contains($constructorProject)) {
+            $this->constructorProjects->add($constructorProject);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructorProject(ConstructorProject $constructorProject): static
+    {
+        $this->constructorProjects->removeElement($constructorProject);
 
         return $this;
     }

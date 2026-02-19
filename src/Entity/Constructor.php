@@ -44,12 +44,20 @@ class Constructor
     #[Assert\Valid]
     private Collection $constructorBuildings;
 
+    /**
+     * @var Collection<int, ConstructorProject>
+     */
+    #[ORM\OneToMany(targetEntity: ConstructorProject::class, mappedBy: 'constructor', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $constructorProjects;
+
     #[ORM\Column(name: 'address', type: Types::TEXT)]
     protected ?string $street = null;
 
     public function __construct()
     {
         $this->constructorBuildings = new ArrayCollection();
+        $this->constructorProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +183,90 @@ class Constructor
     public function hasBuildings(): bool
     {
         return $this->getBuildings()->count() > 0;
+    }
+
+    /**
+     * @return Collection<int, ConstructorProject>
+     */
+    public function getConstructorProjects(): Collection
+    {
+        return $this->constructorProjects;
+    }
+
+    public function getConstructorProjectByProject(Project $project): ?ConstructorProject
+    {
+        foreach ($this->getConstructorProjects() as $constructorProject) {
+            if ($constructorProject->getProject()?->getId() === $project->getId()) {
+                return $constructorProject;
+            }
+        }
+
+        return null;
+    }
+
+    public function addConstructorProject(ConstructorProject $constructorProject): static
+    {
+        if (!$this->constructorProjects->contains($constructorProject)) {
+            $this->constructorProjects->add($constructorProject);
+        }
+
+        return $this;
+    }
+
+    public function removeConstructorProject(ConstructorProject $constructorProject): static
+    {
+        $this->constructorProjects->removeElement($constructorProject);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        $projects = new ArrayCollection();
+        foreach ($this->getConstructorProjects() as $constructorProject) {
+            $projects->add($constructorProject->getProject());
+        }
+
+        return $projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        $constructorProject = new ConstructorProject();
+        $constructorProject->setProject($project);
+        $constructorProject->setConstructor($this);
+
+        $this->addConstructorProject($constructorProject);
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $constructorProjects = $project->getConstructorProjects();
+        /** @var ConstructorProject $constructorProject */
+        foreach ($constructorProjects as $constructorProject) {
+            if ($constructorProject->hasConstructor($this)) {
+                $this->removeConstructorProject($constructorProject);
+
+                return $this;
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProjectsAmount(): int
+    {
+        return $this->getProjects()->count();
+    }
+
+    public function hasProjects(): bool
+    {
+        return $this->getProjects()->count() > 0;
     }
 
     public function getStreet(): ?string

@@ -9,9 +9,9 @@
 </div>
 
 <div class="mb-0 row">
-{#    <div class="col">#}
-{#        {{ form_row(constructor) }}#}
-{#    </div>#}
+    {#    <div class="col"> #}
+    {#        {{ form_row(constructor) }} #}
+    {#    </div> #}
     <div class="col">
         {{ form_row(corporateEntity) }}
     </div>
@@ -22,21 +22,24 @@
     {% endif %}
 </div>
 
-<div class="mb-0 row" {{ stimulusController('visibility') }}>
-    <div class="col">
-        {{ form_row(clientType) }}
-    </div>
-    <div class="col">
-        <div {{ stimulusTarget('visibility', 'target') }}
-            style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
-            {{ form_row(individualClient) }}
+<details class="collection" open>
+    <summary class="collection" style="display: none"></summary>
+    <div class="mb-0 row" {{ stimulusController('visibility') }}>
+        <div class="col">
+            {{ form_row(clientType) }}
         </div>
-        <div {{ stimulusTarget('visibility', 'target') }}
-            style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
-            {{ form_row(enterpriseClient) }}
+        <div class="col">
+            <div {{ stimulusTarget('visibility', 'target') }}
+                style="display: {% if this.isIndividualClient() %}block{% else %}none{% endif %}">
+                {{ form_row(individualClient) }}
+            </div>
+            <div {{ stimulusTarget('visibility', 'target') }}
+                style="display: {% if this.isEnterpriseClient() %}block{% else %}none{% endif %}">
+                {{ form_row(enterpriseClient) }}
+            </div>
         </div>
     </div>
-</div>
+</details>
 
 <details class="collection"
          {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther.vars.data > 0 %}open{% endif %}>

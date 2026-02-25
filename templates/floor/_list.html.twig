@@ -31,9 +31,9 @@
                 {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply':(not reply)}), 'dinkie-icons:house-buildings-small', (reply) ? 'Plantas existentes' : 'Plantas a modificar', (reply) ? 'Plantas existentes' : 'Plantas a modificar') }}
             {% endif %}
 
-            {% if building.canReply() and building.hasErrors(not reply) == false %}
-                {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', ) }}
-            {% endif %}
+{#            {% if building.canReply() and building.hasErrors(not reply) == false %}#}
+{#                {{ tableActionButton3(path('app_building_reply', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', ) }}#}
+{#            {% endif %}#}
 
             <div class="dropdown d-inline-block">
                 <button type="button"

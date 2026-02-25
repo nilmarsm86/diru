@@ -130,7 +130,7 @@
     {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }} #}
     {#    {% endif %} #}
 
-    {% if building.isNew() is not null  %}
+    {% if building.isNew() is not null and building.hasReply() === false  %}
         <a class="btn btn-sm position-relative btn-primary" title="Resetear" data-bs-toggle="tooltip"
            href="{{ path('app_building_reset', {'id':building.id}) }}"
            onclick="return confirm('Esta seguro que desea resetear la obra?')">

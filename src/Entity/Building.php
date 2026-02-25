@@ -817,7 +817,7 @@ class Building implements MeasurementDataInterface
         return $this->isNew;
     }
 
-    public function setIsNew(bool $isNew): static
+    public function setIsNew(?bool $isNew): static
     {
         $this->isNew = $isNew;
 
@@ -1547,4 +1547,41 @@ class Building implements MeasurementDataInterface
     //
     //        return $this;
     //    }
+
+    /**
+     * @throws \Exception
+     */
+    public function reset(EntityManagerInterface $entityManager): self
+    {
+        if (null === $this->isNew()) {
+            throw new \Exception('Esta obra no puede ser reseteada!');
+        }
+
+        $land = $this->getLand();
+        if (null !== $land) {
+            foreach ($this->getFloors() as $floor) {
+                foreach ($floor->getSubSystems() as $subSystem) {
+                    foreach ($subSystem->getLocals() as $local) {
+                        $subSystem->removeLocal($local);
+                        $entityManager->remove($local);
+                    }
+
+                    $floor->removeSubSystem($subSystem);
+                    $entityManager->remove($subSystem);
+                }
+
+                $this->removeFloor($floor);
+                $entityManager->remove($floor);
+            }
+
+            $this->setLand(null);
+            $entityManager->remove($land);
+
+            $this->setIsNew(null);
+
+            $entityManager->flush();
+        }
+
+        return $this;
+    }
 }

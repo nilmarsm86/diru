@@ -130,6 +130,15 @@
     {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }} #}
     {#    {% endif %} #}
 
+    {% if building.isNew() is not null  %}
+        <a class="btn btn-sm position-relative btn-primary" title="Resetear" data-bs-toggle="tooltip"
+           href="{{ path('app_building_reset', {'id':building.id}) }}"
+           onclick="return confirm('Esta seguro que desea resetear la obra?')">
+            {{ ux_icon('ix:reset', {class:'bi'}) }}
+            Resetear
+        </a>
+    {% endif %}
+
     {% if building.id is not null %}
         {% if building.land is null %}
             {% set urlPath = path('app_land_new', {'building': building.id, 'modal' : 'modal-load'}) %}

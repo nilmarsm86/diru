@@ -221,7 +221,7 @@ final class BuildingController extends AbstractController
     {
         try {
             $building->revised($entityManager);
-            $this->addFlash('success', 'Se ha pasado a estado de revisado');
+            $this->addFlash('success', 'Se ha pasado a estado de revisado.');
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
         }
@@ -240,6 +240,22 @@ final class BuildingController extends AbstractController
             'meter_status' => $building->getAmountMeterTechnicalStatus(),
             'title' => 'Estado técnico de los locales de la obra',
             'building' => $building,
+        ]);
+    }
+
+    #[Route('/reset/{id}', name: 'app_building_reset', methods: ['GET'])]
+    public function reset(Building $building, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $building->reset($entityManager);
+            $this->addFlash('success', 'Se ha reseteado la obra.');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ha ocurrido un error al resetear la obra');
+        }
+
+        return $this->redirectToRoute('app_building_edit', [
+            'id' => $building->getId(),
+            'project' => $building->getProject()?->getId(),
         ]);
     }
 }

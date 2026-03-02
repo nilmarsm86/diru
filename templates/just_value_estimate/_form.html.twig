@@ -1,0 +1,40 @@
+{% if app.request.query.get('modal') %}
+    {{ component('JustValueEstimateForm', {modal:app.request.query.get('modal'), ue: just_value_estimate, ajax: ajax, building:building}) }}
+{% else %}
+
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
+
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_just_value_estimate_new',
+                label: 'Nueva',
+                title: 'Nueva estimación de urbanización',
+                entity: just_value_estimate,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
+
+        {% block body %}
+            {{ component('JustValueEstimateForm', {modal:null, ue: urbanization_estimate, ajax: ajax, building:building}) }}
+        {% endblock %}
+
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_just_value_estimate_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_just_value_estimate_delete', label: 'Eliminar', title:'Eliminar estimado de urbanización'},
+                id: just_value_estimate.id,
+                message: 'Está seguro que desea eliminar el estimado de urbanización?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: just_value_estimate
+            }) }}
+        {% endblock %}
+
+    {% endcomponent %}
+{% endif %}

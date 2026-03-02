@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorMap([
     'urbanization' => 'UrbanizationEstimate',
     'ptp' => 'ProjectTechnicalPreparationEstimate',
+    'jv' => 'JustValueEstimate',
 ])]
 class Estimate
 {

@@ -79,6 +79,7 @@ class BuildingType extends AbstractType
             'screen' => 'project', // building || project
             'urbanizationEstimate' => 0,
             'ptpEstimate' => 0,
+            'justValueEstimate' => 0,
         ]);
     }
 
@@ -95,6 +96,7 @@ class BuildingType extends AbstractType
         $activeCorporateEntity = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
+        $estimatedJustValueAddConfig = [];
 
         // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
         if (null !== $building && null !== $building->getId()) {
@@ -125,6 +127,12 @@ class BuildingType extends AbstractType
                 'add_title' => 'Agregar estimado de urbanización',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+            ];
+            $estimatedJustValueAddConfig = [
+                'add' => true,
+                'add_title' => 'Agregar valor estimado ajustado',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_just_value_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
             ];
         }
 
@@ -341,6 +349,39 @@ class BuildingType extends AbstractType
                     'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
+            ->add('estimatedJustValue', MoneyPlusType::class, [
+                'label' => 'Valor estimado ajustado:',
+                //                'help' => 'Urbanizacion + conexiones de red externa.',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    //                    'data-summation-values-target' => 'field',
+                    //                    'data-currency-target' => 'field',
+                    //                    'data-vecpppt' => true,
+                    'readonly' => 'readonly',
+                    'data-type--money-plus-target' => 'field',
+                    'data-controller' => 'money',
+                ],
+                'data' => (null !== $building && null !== $building->getId()) ? $building->getJustValueEstimateTotalPrice() : $options['justValueEstimate'],
+                //                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                //                'html5' => true,
+                'input' => 'integer',
+                'divisor' => 100,
+                'mapped' => false,
+                'grouping' => true,
+
+                'list' => true,
+                'list_title' => 'Listado de valores estimados ajustados',
+                'list_id' => 'modal-load',
+                'list_url' => $this->router->generate('app_just_value_estimate_index', [
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                    'amount' => 100,
+                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                ]),
+            ] + $estimatedJustValueAddConfig)
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',
                 'attr' => [

@@ -62,6 +62,9 @@ final class BuildingForm extends AbstractController
     public ?float $ptpEstimateTotalPrice = 0;
 
     #[LiveProp(writable: true)]
+    public ?float $justValueEstimateTotalPrice = 0;
+
+    #[LiveProp(writable: true)]
     public ?int $client = 0;
 
     #[LiveProp(writable: true)]
@@ -109,6 +112,10 @@ final class BuildingForm extends AbstractController
 
         if (0.0 !== $this->ptpEstimateTotalPrice) {
             $this->formValues['projectPriceTechnicalPreparation'] = (float) $this->ptpEstimateTotalPrice / 100;
+        }
+
+        if (0.0 !== $this->justValueEstimateTotalPrice) {
+            $this->formValues['estimatedJustValue'] = (float) $this->justValueEstimateTotalPrice / 100;
         }
 
         if (!is_null($this->bui?->getId())) {
@@ -165,6 +172,7 @@ final class BuildingForm extends AbstractController
             'screen' => 'building',
             'urbanizationEstimate' => $this->urbanizationEstimateTotalPrice,
             'ptpEstimate' => $this->ptpEstimateTotalPrice,
+            'justValueEstimate' => $this->justValueEstimateTotalPrice,
         ]);
     }
 

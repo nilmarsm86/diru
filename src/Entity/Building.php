@@ -139,6 +139,12 @@ class Building implements MeasurementDataInterface
     private Collection $projectTechnicalPreparationEstimates;
 
     /**
+     * @var Collection<int, JustValueEstimate>
+     */
+    #[ORM\OneToMany(targetEntity: JustValueEstimate::class, mappedBy: 'building', cascade: ['persist'])]
+    private Collection $justValueEstimates;
+
+    /**
      * @var Collection<int, BuildingSeparateConcept>
      */
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
@@ -194,6 +200,7 @@ class Building implements MeasurementDataInterface
         $this->landNetworkConnections = new ArrayCollection();
         $this->urbanizationEstimates = new ArrayCollection();
         $this->projectTechnicalPreparationEstimates = new ArrayCollection();
+        $this->justValueEstimates = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
         $this->coefficient = 0;
         $this->buildingRevisions = new ArrayCollection();
@@ -1350,6 +1357,46 @@ class Building implements MeasurementDataInterface
         $price = 0;
         foreach ($this->projectTechnicalPreparationEstimates as $projectTechnicalPreparationEstimate) {
             $price += $projectTechnicalPreparationEstimate->getTotalPrice();
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return Collection<int, JustValueEstimate>
+     */
+    public function getJustValueEstimates(): Collection
+    {
+        return $this->justValueEstimates;
+    }
+
+    public function addJustValueEstimate(JustValueEstimate $justValueEstimate): static
+    {
+        if (!$this->justValueEstimates->contains($justValueEstimate)) {
+            $this->justValueEstimates->add($justValueEstimate);
+            $justValueEstimate->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJustValueEstimates(JustValueEstimate $justValueEstimate): static
+    {
+        if ($this->justValueEstimates->removeElement($justValueEstimate)) {
+            // set the owning side to null (unless already changed)
+            if ($justValueEstimate->getBuilding() === $this) {
+                $justValueEstimate->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getJustValueEstimateTotalPrice(): float
+    {
+        $price = 0;
+        foreach ($this->justValueEstimates as $justValueEstimate) {
+            $price += $justValueEstimate->getTotalPrice();
         }
 
         return $price;

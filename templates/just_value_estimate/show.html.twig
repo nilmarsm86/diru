@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+
+{% block title %}Estimado de urbanización: {{ just_value_estimate.concept }}{% endblock %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Estimados de urbanización') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Estimados de urbanización', href: path('app_just_value_estimate_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Estimado de urbanización: {{ just_value_estimate.concept }}</h2>
+
+    {{ include('just_value_estimate/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

@@ -382,6 +382,10 @@ class BuildingType extends AbstractType
                     'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedJustValueAddConfig)
+            ->add('coefficient', null, [
+                'label' => 'Coeficiente de ajuste',
+                'required' => false,
+            ])
             ->add('constructionAssembly', MoneyType::class, [
                 'label' => 'Precio:',
                 'attr' => [

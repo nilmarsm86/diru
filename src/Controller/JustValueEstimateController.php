@@ -84,7 +84,7 @@ final class JustValueEstimateController extends AbstractController
     public function delete(Request $request, JustValueEstimate $justValueEstimate, JustValueEstimateRepository $justValueEstimateRepository, CrudActionService $crudActionService, Building $building): Response
     {
         $successMsg = 'Se ha eliminado el valor estimado ajustado.';
-        $response = $crudActionService->deleteAction($request, $justValueEstimateRepository, $justValueEstimate, $successMsg, 'app_just_value_edit', [
+        $response = $crudActionService->deleteAction($request, $justValueEstimateRepository, $justValueEstimate, $successMsg, 'app_building_edit', [
             'id' => $building->getId(),
             'project' => $building->getProject()?->getId(),
         ]);

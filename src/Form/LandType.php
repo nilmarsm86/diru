@@ -104,7 +104,7 @@ class LandType extends AbstractType
                 'attr' => [] + $disabled,
             ])
             ->add('isNew', CheckboxType::class, [
-                'label' => 'Es una obra nueva?',
+                'label' => 'Obra nueva',
                 'mapped' => false,
                 'required' => false,
             ])

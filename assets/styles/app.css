@@ -332,3 +332,7 @@ trix-editor{
 .text-end .btn{
     --bs-btn-padding-x: 0.25rem;
 }
+
+.detail_row th, .detail_row td{
+    width: 25%;
+}

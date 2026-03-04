@@ -175,6 +175,13 @@ class Building implements MeasurementDataInterface
     #[ORM\OneToMany(targetEntity: BuildingRevision::class, mappedBy: 'building')]
     private Collection $buildingRevisions;
 
+    #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
+    private ?int $constructionRealValue = 0;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $constructionRealValueComment = null;
+
     public function __construct()
     {
         $this->estimatedValueEquipment = 0;
@@ -204,6 +211,7 @@ class Building implements MeasurementDataInterface
         $this->buildingSeparateConcepts = new ArrayCollection();
         $this->coefficient = 0;
         $this->buildingRevisions = new ArrayCollection();
+        $this->constructionRealValue = 0;
     }
 
     public function getId(): ?int
@@ -1628,6 +1636,30 @@ class Building implements MeasurementDataInterface
 
             $entityManager->flush();
         }
+
+        return $this;
+    }
+
+    public function getConstructionRealValue(): ?int
+    {
+        return $this->constructionRealValue;
+    }
+
+    public function setConstructionRealValue(?int $constructionRealValue): static
+    {
+        $this->constructionRealValue = $constructionRealValue;
+
+        return $this;
+    }
+
+    public function getConstructionRealValueComment(): ?string
+    {
+        return $this->constructionRealValueComment;
+    }
+
+    public function setConstructionRealValueComment(?string $constructionRealValueComment): static
+    {
+        $this->constructionRealValueComment = $constructionRealValueComment;
 
         return $this;
     }

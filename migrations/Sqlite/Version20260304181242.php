@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260302184904 extends AbstractMigration
+final class Version20260304181242 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20260302184904 extends AbstractMigration
         , design_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , revision_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , revised_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , coefficient DOUBLE PRECISION NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        , coefficient DOUBLE PRECISION NOT NULL, construction_real_value BIGINT NOT NULL, construction_real_value_comment CLOB DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E16F61D4166D1F9C ON building (project_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E16F61D41994904A ON building (land_id)');
         $this->addSql('CREATE INDEX IDX_E16F61D419EB6921 ON building (client_id)');

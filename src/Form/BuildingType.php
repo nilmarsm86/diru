@@ -62,7 +62,14 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'rows' => 1,
                 ],
-            ]);
+            ])
+            ->add('constructionRealValueComment', null, [
+                'label' => 'Comentario:',
+                'attr' => [
+                    'rows' => 1,
+                ],
+            ])
+        ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $this->onPreSetData($event, $options);
@@ -491,6 +498,22 @@ class BuildingType extends AbstractType
                 'modify_title' => 'Detalle del cliente empresarial',
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
+            ])
+            ->add('constructionRealValue', MoneyType::class, [
+                'label' => 'Valor real:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-usd-currency-target' => 'field',
+                    'data-controller' => 'money',
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                //                'html5' => true,
+                'input' => 'integer',
+                'divisor' => 100,
+                'grouping' => true,
             ]);
     }
 

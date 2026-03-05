@@ -28,4 +28,10 @@ final class HomeController extends AbstractController
             'project_amount' => count($projectRepository->findAll()),
         ]);
     }
+
+    #[Route('/ping', name: 'app_ping')]
+    public function ping(): Response
+    {
+        return new Response('OK');
+    }
 }

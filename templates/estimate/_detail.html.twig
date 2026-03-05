@@ -1,0 +1,26 @@
+<div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+    <table class="table table-hover">
+        <tbody class="detail_row_2cols">
+        <tr>
+            <th>Concepto:</th>
+            <td>{{ estimate.concept }}</td>
+        </tr>
+        <tr>
+            <th>Cantidad:</th>
+            <td>{{ estimate.quantity }}</td>
+        </tr>
+        <tr>
+            <th>Unidad de medida:</th>
+            <td>{{ estimate.measurementUnit }}</td>
+        </tr>
+        <tr>
+            <th>Precio:</th>
+            <td>{{ estimate.price }}</td>
+        </tr>
+        <tr>
+            <th>Comentario:</th>
+            <td>{{ estimate.comment|raw }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

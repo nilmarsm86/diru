@@ -82,8 +82,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}"
-                           onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')">
+{#                        <a class="nav-link" href="{{ path('app_logout') }}"#}
+{#                           onclick="return confirm('{{ 'sign.out.question'|trans({}, 'security') }}')">#}
+{#                            {{ ux_icon('fa:sign-out', {class:'bi'}) }}#}
+{#                            <span class="d-md-invisible">{{ 'sign.out'|trans({}, 'security') }}</span>#}
+{#                        </a>#}
+
+                        <a class="nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#logout">
                             {{ ux_icon('fa:sign-out', {class:'bi'}) }}
                             <span class="d-md-invisible">{{ 'sign.out'|trans({}, 'security') }}</span>
                         </a>
@@ -93,3 +98,14 @@
         </div>
     </div>
 </nav>
+
+{% component 'Modal:Confirm' with {
+    title: 'Confirmar',
+    id: 'logout',
+    question: 'sign.out.question'|trans({}, 'security'),
+    href: path('app_logout')
+} %}
+    {% block body %}
+        Cargando...
+    {% endblock %}
+{% endcomponent %}

@@ -177,12 +177,12 @@ final class ProjectForm extends AbstractController
                 }
 
                 if (is_null($project->getId())) {
-                    /** @var Building[] $data */
-                    $data = $this->getForm()->get('buildings')->getData();
-                    foreach ($data as $building) {
-                        assert($draftsman instanceof Draftsman);
-                        $building->addDraftsman($draftsman);
-                    }
+                    /* @var Building[] $data */
+                    //                    $data = $this->getForm()->get('buildings')->getData();
+                    //                    foreach ($data as $building) {
+                    //                        assert($draftsman instanceof Draftsman);
+                    //                        $building->addDraftsman($draftsman);
+                    //                    }
                 }
             }
 

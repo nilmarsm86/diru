@@ -1,0 +1,62 @@
+url: https://127.0.0.1:8000/login
+---
+- launchApp
+- tapOn:
+    id: exampleInputEmail
+- eraseText
+- tapOn:
+    id: exampleInputEmail
+- inputText: superadmin
+- tapOn:
+    id: exampleInputPassword
+- eraseText
+- tapOn:
+    id: exampleInputPassword
+- inputText: superadmin
+- tapOn: "                     Autenticarse                "
+- assertVisible: Proyectos
+- openLink: https://127.0.0.1:8000/project
+- assertVisible: Proyectos
+- assertVisible: "                                Listado de proyectos
+
+    \            "
+- tapOn: "                                            Nuevo
+
+    \    "
+- assertVisible: "                                Nuevo proyecto
+
+    \            "
+#- tapOn:
+#    id: project_name
+#- eraseText
+- scrollUntilVisible:
+    element:
+      id: enviar
+- tapOn:
+    id: project_name
+- inputText: Proyecto4
+
+- tapOn:
+    id: project_investment
+- tapOn:  Inversion1 Proyect1
+
+- tapOn:
+    id: project_individualClient
+- tapOn:  Person 1 Apellido1 Apellido2
+
+- tapOn:
+    id: project_currency
+- tapOn:  Peso Cubano (CUP)
+
+- tapOn:
+    id: project_draftsman
+- tapOn:  Draftsman User
+
+#- tapOn: |2
+#            Agregar
+- tapOn:
+    id: enviar
+
+- assertVisible: Se ha agregado el proyecto.
+- assertVisible: Proyecto4
+    

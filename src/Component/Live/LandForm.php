@@ -113,6 +113,9 @@ final class LandForm extends AbstractController
                     $this->building?->setIsNew(true);
                     $this->building?->setState(BuildingState::Design);
                 } else {
+                    if (null === $land->getFloor()) {
+                        $land->setFloor(1);
+                    }
                     $this->building?->setIsNew(false);
                     $this->building?->setState(BuildingState::Diagnosis);
                 }

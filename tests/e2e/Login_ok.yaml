@@ -1,0 +1,19 @@
+url: https://127.0.0.1:8000/login
+---
+- launchApp
+- tapOn: 
+    id: exampleInputEmail
+- eraseText    
+- tapOn: 
+    id: exampleInputEmail
+- inputText: superadmin
+- tapOn: 
+    id: exampleInputPassword
+- eraseText
+- tapOn: 
+    id: exampleInputPassword
+- inputText: superadmin
+- tapOn: "                     Autenticarse                "
+- extendedWaitUntil:
+      visible: Proyectos
+      timeout: 3000

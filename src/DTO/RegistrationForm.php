@@ -38,13 +38,16 @@ final class RegistrationForm
     public string $plainPassword;
 
     #[Assert\NotBlank(message: 'El carnet de identidad está vacío.')]
-    public string $identificationNumber = '';
+    //    #[Assert\NotNull(message: 'El carnet de identidad está vacío.')]
+    public ?string $identificationNumber = '';
 
     #[Assert\NotBlank(message: 'El correo está vacío.')]
-    public string $email = '';
+    //    #[Assert\NotNull(message: 'El correo está vacío.')]
+    public ?string $email = '';
 
     #[Assert\NotBlank(message: 'El teléfono está vacío.')]
-    public string $phone = '';
+    //    #[Assert\NotNull(message: 'El teléfono está vacío.')]
+    public ?string $phone = '';
 
     public function toEntity(?User $user = null): User
     {

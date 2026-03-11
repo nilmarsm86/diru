@@ -1,0 +1,18 @@
+url: https://127.0.0.1:8000/login
+---
+- launchApp
+- tapOn: 
+    id: exampleInputEmail
+- eraseText    
+- tapOn: 
+    id: exampleInputEmail
+- inputText: pepe
+- tapOn: 
+    id: exampleInputPassword
+- eraseText
+- tapOn: 
+    id: exampleInputPassword
+- inputText: pepe
+- tapOn: "                     Autenticarse                "
+- extendedWaitUntil:
+    visible: Credenciales inválidas

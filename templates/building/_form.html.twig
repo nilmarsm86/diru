@@ -35,3 +35,15 @@
 {% endcomponent %}
 
 {{ include('partials/modal/_modal_load.html.twig') }}
+
+{% component 'Modal:Confirm' with {
+    title: 'Confirmar',
+    id: 'confirm_reset',
+    question: 'Esta seguro que desea resetear la obra?',
+    href: path('app_building_reset', {'id':building.id})
+} %}
+    {% block body %}
+        Cargando...
+    {% endblock %}
+{% endcomponent %}
+

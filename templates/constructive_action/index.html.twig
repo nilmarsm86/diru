@@ -1,0 +1,25 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Acciones constructivas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Acciones constructivas') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Acciones constructivas'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de acciones constructivas</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('constructive_action/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

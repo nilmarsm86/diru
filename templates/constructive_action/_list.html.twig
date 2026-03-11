@@ -1,0 +1,72 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de acciones constructivas',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ component('Card:Refresh', {
+                path: path('app_project_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_constructive_action_index',
+                label:'Tipos de Acciones',
+                queryName: 'type',
+                options:types
+            }) }}
+
+            {{ tableActionButton3(path('app_constructive_action_new'), 'bi:plus-lg', 'Nueva', 'Nueva acción constructiva', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_constructive_action_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for constructive_action in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ constructive_action.name }}</td>
+                        <td>{{ constructive_action.type.getLabelFrom(constructive_action.type) }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_network_connection_show', {'id': network_connection.id}), 'bi:eye', '', 'Detalle de la conexión', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_network_connection_show', {'id': network_connection.id})})) }}#}
+                            {{ tableActionButton3(path('app_constructive_action_edit', {'id': constructive_action.id}), 'fa:edit', '', 'Editar acción constructiva', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_constructive_action_edit', {'id': constructive_action.id})}), 'btn-link') }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_constructive_action_delete', {'id': constructive_action.id}),
+                                confirm: 'Está seguro que desea eliminar la acción constructiva?',
+                                token: 'delete' ~ constructive_action.id,
+                                title: 'Eliminar acción constructiva',
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron acciones constructivas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

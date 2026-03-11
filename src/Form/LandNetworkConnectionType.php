@@ -24,7 +24,7 @@ class LandNetworkConnectionType extends AbstractType
         $builder->add('explanation', null, [
             'label' => 'Explicación:',
             'attr' => [
-                'rows' => 4,
+                'rows' => 5,
             ],
         ])
             ->add('networkConnection', EntityType::class, [

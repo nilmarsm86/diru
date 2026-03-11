@@ -164,7 +164,7 @@
     </div>
 </details>
 
-<details class="collection">
+<details class="collection" {% if constructionAssembly.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valor de construcción y montaje:</div>
@@ -184,7 +184,7 @@
     </div>
 </details>
 
-<details class="collection">
+<details class="collection" {% if constructionRealValue.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
             <div class="col">Valor real del proyecto:</div>
@@ -245,19 +245,33 @@
 
         <div class="mb-0 row">
             <div class="col">
-                {{ form_row(connection.networkConnection) }}
+                <div class="mb-0 row">
+                    <div class="col">
+                        {{ form_row(connection.networkConnection) }}
+                    </div>
+
+                    <div class="col">
+                        {{ form_row(connection.type) }}
+                    </div>
+                </div>
+
+                <div class="mb-0 row">
+                    <div class="col">
+                        {{ form_row(connection.longitude) }}
+                    </div>
+
+                    <div class="col">
+                        {{ form_row(connection.technicalStatus) }}
+                    </div>
+                </div>
             </div>
 
             <div class="col">
-                {{ form_row(connection.type) }}
-            </div>
-
-            <div class="col">
-                {{ form_row(connection.longitude) }}
-            </div>
-
-            <div class="col">
-                {{ form_row(connection.technicalStatus) }}
+                <div class="mb-0 row">
+                    <div class="col">
+                        {{ form_row(connection.explanation) }}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -294,10 +308,6 @@
                         </div>
                     </div>
                 </details>
-            </div>
-
-            <div class="col">
-                {{ form_row(connection.explanation) }}
             </div>
         </div>
     </details>

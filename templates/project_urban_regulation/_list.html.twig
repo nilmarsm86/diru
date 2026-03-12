@@ -1,23 +1,23 @@
 {% if not app.request.query.get('modal') %}
-{% component 'Card:Card' with {
-    cssClass: 'mb-4',
-    extra: '',
-    headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de regulaciones urbanas',
-} %}
-    {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: 'Listado de regulaciones urbanas',
+    } %}
+        {% block header %}
+            {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
-        <div>
-            {{ tableActionButton3(path('app_project_urban_regulation_new', {'project' : project}), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new', {'project':project})})) }}
-        </div>
-    {% endblock %}
+            <div>
+                {{ tableActionButton3(path('app_project_urban_regulation_new', {'project' : project}), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new', {'project':project})})) }}
+            </div>
+        {% endblock %}
 
-    {% block body %}
-        {{ include('project_urban_regulation/_table.html.twig') }}
-    {% endblock %}
+        {% block body %}
+            {{ include('project_urban_regulation/_table.html.twig') }}
+        {% endblock %}
 
-{% endcomponent %}
+    {% endcomponent %}
 {% else %}
     {{ include('project_urban_regulation/_table.html.twig') }}
 {% endif %}

@@ -32,7 +32,9 @@ class ProjectUrbanRegulationType extends AbstractType
                 'mapped' => false,
                 'label' => 'Tipo de regulación:',
                 'placeholder' => '-Seleccione-',
+                'data' => $options['type'],
             ]);
+
         $builder->addDependent('urbanRegulation', 'urbanRegulationType', function (DependentField $field, ?\App\Entity\UrbanRegulationType $urbanRegulationType) {
             $isValid = !is_null($urbanRegulationType);
             $field->add(EntityType::class, [
@@ -45,14 +47,14 @@ class ProjectUrbanRegulationType extends AbstractType
             ]);
         });
 
-        $builder->add('data', null, [
-            'label' => 'Dato:',
-        ])
+        $builder
+            ->add('data', null, [
+                'label' => 'Dato:',
+            ])
             ->add('reference', TrixEditorType::class, [
                 'label' => 'Referencia:',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -62,6 +64,7 @@ class ProjectUrbanRegulationType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
+            'type' => null,
         ]);
     }
 

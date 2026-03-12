@@ -80,6 +80,7 @@ final class ProjectUrbanRegulationController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $projectUrbanRegulation, 'project_urban_regulation', [
             'title' => 'Editar regulación del proyecto',
+            'project' => $project->getId(),
         ]);
     }
 

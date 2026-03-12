@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\DTO\EnumSimulator;
+use App\DTO\Paginator;
+use App\Entity\Enums\UrbanRegulationStructure;
 use App\Entity\Role;
 use App\Entity\UrbanRegulation;
 use App\Repository\UrbanRegulationRepository;
+use App\Repository\UrbanRegulationTypeRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -26,9 +31,35 @@ final class UrbanRegulationController extends AbstractController
      * @throws LoaderError
      */
     #[Route(name: 'app_urban_regulation_index', methods: ['GET'])]
-    public function index(Request $request, UrbanRegulationRepository $urbanRegulationRepository, CrudActionService $crudActionService): Response
+    public function index(Request $request, RouterInterface $router, UrbanRegulationRepository $urbanRegulationRepository, UrbanRegulationTypeRepository $urbanRegulationTypeRepository): Response
     {
-        return $crudActionService->indexAction($request, $urbanRegulationRepository, 'findUrbanRegulations', 'urban_regulation');
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $type = $request->query->get('type', '');
+        $structure = $request->query->get('structure', '');
+
+        $data = $urbanRegulationRepository->findUrbanRegulations($filter, $amountPerPage, $pageNumber, $type, $structure);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $enumSimulators = [];
+        foreach ($urbanRegulationTypeRepository->findAll() as $urbanRegulationType) {
+            $enumSimulators[] = new EnumSimulator($urbanRegulationType->getName());
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("urban_regulation/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'types' => $enumSimulators,
+            'structures' => UrbanRegulationStructure::cases(),
+        ]);
     }
 
     /**

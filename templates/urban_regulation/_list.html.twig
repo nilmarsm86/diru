@@ -8,6 +8,25 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_urban_regulation_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_urban_regulation_index',
+                label:'Tipos de regulación',
+                queryName: 'type',
+                options:types
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_urban_regulation_index',
+                label:'Estructuras',
+                queryName: 'structure',
+                options:structures
+            }) }}
+
             {{ tableActionButton3(path('app_urban_regulation_new'), 'bi:plus-lg', 'Nueva', 'Nueva regulación urbana', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_urban_regulation_new')})) }}
         </div>
     {% endblock %}
@@ -20,9 +39,9 @@
             {% block tableHead %}
                 <tr>
                     <th>Código</th>
-                    <th>Dato</th>
+                    <th>Tipo de Dato</th>
                     <th>Unidad de Medida</th>
-                    <th>Referencia legal</th>
+{#                    <th>Referencia legal</th>#}
                     <th>Tipo</th>
                     <th>Estructura</th>
                     <th></th>
@@ -40,7 +59,7 @@
                         </td>
                         <td>{{ urban_regulation.data }}</td>
                         <td>{{ urban_regulation.measurementUnit }}</td>
-                        <td>{{ urban_regulation.legalReference }}</td>
+{#                        <td>{{ urban_regulation.legalReference }}</td>#}
                         <td>{{ urban_regulation.type }}</td>
                         <td>{{ get_label_from(urban_regulation.structure) }}</td>
                         <td class="text-end">

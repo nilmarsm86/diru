@@ -20,11 +20,6 @@ use Twig\Error\SyntaxError;
 #[Route('/constructive/action')]
 final class ConstructiveActionController extends AbstractController
 {
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
     #[Route(name: 'app_constructive_action_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, ConstructiveActionRepository $constructiveActionRepository): Response
     {

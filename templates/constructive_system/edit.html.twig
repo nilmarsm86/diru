@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ConstructiveSystem{% endblock %}
+
+{% block body %}
+    <h1>Edit ConstructiveSystem</h1>
+
+    {{ include('constructive_system/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_constructive_system_index') }}">back to list</a>
+
+    {{ include('constructive_system/_delete_form.html.twig') }}
+{% endblock %}

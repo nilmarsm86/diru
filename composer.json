@@ -24,6 +24,7 @@
         "symfony/framework-bundle": "7.4.*",
         "symfony/html-sanitizer": "7.4.*",
         "symfony/mime": "7.4.*",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/property-access": "7.4.*",
         "symfony/property-info": "7.4.*",
         "symfony/rate-limiter": "7.4.*",
@@ -111,7 +112,6 @@
         "symfony/debug-bundle": "7.4.*",
         "symfony/filesystem": "7.4.*",
         "symfony/maker-bundle": "^1.62",
-        "symfony/monolog-bundle": "^3.0",
         "symfony/phpunit-bridge": "^7.4",
         "symfony/stopwatch": "7.4.*",
         "symfony/web-profiler-bundle": "7.4.*"

@@ -1,16 +1,16 @@
 url: https://127.0.0.1:8000/login
 ---
 - launchApp
-- tapOn: 
+- tapOn:
     id: exampleInputEmail
-- eraseText    
-- tapOn: 
+- eraseText
+- tapOn:
     id: exampleInputEmail
 - inputText: pepe
-- tapOn: 
+- tapOn:
     id: exampleInputPassword
 - eraseText
-- tapOn: 
+- tapOn:
     id: exampleInputPassword
 - inputText: pepe
 - tapOn: "                     Autenticarse                "

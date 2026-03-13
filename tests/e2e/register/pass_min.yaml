@@ -1,0 +1,66 @@
+url: https://127.0.0.1:8000/register
+---
+- launchApp
+
+- tapOn:
+    id: registration_form_name
+- eraseText
+- tapOn:
+    id: registration_form_name
+- inputText: Nilmar
+
+- tapOn:
+    id: registration_form_lastname
+- eraseText
+- tapOn:
+    id: registration_form_lastname
+- inputText: Sanchez Muguercia
+
+- tapOn:
+    id: registration_form_identificationNumber
+- eraseText
+- tapOn:
+    id: registration_form_identificationNumber
+- inputText: 86122308643
+
+- tapOn:
+    id: registration_form_phone
+- eraseText
+- tapOn:
+    id: registration_form_phone
+- inputText: 54023981
+
+- tapOn:
+    id: registration_form_email
+- eraseText
+- tapOn:
+    id: registration_form_email
+- inputText: nilmarsm86@gmail.com
+
+- tapOn:
+    id: registration_form_username
+- eraseText
+- tapOn:
+    id: registration_form_username
+- inputText: nilmarsm86
+
+- tapOn:
+    id: registration_form_plainPassword_first
+- eraseText
+- tapOn:
+    id: registration_form_plainPassword_first
+- inputText: pepe
+
+- tapOn:
+    id: registration_form_plainPassword_second
+- eraseText
+- tapOn:
+    id: registration_form_plainPassword_second
+- inputText: pepe
+
+- tapOn:
+    id: registration_form_agreeTerms
+
+- tapOn: "                 Crear Cuenta            "
+
+- assertVisible: La contraseña debe tener como mínimo 6 caracteres

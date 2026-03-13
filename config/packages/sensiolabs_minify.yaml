@@ -1,0 +1,28 @@
+sensiolabs_minify:
+    asset_mapper:
+        # Exclude already minified assets
+        ignore_paths:
+            - '*.min.js'
+            - '*.min.css'
+    minify:
+        # Use local binary if available
+        # local_binary: 'auto'
+
+        # Specify local binary path
+        #local_binary: '%kernel.project_dir%/bin/minify/minify.exe'
+
+        # Download binary from GitHub
+#        download_binary: false
+#        download_directory: '%kernel.project_dir%/bin/minify/minify.exe'
+        # this disables the usage of local binaries
+        local_binary: '%kernel.project_dir%/bin/minify/minify.exe'
+
+        # if TRUE, the bundle will download the binary from GitHub
+        download_binary: false
+
+        # the local path where the downloaded binary is stored
+        download_directory: '%kernel.project_dir%/bin/minify'
+
+when@test:
+    sensiolabs_minify:
+        asset_mapper: false

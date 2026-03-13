@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Role;
 use App\Repository\ProjectRepository;
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,8 +31,10 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/ping', name: 'app_ping')]
-    public function ping(): Response
+    public function ping(Logger $logger): Response
     {
+        $logger->info('Ping desde NeutralinoJS');
+
         return new Response('OK');
     }
 }

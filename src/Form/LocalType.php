@@ -115,9 +115,9 @@ class LocalType extends AbstractType
         }
 
         if (null !== $local->getId()) {
-            if ($local->getArea() > $leftArea) {
-                $leftArea += $local->getArea();
-            }
+            //            if ($local->getArea() > $leftArea) {
+            $leftArea += (null !== $local->getArea()) ? $local->getArea() : 0;
+            //            }
         }
 
         $constraints = [

@@ -10,6 +10,7 @@ export default class extends AbstractController {
     static targets = ["field", "total", "estimate"];
     static values = {
         estimate: {type: Number, default: 0},
+        totalArea: {type: Number, default: 0},
     };
 
     connect() {
@@ -18,7 +19,7 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.multiply();
+        // this.multiply();
 
         this.fieldTargets.forEach((field) => {
             field.addEventListener('input', (event) => {
@@ -47,7 +48,8 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.totalTarget.innerText = USDollar.format(this.clearNumber(this.fieldTarget.value) * this.estimateValue / 100);
+        this.totalTarget.innerText = ((this.estimateValue / 100) / this.totalAreaValue).toFixed(3);
+        this.element.querySelector('strong.multiply').innerText = USDollar.format(this.clearNumber(this.fieldTarget.value) * this.estimateValue / 100);
     }
 
     clearNumber(number) {

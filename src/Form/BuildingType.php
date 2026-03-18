@@ -356,14 +356,11 @@ class BuildingType extends AbstractType
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('estimatedJustValue', MoneyPlusType::class, [
-                'label' => 'Valor estimado ajustado:',
-                //                'help' => 'Urbanizacion + conexiones de red externa.',
+                'label' => 'Valor estimado ajustado (<strong class="multiply">$103.20</strong>):',
+                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
-                    //                    'data-summation-values-target' => 'field',
-                    //                    'data-currency-target' => 'field',
-                    //                    'data-vecpppt' => true,
                     'readonly' => 'readonly',
                     'data-type--money-plus-target' => 'field',
                     'data-controller' => 'money',

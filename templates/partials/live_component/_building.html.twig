@@ -174,7 +174,8 @@
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('estimate-presupposition', {
-        estimate : bui.getRangePrice()
+        estimate : bui.getRangePrice(),
+        totalArea: bui.getTotalArea(),
     }) }}>
         <div class="col-sm-3">
             <div class="mb-3">
@@ -197,7 +198,7 @@
                 <p class="text-end-detail">ITE resultante:</p>
                 <h5 class="text-end-detail">{# $ #}
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
-                        {{ 0|number_format(2) }}
+                        {{ ((bui.getRangePrice() / 100) / bui.getTotalArea())|number_format(3) }}
                     </span>
                 </h5>
             </div>

@@ -45,35 +45,37 @@
                         {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
                         Obras
                     </a>
-{#                    <div class="dropdown d-inline-block btn text-decoration-none btn-sm btn-primary show">#}
-                        <button type="button"
-                                class="btn text-decoration-none btn-sm dropdown-toggle dropdown-sm dropdown-toggle-split btn-primary show"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                        >
-                            {#                        {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }} #}
-                            {#                        Obras #}
-                        </button>
-                        <ul class="dropdown-menu btn-sm" data-bs-theme="light">
+                    {#                    <div class="dropdown d-inline-block btn text-decoration-none btn-sm btn-primary show"> #}
+                    <button type="button"
+                            class="btn text-decoration-none btn-sm dropdown-toggle dropdown-sm dropdown-toggle-split btn-primary show"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="padding-left: 10px; padding-right: 10px;color: var(--bs-btn-active-color);background-color: var(--bs-btn-active-bg);border-color: var(--bs-btn-active-border-color);"
+                    >
+                        {#                        {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }} #}
+                        {#                        Obras #}
+                    </button>
+                    <ul class="dropdown-menu btn-sm" data-bs-theme="light">
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{ path('app_building_project', {'project': project.id}) }}"
+                               title="Todas las obras">
+                                <small>Todas</small>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% for building in project.buildings %}
                             <li>
                                 <a class="dropdown-item"
-                                   href="{{ path('app_building_project', {'project': project.id}) }}"
-                                   title="Todas las obras">
-                                    <small>Todas</small>
+                                   href="{{ path('app_building_edit', {'id': building.id, 'project': project.id}) }}">
+                                    {{ building.name }}
                                 </a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            {% for building in project.buildings %}
-                                <li>
-                                    <a class="dropdown-item" href="{{ path('app_building_edit', {'id': building.id, 'project': project.id}) }}">
-                                        {{ building.name }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-{#                    </div>#}
+                        {% endfor %}
+                    </ul>
+                    {#                    </div> #}
                 </div>
             {% endif %}
 
@@ -93,17 +95,17 @@
         {{ component('ProjectForm', {modal:null, pro: project, ajax: ajax}) }}
     {% endblock %}
 
-{#    {% block footer %}#}
-{#        {{ include('partials/_card_footer.html.twig', {#}
-{#            list: {href: 'app_project_index', label: 'Listado', title:'Volver al listado'},#}
-{#            delete: {href: 'app_project_delete', label: 'Eliminar', title:'Eliminar proyecto'},#}
-{#            id: project.id,#}
-{#            message: 'Está seguro que desea eliminar el proyecto?',#}
-{#            state: 'form',#}
-{#            showButton: (showButton is defined and showButton == true) ? true : false,#}
-{#            entity: project#}
-{#        }) }}#}
-{#    {% endblock %}#}
+    {#    {% block footer %} #}
+    {#        {{ include('partials/_card_footer.html.twig', { #}
+    {#            list: {href: 'app_project_index', label: 'Listado', title:'Volver al listado'}, #}
+    {#            delete: {href: 'app_project_delete', label: 'Eliminar', title:'Eliminar proyecto'}, #}
+    {#            id: project.id, #}
+    {#            message: 'Está seguro que desea eliminar el proyecto?', #}
+    {#            state: 'form', #}
+    {#            showButton: (showButton is defined and showButton == true) ? true : false, #}
+    {#            entity: project #}
+    {#        }) }} #}
+    {#    {% endblock %} #}
 
 {% endcomponent %}
 

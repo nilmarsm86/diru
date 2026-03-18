@@ -23,6 +23,10 @@ sensiolabs_minify:
         # the local path where the downloaded binary is stored
         download_directory: '%kernel.project_dir%/bin/minify'
 
+when@dev:
+    sensiolabs_minify:
+        asset_mapper: false
+
 when@test:
     sensiolabs_minify:
         asset_mapper: false

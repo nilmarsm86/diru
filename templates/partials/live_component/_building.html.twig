@@ -198,7 +198,11 @@
                 <p class="text-end-detail">ITE resultante:</p>
                 <h5 class="text-end-detail">{# $ #}
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
-                        {{ ((bui.getRangePrice() / 100) / bui.getTotalArea())|number_format(3) }}
+                        {% if bui.getTotalArea() > 0 %}
+                            {{ ((bui.getRangePrice() / 100) / bui.getTotalArea())|number_format(3) }}
+                        {% else %}
+                            0
+                        {% endif %}
                     </span>
                 </h5>
             </div>

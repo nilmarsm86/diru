@@ -48,7 +48,7 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.totalTarget.innerText = ((this.estimateValue / 100) / this.totalAreaValue).toFixed(3);
+        this.totalTarget.innerText = (this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(3) : 0;
         this.element.querySelector('strong.multiply').innerText = USDollar.format(this.clearNumber(this.fieldTarget.value) * this.estimateValue / 100);
     }
 

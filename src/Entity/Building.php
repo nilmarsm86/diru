@@ -167,7 +167,7 @@ class Building implements MeasurementDataInterface
 
     #[ORM\Column]
     #[Assert\PositiveOrZero(message: 'El coeficiente debe ser un número positivo.')]
-    private ?float $coefficient = 0;
+    private float $coefficient = 0;
 
     /**
      * @var Collection<int, BuildingRevision>
@@ -1561,7 +1561,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getCoefficient(): ?float
+    public function getCoefficient(): float
     {
         return $this->coefficient;
     }
@@ -1662,5 +1662,10 @@ class Building implements MeasurementDataInterface
         $this->constructionRealValueComment = $constructionRealValueComment;
 
         return $this;
+    }
+
+    public function getEstimatedAdjustValue(): float
+    {
+        return $this->getRangePrice() * $this->getCoefficient();
     }
 }

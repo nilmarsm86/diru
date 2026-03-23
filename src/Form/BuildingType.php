@@ -356,7 +356,7 @@ class BuildingType extends AbstractType
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('estimatedJustValue', MoneyPlusType::class, [
-                'label' => 'Valor estimado ajustado (<strong class="multiply">$103.20</strong>):',
+                'label' => 'Valor estimado ajustado (<strong class="multiply">$'.((null !== $building && null !== $building->getId()) ? number_format($building->getEstimatedAdjustValue() / 100, 2) : number_format(0, 2)).'</strong>):',
                 'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',

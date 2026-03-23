@@ -15,7 +15,7 @@ export default class extends AbstractController {
         });
 
         let spanTotal = this.element.querySelector('[data-summation-values-target=total]');
-        let strongTotal = this.element.querySelector('strong.multiply');
+        let strongTotal = document.querySelector('strong.multiply');
 
         let ptp = this.element.querySelector('#building_projectPriceTechnicalPreparation') ? Number(this.element.querySelector('#building_projectPriceTechnicalPreparation').value) : 0;
         let value = 0;
@@ -28,7 +28,7 @@ export default class extends AbstractController {
 
             let updateValue = value + Number(event.target.valueAsNumber);
             spanTotal.innerText = USDollar.format(updateValue / 100);
-            strongTotal.innerText = USDollar.format(updateValue / 100);
+            strongTotal.innerText = USDollar.format(event.target.valueAsNumber / 100);
         });
     }
 

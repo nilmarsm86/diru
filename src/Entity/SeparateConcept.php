@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SeparateConceptRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class SeparateConcept
 {
     use NameToStringTrait;
@@ -50,6 +51,9 @@ class SeparateConcept
      */
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'separateConcept')]
     private Collection $buildingSeparateConcepts;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $percent = null;
 
     public function __construct()
     {
@@ -183,5 +187,17 @@ class SeparateConcept
     {
         $type = (is_null($this->type)) ? '' : $this->type;
         $this->setType(SeparateConceptType::from($type));
+    }
+
+    public function getPercent(): ?float
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(?float $percent): static
+    {
+        $this->percent = $percent;
+
+        return $this;
     }
 }

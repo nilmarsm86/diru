@@ -2,13 +2,16 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Procrea\SeparateConceptFixtures;
 use App\Entity\Building;
+use App\Entity\BuildingSeparateConcept;
 use App\Entity\Client;
 use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
+use App\Entity\SeparateConcept;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -53,11 +56,29 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                     $buildingEntity->setClient($this->findClient($manager, false));
                 }
 
+                $this->addSeparateConcepts($manager, $buildingEntity);
+
                 $manager->persist($buildingEntity);
             }
         }
 
         $manager->flush();
+    }
+
+    private function addSeparateConcepts(ObjectManager $manager, Building $buildingEntity): void
+    {
+        $separateConcepts = $manager->getRepository(SeparateConcept::class)->findBy([], ['number' => 'ASC']);
+        foreach ($separateConcepts as $separateConcept) {
+            $percent = (bool) $separateConcept->getPercent() ? $separateConcept->getPercent() : 0;
+
+            $buildingSeparateConcept = new BuildingSeparateConcept();
+            $buildingSeparateConcept->setBuilding($buildingEntity);
+            $buildingSeparateConcept->setSeparateConcept($separateConcept);
+            $buildingSeparateConcept->setPercent($percent);
+
+            $buildingEntity->addBuildingSeparateConcept($buildingSeparateConcept);
+            $manager->persist($buildingSeparateConcept);
+        }
     }
 
     private function findConstructor(ObjectManager $manager): ?Constructor
@@ -89,6 +110,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             ConstructorFixtures::class,
             CorporateEntityFixtures::class,
             UserFixtures::class,
+            SeparateConceptFixtures::class,
         ];
     }
 

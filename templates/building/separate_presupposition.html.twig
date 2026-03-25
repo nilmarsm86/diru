@@ -1,0 +1,69 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Obras{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Obras', 'streamline-pixel:construction-building-real-eastate') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Obras', href: path('app_building_project', {'project': project})},
+            {label: 'Desglose'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Desglose de presupuesto</h2>
+
+    <div class="row">
+        <div class="col-4">
+            {% component 'Card:Card' with {
+                title: 'Presupuesto estimado',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Presupuesto estimado:</h6>
+                    <h1>{{ money('7625000') }}</h1>
+                    <h6 class="card-subtitle mb-2">ITE:</h6>
+                    <h1>{{ money('61000') }}</h1>
+                    <h6 class="card-subtitle mb-2">Coeficiente de ajuste:</h6>
+                    <h1>{{ 1.2 }}</h1>
+                    <h1>{{ money('76250') }}</h1>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+
+        <div class="col-8">
+            {% component 'Card:Card' with {
+                title: 'Anexo',
+            } %}
+                {% block body %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Constructor</strong>
+                            <span class="badge text-bg-primary rounded-pill">...</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Obra</strong>
+                            <span class="badge text-bg-primary rounded-pill">...</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Objetos de obra</strong>
+                            <span class="badge text-bg-primary rounded-pill">...</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Cliente</strong>
+                            <span class="badge text-bg-primary rounded-pill">...</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Actividad</strong>
+                            <span class="badge text-bg-primary rounded-pill">...</span>
+                        </li>
+                    </ul>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+{% endblock %}

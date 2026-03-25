@@ -258,4 +258,13 @@ final class BuildingController extends AbstractController
             'project' => $building->getProject()?->getId(),
         ]);
     }
+
+    #[Route('/separete/presupposition/{id}', name: 'app_building_separete_presupposition', methods: ['GET'])]
+    public function separetePresupposition(Building $building, EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('building/separate_presupposition.html.twig', [
+            'building' => $building,
+            'project' => $building->getProject()?->getId(),
+        ]);
+    }
 }

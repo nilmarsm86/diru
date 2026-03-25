@@ -10,6 +10,7 @@ export default class extends AbstractController {
     static targets = ["field", "total", "estimate"];
     static values = {
         estimate: {type: Number, default: 0},
+        coefficient: {type: Number, default: 0},
         totalArea: {type: Number, default: 0},
     };
 
@@ -19,7 +20,7 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        // this.multiply();
+        this.multiply();
 
         this.fieldTargets.forEach((field) => {
             field.addEventListener('input', (event) => {
@@ -37,7 +38,7 @@ export default class extends AbstractController {
         document.querySelector('#building_range').addEventListener('input', (event) => {
             this.estimateTarget.innerText = USDollar.format(event.target.valueAsNumber / 100);
 
-            this.estimateValue = event.target.valueAsNumber;
+            this.estimateValue = event.target.valueAsNumber * this.coefficientValue;
             this.multiply();
         });
     }
@@ -48,8 +49,9 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.totalTarget.innerText = (this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(3) : 0;
-        this.element.querySelector('strong.multiply').innerText = USDollar.format(this.clearNumber(this.fieldTarget.value) * this.estimateValue / 100);
+        this.totalTarget.innerText = (this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(2) : 0;
+        console.log(this.estimateValue);
+        this.element.querySelector('strong.multiply').innerText = USDollar.format(this.estimateValue / 100);
     }
 
     clearNumber(number) {

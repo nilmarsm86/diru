@@ -154,7 +154,7 @@
                     <p class="text-end-detail">Total:</p>
                     <h5 class="text-end-detail">{# $ #}
                         <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
-                        {{ 0|number_format(2) }}
+                        ${{ money(this.bui.getPrice()) }}
                     </span>
                     </h5>
                 </div>
@@ -174,8 +174,9 @@
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('estimate-presupposition', {
-        estimate : bui.getRangePrice(),
+        estimate : bui.getEstimatedAdjustValue(),
         totalArea: bui.getTotalArea(),
+        coefficient: bui.getCoefficient()
     }) }}>
         <div class="col-sm-3">
             <div class="mb-3">
@@ -195,11 +196,11 @@
         </div>
         <div class="col-sm-3">
             <div class="mb-3">
-                <p class="text-end-detail">ITE resultante:</p>
+                <p class="text-end-detail">* ITE resultante ($/m<sup>2</sup>):</p>
                 <h5 class="text-end-detail">{# $ #}
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
                         {% if bui.getTotalArea() > 0 %}
-                            {{ ((bui.getRangePrice() / 100) / bui.getTotalArea())|number_format(3) }}
+                            {{ bui.getResultIte()|number_format(2) }}
                         {% else %}
                             0
                         {% endif %}
@@ -207,6 +208,14 @@
                 </h5>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                <em>* El ITE resultante, esta calculado en base a un ATP de: {{ bui.getTotalArea() }} m<sup>2</sup>.</em>
+            </p>
+        </div>
+
     </div>
 </details>
 

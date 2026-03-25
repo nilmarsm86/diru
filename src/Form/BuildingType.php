@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -385,7 +386,7 @@ class BuildingType extends AbstractType
                     'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedJustValueAddConfig)
-            ->add('coefficient', null, [
+            ->add('coefficient', NumberType::class, [
                 'label' => 'Coeficiente de ajuste:',
                 'required' => false,
                 'attr' => [

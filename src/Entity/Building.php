@@ -148,6 +148,7 @@ class Building implements MeasurementDataInterface
      * @var Collection<int, BuildingSeparateConcept>
      */
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
+    #[ORM\OrderBy(['separateConcept' => 'ASC'])]
     private Collection $buildingSeparateConcepts;
 
     #[ORM\Column(nullable: true)]
@@ -1667,5 +1668,10 @@ class Building implements MeasurementDataInterface
     public function getEstimatedAdjustValue(): float
     {
         return $this->getRangePrice() * $this->getCoefficient();
+    }
+
+    public function getResultIte(): float
+    {
+        return $this->getEstimatedAdjustValue() / 100 / $this->getTotalArea();
     }
 }

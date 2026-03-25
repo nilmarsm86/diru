@@ -1672,6 +1672,10 @@ class Building implements MeasurementDataInterface
 
     public function getResultIte(): float
     {
-        return $this->getEstimatedAdjustValue() / 100 / $this->getTotalArea();
+        if ($this->getTotalArea() > 0) {
+            return $this->getEstimatedAdjustValue() / 100 / $this->getTotalArea();
+        }
+
+        return 0;
     }
 }

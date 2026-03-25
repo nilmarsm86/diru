@@ -73,7 +73,7 @@
                 <tr>
                     <th>%</th>
                     <th>Número</th>
-                    <th>Nombre</th>
+                    <th>Concepto</th>
                     <th>Importe</th>
                     <th></th>
                 </tr>
@@ -90,6 +90,7 @@
                                    id="{{ buildingSeparateConcept.id }}" name="building[coefficient]"
                                    data-estimate-presupposition-target="field" inputmode="decimal" class="form-control"
                                    value="{{ buildingSeparateConcept.percent|number_format(2) }}" style="display: inline;width: 80px"
+                                       {% if buildingSeparateConcept.separateConcept.formula is not null %}readonly disabled{% endif %}
                                 > %
                             </span>
                         </td>

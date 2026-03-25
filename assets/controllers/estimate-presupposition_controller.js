@@ -27,6 +27,7 @@ export default class extends AbstractController {
                 if (Number(field.value) < 0) {
                     field.value = Number(field.value) * -1;
                 }
+                this.estimateValue = Number(event.target.value) * this.estimateValue;
                 this.multiply();
             });
         });
@@ -50,7 +51,6 @@ export default class extends AbstractController {
         });
 
         this.totalTarget.innerText = (this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(2) : 0;
-        console.log(this.estimateValue);
         this.element.querySelector('strong.multiply').innerText = USDollar.format(this.estimateValue / 100);
     }
 

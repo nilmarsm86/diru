@@ -1678,4 +1678,16 @@ class Building implements MeasurementDataInterface
 
         return 0;
     }
+
+    public function separateConceptsTotalPercent(): float
+    {
+        $totalPercent = 0;
+        foreach ($this->buildingSeparateConcepts as $concept) {
+            if ($concept->isParent()) {
+                $totalPercent += (float) $concept->getPercent();
+            }
+        }
+
+        return $totalPercent;
+    }
 }

@@ -198,7 +198,16 @@
             <div class="mb-3">
                 <p class="text-end-detail">* ITE resultante ($/m<sup>2</sup>):</p>
                 <h5 class="text-end-detail">{# $ #}
-                    <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
+                    <span class="badge text-bg-info" const request = new Request(form.action, {
+                          headers: new Headers({
+                    'X-Requested-With': 'XMLHttpRequest'
+                    })
+                    });
+
+                    const response = await fetch(request, {
+                    method: form.method,
+                    body: new URLSearchParams(new FormData(form)),
+                    });>
                         {% if bui.getTotalArea() > 0 %}
                             {{ bui.getResultIte()|number_format(2) }}
                         {% else %}

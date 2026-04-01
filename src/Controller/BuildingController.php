@@ -10,7 +10,11 @@ use App\Entity\Project;
 use App\Entity\Role;
 use App\Form\ExtraFloorForReplyType;
 use App\Repository\BuildingRepository;
+use App\Repository\BuildingSeparateConceptRepository;
+use App\Repository\SeparateConceptRepository;
+use App\Service\AssociativeEntryCollection;
 use App\Service\CrudActionService;
+use App\Service\FormulaEvaluator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -260,11 +264,22 @@ final class BuildingController extends AbstractController
     }
 
     #[Route('/separete/presupposition/{id}', name: 'app_building_separete_presupposition', methods: ['GET'])]
-    public function separetePresupposition(Building $building, EntityManagerInterface $entityManager): Response
-    {
-        return $this->render('building/separate_presupposition.html.twig', [
+    public function separetePresupposition(
+        Request $request,
+        Building $building,
+        BuildingSeparateConceptRepository $buildingSeparateConceptRepository,
+        SeparateConceptRepository $separateConceptRepository,
+        FormulaEvaluator $formulaEvaluator,
+    ): Response {
+        $template = ($request->isXmlHttpRequest()) ? 'presupposition.html.twig' : 'separate_presupposition.html.twig';
+
+        return $this->render("building/$template", [
             'building' => $building,
             'project' => $building->getProject()?->getId(),
+            'buildingSeparateConceptRepository' => $buildingSeparateConceptRepository,
+            'separateConceptRepository' => $separateConceptRepository,
+            'aec' => AssociativeEntryCollection::empty(),
+            'formulaEvaluator' => $formulaEvaluator,
         ]);
     }
 }

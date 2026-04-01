@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260325155154 extends AbstractMigration
+final class Version20260331201208 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -137,7 +137,8 @@ final class Version20260325155154 extends AbstractMigration
         $this->addSql('CREATE TABLE representative (id INTEGER NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_2507390EBF396750 FOREIGN KEY (id) REFERENCES person (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE role (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, importance INTEGER NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX role_name ON role (name)');
-        $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, formula VARCHAR(255) DEFAULT NULL, percent DOUBLE PRECISION DEFAULT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, type VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, formula VARCHAR(255) DEFAULT NULL, percent DOUBLE PRECISION DEFAULT NULL, ignore_number CLOB DEFAULT NULL --(DC2Type:simple_array)
+        , name VARCHAR(255) NOT NULL, CONSTRAINT FK_14FBEE96727ACA70 FOREIGN KEY (parent_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_14FBEE96727ACA70 ON separate_concept (parent_id)');
         $this->addSql('CREATE TABLE sub_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, floor_id INTEGER NOT NULL, subsystem_type_subsystem_sub_type_id INTEGER DEFAULT NULL, original_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, has_reply BOOLEAN DEFAULT NULL, CONSTRAINT FK_7B1C5EC7854679E2 FOREIGN KEY (floor_id) REFERENCES floor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC74216BAA1 FOREIGN KEY (subsystem_type_subsystem_sub_type_id) REFERENCES subsystem_type_subsystem_sub_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B1C5EC7108B7592 FOREIGN KEY (original_id) REFERENCES sub_system (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B1C5EC7854679E2 ON sub_system (floor_id)');

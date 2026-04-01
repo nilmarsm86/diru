@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BuildingSeparateConcept;
+use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BuildingSeparateConceptRepository extends ServiceEntityRepository implements FilterInterface
 {
+    use SaveData;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BuildingSeparateConcept::class);

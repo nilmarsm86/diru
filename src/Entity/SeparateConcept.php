@@ -7,6 +7,7 @@ use App\Entity\Traits\NameToStringTrait;
 use App\Repository\SeparateConceptRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -54,6 +55,12 @@ class SeparateConcept
 
     #[ORM\Column(nullable: true)]
     private ?float $percent = null;
+
+    /**
+     * @var array <string>
+     */
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private array $ignoreNumber = [];
 
     public function __construct()
     {
@@ -197,6 +204,26 @@ class SeparateConcept
     public function setPercent(?float $percent): static
     {
         $this->percent = $percent;
+
+        return $this;
+    }
+
+    /**
+     * @return array <string>
+     */
+    public function getIgnoreNumber(): array
+    {
+        return $this->ignoreNumber;
+    }
+
+    /**
+     * @param array <string> $ignoreNumber
+     *
+     * @return $this
+     */
+    public function setIgnoreNumber(array $ignoreNumber = []): static
+    {
+        $this->ignoreNumber = $ignoreNumber;
 
         return $this;
     }

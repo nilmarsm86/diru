@@ -20,6 +20,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Materias primas y materiales',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -28,6 +29,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '1',
                 'name' => 'Materiales aportados por el Constructor Estimado',
                 'percent' => 90,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -36,6 +38,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '1',
                 'name' => 'Materiales aportados por el Inversionista Estimado',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -44,6 +47,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Mano de Obra',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -52,6 +56,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '2',
                 'name' => 'Mano de Obra del Presupuesto por Renglones Variantes',
                 'percent' => 90,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -60,6 +65,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '2',
                 'name' => 'Pagos adicionales aprobados por legislación laboral',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -68,6 +74,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Uso de Equipos Por Actividad Constructiva',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -76,6 +83,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '3',
                 'name' => 'Salario de Operadores',
                 'percent' => 25,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -84,6 +92,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '3',
                 'name' => 'Alquiler de Equipos',
                 'percent' => 75,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -92,6 +101,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Otros Gastos Directos del proceso constructivo',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -100,6 +110,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Pruebas y control de calidad',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -108,6 +119,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.1',
                 'name' => 'Mano de Obra',
                 'percent' => 90,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -116,6 +128,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.1',
                 'name' => 'Recursos',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -124,6 +137,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Mermas en el Proceso de Producción',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -132,6 +146,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => 4,
                 'name' => 'Gastos en los Replanteos de las Obras',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -140,6 +155,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.3',
                 'name' => 'Mano de Obra',
                 'percent' => 50,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -148,6 +164,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.3',
                 'name' => 'Materiales',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -156,6 +173,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.3',
                 'name' => 'Equipos',
                 'percent' => 30,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -164,6 +182,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos de Transferencia Horizontal y Vertical de Recursos Materiales y de Equipos a Montar en el área de la obra',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -172,6 +191,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.4',
                 'name' => 'Mano de Obra',
                 'percent' => 80,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -180,6 +200,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.4',
                 'name' => 'Equipos',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -188,6 +209,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Montaje y Desmontaje de equipos de Construcción',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -196,6 +218,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.5',
                 'name' => 'Mano de Obra',
                 'percent' => 80,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -204,6 +227,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.5',
                 'name' => 'Equipos',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -212,6 +236,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Cargas y Descargas de Recursos Materiales para Construcción y Montaje y Equipos a Montar en la Obra',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -220,6 +245,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.6',
                 'name' => 'Mano de Obra',
                 'percent' => 80,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -228,6 +254,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.6',
                 'name' => 'Equipos',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -236,6 +263,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos de Almacenaje de Recursos materiales y equipos a montar',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -244,6 +272,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.7',
                 'name' => 'Mano de Obra',
                 'percent' => 80,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -252,6 +281,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.7',
                 'name' => 'Equipos',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -260,6 +290,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Paradas tecnológicas de los equipos de construcción',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -268,6 +299,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Reparaciones y mantenimientos de otros equipos de construcción de uso común en las obras',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -276,6 +308,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos de protección e higiene del trabajo',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -284,6 +317,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos menores de materiales, combustibles y grasas para la obra',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -292,6 +326,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.11',
                 'name' => 'Gastos Menores (Insumos y Consuminbles)',
                 'percent' => 90,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -300,6 +335,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.11',
                 'name' => 'Combustibles y Grasas',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -308,6 +344,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Herramientas',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -316,6 +353,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Electricidad al servicio de la obra',
                 'percent' => 1,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -324,6 +362,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Agua al servicio de la obra',
                 'percent' => 1,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -332,6 +371,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos relacionados con la limpieza de la Obra',
                 'percent' => 6,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -348,6 +388,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.15',
                 'name' => 'Equipos',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -356,6 +397,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos de aseo de los trabajadores',
                 'percent' => 1,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -364,6 +406,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Dirección de la obra',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -380,6 +423,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.17',
                 'name' => 'Comunicaciones',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -388,6 +432,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.17',
                 'name' => 'Transportación',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -396,6 +441,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.17',
                 'name' => 'Combustible',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -404,6 +450,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.17',
                 'name' => 'Material de Oficina',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -412,6 +459,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.17',
                 'name' => 'Otros Gastos necesarios',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -420,6 +468,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4',
                 'name' => 'Gastos de preparación y asimilación de la producción',
                 'percent' => 8,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -428,6 +477,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18',
                 'name' => 'Gastos de Preparación Técnica y Elaboración de Ofertas',
                 'percent' => 57.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -436,6 +486,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Salarios (Técnico-Presupuestistas-Ingenieros-Proyectistas-Chofer)',
                 'percent' => 35,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -444,6 +495,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Comunicaciones',
                 'percent' => 2.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -452,6 +504,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Transportación',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -460,6 +513,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Combustible',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -468,6 +522,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Material de Oficina',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -476,6 +531,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.1',
                 'name' => 'Otros Gastos necesarios',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -484,6 +540,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18',
                 'name' => 'Gastos de Comercialización para la entrega de Materiales a la Obra',
                 'percent' => 42.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -492,6 +549,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Salarios (Gestionador Comprador-Logísitico de Obra-Chofer)',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -500,6 +558,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Comunicaciones',
                 'percent' => 2.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -508,6 +567,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Transportación',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -516,6 +576,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Combustible',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -524,6 +585,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Material de Oficina',
                 'percent' => 2.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -532,6 +594,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '4.18.2',
                 'name' => 'Otros Gastos necesarios',
                 'percent' => 2.5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -540,6 +603,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Costos Directos de Producción',
                 'percent' => null, // si no tiene hijos, debo guiarme con la suma de la formula de sus %
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -548,6 +612,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Gastos Asociados a la Producción de la Obra',
                 'percent' => 3,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -556,6 +621,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6',
                 'name' => 'Gastos de la fuerza de trabajo (técnicos y directivos de la producción no vinculados a un producto o servicio)',
                 'percent' => 75,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -564,6 +630,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Salarios (Otros, Jefe de Grupo)',
                 'percent' => 50,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -572,6 +639,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Comunicaciones',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -580,6 +648,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Transportación',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -588,6 +657,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Combustible',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -596,6 +666,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Material de Oficina',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -604,6 +675,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6.1',
                 'name' => 'Otros Gastos necesarios',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -612,6 +684,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '6',
                 'name' => 'Otros Gastos (Mantenimiento, reparaciones corrientes y depreciación de instalaciones productivas, Amortización y depreciación de los activos fijos tangibles de producción, Desgastes de Útiles y Herramientas)',
                 'percent' => 25,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -620,6 +693,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Total de Costos de Producción de la Obra',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -628,6 +702,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Gastos Generales y de Administración',
                 'percent' => 8,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -636,6 +711,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Salarios de la Administración General',
                 'percent' => 50,
+                'ignore' => null,
             ],
             /*[
                 'type' => SeparateConceptType::Leaf,
@@ -651,6 +727,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Comunicaciones',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -659,6 +736,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Arrendamiento del Transporte y Traslado de Personal',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -667,6 +745,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Combustible',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -675,6 +754,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Material de Oficina',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -683,6 +763,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '8',
                 'name' => 'Otros Gastos necesarios',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -691,6 +772,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Gastos Indirectos',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -699,6 +781,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Otros Conceptos de Gastos',
                 'percent' => 8,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -707,6 +790,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10',
                 'name' => 'Facilidades Temporales',
                 'percent' => 25,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -715,6 +799,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.1',
                 'name' => 'Mano de Obra',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -723,6 +808,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.1',
                 'name' => 'Edificaciones e instalaciones provisionales necesarias para la ejecución de la obra construídas o montadas en obra y  Materiales para su construcción',
                 'percent' => 50,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -731,6 +817,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.1',
                 'name' => 'Equipos',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -739,6 +826,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.1',
                 'name' => 'Activos Fijos (Contenedores, Tanques de Agua, Tanques de Desperdicio y Elementos Modulares de la empresa)',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -747,6 +835,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10',
                 'name' => 'Transportación de Suministros y Medios a la Obra',
                 'percent' => 50,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -755,6 +844,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.2',
                 'name' => 'Transportación',
                 'percent' => 80,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -763,6 +853,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.2',
                 'name' => 'Combustibles',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -771,6 +862,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10',
                 'name' => 'Imprevistos',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -779,6 +871,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.3',
                 'name' => 'Mano de Obra',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -787,6 +880,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.3',
                 'name' => 'Materiales',
                 'percent' => 50,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -795,6 +889,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.3',
                 'name' => 'Uso de Equipos',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -803,6 +898,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.3',
                 'name' => 'Otros gastos directos del proceso constructivo',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -811,6 +907,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.3',
                 'name' => 'Transportación de suministros y medios a la obra',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -819,6 +916,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10',
                 'name' => 'Otras Partidas que se requieran de acuerdo  con las características de la obra',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -827,6 +925,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Transporte de operarios directos a la obra',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -835,6 +934,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Transporte de personal, pase y vacaciones',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -843,6 +943,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Gastos de Almuerzos',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -851,6 +952,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Gastos de alojamiento y albergues',
                 'percent' => 20,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -859,6 +961,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Otros Gastos de Transporte',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -867,6 +970,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Servicio de vigilancia y seguridad de la obra',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -875,6 +979,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '10.4',
                 'name' => 'Otros',
                 'percent' => 10,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -883,6 +988,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Gastos Financieros',
                 'percent' => 0.1,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -891,6 +997,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '11',
                 'name' => 'Intereses',
                 'percent' => 15,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Leaf,
@@ -899,6 +1006,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '11',
                 'name' => 'Comisiones Bancarias',
                 'percent' => 85,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -907,14 +1015,16 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Gastos por financiamiento entregado a la OSDE',
                 'percent' => 0.1,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
                 'number' => '13',
-                'formula' => null,
+                'formula' => '2+3.1+4.1.1+4.3.1+4.4.1+4.5.1+4.6.1+4.7.1+4.15.1+4.17.1+4.18.1.1+4.18.2.1+6.1.1+8.1+10.1.1+10.2.1',
                 'parent' => null,
                 'name' => 'Gastos Tributarios',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -923,14 +1033,16 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => '13',
                 'name' => 'Impuesto por el Uso de la Fuerza de Trabajo (5% del total de salarios)',
                 'percent' => 5,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
                 'number' => '13.2',
                 'formula' => null,
                 'parent' => '13',
-                'name' => 'Contribución a la Seguridad Social a corto y largo plazos',
+                'name' => 'Contribución a la Seguridad Social a corto y largo plazos (14% del total de salarios)',
                 'percent' => 14,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -939,6 +1051,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Total de Gastos de la Obra',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -947,14 +1060,16 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Total de Costos y Gastos',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
                 'number' => '16',
-                'formula' => '(2+3+4+6)%15',
+                'formula' => '(2+3+4+6)*15/100',
                 'parent' => null,
                 'name' => 'Utilidad',
                 'percent' => null,
+                'ignore' => ['15', '100'],
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -963,6 +1078,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Precio del Servicio de Construcción',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -971,6 +1087,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'A Cobrar',
                 'percent' => null,
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Branch,
@@ -979,6 +1096,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Impuestos sobre ventas autorizados por MFP',
                 'percent' => 10, // del total
+                'ignore' => null,
             ],
             [
                 'type' => SeparateConceptType::Computable,
@@ -987,6 +1105,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
                 'parent' => null,
                 'name' => 'Facturación del Servicio',
                 'percent' => null,
+                'ignore' => null,
             ],
         ];
         foreach ($concepts as $concept) {
@@ -998,6 +1117,7 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
             $conceptEntity->setNumber($concept['number']);
             $conceptEntity->setFormula($concept['formula']);
             $conceptEntity->setPercent($concept['percent']);
+            $conceptEntity->setIgnoreNumber($concept['ignore']);
             if (!is_null($concept['parent'])) {
                 $parentConcept = $manager->getRepository(SeparateConcept::class)->findOneBy(['number' => $concept['parent']]);
                 if (!is_null($parentConcept)) {

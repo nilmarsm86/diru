@@ -142,7 +142,10 @@ class BuildingSeparateConcept implements MoneyInterface
 
         // Limpiar y filtrar resultados vacíos o solo puntos
         $numeros = array_filter($matches[1], function ($item) {
-            return '' !== $item && '.' !== $item && '' !== trim($item);
+            //            return '' !== $item && '.' !== $item && '' !== trim($item);
+            $clean = trim($item);
+
+            return '' !== $clean && '.' !== $clean;
         });
 
         // Convertir a string (ya que tus claves son strings) y eliminar duplicados

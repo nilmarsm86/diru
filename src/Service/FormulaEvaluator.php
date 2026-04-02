@@ -154,7 +154,7 @@ final class FormulaEvaluator
             $formulaLista = preg_replace(
                 '/(?<![\w.])'.preg_quote($original, '/').'(?![\w.])/',
                 $varName,
-                $formulaLista
+                $formulaLista ?? ''
             );
         }
 
@@ -172,8 +172,8 @@ final class FormulaEvaluator
                 // Si es literal (incluidos los de noReemplazar) → rodear con paréntesis
                 return '('.$num.')';
             },
-            $formulaLista
-        );
+            $formulaLista ?? ''
+        ) ?? '';
 
         try {
             $resultado = $this->expressionLanguage->evaluate($formulaLista, $context);

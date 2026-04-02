@@ -13,6 +13,7 @@ export default class extends AbstractController {
         coefficient: {type: Number, default: 0},
         totalArea: {type: Number, default: 0},
     };
+    originalEstimate = 0;
 
     connect() {
         let USDollar = new Intl.NumberFormat('es-CU', {
@@ -20,14 +21,17 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
+        this.originalEstimate = this.estimateValue;
+        this.estimateValue = this.coefficientValue * this.originalEstimate;
         this.multiply();
+
 
         this.fieldTargets.forEach((field) => {
             field.addEventListener('input', (event) => {
                 if (Number(field.value) < 0) {
                     field.value = Number(field.value) * -1;
                 }
-                this.estimateValue = Number(event.target.value) * this.estimateValue;
+                this.estimateValue = Number(event.target.value) * this.originalEstimate;
                 this.multiply();
             });
         });
@@ -50,7 +54,7 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.totalTarget.innerText = (this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(2) : 0;
+        this.totalTarget.innerText = USDollar.format((this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(2) : 0);
         this.element.querySelector('strong.multiply').innerText = USDollar.format(this.estimateValue / 100);
     }
 

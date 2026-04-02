@@ -1,5 +1,5 @@
 {% block trix_widget %}
-    {% set id = id ?? 'trix_' ~ form.vars.id %} {# id único #}
+    {% set id = id ?? ('trix_' ~ form.vars.id) %} {# id único #}
 
     <div class="trix-editor-wrapper" data-live-ignore data-controller="type--trix">
         <trix-editor

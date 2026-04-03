@@ -1,6 +1,6 @@
 <div class="data-container">
     <div class="row">
-        <div class="col-4">
+        <div class="col-6">
             {% component 'Card:Card' with {
                 title: 'Presupuesto estimado',
             } %}
@@ -15,7 +15,7 @@
             {% endcomponent %}
         </div>
 
-        <div class="col-8">
+        <div class="col-6">
             {% component 'Card:Card' with {
                 title: 'Anexo',
             } %}
@@ -80,7 +80,7 @@
                         : parentImport
                         )
                     }) }}>
-                        <td style="width: 130px">
+                        <td style="width: 190px">
                             {% set separateConcepts = [] %}
                             {% set imports = [] %}
                             {% set totalImport = 0 %}
@@ -90,8 +90,8 @@
                             {% if buildingSeparateConcept.separateConcept.formula %}
                                 {% set numbers = buildingSeparateConcept.extraerNumeros(buildingSeparateConcept.separateConcept.formula, buildingSeparateConcept.separateConcept.ignoreNumber) %}
 
-                                {% set data = buildingSeparateConcept.conformData(aec, numbers) %}
-                                {% set totalImport = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, buildingSeparateConcept.separateConcept.formula, buildingSeparateConcept.separateConcept.ignoreNumber) %}
+                                {% set data = aec.getDataByNumbers(numbers) %}
+                                {% set totalImport = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, buildingSeparateConcept.separateConcept.formula) %}
                                 {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, totalImport, buildingSeparateConcept.getPercentByFormula(totalImport)) %}
                             {% else %}
                                 {% if buildingSeparateConcept.separateConcept.parent is null %}
@@ -116,7 +116,7 @@
                             {% if buildingSeparateConcept.separateConcept.formula %}
                                 [{{ buildingSeparateConcept.separateConcept.formula }}]
                             {% endif %}
-                            {% if buildingSeparateConcept.separateConcept.number in ['9', '13'] %}
+                            {% if buildingSeparateConcept.separateConcept.number in ['9', '13', '13.2'] %}
                                 <strong>[DUDA]</strong>{% endif %}
                         </td>
                         <td {{ stimulusTarget('separate-concept', 'import') }}>

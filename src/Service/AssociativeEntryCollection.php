@@ -247,4 +247,23 @@ final class AssociativeEntryCollection implements \Countable, \IteratorAggregate
     //            throw new \OutOfBoundsException("Entry with number '{$number}' does not exist.");
     //        }
     //    }
+
+    /**
+     * @param array<string> $numbers
+     *
+     * @return array<float>
+     */
+    public function getDataByNumbers(array $numbers): array
+    {
+        $data = [];
+
+        foreach ($numbers as $number) {
+            $entry = $this->find($number);
+            if (null !== $entry) {
+                $data[$number] = $entry->importAsFloat();
+            }
+        }
+
+        return $data;
+    }
 }

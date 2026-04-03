@@ -90,12 +90,11 @@ class BuildingSeparateConcept implements MoneyInterface
     }
 
     /**
-     * @param array<mixed>  $data
-     * @param array<string> $noReplace
+     * @param array<mixed> $data
      */
-    public function calculateImportByFormula(FormulaEvaluator $formulaEvaluator, array $data, string $formula, array $noReplace): float
+    public function calculateImportByFormula(FormulaEvaluator $formulaEvaluator, array $data, string $formula): float
     {
-        return (float) $formulaEvaluator->evaluar($data, $formula, $noReplace);
+        return (float) $formulaEvaluator->evaluar($data, $formula);
     }
 
     public function getImport(?float $parentImport = null, ?float $parentPercent = null, ?SeparateConceptRepository $separateConceptRepository = null, ?BuildingSeparateConceptRepository $buildingSeparateConceptRepository = null): int|float
@@ -162,22 +161,22 @@ class BuildingSeparateConcept implements MoneyInterface
         return $endNumbers;
     }
 
-    /**
-     * @param array<string> $numbers
-     *
-     * @return array<float>
-     */
-    public function conformData(AssociativeEntryCollection $aec, array $numbers): array
-    {
-        $data = [];
-
-        foreach ($numbers as $number) {
-            $entry = $aec->find($number);
-            if (null !== $entry) {
-                $data[$number] = $entry->importAsFloat();
-            }
-        }
-
-        return $data;
-    }
+    //    /**
+    //     * @param array<string> $numbers
+    //     *
+    //     * @return array<float>
+    //     */
+    //    public function conformData(AssociativeEntryCollection $aec, array $numbers): array
+    //    {
+    //        $data = [];
+    //
+    //        foreach ($numbers as $number) {
+    //            $entry = $aec->find($number);
+    //            if (null !== $entry) {
+    //                $data[$number] = $entry->importAsFloat();
+    //            }
+    //        }
+    //
+    //        return $data;
+    //    }
 }

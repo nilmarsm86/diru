@@ -29,11 +29,11 @@ export default class extends AbstractController {
             currency: 'CUP',
         });
 
-        this.element.addEventListener('separate-concept:loaded', (event) => {
-            const listBackdrop = document.querySelector('[data-id=table-backdrop]');
-            const backdrop = super.getController(listBackdrop, 'twig/backdrop/backdrop');
-            backdrop.dispatch(BACKDROP_HIDE, {detail: {id: listBackdrop.dataset.id}});
-        });
+        // this.element.addEventListener('separate-concept:loaded', (event) => {
+        //     const listBackdrop = document.querySelector('[data-id=table-backdrop]');
+        //     const backdrop = super.getController(listBackdrop, 'twig/backdrop/backdrop');
+        //     backdrop.dispatch(BACKDROP_HIDE, {detail: {id: listBackdrop.dataset.id}});
+        // });
     }
 
     async save() {

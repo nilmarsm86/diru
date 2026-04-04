@@ -85,4 +85,9 @@ final class SeparateConceptForm extends AbstractController
 
         return null;
     }
+
+    private function getDataModelValue(): string
+    {
+        return 'norender|*';
+    }
 }

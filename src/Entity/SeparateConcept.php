@@ -9,9 +9,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SeparateConceptRepository::class)]
+#[ORM\UniqueConstraint(name: 'separate_concept_name', columns: ['name'])]
+#[DoctrineAssert\UniqueEntity('name', message: 'Ya existe un concepto con este nombre.')]
+#[ORM\UniqueConstraint(name: 'separate_concept_number', columns: ['number'])]
+#[DoctrineAssert\UniqueEntity('number', message: 'Ya existe un concepto con este número.')]
 #[ORM\HasLifecycleCallbacks]
 class SeparateConcept
 {
@@ -66,6 +71,7 @@ class SeparateConcept
     {
         $this->children = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
+        $this->parent = null;
     }
 
     public function getId(): ?int
@@ -105,7 +111,7 @@ class SeparateConcept
 
     public function setFormula(?string $formula): static
     {
-        $this->formula = $formula;
+        $this->formula = trim($formula ?? '');
 
         return $this;
     }
@@ -186,6 +192,14 @@ class SeparateConcept
     #[ORM\PreUpdate]
     public function onSave(): void
     {
+        if (null === $this->parent && null === $this->formula) {
+            $this->setType(SeparateConceptType::Branch);
+        } elseif (null !== $this->formula) {
+            $this->setType(SeparateConceptType::Computable);
+        } else {
+            $this->setType(SeparateConceptType::Leaf);
+        }
+
         $this->type = $this->getType()->value;
     }
 
@@ -217,7 +231,7 @@ class SeparateConcept
     }
 
     /**
-     * @param array <string> $ignoreNumber
+     * @param array<string> $ignoreNumber
      *
      * @return $this
      */
@@ -226,5 +240,10 @@ class SeparateConcept
         $this->ignoreNumber = $ignoreNumber;
 
         return $this;
+    }
+
+    public function getIdententNumber(string $string): string
+    {
+        return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
     }
 }

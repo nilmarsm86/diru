@@ -30,8 +30,10 @@
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
                 {% for separate_concept in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ separate_concept.number }}</td>
+                    <tr {{ stimulusController('delete-form-container') }} {% if separate_concept.parent is null %}style="font-weight: bold"{% endif %}>
+                        <td>
+                            {{ separate_concept.getIdententNumber('&nbsp;')|raw }}
+                        </td>
                         <td>{{ separate_concept.name }}</td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_separate_concept_show', {'id': separate_concept.id}), 'bi:eye', '', 'Detalle del concepto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_separate_concept_show', {'id': separate_concept.id})}), 'btn-link') }}

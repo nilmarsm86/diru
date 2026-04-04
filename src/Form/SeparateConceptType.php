@@ -20,19 +20,27 @@ class SeparateConceptType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', SeparateConceptTypeEnumType::class, [
-                'label' => 'Tipo:',
-            ])
+//            ->add('type', SeparateConceptTypeEnumType::class, [
+//                'label' => 'Tipo:',
+//            ])
             ->add('number', NumberType::class, [
                 'html5' => true,
                 'label' => 'Número:',
             ])
-            ->add('formula')
-            ->add('name')
+            ->add('formula', null, [
+                'label' => 'Fórmula:',
+            ])
+            ->add('name', null, [
+                'label' => 'Nombre:',
+            ])
             ->add('parent', EntityType::class, [
+                'placeholder' => 'Seleccione',
                 'class' => SeparateConcept::class,
-                'choice_label' => 'number',
+                'choice_label' => function (SeparateConcept $separateConcept) {
+                    return $separateConcept->getNumber().' - '.$separateConcept->getName();
+                },
                 'label' => 'Concepto padre:',
+                'required' => false,
             ])
         ;
     }
@@ -44,9 +52,9 @@ class SeparateConceptType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
-            'error_mapping' => [
-                'enumType' => 'type',
-            ],
+            //            'error_mapping' => [
+            //                'enumType' => 'type',
+            //            ],
         ]);
     }
 }

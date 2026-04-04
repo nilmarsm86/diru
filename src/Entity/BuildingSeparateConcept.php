@@ -90,7 +90,7 @@ class BuildingSeparateConcept implements MoneyInterface
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<string> $data
      */
     public function calculateImportByFormula(FormulaEvaluator $formulaEvaluator, array $data, string $formula): float
     {

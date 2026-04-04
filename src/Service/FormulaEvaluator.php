@@ -134,7 +134,7 @@ final class FormulaEvaluator
     /**
      * @param array<string> $datos
      *
-     * @return array<mixed>
+     * @return array<string, float>
      */
     private function normalizarDatos(array $datos): array
     {
@@ -161,8 +161,8 @@ final class FormulaEvaluator
      * Mapea cada clave de datos a una variable segura (var_0, var_1 …)
      * para que ExpressionLanguage no interprete claves con puntos como decimales.
      *
-     * @param array<string> $claves
-     * @param array<string> $datosNormalizados
+     * @param array<string>        $claves
+     * @param array<string, float> $datosNormalizados
      *
      * @return array{0: array<string,float>, 1: array<string,string>}
      */

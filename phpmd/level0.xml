@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="Level 0 — Crítico">
+    <!-- Parámetros que nunca se usan -->
+    <rule ref="rulesets/unusedcode.xml/UnusedFormalParameter"/>
+    <!-- Variables locales sin usar -->
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable"/>
+</ruleset>

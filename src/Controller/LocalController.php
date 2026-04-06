@@ -113,14 +113,14 @@ final class LocalController extends AbstractController
     #[Route('/wall/{subSystem}/{reply}', name: 'app_local_wall', methods: ['GET'])]
     public function wall(EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
-        $area = 0;
-        if (true === $subSystem->getFloor()?->hasFreeArea()) {
-            $area = $subSystem->getFloor()->getFreeArea();
-        }
-
-        if (true === $subSystem->getFloor()?->hasUnassignedArea()) {
-            $area = $subSystem->getFloor()->getUnassignedArea();
-        }
+        $area = 1;
+//        if (true === $subSystem->getFloor()?->hasFreeArea()) {
+//            $area = $subSystem->getFloor()->getFreeArea();
+//        }
+//
+//        if (true === $subSystem->getFloor()?->hasUnassignedArea()) {
+//            $area = $subSystem->getFloor()->getUnassignedArea();
+//        }
 
         //        $automaticWall = Local::createAutomaticWall($subSystem, $area, (int) $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);
         $automaticWall = Local::createAutomaticWall($subSystem, 1, (int) $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);

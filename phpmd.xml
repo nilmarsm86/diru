@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<ruleset
+    name="Symfony Project Rules"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+>
+    <description>PHPMD ruleset for Symfony 7</description>
+
+    <!-- ============================================================ -->
+    <!-- CLEAN CODE                                                    -->
+    <!-- ============================================================ -->
+    <rule ref="rulesets/cleancode.xml">
+        <!-- Symfony usa inyección por constructor (está bien), pero
+             los Commands, Fixtures y factories usan static a veces -->
+        <exclude name="StaticAccess"/>
+    </rule>
+
+    <!-- Permitir static en casos controlados -->
+    <rule ref="rulesets/cleancode.xml/StaticAccess">
+        <properties>
+            <property name="exceptions" value="\App\Shared\ValueObject\Uuid,\Carbon\Carbon"/>
+        </properties>
+    </rule>
+
+    <!-- ============================================================ -->
+    <!-- CODESIZE                                                      -->
+    <!-- ============================================================ -->
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <!-- Default es 10, Symfony controllers/services pueden ser más complejos -->
+            <property name="reportLevel" value="12"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/NPathComplexity">
+        <properties>
+            <property name="minimum" value="200"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+        <properties>
+            <!-- Default 100, razonable para Symfony -->
+            <property name="maximum" value="40"/>
+            <property name="ignore-whitespace" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength">
+        <properties>
+            <property name="maximum" value="500"/>
+            <property name="ignore-whitespace" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
+        <properties>
+            <!-- Constructores con DI pueden tener muchos params -->
+            <property name="maximum" value="8"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="20"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <properties>
+            <property name="maxmethods" value="15"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <properties>
+            <property name="maximum" value="50"/>
+        </properties>
+    </rule>
+
+    <!-- ============================================================ -->
+    <!-- DESIGN                                                        -->
+    <!-- ============================================================ -->
+    <rule ref="rulesets/design.xml">
+        <!-- Symfony usa bastante herencia (AbstractController, etc.) -->
+        <exclude name="DepthOfInheritance"/>
+    </rule>
+
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <!-- Default 13 — Controllers de Symfony pueden tener más -->
+            <property name="maximum" value="15"/>
+        </properties>
+    </rule>
+
+    <!-- ============================================================ -->
+    <!-- NAMING                                                        -->
+    <!-- ============================================================ -->
+    <rule ref="rulesets/naming.xml">
+        <exclude name="LongVariable"/>
+        <exclude name="ShortVariable"/>
+    </rule>
+
+    <!-- Configurar por separado con umbrales propios -->
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <!-- Permitir $e (catch), $id, $em (EntityManager) -->
+            <property name="minimum" value="2"/>
+            <property name="exceptions" value="e,id,em,i,j,k"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="35"/>
+        </properties>
+    </rule>
+
+    <!-- ============================================================ -->
+    <!-- UNUSED CODE                                                   -->
+    <!-- ============================================================ -->
+    <rule ref="rulesets/unusedcode.xml"/>
+
+    <!-- ============================================================ -->
+    <!-- CONTROVERSIAL (opcional, opina sobre gustos)                 -->
+    <!-- ============================================================ -->
+    <!-- <rule ref="rulesets/controversial.xml"/> -->
+
+</ruleset>

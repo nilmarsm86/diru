@@ -179,7 +179,7 @@ final class BuildingForm extends AbstractController
     #[LiveAction]
     public function save(
         BuildingRepository $buildingRepository,
-        ConstructorRepository $constructorRepository,
+//        ConstructorRepository $constructorRepository,
         CorporateEntityRepository $corporateEntityRepository,
         ProjectRepository $projectRepository,
         DraftsmanRepository $draftsmanRepository,

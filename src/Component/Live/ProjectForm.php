@@ -141,8 +141,8 @@ final class ProjectForm extends AbstractController
         ClientRepository $clientRepository,
         InvestmentRepository $investmentRepository,
         DraftsmanRepository $draftsmanRepository,
-        ConstructorRepository $constructorRepository,
-        CorporateEntityRepository $corporateEntityRepository,
+//        ConstructorRepository $constructorRepository,
+//        CorporateEntityRepository $corporateEntityRepository,
     ): ?Response {
         $this->preValue();
         $successMsg = (is_null($this->pro?->getId())) ? 'Se ha agregado el proyecto.' : 'Se ha modificado el proyecto.';

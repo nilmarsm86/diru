@@ -88,7 +88,17 @@
             "@auto-scripts"
         ],
         "phpstan": "phpstan analyse",
-        "php-cs-fixer": ".\\vendor\\bin\\php-cs-fixer fix"
+        "php-cs-fixer": ".\\vendor\\bin\\php-cs-fixer fix",
+        "phpmd":      "php bin/phpmd-pretty",
+        "phpmd:next": "php bin/phpmd-pretty",
+        "phpmd:0":    "php bin/phpmd-pretty 0",
+        "phpmd:1":    "php bin/phpmd-pretty 1",
+        "phpmd:2":    "php bin/phpmd-pretty 2",
+        "phpmd:3":    "php bin/phpmd-pretty 3",
+        "phpmd:4":    "php bin/phpmd-pretty 4",
+        "phpmd:5":    "php bin/phpmd-pretty 5",
+        "phpmd:6":    "php bin/phpmd-pretty 6",
+        "quality": ["@phpmd", "@cs-check", "@phpstan"]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -103,6 +113,7 @@
         "dbrekelmans/bdi": "^1.4",
         "doctrine/doctrine-fixtures-bundle": "^4.0",
         "friendsofphp/php-cs-fixer": "^3.91",
+        "phpmd/phpmd": "^2.15",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",

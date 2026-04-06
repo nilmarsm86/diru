@@ -1,35 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}ConstructiveSystem index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>ConstructiveSystem index</h1>
+{% block title %}Sistemas constructivos{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for constructive_system in constructive_systems %}
-            <tr>
-                <td>{{ constructive_system.id }}</td>
-                <td>{{ constructive_system.name }}</td>
-                <td>
-                    <a href="{{ path('app_constructive_system_show', {'id': constructive_system.id}) }}">show</a>
-                    <a href="{{ path('app_constructive_system_edit', {'id': constructive_system.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Sistemas constructivos', 'bi:pin-map') }}
 
-    <a href="{{ path('app_constructive_system_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Sistemas'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de sistemas constructivos</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('constructive_system/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

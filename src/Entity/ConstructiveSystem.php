@@ -7,8 +7,11 @@ use App\Repository\ConstructiveSystemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 #[ORM\Entity(repositoryClass: ConstructiveSystemRepository::class)]
+#[ORM\UniqueConstraint(name: 'constructive_system_name', columns: ['name'])]
+#[DoctrineAssert\UniqueEntity('name', message: 'Ya existe un sistema constructivo con este nombre.')]
 #[ORM\HasLifecycleCallbacks]
 class ConstructiveSystem
 {

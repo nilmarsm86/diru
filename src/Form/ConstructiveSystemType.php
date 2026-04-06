@@ -17,7 +17,9 @@ class ConstructiveSystemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nombre:',
+            ])
         ;
     }
 
@@ -25,6 +27,9 @@ class ConstructiveSystemType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ConstructiveSystem::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

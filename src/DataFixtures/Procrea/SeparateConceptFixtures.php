@@ -1117,7 +1117,9 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
             $conceptEntity->setNumber($concept['number']);
             $conceptEntity->setFormula($concept['formula']);
             $conceptEntity->setPercent($concept['percent']);
-            $conceptEntity->setIgnoreNumber($concept['ignore']);
+            if (isset($concept['ignore'])) {
+                $conceptEntity->setIgnoreNumber($concept['ignore']);
+            }
             if (!is_null($concept['parent'])) {
                 $parentConcept = $manager->getRepository(SeparateConcept::class)->findOneBy(['number' => $concept['parent']]);
                 if (!is_null($parentConcept)) {

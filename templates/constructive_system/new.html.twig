@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}New ConstructiveSystem{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Create new ConstructiveSystem</h1>
+{% block title %}Sistemas constructivos{% endblock %}
 
-    {{ include('constructive_system/_form.html.twig') }}
+{% block content %}
+    <div class="row">
+        {{ h1('Sistemas constructivos', 'bi:pin-map') }}
 
-    <a href="{{ path('app_constructive_system_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Sistemas constructivos', href: path('app_constructive_system_index')},
+            {label: 'Nuevo'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar sistema constructivo</h2>
+
+    {{ include('constructive_system/_form.html.twig', {showButton: true, title: title}) }}
 {% endblock %}

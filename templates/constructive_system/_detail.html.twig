@@ -1,0 +1,46 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: 'id="constructive_system_detail_' ~ constructive_system.id,
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {{ include('partials/_card_header_options.html.twig', {
+            goTo: 'app_constructive_system_new',
+            label: 'Nuevo',
+            title: 'Nuevo sistema constructivo',
+            entity: constructive_system,
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ constructive_system.name }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {{ include('partials/_card_footer.html.twig', {
+            list: {href: 'app_constructive_system_index', label: 'Listado', title:'Volver al listado'},
+            edit: {href: 'app_constructive_system_edit', label: 'Editar', title:'Editar sistema constructivo'},
+            delete: {href: 'app_constructive_system_delete', label: 'Eliminar', title:'Eliminar sistema constructivo'},
+            id: constructive_system.id,
+            message: 'Está seguro que desea eliminar el sistema constructivo?',
+            state: 'detail',
+            showButton: (showButton is defined and showButton == true) ? true : false
+        }) }}
+    {% endblock %}
+
+{% endcomponent %}
+
+

@@ -72,6 +72,7 @@ class SeparateConcept
         $this->children = new ArrayCollection();
         $this->buildingSeparateConcepts = new ArrayCollection();
         $this->parent = null;
+        $this->ignoreNumber = [];
     }
 
     public function getId(): ?int

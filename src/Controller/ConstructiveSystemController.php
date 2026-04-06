@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\ConstructiveSystem;
-use App\Form\ConstructiveSystemType;
 use App\Repository\ConstructiveSystemRepository;
 use App\Service\CrudActionService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,60 +28,61 @@ final class ConstructiveSystemController extends AbstractController
         return $crudActionService->indexAction($request, $constructiveSystemRepository, 'findConstructiveSystems', 'constructive_system');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_constructive_system_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $constructiveSystem = new ConstructiveSystem();
-        $form = $this->createForm(ConstructiveSystemType::class, $constructiveSystem);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($constructiveSystem);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_constructive_system_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('constructive_system/new.html.twig', [
-            'constructive_system' => $constructiveSystem,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $constructiveSystem, 'constructive_system', [
+            'title' => 'Nuevo sistema constructivo',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_constructive_system_show', methods: ['GET'])]
-    public function show(ConstructiveSystem $constructiveSystem): Response
+    public function show(Request $request, ConstructiveSystem $constructiveSystem, CrudActionService $crudActionService): Response
     {
-        return $this->render('constructive_system/show.html.twig', [
-            'constructive_system' => $constructiveSystem,
-        ]);
+        return $crudActionService->showAction($request, $constructiveSystem, 'constructive_system', 'constructive_system', 'Detalles del sistema constructivo.');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_constructive_system_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, ConstructiveSystem $constructiveSystem, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, ConstructiveSystem $constructiveSystem, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(ConstructiveSystemType::class, $constructiveSystem);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_constructive_system_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('constructive_system/edit.html.twig', [
-            'constructive_system' => $constructiveSystem,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $constructiveSystem, 'constructive_system', [
+            'title' => 'Editar sistema constructivo',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_constructive_system_delete', methods: ['POST'])]
-    public function delete(Request $request, ConstructiveSystem $constructiveSystem, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, ConstructiveSystem $constructiveSystem, ConstructiveSystemRepository $constructiveSystemRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$constructiveSystem->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($constructiveSystem);
-            $entityManager->flush();
+        $successMsg = 'Se ha eliminado el sistema constructivo.';
+        $response = $crudActionService->deleteAction($request, $constructiveSystemRepository, $constructiveSystem, $successMsg, 'app_constructive_system_index');
+        if ($response instanceof RedirectResponse) {
+            $this->addFlash('success', $successMsg);
+
+            return $response;
         }
 
-        return $this->redirectToRoute('app_constructive_system_index', [], Response::HTTP_SEE_OTHER);
+        return $response;
     }
 }

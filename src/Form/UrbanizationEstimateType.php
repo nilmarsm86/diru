@@ -16,6 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UrbanizationEstimateType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<UrbanizationEstimate|null> $builder
+     * @param array<string, mixed>                            $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $currency = 'CUP';

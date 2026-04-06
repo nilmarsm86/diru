@@ -16,6 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FloorType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Floor|null> $builder
+     * @param array<string, mixed>             $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {

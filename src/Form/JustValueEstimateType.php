@@ -16,6 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JustValueEstimateType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<JustValueEstimate|null> $builder
+     * @param array<string, mixed>                         $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $currency = 'CUP';

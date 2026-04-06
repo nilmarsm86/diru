@@ -929,7 +929,7 @@ class Building implements MeasurementDataInterface
         return $this->getTotalArea($original) / (float) $this->getLandArea();
     }
 
-    public function getCos(?bool $original = null): string
+    public function getCos(): string
     {
         return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / (float) $this->getLand()?->getLandArea(), 2);
     }
@@ -943,9 +943,9 @@ class Building implements MeasurementDataInterface
         return !$this->notWallArea() && $this->hasFloorAndIsNotCompletlyEmptyArea() && $this->isFullyOccupied() && false === $this->hasReply();
     }
 
-    public function reply(EntityManagerInterface $entityManager, ?Building $parent = null): static
+    public function reply(EntityManagerInterface $entityManager): static
     {
-        $this->replySons($entityManager, $this->getOriginalFloors(), $parent);
+        $this->replySons($entityManager, $this->getOriginalFloors());
 
         $this->setHasReply(true);
         $this->setState(BuildingState::Design);
@@ -1209,10 +1209,10 @@ class Building implements MeasurementDataInterface
     /**
      * @param Collection<int, Floor> $items
      */
-    private function replySons(EntityManagerInterface $entityManager, Collection $items, ?object $parent = null): void
+    private function replySons(EntityManagerInterface $entityManager, Collection $items): void
     {
         foreach ($items as $item) {
-            $item->reply($entityManager, $parent);
+            $item->reply($entityManager);
         }
     }
 
@@ -1411,7 +1411,7 @@ class Building implements MeasurementDataInterface
         return $price;
     }
 
-    public function getConstructivePrice(?bool $original = null): int|float
+    public function getConstructivePrice(): int|float
     {
         if (0 === $this->getFloorsAmount()) {
             return 0;

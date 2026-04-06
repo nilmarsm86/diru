@@ -42,6 +42,12 @@ class BuildingType extends AbstractType
     ) {
     }
 
+    /**
+     * @param FormBuilderInterface<Building|null> $builder
+     * @param array<string, mixed>                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -99,7 +105,7 @@ class BuildingType extends AbstractType
         $building = $event->getData();
         $form = $event->getForm();
         $currency = 'CUP';
-        $activeConstructor = null;
+        //        $activeConstructor = null;
         $activeCorporateEntity = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
@@ -119,7 +125,7 @@ class BuildingType extends AbstractType
             $project = $building->getProject();
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
-            $activeConstructor = $building->getActiveConstructor();
+            //            $activeConstructor = $building->getActiveConstructor();
             $activeCorporateEntity = $building->getActiveCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [

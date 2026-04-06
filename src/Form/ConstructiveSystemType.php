@@ -14,6 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConstructiveSystemType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<ConstructiveSystem|null> $builder
+     * @param array<string, mixed>                          $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

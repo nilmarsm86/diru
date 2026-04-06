@@ -25,6 +25,12 @@ class IndividualClientType extends AbstractType
     {
     }
 
+    /**
+     * @param FormBuilderInterface<IndividualClient|null> $builder
+     * @param array<string, mixed>                        $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

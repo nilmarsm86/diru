@@ -14,6 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class OrganismType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Organism|null> $builder
+     * @param array<string, mixed>                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

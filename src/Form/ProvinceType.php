@@ -15,6 +15,12 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 class ProvinceType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Province|null> $builder
+     * @param array<string, mixed>                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

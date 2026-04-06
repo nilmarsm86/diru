@@ -20,6 +20,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class LandNetworkConnectionConstructiveActionType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<LandNetworkConnectionConstructiveAction|null> $builder
+     * @param array<string, mixed>                                               $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

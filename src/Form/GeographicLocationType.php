@@ -19,6 +19,12 @@ class GeographicLocationType extends AbstractType
     private int $min = 1;
     private int $max = 100;
 
+    /**
+     * @param FormBuilderInterface<GeographicLocation|null> $builder
+     * @param array<string, mixed>                          $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

@@ -15,6 +15,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RepresentativeType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Representative|null> $builder
+     * @param array<string, mixed>                      $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

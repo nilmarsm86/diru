@@ -16,6 +16,12 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 class SubsystemTypeType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<SubsystemType|null> $builder
+     * @param array<string, mixed>                     $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

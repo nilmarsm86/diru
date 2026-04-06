@@ -11,8 +11,12 @@ class EnumSimulator
         $this->value = $value;
     }
 
-    public function getLabelFrom(EnumSimulator $enum): string
+    public function getLabelFrom(?EnumSimulator $enum = null): string
     {
+        if (null !== $enum) {
+            return $enum->value;
+        }
+
         return $this->value;
     }
 }

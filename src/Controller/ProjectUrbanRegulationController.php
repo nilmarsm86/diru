@@ -21,7 +21,7 @@ use Twig\Error\SyntaxError;
 final class ProjectUrbanRegulationController extends AbstractController
 {
     #[Route('/{project}', name: 'app_project_urban_regulation_index', methods: ['GET'])]
-    public function index(Request $request, RouterInterface $router, ProjectUrbanRegulationRepository $projectUrbanRegulationRepository, CrudActionService $crudActionService, Project $project): Response
+    public function index(Request $request, RouterInterface $router, ProjectUrbanRegulationRepository $projectUrbanRegulationRepository, Project $project): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int) $request->query->get('amount', '10');
@@ -65,7 +65,7 @@ final class ProjectUrbanRegulationController extends AbstractController
      * @throws LoaderError
      */
     #[Route('/{id}/{project}', name: 'app_project_urban_regulation_show', methods: ['GET'])]
-    public function show(Request $request, ProjectUrbanRegulation $projectUrbanRegulation, CrudActionService $crudActionService, Project $project): Response
+    public function show(Request $request, ProjectUrbanRegulation $projectUrbanRegulation, CrudActionService $crudActionService): Response
     {
         return $crudActionService->showAction($request, $projectUrbanRegulation, 'project_urban_regulation', 'project_urban_regulation', 'Detalles de la regulación en el proyecto');
     }

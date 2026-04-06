@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\MoneyInterface;
 use App\Repository\BuildingSeparateConceptRepository;
-use App\Repository\SeparateConceptRepository;
 use App\Service\AssociativeEntryCollection;
 use App\Service\FormulaEvaluator;
 use Doctrine\ORM\Mapping as ORM;
@@ -97,10 +96,9 @@ class BuildingSeparateConcept implements MoneyInterface
         return (float) $formulaEvaluator->evaluar($data, $formula);
     }
 
-    public function getImport(?float $parentImport = null, ?float $parentPercent = null, ?SeparateConceptRepository $separateConceptRepository = null, ?BuildingSeparateConceptRepository $buildingSeparateConceptRepository = null): int|float
+    public function getImport(?float $parentImport = null, ?float $parentPercent = null): int|float
     {
         $import = (null === $parentImport) ? $this->getBuilding()?->getEstimatedAdjustValue() : $parentImport;
-
         $percent = (null === $parentPercent) ? $this->getPercent() : $parentPercent;
 
         return round((float) $import * (float) $percent / 100);

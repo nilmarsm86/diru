@@ -223,7 +223,7 @@ class Floor implements MeasurementDataInterface
         return $this->hasReplySubSystems() && ($this->getUsefulArea() > 0);
     }
 
-    public function reply(EntityManagerInterface $entityManager, ?object $parent = null): static
+    public function reply(EntityManagerInterface $entityManager): static
     {
         $replica = clone $this;
         $replica->setOriginal($this);
@@ -510,7 +510,7 @@ class Floor implements MeasurementDataInterface
         return $total;
     }
 
-    public function getPrice(?bool $original = null): int|float
+    public function getPrice(): int|float
     {
         if (0 === $this->getSubSystemAmount()) {
             return 0;

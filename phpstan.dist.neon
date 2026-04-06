@@ -13,6 +13,7 @@ parameters:
         - '#Method .+::.+\(\) should return Symfony\\Component\\Form\\FormInterface<.+> but returns Symfony\\Component\\Form\\FormInterface<.+>#'
         - '#Method .+::buildForm\(\) has parameter \$builder with no value type specified#'
         - '#Method .+::buildView\(\) has parameter \$form with no value type specified#'
+        - '#PHPDoc tag @SuppressWarnings has invalid value#'
     excludePaths:
         - src/Kernel.php
     treatPhpDocTypesAsCertain: false

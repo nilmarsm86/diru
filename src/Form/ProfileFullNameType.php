@@ -16,6 +16,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProfileFullNameType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<UserInterface|null> $builder
+     * @param array<string, mixed>                     $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

@@ -1,6 +1,29 @@
 #!/usr/bin/env php
 <?php
 
+// ─── Exclusiones manuales (más fiables que --exclude en Windows) ─────────────
+
+$excludePatterns = [
+    'Migrations',
+    'DataFixtures',
+    'Kernel.php',
+    'tests',
+    'Tests',
+];
+
+function isExcluded(string $absolutePath, array $patterns): bool
+{
+    $normalized = str_replace('\\', '/', $absolutePath);
+
+    foreach ($patterns as $pattern) {
+        if (str_contains($normalized, $pattern)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function isPhpStorm(): bool
@@ -10,7 +33,7 @@ function isPhpStorm(): bool
 
 function supportsOsc8(): bool
 {
-    $term    = getenv('TERM_PROGRAM') ?: '';
+    $term = getenv('TERM_PROGRAM') ?: '';
     $termEnv = getenv('TERM') ?: '';
 
     return in_array($term, ['iTerm.app', 'WezTerm', 'ghostty'], true)
@@ -29,9 +52,9 @@ function terminalLink(string $label, string $url): string
 
 function fileLink(string $absolutePath, int $beginLine, int $endLine): string
 {
-    $isWindows  = 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
+    $isWindows = 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
     $normalized = str_replace('\\', '/', $absolutePath);
-    $lineRange  = $beginLine === $endLine
+    $lineRange = $beginLine === $endLine
         ? "línea {$beginLine}"
         : "líneas {$beginLine}–{$endLine}";
 
@@ -41,7 +64,8 @@ function fileLink(string $absolutePath, int $beginLine, int $endLine): string
     }
 
     if (supportsOsc8()) {
-        $uri = ($isWindows ? 'file:///' : 'file://') . $normalized . ':' . $beginLine;
+        $uri = ($isWindows ? 'file:///' : 'file://').$normalized.':'.$beginLine;
+
         return "\033]8;;{$uri}\033\\\033[90m@ {$lineRange}\033[0m\033]8;;\033\\";
     }
 
@@ -50,9 +74,9 @@ function fileLink(string $absolutePath, int $beginLine, int $endLine): string
 
 function formatFileHeader(string $absolutePath, string $relativePath, int $count): string
 {
-    $isWindows  = 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
+    $isWindows = 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
     $normalized = str_replace('\\', '/', $absolutePath);
-    $suffix     = " \033[90m({$count} violación" . ($count > 1 ? 'es' : '') . ")\033[0m";
+    $suffix = " \033[90m({$count} violación".($count > 1 ? 'es' : '').")\033[0m";
 
     if (isPhpStorm()) {
         // Ruta absoluta para que PHPStorm la enlace, label con color
@@ -62,11 +86,12 @@ function formatFileHeader(string $absolutePath, string $relativePath, int $count
     $label = "\033[1m\033[36m📄 {$relativePath}\033[0m";
 
     if (supportsOsc8()) {
-        $uri = ($isWindows ? 'file:///' : 'file://') . $normalized . ':1';
-        return terminalLink($label, $uri) . $suffix;
+        $uri = ($isWindows ? 'file:///' : 'file://').$normalized.':1';
+
+        return terminalLink($label, $uri).$suffix;
     }
 
-    return $label . $suffix;
+    return $label.$suffix;
 }
 
 function priorityMeta(int $priority): array
@@ -76,7 +101,7 @@ function priorityMeta(int $priority): array
         2 === $priority => ['icon' => '🟠', 'label' => 'HIGH    ', 'color' => "\033[31m"],
         3 === $priority => ['icon' => '🟡', 'label' => 'MEDIUM  ', 'color' => "\033[33m"],
         4 === $priority => ['icon' => '🔵', 'label' => 'LOW     ', 'color' => "\033[34m"],
-        default         => ['icon' => '⚪', 'label' => 'INFO    ', 'color' => "\033[90m"],
+        default => ['icon' => '⚪', 'label' => 'INFO    ', 'color' => "\033[90m"],
     };
 }
 
@@ -88,7 +113,7 @@ function formatLevelSummary(array $counts): string
         if (empty($counts[$p])) {
             continue;
         }
-        $meta    = priorityMeta($p);
+        $meta = priorityMeta($p);
         $parts[] = "{$meta['icon']} {$meta['color']}{$label}\033[0m: {$counts[$p]}";
     }
 
@@ -98,9 +123,9 @@ function formatLevelSummary(array $counts): string
 // ─── Main ───────────────────────────────────────────────────────────────────
 
 $isWindows = 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
-$xmlFile   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpmd_output.xml';
-$phpmd     = __DIR__ . '/../vendor/bin/phpmd';
-$redirect  = $isWindows ? '2>NUL' : '2>/dev/null';
+$xmlFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpmd_output.xml';
+$phpmd = __DIR__.'/../vendor/bin/phpmd';
+$redirect = $isWindows ? '2>NUL' : '2>/dev/null';
 
 // Leer nivel desde argumento: php bin/phpmd-pretty 3
 $level = isset($argv[1]) && is_numeric($argv[1])
@@ -108,7 +133,7 @@ $level = isset($argv[1]) && is_numeric($argv[1])
     : null;
 
 // Leer nivel guardado si no se pasa argumento
-$levelFile = __DIR__ . '/../phpmd/.level';
+$levelFile = __DIR__.'/../phpmd/.level';
 if (null === $level) {
     $level = file_exists($levelFile)
         ? (int) trim(file_get_contents($levelFile))
@@ -116,8 +141,8 @@ if (null === $level) {
 }
 
 $maxLevel = 6;
-$level    = max(0, min($level, $maxLevel));
-$config   = __DIR__ . "/../phpmd/level{$level}.xml";
+$level = max(0, min($level, $maxLevel));
+$config = __DIR__."/../phpmd/level{$level}.xml";
 
 if (!file_exists($config)) {
     echo "\033[31m❌ Config no encontrada: {$config}\033[0m\n";
@@ -128,12 +153,11 @@ echo "\n\033[90mNivel activo: \033[1m{$level}/{$maxLevel}\033[0m";
 echo " \033[90m→ phpmd/level{$level}.xml\033[0m\n";
 
 $command = sprintf(
-    'php %s %s xml %s --reportfile %s --exclude %s %s',
+    'php %s %s xml %s --reportfile %s %s',
     escapeshellarg($phpmd),
     'src/',
     escapeshellarg($config),
     escapeshellarg($xmlFile),
-    'src/Migrations,src/Kernel.php',
     $redirect
 );
 
@@ -159,32 +183,37 @@ if (!$xml || !isset($xml->file)) {
     exit(0);
 }
 
-$totalViolations  = 0;
-$fileCount        = 0;
+$totalViolations = 0;
+$fileCount = 0;
 $countsByPriority = [];
-$cwd              = getcwd() . DIRECTORY_SEPARATOR;
+$cwd = getcwd().DIRECTORY_SEPARATOR;
 
 echo "\033[1m\033[33m⚠  PHPMD — Nivel {$level}/{$maxLevel}\033[0m\n";
-echo str_repeat('─', 60) . "\n";
+echo str_repeat('─', 60)."\n";
 
 foreach ($xml->file as $file) {
     $absolutePath = (string) $file['name'];
     $relativePath = str_replace('\\', '/', str_replace($cwd, '', $absolutePath));
 
-    $violations       = $file->violation;
-    $count            = count($violations);
+    // ✅ Saltar archivos excluidos
+    if (isExcluded($absolutePath, $excludePatterns)) {
+        continue;
+    }
+
+    $violations = $file->violation;
+    $count = count($violations);
     $totalViolations += $count;
     ++$fileCount;
 
-    echo "\n" . formatFileHeader($absolutePath, $relativePath, $count) . "\n";
+    echo "\n".formatFileHeader($absolutePath, $relativePath, $count)."\n";
 
     foreach ($violations as $violation) {
-        $rule      = (string) $violation['rule'];
-        $ruleset   = (string) $violation['ruleset'];
-        $beginLine = (int)    $violation['beginline'];
-        $endLine   = (int)    $violation['endline'];
-        $priority  = (int)    $violation['priority'];
-        $message   = trim((string) $violation);
+        $rule = (string) $violation['rule'];
+        $ruleset = (string) $violation['ruleset'];
+        $beginLine = (int) $violation['beginline'];
+        $endLine = (int) $violation['endline'];
+        $priority = (int) $violation['priority'];
+        $message = trim((string) $violation);
 
         $countsByPriority[$priority] = ($countsByPriority[$priority] ?? 0) + 1;
 
@@ -200,11 +229,11 @@ foreach ($xml->file as $file) {
 
 $nextLevel = $level < $maxLevel ? $level + 1 : null;
 
-echo "\n" . str_repeat('─', 60) . "\n";
+echo "\n".str_repeat('─', 60)."\n";
 echo "\033[1m📊 Total: {$totalViolations} violaciones en {$fileCount} archivo(s)\033[0m\n";
 
 if ('' !== ($summary = formatLevelSummary($countsByPriority))) {
-    echo $summary . "\n";
+    echo $summary."\n";
 }
 
 if (0 === $totalViolations && null !== $nextLevel) {

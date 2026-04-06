@@ -21,6 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class LandType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Land|null> $builder
+     * @param array<string, mixed>            $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {

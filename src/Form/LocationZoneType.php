@@ -19,6 +19,12 @@ class LocationZoneType extends AbstractType
     private int $min = 1;
     private int $max = 100;
 
+    /**
+     * @param FormBuilderInterface<LocationZone|null> $builder
+     * @param array<string, mixed>                    $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

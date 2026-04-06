@@ -15,6 +15,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ContractType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<Contract|null> $builder
+     * @param array<string, mixed>                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $yearList = range((int) date('Y') - 5, (int) date('Y') + 5);

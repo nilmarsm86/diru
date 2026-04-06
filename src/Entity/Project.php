@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Traits\ClientTrait;
@@ -179,7 +180,7 @@ class Project
         $this->enumState = $enumState;
 
         if (ProjectState::Stopped === $enumState) {
-            $this->stopAllBuildings();
+            //            $this->stopAllBuildings();
         }
 
         return $this;
@@ -194,15 +195,15 @@ class Project
         $this->addConstructorProject($constructorProject);
     }
 
-    private function stopAllBuildings(): static
-    {
-        foreach ($this->getBuildings() as $building) {
-            // se deben parar todas las obras del proyecto
-            //            $building->setState(BuildingState::Stopped);
-        }
-
-        return $this;
-    }
+    //    private function stopAllBuildings(): static
+    //    {
+    //        foreach ($this->getBuildings() as $building) {
+    // //         se deben parar todas las obras del proyecto
+    //            $building->setState(BuildingState::Stopped);
+    //        }
+    //
+    //        return $this;
+    //    }
 
     public function isStopped(): bool
     {
@@ -431,9 +432,9 @@ class Project
     public function cancel(): void
     {
         $this->setState(ProjectState::Canceled);
-        foreach ($this->getBuildings() as $building) {
-            //            $building->cancel();
-        }
+        //        foreach ($this->getBuildings() as $building) {
+        //            //            $building->cancel();
+        //        }
     }
 
     /**
@@ -460,7 +461,7 @@ class Project
         return $this;
     }
 
-    public function getPrice(?bool $original = null): int|float
+    public function getPrice(): int|float
     {
         if (0 === $this->getBuildingsAmount()) {
             return 0;

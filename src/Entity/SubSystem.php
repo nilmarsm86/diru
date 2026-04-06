@@ -504,7 +504,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function createInitialLocal(bool $reply = false, ?EntityManagerInterface $entityManager = null): void
     {
         if (is_null($this->getId())) {
-            $unassignedArea = (float) $this->getFloor()?->getUnassignedArea() - 1;
+            //            $unassignedArea = (float) $this->getFloor()?->getUnassignedArea() - 1;
             //            Local::createAutomaticLocal(null, $this, $unassignedArea, 1, $reply, $entityManager);
             Local::createAutomaticLocal(null, $this, 1, 1, $reply, $entityManager);
             Local::createAutomaticWall($this, 1, 0, $reply, $entityManager);

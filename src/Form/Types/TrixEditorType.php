@@ -32,6 +32,7 @@ class TrixEditorType extends AbstractType implements DataTransformerInterface
         ]);
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this);

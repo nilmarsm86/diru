@@ -104,6 +104,8 @@ class AddressType extends AbstractType
     /**
      * @param FormInterface<array> $form
      * @param array<string, mixed> $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {

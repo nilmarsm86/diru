@@ -17,6 +17,7 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
     {
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
         $user = $this->userRepository->findOneBy(['username' => $request->request->get('_username', '')]);

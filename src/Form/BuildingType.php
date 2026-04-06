@@ -98,6 +98,8 @@ class BuildingType extends AbstractType
 
     /**
      * @param array<mixed> $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {

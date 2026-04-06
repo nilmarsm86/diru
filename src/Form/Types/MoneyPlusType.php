@@ -47,6 +47,7 @@ class MoneyPlusType extends AbstractType
         $resolver->setAllowedTypes('list_icon', 'string');
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['add'] = $options['add'];

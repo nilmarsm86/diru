@@ -23,6 +23,7 @@ class UnitMeasurementFloatType extends AbstractType
             ->setDefault('scale', 2);
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['unit'] = $options['unit'];

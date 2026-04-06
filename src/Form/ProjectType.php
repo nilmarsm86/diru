@@ -99,6 +99,7 @@ class ProjectType extends AbstractType
         ]);
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     private function onPreSetData(FormEvent $event): void
     {
         /** @var Project $project */

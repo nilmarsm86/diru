@@ -54,6 +54,8 @@ final class TogglePasswordTypeExtension extends AbstractTypeExtension
 
     /**
      * @throws \JsonException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {

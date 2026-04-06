@@ -33,7 +33,7 @@ class BuildingRevisionRepository extends ServiceEntityRepository implements Filt
             ->leftJoin('br.building', 'b')
             ->where('b.id = :building')
             ->setParameter('building', $building);
-        //        $this->addFilter($builder, $filter, false);
+        $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('br.createdAt', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

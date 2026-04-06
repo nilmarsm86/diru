@@ -113,6 +113,7 @@ class SubSystemClassificationType extends AbstractType
         $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['row'] = $options['row'];

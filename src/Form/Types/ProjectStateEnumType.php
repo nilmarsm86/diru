@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProjectStateEnumType extends AbstractType
 {
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver

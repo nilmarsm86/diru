@@ -21,6 +21,7 @@ class UnitMeasurementType extends AbstractType
             ->setDefault('unit', '');
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['unit'] = $options['unit'];

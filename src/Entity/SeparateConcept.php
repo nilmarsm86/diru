@@ -73,6 +73,7 @@ class SeparateConcept
         $this->buildingSeparateConcepts = new ArrayCollection();
         $this->parent = null;
         $this->ignoreNumber = [];
+        $this->formula = null;
     }
 
     public function getId(): ?int
@@ -112,7 +113,7 @@ class SeparateConcept
 
     public function setFormula(?string $formula): static
     {
-        $this->formula = trim($formula ?? '');
+        $this->formula = (null !== $formula) ? trim($formula) : null;
 
         return $this;
     }

@@ -413,47 +413,15 @@ class Local implements MoneyInterface
             return false;
         }
 
-        if ($original->getNumber() !== $this->getNumber()) {
-            $this->changesFromOriginal[] = 'Cambio de número.';
-            $hasChanges = true;
-        }
+        $hasChanges = $this->changeInNumber($original);
+        $hasChanges = $this->changeInArea($original, $hasChanges);
+        $hasChanges = $this->changeInType($original, $hasChanges);
+        $hasChanges = $this->changeInHeight($original, $hasChanges);
+        $hasChanges = $this->changeInVolume($original, $hasChanges);
+        $hasChanges = $this->changeInTechnicalStatus($original, $hasChanges);
+        $hasChanges = $this->changeInLevels($original, $hasChanges);
 
-        if ($original->getArea() !== $this->getArea()) {
-            $this->changesFromOriginal[] = 'Cambio de área.';
-            $hasChanges = true;
-        }
-
-        if ($original->getType() !== $this->getType()) {
-            $this->changesFromOriginal[] = 'Cambio de tipo.';
-            $hasChanges = true;
-        }
-
-        if ($original->getHeight() !== $this->getHeight()) {
-            $this->changesFromOriginal[] = 'Cambio de altura.';
-            $hasChanges = true;
-        }
-
-        if ($original->getVolume() !== $this->getVolume()) {
-            $this->changesFromOriginal[] = 'Cambio de volumen.';
-            $hasChanges = true;
-        }
-
-        if ($original->getTechnicalStatus() !== $this->getTechnicalStatus()) {
-            $this->changesFromOriginal[] = 'Cambio de estado técnico.';
-            $hasChanges = true;
-        }
-
-        if ($original->isImpactHigherLevels() !== $this->isImpactHigherLevels()) {
-            $this->changesFromOriginal[] = 'Cambio en el impacto en niveles superiores.';
-            $hasChanges = true;
-        }
-
-        if ($this->hasRemoveConstructiveAction()) {
-            $this->changesFromOriginal[] = 'El local ha sido removido.';
-            $hasChanges = true;
-        }
-
-        return $hasChanges;
+        return $this->changeFromRemoveLocal($hasChanges);
     }
 
     /**
@@ -527,5 +495,85 @@ class Local implements MoneyInterface
         }
 
         return (int) $this->getLocalConstructiveAction()?->getPrice() * $area;
+    }
+
+    public function changeInNumber(Local $original, bool $hasChanges = false): bool
+    {
+        if ($original->getNumber() !== $this->getNumber()) {
+            $this->changesFromOriginal[] = 'Cambio de número.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInArea(Local $original, bool $hasChanges): bool
+    {
+        if ($original->getArea() !== $this->getArea()) {
+            $this->changesFromOriginal[] = 'Cambio de área.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInType(Local $original, bool $hasChanges): bool
+    {
+        if ($original->getType() !== $this->getType()) {
+            $this->changesFromOriginal[] = 'Cambio de tipo.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInHeight(Local $original, bool $hasChanges): bool
+    {
+        if ($original->getHeight() !== $this->getHeight()) {
+            $this->changesFromOriginal[] = 'Cambio de altura.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInVolume(Local $original, bool $hasChanges): bool
+    {
+        if ($original->getVolume() !== $this->getVolume()) {
+            $this->changesFromOriginal[] = 'Cambio de volumen.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInTechnicalStatus(Local $original, bool $hasChanges): bool
+    {
+        if ($original->getTechnicalStatus() !== $this->getTechnicalStatus()) {
+            $this->changesFromOriginal[] = 'Cambio de estado técnico.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeInLevels(Local $original, bool $hasChanges): bool
+    {
+        if ($original->isImpactHigherLevels() !== $this->isImpactHigherLevels()) {
+            $this->changesFromOriginal[] = 'Cambio en el impacto en niveles superiores.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
+    }
+
+    public function changeFromRemoveLocal(bool $hasChanges): bool
+    {
+        if ($this->hasRemoveConstructiveAction()) {
+            $this->changesFromOriginal[] = 'El local ha sido removido.';
+            $hasChanges = true;
+        }
+
+        return $hasChanges;
     }
 }

@@ -106,6 +106,12 @@ class BuildingSeparateConcept implements MoneyInterface
 
     public function getPercentByFormula(float $import): float
     {
+        $value = $this->getBuilding()?->getEstimatedAdjustValue();
+
+        if (null === $value || 0.0 === $value) {
+            return 0;
+        }
+
         return $import * 100 / (float) $this->getBuilding()?->getEstimatedAdjustValue();
     }
 

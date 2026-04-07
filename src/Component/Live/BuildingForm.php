@@ -89,75 +89,174 @@ final class BuildingForm extends AbstractController
         }
     }
 
+    //    public function preValue(): void
+    //    {
+    //        if (0 !== $this->constructor) {
+    //            $this->formValues['constructor'] = (string) $this->constructor;
+    //            $this->constructor = 0;
+    //        }
+    //
+    //        if (0 !== $this->corporateEntity) {
+    //            $this->formValues['corporateEntity'] = (string) $this->corporateEntity;
+    //            $this->corporateEntity = 0;
+    //        }
+    //
+    //        if (0 !== $this->project) {
+    //            $project = $this->projectRepository->find((int) $this->project);
+    //            $this->bui?->setProject($project);
+    //        }
+    //
+    //        if (0.0 !== $this->urbanizationEstimateTotalPrice) {
+    //            $this->formValues['estimatedValueUrbanization'] = (float) $this->urbanizationEstimateTotalPrice / 100;
+    //        }
+    //
+    //        if (0.0 !== $this->ptpEstimateTotalPrice) {
+    //            $this->formValues['projectPriceTechnicalPreparation'] = (float) $this->ptpEstimateTotalPrice / 100;
+    //        }
+    //
+    //        if (0.0 !== $this->justValueEstimateTotalPrice) {
+    //            $this->formValues['estimatedJustValue'] = (float) $this->justValueEstimateTotalPrice / 100;
+    //        }
+    //
+    //        if (!is_null($this->bui?->getId())) {
+    //            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
+    //                /** @var int $individualClient */
+    //                $individualClient = $this->formValues['individualClient'];
+    //                $this->individualClient = $individualClient;
+    //            }
+    //        } else {
+    //            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
+    //                /** @var int $individualClient */
+    //                $individualClient = $this->formValues['individualClient'];
+    //                if ((int) $this->individualClient > $individualClient) {
+    //                    $this->formValues['individualClient'] = (string) $this->individualClient;
+    //                } else {
+    //                    $this->individualClient = $individualClient;
+    //                }
+    //            }
+    //        }
+    //
+    //        if (!is_null($this->bui?->getId())) {
+    //            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
+    //                /** @var int $enterpriseClient */
+    //                $enterpriseClient = $this->formValues['enterpriseClient'];
+    //                $this->enterpriseClient = $enterpriseClient;
+    //            }
+    //        } else {
+    //            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
+    //                /** @var int $enterpriseClient */
+    //                $enterpriseClient = $this->formValues['enterpriseClient'];
+    //                if ((int) $this->enterpriseClient > $enterpriseClient) {
+    //                    $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
+    //                    $this->formValues['individualClient'] = '0';
+    //                    $this->individualClient = 0;
+    //                } else {
+    //                    $this->enterpriseClient = $enterpriseClient;
+    //                }
+    //            }
+    //
+    //            if (0 !== $this->enterpriseClient && '' === $this->formValues['enterpriseClient']) {
+    //                $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
+    //            }
+    //        }
+    //    }
+
     public function preValue(): void
     {
-        if (0 !== $this->constructor) {
-            $this->formValues['constructor'] = (string) $this->constructor;
-            $this->constructor = 0;
+        $this->applyIntegerField('constructor');
+        $this->applyIntegerField('corporateEntity');
+        $this->applyProject();
+        $this->applyPriceField('estimatedValueUrbanization', $this->urbanizationEstimateTotalPrice);
+        $this->applyPriceField('projectPriceTechnicalPreparation', $this->ptpEstimateTotalPrice);
+        $this->applyPriceField('estimatedJustValue', $this->justValueEstimateTotalPrice);
+        $this->applyClientField('individualClient', $this->individualClient);
+        $this->applyEnterpriseClientField();
+    }
+
+    private function applyIntegerField(string $field): void
+    {
+        $value = $this->{$field};
+
+        if (0 === $value) {
+            return;
         }
 
-        if (0 !== $this->corporateEntity) {
-            $this->formValues['corporateEntity'] = (string) $this->corporateEntity;
-            $this->corporateEntity = 0;
+        $this->formValues[$field] = $value;
+        $this->{$field} = 0;
+    }
+
+    private function applyProject(): void
+    {
+        if (0 === $this->project) {
+            return;
         }
 
-        if (0 !== $this->project) {
-            $project = $this->projectRepository->find((int) $this->project);
-            $this->bui?->setProject($project);
+        $project = $this->projectRepository->find((int) $this->project);
+        $this->bui?->setProject($project);
+    }
+
+    private function applyPriceField(string $formKey, ?float $value = null): void
+    {
+        if (0.0 === $value) {
+            return;
         }
 
-        if (0.0 !== $this->urbanizationEstimateTotalPrice) {
-            $this->formValues['estimatedValueUrbanization'] = (float) $this->urbanizationEstimateTotalPrice / 100;
+        $this->formValues[$formKey] = (float) $value / 100;
+    }
+
+    private function applyClientField(string $field, ?int $currentValue = null): void
+    {
+        $formValue = $this->formValues[$field] ?? '';
+
+        if ('' === $formValue) {
+            return;
         }
 
-        if (0.0 !== $this->ptpEstimateTotalPrice) {
-            $this->formValues['projectPriceTechnicalPreparation'] = (float) $this->ptpEstimateTotalPrice / 100;
-        }
-
-        if (0.0 !== $this->justValueEstimateTotalPrice) {
-            $this->formValues['estimatedJustValue'] = (float) $this->justValueEstimateTotalPrice / 100;
-        }
+        /** @var int $incomingValue */
+        $incomingValue = $formValue;
 
         if (!is_null($this->bui?->getId())) {
-            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
-                /** @var int $individualClient */
-                $individualClient = $this->formValues['individualClient'];
-                $this->individualClient = $individualClient;
-            }
+            $this->{$field} = $incomingValue;
+
+            return;
+        }
+
+        if ($currentValue > $incomingValue) {
+            $this->formValues[$field] = (string) $currentValue;
         } else {
-            if (isset($this->formValues['individualClient']) && '' !== $this->formValues['individualClient']) {
-                /** @var int $individualClient */
-                $individualClient = $this->formValues['individualClient'];
-                if ((int) $this->individualClient > $individualClient) {
-                    $this->formValues['individualClient'] = (string) $this->individualClient;
-                } else {
-                    $this->individualClient = $individualClient;
-                }
-            }
+            $this->{$field} = $incomingValue;
         }
+    }
+
+    private function applyEnterpriseClientField(): void
+    {
+        $formValue = $this->formValues['enterpriseClient'] ?? '';
 
         if (!is_null($this->bui?->getId())) {
-            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
+            if ('' !== $formValue) {
                 /** @var int $enterpriseClient */
-                $enterpriseClient = $this->formValues['enterpriseClient'];
+                $enterpriseClient = $formValue;
                 $this->enterpriseClient = $enterpriseClient;
             }
-        } else {
-            if (isset($this->formValues['enterpriseClient']) && '' !== $this->formValues['enterpriseClient']) {
-                /** @var int $enterpriseClient */
-                $enterpriseClient = $this->formValues['enterpriseClient'];
-                if ((int) $this->enterpriseClient > $enterpriseClient) {
-                    $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
-                    $this->formValues['individualClient'] = '0';
-                    $this->individualClient = 0;
-                } else {
-                    $this->enterpriseClient = $enterpriseClient;
-                }
-            }
 
-            if (0 !== $this->enterpriseClient && '' === $this->formValues['enterpriseClient']) {
+            return;
+        }
+
+        if ('' !== $formValue) {
+            /** @var int $enterpriseClient */
+            $enterpriseClient = $formValue;
+
+            if ((int) $this->enterpriseClient > $enterpriseClient) {
                 $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
+                $this->formValues['individualClient'] = '0';
+                $this->individualClient = 0;
+            } else {
+                $this->enterpriseClient = $enterpriseClient;
             }
+        }
+
+        if (0 !== $this->enterpriseClient && '' === $formValue) {
+            $this->formValues['enterpriseClient'] = (string) $this->enterpriseClient;
         }
     }
 
@@ -177,9 +276,92 @@ final class BuildingForm extends AbstractController
     }
 
     #[LiveAction]
+    //    public function save(
+    //        BuildingRepository $buildingRepository,
+    //        //        ConstructorRepository $constructorRepository,
+    //        CorporateEntityRepository $corporateEntityRepository,
+    //        ProjectRepository $projectRepository,
+    //        DraftsmanRepository $draftsmanRepository,
+    //        ClientRepository $clientRepository,
+    //    ): ?Response {
+    //        $this->preValue();
+    //
+    //        $successMsg = (is_null($this->bui?->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
+    //
+    //        $this->submitForm();
+    //
+    //        if ($this->isSubmitAndValid()) {
+    //            /** @var Building $building */
+    //            $building = $this->getForm()->getData();
+    //
+    //            $client = 0;
+    //            if ('individual' === $this->formValues['clientType']) {
+    //                /** @var int $client */
+    //                $client = $this->formValues['individualClient'];
+    //            }
+    //
+    //            if ('enterprise' === $this->formValues['clientType']) {
+    //                /** @var int $client */
+    //                $client = $this->formValues['enterpriseClient'];
+    //            }
+    //
+    //            $client = $clientRepository->find($client);
+    //            $building->setClient($client);
+    //
+    //            //            if (false !== (bool) $this->formValues['constructor']) {
+    //            //                $constructor = $constructorRepository->find($this->formValues['constructor']);
+    //            //                if (null !== $constructor) {
+    //            //                    $building->addConstructor($constructor);
+    //            //                }
+    //            //            }
+    //
+    //            if (false !== (bool) $this->formValues['corporateEntity']) {
+    //                $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);
+    //                if (null !== $corporateEntity) {
+    //                    $building->addCorporateEntity($corporateEntity);
+    //                }
+    //            }
+    //
+    //            if (0 !== $this->project) {
+    //                $project = $projectRepository->find((int) $this->project);
+    //                assert($project instanceof Project);
+    //                $building->setProject($project);
+    //            }
+    //
+    //            if (isset($this->formValues['draftsman']) && false !== (bool) $this->formValues['draftsman']) {
+    //                $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
+    //                if (null !== $draftsman) {
+    //                    $building->addDraftsman($draftsman);
+    //                }
+    //            }
+    //
+    //            $buildingRepository->save($building, true);
+    //
+    //            $this->bui = new Building();
+    //            if (!is_null($this->modal)) {
+    //                $this->modalManage($building, 'Se ha seleccionado la nueva obra agregada.', [
+    //                    'building' => $building->getId(),
+    //                ]);
+    //
+    //                return null;
+    //            }
+    //
+    //            if ($this->ajax) {
+    //                $this->ajaxManage($building, $successMsg);
+    //
+    //                return null;
+    //            }
+    //
+    //            $this->addFlash('success', $successMsg);
+    //
+    //            return $this->redirectToRoute('app_building_edit', ['id' => $building->getId(), 'project' => $building->getProject()?->getId()], Response::HTTP_SEE_OTHER);
+    //        }
+    //
+    //        return null;
+    //    }
+
     public function save(
         BuildingRepository $buildingRepository,
-        //        ConstructorRepository $constructorRepository,
         CorporateEntityRepository $corporateEntityRepository,
         ProjectRepository $projectRepository,
         DraftsmanRepository $draftsmanRepository,
@@ -187,80 +369,114 @@ final class BuildingForm extends AbstractController
     ): ?Response {
         $this->preValue();
 
-        $successMsg = (is_null($this->bui?->getId())) ? 'Se ha agregado la obra.' : 'Se ha modificado la obra.';
+        $successMsg = is_null($this->bui?->getId())
+            ? 'Se ha agregado la obra.'
+            : 'Se ha modificado la obra.';
 
         $this->submitForm();
 
-        if ($this->isSubmitAndValid()) {
-            /** @var Building $building */
-            $building = $this->getForm()->getData();
-
-            $client = 0;
-            if ('individual' === $this->formValues['clientType']) {
-                /** @var int $client */
-                $client = $this->formValues['individualClient'];
-            }
-
-            if ('enterprise' === $this->formValues['clientType']) {
-                /** @var int $client */
-                $client = $this->formValues['enterpriseClient'];
-            }
-
-            $client = $clientRepository->find($client);
-            $building->setClient($client);
-
-            //            if (false !== (bool) $this->formValues['constructor']) {
-            //                $constructor = $constructorRepository->find($this->formValues['constructor']);
-            //                if (null !== $constructor) {
-            //                    $building->addConstructor($constructor);
-            //                }
-            //            }
-
-            if (false !== (bool) $this->formValues['corporateEntity']) {
-                $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);
-                if (null !== $corporateEntity) {
-                    $building->addCorporateEntity($corporateEntity);
-                }
-            }
-
-            if (0 !== $this->project) {
-                $project = $projectRepository->find((int) $this->project);
-                assert($project instanceof Project);
-                $building->setProject($project);
-            }
-
-            if (isset($this->formValues['draftsman']) && false !== (bool) $this->formValues['draftsman']) {
-                $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
-                if (null !== $draftsman) {
-                    $building->addDraftsman($draftsman);
-                }
-            }
-
-            $buildingRepository->save($building, true);
-
-            $this->bui = new Building();
-            if (!is_null($this->modal)) {
-                $this->modalManage($building, 'Se ha seleccionado la nueva obra agregada.', [
-                    'building' => $building->getId(),
-                ]);
-
-                return null;
-            }
-
-            if ($this->ajax) {
-                $this->ajaxManage($building, $successMsg);
-
-                return null;
-            }
-
-            $this->addFlash('success', $successMsg);
-
-            return $this->redirectToRoute('app_building_edit', ['id' => $building->getId(), 'project' => $building->getProject()?->getId()], Response::HTTP_SEE_OTHER);
+        if (!$this->isSubmitAndValid()) {
+            return null;
         }
 
-        return null;
+        /** @var Building $building */
+        $building = $this->getForm()->getData();
+
+        $this->applyClient($building, $clientRepository);
+        $this->applyCorporateEntity($building, $corporateEntityRepository);
+        $this->applyProjectToBuilding($building, $projectRepository);
+        $this->applyDraftsman($building, $draftsmanRepository);
+
+        $buildingRepository->save($building, true);
+
+        $this->bui = new Building();
+
+        return $this->resolveResponse($building, $successMsg);
     }
 
+    private function applyClient(Building $building, ClientRepository $clientRepository): void
+    {
+        $clientId = match ($this->formValues['clientType']) {
+            'individual' => $this->formValues['individualClient'],
+            'enterprise' => $this->formValues['enterpriseClient'],
+            default => 0,
+        };
+
+        $building->setClient($clientRepository->find($clientId));
+    }
+
+    private function applyCorporateEntity(
+        Building $building,
+        CorporateEntityRepository $corporateEntityRepository,
+    ): void {
+        if (false === (bool) ($this->formValues['corporateEntity'] ?? false)) {
+            return;
+        }
+
+        $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);
+
+        if (null !== $corporateEntity) {
+            $building->addCorporateEntity($corporateEntity);
+        }
+    }
+
+    private function applyProjectToBuilding(
+        Building $building,
+        ProjectRepository $projectRepository,
+    ): void {
+        if (0 === $this->project) {
+            return;
+        }
+
+        $project = $projectRepository->find((int) $this->project);
+        assert($project instanceof Project);
+        $building->setProject($project);
+    }
+
+    private function applyDraftsman(
+        Building $building,
+        DraftsmanRepository $draftsmanRepository,
+    ): void {
+        if (!isset($this->formValues['draftsman']) || false === (bool) $this->formValues['draftsman']) {
+            return;
+        }
+
+        $draftsman = $draftsmanRepository->find($this->formValues['draftsman']);
+
+        if (null !== $draftsman) {
+            $building->addDraftsman($draftsman);
+        }
+    }
+
+    private function resolveResponse(Building $building, string $successMsg): ?Response
+    {
+        if (!is_null($this->modal)) {
+            $this->modalManage($building, 'Se ha seleccionado la nueva obra agregada.', [
+                'building' => $building->getId(),
+            ]);
+
+            return null;
+        }
+
+        if ($this->ajax) {
+            $this->ajaxManage($building, $successMsg);
+
+            return null;
+        }
+
+        $this->addFlash('success', $successMsg);
+
+        return $this->redirectToRoute(
+            'app_building_edit',
+            [
+                'id' => $building->getId(),
+                'project' => $building->getProject()?->getId(),
+            ],
+            Response::HTTP_SEE_OTHER
+        );
+    }
+
+    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
     private function getDataModelValue(): string
     {
         return 'norender|*';

@@ -120,8 +120,9 @@ final class ProjectUrbanRegulationForm extends AbstractController
         return null;
     }
 
-    /*private function getDataModelValue(): string
-    {
-        return 'norender|*';
-    }*/
+    //    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
+    //    private function getDataModelValue(): string
+    //    {
+    //        return 'norender|*';
+    //    }
 }

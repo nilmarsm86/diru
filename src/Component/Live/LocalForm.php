@@ -150,6 +150,7 @@ final class LocalForm extends AbstractController
         return true;
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
     private function getDataModelValue(): string
     {
         return 'norender|*';

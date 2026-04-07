@@ -14,6 +14,9 @@ parameters:
         - '#Method .+::buildForm\(\) has parameter \$builder with no value type specified#'
         - '#Method .+::buildView\(\) has parameter \$form with no value type specified#'
         - '#PHPDoc tag @SuppressWarnings has invalid value#'
+        -
+            message: '#Variable property access on \$this#'
+            path: src/Component/Live/*
     excludePaths:
         - src/Kernel.php
     treatPhpDocTypesAsCertain: false

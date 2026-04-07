@@ -23,7 +23,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of Project
@@ -107,14 +106,24 @@ class ProjectType extends AbstractType
         $form = $event->getForm();
 
         if (null !== $project->getId()) {
-            $form->add('stopReason', TrixEditorType::class, [
-                'label' => false,
-            ]);
+            $form->add('stopReason', TrixEditorType::class, ['label' => false]);
             $form->add('state', ProjectStateEnumType::class, [
                 'label' => 'Estado del proyecto:',
-                'attr' => [
-                    'data-visibility-by-select-target' => 'select',
+                'attr' => ['data-visibility-by-select-target' => 'select'],
+            ]);
+        } else {
+            $form->add('type', ChoiceType::class, [
+                'label' => 'Tipo de proyecto:',
+                'expanded' => true,
+                'multiple' => false,
+                'placeholder' => null,
+                'choices' => [
+                    EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
+                    EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
                 ],
+                'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
+                'label_attr' => ['class' => 'radio-inline'],
+                'required' => false,
             ]);
         }
 
@@ -128,116 +137,72 @@ class ProjectType extends AbstractType
         ]);
 
         $moreAttr = [];
-        if (!is_null($project->getContract())) {
+        if (null !== $project->getContract()) {
             $moreAttr = [
-                'constraints' => [
-                    new Assert\Valid(),
-                ],
+                'constraints' => [new Assert\Valid()],
                 'error_bubbling' => false,
             ];
         }
-        $form->add('contract', ContractType::class, [
-            'required' => !is_null($project->getContract()),
-        ] + $moreAttr);
-
-        $form->add('clientType', ChoiceType::class, [
-            'label' => 'Tipo cliente:',
-            'choices' => [
-                'Persona natural' => 'individual',
-                'Cliente Empresarial-Negocio' => 'enterprise',
-            ],
-            'mapped' => false,
-            'expanded' => true,
-            'multiple' => false,
-            'data' => (is_null($project->getClient())) ? 'individual' : ($project->isIndividualClient($this->individualClientRepository) ? 'individual' : 'enterprise'),
-            'attr' => [
-                'data-action' => 'change->visibility#toggle', // show or hide representative field
-            ],
-            'label_attr' => [
-                'class' => 'radio-inline',
-            ],
-        ]);
-
-        $form->add('individualClient', EntityPlusType::class, [
-            'class' => IndividualClient::class,
-            'choice_label' => function (IndividualClient $individualClient) {
-                $person = $individualClient->getPerson();
-
-                return $person?->getFullName();
-            },
-            'mapped' => false,
-            'label' => 'Persona natural',
-            'data' => $project->getIndividualClient($this->individualClientRepository),
-
-            'detail' => true,
-            'detail_title' => 'Detalle del cliente individual',
-            'detail_id' => 'modal-load',
-            'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
-
-            'add' => true,
-            'add_title' => 'Agregar cliente individual',
-            'add_id' => 'modal-load',
-            'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
-        ]);
-        $form->add('enterpriseClient', EntityPlusType::class, [
-            'class' => EnterpriseClient::class,
-            'choice_label' => function (EnterpriseClient $enterpriseClient) {
-                $representative = $enterpriseClient->getRepresentative();
-                $corporateEntity = $enterpriseClient->getCorporateEntity();
-
-                return $corporateEntity?->getName().' ('.$representative?->getName().')';
-            },
-            'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getCorporateEntity(),
-            'mapped' => false,
-            'label' => 'Cliente empresarial-negocio (representante)',
-            'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
-
-            'detail' => true,
-            'detail_title' => 'Detalle del cliente empresarial',
-            'detail_id' => 'modal-load',
-            'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
-
-            'add' => true,
-            'add_title' => 'Agregar cliente empresarial-negocio',
-            'add_id' => 'modal-load',
-            'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
-
-            'modify' => true,
-            'modify_title' => 'Detalle del cliente empresarial',
-            'modify_id' => 'modal-load',
-            'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
-        ]);
-
-        if (null === $project->getId()) {
-            $form->add('type', ChoiceType::class, [
-                'label' => 'Tipo de proyecto:',
+        $form
+            ->add('contract', ContractType::class, [
+                'required' => !is_null($project->getContract()),
+            ] + $moreAttr)
+            ->add('clientType', ChoiceType::class, [
+                'label' => 'Tipo cliente:',
+                'choices' => [
+                    'Persona natural' => 'individual',
+                    'Cliente Empresarial-Negocio' => 'enterprise',
+                ],
+                'mapped' => false,
                 'expanded' => true,
                 'multiple' => false,
-                'placeholder' => null,
-                'choices' => [
-                    EnumProjectType::getLabelFrom(EnumProjectType::Parcel) => EnumProjectType::Parcel,
-                    EnumProjectType::getLabelFrom(EnumProjectType::City) => EnumProjectType::City,
-                ],
-                'data' => (is_null($project->getType())) ? EnumProjectType::Parcel : (($project->getType()->value === EnumProjectType::Parcel->value) ? EnumProjectType::Parcel : EnumProjectType::City),
-                'label_attr' => [
-                    'class' => 'radio-inline',
-                ],
-                'required' => false,
-            ]);
-        }
+                'data' => (is_null($project->getClient())) ? 'individual' : ($project->isIndividualClient($this->individualClientRepository) ? 'individual' : 'enterprise'),
+                'attr' => ['data-action' => 'change->visibility#toggle'], // show or hide representative field
+                'label_attr' => ['class' => 'radio-inline'],
+            ])
+            ->add('individualClient', EntityPlusType::class, [
+                'class' => IndividualClient::class,
+                'choice_label' => function (IndividualClient $individualClient) {
+                    $person = $individualClient->getPerson();
 
-        //        $form->add('buildings', LiveCollectionType::class, [
-        //            'entry_type' => BuildingType::class,
-        //            'button_delete_options' => [
-        //                'label_html' => true,
-        //            ],
-        //            'constraints' => [
-        //                new Assert\Count(
-        //                    min: 1,
-        //                    minMessage: 'Debe establecer al menos 1 obra para esta proyecto.',
-        //                ),
-        //            ],
-        //            'error_bubbling' => false,
-        //        ])
+                    return $person?->getFullName();
+                },
+                'mapped' => false,
+                'label' => 'Persona natural',
+                'data' => $project->getIndividualClient($this->individualClientRepository),
+                'detail' => true,
+                'detail_title' => 'Detalle del cliente individual',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
+                'add' => true,
+                'add_title' => 'Agregar cliente individual',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
+            ])
+            ->add('enterpriseClient', EntityPlusType::class, [
+                'class' => EnterpriseClient::class,
+                'choice_label' => function (EnterpriseClient $enterpriseClient) {
+                    $representative = $enterpriseClient->getRepresentative();
+                    $corporateEntity = $enterpriseClient->getCorporateEntity();
+
+                    return $corporateEntity?->getName().' ('.$representative?->getName().')';
+                },
+                'group_by' => fn (EnterpriseClient $enterpriseClient, int $key, string $value) => $enterpriseClient->getCorporateEntity(),
+                'mapped' => false,
+                'label' => 'Cliente empresarial-negocio (representante)',
+                'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
+                'detail' => true,
+                'detail_title' => 'Detalle del cliente empresarial',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
+                'add' => true,
+                'add_title' => 'Agregar cliente empresarial-negocio',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
+                'modify' => true,
+                'modify_title' => 'Detalle del cliente empresarial',
+                'modify_id' => 'modal-load',
+                'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
+            ]);
     }
 }

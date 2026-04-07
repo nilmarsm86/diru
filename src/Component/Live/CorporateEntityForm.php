@@ -2,6 +2,7 @@
 
 namespace App\Component\Live;
 
+use App\Component\Live\Traits\AddressPreValueTrait;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\CorporateEntity;
 use App\Form\CorporateEntityType;
@@ -31,6 +32,7 @@ final class CorporateEntityForm extends AbstractController
     use ComponentWithFormTrait;
     use ComponentToolsTrait;
     use ComponentForm;
+    use AddressPreValueTrait;
 
     /**
      * The initial data used to create the form.
@@ -74,77 +76,198 @@ final class CorporateEntityForm extends AbstractController
         }
     }
 
+    //    public function preValue(): void
+    //    {
+    //        /** @var array<string, array<string, mixed>> $formValues */
+    //        $formValues = $this->formValues;
+    //
+    //        if (0 !== $this->organism) {
+    //            $formValues['organism'] = (string) $this->organism;
+    //            $this->organism = 0;
+    //            $this->formValues = $formValues;
+    //        }
+    //
+    //        if ('' !== $this->street) {
+    //            /** @var array<string, mixed> $streetAddress */
+    //            $streetAddress = $formValues['streetAddress'] ?? [];
+    //            $streetAddress['street'] = (string) $this->street;
+    //            $formValues['streetAddress'] = $streetAddress;
+    //            $this->street = '';
+    //            $this->formValues = $formValues;
+    //        }
+    //
+    //        if (0 !== $this->province) {
+    //            /** @var array<string, mixed> $streetAddress */
+    //            $streetAddress = $formValues['streetAddress'] ?? [];
+    //            /** @var array<string, mixed> $address */
+    //            $address = $streetAddress['address'] ?? [];
+    //            $address['province'] = (string) $this->province;
+    //            $streetAddress['address'] = $address;
+    //            $formValues['streetAddress'] = $streetAddress;
+    //            $this->province = 0;
+    //            $this->formValues = $formValues;
+    //        }
+    //
+    //        if (0 !== $this->municipality) {
+    //            /** @var array<string, mixed> $streetAddress */
+    //            $streetAddress = $formValues['streetAddress'] ?? [];
+    //            /** @var array<string, mixed> $address */
+    //            $address = $streetAddress['address'] ?? [];
+    //            $address['municipality'] = (string) $this->municipality;
+    //            $streetAddress['address'] = $address;
+    //            $formValues['streetAddress'] = $streetAddress;
+    //            $this->municipality = 0;
+    //            $this->formValues = $formValues;
+    //        } else {
+    //            /** @var array<string, array<string, array<int, mixed>>> $formValues */
+    //            $formValues = $this->formValues;
+    //            if (isset($formValues['streetAddress']['address'])) {
+    //                if (isset($formValues['streetAddress']['address']['province'])) {
+    //                    if ($formValues['streetAddress']['address']['municipality']) {
+    //                        $mun = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
+    //                        if ((string) $mun?->getProvince()?->getId() !== $formValues['streetAddress']['address']['province']) {
+    //                            $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
+    //                            if (!is_null($prov)) {
+    //                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first())
+    //                                    ? (string) $prov->getMunicipalities()->first()->getId()
+    //                                    : '';
+    //                            }
+    //                        }
+    //                    } else {
+    //                        $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
+    //                        if (!is_null($prov)) {
+    //                            if ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first()) {
+    //                                $formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //
+    //            $this->formValues = $formValues;
+    //        }
+    //    }
+
     public function preValue(): void
     {
-        /** @var array<string, array<string, mixed>> $formValues */
-        $formValues = $this->formValues;
-
-        if (0 !== $this->organism) {
-            $formValues['organism'] = (string) $this->organism;
-            $this->organism = 0;
-            $this->formValues = $formValues;
-        }
-
-        if ('' !== $this->street) {
-            /** @var array<string, mixed> $streetAddress */
-            $streetAddress = $formValues['streetAddress'] ?? [];
-            $streetAddress['street'] = (string) $this->street;
-            $formValues['streetAddress'] = $streetAddress;
-            $this->street = '';
-            $this->formValues = $formValues;
-        }
-
-        if (0 !== $this->province) {
-            /** @var array<string, mixed> $streetAddress */
-            $streetAddress = $formValues['streetAddress'] ?? [];
-            /** @var array<string, mixed> $address */
-            $address = $streetAddress['address'] ?? [];
-            $address['province'] = (string) $this->province;
-            $streetAddress['address'] = $address;
-            $formValues['streetAddress'] = $streetAddress;
-            $this->province = 0;
-            $this->formValues = $formValues;
-        }
-
-        if (0 !== $this->municipality) {
-            /** @var array<string, mixed> $streetAddress */
-            $streetAddress = $formValues['streetAddress'] ?? [];
-            /** @var array<string, mixed> $address */
-            $address = $streetAddress['address'] ?? [];
-            $address['municipality'] = (string) $this->municipality;
-            $streetAddress['address'] = $address;
-            $formValues['streetAddress'] = $streetAddress;
-            $this->municipality = 0;
-            $this->formValues = $formValues;
-        } else {
-            /** @var array<string, array<string, array<int, mixed>>> $formValues */
-            $formValues = $this->formValues;
-            if (isset($formValues['streetAddress']['address'])) {
-                if (isset($formValues['streetAddress']['address']['province'])) {
-                    if ($formValues['streetAddress']['address']['municipality']) {
-                        $mun = $this->municipalityRepository->find($formValues['streetAddress']['address']['municipality']);
-                        if ((string) $mun?->getProvince()?->getId() !== $formValues['streetAddress']['address']['province']) {
-                            $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
-                            if (!is_null($prov)) {
-                                $formValues['streetAddress']['address']['municipality'] = ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first())
-                                    ? (string) $prov->getMunicipalities()->first()->getId()
-                                    : '';
-                            }
-                        }
-                    } else {
-                        $prov = $this->provinceRepository->find($formValues['streetAddress']['address']['province']);
-                        if (!is_null($prov)) {
-                            if ($prov->getMunicipalities()->count() > 0 && false !== $prov->getMunicipalities()->first()) {
-                                $formValues['streetAddress']['address']['municipality'] = (string) $prov->getMunicipalities()->first()->getId();
-                            }
-                        }
-                    }
-                }
-            }
-
-            $this->formValues = $formValues;
-        }
+        $this->applyOrganism();
+        $this->applyStreet();
+        $this->applyAddressField('province', $this->province);
+        $this->applyMunicipality();
     }
+
+    private function applyOrganism(): void
+    {
+        if (0 === $this->organism) {
+            return;
+        }
+
+        $this->formValues['organism'] = (string) $this->organism;
+        $this->organism = 0;
+    }
+
+    //    private function applyStreet(): void
+    //    {
+    //        if ('' === $this->street) {
+    //            return;
+    //        }
+    //
+    //        /** @var array<string, mixed> $streetAddress */
+    //        $streetAddress = $this->formValues['streetAddress'] ?? [];
+    //        $streetAddress['street'] = (string) $this->street;
+    //
+    //        $this->formValues['streetAddress'] = $streetAddress;
+    //        $this->street = '';
+    //    }
+
+    //    private function applyAddressField(string $field, int $value): void
+    //    {
+    //        if (0 === $value) {
+    //            return;
+    //        }
+    //
+    //        /** @var array<string, mixed> $streetAddress */
+    //        $streetAddress = $this->formValues['streetAddress'] ?? [];
+    //        /** @var array<string, mixed> $address */
+    //        $address = $streetAddress['address'] ?? [];
+    //        $address[$field] = (string) $value;
+    //
+    //        $streetAddress['address'] = $address;
+    //        $this->formValues['streetAddress'] = $streetAddress;
+    //        $this->{$field} = 0;
+    //    }
+
+    //    private function applyMunicipality(): void
+    //    {
+    //        if (0 !== $this->municipality) {
+    //            $this->applyAddressField('municipality', $this->municipality);
+    //            $this->municipality = 0;
+    //
+    //            return;
+    //        }
+    //
+    //        $this->reconcileMunicipalityWithProvince();
+    //    }
+
+    //    private function reconcileMunicipalityWithProvince(): void
+    //    {
+    //        /** @var array<string, array<string, array<int, mixed>>> $formValues */
+    //        $formValues = $this->formValues;
+    //        $address = $formValues['streetAddress']['address'] ?? [];
+    //        $provinceId = $address['province'] ?? null;
+    //
+    //        if (null === $provinceId) {
+    //            return;
+    //        }
+    //
+    //        $municipalityId = $address['municipality'] ?? null;
+    //
+    //        if ((bool) $municipalityId) {
+    //            $this->reconcileExistingMunicipality($municipalityId, $provinceId);
+    //
+    //            return;
+    //        }
+    //
+    //        $this->setFirstMunicipalityOfProvince($provinceId);
+    //    }
+
+    //    private function reconcileExistingMunicipality(mixed $municipalityId, string $provinceId): void
+    //    {
+    //        $mun = $this->municipalityRepository->find($municipalityId);
+    //
+    //        if ($mun?->getProvince()?->getId() === $provinceId) {
+    //            return;
+    //        }
+    //
+    //        $this->setFirstMunicipalityOfProvince($provinceId);
+    //    }
+
+    //    private function setFirstMunicipalityOfProvince(mixed $provinceId): void
+    //    {
+    //        $prov = $this->provinceRepository->find($provinceId);
+    //
+    //        if (null === $prov) {
+    //            return;
+    //        }
+    //
+    //        $municipalities = $prov->getMunicipalities();
+    //        $first = $municipalities->count() > 0 ? $municipalities->first() : false;
+    //
+    //        //        $this->formValues['streetAddress']['address']['municipality'] = false !== $first
+    //        //            ? $first->getId()
+    //        //            : '';
+    //
+    //        /** @var array<string, array<string, mixed>> $streetAddress */
+    //        $streetAddress = $this->formValues['streetAddress'] ?? [];
+    //
+    //        /** @var array<string, mixed> $address */
+    //        $address = $streetAddress['address'] ?? [];
+    //
+    //        $address['municipality'] = false !== $first ? (string) $first->getId() : '';
+    //
+    //        $streetAddress['address'] = $address;
+    //        $this->formValues['streetAddress'] = $streetAddress;
+    //    }
 
     /**
      * @return FormInterface<CorporateEntity>
@@ -251,6 +374,7 @@ final class CorporateEntityForm extends AbstractController
         return null;
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
     private function getDataModelValue(): string
     {
         return 'norender|*';

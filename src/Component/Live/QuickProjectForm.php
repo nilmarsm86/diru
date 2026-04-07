@@ -149,6 +149,7 @@ final class QuickProjectForm extends AbstractController
         return null;
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
     private function getDataModelValue(): string
     {
         return 'norender|*';

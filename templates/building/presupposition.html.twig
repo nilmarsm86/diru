@@ -100,14 +100,15 @@
                                     {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(parentImport), buildingSeparateConcept.getPercentByFormula(buildingSeparateConcept.getImport())) %}
                                 {% endif %}
                             {% endif %}
-
+{#                            {% dump(buildingSeparateConcept.separateConcept.formula) %}#}
                             <input type="number" step="0.01" placeholder="0.00" min="0" max="100"
                                    id="{{ buildingSeparateConcept.id }}" name="building[coefficient]"
                                    data-estimate-presupposition-target="field" inputmode="decimal" class="form-control"
                                    value="{{ (buildingSeparateConcept.separateConcept.formula) ? buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2) : buildingSeparateConcept.percent|number_format(2) }}"
                                    style="display: inline;width: 90px" {{ stimulusTarget('separate-concept', 'percent') }}
-                                {% if buildingSeparateConcept.separateConcept.formula is not null %}readonly
-                                    disabled{% endif %}
+                                {% if buildingSeparateConcept.separateConcept.formula is not null %}
+                                    readonly disabled
+                                {% endif %}
                             > %
                         </td>
                         <td>{{ buildingSeparateConcept.separateConcept.number }}</td>

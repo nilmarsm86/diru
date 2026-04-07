@@ -48,11 +48,6 @@ class Investment
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $addressNumber = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
-    private ?Municipality $municipality = null;
-
     /** @var Collection<int, Project> */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'investment')]
     #[Assert\Valid]

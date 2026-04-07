@@ -32,9 +32,10 @@ trait EnumsTrait
      */
     public static function getValue(): callable
     {
-        return static function (): \Closure {
-            return fn (?\BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
-        };
+        //        return static function (): \Closure {
+        //            return fn (?\BackedEnum $choice): ?string => (null === $choice) ? null : (string) $choice->value;
+        //        };
+        return fn (?\BackedEnum $choice): ?string => null === $choice ? null : (string) $choice->value;
     }
 
     /**

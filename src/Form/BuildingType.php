@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Building;
-use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
@@ -20,7 +19,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -100,6 +98,9 @@ class BuildingType extends AbstractType
      * @param array<mixed> $options
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function onPreSetData(FormEvent $event, array $options): void
     {
@@ -107,7 +108,6 @@ class BuildingType extends AbstractType
         $building = $event->getData();
         $form = $event->getForm();
         $currency = 'CUP';
-        //        $activeConstructor = null;
         $activeCorporateEntity = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
@@ -127,7 +127,6 @@ class BuildingType extends AbstractType
             $project = $building->getProject();
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
-            //            $activeConstructor = $building->getActiveConstructor();
             $activeCorporateEntity = $building->getActiveCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [
@@ -151,69 +150,44 @@ class BuildingType extends AbstractType
             ];
         }
 
-        //        $form->add('constructor', EntityPlusType::class, [
-        //            'class' => Constructor::class,
-        //            'choice_label' => 'name',
-        //            'label' => 'Constructora:',
-        //            'mapped' => false,
-        //            //                'query_builder' => $this->getOrganismQueryBuilder($options),
-        //
-        //            'detail' => true,
-        //            'detail_title' => 'Detalle de la constructora',
-        //            'detail_id' => 'modal-load',
-        //            'detail_url' => $this->router->generate('app_constructor_show', ['id' => 0, 'state' => 'modal']),
-        //
-        //            'add' => true,
-        //            'add_title' => 'Agregar Constructora',
-        //            'add_id' => 'modal-load',
-        //            'add_url' => $this->router->generate('app_constructor_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
-        //
-        //            'required' => false,
-        //            'data' => $activeConstructor,
-        //        ]);
-
-        $form->add('corporateEntity', EntityPlusType::class, [
-            'class' => CorporateEntity::class,
-            'choice_label' => 'name',
-            'label' => 'Entidad corporativa de tipo constructora:',
-            'mapped' => false,
-            'query_builder' => $this->getCorporateEntityConstructor(),
-
-            'detail' => true,
-            'detail_title' => 'Detalle de la entidad corporativa de tipo constructora',
-            'detail_id' => 'modal-load',
-            'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal']),
-
-            'add' => true,
-            'add_title' => 'Agregar Entidad corporativa de tipo constructora',
-            'add_id' => 'modal-load',
-            'add_url' => $this->router->generate('app_corporate_entity_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
-
-            'required' => false,
-            'data' => $activeCorporateEntity,
-        ]);
-
-        $form->add('estimatedValueConstruction', MoneyType::class, [
-            'label' => 'Construcción:',
-            'attr' => [
-                'placeholder' => '0',
-                'min' => 0,
-                'data-summation-values-target' => 'field',
-                'data-currency-target' => 'field',
-                'data-vecpppt' => true,
-                'data-controller' => 'money',
-                'readonly' => 'readonly',
-            ],
-            'empty_data' => 0,
-            'required' => false,
-            'currency' => $currency,
-            //            'html5' => true,
-            'input' => 'integer',
-            'divisor' => 100,
-            'grouping' => true,
-            'mapped' => false,
-            'data' => (null !== $building) ? $building->getEstimatedConstructionAndNetworkConnection() : 0,
-        ])
+        $form
+            ->add('corporateEntity', EntityPlusType::class, [
+                'class' => CorporateEntity::class,
+                'choice_label' => 'name',
+                'label' => 'Entidad corporativa de tipo constructora:',
+                'mapped' => false,
+                'query_builder' => $this->getCorporateEntityConstructor(),
+                'detail' => true,
+                'detail_title' => 'Detalle de la entidad corporativa de tipo constructora',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal']),
+                'add' => true,
+                'add_title' => 'Agregar Entidad corporativa de tipo constructora',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_corporate_entity_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
+                'required' => false,
+                'data' => $activeCorporateEntity,
+            ])
+            ->add('estimatedValueConstruction', MoneyType::class, [
+                'label' => 'Construcción:',
+                'attr' => [
+                    'placeholder' => '0',
+                    'min' => 0,
+                    'data-summation-values-target' => 'field',
+                    'data-currency-target' => 'field',
+                    'data-vecpppt' => true,
+                    'data-controller' => 'money',
+                    'readonly' => 'readonly',
+                ],
+                'empty_data' => 0,
+                'required' => false,
+                'currency' => $currency,
+                'input' => 'integer',
+                'divisor' => 100,
+                'grouping' => true,
+                'mapped' => false,
+                'data' => (null !== $building) ? $building->getEstimatedConstructionAndNetworkConnection() : 0,
+            ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',
                 'attr' => [
@@ -226,7 +200,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -243,7 +216,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -260,7 +232,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -277,7 +248,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -294,7 +264,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -312,15 +281,12 @@ class BuildingType extends AbstractType
                     'data-type--money-plus-target' => 'field',
                 ],
                 'data' => (null !== $building && null !== $building->getId()) ? $building->getProjectTechnicalPreparationEstimateTotalPrice() : $options['ptpEstimate'],
-                //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
                 'grouping' => true,
-
                 'list' => true,
                 'list_title' => 'Listado de estimados de proyecto y preparación técnica',
                 'list_id' => 'modal-load',
@@ -345,15 +311,12 @@ class BuildingType extends AbstractType
                     'data-controller' => 'money',
                 ],
                 'data' => (null !== $building && null !== $building->getId()) ? $building->getEstimatedUrbanizationAndNetworkConnection() : $options['urbanizationEstimate'],
-                //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
                 'grouping' => true,
-
                 'list' => true,
                 'list_title' => 'Listado de estimados de urbanización',
                 'list_id' => 'modal-load',
@@ -375,15 +338,12 @@ class BuildingType extends AbstractType
                     'data-controller' => 'money',
                 ],
                 'data' => (null !== $building && null !== $building->getId()) ? $building->getJustValueEstimateTotalPrice() : $options['justValueEstimate'],
-                //                'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'mapped' => false,
                 'grouping' => true,
-
                 'list' => true,
                 'list_title' => 'Listado de valores estimados ajustados',
                 'list_id' => 'modal-load',
@@ -412,7 +372,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
@@ -424,23 +383,6 @@ class BuildingType extends AbstractType
                 ],
                 'error_bubbling' => false,
             ])
-//            ->add('range', RangeType::class, [
-//                'mapped' => false,
-//                'label' => '<a data-action="click->range#reset" title="Resetear rango" data-bs-toggle="tooltip"><svg viewBox="0 0 20 20" fill="currentColor" height="1em" width="1em" class="bi" aria-hidden="true"><path fill="currentColor" d="M19.295 12a.704.704 0 0 1 .705.709v3.204a.704.704 0 0 1-.7.709a.704.704 0 0 1-.7-.709v-1.125C16.779 17.844 13.399 20 9.757 20c-4.41 0-8.106-2.721-9.709-6.915a.71.71 0 0 1 .4-.917c.36-.141.766.04.906.405c1.4 3.662 4.588 6.01 8.403 6.01c3.371 0 6.52-2.182 7.987-5.154l-1.471.01a.704.704 0 0 1-.705-.704a.705.705 0 0 1 .695-.714zm-9.05-12c4.408 0 8.105 2.721 9.708 6.915a.71.71 0 0 1-.4.917a.697.697 0 0 1-.906-.405c-1.4-3.662-4.588-6.01-8.403-6.01c-3.371 0-6.52 2.182-7.987 5.154l1.471-.01a.704.704 0 0 1 .705.704a.705.705 0 0 1-.695.714L.705 8A.704.704 0 0 1 0 7.291V4.087c0-.392.313-.709.7-.709s.7.317.7.709v1.125C3.221 2.156 6.601 0 10.243 0"></path></svg></a>',
-//                'label_html' => true,
-//                'required' => false,
-//                'attr' => [
-//                    //'class' => 'vecpppt',
-//                    'data-range-target' => 'range',
-//                    'min' => (null === $building) ? 0 : $building->getRangeMinPrice(),
-//                    'max' => (null === $building) ? 0 : $building->getRangeMaxPrice(),
-//                    //                    'step' => 1000
-//                ],
-//                'data' => (null === $building) ? 0 : $building->getRangePrice(),
-//                'row_attr' => [
-//                    'class' => 'mb-0',
-//                ],
-//            ])
             ->add('clientType', ChoiceType::class, [
                 'label' => 'Tipo cliente:',
                 'choices' => [
@@ -468,12 +410,10 @@ class BuildingType extends AbstractType
                 'mapped' => false,
                 'label' => 'Persona natural',
                 'data' => $building->getIndividualClient($this->individualClientRepository),
-
                 'detail' => true,
                 'detail_title' => 'Detalle del cliente individual',
                 'detail_id' => 'modal-load',
                 'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
-
                 'add' => true,
                 'add_title' => 'Agregar cliente individual',
                 'add_id' => 'modal-load',
@@ -491,17 +431,14 @@ class BuildingType extends AbstractType
                 'mapped' => false,
                 'label' => 'Cliente empresarial-negocio (representante)',
                 'data' => $building->getEnterpriseClient($this->enterpriseClientRepository),
-
                 'detail' => true,
                 'detail_title' => 'Detalle del cliente empresarial',
                 'detail_id' => 'modal-load',
                 'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
-
                 'add' => true,
                 'add_title' => 'Agregar cliente empresarial-negocio',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
-
                 'modify' => true,
                 'modify_title' => 'Detalle del cliente empresarial',
                 'modify_id' => 'modal-load',
@@ -518,7 +455,6 @@ class BuildingType extends AbstractType
                 'empty_data' => 0,
                 'required' => false,
                 'currency' => $currency,
-                //                'html5' => true,
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,

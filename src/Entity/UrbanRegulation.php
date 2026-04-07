@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[DoctrineAssert\UniqueEntity(fields: ['code'], message: 'Ya existe una regulación urbana con este código.')]
 class UrbanRegulation
 {
+    public const PHOTO = 'uploads/urban_regulation/photo/';
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

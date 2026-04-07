@@ -66,6 +66,7 @@ class UrbanRegulationType extends AbstractType
                     'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
                 ],
                 'mapped' => false,
+                'help' => 'Imágenes *.jpg, *.jpeg, *.png',
             ])
             ->add('comment', TrixEditorType::class, [
                 'label' => 'Comentario:',

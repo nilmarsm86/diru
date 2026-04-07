@@ -37,6 +37,13 @@
                     <div class="invalid-feedback d-block">{{ error }}</div>
                 {% endfor %}
             {% endif %}
+
+            {% if ur.photo %}
+                <img src="{{ asset(constant('App\\Entity\\UrbanRegulation::PHOTO')~ur.photo) }}"
+                     alt="{{ ur.code }}"
+                     width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+                     fetchpriority="low">
+            {% endif %}
         </div>
     </div>
 

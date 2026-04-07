@@ -9,6 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LandRepository::class)]
 class Land
 {
+    public const MICROLOCALIZATION = 'uploads/land/microlocalization/';
+    public const PHOTO = 'uploads/land/photo/';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

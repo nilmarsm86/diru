@@ -71,6 +71,7 @@ class CorporateEntityType extends AbstractType
                     'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
                 ],
                 'mapped' => false,
+                'help' => 'Imágenes *.jpg, *.jpeg, *.png',
             ]);
 
         $organismAttr = [

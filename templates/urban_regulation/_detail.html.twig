@@ -38,7 +38,14 @@
                 </tr>
                 <tr>
                     <th>Foto:</th>
-                    <td>{{ urban_regulation.photo }}</td>
+                    <td>
+                        {% if urban_regulation.photo %}
+                            <img src="{{ asset(constant('App\\Entity\\UrbanRegulation::PHOTO')~urban_regulation.photo) }}"
+                                 alt="{{ urban_regulation.code }}"
+                                 width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+                                 fetchpriority="low">
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th>Comentario:</th>

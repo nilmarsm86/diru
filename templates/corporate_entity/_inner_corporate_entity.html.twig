@@ -55,7 +55,14 @@
     </tr>
     <tr>
         <th>Logo:</th>
-        <td>{{ entity.logo }}</td>
+        <td>
+            {% if entity.logo %}
+                <img src="{{ asset(constant('App\\Entity\\CorporateEntity::LOGO')~entity.logo) }}"
+                     alt="{{ entity.name }}"
+                     width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+                     fetchpriority="low">
+            {% endif %}
+        </td>
     </tr>
     </tbody>
 </table>

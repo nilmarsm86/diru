@@ -93,6 +93,7 @@ class LandType extends AbstractType
                     'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
                 ] + $disabled,
                 'mapped' => false,
+                'help' => 'Imágenes *.jpg, *.jpeg, *.png',
             ])
             ->add('micro', FileType::class, [
                 'label' => 'Microlocalización:',
@@ -101,6 +102,7 @@ class LandType extends AbstractType
                     'accept' => '.pdf,application/pdf',
                 ] + $disabled,
                 'mapped' => false,
+                'help' => 'Documentos *.pdf',
             ])
             ->add('floor', ChoiceType::class, [
                 'label' => 'Plantas:',

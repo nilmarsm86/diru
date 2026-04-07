@@ -33,7 +33,8 @@
                     <div class="mb-3">
                         <p class="">Hectáreas (ha):</p>
                         <h5 class="">
-                            <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'hectare') }}>{{ 0|number_format(2) }}</span>
+                            <span
+                                class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'hectare') }}>{{ 0|number_format(2) }}</span>
                         </h5>
                     </div>
                 </div>
@@ -48,7 +49,7 @@
     </div>
 
     <details
-            class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
+        class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área a ocupada:</div>
@@ -74,21 +75,41 @@
 
     <div class="mb-0 row">
         <div class="col">
-            {{ form_row(form.micro) }}
-            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
-            {% if pdfErrors is not empty %}
-                {% for error in pdfErrors %}
-                    <div class="invalid-feedback d-block">{{ error }}</div>
-                {% endfor %}
+            {% if l.microlocalization is not null %}
+                <a type="button" class="btn btn-primary"
+                   href="{{ absolute_url(constant('App\\Entity\\Land::MICROLOCALIZATION')~l.microlocalization) }}"
+                   data-bs-toggle="tooltip"
+                   title="Descargar documento de microlocalización" download="{{ l.microlocalization }}">
+                    {{ ux_icon('bi:download', {class:'bi'}) }}
+                    Microlocalización
+                </a>
+            {% else %}
+                {{ form_row(form.micro) }}
+                {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+                {% if pdfErrors is not empty %}
+                    {% for error in pdfErrors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
             {% endif %}
         </div>
-        <div class="col">
-            {{ form_row(form.picture) }}
-            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
-            {% if pictureErrors is not empty %}
-                {% for error in pictureErrors %}
-                    <div class="invalid-feedback d-block">{{ error }}</div>
-                {% endfor %}
+
+        <div class="col text-end">
+            {% if l.photo is not null %}
+                <a type="button" class="btn btn-primary"
+                   href="{{ absolute_url(constant('App\\Entity\\Land::PHOTO')~l.photo) }}" data-bs-toggle="tooltip"
+                   title="Foto del terreno" download="{{ l.photo }}">
+                    {{ ux_icon('bi:download', {class:'bi'}) }}
+                    Foto del terreno
+                </a>
+            {% else %}
+                {{ form_row(form.picture) }}
+                {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+                {% if pictureErrors is not empty %}
+                    {% for error in pictureErrors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
             {% endif %}
         </div>
     </div>

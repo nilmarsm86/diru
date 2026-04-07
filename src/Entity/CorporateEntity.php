@@ -24,6 +24,8 @@ class CorporateEntity
     use NameToStringTrait;
     use AddressTrait;
 
+    public const LOGO = 'uploads/corporate_entity/logo/';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

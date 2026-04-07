@@ -36,7 +36,14 @@
         {% endfor %}
     {% endif %}
 
-    <div class="row mb-3">
+    {% if ce.logo %}
+        <img src="{{ asset(constant('App\\Entity\\CorporateEntity::LOGO')~ce.logo) }}"
+             alt="{{ ce.name }}"
+             width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+             fetchpriority="low">
+    {% endif %}
+
+    <div class="row mb-3 mt-3">
         <div class="col-sm-12">
             {{ component('button:submit', {
                 icon: (this.ce.id is null) ? 'bi:plus-lg' : 'fa:edit',

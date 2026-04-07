@@ -8,7 +8,7 @@
                     <h6 class="card-subtitle mb-2">Presupuesto ajustado:</h6>
                     <h1>$ {{ money(building.getEstimatedAdjustValue()) }}</h1>
                     <h6 class="card-subtitle mb-2">ITE (resultante):</h6>
-                    <h1>{{ building.getResultIte()|number_format(2) }} $/m<sup>2</sup></h1>
+                    <h1>{{ buildingValuationService.getResultIte(building)|number_format(2) }} $/m<sup>2</sup></h1>
                     <h6 class="card-subtitle mb-2">Coeficiente de ajuste:</h6>
                     <h1>{{ building.getCoefficient() }}</h1>
                 {% endblock %}
@@ -52,7 +52,7 @@
 
             {% block tableHead %}
                 <tr>
-                    <th>{{ building.separateConceptsTotalPercent() }} %</th>
+                    <th>{{ buildingValuationService.separateConceptsTotalPercent(building) }} %</th>
                     <th>Número</th>
                     <th>Concepto</th>
                     <th>Importe</th>
@@ -74,7 +74,7 @@
 
                     <tr {{ stimulusController('separate-concept', {
                         urlSaveData: path('app_building_separate_concept', {'id': buildingSeparateConcept.id}),
-                        urlLoadData: path('app_building_separete_presupposition', {'id': buildingSeparateConcept.building.id}),
+                        urlLoadData: path('app_building_report_separate_presupposition', {'id': buildingSeparateConcept.building.id}),
                         estimatedAdjust: ((buildingSeparateConcept.separateConcept.parent is null)
                         ? buildingEstimatedAdjustValue
                         : parentImport

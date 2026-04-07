@@ -14,6 +14,7 @@ use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Repository\ProjectRepository;
+use App\Service\BuildingValuationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,6 +78,7 @@ final class BuildingForm extends AbstractController
         private readonly ProjectRepository $projectRepository,
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
+        private readonly BuildingValuationService $buildingValuationService,
     ) {
     }
 
@@ -498,5 +500,26 @@ final class BuildingForm extends AbstractController
         }
 
         return $this->bui->isEnterpriseClient($this->enterpriseClientRepository);
+    }
+
+    public function getRangeMinPrice(): int|float
+    {
+        assert($this->bui instanceof Building);
+
+        return $this->buildingValuationService->getRangeMinPrice($this->bui);
+    }
+
+    public function getRangeMaxPrice(): int|float
+    {
+        assert($this->bui instanceof Building);
+
+        return $this->buildingValuationService->getRangeMaxPrice($this->bui);
+    }
+
+    public function getResultIte(): float
+    {
+        assert($this->bui instanceof Building);
+
+        return $this->buildingValuationService->getResultIte($this->bui);
     }
 }

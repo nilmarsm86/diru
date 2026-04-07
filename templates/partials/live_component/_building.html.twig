@@ -117,13 +117,13 @@
                         </a>
                     </label>
                     <input type="range" id="building_range"
-                           data-range-target="range" min="{{ bui.getRangeMinPrice() }}"
-                           max="{{ bui.getRangeMaxPrice() }}" class="form-range"
+                           data-range-target="range" min="{{ this.getRangeMinPrice() }}"
+                           max="{{ this.getRangeMaxPrice() }}" class="form-range"
                            value="{{ bui.getRangePrice() }}">
                 </div>
                 <div class="row">
                     <div class="col text-start">
-                        <output data-range-target="min">${{ (bui.getRangeMinPrice() / 100)|number_format(2) }}</output>
+                        <output data-range-target="min">${{ (this.getRangeMinPrice() / 100)|number_format(2) }}</output>
                         <span style="font-size: 0.75em">(-30%)</span>
                     </div>
                     <div class="col text-center">
@@ -135,7 +135,7 @@
                         </output>
                     </div>
                     <div class="col text-end">
-                        <output data-range-target="max">${{ (bui.getRangeMaxPrice() / 100)|number_format(2) }}</output>
+                        <output data-range-target="max">${{ (this.getRangeMaxPrice() / 100)|number_format(2) }}</output>
                         <span style="font-size: 0.75em">(+30%)</span>
                     </div>
                 </div>
@@ -200,7 +200,7 @@
                 <h5 class="text-end-detail">{# $ #}
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
                         {% if bui.getTotalArea() > 0 %}
-                            {{ bui.getResultIte()|number_format(2) }}
+                            {{ this.getResultIte()|number_format(2) }}
                         {% else %}
                             0
                         {% endif %}

@@ -41,8 +41,8 @@
     </div>
 
     {% if building.state.value is same as '4' %}
-        {{ tableActionButton3(path('app_building_design', {'id': building.id}), '', 'Virar a diseño', 'Pasar a estado de diseño') }}
-        {{ tableActionButton3(path('app_building_revised', {'id': building.id}), '', 'Revisado', 'Pasar a estado de revisado') }}
+        {{ tableActionButton3(path('app_building_state_design', {'id': building.id}), '', 'Virar a diseño', 'Pasar a estado de diseño') }}
+        {{ tableActionButton3(path('app_building_state_revised', {'id': building.id}), '', 'Revisado', 'Pasar a estado de revisado') }}
     {% endif %}
 
     {% if building.state.value not in ['1', '2'] %} {# TODO: pasar esta comprobacion para la entidad #}
@@ -77,26 +77,26 @@
     {% endif %}
 
     {% if building.state.value is same as '3' %}
-        {{ tableActionButton3(path('app_building_review', {'id': building.id}), '', 'Revisar', 'Pasar a estado de revisión') }}
+        {{ tableActionButton3(path('app_building_state_review', {'id': building.id}), '', 'Revisar', 'Pasar a estado de revisión') }}
     {% endif %}
 
     {% if building.canReply() and building.hasErrors() == false %}
         {% set action_save = stimulusController('modal-content-loader', {
-            url: path('app_building_more_floors', {'id':building.id, 'modal':'modal-load', 'state':'modal'}),
+            url: path('app_building_state_more_floors', {'id':building.id, 'modal':'modal-load', 'state':'modal'}),
             id: 'modal-load',
             placeholder: 'Cargando...',
             title: 'Replicar obra',
         }) ~ stimulusTarget('modal-content-loader', 'button') %}
-        {{ tableActionButton3(path('app_building_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
+        {{ tableActionButton3(path('app_building_state_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
     {% endif %}
 
     {% set action_save = stimulusController('modal-content-loader', {
-        url: path('app_building_separete_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
+        url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
         id: 'desglose',
         placeholder: 'Cargando...',
         title: 'Desglose de presupuesto',
     }) ~ stimulusTarget('modal-content-loader', 'button') %}
-    {{ tableActionButton3(path('app_building_separete_presupposition', {'id': building.id}), '', 'Desglose', 'Desglose', action_save) }}
+    {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), '', 'Desglose', 'Desglose', action_save) }}
 
     {% if building.isNew() is not null %}
         <div class="dropdown d-inline-block">
@@ -140,7 +140,7 @@
 
     {% if building.isNew() is not null and building.hasReply() === false %}
         {#        <a class="btn btn-sm position-relative btn-primary" title="Resetear" data-bs-toggle="tooltip" #}
-        {#           href="{{ path('app_building_reset', {'id':building.id}) }}" #}
+        {#           href="{{ path('app_building_state_reset', {'id':building.id}) }}" #}
         {#           onclick="return confirm('Esta seguro que desea resetear la obra?')"> #}
         {#            {{ ux_icon('ix:reset', {class:'bi'}) }} #}
         {#            Resetear #}

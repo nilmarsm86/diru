@@ -12,6 +12,7 @@ use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
+use App\Service\BuildingValuationService;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,6 +38,7 @@ class BuildingType extends AbstractType
         private readonly RouterInterface $router,
         private readonly IndividualClientRepository $individualClientRepository,
         private readonly EnterpriseClientRepository $enterpriseClientRepository,
+        private readonly BuildingValuationService $buildingValuationService,
     ) {
     }
 
@@ -186,7 +188,7 @@ class BuildingType extends AbstractType
                 'divisor' => 100,
                 'grouping' => true,
                 'mapped' => false,
-                'data' => (null !== $building) ? $building->getEstimatedConstructionAndNetworkConnection() : 0,
+                'data' => (null !== $building) ? $this->buildingValuationService->getEstimatedConstructionAndNetworkConnection($building) : 0,
             ])
             ->add('estimatedValueEquipment', MoneyType::class, [
                 'label' => 'Equipos:',
@@ -310,7 +312,7 @@ class BuildingType extends AbstractType
                     'data-type--money-plus-target' => 'field',
                     'data-controller' => 'money',
                 ],
-                'data' => (null !== $building && null !== $building->getId()) ? $building->getEstimatedUrbanizationAndNetworkConnection() : $options['urbanizationEstimate'],
+                'data' => (null !== $building && null !== $building->getId()) ? $this->buildingValuationService->getEstimatedUrbanizationAndNetworkConnection($building) : $options['urbanizationEstimate'],
                 'required' => false,
                 'currency' => $currency,
                 'input' => 'integer',

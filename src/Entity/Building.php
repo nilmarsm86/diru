@@ -957,51 +957,6 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    public function review(EntityManagerInterface $entityManager): static
-    {
-        $this->setState(BuildingState::Revision);
-        $entityManager->persist($this);
-
-        foreach ($this->buildingRevisions as $buildingRevision) {
-            if ($buildingRevision->isActive()) {
-                $buildingRevision->deactivate();
-            }
-        }
-
-        $entityManager->flush();
-
-        return $this;
-    }
-
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    public function design(EntityManagerInterface $entityManager): static
-    {
-        $this->setState(BuildingState::Design);
-        $entityManager->persist($this);
-
-        $entityManager->flush();
-
-        return $this;
-    }
-
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    public function revised(EntityManagerInterface $entityManager): static
-    {
-        $this->setState(BuildingState::Revised);
-        $entityManager->persist($this);
-
-        foreach ($this->buildingRevisions as $buildingRevision) {
-            if ($buildingRevision->isActive()) {
-                $buildingRevision->deactivate();
-            }
-        }
-
-        $entityManager->flush();
-
-        return $this;
-    }
-
     public function allLocalsAreClassified(): bool
     {
         return $this->calculateAllLocalsAreClassified($this->getOriginalFloors());
@@ -1464,16 +1419,6 @@ class Building implements MeasurementDataInterface
         return $this->getEstimatedConstructionAndNetworkConnection() + $this->getEstimatedUrbanizationAndNetworkConnection() + $this->getProjectTechnicalPreparationEstimateTotalPrice();
     }
 
-    public function getRangeMinPrice(): int|float
-    {
-        return $this->getRangePrice() - ($this->getRangePrice() * 30 / 100);
-    }
-
-    public function getRangeMaxPrice(): int|float
-    {
-        return $this->getRangePrice() + ($this->getRangePrice() * 30 / 100);
-    }
-
     public function getEstimatedConstructionAndNetworkConnection(): float|int
     {
         $priceLandNetworkConnection = 0;
@@ -1605,43 +1550,6 @@ class Building implements MeasurementDataInterface
     //        return $this;
     //    }
 
-    /**
-     * @throws \Exception
-     */
-    public function reset(EntityManagerInterface $entityManager): self
-    {
-        if (null === $this->isNew()) {
-            throw new \Exception('Esta obra no puede ser reseteada!');
-        }
-
-        $land = $this->getLand();
-        if (null !== $land) {
-            foreach ($this->getFloors() as $floor) {
-                foreach ($floor->getSubSystems() as $subSystem) {
-                    foreach ($subSystem->getLocals() as $local) {
-                        $subSystem->removeLocal($local);
-                        $entityManager->remove($local);
-                    }
-
-                    $floor->removeSubSystem($subSystem);
-                    $entityManager->remove($subSystem);
-                }
-
-                $this->removeFloor($floor);
-                $entityManager->remove($floor);
-            }
-
-            $this->setLand(null);
-            $entityManager->remove($land);
-
-            $this->setIsNew(null);
-
-            $entityManager->flush();
-        }
-
-        return $this;
-    }
-
     public function getConstructionRealValue(): ?int
     {
         return $this->constructionRealValue;
@@ -1669,26 +1577,5 @@ class Building implements MeasurementDataInterface
     public function getEstimatedAdjustValue(): float
     {
         return $this->getRangePrice() * $this->getCoefficient();
-    }
-
-    public function getResultIte(): float
-    {
-        if ($this->getTotalArea() > 0) {
-            return $this->getEstimatedAdjustValue() / 100 / $this->getTotalArea();
-        }
-
-        return 0;
-    }
-
-    public function separateConceptsTotalPercent(): float
-    {
-        $totalPercent = 0;
-        foreach ($this->buildingSeparateConcepts as $concept) {
-            if ($concept->isParent()) {
-                $totalPercent += (float) $concept->getPercent();
-            }
-        }
-
-        return $totalPercent;
     }
 }

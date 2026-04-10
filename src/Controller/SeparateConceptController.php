@@ -25,7 +25,12 @@ final class SeparateConceptController extends AbstractController
     #[Route(name: 'app_separate_concept_index', methods: ['GET'])]
     public function index(Request $request, SeparateConceptRepository $separateConceptRepository, CrudActionService $crudActionService): Response
     {
-        return $crudActionService->indexAction($request, $separateConceptRepository, 'findSeparateConcepts', 'separate_concept');
+        $data = $separateConceptRepository->findSeparateConcepts();
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("separate_concept/$template", [
+            'paginator' => $data,
+        ]);
     }
 
     /**

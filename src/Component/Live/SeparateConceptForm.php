@@ -47,7 +47,9 @@ final class SeparateConceptForm extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(SeparateConceptType::class, $this->sc);
+        return $this->createForm(SeparateConceptType::class, $this->sc, [
+            'hasParent' => $this->sc?->getParent()?->hasParent(),
+        ]);
     }
 
     #[LiveAction]
@@ -60,6 +62,11 @@ final class SeparateConceptForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var SeparateConcept $sc */
             $sc = $this->getForm()->getData();
+
+            $childsData = $this->getForm()->get('childs')->getData();
+            if (null !== $childsData) {
+                $sc->setParent($childsData);
+            }
 
             $contractRepository->save($sc, true);
 
@@ -86,9 +93,9 @@ final class SeparateConceptForm extends AbstractController
         return null;
     }
 
-    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
-    private function getDataModelValue(): string
-    {
-        return 'norender|*';
-    }
+    //    /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
+    //    private function getDataModelValue(): string
+    //    {
+    //        return 'norender|*';
+    //    }
 }

@@ -37,7 +37,7 @@ class SeparateConcept
     private SeparateConceptType $enumType;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Numeración del concepto')]
+    #[Assert\NotBlank(message: 'Numeración vacía.')]
     private ?string $number = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -247,5 +247,10 @@ class SeparateConcept
     public function getIdententNumber(string $string): string
     {
         return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
+    }
+
+    public function hasParent(): bool
+    {
+        return null !== $this->parent;
     }
 }

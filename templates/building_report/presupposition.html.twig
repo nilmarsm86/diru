@@ -130,6 +130,13 @@
                             {% else %}
                                 ${{ money(buildingSeparateConcept.getImport(parentImport)) }}
                             {% endif %}
+
+                            {% if buildingSeparateConcept.separateConcept.number == '9' %}
+{#                                ${{ money(buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, '(2+3.1+4.1.1+4.3.1+4.4.1+4.5.1+4.6.1+4.7.1+4.15.1+4.17.1+4.18.1.1+4.18.2.1)')) }}#}
+                                ${{ money('161022036') }}
+                                <br>
+                                {{ (totalImport / 161022036)|number_format(2) }}{# Si > 1 ponerlo todo en rojo con mensaje #}
+                            {% endif %}
                         </td>
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}

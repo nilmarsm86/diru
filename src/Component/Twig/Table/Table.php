@@ -10,7 +10,7 @@ final class Table
 {
     public const BACKDROP_DATA_ID = 'table-backdrop';
 
-    public ?Paginator $paginator = null;
+    public Paginator|array|null $paginator = null;
     public string $tableContainer = '';
     public bool $amount = true;
     public bool $filter = true;
@@ -20,7 +20,7 @@ final class Table
     /**
      * cuando se monta por primera vez el componete.
      */
-    public function mount(?Paginator $paginator = null): void
+    public function mount(Paginator|array|null $paginator = null): void
     {
         $this->paginator = $paginator;
     }

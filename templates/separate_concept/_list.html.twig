@@ -15,6 +15,10 @@
     {% block body %}
         {% component 'Table:Table' with {
             paginator: paginator,
+            amount: false,
+            filter: false,
+            showPage: false,
+            navigation: false
         } %}
 
             {% block tableHead %}
@@ -29,7 +33,7 @@
             {% block tableBody %}
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
-                {% for separate_concept in paginator.getData() %}
+                {% for separate_concept in paginator %}
                     <tr {{ stimulusController('delete-form-container') }} {% if separate_concept.parent is null %}style="font-weight: bold"{% endif %}>
                         <td>
                             {{ separate_concept.getIdententNumber('&nbsp;')|raw }}

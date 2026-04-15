@@ -100,7 +100,6 @@
                                     {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(parentImport), buildingSeparateConcept.getPercentByFormula(buildingSeparateConcept.getImport())) %}
                                 {% endif %}
                             {% endif %}
-{#                            {% dump(buildingSeparateConcept.separateConcept.formula) %}#}
                             <input type="number" step="0.01" placeholder="0.00" min="0" max="100"
                                    id="{{ buildingSeparateConcept.id }}" name="building[coefficient]"
                                    data-estimate-presupposition-target="field" inputmode="decimal" class="form-control"
@@ -114,28 +113,42 @@
                         <td>{{ buildingSeparateConcept.separateConcept.number }}</td>
                         <td>
                             {{ buildingSeparateConcept.separateConcept.name }}
-                            {% if buildingSeparateConcept.separateConcept.formula %}
-                                [{{ buildingSeparateConcept.separateConcept.formula }}]
-                            {% endif %}
-                            {% if buildingSeparateConcept.separateConcept.number in ['9', '13', '13.2'] %}
-                                <strong>[DUDA]</strong>{% endif %}
+{#                            {% if buildingSeparateConcept.separateConcept.formula %}#}
+{#                                [{{ buildingSeparateConcept.separateConcept.formula }}]#}
+{#                            {% endif %}#}
                         </td>
                         <td {{ stimulusTarget('separate-concept', 'import') }}>
                             {% if buildingSeparateConcept.separateConcept.parent is null %}
                                 {% if buildingSeparateConcept.separateConcept.formula %}
-                                    ${{ money(totalImport) }}
+                                    {% if buildingSeparateConcept.separateConcept.number == '20' %}
+                                        <span {% if (buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
+                                            ~${{ money(totalImport) }}
+                                        </span>
+                                    {% else %}
+                                        ${{ money(totalImport) }}
+                                    {% endif %}
                                 {% else %}
                                     ${{ money(buildingSeparateConcept.getImport()) }}
                                 {% endif %}
                             {% else %}
-                                ${{ money(buildingSeparateConcept.getImport(parentImport)) }}
+                                {% if buildingSeparateConcept.separateConcept.number in ['13.1', '13.2'] %}
+                                    ${{ money(totalImport) }}
+                                {% else %}
+                                    ${{ money(buildingSeparateConcept.getImport(parentImport)) }}
+                                {% endif %}
                             {% endif %}
 
                             {% if buildingSeparateConcept.separateConcept.number == '9' %}
-{#                                ${{ money(buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, '(2+3.1+4.1.1+4.3.1+4.4.1+4.5.1+4.6.1+4.7.1+4.15.1+4.17.1+4.18.1.1+4.18.2.1)')) }}#}
-                                ${{ money('161022036') }}
+                                {% set formula = '2+3.1+4.1.1+4.3.1+4.4.1+4.5.1+4.6.1+4.7.1+4.15.1+4.17.1+4.18.1.1+4.18.2.1' %}
+                                {% set personal_numbers = buildingSeparateConcept.extraerNumeros(formula, []) %}
+                                {% set personal_data = aec.getDataByNumbers(personal_numbers) %}
+                                {% set personal_result = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, personal_data, formula) %}
+                                ${{ money(personal_result) }}
                                 <br>
-                                {{ (totalImport / 161022036)|number_format(2) }}{# Si > 1 ponerlo todo en rojo con mensaje #}
+                            <span {% if (totalImport / personal_result) > 1 %}style="color: red"{% endif %} data-bs-toggle="tooltip"
+                                  title="Texto del mensaje">
+                                {{ (totalImport / personal_result)|number_format(2) }}
+                                </span>{# Si > 1 ponerlo todo en rojo con mensaje #}
                             {% endif %}
                         </td>
                         <td class="text-end">

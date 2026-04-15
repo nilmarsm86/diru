@@ -95,6 +95,9 @@ final class FormulaEvaluator
         $this->validarFormula($formula);
 
         $datosNormalizados = $this->normalizarDatos($datos);
+        //        if($formula === '2') {
+        //            dump($formula);
+        //        }
         $claves = array_keys($datosNormalizados);
 
         $this->validarClaves($claves);

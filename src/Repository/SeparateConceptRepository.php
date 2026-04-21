@@ -8,7 +8,6 @@ use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -34,7 +33,7 @@ class SeparateConceptRepository extends ServiceEntityRepository implements Filte
     }
 
     /**
-     * @return Paginator<mixed>
+     * @return array<mixed>
      */
     public function findSeparateConcepts(): array
     {
@@ -87,8 +86,8 @@ SQL;
 
         // ORDEN NATURAL JERÁRQUICO PERFECTO (esto es lo que realmente necesitabas)
         usort($result, function (SeparateConcept $a, SeparateConcept $b): int {
-            $partsA = array_map('intval', explode('.', $a->getNumber()));
-            $partsB = array_map('intval', explode('.', $b->getNumber()));
+            $partsA = array_map('intval', explode('.', ((bool) $a->getNumber()) ? $a->getNumber() : ''));
+            $partsB = array_map('intval', explode('.', ((bool) $b->getNumber()) ? $b->getNumber() : ''));
 
             $maxLength = max(count($partsA), count($partsB));
 
@@ -199,8 +198,8 @@ SQL;
 
         // ORDEN NATURAL JERÁRQUICO PERFECTO (esto es lo que realmente necesitabas)
         usort($result, function (SeparateConcept $a, SeparateConcept $b): int {
-            $partsA = array_map('intval', explode('.', $a->getNumber()));
-            $partsB = array_map('intval', explode('.', $b->getNumber()));
+            $partsA = array_map('intval', explode('.', ((bool) $a->getNumber()) ? $a->getNumber() : ''));
+            $partsB = array_map('intval', explode('.', ((bool) $b->getNumber()) ? $b->getNumber() : ''));
 
             $maxLength = max(count($partsA), count($partsB));
 

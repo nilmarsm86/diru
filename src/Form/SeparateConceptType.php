@@ -106,8 +106,8 @@ class SeparateConceptType extends AbstractType
             ->orderBy('sc.number', 'ASC');
     }
 
-    private function getChildsConcepts(?SeparateConcept $parentSeparateConcept = null): array
-    {
-        return $this->separateConceptRepository->findSubtree($parentSeparateConcept?->getId() ?? 0);
-    }
+    //    private function getChildsConcepts(?SeparateConcept $parentSeparateConcept = null): array
+    //    {
+    //        return $this->separateConceptRepository->findSubtree($parentSeparateConcept?->getId() ?? 0);
+    //    }
 }

@@ -65,6 +65,7 @@ final class SeparateConceptForm extends AbstractController
 
             $childsData = $this->getForm()->get('childs')->getData();
             if (null !== $childsData) {
+                assert($childsData instanceof SeparateConcept);
                 $sc->setParent($childsData);
             }
 

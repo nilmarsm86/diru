@@ -1,0 +1,59 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Backup{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Backup') }}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {% component 'Card:Card' with {
+                cssClass: 'text-bg-light mb-3'
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Exportar</h6>
+                    <p>Descarga una copia consistente de la base de datos actual.</p>
+                    <form action="{{ path('admin_database_export') }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('export-db') }}">
+                        <button type="submit" class="btn btn-primary">Descargar base de datos</button>
+                    </form>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+
+        <div class="col">
+            {% component 'Card:Card' with {
+                title: 'Proyectos',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Importar</h6>
+                    <p class="text-danger">
+                        <strong>Advertencia:</strong> se reemplazará la base de datos actual.
+                        Se guardará un backup automático junto al archivo original (<code>.backup</code>).
+                    </p>
+                    {{ form_start(import_form, { attr: { enctype: 'multipart/form-data' }, action: path('admin_database_import') }) }}
+                    {{ form_row(import_form.database) }}
+                    {{ form_row(import_form.submit) }}
+                    {{ form_end(import_form) }}
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+
+    <div class="container py-4">
+
+{#        {% for label, messages in app.flashes(['success', 'error']) %}#}
+{#            {% for message in messages %}#}
+{#                <div class="alert alert-{{ label == 'error' ? 'danger' : 'success' }}">#}
+{#                    {{ message }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        {% endfor %}#}
+
+
+    </div>
+{% endblock %}

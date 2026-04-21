@@ -23,7 +23,7 @@ final class SeparateConceptController extends AbstractController
      * @throws LoaderError
      */
     #[Route(name: 'app_separate_concept_index', methods: ['GET'])]
-    public function index(Request $request, SeparateConceptRepository $separateConceptRepository, CrudActionService $crudActionService): Response
+    public function index(Request $request, SeparateConceptRepository $separateConceptRepository): Response
     {
         $data = $separateConceptRepository->findSeparateConcepts();
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/database', name: 'admin_database_')]
+#[Route('/database/backup', name: 'database_backup_')]
 #[IsGranted('ROLE_ADMIN')]
 final class DatabaseBackupController extends AbstractController
 {
@@ -43,7 +43,7 @@ final class DatabaseBackupController extends AbstractController
         } catch (DatabaseBackupException|Exception $e) {
             $this->addFlash('danger', $e->getMessage());
 
-            return $this->redirectToRoute('admin_database_index');
+            return $this->redirectToRoute('database_backup_index');
         }
 
         $response = $this->file($snapshotPath);
@@ -65,7 +65,7 @@ final class DatabaseBackupController extends AbstractController
         if (!$form->isSubmitted() || !$form->isValid()) {
             $this->addFlash('danger', 'Formulario inválido. Revisa el archivo seleccionado.');
 
-            return $this->redirectToRoute('admin_database_index');
+            return $this->redirectToRoute('database_backup_index');
         }
 
         try {
@@ -77,6 +77,6 @@ final class DatabaseBackupController extends AbstractController
             $this->addFlash('danger', $e->getMessage());
         }
 
-        return $this->redirectToRoute('admin_database_index');
+        return $this->redirectToRoute('database_backup_index');
     }
 }

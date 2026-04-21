@@ -40,8 +40,8 @@ final class DatabaseImportType extends AbstractType
                     ),
                 ],
                 'help' => 'Imágenes *.sqlite, *.db',
-            ])
-            ->add('submit', SubmitType::class, ['label' => 'Importar y reemplazar']);
+            ]);
+        //            ->add('submit', SubmitType::class, ['label' => 'Importar y reemplazar']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

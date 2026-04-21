@@ -345,9 +345,9 @@
                 </li>
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     <li>
-                        <a href="{{ path('admin_database_index') }}"
-                           class="nav-link link-body-emphasis {{ activeLink('admin_database_index') }}">
-{#                            {{ ux_icon('bi:lock', {class:'bi'}) }}#}
+                        <a href="{{ path('database_backup_index') }}"
+                           class="nav-link link-body-emphasis {{ activeLink('database_backup_index') }}">
+                            {{ ux_icon('iconoir:database-backup', {class:'bi'}) }}
                             Backup
                         </a>
                     </li>

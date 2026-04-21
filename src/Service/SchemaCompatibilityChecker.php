@@ -31,8 +31,8 @@ final class SchemaCompatibilityChecker
     }
 
     /**
-     * @return array<string, array<string, array{type: string, notnull: int, pk: int}>>
-     *                                                                                  Estructura: [tabla => [columna => {type, notnull, pk}]]
+     * @return array<mixed>
+     *                      Estructura: [tabla => [columna => {type, notnull, pk}]]
      */
     private function fingerprint(string $dbPath): array
     {
@@ -43,6 +43,7 @@ final class SchemaCompatibilityChecker
         $tables = $this->listUserTables($pdo);
         $schema = [];
 
+        /** @var string $table */
         foreach ($tables as $table) {
             $schema[$table] = $this->describeColumns($pdo, $table);
         }
@@ -52,7 +53,7 @@ final class SchemaCompatibilityChecker
         return $schema;
     }
 
-    /** @return array<string> */
+    /** @return array<mixed> */
     private function listUserTables(\PDO $pdo): array
     {
         $sql = "
@@ -77,20 +78,29 @@ final class SchemaCompatibilityChecker
         }, $result);
     }
 
-    /** @return array<string, array{type: string, notnull: int, pk: int}> */
+    /** @return array<mixed> */
     private function describeColumns(\PDO $pdo, string $table): array
     {
         $stmt = $pdo->prepare('SELECT name, type, "notnull", pk FROM pragma_table_info(?)');
         $stmt->execute([$table]);
 
         $columns = [];
+        /** @var array<int, array<string, mixed>> $rows */
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($rows as $row) {
-            /* @var array<string> $row */
-            $columns[$row['name']] = [
-                'type' => $this->toTypeAffinity($row['type']),
-                'notnull' => (int) $row['notnull'],
-                'pk' => (int) $row['pk'],
+            /** @var string $declaredType */
+            $declaredType = $row['type'];
+            /** @var int $notNull */
+            $notNull = $row['notnull'];
+            /** @var int $pk */
+            $pk = $row['pk'];
+            /** @var string $name */
+            $name = $row['name'];
+
+            $columns[$name] = [
+                'type' => $this->toTypeAffinity($declaredType),
+                'notnull' => $notNull,
+                'pk' => $pk,
             ];
         }
 
@@ -127,10 +137,10 @@ final class SchemaCompatibilityChecker
     }
 
     /**
-     * @param array<string, array<string, array{type: string, notnull: int, pk: int}>> $current
-     * @param array<string, array<string, array{type: string, notnull: int, pk: int}>> $candidate
+     * @param array<mixed> $current
+     * @param array<mixed> $candidate
      *
-     * @return list<string>
+     * @return array<string>
      */
     private function diff(array $current, array $candidate): array
     {
@@ -141,20 +151,32 @@ final class SchemaCompatibilityChecker
             $diffs[] = sprintf('Falta la tabla "%s" en el archivo importado.', $table);
         }
 
+        /**
+         * @var array<mixed> $current
+         */
         foreach ($current as $table => $expectedColumns) {
             if (!isset($candidate[$table])) {
                 continue; // ya reportada arriba
             }
 
-            $diffs = [...$diffs, ...$this->diffColumns($table, $expectedColumns, $candidate[$table])];
+            $candidateColumns = $candidate[$table] ?? [];
+            if (!is_array($candidateColumns)) {
+                $candidateColumns = [];
+            }
+
+            if (!is_array($expectedColumns)) {
+                $expectedColumns = [];
+            }
+
+            $diffs = [...$diffs, ...$this->diffColumns($table, $expectedColumns, $candidateColumns)];
         }
 
         return $diffs;
     }
 
     /**
-     * @param array<string, array{type: string, notnull: int, pk: int}> $expected
-     * @param array<string, array{type: string, notnull: int, pk: int}> $actual
+     * @param array<mixed> $expected
+     * @param array<mixed> $actual
      *
      * @return list<string>
      */
@@ -162,22 +184,35 @@ final class SchemaCompatibilityChecker
     {
         $diffs = [];
 
+        /**
+         * @var string        $column
+         * @var array<string> $expectedSpec
+         */
         foreach ($expected as $column => $expectedSpec) {
             if (!isset($actual[$column])) {
                 $diffs[] = sprintf('Tabla "%s": falta la columna "%s".', $table, $column);
                 continue;
             }
 
+            /** @var array<string> $actualSpec */
             $actualSpec = $actual[$column];
 
-            if ($expectedSpec['type'] !== $actualSpec['type']) {
+            /** @var string $expectedSpecType */
+            $expectedSpecType = $expectedSpec['type'];
+            /** @var string $actualSpecType */
+            $actualSpecType = $actualSpec['type'];
+            if ($expectedSpecType !== $actualSpecType) {
                 $diffs[] = sprintf(
                     'Tabla "%s", columna "%s": tipo esperado %s, encontrado %s.',
                     $table, $column, $expectedSpec['type'], $actualSpec['type'],
                 );
             }
 
-            if ($expectedSpec['pk'] !== $actualSpec['pk']) {
+            /** @var string $expectedSpecPk */
+            $expectedSpecPk = $expectedSpec['pk'];
+            /** @var string $actualSpecPk */
+            $actualSpecPk = $actualSpec['pk'];
+            if ($expectedSpecPk !== $actualSpecPk) {
                 $diffs[] = sprintf(
                     'Tabla "%s", columna "%s": diferencia en clave primaria.',
                     $table, $column,

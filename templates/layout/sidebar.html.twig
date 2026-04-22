@@ -227,8 +227,8 @@
                             data-bs-theme="light"
                             style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
                             <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_currency_index') }}"
+                                   href="{{ path('app_currency_index') }}"
                                 >
                                     {{ ux_icon('streamline-ultimate:begging-hand-coin-2-bold', {class:'bi'}) }}
                                     Monedas

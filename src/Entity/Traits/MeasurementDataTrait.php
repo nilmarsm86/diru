@@ -72,12 +72,11 @@ trait MeasurementDataTrait
     }
 
     /**
-     * Un subsistema puede tener area de muro 0
-     * @return bool
+     * Un subsistema puede tener area de muro 0.
      */
     public function notWallArea(): bool
     {
-//        return 0.0 === $this->getWallArea();
+        //        return 0.0 === $this->getWallArea();
         return false;
     }
 }

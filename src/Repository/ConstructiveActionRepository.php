@@ -10,7 +10,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<ConstructiveAction>
@@ -56,12 +55,12 @@ class ConstructiveActionRepository extends ServiceEntityRepository implements Fi
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(ConstructiveAction $entity, bool $flush = false): void
     {
         if ($entity->isOnLocal() || $entity->isOnBuildingNetworkConnection()) {
-            throw new Exception('La accion constructiva esta asociada a uno o varios locales/obras.', 1);
+            throw new \Exception('La accion constructiva esta asociada a uno o varios locales/obras.', 1);
         }
 
         $this->getEntityManager()->remove($entity);

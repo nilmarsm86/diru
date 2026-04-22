@@ -66,7 +66,7 @@ class NetworkConnection
         return $this;
     }
 
-    public function isOnLand(): bool
+    public function isOnBuilding(): bool
     {
         return $this->getLandNetworkConnections()->count() > 0;
     }

@@ -147,4 +147,14 @@ class ConstructiveAction
 
         return $this;
     }
+
+    public function isOnLocal(): bool
+    {
+        return $this->getLocalsConstructiveAction()->count() > 0;
+    }
+
+    public function isOnBuildingNetworkConnection(): bool
+    {
+        return $this->getLandNetworkConnectionConstructiveAction()->count() > 0;
+    }
 }

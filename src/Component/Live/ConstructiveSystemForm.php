@@ -28,7 +28,7 @@ final class ConstructiveSystemForm extends AbstractController
      * The initial data used to create the form.
      */
     #[LiveProp]
-    public ?ConstructiveSystem $lz = null;
+    public ?ConstructiveSystem $cs = null;
 
     #[LiveProp]
     public ?string $modal = null;
@@ -41,8 +41,8 @@ final class ConstructiveSystemForm extends AbstractController
 
     public function mount(?ConstructiveSystem $cs = null): void
     {
-        $this->lz = (is_null($cs)) ? new ConstructiveSystem() : $cs;
-        $this->entity = $this->lz;
+        $this->cs = (is_null($cs)) ? new ConstructiveSystem() : $cs;
+        $this->entity = $this->cs;
     }
 
     /**
@@ -50,34 +50,34 @@ final class ConstructiveSystemForm extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(ConstructiveSystemType::class, $this->lz);
+        return $this->createForm(ConstructiveSystemType::class, $this->cs);
     }
 
     #[LiveAction]
     public function save(ConstructiveSystemRepository $locationZoneRepository): ?Response
     {
-        $successMsg = (is_null($this->lz?->getId())) ? 'Se ha agregado el sistema constructivo.' : 'Se ha modificado el sistema constructivo.'; // TODO: personalizar los mensajes
+        $successMsg = (is_null($this->cs?->getId())) ? 'Se ha agregado el sistema constructivo.' : 'Se ha modificado el sistema constructivo.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            /** @var ConstructiveSystem $lz */
-            $lz = $this->getForm()->getData();
+            /** @var ConstructiveSystem $cs */
+            $cs = $this->getForm()->getData();
 
-            $locationZoneRepository->save($lz, true);
+            $locationZoneRepository->save($cs, true);
 
-            $this->lz = new ConstructiveSystem();
-            $this->entity = $this->lz;
+            $this->cs = new ConstructiveSystem();
+            $this->entity = $this->cs;
             if (!is_null($this->modal)) {
-                $this->modalManage($lz, 'Se ha seleccionado el nuevo sistema constructivo.', [
-                    'constructiveSystem' => $lz->getId(),
+                $this->modalManage($cs, 'Se ha seleccionado el nuevo sistema constructivo.', [
+                    'constructiveSystem' => $cs->getId(),
                 ]);
 
                 return null;
             }
 
             if ($this->ajax) {
-                $this->ajaxManage($lz, $successMsg);
+                $this->ajaxManage($cs, $successMsg);
 
                 return null;
             }

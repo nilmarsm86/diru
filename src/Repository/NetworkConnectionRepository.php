@@ -49,7 +49,7 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
      */
     public function remove(NetworkConnection $entity, bool $flush = false): void
     {
-        if ($entity->isOnLand()) {
+        if ($entity->isOnBuilding()) {
             throw new \Exception('La conexión de red esta asociada a una o varias obras.', 1);
         }
 

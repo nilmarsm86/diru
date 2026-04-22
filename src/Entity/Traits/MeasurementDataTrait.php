@@ -71,8 +71,13 @@ trait MeasurementDataTrait
         return $this->getTotalArea($original) * $this->getMaxHeight($original);
     }
 
+    /**
+     * Un subsistema puede tener area de muro 0
+     * @return bool
+     */
     public function notWallArea(): bool
     {
-        return 0.0 === $this->getWallArea();
+//        return 0.0 === $this->getWallArea();
+        return false;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\Paginator;
 use App\Entity\Local;
+use App\Entity\Role;
 use App\Entity\SubSystem;
 use App\Repository\LocalRepository;
 use App\Service\CrudActionService;
@@ -14,10 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 #[Route('/local')]
 final class LocalController extends AbstractController
 {

@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/database/backup', name: 'database_backup_')]
 #[IsGranted('ROLE_ADMIN')]
+#[Route('/database/backup', name: 'database_backup_')]
 final class DatabaseBackupController extends AbstractController
 {
     public function __construct(

@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\BuildingSeparateConcept;
+use App\Entity\Role;
 use App\Repository\BuildingSeparateConceptRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(Role::ROLE_DRAFTSMAN)]
 final class BuildingSeparateConceptController extends AbstractController
 {
     #[Route('/building/separate/concept/{id}', name: 'app_building_separate_concept')]

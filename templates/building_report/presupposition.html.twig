@@ -23,23 +23,33 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Constructor</strong>
-                            <span class="badge text-bg-primary rounded-pill">...</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getActiveCorporateEntityName() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Obra</strong>
-                            <span class="badge text-bg-primary rounded-pill">...</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getName() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Objetos de obra</strong>
-                            <span class="badge text-bg-primary rounded-pill">...</span>
+                            <span class="badge text-bg-primary rounded-pill">?</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Cliente</strong>
-                            <span class="badge text-bg-primary rounded-pill">...</span>
+                            <span class="badge text-bg-primary rounded-pill">
+                                {% if building.getClient() %}
+                                    {% if building.isFromIndividualClient() == true %}
+                                        {{ building.getClient().getPerson().getFullName() }}
+                                    {% else %}
+                                        {{ building.getClient().getCorporateEntity().getName()~' ('~building.getClient().getRepresentative().getName()~')' }}
+                                    {% endif %}
+                                {% else %}
+                                    No tiene cliente
+                                {% endif %}
+                            </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Actividad</strong>
-                            <span class="badge text-bg-primary rounded-pill">...</span>
+                            <span class="badge text-bg-primary rounded-pill">?</span>
                         </li>
                     </ul>
                 {% endblock %}
@@ -145,9 +155,18 @@
                                 {% set personal_result = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, personal_data, formula) %}
                                 ${{ money(personal_result) }}
                                 <br>
-                            <span {% if (totalImport / personal_result) > 1 %}style="color: red"{% endif %} data-bs-toggle="tooltip"
-                                  title="Texto del mensaje">
-                                {{ (totalImport / personal_result)|number_format(2) }}
+                            <span
+                                {% if personal_result > 0 %}
+                                    {% if (totalImport / personal_result) > 1 %}
+                                        style="color: red"
+                                    {% endif %}
+                                {% endif %}
+                                data-bs-toggle="tooltip" title="Texto del mensaje">
+                                {% if personal_result > 0 %}
+                                    {{ (totalImport / personal_result)|number_format(2) }}
+                                {% else %}
+                                    {{ 0|number_format(2) }}
+                                {% endif %}
                                 </span>{# Si > 1 ponerlo todo en rojo con mensaje #}
                             {% endif %}
                         </td>

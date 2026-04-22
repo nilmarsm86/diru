@@ -136,6 +136,10 @@ class LocalType extends AbstractType
             'placeholder' => 'Área que ocupa el local',
         ];
 
+        if ($local->isWallType()) {
+            $attr['min'] = 0;
+        }
+
         $form->add('area', UnitMeasurementFloatType::class, [
             'unit' => 'm<sup>2</sup>',
             'label' => 'Área:',

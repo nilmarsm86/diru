@@ -85,6 +85,7 @@ class Local implements MoneyInterface
         $this->impactHigherLevels = false;
         $this->localConstructiveAction = null;
         $this->changesFromOriginal = [];
+        $this->setType(LocalType::Null);
     }
 
     private static function setDefaultConstructiveAction(EntityManagerInterface $entityManager, ?Local $local, string $constructiveActionName = 'Obra nueva', int $precio = 100): void

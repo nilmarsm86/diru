@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Unida de medida: {{ currency.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Unidades de medida', 'formkit:unit') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Unidades', href: path('app_measurement_unit_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Unidad de medida: {{ measurement_unit.name }}</h2>
+
+    {{ include('measurement_unit/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

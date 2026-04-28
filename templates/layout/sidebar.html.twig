@@ -221,7 +221,7 @@
                         <span class="d-inline-flex align-items-center">Otros</span>
                     </button>
                     <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_separate_concept_index'] %}show{% else %}hide{% endif %}"
+                        class="collapse {% if app.request.attributes.get('_route') in ['app_currency_index', 'app_measurement_unit_index'] %}show{% else %}hide{% endif %}"
                         id="other-collapse">
                         <ul class="dropdown-menu position-static mx-0 shadow d-block small"
                             data-bs-theme="light"
@@ -235,8 +235,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
+                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_measurement_unit_index') }}"
+                                   href="{{ path('app_measurement_unit_index') }}"
                                 >
                                     {{ ux_icon('formkit:unit', {class:'bi'}) }}
                                     Unidad de medida

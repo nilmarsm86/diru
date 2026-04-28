@@ -90,13 +90,15 @@
         {{ tableActionButton3(path('app_building_state_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
     {% endif %}
 
-    {% set action_save = stimulusController('modal-content-loader', {
-        url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
-        id: 'desglose',
-        placeholder: 'Cargando...',
-        title: 'Desglose de presupuesto',
-    }) ~ stimulusTarget('modal-content-loader', 'button') %}
-    {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), '', 'Desglose', 'Desglose', action_save) }}
+    {% if building.id is not null %}
+        {% set action_save = stimulusController('modal-content-loader', {
+            url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
+            id: 'desglose',
+            placeholder: 'Cargando...',
+            title: 'Desglose de presupuesto',
+        }) ~ stimulusTarget('modal-content-loader', 'button') %}
+        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), '', 'Desglose', 'Desglose', action_save) }}
+    {% endif %}
 
     {% if building.isNew() is not null %}
         <div class="dropdown d-inline-block">

@@ -75,6 +75,10 @@ class ProjectType extends AbstractType
                 'attr' => [
                     'data-currency-target' => 'select',
                 ],
+                'add' => true,
+                'add_title' => 'Agregar Moneda',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_currency_new', ['modal' => 'modal-load']),
             ])
             ->add('comment', TrixEditorType::class, [
                 'label' => false,

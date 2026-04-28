@@ -2,13 +2,13 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de monedas',
+    title: 'Listado de unidades de medida',
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_currency_new'), 'bi:plus-lg', 'Nueva', 'Nueva moneda', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_currency_new')})) }}
+            {{ tableActionButton3(path('app_measurement_unit_new'), 'bi:plus-lg', 'Nueva', 'Nueva unidad de medida', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_measurement_unit_new')})) }}
         </div>
     {% endblock %}
 
@@ -34,7 +34,7 @@
                         <td>{{ currency.code }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_currency_show', {'id': currency.id}), 'bi:eye', '', 'Detalle de la moneda', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_currency_show', {'id': currency.id})}), 'btn-link') }}#}
-                            {{ tableActionButton3(path('app_currency_edit', {'id': currency.id}), 'fa:edit', '', 'Editar moneda', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_currency_edit', {'id': currency.id})}), 'btn-link') }}
+                            {{ tableActionButton3(path('app_measurement_unit_edit', {'id': measurement_unit.id}), 'fa:edit', '', 'Editar unidad de medida', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_measurement_unit_edit', {'id': measurement_unit.id})}), 'btn-link') }}
 
 {#                            {{ component('DeleteForm', {#}
 {#                                path: path('app_currency_delete', {'id': currency.id}),#}
@@ -48,7 +48,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="2">No se encontraron monedas.</td>
+                        <td colspan="2">No se encontraron unidades de medida.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

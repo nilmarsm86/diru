@@ -27,6 +27,7 @@ class CurrencyRepository extends ServiceEntityRepository implements FilterInterf
     {
         if ('' !== $filter) {
             $predicate = 'c.name LIKE :filter ';
+            $predicate .= 'OR c.code LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');
         }

@@ -28,10 +28,10 @@
             {% block tableBody %}
                 {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
 
-                {% for currency in paginator.getData() %}
+                {% for measurement_unit in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-                        <td>{{ currency.name }}</td>
-                        <td>{{ currency.code }}</td>
+                        <td>{{ measurement_unit.name }}</td>
+                        <td>{{ measurement_unit.code }}</td>
                         <td class="text-end">
 {#                            {{ tableActionButton3(path('app_currency_show', {'id': currency.id}), 'bi:eye', '', 'Detalle de la moneda', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_currency_show', {'id': currency.id})}), 'btn-link') }}#}
                             {{ tableActionButton3(path('app_measurement_unit_edit', {'id': measurement_unit.id}), 'fa:edit', '', 'Editar unidad de medida', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_measurement_unit_edit', {'id': measurement_unit.id})}), 'btn-link') }}

@@ -1,5 +1,5 @@
 {% if app.request.query.get('modal') %}
-{#    {{ component('CurrencyForm', {modal:app.request.query.get('modal'), cur: currency, ajax: ajax}) }}#}
+    {{ component('MeasurementUnitForm', {modal:app.request.query.get('modal'), mu: measurement_unit, ajax: ajax}) }}
 {% else %}
 
     {% component 'Card:Card' with {
@@ -21,7 +21,7 @@
         {% endblock %}
 
         {% block body %}
-{#            {{ component('CurrencyForm', {modal:null, cur: currency, ajax: ajax}) }}#}
+            {{ component('MeasurementUnitForm', {modal:null, mu: measurement_unit, ajax: ajax}) }}
         {% endblock %}
 
         {% block footer %}

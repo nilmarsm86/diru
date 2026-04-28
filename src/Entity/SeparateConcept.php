@@ -13,8 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SeparateConceptRepository::class)]
-//#[ORM\UniqueConstraint(name: 'separate_concept_name', columns: ['name'])]
-//#[DoctrineAssert\UniqueEntity('name', message: 'Ya existe un concepto con este nombre.')]
+// #[ORM\UniqueConstraint(name: 'separate_concept_name', columns: ['name'])]
+// #[DoctrineAssert\UniqueEntity('name', message: 'Ya existe un concepto con este nombre.')]
 #[ORM\UniqueConstraint(name: 'separate_concept_number', columns: ['number'])]
 #[DoctrineAssert\UniqueEntity('number', message: 'Ya existe un concepto con este número.')]
 #[ORM\HasLifecycleCallbacks]

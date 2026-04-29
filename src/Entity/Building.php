@@ -1613,7 +1613,7 @@ class Building implements MeasurementDataInterface
      *
      * @return $this
      */
-    public function setObjects(?array $objects): static
+    public function setObjects(array $objects): static
     {
         $this->objects = $objects;
 

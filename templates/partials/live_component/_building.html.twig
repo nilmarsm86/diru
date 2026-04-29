@@ -6,6 +6,10 @@
     <div class="col">
         {{ form_row(population) }}
     </div>
+
+    <div class="col">
+        {{ form_row(activity) }}
+    </div>
 </div>
 
 <div class="mb-0 row">
@@ -222,7 +226,7 @@
 <details class="collection" {% if constructionAssembly.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
-            <div class="col">Valor de construcción y montaje:</div>
+            <div class="col">Valor de ...?:</div>
             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
             </div>
@@ -242,7 +246,7 @@
 <details class="collection" {% if constructionRealValue.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
-            <div class="col">Valor real del proyecto:</div>
+            <div class="col">Valor real de construcción:</div>
             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
             </div>
@@ -367,3 +371,20 @@
         </div>
     </details>
 {% endfor %}
+
+<details class="collection">
+    <summary class="collection">
+        <div class="row summary-btn-lis">
+            <div class="col">Objetos de obra:</div>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+
+            </div>
+        </div>
+    </summary>
+    <br>
+    <div class="mb-0 row">
+        <div class="col-sm-3">
+            {{ form_row(objects) }}
+        </div>
+    </div>
+</details>

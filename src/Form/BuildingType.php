@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Building;
+use App\Entity\ConstructiveAction;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
@@ -75,7 +76,15 @@ class BuildingType extends AbstractType
                 'attr' => [
                     'rows' => 1,
                 ],
-            ]);
+            ])
+            ->add('activity', EntityType::class, [
+                'class' => ConstructiveAction::class,
+                'choice_label' => 'name',
+                'label' => 'Actividad de Obra:',
+                'placeholder' => '-Seleccione-',
+                'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
+            ])
+            ->add('objects');
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $this->onPreSetData($event, $options);

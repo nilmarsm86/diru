@@ -10,7 +10,7 @@
     {{ include('partials/live_component/_building.html.twig', {
         'name' : form.name,
         'population' : form.population,
-
+        'activity' : form.activity,
         'corporateEntity' : form.corporateEntity,
         'draftsman' : (form.draftsman is defined) ? form.draftsman : null,
         'approvedValueConstruction' : form.approvedValueConstruction,
@@ -31,7 +31,9 @@
 
         'clientType': form.clientType,
         'individualClient' : form.individualClient,
-        'enterpriseClient' : form.enterpriseClient
+        'enterpriseClient' : form.enterpriseClient,
+
+        'objects' : form.objects
     }) }}
 
     <div class="row mb-3">

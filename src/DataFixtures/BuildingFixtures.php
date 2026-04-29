@@ -6,6 +6,7 @@ use App\DataFixtures\Procrea\SeparateConceptFixtures;
 use App\Entity\Building;
 use App\Entity\BuildingSeparateConcept;
 use App\Entity\Client;
+use App\Entity\ConstructiveAction;
 use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
@@ -44,6 +45,8 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 $buildingEntity->setEstimatedValueEquipment(1000000);
                 $buildingEntity->setEstimatedValueOther(1000000);
                 $buildingEntity->setPopulation(1);
+                $this->setConstructiveAction($manager, $buildingEntity);
+                $this->addBuildingObject($buildingEntity);
 
                 if ('Obra1' === $building) {
                     $draftsman = $this->findDraftsman($manager, 'Draftsman');
@@ -63,6 +66,19 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
         }
 
         $manager->flush();
+    }
+
+    private function addBuildingObject(Building $buildingEntity): void
+    {
+        $buildingEntity->addObject('Objeto de obra1')->addObject('Objeto de obra2');
+    }
+
+    private function setConstructiveAction(ObjectManager $manager, Building $buildingEntity): void
+    {
+        $constructiveActions = $manager->getRepository(ConstructiveAction::class)->findAll();
+
+        $buildingEntity->setActivity($constructiveActions[0]);
+        //        $manager->persist($buildingEntity);
     }
 
     private function addSeparateConcepts(ObjectManager $manager, Building $buildingEntity): void
@@ -88,7 +104,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
 
     private function findCorporateEntity(ObjectManager $manager): ?CorporateEntity
     {
-        return $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => 'Entidad corporativa 1']);
+        return $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => 'Entidad corporativa 2']);
     }
 
     private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
@@ -111,6 +127,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             CorporateEntityFixtures::class,
             UserFixtures::class,
             SeparateConceptFixtures::class,
+            ConstructiveActionFixtures::class,
         ];
     }
 

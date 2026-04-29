@@ -47,10 +47,17 @@ class ConstructiveAction
     #[ORM\OneToMany(targetEntity: LandNetworkConnectionConstructiveAction::class, mappedBy: 'constructiveAction')]
     private Collection $landNetworkConnectionsConstructiveAction;
 
+    /**
+     * @var Collection<int, Building>
+     */
+    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'activity')]
+    private Collection $buildings;
+
     public function __construct()
     {
         $this->localsConstructiveAction = new ArrayCollection();
         $this->landNetworkConnectionsConstructiveAction = new ArrayCollection();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,5 +163,35 @@ class ConstructiveAction
     public function isOnBuildingNetworkConnection(): bool
     {
         return $this->getLandNetworkConnectionConstructiveAction()->count() > 0;
+    }
+
+    /**
+     * @return Collection<int, Building>
+     */
+    public function getBuildings(): Collection
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Building $building): static
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuilding(Building $building): static
+    {
+        if ($this->buildings->removeElement($building)) {
+            // set the owning side to null (unless already changed)
+            if ($building->getActivity() === $this) {
+                $building->setActivity(null);
+            }
+        }
+
+        return $this;
     }
 }

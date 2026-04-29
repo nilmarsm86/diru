@@ -184,6 +184,14 @@ class Building implements MeasurementDataInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $constructionRealValueComment = null;
 
+    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ConstructiveAction $activity = null;
+
+    /** @var array<mixed> */
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private array $objects = [];
+
     public function __construct()
     {
         $this->estimatedValueEquipment = 0;
@@ -214,6 +222,7 @@ class Building implements MeasurementDataInterface
         $this->coefficient = 0;
         $this->buildingRevisions = new ArrayCollection();
         $this->constructionRealValue = 0;
+        $this->objects = [];
     }
 
     public function getId(): ?int
@@ -1577,5 +1586,44 @@ class Building implements MeasurementDataInterface
     public function getEstimatedAdjustValue(): float
     {
         return $this->getRangePrice() * $this->getCoefficient();
+    }
+
+    public function getActivity(): ?ConstructiveAction
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?ConstructiveAction $activity): static
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getObjects(): array
+    {
+        return $this->objects;
+    }
+
+    /**
+     * @param array<mixed> $objects
+     *
+     * @return $this
+     */
+    public function setObjects(?array $objects): static
+    {
+        $this->objects = $objects;
+
+        return $this;
+    }
+
+    public function addObject(string $object): static
+    {
+        $this->objects[] = $object;
+
+        return $this;
     }
 }

@@ -3,11 +3,8 @@
 namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
-use App\Entity\Currency;
 use App\Entity\MeasurementUnit;
-use App\Form\CurrencyType;
 use App\Form\MeasurementUnitType;
-use App\Repository\CurrencyRepository;
 use App\Repository\MeasurementUnitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;

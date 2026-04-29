@@ -70,14 +70,14 @@
                             <td>{{ building.state.getLabelFrom(building.state) }}</td>
                         {% endif %}
                         <td>
-                            {% if building.hasActiveConstructor() %}
+                            {% if building.hasActiveCorporateEntity() %}
                                 <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
                                    href="#" {{ stimulusController('detail-link-modal', {
-                                    url: path('app_constructor_show', {id:building.getActiveConstructorId(), state:'modal'}),
+                                    url: path('app_corporate_entity_show', {id:building.getActiveCorporateEntityId(), state:'modal'}),
                                     container: '#detail-constructor .modal-body'
                                 }) }}
                                 >
-                                    {{ building.getActiveConstructorName() }}
+                                    {{ building.getActiveCorporateEntityName() }}
                                 </a>
                             {% else %}
                                 <span class="text-danger">Sin constructora</span>

@@ -8,12 +8,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template TData of array
+ *
+ * @extends AbstractType<array>
+ */
 class SimpleArrayTextareaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var string $separator */
+        $separator = $options['separator'];
         $builder->addModelTransformer(
-            new ArrayToCsvTransformer($options['separator'])
+            new ArrayToCsvTransformer($separator)
         );
     }
 

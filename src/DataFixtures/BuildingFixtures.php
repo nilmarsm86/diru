@@ -29,10 +29,10 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 $buildingEntity = new Building();
                 $buildingEntity->setName($building);
 
-                $constructor = $this->findConstructor($manager);
-                if (null !== $constructor) {
-                    $buildingEntity->addConstructor($constructor);
-                }
+                //                $constructor = $this->findConstructor($manager);
+                //                if (null !== $constructor) {
+                //                    $buildingEntity->addConstructor($constructor);
+                //                }
 
                 $corporateEntity = $this->findCorporateEntity($manager);
                 if (null !== $corporateEntity) {
@@ -97,10 +97,10 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
         }
     }
 
-    private function findConstructor(ObjectManager $manager): ?Constructor
-    {
-        return $manager->getRepository(Constructor::class)->findOneBy(['name' => 'Constructora1']);
-    }
+    //    private function findConstructor(ObjectManager $manager): ?Constructor
+    //    {
+    //        return $manager->getRepository(Constructor::class)->findOneBy(['name' => 'Constructora1']);
+    //    }
 
     private function findCorporateEntity(ObjectManager $manager): ?CorporateEntity
     {

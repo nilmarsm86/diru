@@ -4,6 +4,7 @@ namespace App\Component\Live;
 
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
+use App\Entity\BuildingSeparateConcept;
 use App\Entity\Project;
 use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
@@ -14,6 +15,7 @@ use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SeparateConceptRepository;
 use App\Service\BuildingValuationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -368,6 +370,7 @@ final class BuildingForm extends AbstractController
         ProjectRepository $projectRepository,
         DraftsmanRepository $draftsmanRepository,
         ClientRepository $clientRepository,
+        SeparateConceptRepository $separateConceptRepository,
     ): ?Response {
         $this->preValue();
 
@@ -388,6 +391,7 @@ final class BuildingForm extends AbstractController
         $this->applyCorporateEntity($building, $corporateEntityRepository);
         $this->applyProjectToBuilding($building, $projectRepository);
         $this->applyDraftsman($building, $draftsmanRepository);
+        $this->addSeparateConcepts($separateConceptRepository, $building);
 
         $buildingRepository->save($building, true);
 
@@ -521,5 +525,21 @@ final class BuildingForm extends AbstractController
         assert($this->bui instanceof Building);
 
         return $this->buildingValuationService->getResultIte($this->bui);
+    }
+
+    private function addSeparateConcepts(SeparateConceptRepository $separateConceptRepository, Building $building): void
+    {
+        $separateConcepts = $separateConceptRepository->findBy([], ['number' => 'ASC']);
+        foreach ($separateConcepts as $separateConcept) {
+            $percent = (bool) $separateConcept->getPercent() ? $separateConcept->getPercent() : 0;
+
+            $buildingSeparateConcept = new BuildingSeparateConcept();
+            $buildingSeparateConcept->setBuilding($building);
+            $buildingSeparateConcept->setSeparateConcept($separateConcept);
+            $buildingSeparateConcept->setPercent($percent);
+
+            $building->addBuildingSeparateConcept($buildingSeparateConcept);
+            //            $manager->persist($buildingSeparateConcept);
+        }
     }
 }

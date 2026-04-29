@@ -26,6 +26,13 @@
     {% endif %}
 </div>
 
+<div class="mb-0 row">
+    <div class="col">
+        {{ form_row(objects) }}
+    </div>
+
+</div>
+
 <details class="collection" open>
     <summary class="collection" style="display: none"></summary>
     <div class="mb-0 row" {{ stimulusController('visibility') }}>
@@ -372,19 +379,4 @@
     </details>
 {% endfor %}
 
-<details class="collection">
-    <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Objetos de obra:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
-            </div>
-        </div>
-    </summary>
-    <br>
-    <div class="mb-0 row">
-        <div class="col-sm-3">
-            {{ form_row(objects) }}
-        </div>
-    </div>
-</details>

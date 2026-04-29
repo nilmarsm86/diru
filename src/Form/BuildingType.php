@@ -86,7 +86,7 @@ class BuildingType extends AbstractType
                 'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
             ])
             ->add('objects', SimpleArrayTextareaType::class, [
-                'label' => 'Objetos de obra',
+                'label' => 'Objetos de obra:',
                 'separator' => ',',
                 'attr' => [
                     'rows' => 3,

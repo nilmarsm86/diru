@@ -59,4 +59,9 @@ class InvestmentFixtures extends Fixture implements DependentFixtureInterface, F
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 21;
+    }
 }

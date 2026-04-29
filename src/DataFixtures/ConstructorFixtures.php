@@ -47,4 +47,9 @@ class ConstructorFixtures extends Fixture implements FixtureGroupInterface, Depe
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 16;
+    }
 }

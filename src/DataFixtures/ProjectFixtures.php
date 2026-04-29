@@ -166,4 +166,9 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
             }
         }
     }
+
+    public function getOrder(): int
+    {
+        return 24;
+    }
 }

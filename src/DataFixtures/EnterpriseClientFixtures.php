@@ -61,4 +61,9 @@ class EnterpriseClientFixtures extends Fixture implements DependentFixtureInterf
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 19;
+    }
 }

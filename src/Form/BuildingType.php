@@ -11,6 +11,7 @@ use App\Entity\IndividualClient;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
+use App\Form\Types\SimpleArrayTextareaType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Service\BuildingValuationService;
@@ -84,7 +85,15 @@ class BuildingType extends AbstractType
                 'placeholder' => '-Seleccione-',
                 'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
             ])
-            ->add('objects');
+            ->add('objects', SimpleArrayTextareaType::class, [
+                'label' => 'Objetos de obra',
+                'separator' => ',',
+                'attr' => [
+                    'rows' => 3,
+                    'placeholder' => 'ej: objeto de obra1, objeto de obra2, objeto de obra3',
+                ],
+                'help' => 'Ingrese las etiquetas separadas por comas',
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             $this->onPreSetData($event, $options);

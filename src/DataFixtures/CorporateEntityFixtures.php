@@ -73,4 +73,9 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 17;
+    }
 }

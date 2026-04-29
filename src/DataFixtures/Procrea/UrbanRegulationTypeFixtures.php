@@ -38,4 +38,9 @@ class UrbanRegulationTypeFixtures extends Fixture implements FixtureGroupInterfa
     {
         return ['procrea'];
     }
+
+    public function getOrder(): int
+    {
+        return 15;
+    }
 }

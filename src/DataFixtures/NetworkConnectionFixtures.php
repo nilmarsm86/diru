@@ -29,4 +29,9 @@ class NetworkConnectionFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 12;
+    }
 }

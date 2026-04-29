@@ -453,4 +453,9 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
             UrbanRegulationTypeFixtures::class,
         ];
     }
+
+    public function getOrder(): int
+    {
+        return 22;
+    }
 }

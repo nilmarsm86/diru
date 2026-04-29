@@ -62,4 +62,9 @@ class IndividualClientFixtures extends Fixture implements DependentFixtureInterf
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 20;
+    }
 }

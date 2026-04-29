@@ -190,4 +190,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 18;
+    }
 }

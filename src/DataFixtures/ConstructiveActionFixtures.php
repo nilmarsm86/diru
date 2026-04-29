@@ -43,4 +43,9 @@ class ConstructiveActionFixtures extends Fixture implements FixtureGroupInterfac
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 5;
+    }
 }

@@ -38,4 +38,9 @@ class OrganismFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['procrea'];
     }
+
+    public function getOrder(): int
+    {
+        return 13;
+    }
 }

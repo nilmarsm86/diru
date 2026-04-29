@@ -1149,4 +1149,9 @@ class SeparateConceptFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['procrea'];
     }
+
+    public function getOrder(): int
+    {
+        return 4;
+    }
 }

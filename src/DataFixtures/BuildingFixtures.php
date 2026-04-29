@@ -135,4 +135,9 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 23;
+    }
 }

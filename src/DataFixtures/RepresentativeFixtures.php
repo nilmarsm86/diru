@@ -32,4 +32,9 @@ class RepresentativeFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['default'];
     }
+
+    public function getOrder(): int
+    {
+        return 8;
+    }
 }

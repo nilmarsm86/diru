@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\Procrea;
 
-use App\Entity\CorporateEntity;
 use App\Entity\Enums\UrbanRegulationStructure;
 use App\Entity\MeasurementUnit;
 use App\Entity\UrbanRegulation;

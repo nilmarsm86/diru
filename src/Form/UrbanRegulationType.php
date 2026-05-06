@@ -64,10 +64,10 @@ class UrbanRegulationType extends AbstractType
             ->add('measurementUnit', EntityPlusType::class, [
                 'class' => MeasurementUnit::class,
                 'label' => 'Unidad de medida:',
-//                'choice_attr' => fn (MeasurementUnit $choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
-//                'attr' => [
-//                    'data-currency-target' => 'select',
-//                ],
+                //                'choice_attr' => fn (MeasurementUnit $choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
+                //                'attr' => [
+                //                    'data-currency-target' => 'select',
+                //                ],
                 'add' => true,
                 'add_title' => 'Agregar Unidad de medida',
                 'add_id' => 'modal-load',

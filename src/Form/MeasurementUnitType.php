@@ -17,8 +17,12 @@ class MeasurementUnitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('code')
+            ->add('code', null, [
+                'label' => 'Código:',
+            ])
+            ->add('name', null, [
+                'label' => 'Nombre:',
+            ])
         ;
     }
 
@@ -26,6 +30,9 @@ class MeasurementUnitType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MeasurementUnit::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

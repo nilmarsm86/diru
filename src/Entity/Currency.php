@@ -18,7 +18,7 @@ class Currency
     private ?int $id = null;
 
     #[ORM\Column(length: 3)]
-    #[Assert\NotBlank(message: 'Establezca el codigo de la moneda')]
+    #[Assert\NotBlank(message: 'Establezca el código de la moneda')]
     private ?string $code = null;
 
     public function getId(): ?int

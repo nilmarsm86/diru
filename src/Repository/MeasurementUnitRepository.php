@@ -52,7 +52,7 @@ class MeasurementUnitRepository extends ServiceEntityRepository implements Filte
     {
         if ('' !== $filter) {
             $predicate = 'mu.name LIKE :filter ';
-            $predicate .= 'mu.code LIKE :filter ';
+            $predicate .= 'OR mu.code LIKE :filter ';
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');
         }
@@ -61,7 +61,7 @@ class MeasurementUnitRepository extends ServiceEntityRepository implements Filte
     /**
      * @return Paginator<mixed>
      */
-    public function findunits(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findUnits(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('mu');
         $this->addFilter($builder, $filter);

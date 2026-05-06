@@ -16,7 +16,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent(template: 'component/live/currency_form.html.twig')]
+#[AsLiveComponent(template: 'component/live/name_and_code_form.html.twig')]
 final class CurrencyForm extends AbstractController
 {
     use DefaultActionTrait;

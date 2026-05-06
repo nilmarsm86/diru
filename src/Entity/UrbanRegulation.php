@@ -34,9 +34,9 @@ class UrbanRegulation
     #[Assert\NotBlank(message: 'El dato de la regulación está vacío.')]
     private ?string $data = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'La unidad de medida de la regulación está vacía.')]
-    private ?string $measurementUnit = null;
+//    #[ORM\Column(length: 255)]
+//    #[Assert\NotBlank(message: 'La unidad de medida de la regulación está vacía.')]
+//    private ?string $measurementUnit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
@@ -68,6 +68,11 @@ class UrbanRegulation
         message: 'Seleccione la estructura sobre la cual se aplica esta regulación.'
     )]
     private UrbanRegulationStructure $enumStructure;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'La unidad de medida de la regulación está vacía.')]
+    private ?MeasurementUnit $measurementUnit = null;
 
     public function __construct()
     {
@@ -115,17 +120,17 @@ class UrbanRegulation
         return $this;
     }
 
-    public function getMeasurementUnit(): ?string
-    {
-        return $this->measurementUnit;
-    }
-
-    public function setMeasurementUnit(string $measurementUnit): static
-    {
-        $this->measurementUnit = $measurementUnit;
-
-        return $this;
-    }
+//    public function getMeasurementUnit(): ?string
+//    {
+//        return $this->measurementUnit;
+//    }
+//
+//    public function setMeasurementUnit(string $measurementUnit): static
+//    {
+//        $this->measurementUnit = $measurementUnit;
+//
+//        return $this;
+//    }
 
     public function getPhoto(): ?string
     {
@@ -226,5 +231,17 @@ class UrbanRegulation
     public function onLoad(): void
     {
         $this->setStructure(UrbanRegulationStructure::from($this->structure));
+    }
+
+    public function getMeasurementUnit(): ?MeasurementUnit
+    {
+        return $this->measurementUnit2;
+    }
+
+    public function setMeasurementUnit(?MeasurementUnit $measurementUnit): static
+    {
+        $this->measurementUnit = $measurementUnit;
+
+        return $this;
     }
 }

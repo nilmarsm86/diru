@@ -215,6 +215,12 @@ SQL;
             return 0;
         });
 
+        foreach($result as $key => $subtree) {
+            if($subtree->getId() === $rootId) {
+                unset($result[$key]);
+            }
+        }
+
         return $result;
     }
 }

@@ -30,6 +30,9 @@ class CurrencyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Currency::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

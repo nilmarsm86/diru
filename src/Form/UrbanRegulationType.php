@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Currency;
+use App\Entity\MeasurementUnit;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType as Type;
 use App\Form\Types\EntityPlusType;
@@ -53,11 +55,23 @@ class UrbanRegulationType extends AbstractType
                     'placeholder' => 'Dato de la regulación',
                 ],
             ])
-            ->add('measurementUnit', null, [
+//            ->add('measurementUnit', null, [
+//                'label' => 'Unidad de medida:',
+//                'attr' => [
+//                    'placeholder' => 'Unidad de medida del dato',
+//                ],
+//            ])
+            ->add('measurementUnit', EntityPlusType::class, [
+                'class' => MeasurementUnit::class,
                 'label' => 'Unidad de medida:',
-                'attr' => [
-                    'placeholder' => 'Unidad de medida del dato',
-                ],
+//                'choice_attr' => fn (MeasurementUnit $choice, string $key, mixed $value) => ['data-code' => $choice->getCode()],
+//                'attr' => [
+//                    'data-currency-target' => 'select',
+//                ],
+                'add' => true,
+                'add_title' => 'Agregar Unidad de medida',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_measurement_unit_new', ['modal' => 'modal-load']),
             ])
             ->add('picture', FileType::class, [
                 'label' => 'Foto:',

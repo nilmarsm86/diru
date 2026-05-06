@@ -16,7 +16,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent(template: 'component/live/measurement_unit_form.html.twig')]
+#[AsLiveComponent(template: 'component/live/name_and_code_form.html.twig')]
 final class MeasurementUnitForm extends AbstractController
 {
     use DefaultActionTrait;
@@ -56,7 +56,7 @@ final class MeasurementUnitForm extends AbstractController
     #[LiveAction]
     public function save(MeasurementUnitRepository $measurementUnitRepository): ?Response
     {
-        $successMsg = (is_null($this->mu?->getId())) ? 'Se ha agregado la moneda.' : 'Se ha modificado la moneda.'; // TODO: personalizar los mensajes
+        $successMsg = (is_null($this->mu?->getId())) ? 'Se ha agregado la unidad de medida.' : 'Se ha modificado la unidad de medida.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 

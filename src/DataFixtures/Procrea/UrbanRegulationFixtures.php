@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures\Procrea;
 
+use App\Entity\CorporateEntity;
 use App\Entity\Enums\UrbanRegulationStructure;
+use App\Entity\MeasurementUnit;
 use App\Entity\UrbanRegulation;
 use App\Entity\UrbanRegulationType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -31,7 +33,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'code' => 'abc123',
                     'description' => 'No. máximo de niveles',
                     'data' => 'Numérico',
-                    'um' => 'Plantas',
+                    'um' => '#',
                     'observation' => 'COMPARATIVA CON OBRA',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Building,
@@ -40,7 +42,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                     'code' => 'abc123',
                     'description' => 'No. mínimo de niveles',
                     'data' => 'Numérico',
-                    'um' => 'Plantas',
+                    'um' => '#',
                     'observation' => 'COMPARATIVA CON OBRA',
                     'legal_reference' => '',
                     'structure' => UrbanRegulationStructure::Building,
@@ -430,7 +432,7 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
                         $urbanRegulationEntity->setComment($regulation['observation']);
                         $urbanRegulationEntity->setData((string) $value);
                         $urbanRegulationEntity->setDescription($regulation['description']);
-                        $urbanRegulationEntity->setMeasurementUnit($regulation['um']);
+                        $urbanRegulationEntity->setMeasurementUnit($this->findMeasurementUnit($manager, $regulation['um']));
                         $urbanRegulationEntity->setStructure($regulation['structure']);
 
                         $manager->persist($urbanRegulationEntity);
@@ -440,6 +442,11 @@ class UrbanRegulationFixtures extends Fixture implements FixtureGroupInterface, 
         }
 
         $manager->flush();
+    }
+
+    private function findMeasurementUnit(ObjectManager $manager, string $code): ?MeasurementUnit
+    {
+        return $manager->getRepository(MeasurementUnit::class)->findOneBy(['code' => $code]);
     }
 
     public static function getGroups(): array

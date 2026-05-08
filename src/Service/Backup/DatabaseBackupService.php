@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Backup;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;

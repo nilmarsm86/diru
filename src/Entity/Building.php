@@ -1529,6 +1529,11 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
+    public function hasBuildingRevisions(): bool
+    {
+        return $this->getBuildingRevisions()->count() > 0;
+    }
+
     /**
      * @return Collection<int, BuildingRevision>
      */

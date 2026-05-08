@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\DatabaseImportType;
-use App\Service\DatabaseBackupException;
-use App\Service\DatabaseBackupService;
+use App\Service\Backup\DatabaseBackupException;
+use App\Service\Backup\DatabaseBackupService;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

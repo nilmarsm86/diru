@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Backup;
 
 final class DatabaseBackupException extends \RuntimeException
 {

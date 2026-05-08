@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Building;
+use App\Entity\Enums\BuildingState;
 use App\Entity\Floor;
 use App\Entity\Role;
 use App\Form\ExtraFloorForReplyType;
@@ -73,15 +74,20 @@ final class BuildingStateController extends AbstractController
         return $this->redirectToRoute('app_building_edit', ['id' => $building->getId(), 'project' => $building->getProject()?->getId()]);
     }
 
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    #[Route('/review/{id}', name: 'app_building_state_review', methods: ['GET'])]
-    public function review(Building $building, BuildingStateService $buildingStateService): Response
+    #[Route('/state_transition/{type}/{id}', name: 'app_building_state_transition', methods: ['GET'])]
+    public function stateTransition(Building $building, BuildingStateService $buildingStateService, string $type): Response
     {
         try {
-            $buildingStateService->review($building);
-            $this->addFlash('success', 'Se ha pasado a estado de revisión');
+            $buildingState = match ($type) {
+                BuildingState::Revision->value => $buildingStateService->review($building),
+                BuildingState::Design->value => $buildingStateService->design($building),
+                BuildingState::Revised->value => $buildingStateService->revised($building),
+                default => throw new \Exception('Transición no permitida.'),
+            };
+
+            $this->addFlash('success', 'Se ha pasado a estado de '.BuildingState::getLabelFrom($buildingState));
         } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
+            $this->addFlash('danger', $exception->getMessage());
         }
 
         return $this->redirectToRoute('app_building_edit', [
@@ -90,39 +96,56 @@ final class BuildingStateController extends AbstractController
         ]);
     }
 
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    #[Route('/design/{id}', name: 'app_building_state_design', methods: ['GET'])]
-    public function design(Building $building, BuildingStateService $buildingStateService): Response
-    {
-        try {
-            $buildingStateService->design($building);
-            $this->addFlash('success', 'Se ha pasado a estado de diseño');
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-        }
+//    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+//    #[Route('/review/{id}', name: 'app_building_state_review', methods: ['GET'])]
+//    public function review(Building $building, BuildingStateService $buildingStateService): Response
+//    {
+//        try {
+//            $buildingStateService->review($building);
+//            $this->addFlash('success', 'Se ha pasado a estado de '.BuildingState::Revision->getLabelFrom(BuildingState::Revision));
+//        } catch (\Exception $exception) {
+//            $this->addFlash('danger', $exception->getMessage());
+//        }
+//
+//        return $this->redirectToRoute('app_building_edit', [
+//            'id' => $building->getId(),
+//            'project' => $building->getProject()?->getId(),
+//        ]);
+//    }
 
-        return $this->redirectToRoute('app_building_edit', [
-            'id' => $building->getId(),
-            'project' => $building->getProject()?->getId(),
-        ]);
-    }
+//    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+//    #[Route('/design/{id}', name: 'app_building_state_design', methods: ['GET'])]
+//    public function design(Building $building, BuildingStateService $buildingStateService): Response
+//    {
+//        try {
+//            $buildingStateService->design($building);
+//            $this->addFlash('success', 'Se ha pasado a estado de diseño');
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//        }
+//
+//        return $this->redirectToRoute('app_building_edit', [
+//            'id' => $building->getId(),
+//            'project' => $building->getProject()?->getId(),
+//        ]);
+//    }
 
-    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
-    #[Route('/revised/{id}', name: 'app_building_state_revised', methods: ['GET'])]
-    public function revised(Building $building, BuildingStateService $buildingStateService): Response
-    {
-        try {
-            $buildingStateService->revised($building);
-            $this->addFlash('success', 'Se ha pasado a estado de revisado.');
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-        }
-
-        return $this->redirectToRoute('app_building_edit', [
-            'id' => $building->getId(),
-            'project' => $building->getProject()?->getId(),
-        ]);
-    }
+//    // TODO: agrupar en un solo metodo el cambio de estado y en dependencia del tipo de estado se gestionan sus revisiones
+//    #[Route('/revised/{id}', name: 'app_building_state_revised', methods: ['GET'])]
+//    public function revised(Building $building, BuildingStateService $buildingStateService): Response
+//    {
+//        try {
+//            $buildingStateService->revised($building);
+//            $this->addFlash('success', 'Se ha pasado a estado de revisado.');
+//        } catch (\Exception $exception) {
+//            $this->addFlash('error', $exception->getMessage());
+//        }
+//
+//        return $this->redirectToRoute('app_building_edit', [
+//            'id' => $building->getId(),
+//            'project' => $building->getProject()?->getId(),
+//        ]);
+//    }
 
     #[Route('/reset/{id}', name: 'app_building_state_reset', methods: ['GET'])]
     public function reset(Building $building, BuildingResetService $buildingResetService): Response

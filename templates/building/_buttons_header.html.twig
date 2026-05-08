@@ -41,12 +41,13 @@
     </div>
 
     {% if building.state.value is same as '4' %}
-        {{ tableActionButton3(path('app_building_state_design', {'id': building.id}), '', 'Virar a diseño', 'Pasar a estado de diseño') }}
-        {{ tableActionButton3(path('app_building_state_revised', {'id': building.id}), '', 'Revisado', 'Pasar a estado de revisado') }}
+        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }}
+        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }}
     {% endif %}
 
     {% if building.state.value not in ['1', '2'] %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
+            {% if building.hasBuildingRevisions() or building.state.value is same as '4' %}
             <button
                 class="btn text-decoration-none btn-sm btn-primary"
                 {{ stimulusController('modal-content-loader', {
@@ -57,8 +58,11 @@
                 }) }}
                 {{ stimulusTarget('modal-content-loader', 'button') }}
             >
+                {{ ux_icon('bi:list', {'class':'bi'}) }}
                 Revisiones
             </button>
+            {% endif %}
+
             {% if building.state.value is same as '4' %}
                 <button
                     class="btn text-decoration-none btn-sm btn-primary show"
@@ -77,7 +81,7 @@
     {% endif %}
 
     {% if building.state.value is same as '3' %}
-        {{ tableActionButton3(path('app_building_state_review', {'id': building.id}), '', 'Revisar', 'Pasar a estado de revisión') }}
+        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type': '4'}), 'material-symbols:rate-review', 'Revisar', 'Pasar a estado de revisión') }}
     {% endif %}
 
     {% if building.canReply() and building.hasErrors() == false %}
@@ -97,7 +101,7 @@
             placeholder: 'Cargando...',
             title: 'Desglose de presupuesto',
         }) ~ stimulusTarget('modal-content-loader', 'button') %}
-        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), '', 'Desglose', 'Desglose', action_save) }}
+        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', 'Desglose', 'Desglose', action_save) }}
     {% endif %}
 
     {% if building.isNew() is not null %}

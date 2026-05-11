@@ -7,7 +7,7 @@ use App\Entity\Role;
 use App\Repository\BuildingSeparateConceptRepository;
 use App\Repository\SeparateConceptRepository;
 use App\Service\AssociativeEntryCollection;
-use App\Service\BuildingValuationService;
+use App\Service\Building\BuildingValuationService;
 use App\Service\FormulaEvaluator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

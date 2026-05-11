@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Building;
 
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
 use Doctrine\ORM\EntityManagerInterface;
-use DomainException;
 
 readonly class BuildingStateService
 {
@@ -17,7 +16,7 @@ readonly class BuildingStateService
     /**
      * Cambia el estado de la obra con todas las reglas y side-effects necesarios.
      *
-     * @throws DomainException si la transición no está permitida
+     * @throws \DomainException si la transición no está permitida
      */
     public function transitionTo(Building $building, BuildingState $newState): void
     {
@@ -33,9 +32,9 @@ readonly class BuildingStateService
         match ($newState) {
             BuildingState::Revision,
             BuildingState::Revised => function () use ($building) {
-                //TODO: revisar que todos los locales tengan acciones constructivas
+                // TODO: revisar que todos los locales tengan acciones constructivas
                 $this->deactivateActiveRevisions($building);
-                //TODO: guardar el ITE de los subsistemas
+                // TODO: guardar el ITE de los subsistemas
             },
             BuildingState::Design => $this->handleDesignTransition($building),
 
@@ -57,14 +56,14 @@ readonly class BuildingStateService
         // Reglas de negocio claras y fáciles de mantener
         $allowedTransitions = [
             BuildingState::Registered->value => [BuildingState::Design->value/* , BuildingState::Revision->value */],
-            BuildingState::Design->value => [BuildingState::Revision->value/*, BuildingState::Revised->value*/],
+            BuildingState::Design->value => [BuildingState::Revision->value/* , BuildingState::Revised->value */],
             BuildingState::Revision->value => [BuildingState::Revised->value, BuildingState::Design->value],
-//            BuildingState::Revised->value => [BuildingState::Design->value, BuildingState::Revision->value],
+            //            BuildingState::Revised->value => [BuildingState::Design->value, BuildingState::Revision->value],
             // Añade aquí más reglas según tu flujo real
         ];
 
         if (!isset($allowedTransitions[$current->value]) || !in_array($new->value, $allowedTransitions[$current->value], true)) {
-            throw new DomainException(sprintf('Transición no permitida de %s a %s en la obra.', $current->getLabelFrom($current), $new->getLabelFrom($new)));
+            throw new \DomainException(sprintf('Transición no permitida de %s a %s en la obra.', BuildingState::getLabelFrom($current), BuildingState::getLabelFrom($new)));
         }
     }
 

@@ -112,7 +112,7 @@ class BuildingSeparateConcept implements MoneyInterface
             return 0;
         }
 
-        return $import * 100 / (float) $this->getBuilding()?->getEstimatedAdjustValue();
+        return $import * 100 / $this->getBuilding()->getEstimatedAdjustValue();
     }
 
     /**

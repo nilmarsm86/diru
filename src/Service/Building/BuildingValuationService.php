@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Building;
 
 use App\Entity\Building;
 use App\Entity\BuildingSeparateConcept;

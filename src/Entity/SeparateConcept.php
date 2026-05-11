@@ -62,7 +62,7 @@ class SeparateConcept
     private ?float $percent = null;
 
     /**
-     * @var array <string>
+     * @var list <int|string>
      */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $ignoreNumber = [];
@@ -225,7 +225,7 @@ class SeparateConcept
     }
 
     /**
-     * @return array <string>
+     * @return list<int|string>
      */
     public function getIgnoreNumber(): array
     {
@@ -233,7 +233,7 @@ class SeparateConcept
     }
 
     /**
-     * @param array<string> $ignoreNumber
+     * @param list<int|string> $ignoreNumber
      *
      * @return $this
      */

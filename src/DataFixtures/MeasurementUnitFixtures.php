@@ -11,7 +11,7 @@ class MeasurementUnitFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $units = ['m', 'm2', 'm3', 'v', 'texto', '%', '#'];
+        $units = ['m', 'm2', 'm3', 'v', 'texto', '%', '#', 'USD/m2', 'USD/ml', 'USD/tn'];
         foreach ($units as $code) {
             $unit = $manager->getRepository(MeasurementUnit::class)->findOneBy(['code' => $code]);
             if (is_null($unit)) {

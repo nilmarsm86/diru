@@ -45,6 +45,9 @@ class Ite
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sourceAccess = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +169,18 @@ class Ite
     public function setComment(?string $comment): static
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getSourceAccess(): ?string
+    {
+        return $this->sourceAccess;
+    }
+
+    public function setSourceAccess(?string $sourceAccess): static
+    {
+        $this->sourceAccess = $sourceAccess;
 
         return $this;
     }

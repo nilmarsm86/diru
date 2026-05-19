@@ -23,3 +23,9 @@ services:
     # please note that last definitions always *replace* previous ones
     Symfony\UX\StimulusBundle\Helper\StimulusHelper: '@stimulus.helper'
     Symfony\Component\ExpressionLanguage\ExpressionLanguage: ~
+
+    App\Service\IteImport\Reader\IteReaderResolver:
+        arguments:
+            -
+                - '@App\Service\IteImport\Reader\CencremReader'
+                - '@App\Service\IteImport\Reader\InternationalSourcesReader'

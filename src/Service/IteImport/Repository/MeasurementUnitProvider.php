@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\IteImport\Repository;
 
 use App\Entity\MeasurementUnit;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\MeasurementUnitRepository;
 
 /**
  * Resuelve {@see MeasurementUnit} por código, con caché en memoria.
@@ -25,7 +25,7 @@ final class MeasurementUnitProvider
     private array $cache = [];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly MeasurementUnitRepository $measurementUnitRepository,
     ) {
     }
 
@@ -40,8 +40,7 @@ final class MeasurementUnitProvider
             return $this->cache[$normalized];
         }
 
-        $unit = $this->em->getRepository(MeasurementUnit::class)
-            ->findOneBy([self::FIELD_NAME => $normalized]);
+        $unit = $this->measurementUnitRepository->findOneBy([self::FIELD_NAME => $normalized]);
 
         if (null === $unit) {
             throw new \RuntimeException(sprintf("MeasurementUnit con código '%s' (normalizado: '%s') no encontrada en BD.", $code, $normalized));

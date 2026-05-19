@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\IteQuality;
+use App\Entity\Enums\IteType;
 use App\Repository\IteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IteRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Ite
 {
     #[ORM\Id]
@@ -15,19 +19,22 @@ class Ite
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $source = null;
+    private string $type;
+
+    #[Assert\Choice(
+        choices: IteType::CHOICES,
+        message: 'Seleccione el tipo de ITE.'
+    )]
+    private IteType $enumType;
 
     #[ORM\Column(length: 255)]
-    private ?string $country = null;
+    private string $quality;
 
-    #[ORM\Column(length: 255)]
-    private ?string $city = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $projectType = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $quality = null;
+    #[Assert\Choice(
+        choices: IteQuality::CHOICES,
+        message: 'Seleccione la calidad.'
+    )]
+    private IteQuality $enumQuality;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -48,67 +55,51 @@ class Ite
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sourceAccess = null;
 
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'ites')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?IteSource $source = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?IteProjectType $projectType = null;
+
+    public function __construct()
+    {
+        $this->setQuality(IteQuality::Medium);
+        $this->setType(IteType::National);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSource(): ?string
+    public function getType(): IteType
     {
-        return $this->source;
+        return $this->enumType;
     }
 
-    public function setSource(string $source): static
+    public function setType(IteType $enumType): static
     {
-        $this->source = $source;
+        $this->type = '';
+        $this->enumType = $enumType;
 
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getQuality(): IteQuality
     {
-        return $this->country;
+        return $this->enumQuality;
     }
 
-    public function setCountry(string $country): static
+    public function setQuality(IteQuality $enumQuality): static
     {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getProjectType(): ?string
-    {
-        return $this->projectType;
-    }
-
-    public function setProjectType(string $projectType): static
-    {
-        $this->projectType = $projectType;
-
-        return $this;
-    }
-
-    public function getQuality(): ?string
-    {
-        return $this->quality;
-    }
-
-    public function setQuality(string $quality): static
-    {
-        $this->quality = $quality;
+        $this->quality = '';
+        $this->enumQuality = $enumQuality;
 
         return $this;
     }
@@ -183,5 +174,59 @@ class Ite
         $this->sourceAccess = $sourceAccess;
 
         return $this;
+    }
+
+    public function getSource(): ?IteSource
+    {
+        return $this->source;
+    }
+
+    public function setSource(?IteSource $source): static
+    {
+        $this->source = $source;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getProjectType(): ?IteProjectType
+    {
+        return $this->projectType;
+    }
+
+    public function setProjectType(?IteProjectType $projectType): static
+    {
+        $this->projectType = $projectType;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function onSave(): void
+    {
+        $this->quality = $this->getQuality()->value;
+        $this->type = $this->getType()->value;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    #[ORM\PostLoad]
+    public function onLoad(): void
+    {
+        $this->setQuality(IteQuality::from($this->quality));
+        $this->setType(IteType::from($this->type));
     }
 }

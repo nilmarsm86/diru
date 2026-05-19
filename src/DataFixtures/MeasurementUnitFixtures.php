@@ -37,6 +37,15 @@ class MeasurementUnitFixtures extends Fixture implements FixtureGroupInterface
                 if ('#' === $code) {
                     $unit->setName('Numérico');
                 }
+                if ('USD/m2' === $code) {
+                    $unit->setName('Dolar por metro cuadrado');
+                }
+                if ('USD/ml' === $code) {
+                    $unit->setName('Dolar por metro lineal ?');
+                }
+                if ('USD/tn' === $code) {
+                    $unit->setName('Dolar por tonelada');
+                }
 
                 $unit->setCode($code);
                 $manager->persist($unit);

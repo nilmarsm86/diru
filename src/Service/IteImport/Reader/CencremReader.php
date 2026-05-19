@@ -35,14 +35,17 @@ final class CencremReader extends AbstractIteExcelReader
 
     protected function buildDto(array $row, string $sheetName, int $rowNumber): IteImportRow
     {
+        //        $methodology = $this->optionalString($row, 'methodology_note');
+        //        $commentParts = [];
+        //
+        //        if (null !== $methodology) {
+        //            $commentParts[] = $methodology;
+        //        }
+        //
+        //        $comment = [] === $commentParts ? null : implode(' | ', $commentParts);
         $methodology = $this->optionalString($row, 'methodology_note');
-        $commentParts = [];
-
-        if (null !== $methodology) {
-            $commentParts[] = $methodology;
-        }
-
-        $comment = [] === $commentParts ? null : implode(' | ', $commentParts);
+        //        $access = $this->optionalString($row, 'source_access');
+        $comment = $this->joinNonEmpty([$methodology], ' | ');
 
         return new IteImportRow(
             source: $this->requireString($row, 'source'),
@@ -59,5 +62,15 @@ final class CencremReader extends AbstractIteExcelReader
             originSheet: $sheetName,
             originRowNumber: $rowNumber,
         );
+    }
+
+    /**
+     * @param list<?string> $parts
+     */
+    private function joinNonEmpty(array $parts, string $glue): ?string
+    {
+        $filtered = array_filter($parts, static fn (?string $p): bool => null !== $p && '' !== $p);
+
+        return [] === $filtered ? null : implode($glue, $filtered);
     }
 }

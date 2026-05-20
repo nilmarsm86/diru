@@ -20,21 +20,22 @@ final class ExcelImportType extends AbstractType
     {
         $builder
             ->add('excel', FileType::class, [
-                'label' => 'Archivo de salva (*.xls, *.xlsx, *.ods, *.odsx)',
+                'label' => 'Archivo de salva (*.xls, *.xlsx, *.ods, *.fods)',
                 'mapped' => false,
                 'required' => true,
                 'attr' => [
-                    'accept' => '.xls, .xlsx, .ods, .odsx',
+                    'accept' => '.xls, .xlsx, .ods, .fods',
                 ],
                 'constraints' => [
                     new NotNull(message: 'Debes seleccionar un archivo válido.'),
                     new File(
                         maxSize: '5M',
-                        //                        mimeTypes: [
-                        //                            'application/x-sqlite3',
-                        //                            'application/vnd.sqlite3',
-                        //                            'application/octet-stream', // SQLite suele venir así
-                        //                        ],
+                        mimeTypes: [
+                            'application/vnd.ms-excel',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            'application/vnd.oasis.opendocument.spreadsheet',
+                            'application/vnd.oasis.opendocument.spreadsheet-flat-xml',
+                        ],
                         mimeTypesMessage: 'Debes seleccionar un archivo de excel válido.',
                     ),
                 ],

@@ -1,0 +1,22 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}ITE: {{ ite.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('ITE') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'ITE', href: path('app_ite_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">ITE: {{ ite.name }}</h2>
+
+    {{ include('ite/_detail.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

@@ -43,7 +43,7 @@ final class IteUploadController extends AbstractController
             $msg = $result->getImportedCount().' referencias importadas correctamente.';
             $skippedSheets = $result->getSkippedSheets();
             if (count($skippedSheets) > 0) {
-                $msg .= ' Se a saltado la(s) hoja(s) '.join(', ', $skippedSheets).', por estar vacías.';
+                $msg .= ' Se a saltado la(s) hoja(s) '.join(', ', $skippedSheets).', por estar vacía(s).';
             }
 
             $this->addFlash('success', $msg);
@@ -51,6 +51,6 @@ final class IteUploadController extends AbstractController
             $this->addFlash('danger', $e->getMessage());
         }
 
-        return $this->redirectToRoute('ite_upload_index');
+        return $this->redirectToRoute('app_ite_index');
     }
 }

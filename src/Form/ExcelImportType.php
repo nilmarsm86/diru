@@ -14,31 +14,31 @@ use Symfony\Component\Validator\Constraints\NotNull;
  *
  * @extends AbstractType<array>
  */
-final class DatabaseImportType extends AbstractType
+final class ExcelImportType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('database', FileType::class, [
-                'label' => 'Archivo de salva (*.sqlite, *.db)',
+            ->add('excel', FileType::class, [
+                'label' => 'Archivo de salva (*.xls, *.xlsx, *.ods, *.odsx)',
                 'mapped' => false,
                 'required' => true,
                 'attr' => [
-                    'accept' => '.sqlite,.db',
+                    'accept' => '.xls, .xlsx, .ods, .odsx',
                 ],
                 'constraints' => [
-                    new NotNull(message: 'Debes seleccionar un archivo de salva.'),
+                    new NotNull(message: 'Debes seleccionar un archivo válido.'),
                     new File(
-                        maxSize: '200M',
-                        mimeTypes: [
-                            'application/x-sqlite3',
-                            'application/vnd.sqlite3',
-                            'application/octet-stream', // SQLite suele venir así
-                        ],
-                        mimeTypesMessage: 'El archivo debe ser una salva correcta.',
+                        maxSize: '5M',
+                        //                        mimeTypes: [
+                        //                            'application/x-sqlite3',
+                        //                            'application/vnd.sqlite3',
+                        //                            'application/octet-stream', // SQLite suele venir así
+                        //                        ],
+                        mimeTypesMessage: 'Debes seleccionar un archivo de excel válido.',
                     ),
                 ],
-                'help' => 'Archivos *.sqlite, *.db',
+                'help' => 'Archivos *.xls, *.xlsx, *.ods, *.odsx',
             ]);
     }
 

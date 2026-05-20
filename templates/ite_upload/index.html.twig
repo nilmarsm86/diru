@@ -1,0 +1,33 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Referencias Ite{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Referencias Ite') }}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {% component 'Card:Card' with {
+                title: 'Importar',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Importar</h6>
+                    {{ form_start(import_form, { attr: { enctype: 'multipart/form-data' }, action: path('ite_upload_import') }) }}
+                    {{ form_row(import_form.excel) }}
+                    {{ component('button:submit', {
+                        icon: 'bi:upload',
+                        label: 'Importar',
+                        type: 'primary',
+                        size: null,
+                        component: null
+                    }) }}
+                    {{ form_end(import_form) }}
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+{% endblock %}

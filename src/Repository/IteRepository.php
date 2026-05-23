@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Enums\IteQuality;
+use App\Entity\Enums\IteType;
 use App\Entity\Ite;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -54,26 +56,53 @@ class IteRepository extends ServiceEntityRepository
             $predicate = 'i.min LIKE :filter ';
             $predicate .= 'OR i.max LIKE :filter ';
             $predicate .= 'OR i.yearReference LIKE :filter ';
-            //            if ($place) {
-            //                $predicate .= 'OR c.name LIKE :filter ';
-            //            }
+            if ($place) {
+                $predicate .= 'OR c.name LIKE :filter ';
+            }
 
             $builder->andWhere($predicate)
                 ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
+    private function addQuality(QueryBuilder $builder, string $quality): void
+    {
+        if ('' !== $quality) {
+            $quality = IteQuality::from($quality);
+            $builder->andWhere('i.quality = :quality ')->setParameter(':quality', $quality);
+        }
+    }
+
+    private function addMeasurementUnit(QueryBuilder $builder, string $measurementUnit): void
+    {
+        if ('' !== $measurementUnit) {
+            $builder->andWhere('mu.code = :measurementUnit ')->setParameter(':measurementUnit', $measurementUnit);
+        }
+    }
+
     /**
      * @return Paginator<mixed>
      */
-    public function findItes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
-    {
+    public function findItes(
+        string $filter = '',
+        int $amountPerPage = 10,
+        int $page = 1,
+        ?IteType $type = null,
+        string $quality = '',
+        string $measurementUnit = '',
+    ): Paginator {
         $builder = $this->createQueryBuilder('i')
             ->select(['i', 'mu', 'ites', 'c', 'ipt'])
             ->leftJoin('i.measurementUnit', 'mu')
             ->leftJoin('i.source', 'ites')
             ->leftJoin('i.city', 'c')
             ->leftJoin('i.projectType', 'ipt');
+        if (null !== $type) {
+            $builder->where('i.type = :type')
+                ->setParameter(':type', $type);
+        }
+        $this->addQuality($builder, $quality);
+        $this->addMeasurementUnit($builder, $measurementUnit);
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('i.yearReference', 'DESC')->getQuery();
 

@@ -2,12 +2,31 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de ITE',
+    title: 'Listado de ITE '~ type.getLabelFrom(type),
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path(path),
+                queryNames:['quality', 'amount', 'filter', 'page', 'mu']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:path,
+                label:'Calidad',
+                queryName: 'quality',
+                options:qualities
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:path,
+                label:'Unidad de medida',
+                queryName: 'mu',
+                options:measurementUnits
+            }) }}
+
             {{ tableActionButton3(path('app_ite_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_new')})) }}
         </div>
     {% endblock %}
@@ -19,19 +38,22 @@
 
             {% block tableHead %}
                 <tr>
-{#                    <th>Id</th>#}
-                    <th>Type</th>
-                    <th>Quality</th>
+                    {% if type is not defined %}
+                        <th>Tipo</th>
+                    {% endif %}
+                    {% if app.request.query.get('quality') == '' %}
+                        <th>Calidad</th>
+                    {% endif %}
                     <th>Min</th>
                     <th>Max</th>
-                    <th>Unidad de Medida</th>
+                    {% if app.request.query.get('mu') == '' %}
+                        <th>Unidad de Medida</th>
+                    {% endif %}
                     <th>Fuente</th>
-                    <th>YearReference</th>
+                    <th>Año de referencia</th>
                     <th>Ciudad</th>
-                    <th>País</th>
+{#                    <th>País</th>#}
                     <th>Tipo de proyecto</th>
-{#                    <th>Comment</th>#}
-{#                    <th>SourceAccess</th>#}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -41,19 +63,22 @@
 
                 {% for ite in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
-{#                        <td>{{ ite.id }}</td>#}
-                        <td>{{ ite.type.getLabelFrom(ite.type) }}</td>
-                        <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
+                        {% if type is not defined %}
+                            <td>{{ ite.type.getLabelFrom(ite.type) }}</td>
+                        {% endif %}
+                        {% if app.request.query.get('quality') == '' %}
+                            <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
+                        {% endif %}
                         <td>{{ ite.min }}</td>
                         <td>{{ ite.max }}</td>
-                        <td>{{ ite.measurementUnit.code }}</td>
+                        {% if app.request.query.get('mu') == '' %}
+                            <td>{{ ite.measurementUnit.code }}</td>
+                        {% endif %}
                         <td>{{ ite.source.name }}</td>
                         <td>{{ ite.yearReference }}</td>
                         <td>{{ ite.city.name }}</td>
-                        <td>{{ ite.city.country.name }}</td>
+{#                        <td>{{ ite.city.country.name }}</td>#}
                         <td>{{ ite.projectType.name }}</td>
-{#                        <td>{{ ite.comment }}</td>#}
-{#                        <td>{{ ite.sourceAccess }}</td>#}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_ite_edit', {'id': ite.id}), 'fa:edit', '', 'Editar ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_edit', {'id': ite.id})}), 'btn-link') }}
@@ -70,7 +95,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="2">No se encontraron ITE.</td>
+                        <td colspan="2">No se encontraron ITE de referencia.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

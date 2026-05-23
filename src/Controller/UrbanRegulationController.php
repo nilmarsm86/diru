@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\DTO\EnumSimulator;
 use App\DTO\Paginator;
 use App\Entity\Enums\UrbanRegulationStructure;
 use App\Entity\Role;
@@ -47,17 +46,12 @@ final class UrbanRegulationController extends AbstractController
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
-        $enumSimulators = [];
-        foreach ($urbanRegulationTypeRepository->findAll() as $urbanRegulationType) {
-            $enumSimulators[] = new EnumSimulator($urbanRegulationType->getName());
-        }
-
         $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
 
         return $this->render("urban_regulation/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'types' => $enumSimulators,
+            'types' => $urbanRegulationTypeRepository->findAll(),
             'structures' => UrbanRegulationStructure::cases(),
         ]);
     }

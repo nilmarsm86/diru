@@ -15,7 +15,7 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Gestión de ITE</h2>
+    <h2 class="mb-4">Gestión de ITE {% if type is defined %}{{ type.getLabelFrom(type) }}{% endif %}</h2>
 
     {% component ManagePage %}
         {% block list %}

@@ -4,14 +4,14 @@ namespace App\DTO;
 
 class EnumSimulator
 {
-    public string $value;
+    public mixed $value;
 
-    public function __construct(string $value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
     }
 
-    public function getLabelFrom(?EnumSimulator $enum = null): string
+    public function getLabelFrom(?EnumSimulator $enum = null): mixed
     {
         if (null !== $enum) {
             return $enum->value;

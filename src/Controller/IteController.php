@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
+use App\Entity\Enums\CorporateEntityType;
+use App\Entity\Enums\IteQuality;
+use App\Entity\Enums\IteType;
 use App\Entity\Ite;
 use App\Repository\IteRepository;
+use App\Repository\MeasurementUnitRepository;
 use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,16 +23,42 @@ use Twig\Error\SyntaxError;
 #[Route('/ite_manage')]
 final class IteController extends AbstractController
 {
-    #[Route(name: 'app_ite_index', methods: ['GET'])]
-    public function index(Request $request, RouterInterface $router, IteRepository $iteRepository): Response
+    //    #[Route(name: 'app_ite_index', methods: ['GET'])]
+    //    public function index(Request $request, RouterInterface $router, IteRepository $iteRepository): Response
+    //    {
+    //        $filter = $request->query->get('filter', '');
+    //        $amountPerPage = (int) $request->query->get('amount', '10');
+    //        $pageNumber = (int) $request->query->get('page', '1');
+    //
+    //        //        $type = $request->query->get('entity', '');
+    //
+    //        $data = $iteRepository->findItes($filter, $amountPerPage, $pageNumber);
+    //
+    //        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+    //        if ($paginator->isFromGreaterThanTotal()) {
+    //            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+    //        }
+    //
+    //        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+    //
+    //        return $this->render("ite/$template", [
+    //            'filter' => $filter,
+    //            'paginator' => $paginator,
+    //            //            'types' => CorporateEntityType::cases(),
+    //        ]);
+    //    }
+
+    #[Route('/national', name: 'app_ite_national', methods: ['GET'])]
+    public function national(Request $request, RouterInterface $router, IteRepository $iteRepository, MeasurementUnitRepository $measurementUnitRepository): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
-        //        $type = $request->query->get('entity', '');
+        $quality = $request->query->get('quality', '');
+        $measurementUnit = $request->query->get('mu', '');
 
-        $data = $iteRepository->findItes($filter, $amountPerPage, $pageNumber);
+        $data = $iteRepository->findItes($filter, $amountPerPage, $pageNumber, IteType::National, $quality, $measurementUnit);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -40,7 +70,33 @@ final class IteController extends AbstractController
         return $this->render("ite/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            //            'types' => CorporateEntityType::cases(),
+            'type' => IteType::National,
+            'path' => 'app_ite_national',
+            'qualities' => IteQuality::cases(),
+            'measurementUnits' => $measurementUnitRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/international', name: 'app_ite_international', methods: ['GET'])]
+    public function international(Request $request, RouterInterface $router, IteRepository $iteRepository): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $iteRepository->findItes($filter, $amountPerPage, $pageNumber, IteType::International);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("ite/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'type' => IteType::International,
         ]);
     }
 

@@ -36,6 +36,20 @@
                                 style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
 
                                 <li>
+                                    <a class="dropdown-item d-flex gap-2 align-items-center"
+                                       href="">
+                                        {{ ux_icon('icon-park-outline:international', {class:'bi'}) }} Paises
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex gap-2 align-items-center"
+                                       href="">
+                                        {{ ux_icon('icon-park:local', {class:'bi'}) }} Ciudades
+                                    </a>
+                                </li>
+
+                                <li>
                                     <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_province_index') }}"
                                        href="{{ path('app_province_index') }}">
                                         {{ ux_icon('ic:outline-place', {class:'bi'}) }} Provincias

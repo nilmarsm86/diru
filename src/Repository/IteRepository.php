@@ -58,6 +58,7 @@ class IteRepository extends ServiceEntityRepository
             $predicate .= 'OR i.yearReference LIKE :filter ';
             if ($place) {
                 $predicate .= 'OR c.name LIKE :filter ';
+                $predicate .= 'OR cou.name LIKE :filter ';
             }
 
             $builder->andWhere($predicate)
@@ -80,6 +81,34 @@ class IteRepository extends ServiceEntityRepository
         }
     }
 
+    private function addSource(QueryBuilder $builder, string $source): void
+    {
+        if ('' !== $source) {
+            $builder->andWhere('ites.name = :source ')->setParameter(':source', $source);
+        }
+    }
+
+    private function addProjectType(QueryBuilder $builder, string $projectType): void
+    {
+        if ('' !== $projectType) {
+            $builder->andWhere('ipt.name = :projectType ')->setParameter(':projectType', $projectType);
+        }
+    }
+
+    private function addCity(QueryBuilder $builder, string $city): void
+    {
+        if ('' !== $city) {
+            $builder->andWhere('c.name = :city ')->setParameter(':city', $city);
+        }
+    }
+
+    private function addCountry(QueryBuilder $builder, string $country): void
+    {
+        if ('' !== $country) {
+            $builder->andWhere('cou.name = :country ')->setParameter(':country', $country);
+        }
+    }
+
     /**
      * @return Paginator<mixed>
      */
@@ -90,12 +119,17 @@ class IteRepository extends ServiceEntityRepository
         ?IteType $type = null,
         string $quality = '',
         string $measurementUnit = '',
+        string $source = '',
+        string $projectType = '',
+        string $city = '',
+        string $country = '',
     ): Paginator {
         $builder = $this->createQueryBuilder('i')
             ->select(['i', 'mu', 'ites', 'c', 'ipt'])
             ->leftJoin('i.measurementUnit', 'mu')
             ->leftJoin('i.source', 'ites')
             ->leftJoin('i.city', 'c')
+            ->leftJoin('c.country', 'cou')
             ->leftJoin('i.projectType', 'ipt');
         if (null !== $type) {
             $builder->where('i.type = :type')
@@ -103,8 +137,13 @@ class IteRepository extends ServiceEntityRepository
         }
         $this->addQuality($builder, $quality);
         $this->addMeasurementUnit($builder, $measurementUnit);
+        $this->addSource($builder, $source);
+        $this->addProjectType($builder, $projectType);
+        $this->addCity($builder, $city);
+        $this->addCountry($builder, $country);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('i.yearReference', 'DESC')->getQuery();
+        $query = $builder->orderBy('i.yearReference', 'DESC')
+            ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

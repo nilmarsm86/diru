@@ -18,30 +18,54 @@
 
     {% block body %}
         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-{#            <table class="table table-hover">#}
-{#                <tbody>#}
-{#                <tr>#}
-{#                    <th>Nombre:</th>#}
-{#                    <td>{{ province.name }}</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <th>Municipios:</th>#}
-{#                    <td>#}
-{#                        <ul class="px-0 list-unstyled">#}
-{#                            {% for municipality in province.municipalities %}#}
-{#                                <li>#}
-{#                                    <a href="{{ path('app_municipality_show', {'id': municipality.id}) }}" target="_blank">#}
-{#                                        {{ municipality.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}#}
-{#                                    </a>#}
-{#                                </li>#}
-{#                            {% else %}#}
-{#                                <li class="text-danger">No tiene municipios asociados</li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    </td>#}
-{#                </tr>#}
-{#                </tbody>#}
-{#            </table>#}
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Calidad:</th>
+                    <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
+                </tr>
+                <tr>
+                    <th>Mínimo:</th>
+                    <td>{{ ite.min }}</td>
+                </tr>
+                <tr>
+                    <th>Máximo:</th>
+                    <td>{{ ite.max }}</td>
+                </tr>
+                <tr>
+                    <th>Unidad de medida:</th>
+                    <td>{{ ite.measurementUnit.name ~ ' (' ~ ite.measurementUnit.code ~ ')' }}</td>
+                </tr>
+                <tr>
+                    <th>Fuente:</th>
+                    <td>{{ ite.source.name }}</td>
+                </tr>
+                <tr>
+                    <th>Año de referencia:</th>
+                    <td>{{ ite.yearReference }}</td>
+                </tr>
+                <tr>
+                    <th>País:</th>
+                    <td>{{ ite.city.country.name }}</td>
+                </tr>
+                <tr>
+                    <th>Ciudad:</th>
+                    <td>{{ ite.city.name }}</td>
+                </tr>
+                <tr>
+                    <th>Tipo de proyecto:</th>
+                    <td>{{ ite.projectType.name }}</td>
+                </tr>
+                <tr>
+                    <th>Fuente de acceso:</th>
+                    <td>{{ ite.sourceAccess }}</td>
+                </tr>
+                <tr>
+                    <th>Comentario:</th>
+                    <td>{{ ite.comment }}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     {% endblock %}
 
@@ -50,7 +74,7 @@
             list: {href: 'app_ite_index', label: 'Listado', title:'Volver al listado'},
             edit: {href: 'app_ite_edit', label: 'Editar', title:'Editar ITE'},
             delete: {href: 'app_ite_delete', label: 'Eliminar', title:'Eliminar ITE'},
-            id: province.id,
+            id: ite.id,
             message: 'Está seguro que desea eliminar el ITE?',
             state: 'detail',
             showButton: (showButton is defined and showButton == true) ? true : false

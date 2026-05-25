@@ -10,7 +10,7 @@
         <div>
             {{ component('Card:Refresh', {
                 path: path(path),
-                queryNames:['quality', 'amount', 'filter', 'page', 'mu']
+                queryNames:['quality', 'amount', 'filter', 'page', 'mu', 'source', 'pt', 'city', 'country']
             }) }}
 
             {{ component('Card:FilterDropDown', {
@@ -26,6 +26,36 @@
                 queryName: 'mu',
                 options:measurementUnits
             }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:path,
+                label:'Fuente',
+                queryName: 'source',
+                options:sources
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:path,
+                label:'Tipo de proyecto',
+                queryName: 'pt',
+                options:projectTypes
+            }) }}
+
+            {% if path is same as 'app_ite_international' %}
+                {{ component('Card:FilterDropDown', {
+                    path:path,
+                    label:'Ciudades',
+                    queryName: 'city',
+                    options:cities
+                }) }}
+
+                {{ component('Card:FilterDropDown', {
+                    path:path,
+                    label:'Paises',
+                    queryName: 'country',
+                    options:countries
+                }) }}
+            {% endif %}
 
             {{ tableActionButton3(path('app_ite_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_new')})) }}
         </div>
@@ -49,11 +79,21 @@
                     {% if app.request.query.get('mu') == '' %}
                         <th>Unidad de Medida</th>
                     {% endif %}
-                    <th>Fuente</th>
+                    {% if app.request.query.get('source') == '' %}
+                        <th>Fuente</th>
+                    {% endif %}
                     <th>Año de referencia</th>
-                    <th>Ciudad</th>
-{#                    <th>País</th>#}
-                    <th>Tipo de proyecto</th>
+                    {% if path is same as 'app_ite_international' %}
+                        {% if app.request.query.get('city') == '' %}
+                            <th>Ciudad</th>
+                        {% endif %}
+                        {% if app.request.query.get('country') == '' %}
+                            <th>País</th>
+                        {% endif %}
+                    {% endif %}
+                    {% if app.request.query.get('pt') == '' %}
+                        <th>Tipo de proyecto</th>
+                    {% endif %}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -74,11 +114,21 @@
                         {% if app.request.query.get('mu') == '' %}
                             <td>{{ ite.measurementUnit.code }}</td>
                         {% endif %}
-                        <td>{{ ite.source.name }}</td>
+                        {% if app.request.query.get('source') == '' %}
+                            <td>{{ ite.source.name }}</td>
+                        {% endif %}
                         <td>{{ ite.yearReference }}</td>
-                        <td>{{ ite.city.name }}</td>
-{#                        <td>{{ ite.city.country.name }}</td>#}
-                        <td>{{ ite.projectType.name }}</td>
+                        {% if path is same as 'app_ite_international' %}
+                            {% if app.request.query.get('city') == '' %}
+                                <td>{{ ite.city.name }}</td>
+                            {% endif %}
+                            {% if app.request.query.get('country') == '' %}
+                                <td>{{ ite.city.country.name }}</td>
+                            {% endif %}
+                        {% endif %}
+                        {% if app.request.query.get('pt') == '' %}
+                            <td>{{ ite.projectType.name }}</td>
+                        {% endif %}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
                             {{ tableActionButton3(path('app_ite_edit', {'id': ite.id}), 'fa:edit', '', 'Editar ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_edit', {'id': ite.id})}), 'btn-link') }}

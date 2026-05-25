@@ -40,17 +40,22 @@ final class IteUploadController extends AbstractController
             assert($excel instanceof UploadedFile);
             $result = $iteImportService->import($excel->getRealPath());
 
-            $msg = $result->getImportedCount().' referencias importadas correctamente.';
+            $msg = '<strong>'.$result->getImportedCount().'</strong> referencias importadas correctamente.';
+            $this->addFlash('success', $msg);
+
             $skippedSheets = $result->getSkippedSheets();
             if (count($skippedSheets) > 0) {
-                $msg .= ' Se a saltado la(s) hoja(s) '.join(', ', $skippedSheets).', por estar vacía(s).';
+                $msg = ' Se a saltado la(s) hoja(s) '.join(', ', $skippedSheets).', por estar vacía(s).';
+                $this->addFlash('info', $msg);
             }
 
-            $this->addFlash('success', $msg);
+            if ($result->getErrorCount() > 0) {
+                $this->addFlash('warning', 'Ocurrieron algunos errores durante la importación.');
+            }
         } catch (\Exception $e) {
             $this->addFlash('danger', $e->getMessage());
         }
 
-        return $this->redirectToRoute('app_ite_index');
+        return $this->redirectToRoute('ite_upload_index');
     }
 }

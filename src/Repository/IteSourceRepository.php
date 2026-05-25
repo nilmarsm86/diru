@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\IteSource;
+use App\Repository\Traits\PaginateTrait;
+use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,6 +13,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class IteSourceRepository extends ServiceEntityRepository
 {
+    use SaveData;
+    use PaginateTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, IteSource::class);

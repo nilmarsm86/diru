@@ -6,6 +6,7 @@ namespace App\Service\IteImport\Repository;
 
 use App\Entity\MeasurementUnit;
 use App\Repository\MeasurementUnitRepository;
+use App\Service\IteImport\Cache\LocalCacheTrait;
 
 /**
  * Resuelve {@see MeasurementUnit} por código, con caché en memoria.
@@ -19,35 +20,40 @@ use App\Repository\MeasurementUnitRepository;
  */
 final class MeasurementUnitProvider
 {
-    private const FIELD_NAME = 'code';
+    use LocalCacheTrait;
 
-    /** @var array<string, MeasurementUnit> Cache por código normalizado. */
-    private array $cache = [];
+    private const FIELD_NAME = 'code';
 
     public function __construct(
         private readonly MeasurementUnitRepository $measurementUnitRepository,
     ) {
     }
 
-    // TODO: se puede aplicar el metodo plantilla
-    /**
-     * @throws \RuntimeException si la unidad no existe en BD
-     */
     public function getByCode(string $code): MeasurementUnit
     {
         $normalized = $this->normalize($code);
 
-        if (isset($this->cache[$normalized])) {
-            return $this->cache[$normalized];
-        }
+        /** @var MeasurementUnit $measurementUnit */
+        $measurementUnit = $this->getCached($normalized, function () use ($normalized): MeasurementUnit {
+            return $this->getOrCreate($normalized);
+        });
 
+        return $measurementUnit;
+    }
+
+    private function getOrCreate(string $normalized): MeasurementUnit
+    {
         $unit = $this->measurementUnitRepository->findOneBy([self::FIELD_NAME => $normalized]);
 
         if (null === $unit) {
-            throw new \RuntimeException(sprintf("MeasurementUnit con código '%s' (normalizado: '%s') no encontrada en BD.", $code, $normalized));
+            $unit = new MeasurementUnit();
+            $unit->setCode($normalized);
+            $unit->setName($normalized);
+
+            $this->measurementUnitRepository->save($unit);
         }
 
-        return $this->cache[$normalized] = $unit;
+        return $unit;
     }
 
     private function normalize(string $code): string

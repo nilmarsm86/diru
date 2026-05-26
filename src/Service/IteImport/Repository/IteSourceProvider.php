@@ -6,35 +6,40 @@ namespace App\Service\IteImport\Repository;
 
 use App\Entity\IteSource;
 use App\Repository\IteSourceRepository;
+use App\Service\IteImport\Cache\LocalCacheTrait;
 
 final class IteSourceProvider
 {
-    private const FIELD_NAME = 'name';
+    use LocalCacheTrait;
 
-    /** @var array<string, IteSource> */
-    private array $cache = [];
+    private const FIELD_NAME = 'name';
 
     public function __construct(
         private readonly IteSourceRepository $iteSourceRepository,
     ) {
     }
 
-    // TODO: se puede aplicar el metodo plantilla
     public function getByName(string $name): IteSource
     {
-        if (isset($this->cache[$name])) {
-            return $this->cache[$name];
-        }
+        /** @var IteSource $iteSource */
+        $iteSource = $this->getCached($name, function () use ($name): IteSource {
+            return $this->getOrCreate($name);
+        });
 
+        return $iteSource;
+    }
+
+    private function getOrCreate(string $name): IteSource
+    {
         $source = $this->iteSourceRepository->findOneBy([self::FIELD_NAME => $name]);
 
         if (null === $source) {
             $source = new IteSource();
             $source->setName($name);
 
-            $this->iteSourceRepository->save($source, true);
+            $this->iteSourceRepository->save($source);
         }
 
-        return $this->cache[$name] = $source;
+        return $source;
     }
 }

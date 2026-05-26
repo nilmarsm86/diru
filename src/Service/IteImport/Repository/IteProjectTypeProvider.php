@@ -6,35 +6,40 @@ namespace App\Service\IteImport\Repository;
 
 use App\Entity\IteProjectType;
 use App\Repository\IteProjectTypeRepository;
+use App\Service\IteImport\Cache\LocalCacheTrait;
 
 final class IteProjectTypeProvider
 {
-    private const FIELD_NAME = 'name';
+    use LocalCacheTrait;
 
-    /** @var array<string, IteProjectType> */
-    private array $cache = [];
+    private const FIELD_NAME = 'name';
 
     public function __construct(
         private readonly IteProjectTypeRepository $iteProjectTypeRepository,
     ) {
     }
 
-    // TODO: se puede aplicar el metodo plantilla
     public function getByName(string $name): IteProjectType
     {
-        if (isset($this->cache[$name])) {
-            return $this->cache[$name];
-        }
+        /** @var IteProjectType $iteProjectType */
+        $iteProjectType = $this->getCached($name, function () use ($name): IteProjectType {
+            return $this->getOrCreate($name);
+        });
 
+        return $iteProjectType;
+    }
+
+    private function getOrCreate(string $name): IteProjectType
+    {
         $iteProjectType = $this->iteProjectTypeRepository->findOneBy([self::FIELD_NAME => $name]);
 
         if (null === $iteProjectType) {
             $iteProjectType = new IteProjectType();
             $iteProjectType->setName($name);
 
-            $this->iteProjectTypeRepository->save($iteProjectType, true);
+            $this->iteProjectTypeRepository->save($iteProjectType);
         }
 
-        return $this->cache[$name] = $iteProjectType;
+        return $iteProjectType;
     }
 }

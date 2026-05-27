@@ -139,6 +139,7 @@ final class IteController extends AbstractController
 
         return $crudActionService->formLiveComponentAction($request, $ite, 'ite', [
             'title' => 'Nuevo Indicador Técnico Económico',
+            'iteType' => IteType::National,
         ]);
     }
 
@@ -163,6 +164,7 @@ final class IteController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $ite, 'ite', [
             'title' => 'Editar Indicador Técnico Económico',
+            'iteType' => IteType::National,
         ]);
     }
 

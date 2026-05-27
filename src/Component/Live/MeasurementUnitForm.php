@@ -70,7 +70,7 @@ final class MeasurementUnitForm extends AbstractController
             $this->entity = $this->mu;
             if (!is_null($this->modal)) {
                 $this->modalManage($measurementUnit, 'Se ha seleccionado la nueva unidad de medida.', [
-                    'measurement_unit' => $measurementUnit->getId(),
+                    'measurementUnit' => $measurementUnit->getId(),
                 ]);
 
                 return null;

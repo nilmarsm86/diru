@@ -70,8 +70,10 @@ class Ite
 
     public function __construct()
     {
-        $this->setQuality(IteQuality::Medium);
+        //        $this->setQuality(IteQuality::Medium);
         $this->setType(IteType::National);
+        $this->max = 0;
+        $this->min = 0;
     }
 
     public function getId(): ?int

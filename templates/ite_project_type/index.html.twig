@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}IteProjectType index{% endblock %}
+
+{% block body %}
+    <h1>IteProjectType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ite_project_type in ite_project_types %}
+            <tr>
+                <td>{{ ite_project_type.id }}</td>
+                <td>{{ ite_project_type.name }}</td>
+                <td>
+                    <a href="{{ path('app_ite_project_type_show', {'id': ite_project_type.id}) }}">show</a>
+                    <a href="{{ path('app_ite_project_type_edit', {'id': ite_project_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ite_project_type_new') }}">Create new</a>
+{% endblock %}

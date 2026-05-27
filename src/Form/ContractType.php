@@ -24,7 +24,6 @@ class ContractType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $yearList = range((int) date('Y') - 5, (int) date('Y') + 5);
-        $years = array_combine($yearList, $yearList);
         $builder
             ->add('code', null, [
                 'label' => 'Código:',
@@ -35,7 +34,7 @@ class ContractType extends AbstractType
             ->add('year', ChoiceType::class, [
                 'label' => 'Año:',
                 'placeholder' => '-Seleccione-',
-                'choices' => $years,
+                'choices' => array_combine($yearList, $yearList),
                 'data' => date('Y'),
             ])
         ;

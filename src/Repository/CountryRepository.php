@@ -6,6 +6,7 @@ use App\Entity\Country;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,4 +46,11 @@ class CountryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findCountriesForForm(): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+//            ->where("c.name NOT LIKE '%country%'")
+            ->orderBy('c.name');
+    }
 }

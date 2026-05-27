@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New IteSource{% endblock %}
+
+{% block body %}
+    <h1>Create new IteSource</h1>
+
+    {{ include('ite_source/_form.html.twig') }}
+
+    <a href="{{ path('app_ite_source_index') }}">back to list</a>
+{% endblock %}

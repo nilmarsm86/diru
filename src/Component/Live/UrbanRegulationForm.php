@@ -5,6 +5,7 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\UrbanRegulation;
 use App\Form\UrbanRegulationType;
+use App\Repository\MeasurementUnitRepository;
 use App\Repository\UrbanRegulationRepository;
 use App\Repository\UrbanRegulationTypeRepository;
 use App\Service\FileUploader;
@@ -52,9 +53,20 @@ final class UrbanRegulationForm extends AbstractController
     #[LiveProp]
     public array $pictureErrors = [];
 
+    #[LiveProp(writable: true)]
+    public ?string $measurementUnit = null;
+
     public function mount(?UrbanRegulation $ur = null): void
     {
-        $this->ur = (is_null($ur)) ? new UrbanRegulation() : $ur;
+        $this->ur = $ur;
+
+        if (is_null($this->ur)) {
+            $this->ur = new UrbanRegulation();
+        } else {
+            if (!is_null($this->ur->getMeasurementUnit())) {
+                $this->measurementUnit = (string) $this->ur->getMeasurementUnit()->getId();
+            }
+        }
         $this->entity = $this->ur;
     }
 
@@ -63,6 +75,10 @@ final class UrbanRegulationForm extends AbstractController
         if (0 !== $this->type) {
             $this->formValues['type'] = (string) $this->type;
             $this->type = 0;
+        }
+
+        if (!is_null($this->measurementUnit)) {
+            $this->formValues['measurementUnit'] = $this->measurementUnit;
         }
     }
 
@@ -80,6 +96,7 @@ final class UrbanRegulationForm extends AbstractController
     public function save(
         UrbanRegulationRepository $urbanRegulationRepository,
         UrbanRegulationTypeRepository $urbanRegulationTypeRepository,
+        MeasurementUnitRepository $measurementUnitRepository,
         ValidatorInterface $validator,
         FileUploader $fileUploader,
         Request $request,
@@ -101,6 +118,9 @@ final class UrbanRegulationForm extends AbstractController
                 $type = $urbanRegulationTypeRepository->find($this->formValues['type']);
                 $ur->setType($type);
             }
+
+            $measurementUnit = $measurementUnitRepository->find($this->measurementUnit);
+            $ur->setMeasurementUnit($measurementUnit);
 
             $urbanRegulationRepository->save($ur, true);
 

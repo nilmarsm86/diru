@@ -1,5 +1,5 @@
 {% if app.request.query.get('modal') %}
-{#    {{ component('ProvinceForm', {modal:app.request.query.get('modal'), prov: province, ajax: ajax}) }}#}
+    {{ component('IteForm', {modal:app.request.query.get('modal'), indicator: ite, ajax: ajax, type: iteType}) }}
 {% else %}
 
     {% component 'Card:Card' with {
@@ -21,7 +21,7 @@
         {% endblock %}
 
         {% block body %}
-{#            {{ component('ProvinceForm', {modal:null, prov: province, ajax: ajax}) }}#}
+            {{ component('IteForm', {'modal':null, indicator: ite, ajax: ajax, type: iteType}) }}
         {% endblock %}
 
         {% block footer %}
@@ -38,3 +38,5 @@
 
     {% endcomponent %}
 {% endif %}
+
+{{ include('partials/modal/_modal_load.html.twig') }}

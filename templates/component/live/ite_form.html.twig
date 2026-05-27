@@ -1,0 +1,59 @@
+<div {{ attributes.defaults(stimulusController('live-form', {modal:modal})) }}>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.min) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.max) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.yearReference) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.quality) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.measurementUnit) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.source) }}
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
+            {{ form_row(form.projectType) }}
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    {{ form_row(form.sourceAccess) }}
+    {{ form_row(form.comment) }}
+
+    <div class="row mb-3">
+        <div class="col-sm-10 offset-sm-2">
+            {{ component('button:submit', {
+                icon: (entity.id is null) ? 'fa:save' : 'fa:edit',
+                label: (entity.id is null) ? 'Agregar' : 'Modificar',
+                component: this
+            }) }}
+        </div>
+    </div>
+    {{ form_row(form._token) }}
+    {{ form_end(form, {render_rest:false}) }}
+</div>

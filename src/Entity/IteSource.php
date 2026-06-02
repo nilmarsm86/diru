@@ -24,7 +24,7 @@ class IteSource
     /**
      * @var Collection<int, Ite>
      */
-    #[ORM\OneToMany(targetEntity: Ite::class, mappedBy: 'source1', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Ite::class, mappedBy: 'source', orphanRemoval: true)]
     private Collection $ites;
 
     public function __construct()

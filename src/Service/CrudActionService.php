@@ -147,7 +147,7 @@ readonly class CrudActionService
 
     public function deleteAction(
         Request $request,
-        object $repository,
+        FilterInterface $repository,
         object $entity,
         string $successMsg,
         string $gotTo,

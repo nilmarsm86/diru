@@ -3,79 +3,89 @@
 namespace App\Controller;
 
 use App\Entity\IteSource;
-use App\Form\IteSourceType;
+use App\Entity\Role;
 use App\Repository\IteSourceRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
+#[IsGranted(Role::ROLE_ADMIN)]
 #[Route('/ite/source')]
 final class IteSourceController extends AbstractController
 {
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route(name: 'app_ite_source_index', methods: ['GET'])]
-    public function index(IteSourceRepository $iteSourceRepository): Response
+    public function index(Request $request, IteSourceRepository $iteSourceRepository, CrudActionService $crudActionService): Response
     {
-        return $this->render('ite_source/index.html.twig', [
-            'ite_sources' => $iteSourceRepository->findAll(),
-        ]);
+        return $crudActionService->indexAction($request, $iteSourceRepository, 'findIteSources', 'ite_source');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_ite_source_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $iteSource = new IteSource();
-        $form = $this->createForm(IteSourceType::class, $iteSource);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($iteSource);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_ite_source_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('ite_source/new.html.twig', [
-            'ite_source' => $iteSource,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $iteSource, 'ite_source', [
+            'title' => 'Nueva fuente de información',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_ite_source_show', methods: ['GET'])]
-    public function show(IteSource $iteSource): Response
+    public function show(Request $request, IteSource $iteSource, CrudActionService $crudActionService): Response
     {
-        return $this->render('ite_source/show.html.twig', [
-            'ite_source' => $iteSource,
-        ]);
+        return $crudActionService->showAction($request, $iteSource, 'ite_source', 'ite_source', 'Detalles de la fuente de información');
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_ite_source_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, IteSource $iteSource, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, IteSource $iteSource, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(IteSourceType::class, $iteSource);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_ite_source_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('ite_source/edit.html.twig', [
-            'ite_source' => $iteSource,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $iteSource, 'ite_source', [
+            'title' => 'Editar fuente de información',
         ]);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_ite_source_delete', methods: ['POST'])]
-    public function delete(Request $request, IteSource $iteSource, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, IteSource $iteSource, IteSourceRepository $iteSourceRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$iteSource->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($iteSource);
-            $entityManager->flush();
+        $successMsg = 'Se ha eliminado la fuente de información.';
+        $response = $crudActionService->deleteAction($request, $iteSourceRepository, $iteSource, $successMsg, 'app_ite_source_index');
+        if ($response instanceof RedirectResponse) {
+            $this->addFlash('success', $successMsg);
+
+            return $response;
         }
 
-        return $this->redirectToRoute('app_ite_source_index', [], Response::HTTP_SEE_OTHER);
+        return $response;
     }
 }

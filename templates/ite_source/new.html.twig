@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}New IteSource{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Create new IteSource</h1>
+{% block title %}Nueva Fuente de información{% endblock %}
 
-    {{ include('ite_source/_form.html.twig') }}
+{% block content %}
+    <div class="row">
+        {{ h1('Fuentes') }}
 
-    <a href="{{ path('app_ite_source_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Fuentes', href: path('app_ite_source_index')},
+            {label: 'Nueva'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Agregar fuente</h2>
+
+    {{ include('ite_source/_form.html.twig', {showButton: true, title: title}) }}
 {% endblock %}

@@ -1,0 +1,58 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de fuentes de información',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_ite_source_new'), 'bi:plus-lg', 'Nueva', 'Nueva fuente de información', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_source_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for ite_source in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ ite_source.name }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_currency_show', {'id': currency.id}), 'bi:eye', '', 'Detalle de la moneda', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_currency_show', {'id': currency.id})}), 'btn-link') }}#}
+                            {{ tableActionButton3(path('app_ite_source_edit', {'id': ite_source.id}), 'fa:edit', '', 'Editar fuente de información', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_source_edit', {'id': ite_source.id})}), 'btn-link') }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_ite_source_delete', {'id': ite_source.id}),
+                                confirm: 'Está seguro que desea eliminar la fuente de información?',
+                                token: 'delete' ~ ite_source.id,
+                                title: 'Eliminar fuente',
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron fuentes de información.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

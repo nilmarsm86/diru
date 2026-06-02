@@ -1,13 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Edit IteSource{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Edit IteSource</h1>
+{% block title %}Editar fuente{% endblock %}
 
-    {{ include('ite_source/_form.html.twig', {'button_label': 'Update'}) }}
+{% block content %}
+    <div class="row">
+        {{ h1('Fuente de información') }}
 
-    <a href="{{ path('app_ite_source_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Fuentes', href: path('app_ite_source_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
 
-    {{ include('ite_source/_delete_form.html.twig') }}
+    <h2 class="mb-4">Editar fuente</h2>
+
+    {{ include('ite_source/_form.html.twig', {showButton: true, title: title}) }}
 {% endblock %}

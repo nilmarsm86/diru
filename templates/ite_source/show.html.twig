@@ -1,26 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}IteSource{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>IteSource</h1>
+{% block title %}Fuente: {{ ite_source.name }}{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ ite_source.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ ite_source.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Fuentes') }}
 
-    <a href="{{ path('app_ite_source_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Fuentes', href: path('app_ite_source_index')},
+            {label: 'Detalle'},
+        ]) }}
+    </div>
 
-    <a href="{{ path('app_ite_source_edit', {'id': ite_source.id}) }}">edit</a>
+    <h2 class="mb-4">Fuente: {{ ite_source.name }}</h2>
 
-    {{ include('ite_source/_delete_form.html.twig') }}
+    {{ include('ite_source/_detail.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

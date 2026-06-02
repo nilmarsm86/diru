@@ -1,35 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}IteSource index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>IteSource index</h1>
+{% block title %}Fuentes de información{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ite_source in ite_sources %}
-            <tr>
-                <td>{{ ite_source.id }}</td>
-                <td>{{ ite_source.name }}</td>
-                <td>
-                    <a href="{{ path('app_ite_source_show', {'id': ite_source.id}) }}">show</a>
-                    <a href="{{ path('app_ite_source_edit', {'id': ite_source.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Fuentes') }}
 
-    <a href="{{ path('app_ite_source_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Fuentes'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de fuentes</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('ite_source/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

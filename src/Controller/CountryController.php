@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/country')]
@@ -77,5 +78,19 @@ final class CountryController extends AbstractController
         }
 
         return $this->redirectToRoute('app_country_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/city/{id}', name: 'city_country', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function city(Request $request, Country $country): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('partials/_select_options.html.twig', [
+                'entities' => $country->getCities(),
+                'selected' => ($country->getCities()->count() > 0) ? (true === $country->getCities()->first() ? $country->getCities()->first()->getId() : 0) : 0,
+                'empty' => '-Seleccione un país-',
+            ]);
+        }
+
+        throw new BadRequestHttpException('Ajax request');
     }
 }

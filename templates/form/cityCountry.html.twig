@@ -1,0 +1,19 @@
+{% block city_country_row %}
+    <div
+            class="mb-0 {% if row == false and col == true %}row{% endif %}"
+    >
+        {% if row == true and col == false %}
+            {{ form_row(form.country) }}
+            {{ form_row(form.city) }}
+        {% endif %}
+
+        {% if row == false and col == true %}
+            <div class="col">
+                {{ form_row(form.country, {label_attr:{'class':'col-sm-4'}}) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.city, {label_attr:{'class':'col-sm-4'}}) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

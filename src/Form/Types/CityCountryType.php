@@ -16,6 +16,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @template TData of array
@@ -37,9 +39,9 @@ class CityCountryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $country = $this->countryRepository->find($options['country']);
-        $city = $this->cityRepository->find($options['city']);
+        $builder = new DynamicFormBuilder($builder);
 
+        $country = $this->countryRepository->find($options['country']);
         $countryAttr = [
             'class' => Country::class,
             'placeholder' => (bool) $options['country'] ? null : '-Seleccione-',
@@ -61,25 +63,29 @@ class CityCountryType extends AbstractType
             $builder->add('country', EntityType::class, [] + $countryAttr);
         }
 
-        $cityAttr = [
-            'class' => City::class,
-            'placeholder' => (bool) $options['city'] ? null : '-Seleccione un país-',
-            'label' => 'Ciudad:',
-            'constraints' => $this->getCityConstraints($options),
-            'data' => $city,
-            'query_builder' => $this->getCityQueryBuilder($options),
-        ];
+        $builder->addDependent('city', 'country', function (DependentField $field, ?Country $country) use ($options) {
+            $city = $this->cityRepository->find($options['city']);
+            $cityAttr = [
+                'class' => City::class,
+                'placeholder' => (bool) $options['city'] ? null : '-Seleccione un país-',
+                'label' => 'Ciudad:',
+                'constraints' => $this->getCityConstraints($options),
+                'data' => $city,
+                'query_builder' => $this->getCityQueryBuilder($options),
+                'attr' => ['disabled' => is_null($country)],
+            ];
 
-        if (is_null($options['modal'])) {
-            $builder->add('city', EntityPlusType::class, [
-                'add' => true,
-                'add_title' => 'Agregar Ciudad',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_city_new', ['modal' => 'modal-load']),
-            ] + $cityAttr);
-        } else {
-            $builder->add('city', EntityType::class, [] + $cityAttr);
-        }
+            if (is_null($options['modal'])) {
+                $field->add(EntityPlusType::class, [
+                    'add' => true,
+                    'add_title' => 'Agregar Ciudad',
+                    'add_id' => 'modal-load',
+                    'add_url' => $this->router->generate('app_city_new', ['modal' => 'modal-load']),
+                ] + $cityAttr);
+            } else {
+                $field->add(EntityType::class, [] + $cityAttr);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

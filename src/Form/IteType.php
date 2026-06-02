@@ -2,16 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\City;
 use App\Entity\Ite;
 use App\Entity\IteProjectType;
 use App\Entity\IteSource;
+use App\Form\Types\CityCountryType;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\IteQualityEnumType;
 use App\Form\Types\MeasurementUnitEntityPlusType;
 use App\Form\Types\TrixEditorType;
 use App\Form\Types\UnitMeasurementFloatType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -65,6 +64,7 @@ class IteType extends AbstractType
                     'placeholder' => 'Comentario de ayuda',
                     'hidden' => null,
                 ],
+                'required' => false,
             ])
             ->add('sourceAccess', null, [
                 'label' => 'Fuente de acceso:',
@@ -79,10 +79,13 @@ class IteType extends AbstractType
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_ite_source_new', ['modal' => 'modal-load']),
             ])
-//            ->add('city', EntityType::class, [
-//                'class' => City::class,
-//                'choice_label' => 'id',
-//            ])
+
+            ->add('cityCountry', CityCountryType::class, [
+                'country' => $options['country'],
+                'city' => $options['city'],
+                'mapped' => false,
+                'live_form' => $options['live_form'],
+            ])
             ->add('projectType', EntityPlusType::class, [
                 'class' => IteProjectType::class,
                 'choice_label' => 'name',
@@ -106,7 +109,19 @@ class IteType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
+            'country' => 0,
+            'city' => 0,
+            'error_mapping' => [
+                'enumQuality' => 'quality',
+            ],
+            'live_form' => false,
+            'modal' => null,
         ]);
+
+        $resolver->setAllowedTypes('country', 'int');
+        $resolver->setAllowedTypes('city', 'int');
+        $resolver->setAllowedTypes('live_form', 'bool');
+        $resolver->setAllowedTypes('modal', ['null', 'string']);
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */

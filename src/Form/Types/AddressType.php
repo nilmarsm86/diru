@@ -16,6 +16,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @template TData of array
@@ -37,8 +39,9 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder = new DynamicFormBuilder($builder);
+
         $province = $this->provinceRepository->find($options['province']);
-        $municipality = $this->municipalityRepository->find($options['municipality']);
 
         $provinceAttr = [
             'class' => Province::class,
@@ -61,25 +64,29 @@ class AddressType extends AbstractType
             $builder->add('province', EntityType::class, [] + $provinceAttr);
         }
 
-        $municipalityAttr = [
-            'class' => Municipality::class,
-            'placeholder' => (bool) $options['municipality'] ? null : '-Seleccione una provincia-',
-            'label' => 'Municipio:',
-            'constraints' => $this->getMunicipalityConstraints($options),
-            'data' => $municipality,
-            'query_builder' => $this->getMunicipalityQueryBuilder($options),
-        ];
+        $builder->addDependent('municipality', 'province', function (DependentField $field, ?Province $province) use ($options) {
+            $municipality = $this->municipalityRepository->find($options['municipality']);
+            $municipalityAttr = [
+                'class' => Municipality::class,
+                'placeholder' => (bool) $options['municipality'] ? null : '-Seleccione una provincia-',
+                'label' => 'Municipio:',
+                'constraints' => $this->getMunicipalityConstraints($options),
+                'data' => $municipality,
+                'query_builder' => $this->getMunicipalityQueryBuilder($options),
+                'attr' => ['disabled' => is_null($province)],
+            ];
 
-        if (is_null($options['modal'])) {
-            $builder->add('municipality', EntityPlusType::class, [
-                'add' => true,
-                'add_title' => 'Agregar Municipio',
-                'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_municipality_new', ['modal' => 'modal-load']),
-            ] + $municipalityAttr);
-        } else {
-            $builder->add('municipality', EntityType::class, [] + $municipalityAttr);
-        }
+            if (is_null($options['modal'])) {
+                $field->add(EntityPlusType::class, [
+                    'add' => true,
+                    'add_title' => 'Agregar Municipio',
+                    'add_id' => 'modal-load',
+                    'add_url' => $this->router->generate('app_municipality_new', ['modal' => 'modal-load']),
+                ] + $municipalityAttr);
+            } else {
+                $field->add(EntityType::class, [] + $municipalityAttr);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

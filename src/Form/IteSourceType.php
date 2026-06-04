@@ -23,7 +23,12 @@ class IteSourceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nombre de la fuente:',
+                'attr' => [
+                    'placeholder' => 'Nombre de la fuente',
+                ],
+            ])
         ;
     }
 
@@ -31,6 +36,9 @@ class IteSourceType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => IteSource::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

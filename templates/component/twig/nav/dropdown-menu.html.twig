@@ -1,0 +1,15 @@
+<div
+    class="collapse {% if in_route is true %}show{% else %}hide{% endif %}"
+    id="reference-collapse">
+    <ul class="dropdown-menu position-static mx-0 shadow d-block small"
+        data-bs-theme="light"
+        style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
+        {% for item in items %}
+            {{ component('nav:dropdown-item', {
+                link: item.link,
+                icon: item.icon,
+                label: item.label,
+            }) }}
+        {% endfor %}
+    </ul>
+</div>

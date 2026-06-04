@@ -324,61 +324,28 @@
                         </ul>
                     </div>
                 </li>
+
+                {% set ite_reference = ['ite_upload_index', 'app_ite_national', 'app_ite_international', 'app_ite_source_index', 'app_ite_project_type_index'] %}
+                {% set in_route = app.request.attributes.get('_route') in ite_reference %}
                 <li class="nav-item">
                     <button
                         class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
                         data-bs-toggle="collapse" data-bs-target="#reference-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['ite_upload_index', 'app_ite_national', 'app_ite_international'] %}true{% else %}false{% endif %}"
+                        aria-expanded="{% if in_route is true %}true{% else %}false{% endif %}"
                         style="width:100%;text-align:left">
                         <span class="d-inline-flex align-items-center">Referencias ITE</span>
                     </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['ite_upload_index', 'app_ite_national', 'app_ite_international'] %}show{% else %}hide{% endif %}"
-                        id="reference-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('ite_upload_index') }}"
-                                   href="{{ path('ite_upload_index') }}"
-                                >
-                                    {{ ux_icon('bi:upload', {class:'bi'}) }}
-                                    Importar
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_ite_national') }}"
-                                   href="{{ path('app_ite_national') }}"
-                                >
-                                    {{ ux_icon('icon-park-outline:local', {class:'bi'}) }}
-                                    Nacionales
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_ite_international') }}"
-                                   href="{{ path('app_ite_international') }}"
-                                >
-                                    {{ ux_icon('streamline-freehand:currency-international-currency', {class:'bi'}) }}
-                                    Internacionales
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_ite_source_index') }}"
-                                   href="{{ path('app_ite_source_index') }}"
-                                >
-{#                                    {{ ux_icon('streamline-freehand:currency-international-currency', {class:'bi'}) }}#}
-                                    Fuentes
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href="">
-                                    {#                                    {{ ux_icon('lets-icons:paper', {class:'bi'}) }}#}
-                                    Tipo de proyecto
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+
+                    {{ component('nav:dropdown-menu', {
+                        in_route: in_route,
+                        items: [
+                            {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar'},
+                            {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales'},
+                            {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales'},
+                            {link: 'app_ite_source_index', icon: null, label: 'Fuentes'},
+                            {link: 'app_ite_project_type_index', icon: null, label: 'Tipo de proyecto'},
+                        ]
+                    }) }}
                 </li>
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     <li>

@@ -1,0 +1,17 @@
+{% from 'macros/link.html.twig' import activeLink %}
+
+{% if icon is not defined %}
+    {% set icon = null %}
+{% endif %}
+
+<li>
+    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink(link) }}"
+       href="{{ path(link) }}"
+    >
+        {% if icon is not null %}
+            {{ ux_icon(icon, {class:'bi'}) }}
+        {% endif %}
+
+        {{ label }}
+    </a>
+</li>

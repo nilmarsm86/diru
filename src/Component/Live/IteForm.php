@@ -8,6 +8,7 @@ use App\Form\IteType;
 use App\Repository\CityRepository;
 use App\Repository\CountryRepository;
 use App\Repository\IteRepository;
+use App\Repository\IteSourceRepository;
 use App\Repository\MeasurementUnitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -48,7 +49,7 @@ final class IteForm extends AbstractController
     public \App\Entity\Enums\IteType $type;
 
     #[LiveProp(writable: true)]
-    public ?string $measurementUnit = null;
+    public ?int $measurementUnit = null;
 
     #[LiveProp(writable: true)]
     public int $country = 0;
@@ -56,10 +57,27 @@ final class IteForm extends AbstractController
     #[LiveProp(writable: true)]
     public int $city = 0;
 
+    #[LiveProp(writable: true)]
+    public ?int $iteSource = null;
+
     public function __construct(
         protected readonly CountryRepository $countryRepository,
         protected readonly CityRepository $cityRepository,
     ) {
+    }
+
+    public function applyIteSource(): void
+    {
+        if (!is_null($this->iteSource)) {
+            $this->formValues['source'] = $this->iteSource;
+        }
+    }
+
+    public function applyMeasurementUnit(): void
+    {
+        if (!is_null($this->measurementUnit)) {
+            $this->formValues['measurementUnit'] = $this->measurementUnit;
+        }
     }
 
     private function applyCityCountryField(string $field, int $value): void
@@ -84,7 +102,11 @@ final class IteForm extends AbstractController
             $this->indicator = new Ite();
         } else {
             if (!is_null($this->indicator->getMeasurementUnit())) {
-                $this->measurementUnit = (string) $this->indicator->getMeasurementUnit()->getId();
+                $this->measurementUnit = $this->indicator->getMeasurementUnit()->getId();
+            }
+
+            if (!is_null($this->indicator->getSource())) {
+                $this->iteSource = $this->indicator->getSource()->getId();
             }
         }
         $this->entity = $this->indicator;
@@ -92,10 +114,8 @@ final class IteForm extends AbstractController
 
     public function preValue(): void
     {
-        if (!is_null($this->measurementUnit)) {
-            $this->formValues['measurementUnit'] = $this->measurementUnit;
-        }
-
+        $this->applyMeasurementUnit();
+        $this->applyIteSource();
         $this->applyCityCountryField('country', $this->country);
         $this->applyCity();
     }
@@ -200,8 +220,11 @@ final class IteForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(IteRepository $iteRepository, MeasurementUnitRepository $measurementUnitRepository): ?Response
-    {
+    public function save(
+        IteRepository $iteRepository,
+        MeasurementUnitRepository $measurementUnitRepository,
+        IteSourceRepository $iteSourceRepository,
+    ): ?Response {
         $this->preValue();
         /** @var array<string, array<string, mixed>> $formValues */
         $formValues = $this->formValues;
@@ -218,6 +241,9 @@ final class IteForm extends AbstractController
 
             $measurementUnit = $measurementUnitRepository->find($formValues['measurementUnit']);
             $ite->setMeasurementUnit($measurementUnit);
+
+            $iteSource = $iteSourceRepository->find($formValues['source']);
+            $ite->setSource($iteSource);
 
             /** @var array<string, array<string, mixed>> $formValues */
             $formValues = $this->formValues;

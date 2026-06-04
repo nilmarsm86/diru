@@ -48,7 +48,7 @@
     {{ form_row(form.comment) }}
 
     <div class="row mb-3">
-        <div class="col-sm-10 offset-sm-2">
+        <div class="col-sm-12">
             {{ component('button:submit', {
                 icon: (entity.id is null) ? 'fa:save' : 'fa:edit',
                 label: (entity.id is null) ? 'Agregar' : 'Modificar',

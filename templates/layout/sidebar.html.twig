@@ -11,359 +11,103 @@
         <div class="offcanvas-body d-md-flex flex-column d-flex flex-shrink-0 p-3"
              style="height: 100% !important;min-height: 100% !important;">
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="{{ path('app_home') }}" class="nav-link {{ activeLink('app_home') }}" aria-current="page">
-                        {{ ux_icon('bi:house', {class:'bi'}) }}
-                        Inicio
-                    </a>
-                </li>
+                {{ component('nav:nav-link', {
+                    link: 'app_home',
+                    icon: 'bi:house',
+                    label: 'Inicio',
+                }) }}
 
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
-                    <li class="nav-item">
-                        <button
-                            class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                            data-bs-toggle="collapse" data-bs-target="#locations-collapse"
-                            aria-expanded="{% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}true{% else %}false{% endif %}"
-                            style="width:100%;text-align:left"
-                        >
-                            <span class="d-inline-flex align-items-center">Ubicaciones</span>
-                        </button>
-                        <div
-                            class="collapse {% if app.request.attributes.get('_route') in ['app_province_index', 'app_municipality_index', 'app_location_zone_index', 'app_geographic_location_index'] %}show{% else %}hide{% endif %}"
-                            id="locations-collapse">
-                            <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                                data-bs-theme="light"
-                                style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center"
-                                       href="">
-                                        {{ ux_icon('icon-park-outline:international', {class:'bi'}) }} Paises
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center"
-                                       href="">
-                                        {{ ux_icon('icon-park:local', {class:'bi'}) }} Ciudades
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_province_index') }}"
-                                       href="{{ path('app_province_index') }}">
-                                        {{ ux_icon('ic:outline-place', {class:'bi'}) }} Provincias
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_municipality_index') }}"
-                                       href="{{ path('app_municipality_index') }}">
-                                        {{ ux_icon('stash:pin-place', {class:'bi'}) }} Municipios
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_location_zone_index') }}"
-                                       href="{{ path('app_location_zone_index') }}"
-                                    >
-                                        {{ ux_icon('bi:pin-map', {class:'bi'}) }}
-                                        Zona de ubicación
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_geographic_location_index') }}"
-                                       href="{{ path('app_geographic_location_index') }}">
-                                        {{ ux_icon('bi:pin-map-fill', {class:'bi'}) }}
-                                        Ubicación geográfica
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#places-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Organizaciones</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_organism_index', 'app_corporate_entity_index', 'app_constructor_index'] %}show{% else %}hide{% endif %}"
-                        id="places-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_organism_index') }}"
-                                   href="{{ path('app_organism_index') }}"
-                                >
-                                    {{ ux_icon('bi:list-check', {class:'bi'}) }}
-                                    Organismos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_corporate_entity_index') }}"
-                                   href="{{ path('app_corporate_entity_index') }}">
-                                    {{ ux_icon('bi:building', {class:'bi'}) }}
-                                    Entidades
-                                </a>
-                            </li>
-                            {#                            <li> #}
-                            {#                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_constructor_index') }}" #}
-                            {#                                   href="{{ path('app_constructor_index') }}"> #}
-                            {#                                    {{ ux_icon('uil:constructor', {class:'bi'}) }} #}
-                            {#                                    Constructoras #}
-                            {#                                </a> #}
-                            {#                            </li> #}
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#subsystem-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Subsistemas</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_subsystem_sub_type_index', 'app_subsystem_type_index'] %}show{% else %}hide{% endif %}"
-                        id="subsystem-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_subsystem_type_index') }}"
-                                   href="{{ path('app_subsystem_type_index') }}"
-                                >
-                                    {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }}
-                                    Tipos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_subsystem_sub_type_index') }}"
-                                   href="{{ path('app_subsystem_sub_type_index') }}">
-                                    {{ ux_icon('lets-icons:paper', {class:'bi'}) }}
-                                    Subtipos
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#regulation-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Regulaciones urbanas</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_urban_regulation_type_index', 'app_urban_regulation_index'] %}show{% else %}hide{% endif %}"
-                        id="regulation-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urban_regulation_type_index') }}"
-                                   href="{{ path('app_urban_regulation_type_index') }}"
-                                >
-                                    {{ ux_icon('mingcute:paper-2-line', {class:'bi'}) }}
-                                    Tipos de Reg.
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_urban_regulation_index') }}"
-                                   href="{{ path('app_urban_regulation_index') }}">
-                                    {{ ux_icon('lets-icons:paper', {class:'bi'}) }}
-                                    Reg. urbanas
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#edification-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_network_connection_index', 'app_constructive_action_index', 'app_constructive_system_index'] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Edificación</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_network_connection_index', 'app_constructive_action_index', 'app_constructive_system_index'] %}show{% else %}hide{% endif %}"
-                        id="edification-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_network_connection_index') }}"
-                                   href="{{ path('app_network_connection_index') }}"
-                                >
-                                    {{ ux_icon('icon-park-outline:rectangular-circular-connection', {class:'bi'}) }}
-                                    Conexiones de red
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_constructive_action_index') }}"
-                                   href="{{ path('app_constructive_action_index') }}"
-                                >
-                                    {{ ux_icon('mdi:construction-outline', {class:'bi'}) }}
-                                    Acc. Constructivas
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_constructive_system_index') }}"
-                                   href="{{ path('app_constructive_system_index') }}"
-                                >
-                                    {{ ux_icon('roentgen:building-construction', {class:'bi'}) }}
-                                    Sistema Constructivo
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#other-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in ['app_currency_index', 'app_measurement_unit_index', 'app_separate_concept_index'] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Otros</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in ['app_currency_index', 'app_measurement_unit_index', 'app_separate_concept_index'] %}show{% else %}hide{% endif %}"
-                        id="other-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_currency_index') }}"
-                                   href="{{ path('app_currency_index') }}"
-                                >
-                                    {{ ux_icon('streamline-ultimate:begging-hand-coin-2-bold', {class:'bi'}) }}
-                                    Monedas
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_measurement_unit_index') }}"
-                                   href="{{ path('app_measurement_unit_index') }}"
-                                >
-                                    {{ ux_icon('formkit:unit', {class:'bi'}) }}
-                                    Unidad de medida
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_separate_concept_index') }}"
-                                   href="{{ path('app_separate_concept_index') }}"
-                                >
-                                    {{ ux_icon('arcticons:breakdowntimer', {class:'bi'}) }}
-                                    Partida de presupuesto
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#history-collapse"
-                        aria-expanded="{% if app.request.attributes.get('_route') in [] %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Históricos</span>
-                    </button>
-                    <div
-                        class="collapse {% if app.request.attributes.get('_route') in [] %}show{% else %}hide{% endif %}"
-                        id="history-collapse">
-                        <ul class="dropdown-menu position-static mx-0 shadow d-block small"
-                            data-bs-theme="light"
-                            style="background-color: var(--bs-body-bg);margin-left: 15px !important;margin-right: 15px !important;">
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
-                                >
-                                    {{ ux_icon('hugeicons:transaction-history', {class:'bi'}) }}
-                                    ITE Subsistema
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
-                                >
-                                    {{ ux_icon('hugeicons:transaction-history', {class:'bi'}) }}
-                                    ITE Obra
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink('app_separate_concept_index') }}"
-                                   href="{{ path('app_separate_concept_index') }}"
-                                >
-                                    {{ ux_icon('hugeicons:transaction-history', {class:'bi'}) }}
-                                    ITE Obra ajuste
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
-                                >
-                                    {{ ux_icon('hugeicons:transaction-history', {class:'bi'}) }}
-                                    ITE Obra presup. det
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex gap-2 align-items-center"
-                                   href=""
-                                >
-                                    {{ ux_icon('hugeicons:transaction-history', {class:'bi'}) }}
-                                    ITE Obra presup. real
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                {% set ite_reference = ['ite_upload_index', 'app_ite_national', 'app_ite_international', 'app_ite_source_index', 'app_ite_project_type_index'] %}
-                {% set in_route = app.request.attributes.get('_route') in ite_reference %}
-                <li class="nav-item">
-                    <button
-                        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
-                        data-bs-toggle="collapse" data-bs-target="#reference-collapse"
-                        aria-expanded="{% if in_route is true %}true{% else %}false{% endif %}"
-                        style="width:100%;text-align:left">
-                        <span class="d-inline-flex align-items-center">Referencias ITE</span>
-                    </button>
-
-                    {{ component('nav:dropdown-menu', {
-                        in_route: in_route,
+                    {{ component('nav:nav-item', {
+                        title: 'Ubicaciones',
+                        target: 'locations-collapse',
                         items: [
-                            {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar'},
-                            {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales'},
-                            {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales'},
-                            {link: 'app_ite_source_index', icon: null, label: 'Fuentes'},
-                            {link: 'app_ite_project_type_index', icon: null, label: 'Tipo de proyecto'},
+                            {link: '', icon: 'icon-park-outline:international', label: 'Paises'},
+                            {link: '', icon: 'icon-park:local', label: 'Ciudades'},
+                            {link: 'app_province_index', icon: 'ic:outline-place', label: 'Provincias'},
+                            {link: 'app_municipality_index', icon: 'stash:pin-place', label: 'Municipios'},
+                            {link: 'app_location_zone_index', icon: 'bi:pin-map', label: 'Zona de ubicación'},
+                            {link: 'app_geographic_location_index', icon: 'bi:pin-map-fill', label: 'Ubicación geográfica'},
                         ]
                     }) }}
-                </li>
-                {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
-                    <li>
-                        <a href="{{ path('database_backup_index') }}"
-                           class="nav-link link-body-emphasis {{ activeLink('database_backup_index') }}">
-                            {{ ux_icon('iconoir:database-backup', {class:'bi'}) }}
-                            Respaldo
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('user_list') }}"
-                           class="nav-link link-body-emphasis {{ activeLink('user_list') }}">
-                            {{ ux_icon('bi:lock', {class:'bi'}) }}
-                            Seguridad
-                        </a>
-                    </li>
                 {% endif %}
-
+                {{ component('nav:nav-item', {
+                    title: 'Organizaciones',
+                    target: 'places-collapse',
+                    items: [
+                        {link: 'app_organism_index', icon: 'bi:list-check', label: 'Organismos'},
+                        {link: 'app_corporate_entity_index', icon: 'bi:building', label: 'Entidades'},
+                    ]
+                }) }}
+                {#                {link: 'app_constructor_index', icon: 'uil:constructor', label: 'Constructoras'}, #}
+                {{ component('nav:nav-item', {
+                    title: 'Subsistemas',
+                    target: 'subsystem-collapse',
+                    items: [
+                        {link: 'app_subsystem_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos'},
+                        {link: 'app_subsystem_sub_type_index', icon: 'lets-icons:paper', label: 'Subtipos'},
+                    ]
+                }) }}
+                {{ component('nav:nav-item', {
+                    title: 'Regulaciones urbanas',
+                    target: 'regulation-collapse',
+                    items: [
+                        {link: 'app_urban_regulation_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos de Reg.'},
+                        {link: 'app_urban_regulation_index', icon: 'lets-icons:paper', label: 'Reg. urbanas'},
+                    ]
+                }) }}
+                {{ component('nav:nav-item', {
+                    title: 'Edificación',
+                    target: 'edification-collapse',
+                    items: [
+                        {link: 'app_network_connection_index', icon: 'icon-park-outline:rectangular-circular-connection', label: 'Conexiones de red'},
+                        {link: 'app_constructive_action_index', icon: 'mdi:construction-outline', label: 'Acc. Constructivas'},
+                        {link: 'app_constructive_system_index', icon: 'roentgen:building-construction', label: 'Sistema Constructivo'},
+                    ]
+                }) }}
+                {{ component('nav:nav-item', {
+                    title: 'Otros',
+                    target: 'other-collapse',
+                    items: [
+                        {link: 'app_currency_index', icon: 'streamline-ultimate:begging-hand-coin-2-bold', label: 'Monedas'},
+                        {link: 'app_measurement_unit_index', icon: 'formkit:unit', label: 'Unidad de medida'},
+                        {link: 'app_separate_concept_index', icon: 'arcticons:breakdowntimer', label: 'Partida de presupuesto'},
+                    ]
+                }) }}
+                {{ component('nav:nav-item', {
+                    title: 'Históricos',
+                    target: 'history-collapse',
+                    items: [
+                        {link: '', icon: 'hugeicons:transaction-history', label: 'ITE Subsistema'},
+                        {link: '', icon: 'hugeicons:transaction-history', label: 'ITE Obra'},
+                        {link: 'app_separate_concept_index', icon: 'hugeicons:transaction-history', label: 'ITE Obra ajuste'},
+                        {link: '', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. det'},
+                        {link: '', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. real'},
+                    ]
+                }) }}
+                {{ component('nav:nav-item', {
+                    title: 'Referencias ITE',
+                    target: 'reference-collapse',
+                    items: [
+                        {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar'},
+                        {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales'},
+                        {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales'},
+                        {link: 'app_ite_source_index', icon: 'fluent-mdl2:source', label: 'Fuentes'},
+                        {link: 'app_ite_project_type_index', icon: null, label: 'Tipo de proyecto'},
+                    ]
+                }) }}
+                {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
+                    {{ component('nav:nav-link', {
+                        link: 'database_backup_index',
+                        icon: 'iconoir:database-backup',
+                        label: 'Respaldo',
+                    }) }}
+                    {{ component('nav:nav-link', {
+                        link: 'user_list',
+                        icon: 'bi:lock',
+                        label: 'Seguridad',
+                    }) }}
+                {% endif %}
             </ul>
             {#            <hr> #}
             {#            <div class="dropup"> #}

@@ -1,0 +1,17 @@
+{% set options = items|column('link') %}
+{% set in_route = app.request.attributes.get('_route') in options %}
+<li class="nav-item">
+    <button
+        class="btn btn-toggle align-items-center rounded border-0 collapsed nav-link link-body-emphasis"
+        data-bs-toggle="collapse" data-bs-target="#{{ target }}"
+        aria-expanded="{% if in_route is true %}true{% else %}false{% endif %}"
+        style="width:100%;text-align:left">
+        <span class="d-inline-flex align-items-center">{{ title }}</span>
+    </button>
+
+    {{ component('nav:dropdown-menu', {
+        in_route: in_route,
+        items: items,
+        target: target
+    }) }}
+</li>

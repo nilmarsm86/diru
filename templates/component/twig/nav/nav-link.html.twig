@@ -5,13 +5,11 @@
 {% endif %}
 
 <li>
-    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink(link) }}"
-       href="{% if link is not empty %}{{ path(link) }}{% endif %}"
-    >
+    <a href="{{ path(link) }}"
+       class="nav-link link-body-emphasis {{ activeLink(link) }}">
         {% if icon is not null %}
             {{ ux_icon(icon, {class:'bi'}) }}
         {% endif %}
-
         {{ label }}
     </a>
 </li>

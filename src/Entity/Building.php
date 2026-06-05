@@ -1107,6 +1107,10 @@ class Building implements MeasurementDataInterface
 
     public function getConstructionAssembly(): ?int
     {
+        if (null === $this->constructionAssembly) {
+            return 0;
+        }
+
         return $this->constructionAssembly;
     }
 
@@ -1564,8 +1568,12 @@ class Building implements MeasurementDataInterface
     //        return $this;
     //    }
 
-    public function getConstructionRealValue(): ?int
+    public function getConstructionRealValue(): int
     {
+        if (null === $this->constructionRealValue) {
+            return 0;
+        }
+
         return $this->constructionRealValue;
     }
 

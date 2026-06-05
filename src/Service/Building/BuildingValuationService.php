@@ -19,7 +19,7 @@ readonly class BuildingValuationService
 
         return $building->getBuildingSeparateConcepts()
             ->filter(fn (BuildingSeparateConcept $concept) => $concept->isParent())
-            ->reduce(fn (float $carry, BuildingSeparateConcept $concept) => $carry + (float) $concept->getPercent(), 0.0);
+            ->reduce(fn (float $carry, BuildingSeparateConcept $concept) => $carry + (float) $concept->getPercentEstimatedAdjustValue(), 0.0);
     }
 
     /**

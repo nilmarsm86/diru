@@ -17,7 +17,7 @@ final class BuildingSeparateConceptController extends AbstractController
     #[Route('/building/separate/concept/{id}', name: 'app_building_separate_concept')]
     public function save(Request $request, BuildingSeparateConcept $buildingSeparateConcept, BuildingSeparateConceptRepository $buildingSeparateConceptRepository): Response
     {
-        $buildingSeparateConcept->setPercent((float) $request->request->get('percent', 0));
+        $buildingSeparateConcept->setPercentEstimatedAdjustValue((float) $request->request->get('percent', 0));
 
         $buildingSeparateConceptRepository->save($buildingSeparateConcept, true);
 

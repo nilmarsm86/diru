@@ -6,12 +6,14 @@ use App\Entity\IteProjectType;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<IteProjectType>
  */
-class IteProjectTypeRepository extends ServiceEntityRepository
+class IteProjectTypeRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -45,4 +47,25 @@ class IteProjectTypeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        if ('' !== $filter) {
+            $predicate = 'ipt.name LIKE :filter ';
+            $builder->andWhere($predicate)
+                ->setParameter(':filter', '%'.$filter.'%');
+        }
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findIteProjectTypes(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('ipt');
+        $this->addFilter($builder, $filter);
+        $query = $builder->orderBy('ipt.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

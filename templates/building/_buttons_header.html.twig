@@ -99,7 +99,7 @@
             url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
             id: 'desglose',
             placeholder: 'Cargando...',
-            title: 'Desglose de presupuesto',
+            title: 'Desglose de presupuesto del valor estimado ajustado',
         }) ~ stimulusTarget('modal-content-loader', 'button') %}
         {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', 'Desglose', 'Desglose', action_save) }}
     {% endif %}

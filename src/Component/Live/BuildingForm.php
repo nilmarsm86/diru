@@ -535,7 +535,7 @@ final class BuildingForm extends AbstractController
             $buildingSeparateConcept = new BuildingSeparateConcept();
             $buildingSeparateConcept->setBuilding($building);
             $buildingSeparateConcept->setSeparateConcept($separateConcept);
-            $buildingSeparateConcept->setPercent($percent);
+            $buildingSeparateConcept->setPercentEstimatedAdjustValue($percent);
 
             $building->addBuildingSeparateConcept($buildingSeparateConcept);
             //            $manager->persist($buildingSeparateConcept);

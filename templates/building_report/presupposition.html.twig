@@ -102,18 +102,18 @@
 
                                 {% set data = aec.getDataByNumbers(numbers) %}
                                 {% set totalImport = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, buildingSeparateConcept.separateConcept.formula) %}
-                                {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, totalImport, buildingSeparateConcept.getPercentByFormula(totalImport)) %}
+                                {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, totalImport, buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)) %}
                             {% else %}
                                 {% if buildingSeparateConcept.separateConcept.parent is null %}
-                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(), buildingSeparateConcept.getPercentByFormula(buildingSeparateConcept.getImport())) %}
+                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(), buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(buildingSeparateConcept.getImport())) %}
                                 {% else %}
-                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(parentImport), buildingSeparateConcept.getPercentByFormula(buildingSeparateConcept.getImport())) %}
+                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImport(parentImport), buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(buildingSeparateConcept.getImport())) %}
                                 {% endif %}
                             {% endif %}
                             <input type="number" step="0.01" placeholder="0.00" min="0" max="100"
                                    id="{{ buildingSeparateConcept.id }}" name="building[coefficient]"
                                    data-estimate-presupposition-target="field" inputmode="decimal" class="form-control"
-                                   value="{{ (buildingSeparateConcept.separateConcept.formula) ? buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2) : buildingSeparateConcept.percent|number_format(2) }}"
+                                   value="{{ (buildingSeparateConcept.separateConcept.formula) ? buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2) : buildingSeparateConcept.percentEstimatedAdjustValue|number_format(2) }}"
                                    style="display: inline;width: 90px" {{ stimulusTarget('separate-concept', 'percent') }}
                                 {% if buildingSeparateConcept.separateConcept.formula is not null %}
                                     readonly disabled
@@ -131,7 +131,7 @@
                             {% if buildingSeparateConcept.separateConcept.parent is null %}
                                 {% if buildingSeparateConcept.separateConcept.formula %}
                                     {% if buildingSeparateConcept.separateConcept.number == '20' %}
-                                        <span {% if (buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
+                                        <span {% if (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
                                             ~${{ money(totalImport) }}
                                         </span>
                                     {% else %}

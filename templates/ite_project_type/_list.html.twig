@@ -1,0 +1,58 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Listado de tipos de proyectos de ITE',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+            {{ tableActionButton3(path('app_ite_project_type_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo tipo de proyecto ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_project_type_new')})) }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for ite_project_type in paginator.getData() %}
+                    <tr {{ stimulusController('delete-form-container') }}>
+                        <td>{{ ite_project_type.name }}</td>
+                        <td class="text-end">
+{#                            {{ tableActionButton3(path('app_currency_show', {'id': currency.id}), 'bi:eye', '', 'Detalle de la moneda', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_currency_show', {'id': currency.id})}), 'btn-link') }}#}
+                            {{ tableActionButton3(path('app_ite_project_type_edit', {'id': ite_project_type.id}), 'fa:edit', '', 'Editar tipo de proyecto de ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_project_type_edit', {'id': ite_project_type.id})}), 'btn-link') }}
+
+                            {{ component('DeleteForm', {
+                                path: path('app_ite_project_type_delete', {'id': ite_project_type.id}),
+                                confirm: 'Está seguro que desea eliminar el tipo de proyecto de ITE?',
+                                token: 'delete' ~ ite_project_type.id,
+                                title: 'Eliminar tipo de proyecto de ITE',
+                                icon: 'bi:trash',
+                                cssClass: 'btn-link text-danger'
+                            }) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron tipos de proyectos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

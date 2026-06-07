@@ -1,4 +1,40 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% if app.request.query.get('modal') %}
+{#    {{ component('IteSourceForm', {modal:app.request.query.get('modal'), iteS: ite_source, ajax: ajax}) }}#}
+{% else %}
+
+    {% component 'Card:Card' with {
+        cssClass: 'mb-4',
+        extra: '',
+        headerCssClass: 'd-flex justify-content-between align-items-center',
+        title: title
+    } %}
+
+        {% block header %}
+            {{ include('partials/_card_header_options.html.twig', {
+                goTo: 'app_ite_project_type_new',
+                label: 'Nuevo',
+                title: 'Nuevo tipo de proyecto',
+                entity: ite_project_type,
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false
+            }) }}
+        {% endblock %}
+
+        {% block body %}
+{#            {{ component('IteSourceForm', {modal:null, iteS: ite_source, ajax: ajax}) }}#}
+        {% endblock %}
+
+        {% block footer %}
+            {{ include('partials/_card_footer.html.twig', {
+                list: {href: 'app_ite_project_type_index', label: 'Listado', title:'Volver al listado'},
+                delete: {href: 'app_ite_project_type_delete', label: 'Eliminar', title:'Eliminar tipo de proyecto de ITE'},
+                id: ite_project_type.id,
+                message: 'Está seguro que desea eliminar el tipo de proyecto de ITE?',
+                state: 'form',
+                showButton: (showButton is defined and showButton == true) ? true : false,
+                entity: ite_project_type
+            }) }}
+        {% endblock %}
+
+    {% endcomponent %}
+{% endif %}

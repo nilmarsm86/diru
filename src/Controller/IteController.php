@@ -132,14 +132,14 @@ final class IteController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/new', name: 'app_ite_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CrudActionService $crudActionService): Response
+    #[Route('/new/{type}', name: 'app_ite_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CrudActionService $crudActionService, string $type): Response
     {
         $ite = new Ite();
 
         return $crudActionService->formLiveComponentAction($request, $ite, 'ite', [
             'title' => 'Nuevo Indicador Técnico Económico',
-            'iteType' => IteType::National,
+            'iteType' => IteType::from($type),
         ]);
     }
 

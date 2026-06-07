@@ -57,7 +57,8 @@
                 }) }}
             {% endif %}
 
-            {{ tableActionButton3(path('app_ite_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_new')})) }}
+            {{ tableActionButton3(path('app_ite_new', {'type':type.value}), 'bi:plus-lg', 'Nuevo', 'Nuevo ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_new', {'type':type.value})})) }}
+            {% dump(type) %}
         </div>
     {% endblock %}
 

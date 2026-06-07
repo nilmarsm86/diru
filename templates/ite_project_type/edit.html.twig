@@ -1,13 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}Edit IteProjectType{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>Edit IteProjectType</h1>
+{% block title %}Editar tipo de proyecto{% endblock %}
 
-    {{ include('ite_project_type/_form.html.twig', {'button_label': 'Update'}) }}
+{% block content %}
+    <div class="row">
+        {{ h1('Tipo de proyecto', 'oi:project') }}
 
-    <a href="{{ path('app_ite_project_type_index') }}">back to list</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Tipos', href: path('app_ite_project_type_index')},
+            {label: 'Editar'},
+        ]) }}
+    </div>
 
-    {{ include('ite_project_type/_delete_form.html.twig') }}
+    <h2 class="mb-4">Editar tipo de proyecto</h2>
+
+    {{ include('ite_project_type/_form.html.twig', {showButton: true, title: title}) }}
 {% endblock %}

@@ -345,3 +345,7 @@ tbody.detail_row_4cols th, .detail_row_4cols td{
 tbody.detail_row_2cols th{
     width: 25%;
 }
+
+.disabled-field input, .disabled-field span.input-group-text{
+    background-color: var(--bs-secondary-bg) !important;
+}

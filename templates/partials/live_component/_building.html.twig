@@ -78,7 +78,7 @@
                 <p class="text-end-detail">Total:</p>
                 <h5 class="text-end-detail">{# $ #}
                     <span class="badge text-bg-info" {{ stimulusTarget('summation-values', 'total') }}>
-                        {{ 0|number_format(2) }}
+                        ${{ money(this.bui.getTotalApprovedValue()) }}
                     </span>
                 </h5>
             </div>

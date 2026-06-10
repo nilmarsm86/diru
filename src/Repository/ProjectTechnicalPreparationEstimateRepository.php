@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\ProjectTechnicalPreparationEstimate;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -35,9 +36,11 @@ class ProjectTechnicalPreparationEstimateRepository extends ServiceEntityReposit
     /**
      * @return Paginator<mixed>
      */
-    public function findProjectTechnicalPreparationEstimate(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findProjectTechnicalPreparationEstimate(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('ptpe');
+        $builder = $this->createQueryBuilder('ptpe')
+            ->where('ptpe.building = :building')
+            ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('ptpe.concept', 'ASC')->getQuery();
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Role;
 use App\Entity\UrbanizationEstimate;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -21,15 +23,31 @@ use Twig\Error\SyntaxError;
 #[Route('/urbanization/estimate')]
 final class UrbanizationEstimateController extends AbstractController
 {
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
     #[Route('/{building}', name: 'app_urbanization_estimate_index', methods: ['GET'])]
-    public function index(Request $request, UrbanizationEstimateRepository $urbanizationEstimateRepository, CrudActionService $crudActionService, Building $building): Response
+    public function index(
+        Request $request,
+        RouterInterface $router,
+        UrbanizationEstimateRepository $urbanizationEstimateRepository,
+        Building $building): Response
     {
-        return $crudActionService->indexAction($request, $urbanizationEstimateRepository, 'findUrbanizationEstimates', 'urbanization_estimate', ['building' => $building->getId()]);
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $urbanizationEstimateRepository->findUrbanizationEstimates($building, $filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("urbanization_estimate/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'building' => $building->getId(),
+        ]);
     }
 
     /**

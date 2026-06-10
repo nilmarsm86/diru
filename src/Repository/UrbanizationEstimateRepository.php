@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\UrbanizationEstimate;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -35,9 +36,11 @@ class UrbanizationEstimateRepository extends ServiceEntityRepository implements 
     /**
      * @return Paginator<mixed>
      */
-    public function findUrbanizationEstimates(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findUrbanizationEstimates(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('ue');
+        $builder = $this->createQueryBuilder('ue')
+            ->where('ue.building = :building')
+            ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('ue.concept', 'ASC')->getQuery();
 

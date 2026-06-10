@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\JustValueEstimate;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
@@ -35,9 +36,11 @@ class JustValueEstimateRepository extends ServiceEntityRepository implements Fil
     /**
      * @return Paginator<mixed>
      */
-    public function findJustValueEstimates(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findJustValueEstimates(Building $building, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('jve');
+        $builder = $this->createQueryBuilder('jve')
+            ->where('jve.building = :building')
+            ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('jve.concept', 'ASC')->getQuery();
 

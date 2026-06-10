@@ -1,5 +1,5 @@
 {% if app.request.query.get('modal') %}
-{#    {{ component('IteSourceForm', {modal:app.request.query.get('modal'), iteS: ite_source, ajax: ajax}) }}#}
+    {{ component('IteProjectTypeForm', {modal:app.request.query.get('modal'), itePT: ite_project_type, ajax: ajax}) }}
 {% else %}
 
     {% component 'Card:Card' with {
@@ -21,7 +21,7 @@
         {% endblock %}
 
         {% block body %}
-{#            {{ component('IteSourceForm', {modal:null, iteS: ite_source, ajax: ajax}) }}#}
+            {{ component('IteProjectTypeForm', {modal:null, itePT: ite_project_type, ajax: ajax}) }}
         {% endblock %}
 
         {% block footer %}

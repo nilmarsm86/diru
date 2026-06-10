@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ProjectTechnicalPreparationEstimate;
+use App\Form\Types\MeasurementUnitEntityPlusType;
 use App\Form\Types\TrixEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -30,9 +31,7 @@ class ProjectTechnicalPreparationEstimateType extends AbstractType
             ->add('concept', null, [
                 'label' => 'Por concepto de:',
             ])
-            ->add('measurementUnit', null, [
-                'label' => 'Unidad de medida:',
-            ])
+            ->add('measurementUnit', MeasurementUnitEntityPlusType::class)
             ->add('price', MoneyType::class, [
                 'label' => 'Precio:',
                 'attr' => [

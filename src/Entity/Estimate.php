@@ -26,9 +26,9 @@ class Estimate
     #[Assert\NotBlank(message: 'Escriba el concepto para el cual se aplica.')]
     protected ?string $concept = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Escriba la unidad de medida a utilizar.')]
-    protected ?string $measurementUnit = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MeasurementUnit $measurementUnit = null;
 
     #[ORM\Column(type: Types::BIGINT)]
     #[Assert\NotBlank(message: 'Escriba el precio.')]
@@ -65,12 +65,12 @@ class Estimate
         return $this;
     }
 
-    public function getMeasurementUnit(): ?string
+    public function getMeasurementUnit(): ?MeasurementUnit
     {
         return $this->measurementUnit;
     }
 
-    public function setMeasurementUnit(string $measurementUnit): static
+    public function setMeasurementUnit(?MeasurementUnit $measurementUnit): static
     {
         $this->measurementUnit = $measurementUnit;
 

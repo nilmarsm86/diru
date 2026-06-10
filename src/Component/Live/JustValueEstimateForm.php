@@ -80,7 +80,7 @@ final class JustValueEstimateForm extends AbstractController
             $this->ue = new JustValueEstimate();
             $this->entity = $this->ue;
             if (!is_null($this->modal)) {
-                $this->modalManage($ue, 'Valor ajustado agregado.', [
+                $this->modalManage($ue, 'Cambio realizado en los valores ajustados.', [
                     'justValueEstimateTotalPrice' => $ue->getBuilding()?->getJustValueEstimateTotalPrice(),
                 ]);
 

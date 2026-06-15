@@ -390,7 +390,9 @@ final class BuildingForm extends AbstractController
         $this->applyCorporateEntity($building, $corporateEntityRepository);
         $this->applyProjectToBuilding($building, $projectRepository);
         $this->applyDraftsman($building, $draftsmanRepository);
-        $this->addSeparateConcepts($separateConceptRepository, $building);
+        if(null === $building->getId()){
+            $this->addSeparateConcepts($separateConceptRepository, $building);
+        }
 
         $buildingRepository->save($building, true);
 

@@ -35,7 +35,7 @@ export default class extends AbstractController {
             }
 
             if (Number(this.perimeterTarget.value) < Number(this.areaTarget.value)) {
-                this.perimeterTarget.value = this.areaTarget.value + 1;
+                this.perimeterTarget.value = this.areaTarget.value;
             }
 
             this.calculateOccupatedArea();

@@ -34,7 +34,34 @@ readonly class BuildingResetService
             }
 
             $building->setIsNew(null);
+            //            $building->setHasReply(null);
             // Opcional: resetear otros campos a estado inicial si es necesario
+            $building->setStopReason(null);
+            $building->setEstimatedValueEquipment(0);
+            $building->setEstimatedValueOther(0);
+            $building->setApprovedValueConstruction(0);
+            $building->setApprovedValueEquipment(0);
+            $building->setApprovedValueOther(0);
+            $this->removeAllDraftsman($building);
+            $this->removeAllConstructor($building);
+            $this->removeAllCorporateEntity($building);
+            $building->setPopulation(1);
+            $building->setConstructionAssembly(0);
+            $building->setConstructionAssemblyComment(null);
+            $this->removeAllLandNetworkConnection($building);
+            $this->removeAllUrbanizationEstimates($building);
+            $this->removeAllProjectTechnicalPreparationEstimates($building);
+            $this->removeAllJustValueEstimate($building);
+            $this->removeAllBuildingSeparateConcepts($building);
+            $building->setCoefficient(0);
+            $this->removeAllBuildingRevisions($building);
+            $building->setConstructionRealValue(0);
+            $building->setConstructionRealValueComment(null);
+
+            //            $this->removeActivity($building);
+
+            $building->setObjects([]);
+
             $building->setState(BuildingState::Registered);
             //             $building->setRegisterAt(new \DateTimeImmutable());
 
@@ -63,6 +90,7 @@ readonly class BuildingResetService
         foreach ($floors as $floor) {
             $this->removeFloorAndChildren($floor);
             $building->removeFloor($floor);
+
             $this->entityManager->remove($floor);
         }
     }
@@ -74,6 +102,7 @@ readonly class BuildingResetService
         foreach ($subSystems as $subSystem) {
             $this->removeSubSystemAndChildren($subSystem);
             $floor->removeSubSystem($subSystem);
+
             $this->entityManager->remove($subSystem);
         }
     }
@@ -84,7 +113,110 @@ readonly class BuildingResetService
 
         foreach ($locals as $local) {
             $subSystem->removeLocal($local);
+
             $this->entityManager->remove($local);
+        }
+    }
+
+    private function removeAllDraftsman(Building $building): void
+    {
+        $draftsmans = $building->getDraftsmans()->toArray();
+
+        foreach ($draftsmans as $draftsman) {
+            $building->removeDraftsman($draftsman);
+        }
+    }
+
+    private function removeAllConstructor(Building $building): void
+    {
+        $constructors = $building->getConstructors()->toArray();
+
+        foreach ($constructors as $constructor) {
+            $building->removeConstructor($constructor);
+        }
+    }
+
+    private function removeAllCorporateEntity(Building $building): void
+    {
+        $corporateEntities = $building->getCorporateEntities()->toArray();
+
+        foreach ($corporateEntities as $corporateEntity) {
+            $building->removeCorporateEntity($corporateEntity);
+        }
+    }
+
+    private function removeAllLandNetworkConnection(Building $building): void
+    {
+        $landNetworkConnections = $building->getLandNetworkConnections()->toArray();
+
+        foreach ($landNetworkConnections as $landNetworkConnection) {
+            $building->removeLandNetworkConnection($landNetworkConnection);
+
+            $this->entityManager->remove($landNetworkConnection);
+        }
+    }
+
+    private function removeAllUrbanizationEstimates(Building $building): void
+    {
+        $urbanizationEstimates = $building->getUrbanizationEstimates()->toArray();
+
+        foreach ($urbanizationEstimates as $urbanizationEstimate) {
+            $building->removeUrbanizationEstimate($urbanizationEstimate);
+
+            $this->entityManager->remove($urbanizationEstimate);
+        }
+    }
+
+    private function removeAllProjectTechnicalPreparationEstimates(Building $building): void
+    {
+        $projectTechnicalPreparationEstimates = $building->getProjectTechnicalPreparationEstimates()->toArray();
+
+        foreach ($projectTechnicalPreparationEstimates as $projectTechnicalPreparationEstimate) {
+            $building->removeProjectTechnicalPreparationEstimate($projectTechnicalPreparationEstimate);
+
+            $this->entityManager->remove($projectTechnicalPreparationEstimate);
+        }
+    }
+
+    private function removeAllJustValueEstimate(Building $building): void
+    {
+        $justValueEstimates = $building->getJustValueEstimates()->toArray();
+
+        foreach ($justValueEstimates as $justValueEstimate) {
+            $building->removeJustValueEstimate($justValueEstimate);
+
+            $this->entityManager->remove($justValueEstimate);
+        }
+    }
+
+    private function removeAllBuildingSeparateConcepts(Building $building): void
+    {
+        $buildingSeparateConcepts = $building->getBuildingSeparateConcepts()->toArray();
+
+        foreach ($buildingSeparateConcepts as $buildingSeparateConcept) {
+            $building->removeBuildingSeparateConcept($buildingSeparateConcept);
+
+            $this->entityManager->remove($buildingSeparateConcept);
+        }
+    }
+
+    private function removeAllBuildingRevisions(Building $building): void
+    {
+        $buildingRevisions = $building->getBuildingRevisions()->toArray();
+
+        foreach ($buildingRevisions as $buildingRevision) {
+            $building->removeBuildingRevision($buildingRevision);
+
+            $this->entityManager->remove($buildingRevision);
+        }
+    }
+
+    public function removeActivity(Building $building): void
+    {
+        $activity = $building->getActivity();
+        if (null !== $activity) {
+            $building->setActivity(null);
+            $this->entityManager->remove($activity);
         }
     }
 }

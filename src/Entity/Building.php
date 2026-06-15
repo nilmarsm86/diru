@@ -1358,7 +1358,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function removeJustValueEstimates(JustValueEstimate $justValueEstimate): static
+    public function removeJustValueEstimate(JustValueEstimate $justValueEstimate): static
     {
         if ($this->justValueEstimates->removeElement($justValueEstimate)) {
             // set the owning side to null (unless already changed)
@@ -1556,17 +1556,17 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    //    public function removeBuildingRevision(BuildingRevision $buildingRevision): static
-    //    {
-    //        if ($this->buildingRevisions->removeElement($buildingRevision)) {
-    //            // set the owning side to null (unless already changed)
-    //            if ($buildingRevision->getBuilding() === $this) {
-    //                $buildingRevision->setBuilding(null);
-    //            }
-    //        }
-    //
-    //        return $this;
-    //    }
+    public function removeBuildingRevision(BuildingRevision $buildingRevision): static
+    {
+        if ($this->buildingRevisions->removeElement($buildingRevision)) {
+            // set the owning side to null (unless already changed)
+            if ($buildingRevision->getBuilding() === $this) {
+                $buildingRevision->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getConstructionRealValue(): int
     {

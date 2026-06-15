@@ -34,8 +34,8 @@ export default class extends AbstractController {
                 this.occupiedTarget.value = this.areaTarget.value;
             }
 
-            if (Number(this.perimeterTarget.value) > Number(this.areaTarget.value)) {
-                this.perimeterTarget.value = this.areaTarget.value;
+            if (Number(this.perimeterTarget.value) < Number(this.areaTarget.value)) {
+                this.perimeterTarget.value = this.areaTarget.value + 1;
             }
 
             this.calculateOccupatedArea();
@@ -58,17 +58,17 @@ export default class extends AbstractController {
             this.calcualteCos(event);
         });
 
-        this.perimeterTarget.addEventListener('input', (event) => {
-            if (Number(this.perimeterTarget.value) < 0) {
-                this.perimeterTarget.value = Number(this.perimeterTarget.value) * -1;
-            }
-
-            if (Number(this.perimeterTarget.value) > Number(this.areaTarget.value)) {
-                this.perimeterTarget.value = this.areaTarget.value;
-            }
-
-            this.calculateOccupatedArea();
-        });
+        // this.perimeterTarget.addEventListener('input', (event) => {
+        //     if (Number(this.perimeterTarget.value) < 0) {
+        //         this.perimeterTarget.value = Number(this.perimeterTarget.value) * -1;
+        //     }
+        //
+        //     if (Number(this.perimeterTarget.value) < Number(this.areaTarget.value)) {
+        //         this.perimeterTarget.value = this.areaTarget.value + 1;
+        //     }
+        //
+        //     this.calculateOccupatedArea();
+        // });
 
         this.detailsTarget.addEventListener('toggle', this.calcualteCos.bind(this));
     }
@@ -88,7 +88,7 @@ export default class extends AbstractController {
         }
 
         this.occupiedTarget.max = this.areaTarget.value;
-        this.perimeterTarget.max = this.areaTarget.value;
+        this.perimeterTarget.min = this.areaTarget.value;
     }
 
     calculateHectare() {

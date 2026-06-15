@@ -120,7 +120,7 @@ final class LandForm extends AbstractController
                     $this->building?->setState(BuildingState::Diagnosis);
 
                     if (1 > $land->getOccupiedArea()) {
-                        $land->setOccupiedArea(($land->getLandArea() ?? 1) - ($land->getPerimeter() ?? 0));
+                        $land->setOccupiedArea(($land->getLandArea() ?? 1) - ($land->getPerimeter() ?? 1));
                     }
                 }
                 $this->building?->createFloors(false, $this->entityManager);

@@ -154,7 +154,8 @@ final class BuildingStateController extends AbstractController
             $buildingResetService->reset($building);
             $this->addFlash('success', 'Se ha reseteado la obra.');
         } catch (\Exception $exception) {
-            $this->addFlash('error', 'Ha ocurrido un error al resetear la obra');
+            //            $this->addFlash('danger', 'Ha ocurrido un error al resetear la obra');
+            $this->addFlash('danger', $exception->getMessage());
         }
 
         return $this->redirectToRoute('app_building_edit', [

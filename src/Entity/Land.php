@@ -49,7 +49,7 @@ class Land
         $this->occupiedArea = 0;
         $this->floor = 0;
         $this->landArea = 1;
-        $this->perimeter = 0;
+        $this->perimeter = 1;
         $this->isBlocked = false;
     }
 

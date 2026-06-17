@@ -80,7 +80,7 @@ class LandType extends AbstractType
             ])
             ->add('perimeter', UnitMeasurementFloatType::class, [
                 'unit' => 'm',
-                'label' => 'Perímetro:',
+                'label' => 'Perímetro de terreno:',
                 'attr' => [
                     'min' => 0,
                 ] + $disabled,

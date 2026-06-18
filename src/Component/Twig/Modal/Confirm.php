@@ -14,4 +14,5 @@ final class Confirm
     public string $question;
     public string $id;
     public string $href;
+    public ?string $render = null;
 }

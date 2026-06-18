@@ -22,14 +22,14 @@ class TechnicalStatusEnumType extends AbstractType
             ->setDefault('undefined_option', true)
             ->setDefault('class', TechnicalStatus::class)
             ->setDefault('choices', static function (Options $options): array {
-//                if ($options['undefined_option']) {
-//                    return TechnicalStatus::cases();
-//                }
-//
-//                $cases = TechnicalStatus::cases();
-//                unset($cases[1]);
-//
-//                return $cases;
+                //                if ($options['undefined_option']) {
+                //                    return TechnicalStatus::cases();
+                //                }
+                //
+                //                $cases = TechnicalStatus::cases();
+                //                unset($cases[1]);
+                //
+                //                return $cases;
                 return TechnicalStatus::cases();
             })
             ->setDefault('choice_label', TechnicalStatus::getLabel())

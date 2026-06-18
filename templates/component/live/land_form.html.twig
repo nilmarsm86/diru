@@ -49,7 +49,7 @@
     </div>
 
     <details
-        class="collection" {{ stimulusTarget('live/land-form', 'details') }} {% if this.l.hasOccupiedArea() %}open{% endif %}>
+        class="collection" {{ stimulusTarget('live/land-form', 'details') }} {# if this.l.hasOccupiedArea() #}open{# endif #} style="visibility: {% if this.building.isNew() %}hidden{% else %}visible{% endif %};">
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área a ocupada:</div>
@@ -94,7 +94,7 @@
             {% endif %}
         </div>
 
-        <div class="col">
+        <div class="col {% if l.photo is not null %}text-end{% endif %}">
             {% if l.photo is not null %}
                 <a type="button" class="btn btn-primary"
                    href="{{ absolute_url(constant('App\\Entity\\Land::PHOTO')~l.photo) }}" data-bs-toggle="tooltip"
@@ -121,7 +121,7 @@
                 {{ component('button:submit', {
                     icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
                     label: this.isNew() ? 'Agregar' : 'Modificar',
-                    component: this
+                    component: this,
                 }) }}
             </div>
         </div>

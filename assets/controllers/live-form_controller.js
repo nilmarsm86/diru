@@ -37,11 +37,15 @@ export default class extends AbstractController {
             }
         });
 
-        const toastElList = document.querySelectorAll('.toast')
-        const toastList = [...toastElList].map(toastEl => {
-            const toastBootstrap = Toast.getOrCreateInstance(toastEl);
-            toastBootstrap.show();
-        });
+        // const toastElList = document.querySelectorAll('.toast')
+        // const toastList = [...toastElList].map(toastEl => {
+        //     const toastBootstrap = Toast.getOrCreateInstance(toastEl);
+        //     //toastBootstrap.show();
+        //
+        //     toastEl.addEventListener('hidden.bs.toast', () => {
+        //         toastEl.remove();
+        //     });
+        // });
     }
 
     async initialize() {

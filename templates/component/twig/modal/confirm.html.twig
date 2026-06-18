@@ -20,7 +20,11 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <a class="btn btn-primary" href="{{ href }}">Aceptar</a>
+                {% if render is not null %}
+                    {{ render }}
+                {% else %}
+                    <a class="btn btn-primary" href="{{ href }}">Aceptar</a>
+                {% endif %}
             </div>
         </div>
     </div>

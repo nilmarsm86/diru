@@ -256,6 +256,13 @@ class Floor implements MeasurementDataInterface
         return $this->calculateAllLocalsAreClassified($subsystems);
     }
 
+    public function allLocalsHasConstructiveAction(): bool
+    {
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        return $this->calculateAllLocalsHasConstructiveAction($subsystems);
+    }
+
     public function getPosition(): ?int
     {
         return $this->position;
@@ -408,7 +415,7 @@ class Floor implements MeasurementDataInterface
             return $share || false === $this->hasOriginalLocals();
         }
 
-        return $share || false === $this->hasReplyLocals();
+        return $share || false === $this->hasReplyLocals() || false === $this->allLocalsHasConstructiveAction();
     }
 
     public function hasFreeArea(): bool

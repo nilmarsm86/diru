@@ -286,6 +286,23 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return true;
     }
 
+    public function allLocalsHasConstructiveAction(): bool
+    {
+        // TODO: duda con esto
+        if (0 === $this->getLocalsAmount()) {
+            return true;
+        }
+
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        foreach ($locals as $local) {
+            if (!$local->hasLocalConstructiveAction()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getUsefulArea(?bool $original = null): float
     {
         if (0 === $this->getLocalsAmount()) {
@@ -547,7 +564,12 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function hasErrors(): bool
     {
-        return (false === $this->allLocalsAreClassified()) || $this->notWallArea() || (false === $this->isFullyOccupied());
+        $share = (false === $this->allLocalsAreClassified()) || $this->notWallArea() || (false === $this->isFullyOccupied());
+        if ($this->isOriginal()) {
+            return $share;
+        }
+
+        return $share || false === $this->allLocalsHasConstructiveAction();
     }
 
     public function isNewInReply(): bool

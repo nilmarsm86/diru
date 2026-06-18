@@ -16,6 +16,7 @@
             {# component.hasValidationErrors ? 'disabled' : '' #}
         {% endif %}"
     name="enviar"
+    {% if render is defined %}{{ render|raw }}{% endif %}
 >
     {{ ux_icon(icon, {class:'bi'}) }}
     {{ label }}

@@ -169,7 +169,7 @@
                         <td>{{ sub_system.getVolume()|number_format(2) }}</td>
                         <td>
                             {% if reply %}
-                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasReplyLocals())
+                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasReplyLocals() and sub_system.allLocalsHasConstructiveAction())
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",

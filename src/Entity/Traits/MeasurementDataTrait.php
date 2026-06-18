@@ -66,6 +66,26 @@ trait MeasurementDataTrait
         return true;
     }
 
+    /**
+     * @template T of Floor|SubSystem
+     *
+     * @param ArrayCollection<int, T> $items
+     */
+    public function calculateAllLocalsHasConstructiveAction(ArrayCollection $items): bool
+    {
+        if (0 === $items->count()) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            if (!$item->allLocalsHasConstructiveAction()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getVolume(?bool $original = null): float|int
     {
         return $this->getTotalArea($original) * $this->getMaxHeight($original);

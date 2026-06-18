@@ -48,19 +48,19 @@
     {% if building.state.value not in ['1', '2'] %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
             {% if building.hasBuildingRevisions() or building.state.value is same as '4' %}
-            <button
-                class="btn text-decoration-none btn-sm btn-primary"
-                {{ stimulusController('modal-content-loader', {
-                    url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
-                    id: 'modal-load',
-                    placeholder: 'Cargando...',
-                    title: 'Revisiones realizadas',
-                }) }}
-                {{ stimulusTarget('modal-content-loader', 'button') }}
-            >
-                {{ ux_icon('bi:list', {'class':'bi'}) }}
-                Revisiones
-            </button>
+                <button
+                    class="btn text-decoration-none btn-sm btn-primary"
+                    {{ stimulusController('modal-content-loader', {
+                        url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
+                        id: 'modal-load',
+                        placeholder: 'Cargando...',
+                        title: 'Revisiones realizadas',
+                    }) }}
+                    {{ stimulusTarget('modal-content-loader', 'button') }}
+                >
+                    {{ ux_icon('bi:list', {'class':'bi'}) }}
+                    Revisiones
+                </button>
             {% endif %}
 
             {% if building.state.value is same as '4' %}
@@ -113,6 +113,11 @@
             >
                 {{ ux_icon('dinkie-icons:house-buildings-small', {'class':'bi'}) }}
                 Inmueble
+                {% if building.hasErrors() %}
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                    </span>
+                {% endif %}
             </button>
             <ul class="dropdown-menu" data-bs-theme="light">
                 <li>

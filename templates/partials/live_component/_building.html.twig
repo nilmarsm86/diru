@@ -223,7 +223,8 @@
     <div class="row">
         <div class="col">
             <p>
-                <em>* El ITE resultante, esta calculado en base a un ATP de: {{ bui.getTotalArea() }} m<sup>2</sup>.</em>
+                <em>* El ITE resultante, esta calculado en base a un ATP de: {{ bui.getTotalArea() }}
+                    m<sup>2</sup>.</em>
             </p>
         </div>
 
@@ -264,8 +265,16 @@
         <div class="col-sm-3">
             {{ form_row(constructionRealValue) }}
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             {{ form_row(constructionRealValueComment) }}
+        </div>
+        <div class="col-sm-3 p-10">
+            <button class="btn btn-sm btn-primary"
+                    title="Datos generales del terreno"
+            >
+                {{ ux_icon('mdi:land-plots-marker', {'class':'bi'}) }}
+                Desglose
+            </button>
         </div>
     </div>
 </details>

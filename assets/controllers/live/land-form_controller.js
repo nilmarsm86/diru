@@ -13,13 +13,17 @@ export default class extends AbstractController {
         modal: {type: String, default: ''},
     };
 
-    static targets = ["area", "occupied", "cos", "perimeter", "details", "hectare", "floor"];
+    static targets = ["area", "occupied", "cos", "perimeter", "details", "hectare", "floor", "isNew"];
 
     connect() {
         useCsrfToken(this);
 
         this.element.querySelector('form').addEventListener('submit', (event) => {
             this.dispatch('submit', {detail: {form: event.currentTarget}});
+        });
+
+        this.isNewTarget.addEventListener('change', (event) => {
+            this.detailsTarget.style.visibility = (this.isNewTarget.checked) ? 'hidden' : 'visible';
         });
 
         this.calcualteCos();

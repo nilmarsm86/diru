@@ -57,7 +57,7 @@ class LandType extends AbstractType
         $disabled = [];
         $building = $options['building'];
         if ($building instanceof Building) {
-            if (null !== $land && null !== $land->getId() && false === $building->isNew()) {
+            if (null !== $land && null !== $land->getId() /* && false === $building->isNew() */) {
                 $disabled = ['disabled' => true, 'readonly' => true];
             }
         }
@@ -113,7 +113,11 @@ class LandType extends AbstractType
             ])
             ->add('isNew', CheckboxType::class, [
                 'label' => 'Obra nueva',
+                'attr' => [
+                    'data-live--land-form-target' => 'isNew',
+                ] + $disabled,
                 'mapped' => false,
+                'data' => ($building instanceof Building) ? $building->isNew() : false,
                 'required' => false,
             ])
         ;

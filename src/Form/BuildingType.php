@@ -362,7 +362,8 @@ class BuildingType extends AbstractType
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('estimatedJustValue', MoneyPlusType::class, [
-                'label' => 'Valor estimado ajustado (<strong class="multiply">$'.((null !== $building && null !== $building->getId()) ? number_format($building->getEstimatedAdjustValue() / 100, 2) : number_format(0, 2)).'</strong>):',
+                //                'label' => 'Valor estimado ajustado (<strong class="multiply">$'.((null !== $building && null !== $building->getId()) ? number_format($building->getEstimatedAdjustValue() / 100, 2) : number_format(0, 2)).'</strong>):',
+                'label' => 'Valor estimado ajustado',
                 'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
@@ -400,13 +401,14 @@ class BuildingType extends AbstractType
                     'data-estimate-presupposition-target' => 'field',
                 ],
             ])
-            ->add('constructionAssembly', MoneyType::class, [
+            ->add('constructionAssembly', MoneyPlusType::class, [
                 'label' => 'Precio:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
                     'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
+                    'data-type--money-plus-target' => 'field',
                 ],
                 'empty_data' => 0,
                 'required' => false,
@@ -414,6 +416,14 @@ class BuildingType extends AbstractType
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
+
+                'list' => true,
+                'list_icon' => 'streamline-ultimate:presentation-projector-screen-budget-analytics',
+                'list_id' => 'desglose',
+                'list_title' => 'Desglose de ejecución',
+                'list_url' => $this->router->generate('app_building_report_separate_presupposition_execute', [
+                    'id' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                ]),
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [
                 'entry_type' => LandNetworkConnectionType::class,
@@ -483,13 +493,14 @@ class BuildingType extends AbstractType
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ])
-            ->add('constructionRealValue', MoneyType::class, [
+            ->add('constructionRealValue', MoneyPlusType::class, [
                 'label' => 'Valor real:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,
                     'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
+                    'data-type--money-plus-target' => 'field',
                 ],
                 'empty_data' => 0,
                 'required' => false,
@@ -497,6 +508,14 @@ class BuildingType extends AbstractType
                 'input' => 'integer',
                 'divisor' => 100,
                 'grouping' => true,
+
+                'list' => true,
+                'list_icon' => 'streamline-ultimate:presentation-projector-screen-budget-analytics',
+                'list_id' => 'desglose',
+                'list_title' => 'Desglose de valor real',
+                'list_url' => $this->router->generate('app_building_report_separate_presupposition_real', [
+                    'id' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                ]),
             ]);
     }
 

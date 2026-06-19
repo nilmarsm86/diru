@@ -1,3 +1,5 @@
+{% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
 <div class="mb-0 row">
     <div class="col-6">
         {{ form_row(name) }}
@@ -189,23 +191,48 @@
         totalArea: bui.getTotalArea(),
         coefficient: bui.getCoefficient()
     }) }}>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <div class="mb-3">
                 <p class="d">Valor estimado:</p>
-                <h5 class="">
+                <h5>
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'estimate') }}>
                         ${{ (bui.getRangePrice() / 100)|number_format(2) }}
                     </span>
                 </h5>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             {{ form_row(coefficient) }}
+        </div>
+        <div class="col-sm-3">
+            <div class="mb-3">
+                <p class="d">Valor estimado ajustado:</p>
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="">
+                            <span class="badge text-bg-info multiply">
+                                ${{ (bui.getEstimatedAdjustValue() / 100)|number_format(2) }}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="col-4">
+                        {% if building.id is not null and building.getEstimatedConstructionAndNetworkConnection() > 0 %}
+                            {% set action_save = stimulusController('modal-content-loader', {
+                                url: path('app_building_report_separate_presupposition_estimate', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'desglose',
+                                placeholder: 'Cargando...',
+                                title: 'Desglose de presupuesto del valor estimado ajustado',
+                            }) ~ stimulusTarget('modal-content-loader', 'button') %}
+                            {{ tableActionButton3(path('app_building_report_separate_presupposition_estimate', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', '', 'Desglose estimado ajustado', action_save) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-3">
             {{ form_row(estimatedJustValue) }}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <div class="mb-3">
                 <p class="text-end-detail">* ITE resultante ($/m<sup>2</sup>):</p>
                 <h5 class="text-end-detail">{# $ #}
@@ -234,7 +261,7 @@
 <details class="collection" {% if constructionAssembly.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
-            <div class="col">Valor de ...?:</div>
+            <div class="col">Valor de ejecución:</div>
             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
             </div>
@@ -265,16 +292,8 @@
         <div class="col-sm-3">
             {{ form_row(constructionRealValue) }}
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-9">
             {{ form_row(constructionRealValueComment) }}
-        </div>
-        <div class="col-sm-3 p-10">
-            <button class="btn btn-sm btn-primary"
-                    title="Datos generales del terreno"
-            >
-                {{ ux_icon('mdi:land-plots-marker', {'class':'bi'}) }}
-                Desglose
-            </button>
         </div>
     </div>
 </details>

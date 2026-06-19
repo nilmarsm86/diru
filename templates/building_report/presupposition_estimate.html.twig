@@ -83,8 +83,8 @@
                     {% endif %}
 
                     <tr {{ stimulusController('separate-concept', {
-                        urlSaveData: path('app_building_separate_concept', {'id': buildingSeparateConcept.id}),
-                        urlLoadData: path('app_building_report_separate_presupposition', {'id': buildingSeparateConcept.building.id}),
+                        urlSaveData: path('app_building_separate_concept_estimate', {'id': buildingSeparateConcept.id}),
+                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': buildingSeparateConcept.building.id}),
                         estimatedAdjust: ((buildingSeparateConcept.separateConcept.parent is null)
                         ? buildingEstimatedAdjustValue
                         : parentImport

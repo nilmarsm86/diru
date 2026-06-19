@@ -30,8 +30,8 @@ final class BuildingReportController extends AbstractController
         ]);
     }
 
-    #[Route('/separate/presupposition/{id}', name: 'app_building_report_separate_presupposition', methods: ['GET'])]
-    public function separatePresupposition(
+    #[Route('/separate/presupposition/estimate/{id}', name: 'app_building_report_separate_presupposition_estimate', methods: ['GET'])]
+    public function separatePresuppositionEstimate(
         Request $request,
         Building $building,
         BuildingSeparateConceptRepository $buildingSeparateConceptRepository,
@@ -39,7 +39,51 @@ final class BuildingReportController extends AbstractController
         FormulaEvaluator $formulaEvaluator,
         BuildingValuationService $buildingValuationService,
     ): Response {
-        $template = ($request->isXmlHttpRequest()) ? 'presupposition.html.twig' : 'separate_presupposition.html.twig';
+        $template = ($request->isXmlHttpRequest()) ? 'presupposition_estimate.html.twig' : 'separate_presupposition.html.twig';
+
+        return $this->render("building_report/$template", [
+            'building' => $building,
+            'project' => $building->getProject()?->getId(),
+            'buildingSeparateConceptRepository' => $buildingSeparateConceptRepository,
+            'separateConceptRepository' => $separateConceptRepository,
+            'aec' => AssociativeEntryCollection::empty(),
+            'formulaEvaluator' => $formulaEvaluator,
+            'buildingValuationService' => $buildingValuationService,
+        ]);
+    }
+
+    #[Route('/separate/presupposition/execute/{id}', name: 'app_building_report_separate_presupposition_execute', methods: ['GET'])]
+    public function separatePresuppositionExecute(
+        Request $request,
+        Building $building,
+        BuildingSeparateConceptRepository $buildingSeparateConceptRepository,
+        SeparateConceptRepository $separateConceptRepository,
+        FormulaEvaluator $formulaEvaluator,
+        BuildingValuationService $buildingValuationService,
+    ): Response {
+        $template = ($request->isXmlHttpRequest()) ? 'presupposition_execute.html.twig' : 'separate_presupposition.html.twig';
+
+        return $this->render("building_report/$template", [
+            'building' => $building,
+            'project' => $building->getProject()?->getId(),
+            'buildingSeparateConceptRepository' => $buildingSeparateConceptRepository,
+            'separateConceptRepository' => $separateConceptRepository,
+            'aec' => AssociativeEntryCollection::empty(),
+            'formulaEvaluator' => $formulaEvaluator,
+            'buildingValuationService' => $buildingValuationService,
+        ]);
+    }
+
+    #[Route('/separate/presupposition/real/{id}', name: 'app_building_report_separate_presupposition_real', methods: ['GET'])]
+    public function separatePresuppositionReal(
+        Request $request,
+        Building $building,
+        BuildingSeparateConceptRepository $buildingSeparateConceptRepository,
+        SeparateConceptRepository $separateConceptRepository,
+        FormulaEvaluator $formulaEvaluator,
+        BuildingValuationService $buildingValuationService,
+    ): Response {
+        $template = ($request->isXmlHttpRequest()) ? 'presupposition_real.html.twig' : 'separate_presupposition.html.twig';
 
         return $this->render("building_report/$template", [
             'building' => $building,

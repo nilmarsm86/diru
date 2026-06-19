@@ -22,6 +22,28 @@ readonly class BuildingValuationService
             ->reduce(fn (float $carry, BuildingSeparateConcept $concept) => $carry + (float) $concept->getPercentEstimatedAdjustValue(), 0.0);
     }
 
+    public function getSeparateConceptsTotalPercentExecution(Building $building): float
+    {
+        if ($building->getBuildingSeparateConcepts()->isEmpty()) {
+            return 0.0;
+        }
+
+        return $building->getBuildingSeparateConcepts()
+            ->filter(fn (BuildingSeparateConcept $concept) => $concept->isParent())
+            ->reduce(fn (float $carry, BuildingSeparateConcept $concept) => $carry + (float) $concept->getPercentEstimatedToExecuteValue(), 0.0);
+    }
+
+    public function getSeparateConceptsTotalPercentReal(Building $building): float
+    {
+        if ($building->getBuildingSeparateConcepts()->isEmpty()) {
+            return 0.0;
+        }
+
+        return $building->getBuildingSeparateConcepts()
+            ->filter(fn (BuildingSeparateConcept $concept) => $concept->isParent())
+            ->reduce(fn (float $carry, BuildingSeparateConcept $concept) => $carry + (float) $concept->getPercentRealValue(), 0.0);
+    }
+
     /**
      * Resultado ITE = (Estimated Adjust Value) / 100 / Total Area
      * Devuelve 0 si no hay área (evita división por cero).

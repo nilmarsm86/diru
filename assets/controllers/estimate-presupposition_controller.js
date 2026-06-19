@@ -55,7 +55,7 @@ export default class extends AbstractController {
         });
 
         this.totalTarget.innerText = USDollar.format((this.totalAreaValue > 0) ? ((this.estimateValue / 100) / this.totalAreaValue).toFixed(2) : 0);
-        this.element.querySelector('strong.multiply').innerText = USDollar.format(this.estimateValue / 100);
+        this.element.querySelector('.multiply').innerText = USDollar.format(this.estimateValue / 100);
     }
 
     clearNumber(number) {

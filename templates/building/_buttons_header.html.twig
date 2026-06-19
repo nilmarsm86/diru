@@ -41,42 +41,112 @@
     </div>
 
     {% if building.state.value is same as '4' %}
-        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }}
-        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }}
+        {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }} #}
+        {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }} #}
+        <div class="dropdown d-inline-block">
+            <button type="button"
+                    class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false" title="Estados"
+            >
+                {#                {{ ux_icon('bi:list', {'class':'bi'}) }} #}
+                Estados
+            </button>
+
+            <ul class="dropdown-menu" data-bs-theme="light">
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_building_state_transition', {'id': building.id, 'type':'3'}) }}"
+                       title="Pasar a estado de diseño">
+                        Virar a diseño
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_building_state_transition', {'id': building.id, 'type':'5'}) }}"
+                       title="Pasar a estado de revisado">
+                        Revisado
+                    </a>
+                </li>
+            </ul>
+        </div>
     {% endif %}
 
     {% if building.state.value not in ['1', '2'] %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
             {% if building.hasBuildingRevisions() or building.state.value is same as '4' %}
-                <button
-                    class="btn text-decoration-none btn-sm btn-primary"
-                    {{ stimulusController('modal-content-loader', {
-                        url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
-                        id: 'modal-load',
-                        placeholder: 'Cargando...',
-                        title: 'Revisiones realizadas',
-                    }) }}
-                    {{ stimulusTarget('modal-content-loader', 'button') }}
-                >
-                    {{ ux_icon('bi:list', {'class':'bi'}) }}
-                    Revisiones
-                </button>
+                {#                <button #}
+                {#                    class="btn text-decoration-none btn-sm btn-primary" #}
+                {#                    {{ stimulusController('modal-content-loader', { #}
+                {#                        url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}), #}
+                {#                        id: 'modal-load', #}
+                {#                        placeholder: 'Cargando...', #}
+                {#                        title: 'Revisiones realizadas', #}
+                {#                    }) }} #}
+                {#                    {{ stimulusTarget('modal-content-loader', 'button') }} #}
+                {#                > #}
+                {#                    {{ ux_icon('bi:list', {'class':'bi'}) }} #}
+                {#                    Revisiones #}
+                {#                </button> #}
+
+                <div class="dropdown d-inline-block">
+                    <button type="button"
+                            class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false" title="Revisiones"
+                    >
+                        {{ ux_icon('bi:list', {'class':'bi'}) }}
+                        Revisiones
+                    </button>
+
+                    <ul class="dropdown-menu" data-bs-theme="light">
+                        <li>
+                            <a class="dropdown-item" href="" title=""
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Revisiones realizadas',
+                                }) }}
+                                {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
+                                Listado
+                            </a>
+                        </li>
+                        {% if building.state.value is same as '4' %}
+                            <li>
+                                <a class="dropdown-item" href="" title=""
+                                    {{ stimulusController('modal-content-loader', {
+                                        url: path('app_building_revision_new', {'building': building.id, 'state':'modal', 'modal':'modal-load'}),
+                                        id: 'modal-load',
+                                        placeholder: 'Cargando...',
+                                        title: 'Agregar revisión',
+                                    }) }}
+                                    {{ stimulusTarget('modal-content-loader', 'button') }}
+                                >
+                                    Agregar revisión
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                </div>
             {% endif %}
 
-            {% if building.state.value is same as '4' %}
-                <button
-                    class="btn text-decoration-none btn-sm btn-primary show"
-                    {{ stimulusController('modal-content-loader', {
-                        url: path('app_building_revision_new', {'building': building.id, 'state':'modal', 'modal':'modal-load'}),
-                        id: 'modal-load',
-                        placeholder: 'Cargando...',
-                        title: 'Agregar revisión',
-                    }) }}
-                    {{ stimulusTarget('modal-content-loader', 'button') }}
-                >
-                    {{ ux_icon('bi:plus-lg', {'class':'bi'}) }}
-                </button>
-            {% endif %}
+            {#            {% if building.state.value is same as '4' %} #}
+            {#                <button #}
+            {#                    class="btn text-decoration-none btn-sm btn-primary show" #}
+            {#                    {{ stimulusController('modal-content-loader', { #}
+            {#                        url: path('app_building_revision_new', {'building': building.id, 'state':'modal', 'modal':'modal-load'}), #}
+            {#                        id: 'modal-load', #}
+            {#                        placeholder: 'Cargando...', #}
+            {#                        title: 'Agregar revisión', #}
+            {#                    }) }} #}
+            {#                    {{ stimulusTarget('modal-content-loader', 'button') }} #}
+            {#                > #}
+            {#                    {{ ux_icon('bi:plus-lg', {'class':'bi'}) }} #}
+            {#                </button> #}
+            {#            {% endif %} #}
         </div>
     {% endif %}
 
@@ -94,15 +164,15 @@
         {{ tableActionButton3(path('app_building_state_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
     {% endif %}
 
-    {% if building.id is not null and building.getEstimatedConstructionAndNetworkConnection() > 0 %}
-        {% set action_save = stimulusController('modal-content-loader', {
-            url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),
-            id: 'desglose',
-            placeholder: 'Cargando...',
-            title: 'Desglose de presupuesto del valor estimado ajustado',
-        }) ~ stimulusTarget('modal-content-loader', 'button') %}
-        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', 'Desglose', 'Desglose', action_save) }}
-    {% endif %}
+{#    {% if building.id is not null and building.getEstimatedConstructionAndNetworkConnection() > 0 %}#}
+{#        {% set action_save = stimulusController('modal-content-loader', {#}
+{#            url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),#}
+{#            id: 'desglose',#}
+{#            placeholder: 'Cargando...',#}
+{#            title: 'Desglose de presupuesto del valor estimado ajustado',#}
+{#        }) ~ stimulusTarget('modal-content-loader', 'button') %}#}
+{#        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', 'Desglose', 'Desglose', action_save) }}#}
+{#    {% endif %}#}
 
     {% if building.isNew() is not null %}
         <div class="dropdown d-inline-block">

@@ -1,0 +1,190 @@
+<div class="data-container">
+    <div class="row">
+        <div class="col-6">
+            {% component 'Card:Card' with {
+                title: 'Presupuesto estimado',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Presupuesto ajustado:</h6>
+                    <h1>$ {{ money(building.getConstructionRealValue()) }}</h1>
+                    <h6 class="card-subtitle mb-2">ITE (resultante):</h6>
+                    <h1>{#  {{ buildingValuationService.getResultIte(building)|number_format(2) }} $/m<sup>2</sup>#}?</h1>
+                    <h6 class="card-subtitle mb-2">Coeficiente de ajuste:</h6>
+                    <h1>{# building.getCoefficient() #}?</h1>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+
+        <div class="col-6">
+            {% component 'Card:Card' with {
+                title: 'Anexo',
+            } %}
+                {% block body %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Constructor</strong>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getActiveCorporateEntityName() }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Obra</strong>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getName() }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Objetos de obra</strong>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getObjects()|join(', ') }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Cliente</strong>
+                            <span class="badge text-bg-primary rounded-pill">
+                                {% if building.getClient() %}
+                                    {% if building.isFromIndividualClient() == true %}
+                                        {{ building.getClient().getPerson().getFullName() }}
+                                    {% else %}
+                                        {{ building.getClient().getCorporateEntity().getName()~' ('~building.getClient().getRepresentative().getName()~')' }}
+                                    {% endif %}
+                                {% else %}
+                                    No tiene cliente
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <strong>Actividad</strong>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getActivity().getName() }}</span>
+                        </li>
+                    </ul>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% component 'Table:Table' %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>{{ buildingValuationService.getSeparateConceptsTotalPercentReal(building) }} %</th>
+                    <th>Número</th>
+                    <th>Concepto</th>
+                    <th>Importe</th>
+                    <th></th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for buildingSeparateConcept in building.getBuildingSeparateConcepts() %}
+                    {% set buildingEstimatedAdjustValue = buildingSeparateConcept.building.getConstructionRealValue() %}
+                    {% set parentPercent = 0 %}
+                    {% set parentImport = 0 %}
+                    {% if buildingSeparateConcept.separateConcept.parent is not null %}
+                        {% set parentPercent = aec.find(buildingSeparateConcept.separateConcept.parent.number).percentAsFloat() %}
+                        {% set parentImport = aec.find(buildingSeparateConcept.separateConcept.parent.number).importAsFloat() %}
+                    {% endif %}
+
+                    <tr {{ stimulusController('separate-concept', {
+                        urlSaveData: path('app_building_separate_concept_real', {'id': buildingSeparateConcept.id}),
+                        urlLoadData: path('app_building_report_separate_presupposition_real', {'id': buildingSeparateConcept.building.id}),
+                        estimatedAdjust: ((buildingSeparateConcept.separateConcept.parent is null)
+                        ? buildingEstimatedAdjustValue
+                        : parentImport
+                        )
+                    }) }}>
+                        <td style="width: 190px">
+                            {% set separateConcepts = [] %}
+                            {% set imports = [] %}
+                            {% set totalImport = 0 %}
+                            {% set numbers = [] %}
+                            {% set data = [] %}
+
+                            {% if buildingSeparateConcept.separateConcept.formula %}
+                                {% set numbers = buildingSeparateConcept.extraerNumeros(buildingSeparateConcept.separateConcept.formula, buildingSeparateConcept.separateConcept.ignoreNumber) %}
+
+                                {% set data = aec.getDataByNumbers(numbers) %}
+                                {% set totalImport = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, data, buildingSeparateConcept.separateConcept.formula) %}
+                                {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, totalImport, buildingSeparateConcept.getPercentRealValueByFormula(totalImport)) %}
+                            {% else %}
+                                {% if buildingSeparateConcept.separateConcept.parent is null %}
+                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImportRealValue(), buildingSeparateConcept.getPercentRealValueByFormula(buildingSeparateConcept.getImportRealValue())) %}
+                                {% else %}
+                                    {% set aec = aec.add(buildingSeparateConcept.separateConcept.number, buildingSeparateConcept.getImportRealValue(parentImport), buildingSeparateConcept.getPercentRealValueByFormula(buildingSeparateConcept.getImportRealValue())) %}
+                                {% endif %}
+                            {% endif %}
+                            <input type="number" step="0.01" placeholder="0.00" min="0" max="100"
+                                   id="{{ buildingSeparateConcept.id }}" name="building[coefficient]"
+                                   data-estimate-presupposition-target="field" inputmode="decimal" class="form-control"
+                                   value="{{ (buildingSeparateConcept.separateConcept.formula) ? buildingSeparateConcept.getPercentRealValueByFormula(totalImport)|number_format(2) : buildingSeparateConcept.percentRealValue|number_format(2) }}"
+                                   style="display: inline;width: 90px" {{ stimulusTarget('separate-concept', 'percent') }}
+                                {% if buildingSeparateConcept.separateConcept.formula is not null %}
+                                    readonly disabled
+                                {% endif %}
+                            > %
+                        </td>
+                        <td>{{ buildingSeparateConcept.separateConcept.number }}</td>
+                        <td>
+                            {{ buildingSeparateConcept.separateConcept.name }}
+                        </td>
+                        <td {{ stimulusTarget('separate-concept', 'import') }}>
+                            {% if buildingSeparateConcept.separateConcept.parent is null %}
+                                {% if buildingSeparateConcept.separateConcept.formula %}
+                                    {% if buildingSeparateConcept.separateConcept.number == '20' %}
+                                        <span {% if (buildingSeparateConcept.getPercentRealValueByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentRealValueByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
+                                            ~${{ money(totalImport) }}
+                                        </span>
+                                    {% else %}
+                                        ${{ money(totalImport) }}
+                                    {% endif %}
+                                {% else %}
+                                    ${{ money(buildingSeparateConcept.getImportRealValue()) }}
+                                {% endif %}
+                            {% else %}
+                                {% if buildingSeparateConcept.separateConcept.number in ['13.1', '13.2'] %}
+                                    ${{ money(totalImport) }}
+                                {% else %}
+                                    ${{ money(buildingSeparateConcept.getImportRealValue(parentImport)) }}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if buildingSeparateConcept.separateConcept.number == '9' %}
+                                {% set formula = '2+3.1+4.1.1+4.3.1+4.4.1+4.5.1+4.6.1+4.7.1+4.15.1+4.17.1+4.18.1.1+4.18.2.1' %}
+                                {% set personal_numbers = buildingSeparateConcept.extraerNumeros(formula, []) %}
+                                {% set personal_data = aec.getDataByNumbers(personal_numbers) %}
+                                {% set personal_result = buildingSeparateConcept.calculateImportByFormula(formulaEvaluator, personal_data, formula) %}
+                                ${{ money(personal_result) }}
+                                <br>
+                            <span
+                                {% if personal_result > 0 %}
+                                    {% if (totalImport / personal_result) > 1 %}
+                                        style="color: red"
+                                    {% endif %}
+                                {% endif %}
+                                data-bs-toggle="tooltip" title="Texto del mensaje">
+                                {% if personal_result > 0 %}
+                                    {{ (totalImport / personal_result)|number_format(2) }}
+                                {% else %}
+                                    {{ 0|number_format(2) }}
+                                {% endif %}
+                                </span>{# Si > 1 ponerlo todo en rojo con mensaje #}
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% set cssClass = 'btn-link' %}
+                            {% if buildingSeparateConcept.separateConcept.formula %}
+                                {% set cssClass = 'btn-link disabled' %}
+                            {% endif %}
+                            {{ tableActionButton3('', 'fa:save', '', 'Salvar', stimulusAction('separate-concept', 'save:prevent'), cssClass) }}
+                        </td>
+                    </tr>
+
+                    {% set data = data|merge({(buildingSeparateConcept.separateConcept.number) : ''}) %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">No se encontraron desgloses.</td>
+                    </tr>
+                {% endfor %}
+
+            {% endblock %}
+
+        {% endcomponent %}
+    </div>
+</div>

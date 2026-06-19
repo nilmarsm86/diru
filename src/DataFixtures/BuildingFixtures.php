@@ -91,6 +91,8 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             $buildingSeparateConcept->setBuilding($buildingEntity);
             $buildingSeparateConcept->setSeparateConcept($separateConcept);
             $buildingSeparateConcept->setPercentEstimatedAdjustValue($percent);
+            $buildingSeparateConcept->setPercentEstimatedToExecuteValue($percent);
+            $buildingSeparateConcept->setPercentRealValue($percent);
 
             $buildingEntity->addBuildingSeparateConcept($buildingSeparateConcept);
             $manager->persist($buildingSeparateConcept);

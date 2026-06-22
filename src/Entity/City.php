@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Entity\Traits\NameToStringTrait;
 use App\Repository\CityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
+#[DoctrineAssert\UniqueEntity(fields: ['name', 'country'], message: 'Ya existe en el país esta ciudad.', errorPath: 'name')]
 #[ORM\HasLifecycleCallbacks]
 class City
 {
@@ -23,7 +25,7 @@ class City
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Ignore]
-    #[Assert\NotBlank(message: 'Seleccione o cree el pais al cual pertenece la ciudad.')]
+    #[Assert\NotBlank(message: 'Seleccione o cree el país al cual pertenece la ciudad.')]
     private ?Country $country = null;
 
     public function getId(): ?int

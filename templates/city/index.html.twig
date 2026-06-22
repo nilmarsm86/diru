@@ -1,35 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'content.html.twig' %}
 
-{% block title %}City index{% endblock %}
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
 
-{% block body %}
-    <h1>City index</h1>
+{% block title %}Ciudades{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for city in cities %}
-            <tr>
-                <td>{{ city.id }}</td>
-                <td>{{ city.name }}</td>
-                <td>
-                    <a href="{{ path('app_city_show', {'id': city.id}) }}">show</a>
-                    <a href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block content %}
+    <div class="row">
+        {{ h1('Ciudades', 'icon-park:local') }}
 
-    <a href="{{ path('app_city_new') }}">Create new</a>
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Ciudades'},
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">Gestión de ciudades</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('city/_list.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
 {% endblock %}

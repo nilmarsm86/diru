@@ -6,6 +6,7 @@ use App\Entity\Country;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @template TData of Country
@@ -23,7 +24,19 @@ class CountryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, [
+                'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del país',
+                ],
+            ])
+            ->add('cities', LiveCollectionType::class, [
+                'entry_type' => CityType::class,
+                'button_delete_options' => [
+                    'label_html' => true,
+                ],
+                'error_bubbling' => false,
+            ])
         ;
     }
 
@@ -31,6 +44,9 @@ class CountryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Country::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

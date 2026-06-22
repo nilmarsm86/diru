@@ -7,12 +7,13 @@ use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Country>
  */
-class CountryRepository extends ServiceEntityRepository
+class CountryRepository extends ServiceEntityRepository implements FilterInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -46,6 +47,43 @@ class CountryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void
+    {
+        if ('' !== $filter) {
+            $predicate = 'c.name LIKE :filter ';
+            $builder->andWhere($predicate)
+                ->setParameter(':filter', '%'.$filter.'%');
+        }
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findCountries(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('c');
+        $this->addFilter($builder, $filter);
+        $query = $builder->orderBy('c.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function remove(Country $entity, bool $flush = false): void
+    {
+        if ($entity->getCities()->count() > 0) {
+            throw new \Exception('El país aun tiene ciudades asociadas.', 1);
+        }
+
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
 
     public function findCountriesForForm(): QueryBuilder
     {

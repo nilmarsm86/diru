@@ -3,81 +3,91 @@
 namespace App\Controller;
 
 use App\Entity\Country;
-use App\Form\CountryType;
+use App\Entity\Role;
 use App\Repository\CountryRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CrudActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route('/country')]
+#[IsGranted(Role::ROLE_ADMIN)]
 final class CountryController extends AbstractController
 {
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route(name: 'app_country_index', methods: ['GET'])]
-    public function index(CountryRepository $countryRepository): Response
+    public function index(Request $request, CountryRepository $countryRepository, CrudActionService $crudActionService): Response
     {
-        return $this->render('country/index.html.twig', [
-            'countries' => $countryRepository->findAll(),
-        ]);
+        return $crudActionService->indexAction($request, $countryRepository, 'findCountries', 'country');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/new', name: 'app_country_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CrudActionService $crudActionService): Response
     {
         $country = new Country();
-        $form = $this->createForm(CountryType::class, $country);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($country);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_country_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('country/new.html.twig', [
-            'country' => $country,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $country, 'country', [
+            'title' => 'Nuevo país',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_country_show', methods: ['GET'])]
-    public function show(Country $country): Response
+    public function show(Request $request, Country $country, CrudActionService $crudActionService): Response
     {
-        return $this->render('country/show.html.twig', [
-            'country' => $country,
-        ]);
+        return $crudActionService->showAction($request, $country, 'country', 'country', 'Detalles del país');
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}/edit', name: 'app_country_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Country $country, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Country $country, CrudActionService $crudActionService): Response
     {
-        $form = $this->createForm(CountryType::class, $country);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_country_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('country/edit.html.twig', [
-            'country' => $country,
-            'form' => $form,
+        return $crudActionService->formLiveComponentAction($request, $country, 'country', [
+            'title' => 'Editar país',
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/{id}', name: 'app_country_delete', methods: ['POST'])]
-    public function delete(Request $request, Country $country, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Country $country, CountryRepository $countryRepository, CrudActionService $crudActionService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$country->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($country);
-            $entityManager->flush();
+        $successMsg = 'Se ha eliminado el país.';
+        $response = $crudActionService->deleteAction($request, $countryRepository, $country, $successMsg, 'app_country_index');
+        if ($response instanceof RedirectResponse) {
+            $this->addFlash('success', $successMsg);
+
+            return $response;
         }
 
-        return $this->redirectToRoute('app_country_index', [], Response::HTTP_SEE_OTHER);
+        return $response;
     }
 
     #[Route('/city/{id}', name: 'city_country', requirements: ['id' => '\d+'], methods: ['GET'])]

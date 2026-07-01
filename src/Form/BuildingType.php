@@ -11,6 +11,7 @@ use App\Entity\IndividualClient;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
 use App\Form\Types\SimpleArrayTextareaType;
+use App\Form\Types\TrixEditorType;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Service\Building\BuildingValuationService;
@@ -65,17 +66,13 @@ class BuildingType extends AbstractType
                 ],
                 'empty_data' => 1,
             ])
-            ->add('constructionAssemblyComment', null, [
+            ->add('constructionAssemblyComment', TrixEditorType::class, [
                 'label' => 'Comentario:',
-                'attr' => [
-                    'rows' => 1,
-                ],
+                'required' => false,
             ])
-            ->add('constructionRealValueComment', null, [
+            ->add('constructionRealValueComment', TrixEditorType::class, [
                 'label' => 'Comentario:',
-                'attr' => [
-                    'rows' => 1,
-                ],
+                'required' => false,
             ])
             ->add('activity', EntityType::class, [
                 'class' => ConstructiveAction::class,
@@ -494,7 +491,7 @@ class BuildingType extends AbstractType
                 'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ])
             ->add('constructionRealValue', MoneyPlusType::class, [
-                'label' => 'Valor real:',
+                'label' => 'Precio:',
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,

@@ -64,4 +64,77 @@ final class HistoricalIteController extends AbstractController
             'buildingValuationService' => $buildingValuationService,
         ]);
     }
+
+    #[Route('/building/ajust', name: 'app_historical_ite_building_ajust', methods: ['GET'])]
+    public function buildingAjust(Request $request, RouterInterface $router, CrudActionService $crudActionService, BuildingRepository $buildingRepository, BuildingValuationService $buildingValuationService): Response
+    {
+        /** @var array{string, int, int} $result */
+        $result = $crudActionService->getManageQuerys($request);
+        list($filter, $amountPerPage, $pageNumber) = $result;
+
+        $data = $buildingRepository->getIteReferences($filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_building_ajust.html.twig' : 'index.html.twig';
+
+        return $this->render("historical_ite/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'ITE obras ajustadas',
+            'template' => 'historical_ite/_building_ajust.html.twig',
+            'buildingValuationService' => $buildingValuationService,
+        ]);
+    }
+
+    #[Route('/building/detail', name: 'app_historical_ite_building_detail', methods: ['GET'])]
+    public function buildingDetail(Request $request, RouterInterface $router, CrudActionService $crudActionService, BuildingRepository $buildingRepository): Response
+    {
+        /** @var array{string, int, int} $result */
+        $result = $crudActionService->getManageQuerys($request);
+        list($filter, $amountPerPage, $pageNumber) = $result;
+
+        $data = $buildingRepository->getIteReferences($filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_building_detail.html.twig' : 'index.html.twig';
+
+        return $this->render("historical_ite/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'ITE obras presupuesto detallado',
+            'template' => 'historical_ite/_building_detail.html.twig',
+        ]);
+    }
+
+    #[Route('/building/real', name: 'app_historical_ite_building_real', methods: ['GET'])]
+    public function buildingReal(Request $request, RouterInterface $router, CrudActionService $crudActionService, BuildingRepository $buildingRepository): Response
+    {
+        /** @var array{string, int, int} $result */
+        $result = $crudActionService->getManageQuerys($request);
+        list($filter, $amountPerPage, $pageNumber) = $result;
+
+        $data = $buildingRepository->getIteReferences($filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_building_real.html.twig' : 'index.html.twig';
+
+        return $this->render("historical_ite/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'ITE obras presupuesto real',
+            'template' => 'historical_ite/_building_real.html.twig',
+        ]);
+    }
 }

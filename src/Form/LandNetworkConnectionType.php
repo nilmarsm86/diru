@@ -6,6 +6,7 @@ use App\Entity\LandNetworkConnection;
 use App\Entity\NetworkConnection;
 use App\Form\Types\NetworkConnectionEnumType;
 use App\Form\Types\TechnicalStatusEnumType;
+use App\Form\Types\TrixEditorType;
 use App\Form\Types\UnitMeasurementFloatType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -27,11 +28,9 @@ class LandNetworkConnectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('explanation', null, [
+        $builder->add('explanation', TrixEditorType::class, [
             'label' => 'Explicación:',
-            'attr' => [
-                'rows' => 5,
-            ],
+            'required' => false,
         ])
             ->add('networkConnection', EntityType::class, [
                 'class' => NetworkConnection::class,

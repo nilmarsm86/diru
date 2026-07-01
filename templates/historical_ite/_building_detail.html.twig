@@ -1,0 +1,51 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+        <div>
+
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Proyecto</th>
+                    <th style="width: 100px">Fecha</th>
+                    <th class="text-end">ITE ($/m<sup>2</sup>)</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+
+                {% for building in paginator.getData() %}
+                    <tr>
+                        <td>{{ building.name }}</td>
+                        <td>{{ building.project.name }}</td>
+                        <td style="width: 100px">{{ building.revisedAt|date('Y-m-d') }}</td>
+
+                        <td class="text-end">{{ building.getDetailIte()|number_format(2) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">No se encontraron obras.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

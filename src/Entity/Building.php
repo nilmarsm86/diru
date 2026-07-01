@@ -1105,7 +1105,7 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getConstructionAssembly(): ?int
+    public function getConstructionAssembly(): int
     {
         if (null === $this->constructionAssembly) {
             return 0;
@@ -1643,5 +1643,25 @@ class Building implements MeasurementDataInterface
     public function getIte(): float
     {
         return $this->getRangePrice() / $this->getTotalArea();
+    }
+
+    public function getDetailCoefficient(): float
+    {
+        return $this->getConstructionAssembly() / $this->getEstimatedAdjustValue();
+    }
+
+    public function getDetailIte(): float
+    {
+        return $this->getConstructionAssembly() / 100 / $this->getTotalArea();
+    }
+
+    public function getRealCoefficient(): float
+    {
+        return $this->getConstructionRealValue() / $this->getEstimatedAdjustValue();
+    }
+
+    public function getRealIte(): float
+    {
+        return $this->getConstructionRealValue() / 100 / $this->getTotalArea();
     }
 }

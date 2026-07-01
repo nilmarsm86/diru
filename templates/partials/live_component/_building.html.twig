@@ -261,7 +261,7 @@
 <details class="collection" {% if constructionAssembly.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
         <div class="row summary-btn-lis">
-            <div class="col">Valor de ejecución:</div>
+            <div class="col">Valor de presupuesto detallado:</div>
             <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
 
             </div>
@@ -269,10 +269,33 @@
     </summary>
     <br>
     <div class="mb-0 row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             {{ form_row(constructionAssembly) }}
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-4">
+            <div class="mb-3 disabled-field">
+                <label for="building_coefficient" class="form-label">
+                    Coeficiente presup. detallado:
+                </label>
+                <input type="text" inputmode="decimal" class="form-control" name="detail_coefficient"
+                       value="{{ this.bui.getDetailCoefficient()|number_format(2) }}" readonly="readonly" >
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="mb-3">
+                <p class="text-end-detail">* ITE presup. detallado ($/m<sup>2</sup>):</p>
+                <h5 class="text-end-detail">{# $ #}
+                    <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
+                            ${{ this.bui.getDetailIte()|number_format(2) }}
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
             {{ form_row(constructionAssemblyComment) }}
         </div>
     </div>
@@ -289,10 +312,33 @@
     </summary>
     <br>
     <div class="mb-0 row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             {{ form_row(constructionRealValue) }}
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-4">
+            <div class="mb-3 disabled-field">
+                <label for="building_coefficient" class="form-label">
+                    Coeficiente presup. real:
+                </label>
+                <input type="text" inputmode="decimal" class="form-control" name="detail_coefficient"
+                       value="{{ this.bui.getRealCoefficient()|number_format(2) }}" readonly="readonly" >
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="mb-3">
+                <p class="text-end-detail">* ITE presup. real ($/m<sup>2</sup>):</p>
+                <h5 class="text-end-detail">{# $ #}
+                    <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
+                            ${{ this.bui.getRealIte()|number_format(2) }}
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-0 row">
+        <div class="col">
             {{ form_row(constructionRealValueComment) }}
         </div>
     </div>

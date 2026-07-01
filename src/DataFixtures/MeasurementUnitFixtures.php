@@ -11,7 +11,7 @@ class MeasurementUnitFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $units = ['m', 'm2', 'm3', 'v', 'texto', '%', '#', 'USD/m2', 'USD/ml', 'USD/tn'];
+        $units = ['m', 'm2', 'm3', 'v', 'texto', '%', '#', 'USD/m2', 'USD/ml', 'USD/tn', 'u'];
         foreach ($units as $code) {
             $unit = $manager->getRepository(MeasurementUnit::class)->findOneBy(['code' => $code]);
             if (is_null($unit)) {
@@ -45,6 +45,9 @@ class MeasurementUnitFixtures extends Fixture implements FixtureGroupInterface
                 }
                 if ('USD/tn' === $code) {
                     $unit->setName('Dolar por tonelada');
+                }
+                if ('u' === $code) {
+                    $unit->setName('Unidad');
                 }
 
                 $unit->setCode($code);

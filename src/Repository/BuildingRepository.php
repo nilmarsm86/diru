@@ -103,4 +103,18 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
             $this->flush();
         }
     }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function getIteReferences(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
+            ->leftJoin('b.project', 'p');
+        $this->addState($builder, '5');
+        $this->addFilter($builder, $filter, false);
+        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

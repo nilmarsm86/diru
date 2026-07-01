@@ -1639,4 +1639,9 @@ class Building implements MeasurementDataInterface
 
         return $this;
     }
+
+    public function getIte(): float
+    {
+        return $this->getRangePrice() / $this->getTotalArea();
+    }
 }

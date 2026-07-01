@@ -648,4 +648,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         return $this;
     }
+
+    public function getIte(): float
+    {
+        return $this->getPrice() / $this->getTotalArea();
+    }
 }

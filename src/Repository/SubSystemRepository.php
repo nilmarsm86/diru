@@ -67,4 +67,23 @@ class SubSystemRepository extends ServiceEntityRepository implements FilterInter
             $this->flush();
         }
     }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function getIteReferences(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('ss')->select(['ss'])
+            ->where('ss.state = 3 AND ss.hasReply = :hasReply AND ss.original IS NOT NULL AND ss.subsystemTypeSubsystemSubType IS NOT NULL')
+            ->orWhere('ss.state = 0 AND ss.hasReply = :hasReply AND ss.original IS NULL AND ss.subsystemTypeSubsystemSubType IS NOT NULL')
+            ->orWhere('ss.state = 0 AND ss.hasReply IS NULL AND ss.original IS NULL AND ss.subsystemTypeSubsystemSubType IS NOT NULL')
+//            ->setParameter(':state', '3')
+        ->setParameter(':hasReply', '0');
+        $this->addFilter($builder, $filter, false);
+
+        $query = $builder->addOrderBy('ss.name', 'ASC')
+            ->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

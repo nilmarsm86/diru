@@ -110,6 +110,9 @@
                     {% if reply or floor.inNewBuilding() %}
                         <th>Importe ({{ floor.building.getProjectCurrency() }})</th>
                     {% endif %}
+                    {% if reply or floor.inNewBuilding() %}
+                        <th>ITE ($/m<sup>2</sup>)</th>
+                    {% endif %}
                     <th></th>
                 </tr>
             {% endblock %}
@@ -188,6 +191,9 @@
                         </td>
                         {% if reply or floor.inNewBuilding() %}
                             <td>{{ money(sub_system.getPrice()) }}</td>
+                        {% endif %}
+                        {% if reply or floor.inNewBuilding() %}
+                            <td>{{ money(sub_system.getIte()) }}</td>
                         {% endif %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}

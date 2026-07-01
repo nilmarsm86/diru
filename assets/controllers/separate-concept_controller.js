@@ -14,6 +14,7 @@ export default class extends AbstractController {
     static values = {
         urlSaveData: {type: String, default: ''},
         urlLoadData: {type: String, default: ''},
+        urlResetData: {type: String, default: ''},
         estimatedAdjust: {type: Number, default: 0},
     };
 
@@ -54,6 +55,28 @@ export default class extends AbstractController {
 
         //poner el valor del importe
         this.importTarget.innerText = this.uSDollar.format((this.estimatedAdjustValue * this.percentTarget.value / 100) / 100);
+
+        //mostrar backdrop
+        const listBackdrop = document.querySelector('[data-id=table-backdrop]');
+        const backdrop = super.getController(listBackdrop, 'twig/backdrop/backdrop');
+        backdrop.dispatch(BACKDROP_SHOW, {detail: {id: listBackdrop.dataset.id}});
+
+        const eventDetail = new CustomEvent('eventDetail', {detail: {}});
+        this.refreshContent(eventDetail);
+    }
+
+    async reset() {
+        const request = new Request(this.urlResetDataValue, {
+            headers: new Headers({
+                'X-Requested-With': 'XMLHttpRequest'
+            })
+        });
+
+        const response = await fetch(request, {
+            method: 'get',
+        });
+
+        await this.processResponseToast(response);
 
         //mostrar backdrop
         const listBackdrop = document.querySelector('[data-id=table-backdrop]');

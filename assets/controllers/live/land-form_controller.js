@@ -23,7 +23,7 @@ export default class extends AbstractController {
         });
 
         this.isNewTarget.addEventListener('change', (event) => {
-            this.detailsTarget.style.visibility = (this.isNewTarget.checked) ? 'hidden' : 'visible';
+            this.detailsTarget.style.visibility = (!this.isNewTarget.checked) ? 'hidden' : 'visible';
         });
 
         this.calcualteCos();

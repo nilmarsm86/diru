@@ -23,7 +23,8 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Constructor</strong>
-                            <span class="badge text-bg-primary rounded-pill">{{ building.getActiveCorporateEntityName() }}</span>
+                            <span
+                                class="badge text-bg-primary rounded-pill">{{ building.getActiveCorporateEntityName() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Obra</strong>
@@ -31,7 +32,8 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Objetos de obra</strong>
-                            <span class="badge text-bg-primary rounded-pill">{{ building.getObjects()|join(', ') }}</span>
+                            <span
+                                class="badge text-bg-primary rounded-pill">{{ building.getObjects()|join(', ') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Cliente</strong>
@@ -49,7 +51,8 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Actividad</strong>
-                            <span class="badge text-bg-primary rounded-pill">{{ building.getActivity().getName() }}</span>
+                            <span
+                                class="badge text-bg-primary rounded-pill">{{ building.getActivity().getName() }}</span>
                         </li>
                     </ul>
                 {% endblock %}
@@ -61,12 +64,19 @@
         {% component 'Table:Table' %}
 
             {% block tableHead %}
+                {% from 'macros/buttons.html.twig' import tableActionButton3 %}
                 <tr>
                     <th>{{ buildingValuationService.separateConceptsTotalPercent(building) }} %</th>
                     <th>Número</th>
                     <th>Concepto</th>
                     <th>Importe</th>
-                    <th></th>
+                    <th class="text-end" {{ stimulusController('separate-concept', {
+                        urlResetData: path('app_building_separate_concept_estimate_reset', {'id': building.id}),
+                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': building.id})
+
+                    }) }}>
+                        {{ tableActionButton3('', 'ix:reset' , '', 'Resetear desglose', stimulusAction('separate-concept', 'reset:prevent'), 'btn-danger') }}
+                    </th>
                 </tr>
             {% endblock %}
 
@@ -84,7 +94,7 @@
 
                     <tr {{ stimulusController('separate-concept', {
                         urlSaveData: path('app_building_separate_concept_estimate', {'id': buildingSeparateConcept.id}),
-                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': buildingSeparateConcept.building.id}),
+                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': building.id}),
                         estimatedAdjust: ((buildingSeparateConcept.separateConcept.parent is null)
                         ? buildingEstimatedAdjustValue
                         : parentImport
@@ -123,15 +133,16 @@
                         <td>{{ buildingSeparateConcept.separateConcept.number }}</td>
                         <td>
                             {{ buildingSeparateConcept.separateConcept.name }}
-{#                            {% if buildingSeparateConcept.separateConcept.formula %}#}
-{#                                [{{ buildingSeparateConcept.separateConcept.formula }}]#}
-{#                            {% endif %}#}
+                            {#                            {% if buildingSeparateConcept.separateConcept.formula %} #}
+                            {#                                [{{ buildingSeparateConcept.separateConcept.formula }}] #}
+                            {#                            {% endif %} #}
                         </td>
                         <td {{ stimulusTarget('separate-concept', 'import') }}>
                             {% if buildingSeparateConcept.separateConcept.parent is null %}
                                 {% if buildingSeparateConcept.separateConcept.formula %}
                                     {% if buildingSeparateConcept.separateConcept.number == '20' %}
-                                        <span {% if (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
+                                        <span
+                                            {% if (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
                                             ~${{ money(totalImport) }}
                                         </span>
                                     {% else %}

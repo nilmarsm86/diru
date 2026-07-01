@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Building;
 use App\Entity\BuildingSeparateConcept;
 use App\Entity\Role;
+use App\Repository\BuildingRepository;
 use App\Repository\BuildingSeparateConceptRepository;
+use App\Repository\SeparateConceptRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +28,20 @@ final class BuildingSeparateConceptController extends AbstractController
             'id' => 'new_'.$this->getClassName(BuildingSeparateConcept::class).'_'.$buildingSeparateConcept->getId().'_'.time(),
             'type' => 'text-bg-success',
             'message' => 'Se a actualizado el desglose.',
+        ]);
+    }
+
+    #[Route('/building/separate/concept/estimate_reset/{id}', name: 'app_building_separate_concept_estimate_reset')]
+    public function estimateReset(SeparateConceptRepository $separateConceptRepository, Building $building, BuildingRepository $buildingRepository): Response
+    {
+        $this->addSeparateConcepts($separateConceptRepository, $building);
+
+        $buildingRepository->save($building, true);
+
+        return $this->render('partials/_form_success.html.twig', [
+            'id' => 'new_'.$this->getClassName(Building::class).'_'.$building->getId().'_'.time(),
+            'type' => 'text-bg-success',
+            'message' => 'Se a reseteado el desglose.',
         ]);
     }
 
@@ -65,5 +82,32 @@ final class BuildingSeparateConceptController extends AbstractController
         }
 
         return $classname;
+    }
+
+    private function addSeparateConcepts(SeparateConceptRepository $separateConceptRepository, Building $building): void
+    {
+        $existingSeparateConcepts = $building->getBuildingSeparateConcepts();
+
+        $separateConcepts = $separateConceptRepository->findBy([], ['number' => 'ASC']);
+        foreach ($separateConcepts as $separateConcept) {
+            foreach ($existingSeparateConcepts as $existingSeparateConcept) {
+                if ($existingSeparateConcept->getSeparateConcept()?->getId() === $separateConcept->getId()) {
+                    $existingSeparateConcept->setPercentEstimatedAdjustValue($separateConcept->getPercent() ?? 0);
+                    continue;
+                }
+            }
+
+            // solo agregar cuando no existe
+            $percent = (bool) $separateConcept->getPercent() ? $separateConcept->getPercent() : 0;
+
+            $buildingSeparateConcept = new BuildingSeparateConcept();
+            $buildingSeparateConcept->setBuilding($building);
+            $buildingSeparateConcept->setSeparateConcept($separateConcept);
+            $buildingSeparateConcept->setPercentEstimatedAdjustValue($percent);
+            $buildingSeparateConcept->setPercentEstimatedToExecuteValue($percent);
+            $buildingSeparateConcept->setPercentRealValue($percent);
+
+            $building->addBuildingSeparateConcept($buildingSeparateConcept);
+        }
     }
 }

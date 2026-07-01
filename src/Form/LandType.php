@@ -112,7 +112,7 @@ class LandType extends AbstractType
                 'attr' => [] + $disabled,
             ])
             ->add('isNew', CheckboxType::class, [
-                'label' => 'Obra nueva',
+                'label' => 'Inmueble existente',
                 'attr' => [
                     'data-live--land-form-target' => 'isNew',
                 ] + $disabled,

@@ -21,7 +21,7 @@
         }
     }) }}
 
-    {{ form_row(form.isNew) }}
+
 
     <div class="mb-0 row">
         <div class="col">
@@ -48,8 +48,10 @@
         </div>
     </div>
 
+    {{ form_row(form.isNew) }}
+
     <details
-        class="collection" {{ stimulusTarget('live/land-form', 'details') }} {# if this.l.hasOccupiedArea() #}open{# endif #} style="visibility: {% if this.building.isNew() %}hidden{% else %}visible{% endif %};">
+        class="collection" {{ stimulusTarget('live/land-form', 'details') }} {# if this.l.hasOccupiedArea() #}open{# endif #} style="visibility: {% if this.building.isNew() == false %}hidden{% else %}visible{% endif %};">
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área a ocupada:</div>

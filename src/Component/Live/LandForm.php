@@ -108,7 +108,7 @@ final class LandForm extends AbstractController
             if (is_null($land->getId())) {
                 $showFloorMessage = true;
                 //                if (false === (bool) $this->formValues['floor'] || 0 === $this->formValues['occupiedArea']) {//TODO: cambiar
-                if (true === (bool) $this->formValues['isNew']) {
+                if (false === (bool) $this->formValues['isNew']) {
                     $land->setFloor(1);
                     $this->building?->setIsNew(true);
                     $this->building?->setState(BuildingState::Design);

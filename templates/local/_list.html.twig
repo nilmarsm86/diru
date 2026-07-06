@@ -75,7 +75,9 @@
                         <th data-bs-toggle="tooltip" data-bs-title="Acción Constructiva">Acción. C</th>
                         <th>Importe ({{ sub_system.floor.building.getProjectCurrency() }})</th>
                     {% endif %}
+                    {% if sub_system.isBuildingInRevisedState() === false %}
                     <th></th>
+                    {% endif %}
                 </tr>
             {% endblock %}
 
@@ -171,6 +173,7 @@
                             </td>
                         {% endif %}
 
+                        {% if local.isBuildingInRevisedState() === false %}
                         <td class="text-end">
                             {% set cssClass = 'btn-link' %}
                             {% if local.hasBackgroundColorOfChange() %}
@@ -195,6 +198,7 @@
                                 }) }}
                             {% endif %}
                         </td>
+                        {% endif %}
                     </tr>
                 {% else %}
                     <tr>

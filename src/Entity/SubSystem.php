@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Interfaces\MoneyInterface;
@@ -652,5 +653,29 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     public function getIte(): float
     {
         return $this->getPrice() / $this->getTotalArea();
+    }
+
+    public function isBuildingInRevisedState(): bool
+    {
+        return BuildingState::Revised !== $this->getFloor()?->getBuilding()?->getState();
+    }
+
+    public function getConstructiveSystem(): string
+    {
+        $constructiveSystems = [];
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            if (!in_array($local->getConstructiveSystem(), $constructiveSystems, true)) {
+                $constructiveSystems[] = $local->getConstructiveSystem();
+            }
+        }
+
+        if (count($constructiveSystems) > 1) {
+            return 'Mixto';
+        }
+
+        return $constructiveSystems[0]?->getName() ?? 'Mixto';
     }
 }

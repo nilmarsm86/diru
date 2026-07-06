@@ -50,7 +50,7 @@ class UrbanRegulationType extends AbstractType
                 ],
             ])
             ->add('data', null, [
-                'label' => 'Dato:',
+                'label' => 'Tipo de Dato:',
                 'attr' => [
                     'placeholder' => 'Dato de la regulación',
                 ],

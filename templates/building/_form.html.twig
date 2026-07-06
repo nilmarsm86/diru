@@ -6,7 +6,10 @@
 } %}
 
     {% block header %}
-        <span>&nbsp;({{ building.state.getLabelFrom(building.state) }})</span>
+        {% if building.id is not null %}
+            <span>&nbsp;({{ building.state.getLabelFrom(building.state) }})</span>
+            <span>&nbsp;[{{ building.getConstructiveSystem() }}]</span>
+        {% endif %}
         {{ include('building/_buttons_header.html.twig', {'building': building}) }}
     {% endblock %}
 

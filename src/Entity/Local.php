@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\LocalType;
 use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MoneyInterface;
@@ -576,5 +577,10 @@ class Local implements MoneyInterface
         }
 
         return $hasChanges;
+    }
+
+    public function isBuildingInRevisedState(): bool
+    {
+        return BuildingState::Revised !== $this->getSubSystem()?->getFloor()?->getBuilding()?->getState();
     }
 }

@@ -538,4 +538,23 @@ class Floor implements MeasurementDataInterface
     {
         return $this->getBuilding()?->getProjectCurrency();
     }
+
+    public function getConstructiveSystem(): string
+    {
+        $constructiveSystems = [];
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subsystem */
+        foreach ($subsystems as $subsystem) {
+            if (!in_array($subsystem->getConstructiveSystem(), $constructiveSystems, true)) {
+                $constructiveSystems[] = $subsystem->getConstructiveSystem();
+            }
+        }
+
+        if (count($constructiveSystems) > 1) {
+            return 'Mixto';
+        }
+
+        return $constructiveSystems[0];
+    }
 }

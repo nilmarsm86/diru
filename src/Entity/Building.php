@@ -1647,21 +1647,56 @@ class Building implements MeasurementDataInterface
 
     public function getDetailCoefficient(): float
     {
+        if (0.0 === $this->getEstimatedAdjustValue() || 0 === $this->getConstructionAssembly()) {
+            return 0;
+        }
+
         return $this->getConstructionAssembly() / $this->getEstimatedAdjustValue();
     }
 
     public function getDetailIte(): float
     {
+        if (0 === $this->getConstructionAssembly() || 0.0 === $this->getTotalArea()) {
+            return 0;
+        }
+
         return $this->getConstructionAssembly() / 100 / $this->getTotalArea();
     }
 
     public function getRealCoefficient(): float
     {
+        if (0.0 === $this->getEstimatedAdjustValue() || 0 === $this->getConstructionRealValue()) {
+            return 0;
+        }
+
         return $this->getConstructionRealValue() / $this->getEstimatedAdjustValue();
     }
 
     public function getRealIte(): float
     {
+        if (0 === $this->getConstructionRealValue() || 0.0 === $this->getTotalArea()) {
+            return 0;
+        }
+
         return $this->getConstructionRealValue() / 100 / $this->getTotalArea();
+    }
+
+    public function getConstructiveSystem(): string
+    {
+        $constructiveSystems = [];
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            if (!in_array($floor->getConstructiveSystem(), $constructiveSystems, true)) {
+                $constructiveSystems[] = $floor->getConstructiveSystem();
+            }
+        }
+
+        if (count($constructiveSystems) > 1) {
+            return 'Mixto';
+        }
+
+        return $constructiveSystems[0];
     }
 }

@@ -40,7 +40,7 @@
         </ul>
     </div>
 
-    {% if building.state.value is same as '4' %}
+    {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
         {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }} #}
         {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }} #}
         <div class="dropdown d-inline-block">
@@ -72,9 +72,10 @@
         </div>
     {% endif %}
 
-    {% if building.state.value not in ['1', '2'] %} {# TODO: pasar esta comprobacion para la entidad #}
+    {% set notRegisteredOrDiagnosis = [constant('App\\Entity\\Enums\\BuildingState::Registered'), constant('App\\Entity\\Enums\\BuildingState::Diagnosis')] %}
+    {% if building.state not in notRegisteredOrDiagnosis %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
-            {% if building.hasBuildingRevisions() or building.state.value is same as '4' %}
+            {% if building.hasBuildingRevisions() or building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
                 {#                <button #}
                 {#                    class="btn text-decoration-none btn-sm btn-primary" #}
                 {#                    {{ stimulusController('modal-content-loader', { #}
@@ -113,7 +114,7 @@
                                 Listado
                             </a>
                         </li>
-                        {% if building.state.value is same as '4' %}
+                        {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
                             <li>
                                 <a class="dropdown-item" href="" title=""
                                     {{ stimulusController('modal-content-loader', {
@@ -150,7 +151,7 @@
         </div>
     {% endif %}
 
-    {% if building.state.value is same as '3' %}
+    {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::Design') and building.hasErrors() === false %}
         {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type': '4'}), 'material-symbols:rate-review', 'Revisar', 'Pasar a estado de revisión') }}
     {% endif %}
 
@@ -235,6 +236,20 @@
     {% endif %}
 
     {% if building.id is not null %}
+{#        <button class="btn btn-sm btn-primary"#}
+{#                title="Conexiones de red"#}
+{#            {{ stimulusTarget('modal-content-loader', 'button') }}#}
+{#            {{ stimulusController('modal-content-loader', {#}
+{#                url: path('app_network_connection_index'),#}
+{#                id: 'modal-load',#}
+{#                placeholder: 'Cargando...',#}
+{#                title: 'Conexiones de red',#}
+{#            }) }}#}
+{#        >#}
+{#            {{ ux_icon('mdi:land-plots-marker', {'class':'bi'}) }}#}
+{#            Conexiones de red#}
+{#        </button>#}
+
         {% if building.land is null %}
             {% set urlPath = path('app_land_new', {'building': building.id, 'modal' : 'modal-load'}) %}
         {% else %}

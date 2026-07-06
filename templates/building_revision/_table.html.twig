@@ -33,7 +33,7 @@
                     }) ~ stimulusTarget('modal-content-loader', 'button') %}
                     {{ tableActionButton3(path('app_building_revision_show', {'id': building_revision.id, 'building' : building.id}), 'bi:eye', '', 'Detalle de la revisión', action_show, 'btn-link') }}
 
-                    {% if building_revision.isActive() and building_revision.building.state.value is same as '4' %}
+                    {% if building_revision.isActive() and building_revision.building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
                         {% set action = stimulusController('modal-content-loader', {
                             url: path('app_building_revision_edit', {'building': building.id, 'id': building_revision.id, 'modal':'modal-load', 'state':'modal'}),
                             id: 'modal-load',

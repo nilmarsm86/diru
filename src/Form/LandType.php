@@ -110,6 +110,7 @@ class LandType extends AbstractType
                 'choices' => array_combine(range(1, 50), range(1, 50)),
                 'required' => false,
                 'attr' => [] + $disabled,
+                'data' => ($building instanceof Building) ? ($building->hasReplyFloors() ? count($building->getReplyFloors()) : count($building->getOriginalFloors())) : 0,
             ])
             ->add('isNew', CheckboxType::class, [
                 'label' => 'Inmueble existente',
@@ -117,7 +118,7 @@ class LandType extends AbstractType
                     'data-live--land-form-target' => 'isNew',
                 ] + $disabled,
                 'mapped' => false,
-                'data' => ($building instanceof Building) ? $building->isNew() : false,
+                'data' => ($building instanceof Building) ? (true === $building->isNew() ? false : true) : false,
                 'required' => false,
             ])
         ;

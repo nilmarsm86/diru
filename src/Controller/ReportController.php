@@ -18,9 +18,9 @@ final class ReportController extends AbstractController
         $options->setIsRemoteEnabled(true);
         $options->setDefaultFont('DejaVu Sans'); // Mejor soporte UTF-8
 
-        $logoPath = $_SERVER['DOCUMENT_ROOT'] . 'icono.jpg';
+        $logoPath = $_SERVER['DOCUMENT_ROOT'].'icono.jpg';
         $logoData = base64_encode(file_get_contents($logoPath));
-        $logoBase64 = 'data:image/png;base64,' . $logoData;
+        $logoBase64 = 'data:image/png;base64,'.$logoData;
 
         $dompdf = new Dompdf($options);
 
@@ -55,9 +55,9 @@ final class ReportController extends AbstractController
     #[Route('/reporte/preview', name: 'reporte_preview')]
     public function preview(): Response
     {
-        $logoPath = $_SERVER['DOCUMENT_ROOT'] . 'icono.jpg';
+        $logoPath = $_SERVER['DOCUMENT_ROOT'].'icono.jpg';
         $logoData = base64_encode(file_get_contents($logoPath));
-        $logoBase64 = 'data:image/png;base64,' . $logoData;
+        $logoBase64 = 'data:image/png;base64,'.$logoData;
 
         return $this->render('report/index.html.twig', [
             'titulo' => 'Reporte Mensual',

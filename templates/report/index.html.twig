@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            /*margin: 80px 50px 70px 50px;*/
+            margin: 30px 30px 30px 30px;
+        }
+
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            /*color: #333;*/
+            padding: 0;
+            margin: 0;
+        }
+
+        /*header {*/
+        /*    position: fixed;*/
+        /*    top: -70px;*/
+        /*    left: 0;*/
+        /*    right: 0;*/
+        /*    height: 70px;*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    align-items: center;*/
+        /*}*/
+
+        /*.logo {*/
+        /*    max-height: 60px;*/
+        /*}*/
+
+        /*.invoice-info {*/
+        /*    !*text-align: right;*!*/
+        /*    float: right;*/
+        /*    margin-top: -100px !important;*/
+        /*}*/
+
+        /*table {*/
+        /*    width: 100%;*/
+        /*    border-collapse: collapse;*/
+        /*    margin: 30px 0;*/
+        /*}*/
+
+        /*th, td {*/
+        /*    padding: 10px 8px;*/
+        /*    text-align: left;*/
+        /*    border-bottom: 1px solid #ddd;*/
+        /*}*/
+
+        /*th {*/
+        /*    background-color: #f8f8f8;*/
+        /*    font-weight: bold;*/
+        /*    color: #444;*/
+        /*}*/
+
+        /*.text-right {*/
+        /*    text-align: right;*/
+        /*}*/
+
+        /*.totals {*/
+        /*    width: 40%;*/
+        /*    float: right;*/
+        /*    margin-top: 20px;*/
+        /*}*/
+
+        /*.totals td {*/
+        /*    padding: 6px 8px;*/
+        /*}*/
+
+        /*.totals .total-row {*/
+        /*    font-weight: bold;*/
+        /*    background-color: #f4f4f4;*/
+        /*}*/
+
+        /*footer {*/
+        /*    position: fixed;*/
+        /*    bottom: -50px;*/
+        /*    left: 0;*/
+        /*    right: 0;*/
+        /*    text-align: center;*/
+        /*    font-size: 10px;*/
+        /*    color: #777;*/
+        /*}*/
+    </style>
+</head>
+<body>
+
+<header style="position: fixed;top: 0;left: 0;right: 0;">
+    <div style="display: inline-block;width: 49%">
+        <img src="{{ logo }}" class="logo" alt="Logo" style="max-height: 60px;">
+        <h2 style="">Título</h2>
+    </div>
+    <div style="display: inline-block;width: 49%">
+        <h3>Resumen derecha:</h3>
+        <strong>Id:</strong> 3<br>
+        <strong>Fecha:</strong> {{ 'now'|date('Y-m-d') }}<br>
+        <strong>Cantidad:</strong> 5<br>
+        <strong>Dinero:</strong> $15, 532.50<br>
+    </div>
+</header>
+
+<main style="position: relative;margin-bottom: 200px;top:140px">
+
+    <div>
+        <strong>Subtitulo:</strong><br>
+        {{ billTo.name|default('Cliente') }}<br>
+        {{ billTo.address|default('Dirección') }}
+    </div>
+    <br>
+    <table style="width: 100%;">
+        <thead style="text-align: left;">
+        <tr>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Order</th>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Service Period</th>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Product Description</th>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Price</th>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Qty</th>
+            <th style="background-color: #f8f8f8;font-weight: bold;color: #444;">Line Total</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: left;">
+        {% for i in 1..100 %}
+            <tr>
+                <td>{{ i }}</td>
+                <td>{{ 'now'|date('Y-m-d') }} - {{ 'now'|date('Y-m-d') }}</td>
+                <td>Un poco de muela sobre la fila</td>
+                <td>$976.50</td>
+                <td>5</td>
+                <td>$4,882.50</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+     <div class="totals" style="width: 40%;float: right;margin-top: 20px;">
+        <table>
+            <tr>
+                <td style="padding: 6px 8px;">Subtotal</td>
+                <td style="padding: 6px 8px;text-align: right">$15, 532.50</td>
+            </tr>
+            <tr class="total-row" style="font-weight: bold;background-color: #f4f4f4;">
+                <td style="padding: 6px 8px;">Total</td>
+                <td style="padding: 6px 8px;text-align: right">$15, 532.50</td>
+            </tr>
+        </table>
+     </div>
+
+</main>
+
+<footer style="position: fixed;bottom: 0px;text-align: center;left: 0;right: 0">
+    We appreciate your business.<br>
+</footer>
+
+</body>
+</html>

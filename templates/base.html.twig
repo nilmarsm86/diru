@@ -13,7 +13,6 @@
     {% block stylesheets %}{% endblock %}
 
     {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% block importmap %}{{ importmap(['app']) }}{% endblock %}
     {% endblock %}
     {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}

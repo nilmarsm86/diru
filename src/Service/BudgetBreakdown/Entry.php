@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\BudgetBreakdown;
 
 final readonly class Entry
 {

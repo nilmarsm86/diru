@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\BudgetBreakdown;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;

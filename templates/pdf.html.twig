@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sistema para el Diseño con Indicadores y Regulaciones Urbanas">
+    <meta name="author" content="Nilmar Sanchez Muguercia, Enrique Capote Passanaout">
+    <title>{% block title %}PDF!{% endblock %}</title>
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" type="image/png" sizes="16x16" />
+    <link rel="manifest" href="/manifest.json" />
+    {% block stylesheets %}
+        <style>
+            @page {
+                margin: 30px 30px 30px 30px;
+            }
+
+            body {
+                font-family: DejaVu Sans, sans-serif;
+                font-size: 12px;
+                line-height: 1.4;
+                color: #333;
+                padding: 0;
+                margin: 0;
+            }
+
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+
+            .col {
+                display: inline-block;
+            }
+
+            main {
+                position: relative;
+                margin-bottom: 200px;
+                top: 140px
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            thead, tbody {
+                text-align: left;
+            }
+
+            tbody td {
+                padding: 10px 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #f8f8f8;
+                font-weight: bold;
+                color: #444;
+                padding: 10px 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            footer {
+                position: fixed;
+                bottom: 0;
+                text-align: center;
+                left: 0;
+                right: 0;
+                font-size: 10px;
+                color: #777
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+</body>
+</html>

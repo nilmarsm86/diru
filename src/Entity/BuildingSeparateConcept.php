@@ -4,8 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\MoneyInterface;
 use App\Repository\BuildingSeparateConceptRepository;
-use App\Service\AssociativeEntryCollection;
-use App\Service\FormulaEvaluator;
+use App\Service\BudgetBreakdown\FormulaEvaluator;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BuildingSeparateConceptRepository::class)]

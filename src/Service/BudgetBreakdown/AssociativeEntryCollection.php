@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\BudgetBreakdown;
 
 /**
  * Manages an associative array with structure:

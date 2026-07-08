@@ -65,6 +65,34 @@ export default class extends AbstractController {
         this.refreshContent(eventDetail);
     }
 
+    async saveImport() {
+        const request = new Request(this.urlSaveDataValue, {
+            headers: new Headers({
+                'X-Requested-With': 'XMLHttpRequest'
+            })
+        });
+
+        const response = await fetch(request, {
+            method: 'post',
+            body: new URLSearchParams({
+                'import': this.importTarget.value.replace(',', '')
+            }),
+        });
+
+        await this.processResponseToast(response);
+
+        //poner el valor del importe
+        this.percentTarget.innerText = (this.importTarget.value * 100) / this.estimatedAdjustValue;
+
+        //mostrar backdrop
+        const listBackdrop = document.querySelector('[data-id=table-backdrop]');
+        const backdrop = super.getController(listBackdrop, 'twig/backdrop/backdrop');
+        backdrop.dispatch(BACKDROP_SHOW, {detail: {id: listBackdrop.dataset.id}});
+
+        const eventDetail = new CustomEvent('eventDetail', {detail: {}});
+        this.refreshContent(eventDetail);
+    }
+
     async reset() {
         const request = new Request(this.urlResetDataValue, {
             headers: new Headers({

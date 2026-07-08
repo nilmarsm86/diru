@@ -266,4 +266,23 @@ final class AssociativeEntryCollection implements \Countable, \IteratorAggregate
 
         return $data;
     }
+
+    /**
+     * @param array<string> $numbers
+     *
+     * @return array<float>
+     */
+    public function getDataPercentByNumbers(array $numbers): array
+    {
+        $data = [];
+
+        foreach ($numbers as $number) {
+            $entry = $this->find($number);
+            if (null !== $entry) {
+                $data[$number] = $entry->percentAsFloat();
+            }
+        }
+
+        return $data;
+    }
 }

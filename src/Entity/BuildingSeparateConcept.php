@@ -137,6 +137,14 @@ class BuildingSeparateConcept implements MoneyInterface
         return (float) $formulaEvaluator->evaluar($data, $formula);
     }
 
+    /**
+     * @param array<string> $data
+     */
+    public function calculatePercentByFormula(FormulaEvaluator $formulaEvaluator, array $data, string $formula): float
+    {
+        return (float) $formulaEvaluator->evaluar($data, $formula);
+    }
+
     public function getImport(?float $parentImport = null, ?float $parentPercent = null): int|float
     {
         $import = (null === $parentImport) ? $this->getBuilding()?->getEstimatedAdjustValue() : $parentImport;
@@ -146,6 +154,14 @@ class BuildingSeparateConcept implements MoneyInterface
     }
 
     public function getImportEstimateToExecuteValue(?float $parentImport = null, ?float $parentPercent = null): int|float
+    {
+        $import = (null === $parentImport) ? $this->getBuilding()?->getConstructionAssembly() : $parentImport;
+        $percent = (null === $parentPercent) ? $this->getPercentEstimatedToExecuteValue() : $parentPercent;
+
+        return round((float) $import * (float) $percent / 100);
+    }
+
+    public function getPercentEstimateToExecuteValue(?float $parentImport = null, ?float $parentPercent = null): int|float
     {
         $import = (null === $parentImport) ? $this->getBuilding()?->getConstructionAssembly() : $parentImport;
         $percent = (null === $parentPercent) ? $this->getPercentEstimatedToExecuteValue() : $parentPercent;
@@ -181,6 +197,16 @@ class BuildingSeparateConcept implements MoneyInterface
         }
 
         return $import * 100 / $value;
+    }
+
+    public function getImportEstimatedToExecuteValueByFormula(float $percent): float
+    {
+        $value = (float) $this->getBuilding()?->getConstructionAssembly();
+        if (0.0 === $value) {
+            return 0;
+        }
+
+        return $percent / (100 * $value);
     }
 
     public function getPercentRealValueByFormula(float $import): float

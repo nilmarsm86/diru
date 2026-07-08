@@ -15,9 +15,6 @@
 </div>
 
 <div class="mb-0 row">
-    {#    <div class="col"> #}
-    {#        {{ form_row(constructor) }} #}
-    {#    </div> #}
     <div class="col">
         {{ form_row(corporateEntity) }}
     </div>
@@ -32,7 +29,6 @@
     <div class="col">
         {{ form_row(objects) }}
     </div>
-
 </div>
 
 <details class="collection" open>
@@ -116,7 +112,6 @@
         </div>
         <div class="mb-3 row">
             <div class="col-12 text-center" {{ stimulusController('range') }}>
-                {#                {{ form_row(range, {'data':bui.getRangePrice() / 100}) }} #}
                 <div class="mb-0">
                     <label for="building_range" class="form-label">
                         <a data-action="click->range#reset" title="Resetear rango" data-bs-toggle="tooltip">
@@ -278,7 +273,7 @@
                     Coeficiente presup. detallado:
                 </label>
                 <input type="text" inputmode="decimal" class="form-control" name="detail_coefficient"
-                       value="{{ this.bui.getDetailCoefficient()|number_format(2) }}" readonly="readonly" >
+                       value="{{ this.bui.getDetailCoefficient()|number_format(2) }}" readonly="readonly">
             </div>
         </div>
 
@@ -321,14 +316,14 @@
                     Coeficiente presup. real:
                 </label>
                 <input type="text" inputmode="decimal" class="form-control" name="detail_coefficient"
-                       value="{{ this.bui.getRealCoefficient()|number_format(2) }}" readonly="readonly" >
+                       value="{{ this.bui.getRealCoefficient()|number_format(2) }}" readonly="readonly">
             </div>
         </div>
 
         <div class="col-sm-4">
             <div class="mb-3">
                 <p class="text-end-detail">* ITE presup. real ($/m<sup>2</sup>):</p>
-                <h5 class="text-end-detail">{# $ #}
+                <h5 class="text-end-detail">
                     <span class="badge text-bg-info" {{ stimulusTarget('estimate-presupposition', 'total') }}>
                             ${{ this.bui.getRealIte()|number_format(2) }}
                     </span>

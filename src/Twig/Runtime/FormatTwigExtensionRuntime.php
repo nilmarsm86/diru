@@ -13,6 +13,6 @@ class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
             return number_format((float) $price->getPrice() / 100, 2).' '.$price->getCurrency();
         }
 
-        return number_format((float) $price / 100, 2).' '.(!is_null($currency) ? $currency : '');
+        return number_format((float) $price / 100, 2).(!is_null($currency) ? ' '.$currency : '');
     }
 }

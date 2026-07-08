@@ -59,10 +59,44 @@ final class BuildingSeparateConceptController extends AbstractController
         ]);
     }
 
+    #[Route('/building/separate/concept/execute_import/{id}', name: 'app_building_separate_concept_execute_import')]
+    public function executeImport(Request $request, BuildingSeparateConcept $buildingSeparateConcept, BuildingSeparateConceptRepository $buildingSeparateConceptRepository): Response
+    {
+        $import = (float) $request->request->get('import', 0) * 100;
+        $constructionAssembly = $buildingSeparateConcept->getBuilding()?->getConstructionAssembly() ?? 0;
+        $percent = $import * 100 / $constructionAssembly;
+        $buildingSeparateConcept->setPercentEstimatedToExecuteValue($percent);
+
+        $buildingSeparateConceptRepository->save($buildingSeparateConcept, true);
+
+        return $this->render('partials/_form_success.html.twig', [
+            'id' => 'new_'.$this->getClassName(BuildingSeparateConcept::class).'_'.$buildingSeparateConcept->getId().'_'.time(),
+            'type' => 'text-bg-success',
+            'message' => 'Se a actualizado el desglose.',
+        ]);
+    }
+
     #[Route('/building/separate/concept/real/{id}', name: 'app_building_separate_concept_real')]
     public function real(Request $request, BuildingSeparateConcept $buildingSeparateConcept, BuildingSeparateConceptRepository $buildingSeparateConceptRepository): Response
     {
         $buildingSeparateConcept->setPercentRealValue((float) $request->request->get('percent', 0));
+
+        $buildingSeparateConceptRepository->save($buildingSeparateConcept, true);
+
+        return $this->render('partials/_form_success.html.twig', [
+            'id' => 'new_'.$this->getClassName(BuildingSeparateConcept::class).'_'.$buildingSeparateConcept->getId().'_'.time(),
+            'type' => 'text-bg-success',
+            'message' => 'Se a actualizado el desglose.',
+        ]);
+    }
+
+    #[Route('/building/separate/concept/real_import/{id}', name: 'app_building_separate_concept_real_import')]
+    public function realImport(Request $request, BuildingSeparateConcept $buildingSeparateConcept, BuildingSeparateConceptRepository $buildingSeparateConceptRepository): Response
+    {
+        $import = (float) $request->request->get('import', 0) * 100;
+        $constructionReal = $buildingSeparateConcept->getBuilding()?->getConstructionRealValue() ?? 0;
+        $percent = $import * 100 / $constructionReal;
+        $buildingSeparateConcept->setPercentRealValue($percent);
 
         $buildingSeparateConceptRepository->save($buildingSeparateConcept, true);
 

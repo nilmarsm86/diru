@@ -34,8 +34,9 @@ class ProjectUrbanRegulationRepository extends ServiceEntityRepository implement
      */
     public function findUrbanRegulationsInProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('pur');
+        $builder = $this->createQueryBuilder('pur')->select(['pur', 'ur']);
         $this->addFilter($builder, $filter);
+        $builder->join('pur.urbanRegulation', 'ur');
         $builder->andWhere('pur.project  = :project');
         $builder->setParameter('project', $project->getId());
         $query = $builder->orderBy('pur.id', 'ASC')->getQuery();

@@ -76,7 +76,7 @@
                         <th>Importe ({{ sub_system.floor.building.getProjectCurrency() }})</th>
                     {% endif %}
                     {% if sub_system.isBuildingInRevisedState() === false %}
-                    <th></th>
+                        <th></th>
                     {% endif %}
                 </tr>
             {% endblock %}
@@ -221,7 +221,9 @@
                         <th></th>
                         <th>{{ money(sub_system.getPrice()) }}</th>
                     {% endif %}
-                    <th></th>
+                    {% if sub_system.isBuildingInRevisedState() === false %}
+                        <th></th>
+                    {% endif %}
                 </tr>
             {% endblock %}
         {% endcomponent %}

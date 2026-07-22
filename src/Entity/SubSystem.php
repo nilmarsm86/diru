@@ -657,7 +657,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function isBuildingInRevisedState(): bool
     {
-        return BuildingState::Revised !== $this->getFloor()?->getBuilding()?->getState();
+        return BuildingState::Revised === $this->getFloor()?->getBuilding()?->getState();
     }
 
     public function getConstructiveSystem(): string

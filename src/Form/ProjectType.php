@@ -67,6 +67,12 @@ class ProjectType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(message: 'Seleccione o cree la inversión a la cual pertenece el proyecto.'),
                 ],
+
+                'modify' => true,
+                'modify_title' => 'Editar Inversión',
+                'modify_id' => 'modal-load',
+                'modify_url' => $this->router->generate('app_investment_edit', ['id' => 0, 'modal' => 'modal-load']),
+
             ])
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,

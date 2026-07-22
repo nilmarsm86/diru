@@ -38,11 +38,34 @@
                             <span class="d-md-invisible">Inicio</span>
                         </a>
                     </li>
+{#                    <li class="nav-item dropdown">#}
+{#                        <a class="nav-link" href="{{ path('app_project_index') }}">#}
+{#                            {{ ux_icon('bi:table', {class:'bi'}) }}#}
+{#                            <span class="d-md-invisible">Proyectos</span>#}
+{#                        </a>#}
+{#                    </li>#}
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="{{ path('app_project_index') }}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
                             {{ ux_icon('bi:table', {class:'bi'}) }}
                             <span class="d-md-invisible">Proyectos</span>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item {{ activeLink('app_project_new') }}"
+                                   href="{{ path('app_project_new') }}">
+                                    {{ ux_icon('bi:plus-lg', {class:'bi'}) }}
+                                    Nuevo proyecto
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ activeLink('app_project_index') }}"
+                                   href="{{ path('app_project_index') }}">
+                                    {{ ux_icon('bi:list', {class:'bi'}) }}
+                                    Listado de proyectos
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -62,7 +85,7 @@
                                 <a class="dropdown-item {{ activeLink('app_enterprise_client_index') }}"
                                    href="{{ path('app_enterprise_client_index') }}">
                                     {{ ux_icon('fa:users', {class:'bi'}) }}
-                                    Cliente empresa
+                                    Cliente entidades
                                 </a>
                             </li>
                             <li class="dropdown-divider"></li>
@@ -75,6 +98,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ path('app_investment_index') }}">
+                            {{ ux_icon('bi:table', {class:'bi'}) }}
+                            <span class="d-md-invisible">Inversiones</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('user_profile') }}">
                             {{ ux_icon('bi:person-circle', {class:'bi'}) }}

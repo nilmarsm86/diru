@@ -54,7 +54,7 @@ final class UrbanRegulationForm extends AbstractController
     public array $pictureErrors = [];
 
     #[LiveProp(writable: true)]
-    public ?string $measurementUnit = null;
+    public ?int $measurementUnit = 0;
 
     public function mount(?UrbanRegulation $ur = null): void
     {
@@ -64,7 +64,7 @@ final class UrbanRegulationForm extends AbstractController
             $this->ur = new UrbanRegulation();
         } else {
             if (!is_null($this->ur->getMeasurementUnit())) {
-                $this->measurementUnit = (string) $this->ur->getMeasurementUnit()->getId();
+                $this->measurementUnit = $this->ur->getMeasurementUnit()->getId();
             }
         }
         $this->entity = $this->ur;
@@ -77,8 +77,9 @@ final class UrbanRegulationForm extends AbstractController
             $this->type = 0;
         }
 
-        if (!is_null($this->measurementUnit)) {
+        if (0 !== $this->measurementUnit) {
             $this->formValues['measurementUnit'] = $this->measurementUnit;
+            $this->measurementUnit = 0;
         }
     }
 
@@ -119,8 +120,10 @@ final class UrbanRegulationForm extends AbstractController
                 $ur->setType($type);
             }
 
-            $measurementUnit = $measurementUnitRepository->find($this->measurementUnit);
-            $ur->setMeasurementUnit($measurementUnit);
+            if ('' !== $this->formValues['measurementUnit']) {
+                $measurementUnit = $measurementUnitRepository->find($this->formValues['measurementUnit']);
+                $ur->setMeasurementUnit($measurementUnit);
+            }
 
             $urbanRegulationRepository->save($ur, true);
 

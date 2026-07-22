@@ -115,6 +115,13 @@
                                 <ul class="dropdown-menu" data-bs-theme="light">
                                     <li>
                                         <a class="dropdown-item"
+                                           href="{{ path('app_building_new', {'project': project.id}) }}"
+                                           title="Nueva obra">
+                                            <small>Nueva Obra</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
                                            href="{{ path('app_building_project', {'project': project.id}) }}"
                                            title="Todas las obras">
                                             <small>Todas</small>

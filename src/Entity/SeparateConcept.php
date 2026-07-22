@@ -244,9 +244,14 @@ class SeparateConcept
         return $this;
     }
 
-    public function getIdententNumber(string $string): string
+//    public function getIdententNumber(string $string): string
+//    {
+//        return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
+//    }
+
+    public function getIdentent(): string
     {
-        return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
+        return substr_count($this->number ?? '', '.');
     }
 
     public function hasParent(): bool

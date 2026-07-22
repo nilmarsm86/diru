@@ -109,7 +109,9 @@ final class LandForm extends AbstractController
                 $showFloorMessage = true;
                 //                if (false === (bool) $this->formValues['floor'] || 0 === $this->formValues['occupiedArea']) {//TODO: cambiar
                 if (false === (bool) $this->formValues['isNew']) {
-                    $land->setFloor(1);
+                    if (null === $land->getFloor()) {
+                        $land->setFloor(1);
+                    }
                     $this->building?->setIsNew(true);
                     $this->building?->setState(BuildingState::Design);
                 } else {
@@ -120,7 +122,7 @@ final class LandForm extends AbstractController
                     $this->building?->setState(BuildingState::Diagnosis);
 
                     if (1 > $land->getOccupiedArea()) {
-                        $land->setOccupiedArea(($land->getLandArea() ?? 1) - ($land->getPerimeter() ?? 1));
+                        $land->setOccupiedArea(($land->getPerimeter() ?? 1) - ($land->getLandArea() ?? 1));
                     }
                 }
                 $this->building?->createFloors(false, $this->entityManager);

@@ -7,6 +7,7 @@
 } %}
     {% block tableHead %}
         <tr>
+            <th>Código</th>
             <th>Dato</th>
             <th>Medida</th>
             <th>Descripción</th>
@@ -19,6 +20,7 @@
 
         {% for project_urban_regulation in paginator.getData() %}
             <tr {# stimulusController('delete-form-container') #}>
+                <td>{{ project_urban_regulation.urbanRegulation.code }}</td>
                 <td>{{ project_urban_regulation.data }}</td>
                 <td>{{ project_urban_regulation.urbanRegulation.measurementUnit }}</td>
                 <td>{{ project_urban_regulation.urbanRegulation.description }}</td>

@@ -72,7 +72,6 @@ class ProjectType extends AbstractType
                 'modify_title' => 'Editar Inversión',
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_investment_edit', ['id' => 0, 'modal' => 'modal-load']),
-
             ])
             ->add('currency', EntityPlusType::class, [
                 'class' => Currency::class,

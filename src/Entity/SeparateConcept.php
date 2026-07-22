@@ -244,12 +244,12 @@ class SeparateConcept
         return $this;
     }
 
-//    public function getIdententNumber(string $string): string
-//    {
-//        return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
-//    }
+    //    public function getIdententNumber(string $string): string
+    //    {
+    //        return str_repeat($string, substr_count($this->number ?? '', '.')).$this->number;
+    //    }
 
-    public function getIdentent(): string
+    public function getIdentent(): int
     {
         return substr_count($this->number ?? '', '.');
     }

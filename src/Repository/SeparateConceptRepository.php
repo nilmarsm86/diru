@@ -102,6 +102,7 @@ SQL;
 
             return 0;
         });
+
         return $result;
     }
 

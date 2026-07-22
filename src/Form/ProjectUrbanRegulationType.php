@@ -46,7 +46,7 @@ class ProjectUrbanRegulationType extends AbstractType
             $field->add(EntityType::class, [
                 'class' => UrbanRegulation::class,
                 'choice_label' => function (UrbanRegulation $urbanRegulation) {
-                    return $urbanRegulation->getDescription().' ('.$urbanRegulation->getMeasurementUnit()->getCode().') ['.$urbanRegulation->getCode().']';
+                    return $urbanRegulation->getDescription().' ('.$urbanRegulation->getMeasurementUnit()?->getCode().') ['.$urbanRegulation->getCode().']';
                 },
                 'label' => 'Regulación:',
                 'placeholder' => $isValid ? '-Seleccione-' : '-Seleccione un tipo de regulación-',

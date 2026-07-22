@@ -941,7 +941,7 @@ class Building implements MeasurementDataInterface
 
     public function getCos(): string
     {
-        //TODO: si se esta en un proyecto nuevo y el area ocupada es 0, entonces se toma como dato del area ocupada el ATP de la planta baja
+        // TODO: si se esta en un proyecto nuevo y el area ocupada es 0, entonces se toma como dato del area ocupada el ATP de la planta baja
         return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / (float) $this->getLand()?->getLandArea(), 2);
     }
 
@@ -1687,7 +1687,7 @@ class Building implements MeasurementDataInterface
         $constructiveSystems = [];
         $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
-        if(count($floors) === 0){
+        if (0 === count($floors)) {
             return '';
         }
 

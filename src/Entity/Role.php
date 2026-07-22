@@ -18,6 +18,7 @@ class Role
     public const ROLE_DIRECTOR = 'ROLE_DIRECTOR';
     public const ROLE_INVESTOR = 'ROLE_INVESTOR';
     public const ROLE_DRAFTSMAN = 'ROLE_DRAFTSMAN';
+    public const ROLE_PLANNER = 'ROLE_PLANNER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     public const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
@@ -51,6 +52,7 @@ class Role
             static::ROLE_DIRECTOR => 'Rol director',
             static::ROLE_INVESTOR => 'Rol inversionista',
             static::ROLE_DRAFTSMAN => 'Rol proyectista',
+            static::ROLE_PLANNER => 'Rol planificador',
             static::ROLE_ADMIN => 'Rol admin',
             static::ROLE_SUPER_ADMIN => 'Rol super admin',
             default => throw new \InvalidArgumentException('Valor no soportado'),

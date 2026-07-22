@@ -11,7 +11,7 @@ class RoleFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $roles = [Role::ROLE_CLIENT, Role::ROLE_INVESTOR, Role::ROLE_DRAFTSMAN, Role::ROLE_DIRECTOR, Role::ROLE_ADMIN, Role::ROLE_SUPER_ADMIN];
+        $roles = [Role::ROLE_CLIENT, Role::ROLE_INVESTOR, Role::ROLE_PLANNER, Role::ROLE_DRAFTSMAN, Role::ROLE_DIRECTOR, Role::ROLE_ADMIN, Role::ROLE_SUPER_ADMIN];
         $i = 1;
         foreach ($roles as $role) {
             $rol = $manager->getRepository(Role::class)->findOneBy(['name' => $role]);

@@ -118,7 +118,8 @@ class LandType extends AbstractType
                     'data-live--land-form-target' => 'isNew',
                 ] + $disabled,
                 'mapped' => false,
-                'data' => ($building instanceof Building) ? (true === $building->isNew() ? false : true) : false,
+                //                'data' => ($building instanceof Building) ? (true === $building->isNew() ? false : true) : false,
+                'data' => (null === $building?->isNew()) ? false : !$building->isNew(),
                 'required' => false,
             ])
         ;

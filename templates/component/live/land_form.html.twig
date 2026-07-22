@@ -21,8 +21,6 @@
         }
     }) }}
 
-
-
     <div class="mb-0 row">
         <div class="col">
             <div class="mb-0 row">
@@ -51,7 +49,7 @@
     {{ form_row(form.isNew) }}
 
     <details
-        class="collection" {{ stimulusTarget('live/land-form', 'details') }} open style="visibility: {% if this.building.isNew() == true %}hidden{% else %}visible{% endif %};">
+        class="collection" {{ stimulusTarget('live/land-form', 'details') }} open style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área a ocupada:</div>

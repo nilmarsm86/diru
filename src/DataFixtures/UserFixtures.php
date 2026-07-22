@@ -24,6 +24,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $this->createInactive($manager);
         $this->createClient($manager);
         $this->createInvestor($manager);
+        $this->createPlanner($manager);
         $this->createDraftsman($manager);
         $this->createDirector($manager);
         $this->createAdmin($manager);
@@ -121,6 +122,26 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             });
 
             $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'draftsman@diru.com', true);
+            $this->save($manager, $planner, array_values($roles));
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function createPlanner(ObjectManager $manager): void
+    {
+        $plannerUser = $manager->getRepository(User::class)->findOneBy(['username' => 'planner']);
+        if (is_null($plannerUser)) {
+            $roles = $manager->getRepository(Role::class)->findAll();
+            $roles = array_filter($roles, function ($role) {
+                return Role::ROLE_SUPER_ADMIN !== $role->getName()
+                    && Role::ROLE_ADMIN !== $role->getName()
+                    && Role::ROLE_DIRECTOR !== $role->getName()
+                    && Role::ROLE_DRAFTSMAN !== $role->getName();
+            });
+
+            $planner = new User('Planner', 'User', 'planner', 'planner', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'planner@diru.com', false);
             $this->save($manager, $planner, array_values($roles));
         }
     }

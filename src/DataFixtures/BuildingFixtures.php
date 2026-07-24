@@ -7,7 +7,6 @@ use App\Entity\Building;
 use App\Entity\BuildingSeparateConcept;
 use App\Entity\Client;
 use App\Entity\ConstructiveAction;
-use App\Entity\Constructor;
 use App\Entity\CorporateEntity;
 use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
@@ -28,11 +27,6 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             if (is_null($buildingEntity)) {
                 $buildingEntity = new Building();
                 $buildingEntity->setName($building);
-
-                //                $constructor = $this->findConstructor($manager);
-                //                if (null !== $constructor) {
-                //                    $buildingEntity->addConstructor($constructor);
-                //                }
 
                 $draftmanCorporateEntity = $this->findConstructorCorporateEntity($manager);
                 if (null !== $draftmanCorporateEntity) {
@@ -135,7 +129,6 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
     public function getDependencies(): array
     {
         return [
-            ConstructorFixtures::class,
             CorporateEntityFixtures::class,
             UserFixtures::class,
             SeparateConceptFixtures::class,

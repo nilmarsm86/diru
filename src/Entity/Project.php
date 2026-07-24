@@ -178,14 +178,14 @@ class Project
         return $this;
     }
 
-    public function makeAddConstructorProject(Constructor $constructor): void
-    {
-        $constructorProject = new ConstructorProject();
-        $constructorProject->setProject($this);
-        $constructorProject->setConstructor($constructor);
-
-        $this->addConstructorProject($constructorProject);
-    }
+    //    public function makeAddConstructorProject(Constructor $constructor): void
+    //    {
+    //        $constructorProject = new ConstructorProject();
+    //        $constructorProject->setProject($this);
+    //        $constructorProject->setConstructor($constructor);
+    //
+    //        $this->addConstructorProject($constructorProject);
+    //    }
 
     //    private function stopAllBuildings(): static
     //    {

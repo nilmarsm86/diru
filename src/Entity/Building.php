@@ -566,7 +566,7 @@ class Building implements MeasurementDataInterface
     {
         $draftmanCorporateEntities = new ArrayCollection();
         /** @var DraftmanCorporateEntityBuilding $draftmanCcorporateEntityBuilding */
-        foreach ($this->getConstructorCorporateEntityBuildings() as $draftmanCcorporateEntityBuilding) {
+        foreach ($this->getDraftmanCorporateEntityBuildings() as $draftmanCcorporateEntityBuilding) {
             $draftmanCorporateEntities->add($draftmanCcorporateEntityBuilding->getCorporateEntity());
         }
 
@@ -925,23 +925,23 @@ class Building implements MeasurementDataInterface
 
     public function getCos(): string
     {
-        if ($this->isNew() && 0 == $this->getLand()?->getOccupiedArea()) {
+        if ((bool) $this->isNew() && 0.0 === $this->getLand()?->getOccupiedArea()) {
             $groundFloor = null;
             $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
             foreach ($floors as $floor) {
-                if ($floor->isGroundFloor()) {
+                if ((bool) $floor->isGroundFloor()) {
                     $groundFloor = $floor;
                 }
             }
 
-            $occupiedArea = $groundFloor?->getTotalArea() || 0;
+            $occupiedArea = $groundFloor?->getTotalArea() ?? 0;
 
-            if ($groundFloor->getUnassignedArea() > 0) {
+            if ($groundFloor?->getUnassignedArea() > 0) {
                 return '0';
             }
 
-            return number_format($occupiedArea * 100 / (float) $this->getLand()?->getLandArea(), 2);
+            return number_format($occupiedArea * 100 / (float) $this->getLand()->getLandArea(), 2);
         }
 
         return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / (float) $this->getLand()?->getLandArea(), 2);

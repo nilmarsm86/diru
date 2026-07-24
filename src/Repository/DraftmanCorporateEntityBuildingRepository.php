@@ -2,19 +2,19 @@
 
 namespace App\Repository;
 
-use App\Entity\DraftsmanProject;
+use App\Entity\DraftmanCorporateEntityBuilding;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<DraftsmanProject>
+ * @extends ServiceEntityRepository<DraftmanCorporateEntityBuilding>
  */
-class DraftsmanProjectRepository extends ServiceEntityRepository implements FilterInterface
+class DraftmanCorporateEntityBuildingRepository extends ServiceEntityRepository implements FilterInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DraftsmanProject::class);
+        parent::__construct($registry, DraftmanCorporateEntityBuilding::class);
     }
 
     public function addFilter(QueryBuilder $builder, string $filter, bool $place = true): void

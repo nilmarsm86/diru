@@ -103,18 +103,11 @@ class Project
     private Collection $projectUrbanRegulations;
 
     /**
-     * @var Collection<int, DraftsmanProject>
+     * @var Collection<int, PlannerProject>
      */
-    #[ORM\OneToMany(targetEntity: DraftsmanProject::class, mappedBy: 'project', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: PlannerProject::class, mappedBy: 'project', cascade: ['persist'])]
     #[Assert\Valid]
-    private Collection $draftsmansProjects;
-
-    /**
-     * @var Collection<int, ConstructorProject>
-     */
-    #[ORM\OneToMany(targetEntity: ConstructorProject::class, mappedBy: 'project', cascade: ['persist'])]
-    #[Assert\Valid]
-    private Collection $constructorProjects;
+    private Collection $plannersProjects;
 
     public function __construct()
     {
@@ -124,8 +117,7 @@ class Project
         $this->buildings = new ArrayCollection();
         $this->contract = null;
         $this->projectUrbanRegulations = new ArrayCollection();
-        $this->draftsmansProjects = new ArrayCollection();
-        $this->constructorProjects = new ArrayCollection();
+        $this->plannersProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -412,7 +404,7 @@ class Project
     {
         $investment = new Investment();
         $investment->setName('Inversión del proyecto '.$this->getName());
-        $investment->setStreet('Direccion de la inversión');
+        $investment->setStreet('Dirección de la inversión');
         $investment->setMunicipality($municipality);
 
         $this->setInvestment($investment);
@@ -477,60 +469,52 @@ class Project
     }
 
     /**
-     * @return Collection<int, Draftsman>
+     * @return Collection<int, Planner>
      */
-    public function getDraftsmans(): Collection
+    public function getPlanners(): Collection
     {
-        $draftsman = new ArrayCollection();
-        foreach ($this->getDraftsmansProjects() as $draftsmansProject) {
-            $draftsman->add($draftsmansProject->getDraftsman());
+        $planners = new ArrayCollection();
+        foreach ($this->getPlannersProjects() as $plannersProject) {
+            $planners->add($plannersProject->getPlanner());
         }
 
-        return $draftsman;
+        return $planners;
     }
 
-    public function getActiveDraftsman(): ?Draftsman
+    public function getActivePlanner(): ?Planner
     {
-        foreach ($this->getDraftsmansProjects() as $draftsmansProject) {
-            if (is_null($draftsmansProject->getFinishedAt())) {
-                return $draftsmansProject->getDraftsman();
+        foreach ($this->getPlannersProjects() as $plannersProject) {
+            if (is_null($plannersProject->getFinishedAt())) {
+                return $plannersProject->getPlanner();
             }
         }
 
         return null;
     }
 
-    public function addDraftsman(Draftsman $draftsman): static
+    public function addPlanner(Planner $planner): static
     {
-        $actualDraftsman = $this->getActiveDraftsman();
-        if (!is_null($actualDraftsman)) {
-            if ($actualDraftsman->getId() !== $draftsman->getId()) {
-                $actualDraftsmanProject = $actualDraftsman->getDraftsmanProjectByProject($this);
-                $actualDraftsmanProject?->setFinishedAt(new \DateTimeImmutable());
+        $actualPlanner = $this->getActivePlanner();
+        if (!is_null($actualPlanner)) {
+            if ($actualPlanner->getId() !== $planner->getId()) {
+                $actualPlannerProject = $actualPlanner->getPlannerProjectByProject($this);
+                $actualPlannerProject?->setFinishedAt(new \DateTimeImmutable());
 
-                $draftsmanProject = new DraftsmanProject();
-                $draftsmanProject->setProject($this);
-                $draftsmanProject->setDraftsman($draftsman);
-
-                $this->addDraftsmanProject($draftsmanProject);
+                $this->setPlannerProject($planner);
             }
         } else {
-            $draftsmanProject = new DraftsmanProject();
-            $draftsmanProject->setProject($this);
-            $draftsmanProject->setDraftsman($draftsman);
-
-            $this->addDraftsmanProject($draftsmanProject);
+            $this->setPlannerProject($planner);
         }
 
         return $this;
     }
 
-    public function removeDraftsman(Draftsman $draftsman): static
+    public function removePlanner(Planner $planner): static
     {
-        $draftsmansProjects = $draftsman->getDraftsmansProjects();
-        foreach ($draftsmansProjects as $draftsmansProject) {
-            if ($draftsmansProject->hasProject($this)) {
-                $this->removeDraftsmansProject($draftsmansProject);
+        $plannersProjects = $planner->getPlannersProjects();
+        foreach ($plannersProjects as $plannersProject) {
+            if ($plannersProject->hasProject($this)) {
+                $this->removePlannersProject($plannersProject);
 
                 return $this;
             }
@@ -539,133 +523,41 @@ class Project
         return $this;
     }
 
-    public function hasDraftsman(): bool
+    public function hasPlanner(): bool
     {
-        return $this->getDraftsmans()->count() > 0;
+        return $this->getPlanners()->count() > 0;
     }
 
     /**
-     * @return Collection<int, DraftsmanProject>
+     * @return Collection<int, PlannerProject>
      */
-    public function getDraftsmansProjects(): Collection
+    public function getPlannersProjects(): Collection
     {
-        return $this->draftsmansProjects;
+        return $this->plannersProjects;
     }
 
-    public function addDraftsmanProject(DraftsmanProject $draftsmanProject): static
+    public function addPlannerProject(PlannerProject $plannerProject): static
     {
-        if (!$this->draftsmansProjects->contains($draftsmanProject)) {
-            $this->draftsmansProjects->add($draftsmanProject);
+        if (!$this->plannersProjects->contains($plannerProject)) {
+            $this->plannersProjects->add($plannerProject);
         }
 
         return $this;
     }
 
-    public function removeDraftsmansProject(DraftsmanProject $draftsmanProject): static
+    public function removePlannersProject(PlannerProject $plannerProject): static
     {
-        $this->draftsmansProjects->removeElement($draftsmanProject);
+        $this->plannersProjects->removeElement($plannerProject);
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Constructor>
-     */
-    public function getConstructors(): Collection
+    public function setPlannerProject(Planner $planner): void
     {
-        $constructors = new ArrayCollection();
-        /** @var ConstructorProject $constructorProject */
-        foreach ($this->getConstructorProjects() as $constructorProject) {
-            $constructors->add($constructorProject->getConstructor());
-        }
+        $plannerProject = new PlannerProject();
+        $plannerProject->setProject($this);
+        $plannerProject->setPlanner($planner);
 
-        return $constructors;
-    }
-
-    public function getActiveConstructor(): ?Constructor
-    {
-        /** @var ConstructorProject $constructorProject */
-        foreach ($this->getConstructorProjects() as $constructorProject) {
-            if (is_null($constructorProject->getFinishedAt())) {
-                return $constructorProject->getConstructor();
-            }
-        }
-
-        return null;
-    }
-
-    public function addConstructor(Constructor $constructor): static
-    {
-        $actualConstructor = $this->getActiveConstructor();
-        if (!is_null($actualConstructor)) {
-            if ($actualConstructor->getId() !== $constructor->getId()) {
-                $actualConstrcutorProject = $actualConstructor->getConstructorProjectByProject($this);
-                $actualConstrcutorProject?->setFinishedAt(new \DateTimeImmutable());
-
-                $this->makeAddConstructorProject($constructor);
-            }
-        } else {
-            $this->makeAddConstructorProject($constructor);
-        }
-
-        return $this;
-    }
-
-    public function removeConstructor(Constructor $constructor): static
-    {
-        $constructorProjects = $constructor->getConstructorProjects();
-        foreach ($constructorProjects as $constructorProject) {
-            if ($constructorProject->hasProject($this)) {
-                $this->removeConstructorProject($constructorProject);
-
-                return $this;
-            }
-        }
-
-        return $this;
-    }
-
-    public function hasConstructor(): bool
-    {
-        return $this->getConstructors()->count() > 0;
-    }
-
-    public function hasActiveConstructor(): bool
-    {
-        return !is_null($this->getActiveConstructor());
-    }
-
-    public function getActiveConstructorName(): ?string
-    {
-        return $this->getActiveConstructor()?->getName();
-    }
-
-    public function getActiveConstructorId(): ?int
-    {
-        return $this->getActiveConstructor()?->getId();
-    }
-
-    /**
-     * @return Collection<int, ConstructorProject>
-     */
-    public function getConstructorProjects(): Collection
-    {
-        return $this->constructorProjects;
-    }
-
-    public function addConstructorProject(ConstructorProject $constructorProject): static
-    {
-        if (!$this->constructorProjects->contains($constructorProject)) {
-            $this->constructorProjects->add($constructorProject);
-        }
-
-        return $this;
-    }
-
-    public function removeConstructorProject(ConstructorProject $constructorProject): static
-    {
-        $this->constructorProjects->removeElement($constructorProject);
-
-        return $this;
+        $this->addPlannerProject($plannerProject);
     }
 }

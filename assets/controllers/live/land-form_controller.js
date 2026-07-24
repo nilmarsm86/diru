@@ -22,6 +22,13 @@ export default class extends AbstractController {
             this.dispatch('submit', {detail: {form: event.currentTarget}});
         });
 
+        this.detailsTarget.style.visibility = (!this.isNewTarget.checked) ? 'hidden' : 'visible';
+
+        console.log(Number(this.occupiedTarget.value));
+        if(Number(this.occupiedTarget.value) > 0){
+            this.detailsTarget.style.visibility = 'visible';
+        }
+
         this.isNewTarget.addEventListener('change', (event) => {
             this.detailsTarget.style.visibility = (!this.isNewTarget.checked) ? 'hidden' : 'visible';
         });

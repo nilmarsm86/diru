@@ -79,18 +79,18 @@ class Building implements MeasurementDataInterface
     private Collection $draftsmansBuildings;
 
     /**
-     * @var Collection<int, ConstructorBuilding>
+     * @var Collection<int, ConstructorCorporateEntityBuilding>
      */
-    #[ORM\OneToMany(targetEntity: ConstructorBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ConstructorCorporateEntityBuilding::class, mappedBy: 'building', cascade: ['persist'])]
     #[Assert\Valid]
-    private Collection $constructorBuildings;
+    private Collection $constructorCorporateEntityBuildings;
 
     /**
-     * @var Collection<int, CorporateEntityBuilding>
+     * @var Collection<int, DraftmanCorporateEntityBuilding>
      */
-    #[ORM\OneToMany(targetEntity: CorporateEntityBuilding::class, mappedBy: 'building', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: DraftmanCorporateEntityBuilding::class, mappedBy: 'building', cascade: ['persist'])]
     #[Assert\Valid]
-    private Collection $corporateEntityBuildings;
+    private Collection $draftmanCorporateEntityBuildings;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[Assert\Valid]
@@ -206,8 +206,8 @@ class Building implements MeasurementDataInterface
         $this->registerAt = new \DateTimeImmutable();
 
         $this->draftsmansBuildings = new ArrayCollection();
-        $this->constructorBuildings = new ArrayCollection();
-        $this->corporateEntityBuildings = new ArrayCollection();
+        $this->constructorCorporateEntityBuildings = new ArrayCollection();
+        $this->draftmanCorporateEntityBuildings = new ArrayCollection();
         $this->floors = new ArrayCollection();
 
         $this->hasReply = false;
@@ -459,62 +459,54 @@ class Building implements MeasurementDataInterface
     }
 
     /**
-     * @return Collection<int, Constructor>
+     * @return Collection<int, CorporateEntity>
      */
-    public function getConstructors(): Collection
+    public function getConstructorCorporateEntities(): Collection
     {
-        $constrcutors = new ArrayCollection();
-        /** @var ConstructorBuilding $constructorBuilding */
-        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
-            $constrcutors->add($constructorBuilding->getConstructor());
+        $constructorCorporateEntities = new ArrayCollection();
+        /** @var ConstructorCorporateEntityBuilding $constructorCcorporateEntityBuilding */
+        foreach ($this->getConstructorCorporateEntityBuildings() as $constructorCcorporateEntityBuilding) {
+            $constructorCorporateEntities->add($constructorCcorporateEntityBuilding->getCorporateEntity());
         }
 
-        return $constrcutors;
+        return $constructorCorporateEntities;
     }
 
-    public function getActiveConstructor(): ?Constructor
+    public function getActiveConstructorCorporateEntity(): ?CorporateEntity
     {
-        /** @var ConstructorBuilding $constructorBuilding */
-        foreach ($this->getConstructorBuildings() as $constructorBuilding) {
-            if (is_null($constructorBuilding->getFinishedAt())) {
-                return $constructorBuilding->getConstructor();
+        /** @var ConstructorCorporateEntityBuilding $constructorCorporateEntityBuilding */
+        foreach ($this->getConstructorCorporateEntityBuildings() as $constructorCorporateEntityBuilding) {
+            if (is_null($constructorCorporateEntityBuilding->getFinishedAt())) {
+                return $constructorCorporateEntityBuilding->getCorporateEntity();
             }
         }
 
         return null;
     }
 
-    public function addConstructor(Constructor $constructor): static
+    public function addConstructorCorporateEntity(CorporateEntity $corporateEntity): static
     {
-        $actualConstructor = $this->getActiveConstructor();
-        if (!is_null($actualConstructor)) {
-            if ($actualConstructor->getId() !== $constructor->getId()) {
-                $actualConstrcutorBuilding = $actualConstructor->getConstructorBuildingByBuilding($this);
-                $actualConstrcutorBuilding?->setFinishedAt(new \DateTimeImmutable());
+        $actualConstructorCorporateEntity = $this->getActiveConstructorCorporateEntity();
+        if (!is_null($actualConstructorCorporateEntity)) {
+            if ($actualConstructorCorporateEntity->getId() !== $corporateEntity->getId()) {
+                $actualConstructorCorporateEntityBuilding = $actualConstructorCorporateEntity->getConstructorCorporateEntityBuildingByBuilding($this);
+                $actualConstructorCorporateEntityBuilding?->setFinishedAt(new \DateTimeImmutable());
 
-                $constructorBuilding = new ConstructorBuilding();
-                $constructorBuilding->setBuilding($this);
-                $constructorBuilding->setConstructor($constructor);
-
-                $this->addConstructorBuilding($constructorBuilding);
+                $this->establishConstructorCorporateEntity($corporateEntity);
             }
         } else {
-            $constructorBuilding = new ConstructorBuilding();
-            $constructorBuilding->setBuilding($this);
-            $constructorBuilding->setConstructor($constructor);
-
-            $this->addConstructorBuilding($constructorBuilding);
+            $this->establishConstructorCorporateEntity($corporateEntity);
         }
 
         return $this;
     }
 
-    public function removeConstructor(Constructor $constructor): static
+    public function removeConstructorCorporateEntity(CorporateEntity $corporateEntity): static
     {
-        $constructorBuildings = $constructor->getConstructorBuildings();
-        foreach ($constructorBuildings as $constructorBuilding) {
-            if ($constructorBuilding->hasBuilding($this)) {
-                $this->removeConstructorBuilding($constructorBuilding);
+        $constructorCorporateEntityBuildings = $corporateEntity->getConstructorCorporateEntityBuildings();
+        foreach ($constructorCorporateEntityBuildings as $corporateEntityBuilding) {
+            if ($corporateEntityBuilding->hasBuilding($this)) {
+                $this->removeConstructorCorporateEntityBuilding($corporateEntityBuilding);
 
                 return $this;
             }
@@ -523,46 +515,46 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function hasConstructor(): bool
+    public function hasConstructorCorporateEntity(): bool
     {
-        return $this->getConstructors()->count() > 0;
+        return $this->getConstructorCorporateEntities()->count() > 0;
     }
 
-    public function hasActiveConstructor(): bool
+    public function hasActiveConstructorCorporateEntity(): bool
     {
-        return !is_null($this->getActiveConstructor());
+        return !is_null($this->getActiveConstructorCorporateEntity());
     }
 
-    public function getActiveConstructorName(): ?string
+    public function getActiveConstructorCorporateEntityName(): ?string
     {
-        return $this->getActiveConstructor()?->getName();
+        return $this->getActiveConstructorCorporateEntity()?->getName();
     }
 
-    public function getActiveConstructorId(): ?int
+    public function getActiveConstructorCorporateEntityId(): ?int
     {
-        return $this->getActiveConstructor()?->getId();
+        return $this->getActiveConstructorCorporateEntity()?->getId();
     }
 
     /**
-     * @return Collection<int, ConstructorBuilding>
+     * @return Collection<int, ConstructorCorporateEntityBuilding>
      */
-    public function getConstructorBuildings(): Collection
+    public function getConstructorCorporateEntityBuildings(): Collection
     {
-        return $this->constructorBuildings;
+        return $this->constructorCorporateEntityBuildings;
     }
 
-    public function addConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    public function addConstructorCorporateEntityBuilding(ConstructorCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        if (!$this->constructorBuildings->contains($constructorBuilding)) {
-            $this->constructorBuildings->add($constructorBuilding);
+        if (!$this->constructorCorporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->constructorCorporateEntityBuildings->add($corporateEntityBuilding);
         }
 
         return $this;
     }
 
-    public function removeConstructorBuilding(ConstructorBuilding $constructorBuilding): static
+    public function removeConstructorCorporateEntityBuilding(ConstructorCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        $this->constructorBuildings->removeElement($constructorBuilding);
+        $this->constructorCorporateEntityBuildings->removeElement($corporateEntityBuilding);
 
         return $this;
     }
@@ -570,60 +562,52 @@ class Building implements MeasurementDataInterface
     /**
      * @return Collection<int, CorporateEntity>
      */
-    public function getCorporateEntities(): Collection
+    public function getDraftmanCorporateEntities(): Collection
     {
-        $corporateEntities = new ArrayCollection();
-        /** @var CorporateEntityBuilding $corporateEntityBuilding */
-        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
-            $corporateEntities->add($corporateEntityBuilding->getCorporateEntity());
+        $draftmanCorporateEntities = new ArrayCollection();
+        /** @var DraftmanCorporateEntityBuilding $draftmanCcorporateEntityBuilding */
+        foreach ($this->getConstructorCorporateEntityBuildings() as $draftmanCcorporateEntityBuilding) {
+            $draftmanCorporateEntities->add($draftmanCcorporateEntityBuilding->getCorporateEntity());
         }
 
-        return $corporateEntities;
+        return $draftmanCorporateEntities;
     }
 
-    public function getActiveCorporateEntity(): ?CorporateEntity
+    public function getActiveDraftmanCorporateEntity(): ?CorporateEntity
     {
-        /** @var CorporateEntityBuilding $corporateEntityBuilding */
-        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
-            if (is_null($corporateEntityBuilding->getFinishedAt())) {
-                return $corporateEntityBuilding->getCorporateEntity();
+        /** @var DraftmanCorporateEntityBuilding $draftmanCorporateEntityBuilding */
+        foreach ($this->getDraftmanCorporateEntityBuildings() as $draftmanCorporateEntityBuilding) {
+            if (is_null($draftmanCorporateEntityBuilding->getFinishedAt())) {
+                return $draftmanCorporateEntityBuilding->getCorporateEntity();
             }
         }
 
         return null;
     }
 
-    public function addCorporateEntity(CorporateEntity $corporateEntity): static
+    public function addDraftmanCorporateEntity(CorporateEntity $corporateEntity): static
     {
-        $actualCorporateEntity = $this->getActiveCorporateEntity();
-        if (!is_null($actualCorporateEntity)) {
-            if ($actualCorporateEntity->getId() !== $corporateEntity->getId()) {
-                $actualCorporateEntityBuilding = $actualCorporateEntity->getCorporateEntityBuildingByBuilding($this);
-                $actualCorporateEntityBuilding?->setFinishedAt(new \DateTimeImmutable());
+        $actualDraftmanCorporateEntity = $this->getActiveDraftmanCorporateEntity();
+        if (!is_null($actualDraftmanCorporateEntity)) {
+            if ($actualDraftmanCorporateEntity->getId() !== $corporateEntity->getId()) {
+                $actualDraftmanCorporateEntityBuilding = $actualDraftmanCorporateEntity->getDraftmanCorporateEntityBuildingByBuilding($this);
+                $actualDraftmanCorporateEntityBuilding?->setFinishedAt(new \DateTimeImmutable());
 
-                $corporateEntityBuilding = new CorporateEntityBuilding();
-                $corporateEntityBuilding->setBuilding($this);
-                $corporateEntityBuilding->setCorporateEntity($corporateEntity);
-
-                $this->addCorporateEntityBuilding($corporateEntityBuilding);
+                $this->establishDraftmanCorporateEntity($corporateEntity);
             }
         } else {
-            $corporateEntityBuilding = new CorporateEntityBuilding();
-            $corporateEntityBuilding->setBuilding($this);
-            $corporateEntityBuilding->setCorporateEntity($corporateEntity);
-
-            $this->addCorporateEntityBuilding($corporateEntityBuilding);
+            $this->establishDraftmanCorporateEntity($corporateEntity);
         }
 
         return $this;
     }
 
-    public function removeCorporateEntity(CorporateEntity $corporateEntity): static
+    public function removeDraftmanCorporateEntity(CorporateEntity $corporateEntity): static
     {
-        $corporateEntityBuildings = $corporateEntity->getCorporateEntityBuildings();
-        foreach ($corporateEntityBuildings as $corporateEntityBuilding) {
+        $draftmanCorporateEntityBuildings = $corporateEntity->getDraftmanCorporateEntityBuildings();
+        foreach ($draftmanCorporateEntityBuildings as $corporateEntityBuilding) {
             if ($corporateEntityBuilding->hasBuilding($this)) {
-                $this->removeCorporateEntityBuilding($corporateEntityBuilding);
+                $this->removeDraftmanCorporateEntityBuilding($corporateEntityBuilding);
 
                 return $this;
             }
@@ -632,46 +616,46 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function hasCorporateEntity(): bool
+    public function hasDraftmanCorporateEntity(): bool
     {
-        return $this->getCorporateEntities()->count() > 0;
+        return $this->getDraftmanCorporateEntities()->count() > 0;
     }
 
-    public function hasActiveCorporateEntity(): bool
+    public function hasActiveDraftmanCorporateEntity(): bool
     {
-        return !is_null($this->getActiveCorporateEntity());
+        return !is_null($this->getActiveDraftmanCorporateEntity());
     }
 
-    public function getActiveCorporateEntityName(): ?string
+    public function getActiveDraftmanCorporateEntityName(): ?string
     {
-        return $this->getActiveCorporateEntity()?->getName();
+        return $this->getActiveDraftmanCorporateEntity()?->getName();
     }
 
-    public function getActiveCorporateEntityId(): ?int
+    public function getActiveDraftmanCorporateEntityId(): ?int
     {
-        return $this->getActiveCorporateEntity()?->getId();
+        return $this->getActiveDraftmanCorporateEntity()?->getId();
     }
 
     /**
-     * @return Collection<int, CorporateEntityBuilding>
+     * @return Collection<int, DraftmanCorporateEntityBuilding>
      */
-    public function getCorporateEntityBuildings(): Collection
+    public function getDraftmanCorporateEntityBuildings(): Collection
     {
-        return $this->corporateEntityBuildings;
+        return $this->draftmanCorporateEntityBuildings;
     }
 
-    public function addCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    public function addDraftmanCorporateEntityBuilding(DraftmanCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        if (!$this->corporateEntityBuildings->contains($corporateEntityBuilding)) {
-            $this->corporateEntityBuildings->add($corporateEntityBuilding);
+        if (!$this->draftmanCorporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->draftmanCorporateEntityBuildings->add($corporateEntityBuilding);
         }
 
         return $this;
     }
 
-    public function removeCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    public function removeDraftmanCorporateEntityBuilding(DraftmanCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        $this->corporateEntityBuildings->removeElement($corporateEntityBuilding);
+        $this->draftmanCorporateEntityBuildings->removeElement($corporateEntityBuilding);
 
         return $this;
     }
@@ -951,7 +935,7 @@ class Building implements MeasurementDataInterface
                 }
             }
 
-            $occupiedArea = $groundFloor?->getTotalArea();
+            $occupiedArea = $groundFloor?->getTotalArea() || 0;
 
             if ($groundFloor->getUnassignedArea() > 0) {
                 return '0';
@@ -1721,5 +1705,23 @@ class Building implements MeasurementDataInterface
         }
 
         return $constructiveSystems[0];
+    }
+
+    public function establishConstructorCorporateEntity(CorporateEntity $corporateEntity): void
+    {
+        $constructorCorporateEntityBuilding = new ConstructorCorporateEntityBuilding();
+        $constructorCorporateEntityBuilding->setBuilding($this);
+        $constructorCorporateEntityBuilding->setCorporateEntity($corporateEntity);
+
+        $this->addConstructorCorporateEntityBuilding($constructorCorporateEntityBuilding);
+    }
+
+    public function establishDraftmanCorporateEntity(CorporateEntity $corporateEntity): void
+    {
+        $draftmanCorporateEntityBuilding = new DraftmanCorporateEntityBuilding();
+        $draftmanCorporateEntityBuilding->setBuilding($this);
+        $draftmanCorporateEntityBuilding->setCorporateEntity($corporateEntity);
+
+        $this->addDraftmanCorporateEntityBuilding($draftmanCorporateEntityBuilding);
     }
 }

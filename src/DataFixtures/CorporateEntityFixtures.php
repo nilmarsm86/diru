@@ -15,7 +15,7 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
 {
     public function load(ObjectManager $manager): void
     {
-        $corporateEntities = ['Entidad corporativa 1', 'Entidad corporativa 2', 'Entidad corporativa 3'];
+        $corporateEntities = ['Entidad corporativa 1', 'Entidad corporativa 2', 'Entidad corporativa 3', 'Entidad corporativa 4'];
         $corporateEntities = $corporateEntities + [
             '',
         ];
@@ -40,6 +40,10 @@ class CorporateEntityFixtures extends Fixture implements DependentFixtureInterfa
 
                 if ('Entidad corporativa 3' === $corporateEntity) {
                     $corporate->setType(CorporateEntityType::ClientAndConstructor);
+                }
+
+                if ('Entidad corporativa 4' === $corporateEntity) {
+                    $corporate->setType(CorporateEntityType::Draftman);
                 }
 
                 $corporate->setStreet('direccion de la calle de la entidad corporativa');

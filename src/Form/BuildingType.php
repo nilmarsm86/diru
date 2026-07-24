@@ -130,6 +130,7 @@ class BuildingType extends AbstractType
         $estimatedJustValueAddConfig = [];
 
         // TODO: y si ya de antemano se sabe que proyectista trabajara en la obra?
+        // TODO: cambiar por entidad de tipo proyectista
         if (null !== $building && null !== $building->getId()) {
             $form->add('draftsman', EntityType::class, [
                 'mapped' => false,
@@ -143,7 +144,7 @@ class BuildingType extends AbstractType
             $project = $building->getProject();
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
-            $activeCorporateEntity = $building->getActiveCorporateEntity();
+            $activeCorporateEntity = $building->getActiveConstructorCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [
                 'add' => true,
@@ -170,7 +171,7 @@ class BuildingType extends AbstractType
             ->add('corporateEntity', EntityPlusType::class, [
                 'class' => CorporateEntity::class,
                 'choice_label' => 'name',
-                'label' => 'Entidad corporativa de tipo constructora:',
+                'label' => 'Entidad constructora:',
                 'mapped' => false,
                 'query_builder' => $this->getCorporateEntityConstructor(),
                 'detail' => true,

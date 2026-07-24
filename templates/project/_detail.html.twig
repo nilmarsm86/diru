@@ -107,17 +107,17 @@
                 {% endif %}
 
                 <tr>
-                    <th>Proyectistas:</th>
+                    <th>Planificadores:</th>
                     <td>
                         <ul class="px-0 list-unstyled">
-                            {% for draftsman in project.getDraftsmans() %}
+                            {% for planner in project.getPlanners() %}
                                 <li>
-                                    <a href="{{ path('app_person_show', {'id': draftsman.id}) }}" target="_blank">
-                                        {{ draftsman.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                                    <a href="{{ path('app_person_show', {'id': planner.id}) }}" target="_blank">
+                                        {{ planner.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                                     </a>
                                 </li>
                             {% else %}
-                                <li class="text-danger">No tiene proyectistas asociados.</li>
+                                <li class="text-danger">No tiene planificadores asociados.</li>
                             {% endfor %}
                         </ul>
                     </td>

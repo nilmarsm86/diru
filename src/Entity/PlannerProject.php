@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Traits\StartedAndFinishedTrait;
-use App\Repository\ConstructorProjectRepository;
+use App\Repository\PlannerProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ConstructorProjectRepository::class)]
-class ConstructorProject
+#[ORM\Entity(repositoryClass: PlannerProjectRepository::class)]
+class PlannerProject
 {
     use StartedAndFinishedTrait;
 
@@ -17,13 +17,13 @@ class ConstructorProject
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'constructorProjects')]
+    #[ORM\ManyToOne(inversedBy: 'plannersProjects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
-    #[Assert\NotBlank(message: 'Establezca la constructora.')]
-    private ?Constructor $constructor = null;
+    #[Assert\NotBlank(message: 'Establezca el planificador.')]
+    private ?Planner $planner = null;
 
-    #[ORM\ManyToOne(inversedBy: 'constructorProjects')]
+    #[ORM\ManyToOne(inversedBy: 'plannersProjects')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca el proyecto.')]
@@ -39,14 +39,14 @@ class ConstructorProject
         return $this->id;
     }
 
-    public function getConstructor(): ?Constructor
+    public function getPlanner(): ?Planner
     {
-        return $this->constructor;
+        return $this->planner;
     }
 
-    public function setConstructor(?Constructor $constructor): static
+    public function setPlanner(?Planner $planner): static
     {
-        $this->constructor = $constructor;
+        $this->planner = $planner;
 
         return $this;
     }
@@ -68,8 +68,8 @@ class ConstructorProject
         return $this->getProject()?->getId() === $project->getId();
     }
 
-    public function hasConstructor(Constructor $constructor): bool
+    public function hasPlanner(Planner $planner): bool
     {
-        return $this->getConstructor()?->getId() === $constructor->getId();
+        return $this->getPlanner()?->getId() === $planner->getId();
     }
 }

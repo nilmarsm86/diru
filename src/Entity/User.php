@@ -60,9 +60,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
     private ?Person $person = null;
 
-    public function __construct(string $name, string $lastname, string $username, string $password, ?string $identificationNumber, ?string $phone, ?string $email, bool $isDraftsman = false)
+    public function __construct(string $name, string $lastname, string $username, string $password, ?string $identificationNumber, ?string $phone, ?string $email, bool $isDraftsman = false, bool $isPlanner = false)
     {
-        $this->person = ($isDraftsman) ? new Draftsman() : new Person();
+        if ($isPlanner) {
+            $this->person = new Planner();
+        } else {
+            $this->person = ($isDraftsman) ? new Draftsman() : new Person();
+        }
+
         $this->person->setName($name);
         $this->person->setLastname($lastname);
         $this->person->setIdentificationNumber($identificationNumber);

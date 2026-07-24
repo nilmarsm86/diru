@@ -119,7 +119,7 @@ class LandType extends AbstractType
                 ] + $disabled,
                 'mapped' => false,
                 //                'data' => ($building instanceof Building) ? (true === $building->isNew() ? false : true) : false,
-                'data' => (null === $building?->isNew()) ? false : !$building->isNew(),
+                'data' => (null === $building->isNew()) ? false : !$building->isNew(),
                 'required' => false,
             ])
         ;

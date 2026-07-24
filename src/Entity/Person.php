@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorMap([
     'representative' => 'Representative',
     'draftsman' => 'Draftsman',
+    'planner' => 'Planner',
     'user' => 'Person',
 ])]
 #[ORM\UniqueConstraint(name: 'person_identification_number', columns: ['identification_number'])]

@@ -423,7 +423,7 @@ final class BuildingForm extends AbstractController
         $corporateEntity = $corporateEntityRepository->find($this->formValues['corporateEntity']);
 
         if (null !== $corporateEntity) {
-            $building->addCorporateEntity($corporateEntity);
+            $building->addConstructorCorporateEntity($corporateEntity);
         }
     }
 

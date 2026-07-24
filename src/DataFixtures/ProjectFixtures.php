@@ -13,6 +13,7 @@ use App\Entity\EnterpriseClient;
 use App\Entity\Enums\ProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
+use App\Entity\Planner;
 use App\Entity\Project;
 use App\Entity\ProjectUrbanRegulation;
 use App\Entity\UrbanRegulation;
@@ -57,9 +58,9 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
                     $this->addUrbanRegulation($manager, $projectEntity, 'Retranqueos', '1.5');
                 }
 
-                $draftsman = $this->findDraftsman($manager, 'Draftsman');
-                if (null !== $draftsman) {
-                    $projectEntity->addDraftsman($draftsman);
+                $planner = $this->findPlanner($manager, 'Planner');
+                if (null !== $planner) {
+                    $projectEntity->addPlanner($planner);
                 }
 
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
@@ -71,9 +72,9 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
         $manager->flush();
     }
 
-    private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman
+    private function findPlanner(ObjectManager $manager, string $name): ?Planner
     {
-        return $manager->getRepository(Draftsman::class)->findOneBy(['name' => $name]);
+        return $manager->getRepository(Planner::class)->findOneBy(['name' => $name]);
     }
 
     private function addUrbanRegulation(ObjectManager $manager, Project $project, string $urbanRegulationDescription, string $data): void

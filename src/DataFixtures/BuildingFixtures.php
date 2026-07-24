@@ -34,9 +34,14 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 //                    $buildingEntity->addConstructor($constructor);
                 //                }
 
-                $corporateEntity = $this->findCorporateEntity($manager);
-                if (null !== $corporateEntity) {
-                    $buildingEntity->addCorporateEntity($corporateEntity);
+                $draftmanCorporateEntity = $this->findConstructorCorporateEntity($manager);
+                if (null !== $draftmanCorporateEntity) {
+                    $buildingEntity->addConstructorCorporateEntity($draftmanCorporateEntity);
+                }
+
+                $draftmanCorporateEntity = $this->findDraftmanCorporateEntity($manager);
+                if (null !== $draftmanCorporateEntity) {
+                    $buildingEntity->addDraftmanCorporateEntity($draftmanCorporateEntity);
                 }
 
                 $buildingEntity->setApprovedValueConstruction(1000000);
@@ -104,9 +109,14 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
     //        return $manager->getRepository(Constructor::class)->findOneBy(['name' => 'Constructora1']);
     //    }
 
-    private function findCorporateEntity(ObjectManager $manager): ?CorporateEntity
+    private function findConstructorCorporateEntity(ObjectManager $manager): ?CorporateEntity
     {
         return $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => 'Entidad corporativa 2']);
+    }
+
+    private function findDraftmanCorporateEntity(ObjectManager $manager): ?CorporateEntity
+    {
+        return $manager->getRepository(CorporateEntity::class)->findOneBy(['name' => 'Entidad corporativa 4']);
     }
 
     private function findDraftsman(ObjectManager $manager, string $name): ?Draftsman

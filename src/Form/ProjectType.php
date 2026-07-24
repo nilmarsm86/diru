@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Currency;
-use App\Entity\Draftsman;
 use App\Entity\EnterpriseClient;
 use App\Entity\Enums\ProjectType as EnumProjectType;
 use App\Entity\IndividualClient;
 use App\Entity\Investment;
+use App\Entity\Planner;
 use App\Entity\Project;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\ProjectStateEnumType;
@@ -136,13 +136,13 @@ class ProjectType extends AbstractType
             ]);
         }
 
-        $form->add('draftsman', EntityType::class, [
+        $form->add('planner', EntityType::class, [
             'mapped' => false,
-            'class' => Draftsman::class,
+            'class' => Planner::class,
             'placeholder' => '-Seleccione-',
-            'label' => 'Proyectista:',
+            'label' => 'Planificador:',
             'required' => false,
-            'data' => $project->getActiveDraftsman(),
+            'data' => $project->getActivePlanner(),
         ]);
 
         $moreAttr = [];

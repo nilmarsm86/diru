@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Traits\StartedAndFinishedTrait;
-use App\Repository\CorporateEntityBuildingRepository;
+use App\Repository\ConstructorCorporateEntityBuildingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CorporateEntityBuildingRepository::class)]
-class CorporateEntityBuilding
+#[ORM\Entity(repositoryClass: ConstructorCorporateEntityBuildingRepository::class)]
+class ConstructorCorporateEntityBuilding
 {
     use StartedAndFinishedTrait;
 
@@ -17,13 +17,13 @@ class CorporateEntityBuilding
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'corporateEntityBuildings')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'constructorCorporateEntityBuildings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca la entidad corporativa de tipo constructora.')]
     private ?CorporateEntity $corporateEntity = null;
 
-    #[ORM\ManyToOne(inversedBy: 'corporateEntityBuildings')]
+    #[ORM\ManyToOne(inversedBy: 'constructorCorporateEntityBuildings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Establezca la obra.')]

@@ -9,10 +9,10 @@ use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ClientRepository;
 use App\Repository\CurrencyRepository;
-use App\Repository\DraftsmanRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Repository\InvestmentRepository;
+use App\Repository\PlannerRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -170,7 +170,7 @@ final class ProjectForm extends AbstractController
         ProjectRepository $projectRepository,
         ClientRepository $clientRepository,
         InvestmentRepository $investmentRepository,
-        DraftsmanRepository $draftsmanRepository,
+        PlannerRepository $plannerRepository,
         CurrencyRepository $currencyRepository,
     ): ?Response {
         $this->preValue();
@@ -191,7 +191,7 @@ final class ProjectForm extends AbstractController
         $this->applyCurrency($project, $currencyRepository);
         $this->applyInvestment($project, $investmentRepository);
         $this->applyClient($project, $clientRepository);
-        $this->applyDraftsman($project, $draftsmanRepository);
+        $this->applyDraftsman($project, $plannerRepository);
         $this->applyContract($project);
 
         $projectRepository->save($project, true);
@@ -224,18 +224,18 @@ final class ProjectForm extends AbstractController
         $project->setClient($clientRepository->find($clientId));
     }
 
-    private function applyDraftsman(Project $project, DraftsmanRepository $draftsmanRepository): void
+    private function applyDraftsman(Project $project, PlannerRepository $plannerRepository): void
     {
-        $draftsmanValue = $this->formValues['draftsman'] ?? '';
+        $plannerValue = $this->formValues['planner'] ?? '';
 
-        if ('' === $draftsmanValue) {
+        if ('' === $plannerValue) {
             return;
         }
 
-        $draftsman = $draftsmanRepository->find($draftsmanValue);
+        $planner = $plannerRepository->find($plannerValue);
 
-        if (null !== $draftsman) {
-            $project->addDraftsman($draftsman);
+        if (null !== $planner) {
+            $project->addPlanner($planner);
         }
     }
 

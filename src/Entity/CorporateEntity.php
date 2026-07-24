@@ -69,16 +69,24 @@ class CorporateEntity
     private ?string $logo = null;
 
     /**
-     * @var Collection<int, CorporateEntityBuilding>
+     * @var Collection<int, ConstructorCorporateEntityBuilding>
      */
-    #[ORM\OneToMany(targetEntity: CorporateEntityBuilding::class, mappedBy: 'corporateEntity', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: ConstructorCorporateEntityBuilding::class, mappedBy: 'corporateEntity', cascade: ['persist'])]
     #[Assert\Valid]
-    private Collection $corporateEntityBuildings;
+    private Collection $constructorCorporateEntityBuildings;
+
+    /**
+     * @var Collection<int, DraftmanCorporateEntityBuilding>
+     */
+    #[ORM\OneToMany(targetEntity: DraftmanCorporateEntityBuilding::class, mappedBy: 'corporateEntity', cascade: ['persist'])]
+    #[Assert\Valid]
+    private Collection $draftmanCorporateEntityBuildings;
 
     public function __construct()
     {
         $this->enterpriseClients = new ArrayCollection();
-        $this->corporateEntityBuildings = new ArrayCollection();
+        $this->constructorCorporateEntityBuildings = new ArrayCollection();
+        $this->draftmanCorporateEntityBuildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,16 +224,16 @@ class CorporateEntity
     }
 
     /**
-     * @return Collection<int, CorporateEntityBuilding>
+     * @return Collection<int, ConstructorCorporateEntityBuilding>
      */
-    public function getCorporateEntityBuildings(): Collection
+    public function getConstructorCorporateEntityBuildings(): Collection
     {
-        return $this->corporateEntityBuildings;
+        return $this->constructorCorporateEntityBuildings;
     }
 
-    public function getCorporateEntityBuildingByBuilding(Building $building): ?CorporateEntityBuilding
+    public function getConstructorCorporateEntityBuildingByBuilding(Building $building): ?ConstructorCorporateEntityBuilding
     {
-        foreach ($this->getCorporateEntityBuildings() as $corporateEntityBuilding) {
+        foreach ($this->getConstructorCorporateEntityBuildings() as $corporateEntityBuilding) {
             if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId()) {
                 return $corporateEntityBuilding;
             }
@@ -234,18 +242,53 @@ class CorporateEntity
         return null;
     }
 
-    public function addCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    public function addConstructorCorporateEntityBuilding(ConstructorCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        if (!$this->corporateEntityBuildings->contains($corporateEntityBuilding)) {
-            $this->corporateEntityBuildings->add($corporateEntityBuilding);
+        if (!$this->constructorCorporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->constructorCorporateEntityBuildings->add($corporateEntityBuilding);
         }
 
         return $this;
     }
 
-    public function removeCorporateEntityBuilding(CorporateEntityBuilding $corporateEntityBuilding): static
+    public function removeConstructorCorporateEntityBuilding(ConstructorCorporateEntityBuilding $corporateEntityBuilding): static
     {
-        $this->corporateEntityBuildings->removeElement($corporateEntityBuilding);
+        $this->constructorCorporateEntityBuildings->removeElement($corporateEntityBuilding);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DraftmanCorporateEntityBuilding>
+     */
+    public function getDraftmanCorporateEntityBuildings(): Collection
+    {
+        return $this->draftmanCorporateEntityBuildings;
+    }
+
+    public function getDraftmanCorporateEntityBuildingByBuilding(Building $building): ?DraftmanCorporateEntityBuilding
+    {
+        foreach ($this->getDraftmanCorporateEntityBuildings() as $corporateEntityBuilding) {
+            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId()) {
+                return $corporateEntityBuilding;
+            }
+        }
+
+        return null;
+    }
+
+    public function addDraftmanCorporateEntityBuilding(DraftmanCorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        if (!$this->draftmanCorporateEntityBuildings->contains($corporateEntityBuilding)) {
+            $this->draftmanCorporateEntityBuildings->add($corporateEntityBuilding);
+        }
+
+        return $this;
+    }
+
+    public function removeDraftmanCorporateEntityBuilding(DraftmanCorporateEntityBuilding $corporateEntityBuilding): static
+    {
+        $this->draftmanCorporateEntityBuildings->removeElement($corporateEntityBuilding);
 
         return $this;
     }

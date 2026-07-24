@@ -43,7 +43,7 @@ readonly class BuildingResetService
             $building->setApprovedValueEquipment(0);
             $building->setApprovedValueOther(0);
             $this->removeAllDraftsman($building);
-            $this->removeAllConstructor($building);
+            //            $this->removeAllConstructor($building);
             $this->removeAllCorporateEntity($building);
             $building->setPopulation(1);
             $building->setConstructionAssembly(0);
@@ -127,21 +127,21 @@ readonly class BuildingResetService
         }
     }
 
-    private function removeAllConstructor(Building $building): void
-    {
-        $constructors = $building->getConstructors()->toArray();
-
-        foreach ($constructors as $constructor) {
-            $building->removeConstructor($constructor);
-        }
-    }
+    //    private function removeAllConstructor(Building $building): void
+    //    {
+    //        $constructors = $building->getConstructors()->toArray();
+    //
+    //        foreach ($constructors as $constructor) {
+    //            $building->removeConstructor($constructor);
+    //        }
+    //    }
 
     private function removeAllCorporateEntity(Building $building): void
     {
-        $corporateEntities = $building->getCorporateEntities()->toArray();
+        $corporateEntities = $building->getConstructorCorporateEntities()->toArray();
 
         foreach ($corporateEntities as $corporateEntity) {
-            $building->removeCorporateEntity($corporateEntity);
+            $building->removeConstructorCorporateEntity($corporateEntity);
         }
     }
 

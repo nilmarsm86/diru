@@ -52,12 +52,24 @@
                 <tr>
                     <th>Constructora:</th>
                     <td>
-                        {% if building.getActiveConstructor() %}
-                            <a href="{{ path('app_constructor_show', {'id': building.getActiveConstructor.id }) }}" target="_blank">
-                                {{ building.getActiveConstructor.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                        {% if building.getActiveConstructorCorporateEntity() %}
+                            <a href="{{ path('app_corporate_entity_show', {'id': building.getActiveConstructorCorporateEntityId() }) }}" target="_blank">
+                                {{ building.getActiveConstructorCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
                         {% else%}
                             <span class="text-danger">Sin constructora</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Proyectista:</th>
+                    <td>
+                        {% if building.getActiveDraftmanCorporateEntity() %}
+                            <a href="{{ path('app_corporate_entity_show', {'id': building.getActiveDraftmanCorporateEntityId() }) }}" target="_blank">
+                                {{ building.getActiveDraftmanCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
+                            </a>
+                        {% else%}
+                            <span class="text-danger">Sin proyectista</span>
                         {% endif %}
                     </td>
                 </tr>

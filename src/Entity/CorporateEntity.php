@@ -50,7 +50,7 @@ class CorporateEntity
     private string $type;
 
     #[Assert\Choice(
-        choices: [CorporateEntityType::Client, CorporateEntityType::Constructor, CorporateEntityType::ClientAndConstructor],
+        choices: CorporateEntityType::CHOICES,
         message: 'Seleccione un tipo de entidad.'
     )]
     private CorporateEntityType $enumType;
@@ -234,7 +234,7 @@ class CorporateEntity
     public function getConstructorCorporateEntityBuildingByBuilding(Building $building): ?ConstructorCorporateEntityBuilding
     {
         foreach ($this->getConstructorCorporateEntityBuildings() as $corporateEntityBuilding) {
-            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId()) {
+            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId() && null === $corporateEntityBuilding->getFinishedAt()) {
                 return $corporateEntityBuilding;
             }
         }
@@ -269,7 +269,7 @@ class CorporateEntity
     public function getDraftmanCorporateEntityBuildingByBuilding(Building $building): ?DraftmanCorporateEntityBuilding
     {
         foreach ($this->getDraftmanCorporateEntityBuildings() as $corporateEntityBuilding) {
-            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId()) {
+            if ($corporateEntityBuilding->getBuilding()?->getId() === $building->getId() && null === $corporateEntityBuilding->getFinishedAt()) {
                 return $corporateEntityBuilding;
             }
         }

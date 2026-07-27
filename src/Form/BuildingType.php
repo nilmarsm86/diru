@@ -125,6 +125,7 @@ class BuildingType extends AbstractType
         $form = $event->getForm();
         $currency = 'CUP';
         $activeCorporateEntity = null;
+        $activeCorporateEntityDraftman = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
         $estimatedJustValueAddConfig = [];
@@ -145,6 +146,7 @@ class BuildingType extends AbstractType
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
             $activeCorporateEntity = $building->getActiveConstructorCorporateEntity();
+            $activeCorporateEntityDraftman = $building->getActiveConstructorCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [
                 'add' => true,
@@ -184,6 +186,23 @@ class BuildingType extends AbstractType
                 'add_url' => $this->router->generate('app_corporate_entity_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
                 'required' => false,
                 'data' => $activeCorporateEntity,
+            ])
+            ->add('draftmanCorporateEntityBuildings', EntityPlusType::class, [
+                'class' => CorporateEntity::class,
+                'choice_label' => 'name',
+                'label' => 'Entidad proyectista:',
+                'mapped' => false,
+                'query_builder' => $this->getCorporateEntityDraftman(),
+                'detail' => true,
+                'detail_title' => 'Detalle de la entidad corporativa de tipo proyectista',
+                'detail_id' => 'modal-load',
+                'detail_url' => $this->router->generate('app_corporate_entity_show', ['id' => 0, 'state' => 'modal']),
+                'add' => true,
+                'add_title' => 'Agregar Entidad corporativa de tipo proyectista',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_corporate_entity_new', ['modal' => 'modal-load', 'screen' => $options['screen']]),
+                'required' => false,
+                'data' => $building->getActiveDraftmanCorporateEntity(),
             ])
             ->add('estimatedValueConstruction', MoneyType::class, [
                 'label' => 'Construcción:',
@@ -522,6 +541,14 @@ class BuildingType extends AbstractType
         return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
             ->andWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::Constructor->value)
             ->orWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::ClientAndConstructor->value)
+            ->orderBy('ce.name', 'ASC');
+    }
+
+    private function getCorporateEntityDraftman(): \Closure
+    {
+        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
+            ->andWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::Draftman->value)
+//            ->orWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::ClientAndConstructor->value)
             ->orderBy('ce.name', 'ASC');
     }
 }

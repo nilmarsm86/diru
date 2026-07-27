@@ -119,7 +119,12 @@ class LandType extends AbstractType
                 ] + $disabled,
                 'mapped' => false,
                 //                'data' => ($building instanceof Building) ? (true === $building->isNew() ? false : true) : false,
-                'data' => (assert($building instanceof Building) && null === $building->isNew()) ? false : !$building->isNew(),
+                //                'data' => (assert($building instanceof Building) && null === $building->isNew()) ? false : !$building->isNew(),
+                'data' => match (true) {
+                    !$building instanceof Building => throw new \LogicException('...'),
+                    null === $building->isNew() => false, // o el valor que realmente quieras
+                    default => !$building->isNew(),
+                },
                 'required' => false,
             ])
         ;

@@ -9,6 +9,8 @@ use App\Entity\SubSystem;
 use App\Repository\ConstructiveActionRepository;
 use App\Repository\SubSystemRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,6 +145,69 @@ final class SubSystemController extends AbstractController
             'constructive_action' => $ca,
             'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem,
+        ]);
+    }
+
+    #[Route('/{id}/local/technical_status', name: 'app_sub_system_report_local_technical_status', methods: ['GET'])]
+    public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $html = $this->renderView('sub_system/reports/technical_status.html.twig', [
+            'local_status' => $subSystem->getAmountTechnicalStatus(),
+            'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
+            'sub_system' => $subSystem,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="estado_tecnico-'.date('Y-m-d_H-i').'.pdf"',
+            'Content-Length' => strlen($pdfContent),
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'private, must-revalidate',
+        ]);
+    }
+
+    #[Route('/{id}/local/constructive_action', name: 'app_sub_system_report_local_constructive_action', methods: ['GET'])]
+    public function localconstructive_action(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $constructiveActionStatus = $subSystem->getAmountConstructiveAction();
+        $constructiveActionPrice = $subSystem->getPriceByConstructiveAction();
+        $constructiveActionMeter = $subSystem->getMeterByConstructiveAction();
+        $constructiveActions = $constructiveActionRepository->findAll();
+        $ca = [];
+
+        foreach ($constructiveActions as $constructiveAction) {
+            if (!array_key_exists($constructiveAction->getName(), $constructiveActionMeter)) {
+                $ca[$constructiveAction->getName()] = [
+                    'status' => 0,
+                    'price' => 0,
+                    'meter' => 0,
+                ];
+            } else {
+                $ca[$constructiveAction->getName()] = [
+                    'status' => $constructiveActionStatus[$constructiveAction->getName()],
+                    'price' => $constructiveActionPrice[$constructiveAction->getName()],
+                    'meter' => $constructiveActionMeter[$constructiveAction->getName()],
+                ];
+            }
+        }
+
+        $html = $this->renderView('sub_system/reports/constructive_actions.html.twig', [
+            'constructive_action' => $ca,
+            'sub_system' => $subSystem,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="acciones_constructivas-'.date('Y-m-d_H-i').'.pdf"',
+            'Content-Length' => strlen($pdfContent),
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'private, must-revalidate',
         ]);
     }
 }

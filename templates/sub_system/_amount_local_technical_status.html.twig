@@ -8,6 +8,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
         <div>
             {{ tableActionButton3(path('app_sub_system_index', {'floor': sub_system.floor.id, 'reply': true}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}
+            {{ tableActionButton3(path('app_sub_system_report_local_technical_status', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}
 
@@ -60,6 +61,10 @@
     title: 'Acciones constructivas de los locales del subsistema',
 } %}
     {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        <div>
+            {{ tableActionButton3(path('app_sub_system_report_local_constructive_action', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+        </div>
     {% endblock %}
 
     {% block body %}

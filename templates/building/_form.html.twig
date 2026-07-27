@@ -43,7 +43,7 @@
     {% component 'Modal:Confirm' with {
         title: 'Confirmar',
         id: 'confirm_reset',
-        question: 'Esta seguro que desea resetear la obra?',
+        question: 'Esta seguro que desea resetear la obra?<br><h6 style="color:red">Se borrarán todos los datos de la obra</h6>',
         href: path('app_building_state_reset', {'id':building.id})
     } %}
         {% block body %}

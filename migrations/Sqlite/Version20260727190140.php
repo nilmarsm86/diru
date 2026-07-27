@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260724190828 extends AbstractMigration
+final class Version20260727190140 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -46,14 +46,6 @@ final class Version20260724190828 extends AbstractMigration
         $this->addSql('CREATE TABLE constructive_action (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE constructive_system (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX constructive_system_name ON constructive_system (name)');
-        $this->addSql('CREATE TABLE constructor (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, municipality_id INTEGER NOT NULL, code VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, address CLOB NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_7DD91A39AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_7DD91A39AE6F181C ON constructor (municipality_id)');
-        $this->addSql('CREATE UNIQUE INDEX constructor_name ON constructor (name)');
-        $this->addSql('CREATE TABLE constructor_building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, constructor_id INTEGER NOT NULL, building_id INTEGER NOT NULL, started_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
-        , finished_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , CONSTRAINT FK_29A127572D98BF9 FOREIGN KEY (constructor_id) REFERENCES constructor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_29A127574D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_29A127572D98BF9 ON constructor_building (constructor_id)');
-        $this->addSql('CREATE INDEX IDX_29A127574D2A7E12 ON constructor_building (building_id)');
         $this->addSql('CREATE TABLE constructor_corporate_entity_building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, corporate_entity_id INTEGER NOT NULL, building_id INTEGER NOT NULL, started_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , finished_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , CONSTRAINT FK_E1981A658BA692E5 FOREIGN KEY (corporate_entity_id) REFERENCES corporate_entity (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E1981A654D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -193,8 +185,6 @@ final class Version20260724190828 extends AbstractMigration
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE constructive_action');
         $this->addSql('DROP TABLE constructive_system');
-        $this->addSql('DROP TABLE constructor');
-        $this->addSql('DROP TABLE constructor_building');
         $this->addSql('DROP TABLE constructor_corporate_entity_building');
         $this->addSql('DROP TABLE contract');
         $this->addSql('DROP TABLE corporate_entity');

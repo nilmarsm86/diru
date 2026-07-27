@@ -21,7 +21,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 {% if render is not null %}
-                    {{ render }}
+                    {{ render|raw }}
                 {% else %}
                     <a class="btn btn-primary" href="{{ href }}">Aceptar</a>
                 {% endif %}

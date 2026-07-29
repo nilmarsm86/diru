@@ -22,6 +22,8 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+{#            {{ tableActionButton3(path('app_sub_system_report_local', {'id': sub_system.id}), '', 'Resumen', 'Resumen', '', 'btn-info') }}#}
+
             <div class="dropdown d-inline-block">
                 <button type="button"
                         class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -213,7 +215,7 @@
                                 <ul class="dropdown-menu" data-bs-theme="light">
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{{ path('app_sub_system_report_local', {'id': sub_system.id}) }}"
+                                           href=""
                                            title="">
                                             Reporte de estado técnico
                                         </a>

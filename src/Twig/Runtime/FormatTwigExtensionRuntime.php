@@ -10,7 +10,7 @@ class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
     public function money(MoneyInterface|string $price, ?string $currency = null): string
     {
         if (!is_string($price)) {
-            return number_format((float) $price->getPrice() / 100, 2).' '.$price->getCurrency();
+            return number_format((float) $price->getPrice() / 100, 2).' '.(!is_null($currency) ? $price->getCurrency() : '');
         }
 
         return number_format((float) $price / 100, 2).(!is_null($currency) ? ' '.$currency : '');

@@ -1,0 +1,31 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Resumen de los locales{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Resumen de los locales', 'lucide-lab:floor-plan') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Locales'},
+        ]) }}
+    </div>
+
+    <h5 class="mb-4">
+        Datos de construcción:
+    </h5>
+
+    <ul>
+        <li><strong>Subsistema: </strong>{{ sub_system.name }}</li>
+        <li><strong>Planta: </strong>{{ sub_system.floor.name }}</li>
+        <li><strong>Obra: </strong>{{ sub_system.floor.building.name }}</li>
+        <li><strong>Proyecto: </strong>{{ sub_system.floor.building.project.name }}</li>
+    </ul>
+
+    {{ include('local/resume/_technical_status.html.twig', {'showButton': true, 'title': title}) }}
+    {{ include('local/resume/_constructive_action.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

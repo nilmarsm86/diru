@@ -28,7 +28,7 @@
         <tr>
             <th>Acción constructiva</th>
             <th>Cantidad</th>
-            <th>Precio</th>
+            <th>Precio(CUP)</th>{# TODO: poner la moneda del proyecto #}
             <th>Metros(m<sup>2</sup>)</th>
         </tr>
 
@@ -36,7 +36,7 @@
             <tr>
                 <td>{{ key }}</td>
                 <td>{{ value['status'] }}</td>
-                <td>{{ money(value['price'], 'CUP') }}</td>
+                <td>{{ money(value['price']) }}</td>
                 <td>{{ value['meter']|number_format(2) }}</td>
             </tr>
         {% endfor %}
@@ -44,7 +44,7 @@
         <tr>
             <th>Totales</th>
             <th>{{ sub_system.getLocalsAmount() }}</th>
-            <th>{{ money(sub_system.getPrice(), 'CUP') }}</th>
+            <th>{{ money(sub_system.getPrice()) }}</th>
             <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
         </tr>
     </table>

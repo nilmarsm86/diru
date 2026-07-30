@@ -34,6 +34,8 @@ class BuildingRevision
     #[Assert\Valid]
     private ?Building $building = null;
 
+    // TODO: que usuario realizo la revision
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable('now');

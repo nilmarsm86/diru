@@ -30,8 +30,8 @@ readonly class BuildingStateService
 
         // Ejecutar side-effects según el nuevo estado
         match ($newState) {
-            BuildingState::Revision,
-            BuildingState::Revised => function () use ($building) {
+            BuildingState::RevisionDraftman,
+            BuildingState::RevisedDraftman => function () use ($building) {
                 // TODO: revisar que todos los locales tengan acciones constructivas
                 $this->deactivateActiveRevisions($building);
                 // TODO: guardar el ITE de los subsistemas
@@ -56,8 +56,8 @@ readonly class BuildingStateService
         // Reglas de negocio claras y fáciles de mantener
         $allowedTransitions = [
             BuildingState::Registered->value => [BuildingState::Design->value/* , BuildingState::Revision->value */],
-            BuildingState::Design->value => [BuildingState::Revision->value/* , BuildingState::Revised->value */],
-            BuildingState::Revision->value => [BuildingState::Revised->value, BuildingState::Design->value],
+            BuildingState::Design->value => [BuildingState::RevisionDraftman->value/* , BuildingState::Revised->value */],
+            BuildingState::RevisionDraftman->value => [BuildingState::RevisedDraftman->value, BuildingState::Design->value],
             //            BuildingState::Revised->value => [BuildingState::Design->value, BuildingState::Revision->value],
             // Añade aquí más reglas según tu flujo real
         ];
@@ -90,8 +90,8 @@ readonly class BuildingStateService
         match ($state) {
             BuildingState::Registered => $building->setRegisterAt($now),
             BuildingState::Design => $building->setDesignAt($now),
-            BuildingState::Revision => $building->setRevisionAt($now),
-            BuildingState::Revised => $building->setRevisedAt($now),
+            BuildingState::RevisionDraftman => $building->setRevisionAt($now),
+            BuildingState::RevisedDraftman => $building->setRevisedAt($now),
             default => null,
         };
     }
@@ -99,9 +99,9 @@ readonly class BuildingStateService
     // Métodos públicos de conveniencia (mantienes API amigable)
     public function review(Building $building): BuildingState
     {
-        $this->transitionTo($building, BuildingState::Revision);
+        $this->transitionTo($building, BuildingState::RevisionDraftman);
 
-        return BuildingState::Revision;
+        return BuildingState::RevisionDraftman;
     }
 
     public function design(Building $building): BuildingState
@@ -113,8 +113,8 @@ readonly class BuildingStateService
 
     public function revised(Building $building): BuildingState
     {
-        $this->transitionTo($building, BuildingState::Revised);
+        $this->transitionTo($building, BuildingState::RevisedDraftman);
 
-        return BuildingState::Revised;
+        return BuildingState::RevisedDraftman;
     }
 }

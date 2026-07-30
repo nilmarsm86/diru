@@ -533,6 +533,14 @@ class BuildingType extends AbstractType
                 'list_url' => $this->router->generate('app_building_report_separate_presupposition_real', [
                     'id' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
                 ]),
+            ])
+            ->add('draftsman', EntityType::class, [
+                'mapped' => false,
+                'class' => Draftsman::class,
+                'placeholder' => '-Seleccione-',
+                'label' => 'Proyectista:',
+                'required' => false,
+                'data' => $building->getActiveDraftsman(),
             ]);
     }
 

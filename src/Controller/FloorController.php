@@ -108,15 +108,4 @@ final class FloorController extends AbstractController
 
         return $response;
     }
-
-    #[Route('/{id}/report/local', name: 'app_floor_report_local', methods: ['GET'])]
-    public function reportLocal(Floor $floor): Response
-    {
-        return $this->render('floor/report.html.twig', [
-            'local_status' => $floor->getAmountTechnicalStatus(),
-            'meter_status' => $floor->getAmountMeterTechnicalStatus(),
-            'title' => 'Estado técnico de los locales del piso',
-            'floor' => $floor,
-        ]);
-    }
 }

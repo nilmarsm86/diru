@@ -186,6 +186,7 @@ class Building implements MeasurementDataInterface
 
     #[ORM\ManyToOne(inversedBy: 'buildings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Establezca la actividad de la obra.')]
     private ?ConstructiveAction $activity = null;
 
     /** @var array<mixed> */

@@ -23,9 +23,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         $this->createInactive($manager);
         $this->createClient($manager);
-        $this->createInvestor($manager);
         $this->createPlanner($manager);
         $this->createDraftsman($manager);
+        $this->createInvestor($manager);
         $this->createDirector($manager);
         $this->createAdmin($manager);
         $this->createSuperAdmin($manager);
@@ -35,15 +35,16 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     /**
      * @throws \Exception
      */
-    private function register(UserPasswordHasherInterface $userPasswordHasher, User $user, Role $baseRol): void
+    private function register(UserPasswordHasherInterface $userPasswordHasher, User $user, ?Role $baseRol): void
     {
         $user->changePassword($userPasswordHasher);
         $user->activate();
+        assert($baseRol instanceof Role);
         $user->addRole($baseRol);
     }
 
     /**
-     * @param array<Role> $roles
+     * @param array<Role|null> $roles
      *
      * @throws \Exception
      */
@@ -51,7 +52,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         $this->register($this->userPasswordHasher, $user, $roles[0]);
         foreach ($roles as $role) {
-            if ($role->getId() !== $roles[0]->getId()) {
+            assert($role instanceof Role);
+            if ($role->getId() !== $roles[0]?->getId()) {
                 $user->addRole($role);
             }
         }
@@ -68,7 +70,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         if (is_null($adminUser)) {
             $roles = $manager->getRepository(Role::class)->findAll();
 
-            $admin = new User('SuperAdmin', 'User', 'superadmin', 'superadmin', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'superadmin@diru.com', true, true);
+            $admin = new User('SuperAdmin', 'User', 'superadmin', 'superadmin', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'superadmin@diru.com', true);
             $this->save($manager, $admin, $roles);
         }
     }
@@ -80,13 +82,15 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         $adminUser = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
         if (is_null($adminUser)) {
-            $roles = $manager->getRepository(Role::class)->findAll();
-            $roles = array_filter($roles, function ($role) {
-                return Role::ROLE_SUPER_ADMIN !== $role->getName();
-            });
+            $clientRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
+            $plannerRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_PLANNER]);
+            $draftmanRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DRAFTSMAN]);
+            $investorRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_INVESTOR]);
+            $directorRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DIRECTOR]);
+            $adminRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_ADMIN]);
 
-            $admin = new User('Admin', 'User', 'admin', 'admin', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'admin@diru.com', true, true);
-            $this->save($manager, $admin, $roles);
+            $admin = new User('Admin', 'User', 'admin', 'admin', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'admin@diru.com', true);
+            $this->save($manager, $admin, [$clientRole, $plannerRole, $draftmanRole, $investorRole, $directorRole, $adminRole]);
         }
     }
 
@@ -97,52 +101,14 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         $directorUser = $manager->getRepository(User::class)->findOneBy(['username' => 'director']);
         if (is_null($directorUser)) {
-            $roles = $manager->getRepository(Role::class)->findAll();
-            $roles = array_filter($roles, function ($role) {
-                return Role::ROLE_SUPER_ADMIN !== $role->getName() && Role::ROLE_ADMIN !== $role->getName();
-            });
+            $clientRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
+            $plannerRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_PLANNER]);
+            $draftmanRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DRAFTSMAN]);
+            $investorRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_INVESTOR]);
+            $directorRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DIRECTOR]);
 
-            $boss = new User('Director', 'User', 'director', 'director', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'director@diru.com', true, true);
-            $this->save($manager, $boss, array_values($roles));
-        }
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function createDraftsman(ObjectManager $manager): void
-    {
-        $draftsmanUser = $manager->getRepository(User::class)->findOneBy(['username' => 'draftsman']);
-        if (is_null($draftsmanUser)) {
-            $roles = $manager->getRepository(Role::class)->findAll();
-            $roles = array_filter($roles, function ($role) {
-                return Role::ROLE_SUPER_ADMIN !== $role->getName()
-                    && Role::ROLE_ADMIN !== $role->getName()
-                    && Role::ROLE_DIRECTOR !== $role->getName();
-            });
-
-            $planner = new User('Draftsman', 'User', 'draftsman', 'draftsman', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'draftsman@diru.com', true, true);
-            $this->save($manager, $planner, array_values($roles));
-        }
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function createPlanner(ObjectManager $manager): void
-    {
-        $plannerUser = $manager->getRepository(User::class)->findOneBy(['username' => 'planner']);
-        if (is_null($plannerUser)) {
-            $roles = $manager->getRepository(Role::class)->findAll();
-            $roles = array_filter($roles, function ($role) {
-                return Role::ROLE_SUPER_ADMIN !== $role->getName()
-                    && Role::ROLE_ADMIN !== $role->getName()
-                    && Role::ROLE_DIRECTOR !== $role->getName()
-                    && Role::ROLE_DRAFTSMAN !== $role->getName();
-            });
-
-            $planner = new User('Planner', 'User', 'planner', 'planner', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'planner@diru.com', false, true);
-            $this->save($manager, $planner, array_values($roles));
+            $boss = new User('Director', 'User', 'director', 'director', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'director@diru.com', true);
+            $this->save($manager, $boss, [$clientRole, $plannerRole, $draftmanRole, $investorRole, $directorRole]);
         }
     }
 
@@ -153,16 +119,44 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         $investorUser = $manager->getRepository(User::class)->findOneBy(['username' => 'investor']);
         if (is_null($investorUser)) {
-            $roles = $manager->getRepository(Role::class)->findAll();
-            $roles = array_filter($roles, function ($role) {
-                return Role::ROLE_SUPER_ADMIN !== $role->getName()
-                    && Role::ROLE_ADMIN !== $role->getName()
-                    && Role::ROLE_DIRECTOR !== $role->getName()
-                    && Role::ROLE_DRAFTSMAN !== $role->getName();
-            });
+            $clientRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
+            $plannerRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_PLANNER]);
+            $draftmanRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DRAFTSMAN]);
+            $investorRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_INVESTOR]);
 
-            $planner = new User('Investor', 'User', 'investor', 'investor', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'investor@diru.com');
-            $this->save($manager, $planner, array_values($roles));
+            $investor = new User('Investor', 'User', 'investor', 'investor', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'investor@diru.com', true);
+            $this->save($manager, $investor, [$clientRole, $plannerRole, $draftmanRole, $investorRole]);
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function createDraftsman(ObjectManager $manager): void
+    {
+        $draftsmanUser = $manager->getRepository(User::class)->findOneBy(['username' => 'draftsman']);
+        if (is_null($draftsmanUser)) {
+            $clientRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
+            $plannerRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_PLANNER]);
+            $draftmanRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_DRAFTSMAN]);
+
+            $draftman = new User('Draftsman', 'User', 'draftsman', 'draftsman', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'draftsman@diru.com', true);
+            $this->save($manager, $draftman, [$clientRole, $plannerRole, $draftmanRole]);
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function createPlanner(ObjectManager $manager): void
+    {
+        $plannerUser = $manager->getRepository(User::class)->findOneBy(['username' => 'planner']);
+        if (is_null($plannerUser)) {
+            $clientRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_CLIENT]);
+            $plannerRole = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_PLANNER]);
+
+            $planner = new User('Planner', 'User', 'planner', 'planner', (string) rand(11111111111, 99999999999), (string) rand(50000000, 69999999), 'planner@diru.com', false, true);
+            $this->save($manager, $planner, [$clientRole, $plannerRole]);
         }
     }
 

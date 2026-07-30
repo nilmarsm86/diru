@@ -40,7 +40,7 @@
         </ul>
     </div>
 
-    {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
+    {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftman') %}
         {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }} #}
         {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }} #}
         <div class="dropdown d-inline-block">
@@ -75,7 +75,7 @@
     {% set notRegisteredOrDiagnosis = [constant('App\\Entity\\Enums\\BuildingState::Registered'), constant('App\\Entity\\Enums\\BuildingState::Diagnosis')] %}
     {% if building.state not in notRegisteredOrDiagnosis %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
-            {% if building.hasBuildingRevisions() or building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
+            {% if building.hasBuildingRevisions() or building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftman') %}
                 {#                <button #}
                 {#                    class="btn text-decoration-none btn-sm btn-primary" #}
                 {#                    {{ stimulusController('modal-content-loader', { #}
@@ -114,7 +114,7 @@
                                 Listado
                             </a>
                         </li>
-                        {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::Revision') %}
+                        {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftman') %}
                             <li>
                                 <a class="dropdown-item" href="" title=""
                                     {{ stimulusController('modal-content-loader', {

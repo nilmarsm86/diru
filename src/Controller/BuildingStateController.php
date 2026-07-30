@@ -79,9 +79,9 @@ final class BuildingStateController extends AbstractController
     {
         try {
             $buildingState = match ($type) {
-                BuildingState::Revision->value => $buildingStateService->review($building),
+                BuildingState::RevisionDraftman->value => $buildingStateService->review($building),
                 BuildingState::Design->value => $buildingStateService->design($building),
-                BuildingState::Revised->value => $buildingStateService->revised($building),
+                BuildingState::RevisedDraftman->value => $buildingStateService->revised($building),
                 default => throw new \Exception('Transición no permitida.'),
             };
 

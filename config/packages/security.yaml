@@ -1,9 +1,10 @@
 security:
     role_hierarchy:
         ROLE_CLIENT: ROLE_CLIENT
-        ROLE_INVESTOR: ROLE_CLIENT
-        ROLE_DRAFTSMAN: ROLE_INVESTOR #proyectista
-        ROLE_DIRECTOR: ROLE_DRAFTSMAN
+        ROLE_PLANNER: ROLE_CLIENT
+        ROLE_DRAFTSMAN: ROLE_PLANNER #proyectista
+        ROLE_INVESTOR: ROLE_DRAFTSMAN
+        ROLE_DIRECTOR: ROLE_INVESTOR
         ROLE_ADMIN: ROLE_DIRECTOR
         ROLE_SUPER_ADMIN: ROLE_ADMIN
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords

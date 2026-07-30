@@ -110,4 +110,15 @@ final class SubSystemController extends AbstractController
 
         return $response;
     }
+
+    #[Route('/{floor}/resume/subsystem', name: 'app_sub_system_resume', methods: ['GET'])]
+    public function resumeSubSystem(Floor $floor): Response
+    {
+        return $this->render('sub_system/report.html.twig', [
+            'local_status' => $floor->getAmountTechnicalStatus(),
+            'meter_status' => $floor->getAmountMeterTechnicalStatus(),
+            'title' => 'Estado técnico de los locales del piso',
+            'floor' => $floor,
+        ]);
+    }
 }

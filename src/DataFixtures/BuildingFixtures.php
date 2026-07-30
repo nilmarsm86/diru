@@ -47,12 +47,12 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
                 $this->setConstructiveAction($manager, $buildingEntity);
                 $this->addBuildingObject($buildingEntity);
 
-                if ('Obra1' === $building) {
-                    $draftsman = $this->findDraftsman($manager, 'Draftsman');
-                    if (null !== $draftsman) {
-                        $buildingEntity->addDraftsman($draftsman);
-                    }
+                $draftsman = $this->findDraftsman($manager, 'Draftsman');
+                if (null !== $draftsman) {
+                    $buildingEntity->addDraftsman($draftsman);
+                }
 
+                if ('Obra1' === $building) {
                     $buildingEntity->setClient($this->findClient($manager));
                 } else {
                     $buildingEntity->setClient($this->findClient($manager, false));
@@ -97,11 +97,6 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
             $manager->persist($buildingSeparateConcept);
         }
     }
-
-    //    private function findConstructor(ObjectManager $manager): ?Constructor
-    //    {
-    //        return $manager->getRepository(Constructor::class)->findOneBy(['name' => 'Constructora1']);
-    //    }
 
     private function findConstructorCorporateEntity(ObjectManager $manager): ?CorporateEntity
     {

@@ -176,6 +176,9 @@ final class LocalController extends AbstractController
         return $this->pdfResponse($pdfContent, 'acciones_constructivas');
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     private function constructiveActionStatus(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository): array
     {
         $constructiveActionStatus = $subSystem->getAmountConstructiveAction();

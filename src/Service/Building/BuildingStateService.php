@@ -29,18 +29,7 @@ readonly class BuildingStateService
         $this->validateTransition($currentState, $newState);
 
         // Ejecutar side-effects según el nuevo estado
-        match ($newState) {
-            BuildingState::RevisionDraftman,
-            BuildingState::RevisedDraftman => function () use ($building) {
-                // TODO: revisar que todos los locales tengan acciones constructivas
-                $this->deactivateActiveRevisions($building);
-                // TODO: guardar el ITE de los subsistemas
-            },
-            BuildingState::Design => $this->handleDesignTransition($building),
-
-            // Aquí irán futuros estados: Canceled, OnHold, Approved, etc.
-            default => null,
-        };
+        $this->handleSideEffects($building, $newState);
 
         $building->setState($newState);
 
@@ -51,14 +40,29 @@ readonly class BuildingStateService
         $this->entityManager->flush();
     }
 
+    private function handleSideEffects(Building $building, BuildingState $newState): void
+    {
+        match ($newState) {
+            BuildingState::RevisionDraftsman,
+            BuildingState::RevisedDraftsman => $this->handleRevisedDraftmanTransition($building),
+            BuildingState::Design => $this->handleDesignTransition($building),
+
+            // Aquí irán futuros estados: Canceled, OnHold, Approved, etc.
+            default => null,
+        };
+    }
+
     private function validateTransition(BuildingState $current, BuildingState $new): void
     {
         // Reglas de negocio claras y fáciles de mantener
         $allowedTransitions = [
-            BuildingState::Registered->value => [BuildingState::Design->value/* , BuildingState::Revision->value */],
-            BuildingState::Design->value => [BuildingState::RevisionDraftman->value/* , BuildingState::Revised->value */],
-            BuildingState::RevisionDraftman->value => [BuildingState::RevisedDraftman->value, BuildingState::Design->value],
-            //            BuildingState::Revised->value => [BuildingState::Design->value, BuildingState::Revision->value],
+            BuildingState::Registered->value => [BuildingState::Design->value],
+            BuildingState::Design->value => [BuildingState::RevisionDraftsman->value],
+            BuildingState::RevisionDraftsman->value => [BuildingState::RevisedDraftsman->value, BuildingState::Design->value],
+            BuildingState::RevisedDraftsman->value => [BuildingState::RevisionInvestmen->value, BuildingState::Design->value],
+            BuildingState::RevisionInvestmen->value => [BuildingState::RevisedInvestmen->value, BuildingState::Design->value],
+            BuildingState::RevisedInvestmen->value => [BuildingState::RevisionDirector->value, BuildingState::Design->value],
+            BuildingState::RevisionDirector->value => [BuildingState::RevisedDirector->value, BuildingState::Design->value],
             // Añade aquí más reglas según tu flujo real
         ];
 
@@ -77,6 +81,13 @@ readonly class BuildingStateService
         }
     }
 
+    private function handleRevisedDraftmanTransition(Building $building): void
+    {
+        // TODO: revisar que todos los locales tengan acciones constructivas
+        $this->deactivateActiveRevisions($building);
+        // TODO: guardar el ITE de los subsistemas
+    }
+
     private function handleDesignTransition(Building $building): void
     {
         // Aquí puedes poner lógica específica de cuando pasa a Diseño
@@ -90,20 +101,17 @@ readonly class BuildingStateService
         match ($state) {
             BuildingState::Registered => $building->setRegisterAt($now),
             BuildingState::Design => $building->setDesignAt($now),
-            BuildingState::RevisionDraftman => $building->setRevisionAt($now),
-            BuildingState::RevisedDraftman => $building->setRevisedAt($now),
+            BuildingState::RevisionDraftsman => $building->setRevisionDraftsmanAt($now),
+            BuildingState::RevisedDraftsman => $building->setRevisedDraftsmanAt($now),
+            BuildingState::RevisionInvestmen => $building->setRevisionInvestmenAt($now),
+            BuildingState::RevisedInvestmen => $building->setRevisedInvestmenAt($now),
+            BuildingState::RevisionDirector => $building->setRevisionDirectorAt($now),
+            BuildingState::RevisedDirector => $building->setRevisedDirectorAt($now),
             default => null,
         };
     }
 
     // Métodos públicos de conveniencia (mantienes API amigable)
-    public function review(Building $building): BuildingState
-    {
-        $this->transitionTo($building, BuildingState::RevisionDraftman);
-
-        return BuildingState::RevisionDraftman;
-    }
-
     public function design(Building $building): BuildingState
     {
         $this->transitionTo($building, BuildingState::Design);
@@ -111,10 +119,45 @@ readonly class BuildingStateService
         return BuildingState::Design;
     }
 
-    public function revised(Building $building): BuildingState
+    public function reviewDraftsman(Building $building): BuildingState
     {
-        $this->transitionTo($building, BuildingState::RevisedDraftman);
+        $this->transitionTo($building, BuildingState::RevisionDraftsman);
 
-        return BuildingState::RevisedDraftman;
+        return BuildingState::RevisionDraftsman;
+    }
+
+    public function revisedDraftsman(Building $building): BuildingState
+    {
+        $this->transitionTo($building, BuildingState::RevisedDraftsman);
+
+        return BuildingState::RevisedDraftsman;
+    }
+
+    public function reviewInvestmen(Building $building): BuildingState
+    {
+        $this->transitionTo($building, BuildingState::RevisionInvestmen);
+
+        return BuildingState::RevisionInvestmen;
+    }
+
+    public function revisedInvestmen(Building $building): BuildingState
+    {
+        $this->transitionTo($building, BuildingState::RevisedInvestmen);
+
+        return BuildingState::RevisedInvestmen;
+    }
+
+    public function reviewDirector(Building $building): BuildingState
+    {
+        $this->transitionTo($building, BuildingState::RevisionDirector);
+
+        return BuildingState::RevisionDirector;
+    }
+
+    public function revisedDirector(Building $building): BuildingState
+    {
+        $this->transitionTo($building, BuildingState::RevisedDirector);
+
+        return BuildingState::RevisedDirector;
     }
 }

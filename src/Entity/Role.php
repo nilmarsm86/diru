@@ -49,10 +49,10 @@ class Role
     {
         return match ($role ?? $this->getName()) {
             static::ROLE_CLIENT => 'Rol cliente',
-            static::ROLE_DIRECTOR => 'Rol director',
-            static::ROLE_INVESTOR => 'Rol inversionista',
-            static::ROLE_DRAFTSMAN => 'Rol proyectista',
             static::ROLE_PLANNER => 'Rol planificador',
+            static::ROLE_DRAFTSMAN => 'Rol proyectista',
+            static::ROLE_INVESTOR => 'Rol inversionista',
+            static::ROLE_DIRECTOR => 'Rol director',
             static::ROLE_ADMIN => 'Rol admin',
             static::ROLE_SUPER_ADMIN => 'Rol super admin',
             default => throw new \InvalidArgumentException('Valor no soportado'),
@@ -68,9 +68,10 @@ class Role
     {
         return match ($role ?? $this->getName()) {
             static::ROLE_CLIENT => 'client',
-            static::ROLE_DIRECTOR => 'director',
-            static::ROLE_INVESTOR => 'investor',
+            static::ROLE_PLANNER => 'planner',
             static::ROLE_DRAFTSMAN => 'draftsman',
+            static::ROLE_INVESTOR => 'investor',
+            static::ROLE_DIRECTOR => 'director',
             static::ROLE_ADMIN => 'admin',
             static::ROLE_SUPER_ADMIN => 'super_admin',
             default => throw new \InvalidArgumentException('Valor no soportado'),

@@ -581,6 +581,6 @@ class Local implements MoneyInterface
 
     public function isBuildingInRevisedState(): bool
     {
-        return BuildingState::RevisedDraftman === $this->getSubSystem()?->getFloor()?->getBuilding()?->getState();
+        return BuildingState::RevisedDraftsman === $this->getSubSystem()?->getFloor()?->getBuilding()?->getState();
     }
 }

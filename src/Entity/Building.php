@@ -162,10 +162,22 @@ class Building implements MeasurementDataInterface
     private ?\DateTimeImmutable $designAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $revisionAt = null;
+    private ?\DateTimeImmutable $revisionDraftsmanAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $revisedAt = null;
+    private ?\DateTimeImmutable $revisedDraftsmanAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisionInvestmenAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisedInvestmenAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisionDirectorAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $revisedDirectorAt = null;
 
     #[ORM\Column]
     #[Assert\PositiveOrZero(message: 'El coeficiente debe ser un número positivo.')]
@@ -1501,26 +1513,74 @@ class Building implements MeasurementDataInterface
         return $this;
     }
 
-    public function getRevisionAt(): ?\DateTimeImmutable
+    public function getRevisionDraftsmanAt(): ?\DateTimeImmutable
     {
-        return $this->revisionAt;
+        return $this->revisionDraftsmanAt;
     }
 
-    public function setRevisionAt(?\DateTimeImmutable $revisionAt): static
+    public function setRevisionDraftsmanAt(?\DateTimeImmutable $revisionDraftsmanAt): static
     {
-        $this->revisionAt = $revisionAt;
+        $this->revisionDraftsmanAt = $revisionDraftsmanAt;
 
         return $this;
     }
 
-    public function getRevisedAt(): ?\DateTimeImmutable
+    public function getRevisedDraftsmanAt(): ?\DateTimeImmutable
     {
-        return $this->revisedAt;
+        return $this->revisedDraftsmanAt;
     }
 
-    public function setRevisedAt(?\DateTimeImmutable $revisedAt): static
+    public function setRevisedDraftsmanAt(?\DateTimeImmutable $revisedDraftsmanAt): static
     {
-        $this->revisedAt = $revisedAt;
+        $this->revisedDraftsmanAt = $revisedDraftsmanAt;
+
+        return $this;
+    }
+
+    public function getRevisionInvestmenAt(): ?\DateTimeImmutable
+    {
+        return $this->revisionInvestmenAt;
+    }
+
+    public function setRevisionInvestmenAt(?\DateTimeImmutable $revisionInvestmenAt): static
+    {
+        $this->revisionInvestmenAt = $revisionInvestmenAt;
+
+        return $this;
+    }
+
+    public function getRevisedInvestmenAt(): ?\DateTimeImmutable
+    {
+        return $this->revisedInvestmenAt;
+    }
+
+    public function setRevisedInvestmenAt(?\DateTimeImmutable $revisedInvestmenAt): static
+    {
+        $this->revisedInvestmenAt = $revisedInvestmenAt;
+
+        return $this;
+    }
+
+    public function getRevisionDirectorAt(): ?\DateTimeImmutable
+    {
+        return $this->revisionDirectorAt;
+    }
+
+    public function setRevisionDirectorAt(?\DateTimeImmutable $revisionDirectorAt): static
+    {
+        $this->revisionDirectorAt = $revisionDirectorAt;
+
+        return $this;
+    }
+
+    public function getRevisedDirectorAt(): ?\DateTimeImmutable
+    {
+        return $this->revisedDirectorAt;
+    }
+
+    public function setRevisedDirectorAt(?\DateTimeImmutable $revisedDirectorAt): static
+    {
+        $this->revisedDirectorAt = $revisedDirectorAt;
 
         return $this;
     }

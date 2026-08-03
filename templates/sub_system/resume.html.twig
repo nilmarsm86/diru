@@ -1,0 +1,30 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}Resumen de los subsistemas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Resumen de los subsistemas', 'ix:building-block-filled') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Subsistemas'},
+        ]) }}
+    </div>
+
+    <h5 class="mb-4">
+        Datos de construcción:
+    </h5>
+
+    <ul>
+{#        <li><strong>Subsistema: </strong>{{ sub_system.name }}</li>#}
+        <li><strong>Planta: </strong>{{ floor.name }}</li>
+        <li><strong>Obra: </strong>{{ floor.building.name }}</li>
+        <li><strong>Proyecto: </strong>{{ floor.building.project.name }}</li>
+    </ul>
+
+    {{ include('sub_system/resume/_classification.html.twig', {'showButton': true, 'title': title}) }}
+{% endblock %}

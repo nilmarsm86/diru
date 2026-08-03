@@ -22,7 +22,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-{#            {{ tableActionButton3(path('app_sub_system_report_local', {'id': sub_system.id}), '', 'Resumen', 'Resumen', '', 'btn-info') }}#}
+            {{ tableActionButton3(path('app_sub_system_resume', {'floor': floor.id}), '', 'Resumen', 'Resumen', '', 'btn-info') }}
 
             <div class="dropdown d-inline-block">
                 <button type="button"
@@ -232,7 +232,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), 'lucide-lab:floor-plan', '', (reply) ? ((sub_system.isNewInReply()) ? 'Locales nuevos' : 'Locales replicados') : 'Locales', '', cssClass, sub_system.hasErrors()) }}
+                            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply ? 1 : 0}), 'lucide-lab:floor-plan', '', (reply) ? ((sub_system.isNewInReply()) ? 'Locales nuevos' : 'Locales replicados') : 'Locales', '', cssClass, sub_system.hasErrors()) }}
 
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id}), 'fa:edit', '', 'Editar subsistema', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_sub_system_edit', {'id': sub_system.id, 'floor':floor.id})}), cssClass) }}

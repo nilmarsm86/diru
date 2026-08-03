@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\SubsystemFunctionalClassification;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
@@ -335,6 +336,38 @@ class Floor implements MeasurementDataInterface
             'regular' => $regular,
             'bad' => $bad,
             'critical' => $critical,
+            'undefined' => $undefined,
+        ];
+    }
+
+    /**
+     * @return array<int>
+     */
+    public function getAmountByClassification(): array
+    {
+        $undefined = 0;
+        $residential = 0;
+        $local = 0;
+        $city = 0;
+        $enterprise = 0;
+
+        $subsystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        foreach ($subsystems as $subsystem) {
+            match ($subsystem->getSubsystemTypeSubsystemSubType()?->getSubsystemType()?->getClassification()) {
+                SubsystemFunctionalClassification::Residential => $residential++,
+                SubsystemFunctionalClassification::Local => $local++,
+                SubsystemFunctionalClassification::City => $city++,
+                SubsystemFunctionalClassification::Enterprise => $enterprise++,
+                default => $undefined++,
+            };
+        }
+
+        return [
+            'residential' => $residential,
+            'local' => $local,
+            'city' => $city,
+            'enterprise' => $enterprise,
             'undefined' => $undefined,
         ];
     }

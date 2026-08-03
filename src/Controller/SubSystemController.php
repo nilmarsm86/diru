@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
 use App\Entity\Floor;
 use App\Entity\Role;
 use App\Entity\SubSystem;
 use App\Repository\SubSystemRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +26,8 @@ use Twig\Error\SyntaxError;
 #[Route('/sub/system')]
 final class SubSystemController extends AbstractController
 {
+    use PdfResponseTrait;
+
     #[Route('/{floor}/{reply}', name: 'app_sub_system_index', requirements: ['floor' => '\d+'], methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, CrudActionService $crudActionService, SubSystemRepository $subSystemRepository, Floor $floor, bool $reply = false): Response
     {
@@ -114,11 +119,26 @@ final class SubSystemController extends AbstractController
     #[Route('/{floor}/resume/subsystem', name: 'app_sub_system_resume', methods: ['GET'])]
     public function resumeSubSystem(Floor $floor): Response
     {
-        return $this->render('sub_system/report.html.twig', [
-            'local_status' => $floor->getAmountTechnicalStatus(),
-            'meter_status' => $floor->getAmountMeterTechnicalStatus(),
-            'title' => 'Estado técnico de los locales del piso',
+        return $this->render('sub_system/resume.html.twig', [
+            //            'sub_system_status' => $floor->getAmountTechnicalStatus(),
+            //            'meter_status' => $floor->getAmountMeterTechnicalStatus(),
+            'classification' => $floor->getAmountByClassification(),
+            'title' => 'Estado técnico de los subsistemas de la planta',
             'floor' => $floor,
         ]);
+    }
+
+    #[Route('/{floor}/sub_system/classification', name: 'app_sub_system_report_classification', methods: ['GET'])]
+    public function subsystemClassification(Floor $floor, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $html = $this->renderView('sub_system/pdf/classification.html.twig', [
+            'classification' => $floor->getAmountByClassification(),
+            'floor' => $floor,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return $this->pdfResponse($pdfContent, 'classification_subsistema.pdf');
     }
 }

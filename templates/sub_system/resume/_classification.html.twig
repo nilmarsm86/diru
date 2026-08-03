@@ -1,0 +1,44 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: 'Clasificación de los subsistemas de la planta',
+} %}
+    {% block header %}
+        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        <div>
+{#            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply': true}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}#}
+            {{ tableActionButton3(path('app_sub_system_report_classification', {'floor':floor.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+        </div>
+    {% endblock %}
+
+    {% block body %}
+        <table class="table table-hover">
+            <tr>
+                <th>Clasificación</th>
+                <th>Cantidad</th>
+            </tr>
+            <tr>
+                <th>Residencial</th>
+                <td>{{ classification.residential }}</td>
+            </tr>
+            <tr>
+                <th>Local</th>
+                <td>{{ classification.local }}</td>
+            </tr>
+            <tr>
+                <th>Ciudad</th>
+                <td>{{ classification.city }}</td>
+            </tr>
+            <tr>
+                <th>Empresa</th>
+                <td>{{ classification.enterprise }}</td>
+            </tr>
+            <tr>
+                <th>Totales</th>
+                <th>{{ floor.getSubSystemAmount() }}</th>
+            </tr>
+        </table>
+    {% endblock %}
+
+{% endcomponent %}

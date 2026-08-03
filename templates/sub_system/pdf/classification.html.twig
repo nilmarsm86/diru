@@ -1,0 +1,58 @@
+{% extends 'pdf.html.twig' %}
+
+{% block title %}Clasificación{% endblock %}
+
+{% block header %}
+    <div style=";width: 49%" class="col">
+        <img src="{{ logo }}" class="logo" alt="Logo" style="max-height: 60px;">
+        <h2 style="">Clasificación</h2>
+    </div>
+
+    <div style="width: 49%;" class="col">
+        <div style="margin-left: 0px">
+            <h3>Proyecto:</h3>
+            <strong>Proyecto:</strong> {{ floor.building.project.name }}<br>
+            <strong>Obra:</strong> {{ floor.building.name }}<br>
+            <strong>Planta:</strong> {{ floor.name }}<br>
+{#            <strong>Subsistema:</strong> {{ sub_system.name }}<br>#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <strong>Resumen de la clasificación de los subsistemas de este planta.</strong>
+    </div>
+    <br>
+    <table>
+        <tr>
+            <th>Clasificación</th>
+            <th>Cantidad</th>
+        </tr>
+        <tr>
+            <td>Residencial</td>
+            <td>{{ classification.residential }}</td>
+        </tr>
+        <tr>
+            <td>Local</td>
+            <td>{{ classification.local }}</td>
+        </tr>
+        <tr>
+            <td>Ciudad</td>
+            <td>{{ classification.city }}</td>
+        </tr>
+        <tr>
+            <td>Empresa</td>
+            <td>{{ classification.enterprise }}</td>
+        </tr>
+        <tr>
+            <th>Totales</th>
+            <th>{{ floor.getSubSystemAmount() }}</th>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block footer %}
+    Procrea S.R.L.<br>
+    {{ 'now'|date('Y-m-d') }}
+{% endblock %}

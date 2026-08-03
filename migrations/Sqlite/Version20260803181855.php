@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260729195956 extends AbstractMigration
+final class Version20260803181855 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,8 +23,12 @@ final class Version20260729195956 extends AbstractMigration
         $this->addSql('CREATE TABLE building (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER DEFAULT NULL, land_id INTEGER DEFAULT NULL, activity_id INTEGER NOT NULL, client_id INTEGER DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason CLOB DEFAULT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, is_new BOOLEAN DEFAULT NULL, population INTEGER NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment CLOB DEFAULT NULL, has_reply BOOLEAN DEFAULT NULL, register_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , diagnosis_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , design_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , revision_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , revised_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revision_draftsman_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revised_draftsman_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revision_investmen_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revised_investmen_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revision_director_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        , revised_director_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         , coefficient DOUBLE PRECISION NOT NULL, construction_real_value BIGINT NOT NULL, construction_real_value_comment CLOB DEFAULT NULL, objects CLOB DEFAULT NULL --(DC2Type:simple_array)
         , name VARCHAR(255) NOT NULL, CONSTRAINT FK_E16F61D4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D41994904A FOREIGN KEY (land_id) REFERENCES land (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D481C06096 FOREIGN KEY (activity_id) REFERENCES constructive_action (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E16F61D419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_E16F61D4166D1F9C ON building (project_id)');

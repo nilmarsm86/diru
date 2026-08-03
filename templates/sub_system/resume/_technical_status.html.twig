@@ -2,13 +2,13 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Estado técnico de los locales del subsistema',
+    title: 'Estado técnico de los subsistemas de la planta',
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
         <div>
-            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), '', 'Locales', 'Locales', '', 'btn-info') }}
-            {{ tableActionButton3(path('app_sub_system_report_local_technical_status', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+{#            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply': true}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}#}
+{#            {{ tableActionButton3(path('app_sub_system_report_local_technical_status', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}#}
         </div>
     {% endblock %}
 
@@ -21,33 +21,33 @@
             </tr>
             <tr>
                 <th>Bueno</th>
-                <td>{{ local_status.good }}</td>
+                <td>{{ sub_system_status.good }}</td>
                 <td>{{ meter_status.good|number_format(2) }}</td>
             </tr>
             <tr>
                 <th>Regular</th>
-                <td>{{ local_status.regular }}</td>
+                <td>{{ sub_system_status.regular }}</td>
                 <td>{{ meter_status.regular|number_format(2) }}</td>
             </tr>
             <tr>
                 <th>Malo</th>
-                <td>{{ local_status.bad }}</td>
+                <td>{{ sub_system_status.bad }}</td>
                 <td>{{ meter_status.bad|number_format(2) }}</td>
             </tr>
             <tr>
                 <th>Crítico</th>
-                <td>{{ local_status.critical }}</td>
+                <td>{{ sub_system_status.critical }}</td>
                 <td>{{ meter_status.critical|number_format(2) }}</td>
             </tr>
             <tr>
                 <th>Sin definir</th>
-                <td>{{ local_status.undefined }}</td>
+                <td>{{ sub_system_status.undefined }}</td>
                 <td>{{ meter_status.undefined|number_format(2) }}</td>
             </tr>
             <tr>
                 <th>Totales</th>
-                <th>{{ sub_system.getLocalsAmount() }}</th>
-                <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
+                <th>{{ floor.getSubSystemAmount() }}</th>
+                <th>{{ floor.getAmountMeters()|number_format(2) }}</th>
             </tr>
         </table>
     {% endblock %}

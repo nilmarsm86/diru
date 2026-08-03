@@ -2,13 +2,12 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Acciones constructivas de los locales del subsistema',
+    title: 'Acciones constructivas de los subsistemas de la planta',
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
         <div>
-            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), '', 'Locales', 'Locales', '', 'btn-info') }}
-            {{ tableActionButton3(path('app_sub_system_report_local_constructive_action', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+{#            {{ tableActionButton3(path('app_sub_system_report_local_constructive_action', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}#}
         </div>
     {% endblock %}
 
@@ -24,17 +23,17 @@
             {% for key, value in constructive_action %}
                 <tr>
                     <th>{{ key }}</th>
-                    <td>{{ value['status'] }}</td>
-                    <td>{{ money(value['price']) }}</td>
-                    <td>{{ value['meter']|number_format(2) }}</td>
+                    <th>{{ value['status'] }}</th>
+                    <th>{{ money(value['price']) }}</th>
+                    <th>{{ value['meter']|number_format(2) }}</th>
                 </tr>
             {% endfor %}
 
             <tr>
                 <th>Totales</th>
-                <th>{{ sub_system.getLocalsAmount() }}</th>
-                <th>{{ money(sub_system.getPrice(), null) }}</th>
-                <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
+                <th>{{ floor.getLocalsAmount() }}</th>
+                <th>{{ money(floor.getPrice(), null) }}</th>
+                <th>{{ floor.getAmountMeters()|number_format(2) }}</th>
             </tr>
         </table>
     {% endblock %}

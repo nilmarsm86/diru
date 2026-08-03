@@ -131,8 +131,8 @@ final class LocalController extends AbstractController
         return $this->redirectToRoute('app_local_index', ['subSystem' => $subSystem->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{subSystem}/resume/local', name: 'app_local_resume', methods: ['GET'])]
-    public function resumeLocal(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository): Response
+    #[Route('/{subSystem}/resume/{reply}', name: 'app_local_resume', methods: ['GET'])]
+    public function resumeLocal(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, bool $reply = false): Response
     {
         $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository);
 
@@ -142,6 +142,7 @@ final class LocalController extends AbstractController
             'constructive_action' => $ca,
             'title' => 'Estado técnico de los locales del subsistema',
             'sub_system' => $subSystem,
+            'reply' => $reply,
         ]);
     }
 

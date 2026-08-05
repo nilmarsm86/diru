@@ -22,7 +22,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
-            {{ tableActionButton3(path('app_sub_system_resume', {'floor': floor.id}), '', 'Resumen', 'Resumen', '', 'btn-info') }}
+            {{ tableActionButton3(path('app_sub_system_resume', {'floor': floor.id, 'reply': reply}), '', 'Resumen', 'Resumen', '', 'btn-info') }}
 
             <div class="dropdown d-inline-block">
                 <button type="button"

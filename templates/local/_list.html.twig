@@ -22,6 +22,18 @@
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_local_index', {'reply': reply,'subSystem': sub_system.id}),
+                queryNames:['type', 'amount', 'filter', 'page']
+            }) }}
+
+            {{ component('Card:FilterDropDown', {
+                path:'app_local_index',
+                pathParams: {'reply': reply, 'subSystem': sub_system.id},
+                label:'Tipos de locales',
+                queryName: 'type',
+                options:types
+            }) }}
             {{ tableActionButton3(path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}), '', 'Resumen', 'Resumen', '', 'btn-info') }}
 
             {% if sub_system.floor.isFullyOccupied() == false or reply == true %}
@@ -31,6 +43,7 @@
 
             {{ tableActionButton3(path('app_sub_system_index', {'floor':sub_system.floor.id, 'reply':reply}), 'ix:building-block-filled', (reply) ? 'Subsistemas replicados' : 'Subsistemas', (reply) ? 'Listado de subsistemas replicados' : 'Listado de subsistemas') }}
             {{ tableActionButton3(path('app_building_edit', {'id':sub_system.floor.building.id, 'project': sub_system.floor.building.project.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
+            {{ tableActionButton3(path('app_local_print', {'subSystem':sub_system.id, 'reply': reply}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}
 

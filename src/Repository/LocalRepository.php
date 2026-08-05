@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Enums\CorporateEntityType;
+use App\Entity\Enums\LocalType;
 use App\Entity\Local;
 use App\Entity\SubSystem;
 use App\Repository\Traits\PaginateTrait;
@@ -36,7 +38,7 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
     /**
      * @return Paginator<mixed>
      */
-    public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false): Paginator
+    public function findSubSystemLocals(SubSystem $subSystem, string $filter = '', int $amountPerPage = 10, int $page = 1, bool $reply = false, string $type = ''): Paginator
     {
         $builder = $this->createQueryBuilder('l')->select(['l', 'ss'])
             ->leftJoin('l.subSystem', 'ss')
@@ -46,10 +48,19 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
         $dqlReply = ($reply) ? 'l.hasReply = false AND (l.state = 3 OR l.state = 0)' : 'l.original IS NULL AND (l.hasReply IS NULL OR l.hasReply = true) AND l.state != 3';
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idSubSystem', $subSystem->getId());
+        $this->addType($builder, $type);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('l.number', 'ASC')
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    private function addType(QueryBuilder $builder, string $type): void
+    {
+        if ('' !== $type) {
+            $type = LocalType::from($type);
+            $builder->andWhere('l.type = :type ')->setParameter(':type', $type);
+        }
     }
 }

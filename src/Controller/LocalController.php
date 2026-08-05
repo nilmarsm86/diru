@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
+use App\Entity\Enums\CorporateEntityType;
+use App\Entity\Enums\LocalType;
 use App\Entity\Local;
 use App\Entity\Role;
 use App\Entity\SubSystem;
@@ -37,7 +39,9 @@ final class LocalController extends AbstractController
         $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
-        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
+        $type = $request->query->get('type', '');
+
+        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply, $type);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -50,7 +54,8 @@ final class LocalController extends AbstractController
             'filter' => $filter,
             'paginator' => $paginator,
             'sub_system' => $subSystem,
-            'reply' => $reply,
+            'reply' => $reply ? 1 : 0,
+            'types' => LocalType::cases(),
         ]);
     }
 
@@ -175,6 +180,33 @@ final class LocalController extends AbstractController
         $pdfContent = $pdfGenerator->generate($html);
 
         return $this->pdfResponse($pdfContent, 'acciones_constructivas');
+    }
+
+    #[Route('/{subSystem}/{reply}/print', name: 'app_local_print', requirements: ['subSystem' => '\d+'], methods: ['GET'])]
+    public function print(Request $request, RouterInterface $router, LocalRepository $localRepository, SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, bool $reply = false): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $localRepository->findSubSystemLocals($subSystem, $filter, $amountPerPage, $pageNumber, $reply);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $html = $this->renderView('local/pdf/print.html.twig', [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'sub_system' => $subSystem,
+            'reply' => $reply,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return $this->pdfResponse($pdfContent, 'locales');
     }
 
     /**

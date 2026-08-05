@@ -116,8 +116,8 @@ final class SubSystemController extends AbstractController
         return $response;
     }
 
-    #[Route('/{floor}/resume/subsystem', name: 'app_sub_system_resume', methods: ['GET'])]
-    public function resumeSubSystem(Floor $floor): Response
+    #[Route('/{floor}/resume/subsystem/{reply}', name: 'app_sub_system_resume', methods: ['GET'])]
+    public function resumeSubSystem(Floor $floor, bool $reply = false): Response
     {
         return $this->render('sub_system/resume.html.twig', [
             //            'sub_system_status' => $floor->getAmountTechnicalStatus(),
@@ -125,6 +125,7 @@ final class SubSystemController extends AbstractController
             'classification' => $floor->getAmountByClassification(),
             'title' => 'Estado técnico de los subsistemas de la planta',
             'floor' => $floor,
+            'reply' => $reply,
         ]);
     }
 

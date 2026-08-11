@@ -12,12 +12,14 @@ trait PaginateTrait
      *
      * @return Paginator<mixed>
      */
-    private function paginate(Query $dql, int $page, int $limit): Paginator
+    private function paginate(Query $dql, ?int $page = null, ?int $limit = null): Paginator
     {
         $paginator = new Paginator($dql, false);
-        $paginator->getQuery()
-            ->setFirstResult($limit * ($page - 1)) // Offset
-            ->setMaxResults($limit); // Limit
+        if (null !== $page && null !== $limit) {
+            $query = $paginator->getQuery();
+            $query->setFirstResult($limit * ($page - 1)); // Offset
+            $query->setMaxResults($limit); // Limit
+        }
 
         return $paginator;
     }

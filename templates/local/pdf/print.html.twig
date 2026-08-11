@@ -124,6 +124,7 @@
                 <td colspan="8">No se encontraron locales.</td>
             </tr>
         {% endfor %}
+        {% if app.request.query.has('type') === false %}
         <tr>
             <th></th>
             <th></th>
@@ -141,6 +142,7 @@
                 <th></th>
             {% endif %}
         </tr>
+        {% endif %}
     </table>
 {% endblock %}
 

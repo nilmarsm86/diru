@@ -14,7 +14,7 @@ final class ReportController extends AbstractController
     public function pdf(PdfGenerator $pdfGenerator, PdfAssetManager $pdfAssetManager): Response
     {
         $html = $this->renderView('report/index.html.twig', [
-            'titulo' => 'Reporte Mensual',
+            'title' => 'Reporte Mensual',
             'fecha' => new \DateTime(),
             'items' => [], // aquí pasas las filas de la tabla
             'logo' => $pdfAssetManager->getLogoBase64(),
@@ -35,7 +35,7 @@ final class ReportController extends AbstractController
     public function preview(PdfAssetManager $pdfAssetManager): Response
     {
         return $this->render('report/index.html.twig', [
-            'titulo' => 'Reporte Mensual',
+            'title' => 'Reporte Mensual',
             'fecha' => new \DateTime(),
             'items' => [], // aquí pasas las filas de la tabla
             'logo' => $pdfAssetManager->getLogoBase64(),

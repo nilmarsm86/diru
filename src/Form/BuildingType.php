@@ -77,7 +77,7 @@ class BuildingType extends AbstractType
             ->add('activity', EntityType::class, [
                 'class' => ConstructiveAction::class,
                 'choice_label' => 'name',
-                'label' => 'Actividad de Obra:',
+                'label' => 'Acción constructiva obra:',
                 'placeholder' => '-Seleccione-',
                 'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
             ])

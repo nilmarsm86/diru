@@ -274,4 +274,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return in_array(Role::ROLE_INVESTOR, $this->getRoles(), true);
     }
+
+    public function getHightRole(): string
+    {
+        foreach ($this->roles as $role) {
+            if ($this->isSuperAdmin()) {
+                return $role->capitalizeName(Role::ROLE_SUPER_ADMIN);
+            }
+        }
+
+        return '';
+    }
 }

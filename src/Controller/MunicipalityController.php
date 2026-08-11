@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
+use App\DTO\Paginator;
 use App\Entity\Municipality;
 use App\Entity\Role;
 use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -20,6 +25,8 @@ use Twig\Error\SyntaxError;
 #[IsGranted(Role::ROLE_ADMIN)]
 final class MunicipalityController extends AbstractController
 {
+    use PdfResponseTrait;
+
     /**
      * @throws SyntaxError
      * @throws RuntimeError
@@ -87,5 +94,26 @@ final class MunicipalityController extends AbstractController
         }
 
         return $response;
+    }
+
+    #[Route('/print', name: 'app_municipality_print', methods: ['GET'])]
+    public function print(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+
+        $data = $municipalityRepository->findMunicipalities($filter, null, null);
+
+        $paginator = new Paginator($data);
+
+        $html = $this->renderView('municipality/pdf/print.html.twig', [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+            'title' => 'Listado de municipios',
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return $this->pdfResponse($pdfContent, 'municipios');
     }
 }

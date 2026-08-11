@@ -44,7 +44,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
     /**
      * @return Paginator<mixed>
      */
-    public function findMunicipalities(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findMunicipalities(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('m')
             ->select(['m', 'p'])

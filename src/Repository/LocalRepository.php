@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Enums\LocalType;
 use App\Entity\Local;
 use App\Entity\SubSystem;

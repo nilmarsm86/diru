@@ -106,16 +106,7 @@ final class MunicipalityController extends AbstractController
 
         $paginator = new Paginator($data);
 
-        $html = $this->renderView('municipality/pdf/print.html.twig', [
-            'filter' => $filter,
-            'paginator' => $paginator,
-            'logo' => $pdfAssetManager->getLogoBase64(),
-            'title' => 'Listado de municipios',
-        ]);
-
-        $pdfContent = $pdfGenerator->generate($html);
-
-        return $this->pdfResponse($pdfContent, 'municipios');
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/print.html.twig', 'Listado de municipios', 'municipios');
     }
 
     /**
@@ -124,43 +115,60 @@ final class MunicipalityController extends AbstractController
     #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
     public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, CrudActionService $crudActionService): Response
     {
-        $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
-        $pageNumber = (int) $request->query->get('page', '1');
-
-        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
-
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $municipalityRepository->count());
-        if ($paginator->isFromGreaterThanTotal()) {
-            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        $response = $this->findMunicipalities($request, $router, $municipalityRepository);
+        if ($response instanceof RedirectResponse) {
+            return $response;
         }
+        [$filter, $paginator] = $response;
 
         $template = ($request->isXmlHttpRequest()) ? '_amount_project.html.twig' : 'report.html.twig';
 
         return $this->render("municipality/report/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
+            'title' => "Cantidad de proyectos y obras por municipio",
         ]);
     }
 
-    #[Route('/print', name: 'app_municipality_print', methods: ['GET'])]
+    /**
+     * @throws Exception
+     */
+    #[Route('/amount_project_report_print', name: 'app_municipality_amount_project_report_print', methods: ['GET'])]
     public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
+        $response = $this->findMunicipalities($request, $router, $municipalityRepository, true);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_project.twig', "Cantidad de proyectos y obras por municipio", 'municipios_proyectos_obras');
+    }
+
+    /**
+     * @return RedirectResponse|array<mixed>
+     *
+     * @throws Exception
+     */
+    private function findMunicipalities(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
+    {
         $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
 
-        $data = $municipalityRepository->findMunicipalities($filter, null, null);
+        if (true === $pdf) {
+            $amountPerPage = null;
+            $pageNumber = null;
+        }
 
-        $paginator = new Paginator($data);
+        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
+        $countData = count($municipalityRepository->findAmountProject($filter, null, null));
 
-        $html = $this->renderView('municipality/pdf/print.html.twig', [
-            'filter' => $filter,
-            'paginator' => $paginator,
-            'logo' => $pdfAssetManager->getLogoBase64(),
-            'title' => 'Listado de municipios',
-        ]);
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $countData);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
 
-        $pdfContent = $pdfGenerator->generate($html);
-
-        return $this->pdfResponse($pdfContent, 'municipios');
+        return [$filter, $paginator];
     }
 }

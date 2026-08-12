@@ -18,8 +18,8 @@ class Paginator
      */
     public function __construct(
         private readonly DoctrinePaginator|array $data = [],
-        private int $amount = 10,
-        private int $page = 1,
+        private ?int $amount = 10,
+        private ?int $page = 1,
         private ?int $fake = null,
     ) {
     }
@@ -132,9 +132,12 @@ class Paginator
     }
 
     /**
+     * @param Request $request
+     * @param RouterInterface $router
+     * @param int|null $pageNumber
      * @return RedirectResponse
      */
-    public function greatherThanTotal(Request $request, RouterInterface $router, int $pageNumber)
+    public function greatherThanTotal(Request $request, RouterInterface $router, ?int $pageNumber = null): RedirectResponse
     {
         $number = (1 === $pageNumber) ? 1 : ($pageNumber - 1);
         $route = $request->attributes->get('_route');

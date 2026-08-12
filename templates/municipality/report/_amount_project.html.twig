@@ -2,7 +2,7 @@
     cssClass: 'mb-4',
     extra: '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
-    title: 'Listado de municipios',
+    title: title,
 } %}
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
@@ -39,7 +39,7 @@
             </div>
 
             {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
-            {{ tableActionButton3(path('app_municipality_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+            {{ tableActionButton3(path('app_municipality_amount_project_report_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}
 
@@ -52,7 +52,6 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-                    <th>Inversiones</th>
                     <th>Proyectos</th>
                     <th>Obras</th>
                 </tr>
@@ -72,7 +71,6 @@
                                 {{ municipality.province }}
                             </a>
                         </td>
-                        <td>{{ municipality.investments }}</td>
                         <td>{{ municipality.projects }}</td>
                         <td>{{ municipality.buildings }}</td>
                     </tr>

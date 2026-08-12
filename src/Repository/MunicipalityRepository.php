@@ -38,7 +38,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
             }
 
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%' . $filter . '%');
+                ->setParameter(':filter', '%'.$filter.'%');
         }
     }
 
@@ -58,11 +58,23 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
 
     /**
      * @return array<mixed>
+     *
      * @throws Exception
      */
     public function findAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $sql = $this->sqlAmountProject($filter, $amountPerPage, $page);
+
+        return $conn->executeQuery($sql, [
+            'page' => (((int) $page - 1) * (int) $amountPerPage),
+            'amount' => $amountPerPage,
+            'filter' => $filter,
+        ])->fetchAllAssociative();
+    }
+
+    private function sqlAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): string
+    {
         $sql = 'SELECT m.id AS id,
        m.name AS name,
        p.name as province,
@@ -77,13 +89,18 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
        LEFT JOIN
        project pr ON pr.investment_id = i.id
        LEFT JOIN
-       building b ON b.project_id = p.id
- GROUP BY m.id
- ORDER BY m.name
- LIMIT :page,:amount
-';
+       building b ON b.project_id = p.id';
 
-        return $conn->executeQuery($sql, ['page' => (($page - 1) * $amountPerPage), 'amount' => $amountPerPage])->fetchAllAssociative();
+        if ('' !== $filter) {
+            $sql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter ';
+        }
+
+        $sql .= ' GROUP BY m.id ORDER BY m.name';
+
+        if (null !== $amountPerPage && null !== $page) {
+            $sql .= ' LIMIT :page,:amount';
+        }
+
+        return $sql;
     }
-
 }

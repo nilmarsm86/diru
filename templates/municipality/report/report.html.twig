@@ -3,7 +3,7 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Municipios{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -15,7 +15,7 @@
         ]) }}
     </div>
 
-    <h2 class="mb-4">Cantidad de proyectos y obras</h2>
+    <h2 class="mb-4">{{ title }}</h2>
 
     {% component ManagePage %}
         {% block list %}

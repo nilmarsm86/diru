@@ -6,6 +6,7 @@ use App\Entity\Municipality;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,7 +38,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
             }
 
             $builder->andWhere($predicate)
-                ->setParameter(':filter', '%'.$filter.'%');
+                ->setParameter(':filter', '%' . $filter . '%');
         }
     }
 
@@ -54,4 +55,35 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    /**
+     * @return array<mixed>
+     * @throws Exception
+     */
+    public function findAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT m.id AS id,
+       m.name AS name,
+       p.name as province,
+       count(DISTINCT i.id) AS investments,
+       count(DISTINCT pr.id) AS projects,
+       count(DISTINCT b.id) AS buildings
+  FROM municipality m
+       LEFT JOIN
+       province p ON m.province_id = p.id
+       LEFT JOIN
+       investment i ON m.id = i.municipality_id
+       LEFT JOIN
+       project pr ON pr.investment_id = i.id
+       LEFT JOIN
+       building b ON b.project_id = p.id
+ GROUP BY m.id
+ ORDER BY m.name
+ LIMIT :page,:amount
+';
+
+        return $conn->executeQuery($sql, ['page' => (($page - 1) * $amountPerPage), 'amount' => $amountPerPage])->fetchAllAssociative();
+    }
+
 }

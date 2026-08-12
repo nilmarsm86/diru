@@ -10,6 +10,7 @@ use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,6 +99,52 @@ final class MunicipalityController extends AbstractController
 
     #[Route('/print', name: 'app_municipality_print', methods: ['GET'])]
     public function print(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+
+        $data = $municipalityRepository->findMunicipalities($filter, null, null);
+
+        $paginator = new Paginator($data);
+
+        $html = $this->renderView('municipality/pdf/print.html.twig', [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'logo' => $pdfAssetManager->getLogoBase64(),
+            'title' => 'Listado de municipios',
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return $this->pdfResponse($pdfContent, 'municipios');
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
+    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, CrudActionService $crudActionService): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $municipalityRepository->count());
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_project.html.twig' : 'report.html.twig';
+
+        return $this->render("municipality/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+        ]);
+    }
+
+    #[Route('/print', name: 'app_municipality_print', methods: ['GET'])]
+    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
 

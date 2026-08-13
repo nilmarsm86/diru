@@ -10,7 +10,6 @@ use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
-use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,13 +108,10 @@ final class MunicipalityController extends AbstractController
         return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/print.html.twig', 'Listado de municipios', 'municipios');
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
-    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, CrudActionService $crudActionService): Response
+    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
     {
-        $response = $this->findMunicipalities($request, $router, $municipalityRepository);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -126,31 +122,25 @@ final class MunicipalityController extends AbstractController
         return $this->render("municipality/report/$template", [
             'filter' => $filter,
             'paginator' => $paginator,
-            'title' => "Cantidad de proyectos y obras por municipio",
+            'title' => 'Cantidad de proyectos y obras por municipio',
+            'list' => '_amount_project',
         ]);
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/amount_project_report_print', name: 'app_municipality_amount_project_report_print', methods: ['GET'])]
     public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
-        $response = $this->findMunicipalities($request, $router, $municipalityRepository, true);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
         [$filter, $paginator] = $response;
+        assert($paginator instanceof Paginator);
 
-        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_project.twig', "Cantidad de proyectos y obras por municipio", 'municipios_proyectos_obras');
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_project.twig', 'Cantidad de proyectos y obras por municipio', 'municipios_proyectos_obras');
     }
 
-    /**
-     * @return RedirectResponse|array<mixed>
-     *
-     * @throws Exception
-     */
-    private function findMunicipalities(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
+    private function amountProjectsAndBuildings(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int) $request->query->get('amount', '10');
@@ -163,6 +153,60 @@ final class MunicipalityController extends AbstractController
 
         $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
         $countData = count($municipalityRepository->findAmountProject($filter, null, null));
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $countData);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        return [$filter, $paginator];
+    }
+
+    #[Route('/amount_client_report', name: 'app_municipality_amount_client_report', methods: ['GET'])]
+    public function amountClientReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
+    {
+        $response = $this->amountClients($request, $router, $municipalityRepository);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_client.html.twig' : 'report.html.twig';
+
+        return $this->render("municipality/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Cantidad de clientes por municipio',
+            'list' => '_amount_client',
+        ]);
+    }
+
+    #[Route('/amount_client_report_print', name: 'app_municipality_amount_client_report_print', methods: ['GET'])]
+    public function amountClientReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $response = $this->amountClients($request, $router, $municipalityRepository, true);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+        assert($paginator instanceof Paginator);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_client.twig', 'Cantidad de clientes por municipio', 'municipios_clientes');
+    }
+
+    private function amountClients(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        if (true === $pdf) {
+            $amountPerPage = null;
+            $pageNumber = null;
+        }
+
+        $data = $municipalityRepository->findAmountClients($filter, $amountPerPage, $pageNumber);
+        $countData = count($municipalityRepository->findAmountClients($filter, null, null));
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber, $countData);
         if ($paginator->isFromGreaterThanTotal()) {

@@ -19,7 +19,7 @@
 
     {% component ManagePage %}
         {% block list %}
-            {{ include('municipality/report/_amount_project.html.twig') }}
+            {{ include('municipality/report/'~list~'.html.twig') }}
         {% endblock %}
     {% endcomponent %}
 {% endblock %}

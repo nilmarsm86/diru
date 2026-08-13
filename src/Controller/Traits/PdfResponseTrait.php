@@ -13,7 +13,7 @@ trait PdfResponseTrait
     {
         return new Response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $filename . '-' . date('Y-m-d_H-i') . '.pdf"',
+            'Content-Disposition' => 'inline; filename="'.$filename.'-'.date('Y-m-d_H-i').'.pdf"',
             'Content-Length' => strlen($pdfContent),
             'X-Content-Type-Options' => 'nosniff',
             'Cache-Control' => 'private, must-revalidate',
@@ -21,15 +21,14 @@ trait PdfResponseTrait
     }
 
     public function renderPdf(
-        string          $filter,
-        Paginator       $paginator,
+        string $filter,
+        Paginator $paginator,
         PdfAssetManager $pdfAssetManager,
-        PdfGenerator    $pdfGenerator,
-        string          $template,
-        string          $title,
-        string          $fileName,
-    ): Response
-    {
+        PdfGenerator $pdfGenerator,
+        string $template,
+        string $title,
+        string $fileName,
+    ): Response {
         $html = $this->renderView($template, [
             'filter' => $filter,
             'paginator' => $paginator,

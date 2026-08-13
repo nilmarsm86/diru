@@ -12,7 +12,7 @@
                 <button type="button"
                         class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
                         data-bs-toggle="dropdown"
-                        aria-expanded="false" title="Obras del proyecto"
+                        aria-expanded="false" title="{{ title }}"
                 >
                     Reportes
                 </button>
@@ -39,7 +39,7 @@
             </div>
 
             {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
-            {{ tableActionButton3(path('app_municipality_amount_project_report_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+            {{ tableActionButton3(path('app_municipality_amount_client_report_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}
 
@@ -52,8 +52,8 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-                    <th>Proyectos</th>
-                    <th>Obras</th>
+                    <th>Empresarial</th>
+                    <th>Natural</th>
                 </tr>
             {% endblock %}
 
@@ -71,8 +71,8 @@
                                 {{ municipality.province }}
                             </a>
                         </td>
-                        <td>{{ municipality.projects }}</td>
-                        <td>{{ municipality.buildings }}</td>
+                        <td>{{ municipality.enterprise }}</td>
+                        <td>{{ municipality.individual }}</td>
                     </tr>
                 {% else %}
                     <tr>

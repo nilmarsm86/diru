@@ -69,7 +69,7 @@ class Paginator
      */
     public function getMaxPage(): int|float
     {
-        return ceil($this->getTotal() / $this->amount);
+        return ceil($this->getTotal() / (int) $this->amount);
     }
 
     /**
@@ -82,7 +82,7 @@ class Paginator
             return 0;
         }
 
-        return ($this->page * $this->amount) - $this->amount + 1;
+        return ((int) $this->page * (int) $this->amount) - (int) $this->amount + 1;
     }
 
     /**
@@ -92,7 +92,7 @@ class Paginator
     {
         $total = $this->getTotal();
 
-        return (($this->page * $this->amount) < $total) ? $this->page * $this->amount : $total;
+        return (((int) $this->page * (int) $this->amount) < $total) ? (int) $this->page * (int) $this->amount : $total;
     }
 
     /**
@@ -112,7 +112,7 @@ class Paginator
      */
     public function getAmount(): int
     {
-        return $this->amount;
+        return (int) $this->amount;
     }
 
     /**
@@ -120,7 +120,7 @@ class Paginator
      */
     public function currentPage(): int
     {
-        return $this->page;
+        return (int) $this->page;
     }
 
     /**
@@ -131,15 +131,9 @@ class Paginator
         return $this->from() > $this->getTotal();
     }
 
-    /**
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param int|null $pageNumber
-     * @return RedirectResponse
-     */
     public function greatherThanTotal(Request $request, RouterInterface $router, ?int $pageNumber = null): RedirectResponse
     {
-        $number = (1 === $pageNumber) ? 1 : ($pageNumber - 1);
+        $number = (1 === (int) $pageNumber) ? 1 : ((int) $pageNumber - 1);
         $route = $request->attributes->get('_route');
 
         return new RedirectResponse($router->generate(is_string($route) ? $route : '', [

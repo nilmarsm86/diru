@@ -21,7 +21,7 @@ trait PdfResponseTrait
     }
 
     public function renderPdf(
-        string $filter,
+        mixed $filter,
         Paginator $paginator,
         PdfAssetManager $pdfAssetManager,
         PdfGenerator $pdfGenerator,

@@ -1,0 +1,24 @@
+{% extends 'pdf_nomenclator.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div>
+        <strong>Ubicaciones:</strong> Municipios
+        {% if filter %}
+            <br>
+            <strong>Filtrado por:</strong> {{ filter }}
+        {% endif %}
+    </div>
+    <br>
+    <table>
+        {% block columns %}{% endblock %}
+        {% for municipality in paginator.getData() %}
+            {% block data %}{% endblock %}
+        {% else %}
+            <tr>
+                <td colspan="{{ colspan|default(4) }}">No se encontraron municipios.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

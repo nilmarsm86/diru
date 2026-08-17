@@ -1,31 +1,17 @@
-{% extends 'pdf_nomenclator.html.twig' %}
+{% extends 'municipality/pdf/pdf_municipality.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% set colspan = 2 %}
 
-{% block content %}
-    <div>
-        <strong>Ubicaciones:</strong> Municipios
-        {% if filter %}
-            <br>
-            <strong>Filtrado por:</strong> {{ filter }}
-        {% endif %}
-    </div>
-    <br>
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Provincia</th>
-        </tr>
-        {% for municipality in paginator.getData() %}
-            <tr>
-                <td>{{ municipality.name }}</td>
-                <td>{{ municipality.province }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">No se encontraron municipios.</td>
-            </tr>
-        {% endfor %}
-    </table>
+{% block columns %}
+    <tr>
+        <th>Nombre</th>
+        <th>Provincia</th>
+    </tr>
 {% endblock %}
 
+{% block data %}
+    <tr>
+        <td>{{ municipality.name }}</td>
+        <td>{{ municipality.province }}</td>
+    </tr>
+{% endblock %}

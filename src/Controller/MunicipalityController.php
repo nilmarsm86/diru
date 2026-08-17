@@ -10,6 +10,7 @@ use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,6 +141,11 @@ final class MunicipalityController extends AbstractController
         return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_project.twig', 'Cantidad de proyectos y obras por municipio', 'municipios_proyectos_obras');
     }
 
+    /**
+     * @return RedirectResponse|array<mixed>
+     *
+     * @throws Exception
+     */
     private function amountProjectsAndBuildings(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
     {
         $filter = $request->query->get('filter', '');
@@ -194,6 +200,11 @@ final class MunicipalityController extends AbstractController
         return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_client.twig', 'Cantidad de clientes por municipio', 'municipios_clientes');
     }
 
+    /**
+     * @return RedirectResponse|array<mixed>
+     *
+     * @throws Exception
+     */
     private function amountClients(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
     {
         $filter = $request->query->get('filter', '');

@@ -89,7 +89,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
        LEFT JOIN
        project pr ON pr.investment_id = i.id
        LEFT JOIN
-       building b ON b.project_id = p.id';
+       building b ON b.project_id = pr.id';
 
         if ('' !== $filter) {
             $sql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';

@@ -164,29 +164,8 @@ final class MunicipalityController extends AbstractController
             $pageNumber = null;
         }
 
-        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
-        $newData = [];
-        /** @var array<int, string, string, int, int, int, int> $item */
-        foreach ($data as $item) {
-            $price = 0;
-            /** @var Investment $investment */
-            $investment = $investmentRepository->findOneBy(['municipality' => $item['id']]);
-            if (null !== $investment) {
-                $projects = $investment->getProjects();
-
-                foreach ($projects as $project) {
-                    $price += $project->getPrice();
-                }
-            }
-
-            $item['price'] = $price;
-            $newData[] = $item;
-        }
-        dump($newData);
-        $countData = count($municipalityRepository->findAmountProject($filter, null, null));
-
-        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, $countData);
-        //        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        $data = $municipalityRepository->findAmountProject2($filter, $amountPerPage, $pageNumber);
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
@@ -251,5 +230,111 @@ final class MunicipalityController extends AbstractController
         }
 
         return [$filter, $paginator];
+    }
+
+    #[Route('/amount_finance_report', name: 'app_municipality_amount_finance_report', methods: ['GET'])]
+    public function amountFinanceReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, InvestmentRepository $investmentRepository): Response
+    {
+        $response = $this->amountFinance($request, $router, $municipalityRepository, $investmentRepository);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_finance.html.twig' : 'report.html.twig';
+
+        return $this->render("municipality/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Finanzas de obras por municipio',
+            'list' => '_amount_finance',
+            'currency' => 'CUP',
+        ]);
+    }
+
+    #[Route('/amount_finance_report_print', name: 'app_municipality_amount_finance_report_print', methods: ['GET'])]
+    public function amountFinanceReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, InvestmentRepository $investmentRepository): Response
+    {
+        $response = $this->amountFinance($request, $router, $municipalityRepository, $investmentRepository, true);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+        assert($paginator instanceof Paginator);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_finance.twig', 'Finanzas de obras por municipio', 'municipios_finanzas', ['currency' => 'CUP']);
+    }
+
+    /**
+     * @return RedirectResponse|array<mixed>
+     *
+     * @throws Exception
+     */
+    private function amountFinance(
+        Request $request,
+        RouterInterface $router,
+        MunicipalityRepository $municipalityRepository,
+        InvestmentRepository $investmentRepository,
+        bool $pdf = false,
+    ): RedirectResponse|array {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        if (true === $pdf) {
+            $amountPerPage = null;
+            $pageNumber = null;
+        }
+
+        $data = $municipalityRepository->findAmountProject2($filter, $amountPerPage, $pageNumber);
+        $newData = $this->addFinance($investmentRepository, $data);
+
+        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, count($municipalityRepository->findAmountProject($filter, null, null)));
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        return [$filter, $paginator];
+    }
+
+    /**
+     * @param \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $data
+     *
+     * @return array<mixed>
+     */
+    public function addFinance(InvestmentRepository $investmentRepository, \Doctrine\ORM\Tools\Pagination\Paginator $data): array
+    {
+        $newData = [];
+        /** @var array<mixed> $item */
+        foreach ($data as $item) {
+            $approvedValue = 0;
+            $estimatedValue = 0;
+            $estimatedAdjustValue = 0;
+            $constructionAssembly = 0;
+            $constructionRealValue = 0;
+            /** @var Investment $investment */
+            $investments = $investmentRepository->findBy(['municipality' => $item['id']]);
+            foreach ($investments as $investment) {
+                $projects = $investment->getProjects();
+                foreach ($projects as $project) {
+                    foreach ($project->getBuildings() as $building) {
+                        $approvedValue += (int) $building->getTotalApprovedValue();
+                        $estimatedValue += $building->getPrice();
+                        $estimatedAdjustValue += $building->getEstimatedAdjustValue();
+                        $constructionAssembly += $building->getConstructionAssembly();
+                        $constructionRealValue += $building->getConstructionRealValue();
+                    }
+                }
+            }
+
+            $item['approvedValue'] = $approvedValue;
+            $item['estimatedValue'] = $estimatedValue;
+            $item['estimatedAdjustValue'] = $estimatedAdjustValue;
+            $item['constructionAssembly'] = $constructionAssembly;
+            $item['constructionRealValue'] = $constructionRealValue;
+            $newData[] = $item;
+        }
+
+        return $newData;
     }
 }

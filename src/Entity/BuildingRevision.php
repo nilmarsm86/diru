@@ -7,7 +7,6 @@ use App\Entity\Traits\StateTrait;
 use App\Repository\BuildingRevisionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRevisionRepository::class)]

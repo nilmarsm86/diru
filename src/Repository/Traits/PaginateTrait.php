@@ -8,7 +8,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 trait PaginateTrait
 {
     /**
-     * @param Query<mixed> $dql
+     * @param Query<mixed, mixed> $dql
      *
      * @return Paginator<mixed>
      */

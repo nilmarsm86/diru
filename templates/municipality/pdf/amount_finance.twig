@@ -1,0 +1,25 @@
+{% extends 'municipality/pdf/pdf_municipality.html.twig' %}
+
+{% block columns %}
+    <tr>
+        <th>Nombre</th>
+        <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+        <th>V. Aprobado ({{ currency }})</th>
+        <th>V. Estimado ({{ currency }})</th>
+        <th>P. Estimado ({{ currency }})</th>
+        <th>P. Detallado ({{ currency }})</th>
+        <th>V. Real ({{ currency }})</th>
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        <td>{{ municipality.name }}</td>
+        <td>{{ municipality.province }}</td>
+        <td>{{ money(municipality.approvedValue) }}</td>
+        <td>{{ money(municipality.estimatedValue) }}</td>
+        <td>{{ money(municipality.estimatedAdjustValue) }}</td>
+        <td>{{ money(municipality.constructionAssembly) }}</td>
+        <td>{{ money(municipality.constructionRealValue) }}</td>
+    </tr>
+{% endblock %}

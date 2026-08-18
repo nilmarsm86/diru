@@ -1,0 +1,58 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('municipality/report/_header.html.twig', {'print_link':'app_municipality_amount_finance_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
+                    <th>V. Aprobado ({{ currency }})</th>
+                    <th>V. Estimado ({{ currency }})</th>
+                    <th>P. Estimado ({{ currency }})</th>
+                    <th>P. Detallado ({{ currency }})</th>
+                    <th>V. Real ({{ currency }})</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for municipality in paginator.getData() %}
+                    <tr>
+                        <td>{{ municipality.name }}</td>
+                        <td>
+                            <a href="{{ filterLink(municipality.province) }}"
+                               class="text-decoration-none"
+                            >
+                                {{ municipality.province }}
+                            </a>
+                        </td>
+                        <td>{{ money(municipality.approvedValue, currency) }}</td>
+                        <td>{{ money(municipality.estimatedValue, currency) }}</td>
+                        <td>{{ money(municipality.estimatedAdjustValue, currency) }}</td>
+                        <td>{{ money(municipality.constructionAssembly, currency) }}</td>
+                        <td>{{ money(municipality.constructionRealValue, currency) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">No se encontraron municipios.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

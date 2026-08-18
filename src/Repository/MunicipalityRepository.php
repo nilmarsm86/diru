@@ -73,8 +73,12 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
         ])->fetchAllAssociative();
     }
 
+    /**
+     * @return Paginator<mixed>
+     */
     public function findAmountProject2(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
+        $parameters = [];
         $dql = 'SELECT m.id AS id,
        m.name AS name,
        p.name AS province,
@@ -89,20 +93,18 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
        LEFT JOIN
        App\Entity\Project pr ON pr.investment = i.id
        LEFT JOIN
-       App\Entity\Building b ON b.project = pr.id
- GROUP BY m.id
- ORDER BY m.name';
+       App\Entity\Building b ON b.project = pr.id';
+
+        if ('' !== $filter) {
+            $dql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
+            $parameters['filter'] = '%'.$filter.'%';
+        }
+
+        $dql .= ' GROUP BY m.id ORDER BY m.name';
 
         $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameters($parameters);
 
-        //        $builder = $this->createQueryBuilder(['m', 'p'])
-        //            ->select(['m.name AS NAME', 'p.name AS province', 'count(DISTINCT i.id) AS investments', 'count(DISTINCT pr.id) AS projects', 'count(DISTINCT b.id) AS buildings'])
-        //            ->leftJoin('m.province', 'i');
-        //            ->leftJoin('m.province', 'p');
-        //        $this->addFilter($builder, $filter);
-        //        $query = $builder->orderBy('m.name', 'ASC')->getQuery();
-
-        //        dump($query->getResult(1));
         return $this->paginate($query, $page, $amountPerPage);
     }
 
@@ -110,25 +112,16 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
     {
         $sql = 'SELECT m.id AS id,
        m.name AS name,
-       p.name as province,
-       count(DISTINCT i.id) AS investments,
-       count(DISTINCT pr.id) AS projects,
-       count(DISTINCT b.id) AS buildings
+       p.name as province
   FROM municipality m
        LEFT JOIN
-       province p ON m.province_id = p.id
-       LEFT JOIN
-       investment i ON m.id = i.municipality_id
-       LEFT JOIN
-       project pr ON pr.investment_id = i.id
-       LEFT JOIN
-       building b ON b.project_id = pr.id';
+       province p ON m.province_id = p.id';
 
         if ('' !== $filter) {
             $sql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
         }
 
-        $sql .= ' GROUP BY m.id ORDER BY m.name';
+        $sql .= ' ORDER BY m.name';
 
         if (null !== $amountPerPage && null !== $page) {
             $sql .= ' LIMIT :page,:amount';

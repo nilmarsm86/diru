@@ -20,6 +20,9 @@ trait PdfResponseTrait
         ]);
     }
 
+    /**
+     * @param array<mixed> $vars
+     */
     public function renderPdf(
         mixed $filter,
         Paginator $paginator,
@@ -28,13 +31,14 @@ trait PdfResponseTrait
         string $template,
         string $title,
         string $fileName,
+        array $vars = [],
     ): Response {
         $html = $this->renderView($template, [
             'filter' => $filter,
             'paginator' => $paginator,
             'logo' => $pdfAssetManager->getLogoBase64(),
             'title' => $title,
-        ]);
+        ] + $vars);
 
         $pdfContent = $pdfGenerator->generate($html);
 

@@ -5,42 +5,7 @@
     title: title,
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
-
-        <div>
-            <div class="dropdown d-inline-block">
-                <button type="button"
-                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false" title="{{ title }}"
-                >
-                    Reportes
-                </button>
-                <ul class="dropdown-menu" data-bs-theme="light">
-                    <li>
-                        <a class="dropdown-item"
-                           href="{{ path('app_municipality_amount_project_report') }}" title="">
-                            Cantidad de proyectos y obras
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item"
-                           href="" title="">
-                            Financiero
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item"
-                           href="{{ path('app_municipality_amount_client_report') }}" title="">
-                            Tipos de clientes
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
-            {{ tableActionButton3(path('app_municipality_amount_client_report_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
-        </div>
+        {{ include('municipality/report/_header.html.twig', {'print_link':'app_municipality_amount_client_report_print'}) }}
     {% endblock %}
 
     {% block body %}
@@ -58,11 +23,10 @@
             {% endblock %}
 
             {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import tableActionButton3 %}
                 {% from 'macros/link.html.twig' import filterLink %}
 
                 {% for municipality in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
+                    <tr>
                         <td>{{ municipality.name }}</td>
                         <td>
                             <a href="{{ filterLink(municipality.province) }}"
@@ -76,7 +40,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="3">No se encontraron municipios.</td>
+                        <td colspan="4">No se encontraron municipios.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

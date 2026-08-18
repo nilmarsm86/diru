@@ -73,6 +73,39 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
         ])->fetchAllAssociative();
     }
 
+    public function findAmountProject2(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $dql = 'SELECT m.id AS id,
+       m.name AS name,
+       p.name AS province,
+       count(DISTINCT i.id) AS investments,
+       count(DISTINCT pr.id) AS projects,
+       count(DISTINCT b.id) AS buildings
+  FROM App\Entity\Municipality m
+       LEFT JOIN
+       App\Entity\Province p ON m.province = p.id
+       LEFT JOIN
+       App\Entity\Investment i ON m.id = i.municipality
+       LEFT JOIN
+       App\Entity\Project pr ON pr.investment = i.id
+       LEFT JOIN
+       App\Entity\Building b ON b.project = pr.id
+ GROUP BY m.id
+ ORDER BY m.name';
+
+        $query = $this->getEntityManager()->createQuery($dql);
+
+        //        $builder = $this->createQueryBuilder(['m', 'p'])
+        //            ->select(['m.name AS NAME', 'p.name AS province', 'count(DISTINCT i.id) AS investments', 'count(DISTINCT pr.id) AS projects', 'count(DISTINCT b.id) AS buildings'])
+        //            ->leftJoin('m.province', 'i');
+        //            ->leftJoin('m.province', 'p');
+        //        $this->addFilter($builder, $filter);
+        //        $query = $builder->orderBy('m.name', 'ASC')->getQuery();
+
+        //        dump($query->getResult(1));
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
     private function sqlAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): string
     {
         $sql = 'SELECT m.id AS id,

@@ -5,6 +5,7 @@ namespace App\Component\Live;
 use App\Component\Live\Traits\ComponentForm;
 use App\Entity\Building;
 use App\Entity\BuildingRevision;
+use App\Entity\User;
 use App\Form\BuildingRevisionType;
 use App\Repository\BuildingRevisionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,6 +69,9 @@ final class BuildingRevisionForm extends AbstractController
         if ($this->isSubmitAndValid()) {
             /** @var BuildingRevision $br */
             $br = $this->getForm()->getData();
+            $br->setType($this->building?->getState());
+            assert($this->getUser() instanceof User);
+            $br->setUser($this->getUser());
             $this->building?->addBuildingRevision($br);
 
             $buildingRevisionRepository->save($br, true);

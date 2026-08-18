@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260803181855 extends AbstractMigration
+final class Version20260818171536 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -35,10 +35,11 @@ final class Version20260803181855 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E16F61D41994904A ON building (land_id)');
         $this->addSql('CREATE INDEX IDX_E16F61D481C06096 ON building (activity_id)');
         $this->addSql('CREATE INDEX IDX_E16F61D419EB6921 ON building (client_id)');
-        $this->addSql('CREATE TABLE building_revision (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+        $this->addSql('CREATE TABLE building_revision (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , modified_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , comment CLOB NOT NULL, state VARCHAR(255) NOT NULL, CONSTRAINT FK_B6EF14974D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        , comment CLOB NOT NULL, type VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, CONSTRAINT FK_B6EF14974D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_B6EF1497A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_B6EF14974D2A7E12 ON building_revision (building_id)');
+        $this->addSql('CREATE INDEX IDX_B6EF1497A76ED395 ON building_revision (user_id)');
         $this->addSql('CREATE TABLE building_separate_concept (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, building_id INTEGER NOT NULL, separate_concept_id INTEGER NOT NULL, percent_estimated_adjust_value DOUBLE PRECISION NOT NULL, percent_estimated_to_execute_value DOUBLE PRECISION NOT NULL, percent_real_value DOUBLE PRECISION NOT NULL, CONSTRAINT FK_2D9790594D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2D979059754DF490 FOREIGN KEY (separate_concept_id) REFERENCES separate_concept (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_2D9790594D2A7E12 ON building_separate_concept (building_id)');
         $this->addSql('CREATE INDEX IDX_2D979059754DF490 ON building_separate_concept (separate_concept_id)');

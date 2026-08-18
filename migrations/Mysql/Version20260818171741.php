@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260724165227 extends AbstractMigration
+final class Version20260818171741 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,20 +20,19 @@ final class Version20260724165227 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE building (id INT AUTO_INCREMENT NOT NULL, project_id INT DEFAULT NULL, land_id INT DEFAULT NULL, activity_id INT NOT NULL, client_id INT DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason LONGTEXT DEFAULT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, is_new TINYINT(1) DEFAULT NULL, population INT NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment LONGTEXT DEFAULT NULL, has_reply TINYINT(1) DEFAULT NULL, register_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', diagnosis_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', design_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revision_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revised_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', coefficient DOUBLE PRECISION NOT NULL, construction_real_value BIGINT NOT NULL, construction_real_value_comment LONGTEXT DEFAULT NULL, objects LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', name VARCHAR(255) NOT NULL, INDEX IDX_E16F61D4166D1F9C (project_id), UNIQUE INDEX UNIQ_E16F61D41994904A (land_id), INDEX IDX_E16F61D481C06096 (activity_id), INDEX IDX_E16F61D419EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE building_revision (id INT AUTO_INCREMENT NOT NULL, building_id INT NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', modified_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', comment LONGTEXT NOT NULL, state VARCHAR(255) NOT NULL, INDEX IDX_B6EF14974D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE building (id INT AUTO_INCREMENT NOT NULL, project_id INT DEFAULT NULL, land_id INT DEFAULT NULL, activity_id INT NOT NULL, client_id INT DEFAULT NULL, state VARCHAR(255) NOT NULL, stop_reason LONGTEXT DEFAULT NULL, estimated_value_equipment BIGINT NOT NULL, estimated_value_other BIGINT NOT NULL, approved_value_construction BIGINT NOT NULL, approved_value_equipment BIGINT NOT NULL, approved_value_other BIGINT NOT NULL, is_new TINYINT(1) DEFAULT NULL, population INT NOT NULL, construction_assembly BIGINT NOT NULL, construction_assembly_comment LONGTEXT DEFAULT NULL, has_reply TINYINT(1) DEFAULT NULL, register_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', diagnosis_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', design_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revision_draftsman_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revised_draftsman_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revision_investmen_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revised_investmen_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revision_director_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', revised_director_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', coefficient DOUBLE PRECISION NOT NULL, construction_real_value BIGINT NOT NULL, construction_real_value_comment LONGTEXT DEFAULT NULL, objects LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', name VARCHAR(255) NOT NULL, INDEX IDX_E16F61D4166D1F9C (project_id), UNIQUE INDEX UNIQ_E16F61D41994904A (land_id), INDEX IDX_E16F61D481C06096 (activity_id), INDEX IDX_E16F61D419EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE building_revision (id INT AUTO_INCREMENT NOT NULL, building_id INT NOT NULL, user_id INT NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', modified_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', comment LONGTEXT NOT NULL, type VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, INDEX IDX_B6EF14974D2A7E12 (building_id), INDEX IDX_B6EF1497A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE building_separate_concept (id INT AUTO_INCREMENT NOT NULL, building_id INT NOT NULL, separate_concept_id INT NOT NULL, percent_estimated_adjust_value DOUBLE PRECISION NOT NULL, percent_estimated_to_execute_value DOUBLE PRECISION NOT NULL, percent_real_value DOUBLE PRECISION NOT NULL, INDEX IDX_2D9790594D2A7E12 (building_id), INDEX IDX_2D979059754DF490 (separate_concept_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE city (id INT AUTO_INCREMENT NOT NULL, country_id INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_2D5B0234F92F3E70 (country_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, representative_id INT DEFAULT NULL, municipality_id INT NOT NULL, address LONGTEXT NOT NULL, phone VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, discr VARCHAR(255) NOT NULL, INDEX IDX_C7440455FC3FF006 (representative_id), INDEX IDX_C7440455AE6F181C (municipality_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE constructive_action (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE constructive_action (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(255) NOT NULL, comment LONGTEXT DEFAULT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE constructive_system (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX constructive_system_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE constructor (id INT AUTO_INCREMENT NOT NULL, municipality_id INT NOT NULL, code VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, logo VARCHAR(255) DEFAULT NULL, address LONGTEXT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_7DD91A39AE6F181C (municipality_id), UNIQUE INDEX constructor_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE constructor_building (id INT AUTO_INCREMENT NOT NULL, constructor_id INT NOT NULL, building_id INT NOT NULL, started_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', finished_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_29A127572D98BF9 (constructor_id), INDEX IDX_29A127574D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE constructor_corporate_entity_building (id INT AUTO_INCREMENT NOT NULL, corporate_entity_id INT NOT NULL, building_id INT NOT NULL, started_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', finished_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_E1981A658BA692E5 (corporate_entity_id), INDEX IDX_E1981A654D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE contract (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, year INT NOT NULL, UNIQUE INDEX contract_code (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE corporate_entity (id INT AUTO_INCREMENT NOT NULL, organism_id INT NOT NULL, municipality_id INT NOT NULL, code VARCHAR(255) NOT NULL, nit VARCHAR(255) DEFAULT NULL, type VARCHAR(255) NOT NULL, address LONGTEXT NOT NULL, logo VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_C6EFC8A464180A36 (organism_id), INDEX IDX_C6EFC8A4AE6F181C (municipality_id), UNIQUE INDEX corporate_entity_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX country_name (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE currency (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(3) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE draftman_corporate_entity_building (id INT AUTO_INCREMENT NOT NULL, corporate_entity_id INT NOT NULL, building_id INT NOT NULL, started_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', finished_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_C2480FE8BA692E5 (corporate_entity_id), INDEX IDX_C2480FE4D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE draftsman (id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE draftsman_building (id INT AUTO_INCREMENT NOT NULL, draftsman_id INT NOT NULL, building_id INT NOT NULL, started_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', finished_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_F9CF0F7B40C866FD (draftsman_id), INDEX IDX_F9CF0F7B4D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE enterprise_client (id INT NOT NULL, corporate_entity_id INT NOT NULL, INDEX IDX_54598E4C8BA692E5 (corporate_entity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -80,18 +79,18 @@ final class Version20260724165227 extends AbstractMigration
         $this->addSql('ALTER TABLE building ADD CONSTRAINT FK_E16F61D481C06096 FOREIGN KEY (activity_id) REFERENCES constructive_action (id)');
         $this->addSql('ALTER TABLE building ADD CONSTRAINT FK_E16F61D419EB6921 FOREIGN KEY (client_id) REFERENCES client (id)');
         $this->addSql('ALTER TABLE building_revision ADD CONSTRAINT FK_B6EF14974D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
+        $this->addSql('ALTER TABLE building_revision ADD CONSTRAINT FK_B6EF1497A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE building_separate_concept ADD CONSTRAINT FK_2D9790594D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
         $this->addSql('ALTER TABLE building_separate_concept ADD CONSTRAINT FK_2D979059754DF490 FOREIGN KEY (separate_concept_id) REFERENCES separate_concept (id)');
         $this->addSql('ALTER TABLE city ADD CONSTRAINT FK_2D5B0234F92F3E70 FOREIGN KEY (country_id) REFERENCES country (id)');
         $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C7440455FC3FF006 FOREIGN KEY (representative_id) REFERENCES representative (id)');
         $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C7440455AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id)');
-        $this->addSql('ALTER TABLE constructor ADD CONSTRAINT FK_7DD91A39AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id)');
-        $this->addSql('ALTER TABLE constructor_building ADD CONSTRAINT FK_29A127572D98BF9 FOREIGN KEY (constructor_id) REFERENCES constructor (id)');
-        $this->addSql('ALTER TABLE constructor_building ADD CONSTRAINT FK_29A127574D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
         $this->addSql('ALTER TABLE constructor_corporate_entity_building ADD CONSTRAINT FK_E1981A658BA692E5 FOREIGN KEY (corporate_entity_id) REFERENCES corporate_entity (id)');
         $this->addSql('ALTER TABLE constructor_corporate_entity_building ADD CONSTRAINT FK_E1981A654D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
         $this->addSql('ALTER TABLE corporate_entity ADD CONSTRAINT FK_C6EFC8A464180A36 FOREIGN KEY (organism_id) REFERENCES organism (id)');
         $this->addSql('ALTER TABLE corporate_entity ADD CONSTRAINT FK_C6EFC8A4AE6F181C FOREIGN KEY (municipality_id) REFERENCES municipality (id)');
+        $this->addSql('ALTER TABLE draftman_corporate_entity_building ADD CONSTRAINT FK_C2480FE8BA692E5 FOREIGN KEY (corporate_entity_id) REFERENCES corporate_entity (id)');
+        $this->addSql('ALTER TABLE draftman_corporate_entity_building ADD CONSTRAINT FK_C2480FE4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
         $this->addSql('ALTER TABLE draftsman ADD CONSTRAINT FK_19A4FE4ABF396750 FOREIGN KEY (id) REFERENCES person (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE draftsman_building ADD CONSTRAINT FK_F9CF0F7B40C866FD FOREIGN KEY (draftsman_id) REFERENCES draftsman (id)');
         $this->addSql('ALTER TABLE draftsman_building ADD CONSTRAINT FK_F9CF0F7B4D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
@@ -156,18 +155,18 @@ final class Version20260724165227 extends AbstractMigration
         $this->addSql('ALTER TABLE building DROP FOREIGN KEY FK_E16F61D481C06096');
         $this->addSql('ALTER TABLE building DROP FOREIGN KEY FK_E16F61D419EB6921');
         $this->addSql('ALTER TABLE building_revision DROP FOREIGN KEY FK_B6EF14974D2A7E12');
+        $this->addSql('ALTER TABLE building_revision DROP FOREIGN KEY FK_B6EF1497A76ED395');
         $this->addSql('ALTER TABLE building_separate_concept DROP FOREIGN KEY FK_2D9790594D2A7E12');
         $this->addSql('ALTER TABLE building_separate_concept DROP FOREIGN KEY FK_2D979059754DF490');
         $this->addSql('ALTER TABLE city DROP FOREIGN KEY FK_2D5B0234F92F3E70');
         $this->addSql('ALTER TABLE client DROP FOREIGN KEY FK_C7440455FC3FF006');
         $this->addSql('ALTER TABLE client DROP FOREIGN KEY FK_C7440455AE6F181C');
-        $this->addSql('ALTER TABLE constructor DROP FOREIGN KEY FK_7DD91A39AE6F181C');
-        $this->addSql('ALTER TABLE constructor_building DROP FOREIGN KEY FK_29A127572D98BF9');
-        $this->addSql('ALTER TABLE constructor_building DROP FOREIGN KEY FK_29A127574D2A7E12');
         $this->addSql('ALTER TABLE constructor_corporate_entity_building DROP FOREIGN KEY FK_E1981A658BA692E5');
         $this->addSql('ALTER TABLE constructor_corporate_entity_building DROP FOREIGN KEY FK_E1981A654D2A7E12');
         $this->addSql('ALTER TABLE corporate_entity DROP FOREIGN KEY FK_C6EFC8A464180A36');
         $this->addSql('ALTER TABLE corporate_entity DROP FOREIGN KEY FK_C6EFC8A4AE6F181C');
+        $this->addSql('ALTER TABLE draftman_corporate_entity_building DROP FOREIGN KEY FK_C2480FE8BA692E5');
+        $this->addSql('ALTER TABLE draftman_corporate_entity_building DROP FOREIGN KEY FK_C2480FE4D2A7E12');
         $this->addSql('ALTER TABLE draftsman DROP FOREIGN KEY FK_19A4FE4ABF396750');
         $this->addSql('ALTER TABLE draftsman_building DROP FOREIGN KEY FK_F9CF0F7B40C866FD');
         $this->addSql('ALTER TABLE draftsman_building DROP FOREIGN KEY FK_F9CF0F7B4D2A7E12');
@@ -229,13 +228,12 @@ final class Version20260724165227 extends AbstractMigration
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE constructive_action');
         $this->addSql('DROP TABLE constructive_system');
-        $this->addSql('DROP TABLE constructor');
-        $this->addSql('DROP TABLE constructor_building');
         $this->addSql('DROP TABLE constructor_corporate_entity_building');
         $this->addSql('DROP TABLE contract');
         $this->addSql('DROP TABLE corporate_entity');
         $this->addSql('DROP TABLE country');
         $this->addSql('DROP TABLE currency');
+        $this->addSql('DROP TABLE draftman_corporate_entity_building');
         $this->addSql('DROP TABLE draftsman');
         $this->addSql('DROP TABLE draftsman_building');
         $this->addSql('DROP TABLE enterprise_client');

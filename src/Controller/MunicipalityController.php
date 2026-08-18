@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
+use App\Entity\Investment;
 use App\Entity\Municipality;
 use App\Entity\Role;
+use App\Repository\InvestmentRepository;
 use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
@@ -110,9 +112,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
-    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
+    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, InvestmentRepository $investmentRepository): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, $investmentRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -129,9 +131,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report_print', name: 'app_municipality_amount_project_report_print', methods: ['GET'])]
-    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, InvestmentRepository $investmentRepository): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, true);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, $investmentRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -146,8 +148,13 @@ final class MunicipalityController extends AbstractController
      *
      * @throws Exception
      */
-    private function amountProjectsAndBuildings(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
-    {
+    private function amountProjectsAndBuildings(
+        Request $request,
+        RouterInterface $router,
+        MunicipalityRepository $municipalityRepository,
+        InvestmentRepository $investmentRepository,
+        bool $pdf = false,
+    ): RedirectResponse|array {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
@@ -158,9 +165,28 @@ final class MunicipalityController extends AbstractController
         }
 
         $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
+        $newData = [];
+        /** @var array<int, string, string, int, int, int, int> $item */
+        foreach ($data as $item) {
+            $price = 0;
+            /** @var Investment $investment */
+            $investment = $investmentRepository->findOneBy(['municipality' => $item['id']]);
+            if (null !== $investment) {
+                $projects = $investment->getProjects();
+
+                foreach ($projects as $project) {
+                    $price += $project->getPrice();
+                }
+            }
+
+            $item['price'] = $price;
+            $newData[] = $item;
+        }
+        dump($newData);
         $countData = count($municipalityRepository->findAmountProject($filter, null, null));
 
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $countData);
+        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, $countData);
+        //        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }

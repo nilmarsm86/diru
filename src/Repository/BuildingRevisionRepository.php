@@ -32,7 +32,9 @@ class BuildingRevisionRepository extends ServiceEntityRepository implements Filt
         $builder = $this->createQueryBuilder('br')->select(['br', 'b'])
             ->leftJoin('br.building', 'b')
             ->where('b.id = :building')
-            ->setParameter('building', $building);
+            ->setParameter('building', $building)
+            ->andWhere('br.state = :state')
+            ->setParameter('state', \App\Entity\Enums\State::Active->value);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('br.createdAt', 'ASC')->getQuery();
 

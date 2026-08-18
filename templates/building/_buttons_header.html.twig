@@ -107,7 +107,7 @@
                                     url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}),
                                     id: 'modal-load',
                                     placeholder: 'Cargando...',
-                                    title: 'Revisiones realizadas',
+                                    title: (building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftsman')) ? 'Revisiones realizadas por el proyectista' : 'Revisiones realizadas',
                                 }) }}
                                 {{ stimulusTarget('modal-content-loader', 'button') }}
                             >

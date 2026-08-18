@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\BuildingState;
 use App\Entity\Traits\StateTrait;
 use App\Repository\BuildingRevisionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRevisionRepository::class)]
@@ -34,7 +36,12 @@ class BuildingRevision
     #[Assert\Valid]
     private ?Building $building = null;
 
-    // TODO: que usuario realizo la revision
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\Column(enumType: BuildingState::class)]
+    private ?BuildingState $type = null;
 
     public function __construct()
     {
@@ -99,5 +106,29 @@ class BuildingRevision
     public function onModified(): void
     {
         $this->modifiedAt = new \DateTimeImmutable('now');
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getType(): ?BuildingState
+    {
+        return $this->type;
+    }
+
+    public function setType(?BuildingState $type): static
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

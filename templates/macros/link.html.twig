@@ -1,5 +1,5 @@
-{% macro activeLink(route) %}
-    {% if app.request.attributes.get('_route') == route %}active{% endif %}
+{% macro activeLink(link) %}
+    {% if link in app.request.attributes.get('_route') %}active{% endif %}
 {% endmacro %}
 
 {% macro filterLink(filter) %}

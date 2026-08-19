@@ -22,11 +22,11 @@
                         title: 'Ubicaciones',
                         target: 'locations-collapse',
                         items: [
-                            {link: 'app_country_index', icon: 'icon-park-outline:international', label: 'Paises'},
-                            {link: 'app_city_index', icon: 'icon-park:local', label: 'Ciudades'},
-                            {link: 'app_province_index', icon: 'ic:outline-place', label: 'Provincias'},
-                            {link: 'app_municipality_index', icon: 'stash:pin-place', label: 'Municipios'},
-                            {link: 'app_location_zone_index', icon: 'bi:pin-map', label: 'Zona de ubicación'},
+                            {link: 'app_country_index', icon: 'icon-park-outline:international', label: 'Paises', base:null},
+                            {link: 'app_city_index', icon: 'icon-park:local', label: 'Ciudades', base:null},
+                            {link: 'app_province_index', icon: 'ic:outline-place', label: 'Provincias', base:null},
+                            {link: 'app_municipality_index', icon: 'stash:pin-place', label: 'Municipios', base:'app_municipality_'},
+                            {link: 'app_location_zone_index', icon: 'bi:pin-map', label: 'Zona de ubicación', base:null},
 
                         ]
                     }) }}
@@ -35,8 +35,8 @@
                     title: 'Organizaciones',
                     target: 'places-collapse',
                     items: [
-                        {link: 'app_organism_index', icon: 'bi:list-check', label: 'Organismos'},
-                        {link: 'app_corporate_entity_index', icon: 'bi:building', label: 'Entidades'},
+                        {link: 'app_organism_index', icon: 'bi:list-check', label: 'Organismos', base:null},
+                        {link: 'app_corporate_entity_index', icon: 'bi:building', label: 'Entidades', base:null},
                     ]
                 }) }}
                 {#                {link: 'app_constructor_index', icon: 'uil:constructor', label: 'Constructoras'}, #}
@@ -44,56 +44,56 @@
                     title: 'Subsistemas',
                     target: 'subsystem-collapse',
                     items: [
-                        {link: 'app_subsystem_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos'},
-                        {link: 'app_subsystem_sub_type_index', icon: 'lets-icons:paper', label: 'Subtipos'},
+                        {link: 'app_subsystem_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos', base:null},
+                        {link: 'app_subsystem_sub_type_index', icon: 'lets-icons:paper', label: 'Subtipos', base:null},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Regulaciones urbanas',
                     target: 'regulation-collapse',
                     items: [
-                        {link: 'app_urban_regulation_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos de Reg.'},
-                        {link: 'app_urban_regulation_index', icon: 'lets-icons:paper', label: 'Reg. urbanas'},
+                        {link: 'app_urban_regulation_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos de Reg.', base:null},
+                        {link: 'app_urban_regulation_index', icon: 'lets-icons:paper', label: 'Reg. urbanas', base:null},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Edificación',
                     target: 'edification-collapse',
                     items: [
-                        {link: 'app_network_connection_index', icon: 'icon-park-outline:rectangular-circular-connection', label: 'Conexiones de red'},
-                        {link: 'app_constructive_action_index', icon: 'mdi:construction-outline', label: 'Acc. Constructivas'},
-                        {link: 'app_constructive_system_index', icon: 'roentgen:building-construction', label: 'Sistema Constructivo'},
+                        {link: 'app_network_connection_index', icon: 'icon-park-outline:rectangular-circular-connection', label: 'Conexiones de red', base:null},
+                        {link: 'app_constructive_action_index', icon: 'mdi:construction-outline', label: 'Acc. Constructivas', base:null},
+                        {link: 'app_constructive_system_index', icon: 'roentgen:building-construction', label: 'Sistema Constructivo', base:null},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Otros',
                     target: 'other-collapse',
                     items: [
-                        {link: 'app_currency_index', icon: 'streamline-ultimate:begging-hand-coin-2-bold', label: 'Monedas'},
-                        {link: 'app_measurement_unit_index', icon: 'formkit:unit', label: 'Unidad de medida'},
-                        {link: 'app_separate_concept_index', icon: 'arcticons:breakdowntimer', label: 'Partida de presupuesto'},
+                        {link: 'app_currency_index', icon: 'streamline-ultimate:begging-hand-coin-2-bold', label: 'Monedas', base:null},
+                        {link: 'app_measurement_unit_index', icon: 'formkit:unit', label: 'Unidad de medida', base:null},
+                        {link: 'app_separate_concept_index', icon: 'arcticons:breakdowntimer', label: 'Partida de presupuesto', base:null},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Históricos',
                     target: 'history-collapse',
                     items: [
-                        {link: 'app_historical_ite_subsystem', icon: 'hugeicons:transaction-history', label: 'ITE Subsistema'},
-                        {link: 'app_historical_ite_building', icon: 'hugeicons:transaction-history', label: 'ITE Obra'},
-                        {link: 'app_historical_ite_building_ajust', icon: 'hugeicons:transaction-history', label: 'ITE Obra ajuste'},
-                        {link: 'app_historical_ite_building_detail', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. det'},
-                        {link: 'app_historical_ite_building_real', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. real'},
+                        {link: 'app_historical_ite_subsystem', icon: 'hugeicons:transaction-history', label: 'ITE Subsistema', base:null},
+                        {link: 'app_historical_ite_building', icon: 'hugeicons:transaction-history', label: 'ITE Obra', base:null},
+                        {link: 'app_historical_ite_building_ajust', icon: 'hugeicons:transaction-history', label: 'ITE Obra ajuste', base:null},
+                        {link: 'app_historical_ite_building_detail', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. det', base:null},
+                        {link: 'app_historical_ite_building_real', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. real', base:null},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Referencias ITE',
                     target: 'reference-collapse',
                     items: [
-                        {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar'},
-                        {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales'},
-                        {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales'},
-                        {link: 'app_ite_source_index', icon: 'fluent-mdl2:source', label: 'Fuentes'},
-                        {link: 'app_ite_project_type_index', icon: 'oi:project', label: 'Tipo de proyecto'},
+                        {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar', base:null},
+                        {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales', base:null},
+                        {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales', base:null},
+                        {link: 'app_ite_source_index', icon: 'fluent-mdl2:source', label: 'Fuentes', base:null},
+                        {link: 'app_ite_project_type_index', icon: 'oi:project', label: 'Tipo de proyecto', base:null},
                     ]
                 }) }}
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}

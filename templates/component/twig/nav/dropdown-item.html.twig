@@ -5,7 +5,7 @@
 {% endif %}
 
 <li>
-    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink(link) }}"
+    <a class="dropdown-item d-flex gap-2 align-items-center {{ activeLink(base) }}"
        href="{% if link is not empty %}{{ path(link) }}{% endif %}"
     >
         {% if icon is not null %}

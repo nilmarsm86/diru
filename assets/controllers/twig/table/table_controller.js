@@ -5,6 +5,7 @@ import {BLUR as FILTER_BLUR} from "./filter_controller.js";
 import {NAVIGATE} from "./navigation_controller.js";
 import {SHOW as BACKDROP_SHOW, HIDE as BACKDROP_HIDE} from "../backdrop/backdrop_controller.js";
 import {SUCCESS as DELETE_SUCCESS, FAILURE as DELETE_FAILURE, START as DELETE_START} from "../../delete-form-container_controller.js";
+import {FILTER as FILTER_COLUMN} from "./column_controller.js";
 
 export const DETAIL = "App\\Component\\Twig\\Table\\Table_detail";
 export const EDIT = "App\\Component\\Twig\\Table\\Table_edit";
@@ -23,6 +24,7 @@ export default class extends AbstractController {
         this.addListener(this.element, AMOUNT_CHANGE, this.dataChange.bind(this), {}, 'twig/table/amount');
         this.addListener(this.element, FILTER_BLUR, this.dataChange.bind(this), {}, 'twig/table/filter');
         this.addListener(this.element, NAVIGATE, this.dataChange.bind(this), {}, 'twig/table/navigation');
+        this.addListener(this.element, FILTER_COLUMN, this.dataChange.bind(this), {}, 'twig/table/column');
 
         this.element.addEventListener(DELETE_START, (event) => {
             this.backdrop(this.backdropTarget, BACKDROP_SHOW);
@@ -66,6 +68,7 @@ export default class extends AbstractController {
         //     event.detail.url.searchParams.set('page', '1');
         // }
         // this.backdrop(this.backdropTarget, BACKDROP_SHOW);
+        console.log('AKI');
         history.pushState({}, '', event.detail.url);
         super.dispatch(REFRESH, {detail:{url:event.detail.url}});
     }

@@ -118,7 +118,7 @@ final class MunicipalityController extends AbstractController
         if ($response instanceof RedirectResponse) {
             return $response;
         }
-        [$filter, $paginator] = $response;
+        [$filter, $paginator, $column] = $response;
 
         $template = ($request->isXmlHttpRequest()) ? '_amount_project.html.twig' : 'report.html.twig';
 
@@ -127,6 +127,7 @@ final class MunicipalityController extends AbstractController
             'paginator' => $paginator,
             'title' => 'Cantidad de proyectos y obras por municipio',
             'list' => '_amount_project',
+            'column' => $column,
         ]);
     }
 
@@ -156,6 +157,8 @@ final class MunicipalityController extends AbstractController
         $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
+        $column = $request->query->get('column', '');
+
         if (true === $pdf) {
             $amountPerPage = null;
             $pageNumber = null;
@@ -167,7 +170,7 @@ final class MunicipalityController extends AbstractController
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
 
-        return [$filter, $paginator];
+        return [$filter, $paginator, $column];
     }
 
     /**

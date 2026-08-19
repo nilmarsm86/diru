@@ -15,4 +15,9 @@ class FormatTwigExtensionRuntime implements RuntimeExtensionInterface
 
         return number_format((float) $price / 100, 2).(!is_null($currency) ? ' '.$currency : '');
     }
+
+    public function columns(string $data): mixed
+    {
+        return json_decode(urldecode($data), true);
+    }
 }

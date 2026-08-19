@@ -19,7 +19,16 @@
             {% block message %}{% endblock %}
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3 text-md-end">
+            {{ component('Table:Column', {
+                path:'app_municipality_amount_project_report',
+                label:'Columnas',
+                queryName: 'column',
+                options:['Nombre', 'Provincia', 'Proyectos', 'Obras']
+            }) }}
+        </div>
+
+        <div class="col-md-3">
             {% if paginator is not null and filter %}
                 {% block filter %}
                     {{ component('Table:Filter', {

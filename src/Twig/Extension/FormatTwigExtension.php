@@ -23,6 +23,7 @@ class FormatTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('money', [FormatTwigExtensionRuntime::class, 'money']),
+            new TwigFunction('columns', [FormatTwigExtensionRuntime::class, 'columns']),
         ];
     }
 }

@@ -1,6 +1,5 @@
 {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
-<div>
     <div class="dropdown d-inline-block">
         <button type="button"
                 class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -33,4 +32,3 @@
 
     {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
     {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
-</div>

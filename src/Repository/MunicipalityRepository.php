@@ -6,7 +6,6 @@ use App\Entity\Municipality;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -57,28 +56,10 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
     }
 
     /**
-     * @return array<mixed>
-     *
-     * @throws Exception
-     */
-    public function findAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): array
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = $this->sqlAmountProject($filter, $amountPerPage, $page);
-
-        return $conn->executeQuery($sql, [
-            'page' => (((int) $page - 1) * (int) $amountPerPage),
-            'amount' => $amountPerPage,
-            'filter' => $filter,
-        ])->fetchAllAssociative();
-    }
-
-    /**
      * @return Paginator<mixed>
      */
-    public function findAmountProject2(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    public function findAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
-        $parameters = [];
         $dql = 'SELECT m.id AS id,
        m.name AS name,
        p.name AS province,
@@ -95,6 +76,35 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
        LEFT JOIN
        App\Entity\Building b ON b.project = pr.id';
 
+        return $this->pagination($dql, $filter, $page, $amountPerPage);
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findAmountClients(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $dql = 'SELECT m.id AS id,
+       m.name AS name,
+       p.name AS province,
+       count(DISTINCT ic.id) AS individual,
+       count(DISTINCT ec.id) AS enterprise
+  FROM App\Entity\Municipality m
+       LEFT JOIN
+       App\Entity\Province p ON m.province = p.id
+       LEFT JOIN
+       App\Entity\Client c ON m.id = c.municipality
+       LEFT JOIN
+       App\Entity\IndividualClient ic ON c.id = ic.id
+       LEFT JOIN
+       App\Entity\EnterpriseClient ec ON c.id = ec.id';
+
+        return $this->pagination($dql, $filter, $page, $amountPerPage);
+    }
+
+    public function pagination(string $dql, string $filter, ?int $page, ?int $amountPerPage): Paginator
+    {
+        $parameters = [];
         if ('' !== $filter) {
             $dql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
             $parameters['filter'] = '%'.$filter.'%';
@@ -106,74 +116,5 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
         $query->setParameters($parameters);
 
         return $this->paginate($query, $page, $amountPerPage);
-    }
-
-    private function sqlAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): string
-    {
-        $sql = 'SELECT m.id AS id,
-       m.name AS name,
-       p.name as province
-  FROM municipality m
-       LEFT JOIN
-       province p ON m.province_id = p.id';
-
-        if ('' !== $filter) {
-            $sql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
-        }
-
-        $sql .= ' ORDER BY m.name';
-
-        if (null !== $amountPerPage && null !== $page) {
-            $sql .= ' LIMIT :page,:amount';
-        }
-
-        return $sql;
-    }
-
-    /**
-     * @return array<mixed>
-     *
-     * @throws Exception
-     */
-    public function findAmountClients(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): array
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = $this->sqlAmountClients($filter, $amountPerPage, $page);
-
-        return $conn->executeQuery($sql, [
-            'page' => (((int) $page - 1) * (int) $amountPerPage),
-            'amount' => $amountPerPage,
-            'filter' => $filter,
-        ])->fetchAllAssociative();
-    }
-
-    private function sqlAmountClients(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): string
-    {
-        $sql = 'SELECT m.id AS id,
-       m.name AS name,
-       p.name AS province,
-       count(DISTINCT ic.id) AS individual,
-       count(DISTINCT ec.id) AS enterprise
-  FROM municipality m
-       LEFT JOIN
-       province p ON m.province_id = p.id
-       LEFT JOIN
-       client c ON m.id = c.municipality_id
-       LEFT JOIN
-       individual_client ic ON c.id = ic.id
-       LEFT JOIN
-       enterprise_client ec ON c.id = ec.id';
-
-        if ('' !== $filter) {
-            $sql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
-        }
-
-        $sql .= ' GROUP BY m.id ORDER BY m.name';
-
-        if (null !== $amountPerPage && null !== $page) {
-            $sql .= ' LIMIT :page,:amount';
-        }
-
-        return $sql;
     }
 }

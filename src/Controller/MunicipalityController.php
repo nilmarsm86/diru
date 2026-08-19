@@ -100,7 +100,7 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/print', name: 'app_municipality_print', methods: ['GET'])]
-    public function print(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function print(Request $request, MunicipalityRepository $municipalityRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
 
@@ -112,9 +112,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
-    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, InvestmentRepository $investmentRepository): Response
+    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, $investmentRepository);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -131,9 +131,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report_print', name: 'app_municipality_amount_project_report_print', methods: ['GET'])]
-    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, InvestmentRepository $investmentRepository): Response
+    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, $investmentRepository, true);
+        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -145,14 +145,11 @@ final class MunicipalityController extends AbstractController
 
     /**
      * @return RedirectResponse|array<mixed>
-     *
-     * @throws Exception
      */
     private function amountProjectsAndBuildings(
         Request $request,
         RouterInterface $router,
         MunicipalityRepository $municipalityRepository,
-        InvestmentRepository $investmentRepository,
         bool $pdf = false,
     ): RedirectResponse|array {
         $filter = $request->query->get('filter', '');
@@ -164,7 +161,7 @@ final class MunicipalityController extends AbstractController
             $pageNumber = null;
         }
 
-        $data = $municipalityRepository->findAmountProject2($filter, $amountPerPage, $pageNumber);
+        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
@@ -173,6 +170,9 @@ final class MunicipalityController extends AbstractController
         return [$filter, $paginator];
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/amount_client_report', name: 'app_municipality_amount_client_report', methods: ['GET'])]
     public function amountClientReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
     {
@@ -192,6 +192,9 @@ final class MunicipalityController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/amount_client_report_print', name: 'app_municipality_amount_client_report_print', methods: ['GET'])]
     public function amountClientReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
@@ -222,9 +225,8 @@ final class MunicipalityController extends AbstractController
         }
 
         $data = $municipalityRepository->findAmountClients($filter, $amountPerPage, $pageNumber);
-        $countData = count($municipalityRepository->findAmountClients($filter, null, null));
 
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber, $countData);
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
@@ -232,6 +234,9 @@ final class MunicipalityController extends AbstractController
         return [$filter, $paginator];
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/amount_finance_report', name: 'app_municipality_amount_finance_report', methods: ['GET'])]
     public function amountFinanceReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, InvestmentRepository $investmentRepository): Response
     {
@@ -248,10 +253,13 @@ final class MunicipalityController extends AbstractController
             'paginator' => $paginator,
             'title' => 'Finanzas de obras por municipio',
             'list' => '_amount_finance',
-            'currency' => 'CUP',
+            'currency' => 'CUP', // TODO: poner la moneda del sistema
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/amount_finance_report_print', name: 'app_municipality_amount_finance_report_print', methods: ['GET'])]
     public function amountFinanceReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, InvestmentRepository $investmentRepository): Response
     {
@@ -286,10 +294,10 @@ final class MunicipalityController extends AbstractController
             $pageNumber = null;
         }
 
-        $data = $municipalityRepository->findAmountProject2($filter, $amountPerPage, $pageNumber);
+        $data = $municipalityRepository->findMunicipalities($filter, $amountPerPage, $pageNumber);
         $newData = $this->addFinance($investmentRepository, $data);
 
-        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, count($municipalityRepository->findAmountProject($filter, null, null)));
+        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, count($municipalityRepository->findMunicipalities($filter, null, null)));
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }
@@ -305,15 +313,20 @@ final class MunicipalityController extends AbstractController
     public function addFinance(InvestmentRepository $investmentRepository, \Doctrine\ORM\Tools\Pagination\Paginator $data): array
     {
         $newData = [];
-        /** @var array<mixed> $item */
-        foreach ($data as $item) {
+        /* @var Municipality $item */
+        foreach ($data as $municipality) {
+            $item = [];
+            $item['id'] = $municipality->getId();
+            $item['name'] = $municipality->getName();
+            $item['province'] = $municipality->getProvince()->getName();
+
             $approvedValue = 0;
             $estimatedValue = 0;
             $estimatedAdjustValue = 0;
             $constructionAssembly = 0;
             $constructionRealValue = 0;
             /** @var Investment $investment */
-            $investments = $investmentRepository->findBy(['municipality' => $item['id']]);
+            $investments = $investmentRepository->findBy(['municipality' => $municipality->getId()]);
             foreach ($investments as $investment) {
                 $projects = $investment->getProjects();
                 foreach ($projects as $project) {

@@ -7,7 +7,6 @@
     {% block header %}
         <div>
             {{ component('Card:Refresh', {
-                path: path('app_municipality_amount_project_report'),
                 queryNames:['column', 'amount', 'filter', 'page']
             }) }}
 
@@ -18,14 +17,15 @@
     {% block body %}
         {% component 'Table:Table' with {
             paginator: paginator,
+            columns: [null, null, 'Proyectos', 'Obras']
         } %}
 
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
                     <th>Provincia {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
-                    <th>Proyectos {{ ux_icon('fa:check-square-o', {class:'bi'}) }}</th>
-                    <th>Obras {{ ux_icon('fa:check-square-o', {class:'bi'}) }}</th>
+                    <th>Proyectos</th>
+                    <th>Obras</th>
                 </tr>
             {% endblock %}
 

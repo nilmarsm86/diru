@@ -17,6 +17,8 @@ final class Table
     public bool $filter = true;
     public bool $showPage = true;
     public bool $navigation = true;
+    /** @var array<object> */
+    public array $columns = [];
 
     /**
      * @param Paginator|array<mixed>|null $paginator

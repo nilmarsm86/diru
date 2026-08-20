@@ -18,6 +18,10 @@ export default class extends AbstractController {
             link.addEventListener('click', (event) => this.filter(event, FILTER, this.queryNameValue, link.dataset.value));
         });
 
+        this.processColumn();
+    }
+
+    processColumn() {
         let currentPath = new URL(document.location);
         if (currentPath.searchParams.has(this.queryNameValue)) {
             let columns = currentPath.searchParams.get(this.queryNameValue);
@@ -29,13 +33,18 @@ export default class extends AbstractController {
                 columns.push(newValue);
             }
             let table = document.querySelector('table.table-sm')
-            let trs = table.querySelector('thead').children;
-            for (let i = 0; i < trs.length; i++) {
-                let ths = trs[i].children;
-                for (let j = 0; j < ths.length; j++) {
-                    if (columns.indexOf(String(j)) !== -1) {
-                        ths[j].style.display = 'none';
-                    }
+            this.showHide(table, 'thead', columns);
+            this.showHide(table, 'tbody', columns);
+        }
+    }
+
+    showHide(table, type, columns){
+        let trs = table.querySelector(type).children;
+        for (let i = 0; i < trs.length; i++) {
+            let cell = trs[i].children;
+            for (let j = 0; j < cell.length; j++) {
+                if (columns.indexOf(String(j)) !== -1) {
+                    cell[j].style.display = 'none';
                 }
             }
         }
@@ -54,23 +63,33 @@ export default class extends AbstractController {
 
         let currentPath = new URL(document.location);
         if (currentPath.searchParams.has(queryName)) {
-            let value = currentPath.searchParams.get(queryName);
+            var value = currentPath.searchParams.get(queryName);
             value = JSON.parse(decodeURIComponent(decodeURIComponent(value)));
             if (value instanceof Array) {
                 if (value.indexOf(data) === -1) {
                     value.push(data);
-                    value = JSON.stringify(value);
-                    currentPath.searchParams.set(queryName, encodeURIComponent(value));
+                }else{
+                    let position = value.indexOf(data);
+                    value.splice(position,1);
                 }
             } else {
-                let newValue = [];
-                newValue.push(value);
-                newValue.push(data);
-                value = JSON.stringify(value);
-                currentPath.searchParams.set(queryName, encodeURIComponent(value));
+
+                if (value.indexOf(data) === -1) {
+                    let newValue = [];
+                    newValue.push(value);
+                    newValue.push(data);
+                }else{
+                    let position = value.indexOf(data);
+                    value.splice(position,1);
+                }
             }
         } else {
-            let value = [data];
+            value = [data];
+        }
+
+        if(value.length === 0){
+            currentPath.searchParams.delete(queryName);
+        }else{
             value = JSON.stringify(value);
             currentPath.searchParams.set(queryName, encodeURIComponent(value));
         }

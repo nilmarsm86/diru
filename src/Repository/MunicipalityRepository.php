@@ -102,6 +102,9 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
         return $this->pagination($dql, $filter, $page, $amountPerPage);
     }
 
+    /**
+     * @return Paginator<mixed>
+     */
     public function pagination(string $dql, string $filter, ?int $page, ?int $amountPerPage): Paginator
     {
         $parameters = [];

@@ -22,6 +22,8 @@ class TableListTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('show_reload', [TableListTwigExtensionRuntime::class, 'showReload']),
+            new TwigFunction('th', [TableListTwigExtensionRuntime::class, 'th'], ['is_safe' => ['html']]),
+            new TwigFunction('td', [TableListTwigExtensionRuntime::class, 'td'], ['is_safe' => ['html']]),
         ];
     }
 }

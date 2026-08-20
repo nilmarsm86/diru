@@ -1,27 +1,23 @@
 <div class="dropdown d-inline-block" {{ stimulusController('twig/table/column', {'queryName':queryName}) }}>
     <button type="button"
-            class="btn
-            {% if app.request.query.get((queryName)) != '' %}btn-dark active{% else %}btn-link{% endif %}
-            text-decoration-none btn-sm dropdown-toggle show dropdown-sm"
+            class="btn btn-link text-decoration-none btn-sm dropdown-toggle show dropdown-sm"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            style="border: 1px solid;color: var(--bs-body-color);border: var(--bs-border-width) solid var(--bs-border-color);"
     >
-        {{ ux_icon('bi:eye', {class:'bi', 'style': 'vertical-align: -.25em'}) }}
         {{ label }}
     </button>
     <ul class="dropdown-menu" data-bs-theme="light">
-        {% for option in options %}
+        {% for option in columns %}
             {% if option.value != '' %}
                 <li>
                     <a class="dropdown-item" {{ stimulusTarget('twig/table/column', 'option') }}
                        data-value="{{ loop.index - 1 }}"
                        href=""
                     >
-                        {#                        {% set icon = (option.value == app.request.query.get(queryName)) ? 'fa:check-square-o' : 'fa6-regular:square-full' %}#}
-                        {% set icon = ((loop.index - 1) in columns(app.request.query.get((queryName), ''))) ? 'fa6-regular:square-full' : 'bi:eye' %}
+                        {% set icon = ((loop.index - 1) in this.columns()) ? 'bi:eye-slash' : 'bi:eye' %}
                         {{ ux_icon(icon, {class:'bi'}) }}
                         {{ option.getLabelFrom(option) }}
-{#                        {{ option.value }}#}
                     </a>
                 </li>
             {% endif %}

@@ -18,19 +18,4 @@ export default class extends AbstractController {
         useFilter(this);
         this.element.addEventListener('change', (event) => this.filter(event, CHANGE, this.queryNameValue, this.selectTarget.value));
     }
-
-    // /**
-    //  * Show amount elements to show on table
-    //  * @param event change select event
-    //  */
-    // onChange(event){
-    //     event.preventDefault();
-    //     event.stopImmediatePropagation();
-    //
-    //     let currentPath = new URL(document.location);
-    //     currentPath.searchParams.set(this.queryNameValue, this.selectTarget.value);
-    //     super.dispatch(CHANGE, {detail:{url:currentPath}});
-    //     // document.location = currentPath.toString();
-    // }
-
 }

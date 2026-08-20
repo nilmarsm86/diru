@@ -68,7 +68,6 @@ export default class extends AbstractController {
         //     event.detail.url.searchParams.set('page', '1');
         // }
         // this.backdrop(this.backdropTarget, BACKDROP_SHOW);
-        console.log('AKI');
         history.pushState({}, '', event.detail.url);
         super.dispatch(REFRESH, {detail:{url:event.detail.url}});
     }

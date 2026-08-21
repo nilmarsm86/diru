@@ -12,6 +12,7 @@ use App\Repository\MunicipalityRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
+use App\Service\UbicationReport;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -112,9 +113,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report', name: 'app_municipality_amount_project_report', methods: ['GET'])]
-    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
+    public function amountProjectReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, UbicationReport $ubicationReport): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository);
+        $response = $ubicationReport->amountProjectsAndBuildings($request, $router, $municipalityRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -131,9 +132,9 @@ final class MunicipalityController extends AbstractController
     }
 
     #[Route('/amount_project_report_print', name: 'app_municipality_amount_project_report_print', methods: ['GET'])]
-    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function amountProjectReportPrint(Request $request, MunicipalityRepository $municipalityRepository, UbicationReport $ubicationReport, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
-        $response = $this->amountProjectsAndBuildings($request, $router, $municipalityRepository, true);
+        $response = $ubicationReport->amountProjectsAndBuildings($request, $router, $municipalityRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -144,41 +145,12 @@ final class MunicipalityController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|array<mixed>
-     */
-    private function amountProjectsAndBuildings(
-        Request $request,
-        RouterInterface $router,
-        MunicipalityRepository $municipalityRepository,
-        bool $pdf = false,
-    ): RedirectResponse|array {
-        $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
-        $pageNumber = (int) $request->query->get('page', '1');
-
-        //        $column = $request->query->get('column', '');
-
-        if (true === $pdf) {
-            $amountPerPage = null;
-            $pageNumber = null;
-        }
-
-        $data = $municipalityRepository->findAmountProject($filter, $amountPerPage, $pageNumber);
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
-        if ($paginator->isFromGreaterThanTotal()) {
-            return $paginator->greatherThanTotal($request, $router, $pageNumber);
-        }
-
-        return [$filter, $paginator];
-    }
-
-    /**
      * @throws Exception
      */
     #[Route('/amount_client_report', name: 'app_municipality_amount_client_report', methods: ['GET'])]
-    public function amountClientReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository): Response
+    public function amountClientReport(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, UbicationReport $ubicationReport): Response
     {
-        $response = $this->amountClients($request, $router, $municipalityRepository);
+        $response = $ubicationReport->amountClients($request, $router, $municipalityRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -198,9 +170,9 @@ final class MunicipalityController extends AbstractController
      * @throws Exception
      */
     #[Route('/amount_client_report_print', name: 'app_municipality_amount_client_report_print', methods: ['GET'])]
-    public function amountClientReportPrint(Request $request, MunicipalityRepository $municipalityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function amountClientReportPrint(Request $request, MunicipalityRepository $municipalityRepository, UbicationReport $ubicationReport, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
-        $response = $this->amountClients($request, $router, $municipalityRepository, true);
+        $response = $ubicationReport->amountClients($request, $router, $municipalityRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -208,32 +180,6 @@ final class MunicipalityController extends AbstractController
         assert($paginator instanceof Paginator);
 
         return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'municipality/pdf/amount_client.twig', 'Cantidad de clientes por municipio', 'municipios_clientes');
-    }
-
-    /**
-     * @return RedirectResponse|array<mixed>
-     *
-     * @throws Exception
-     */
-    private function amountClients(Request $request, RouterInterface $router, MunicipalityRepository $municipalityRepository, bool $pdf = false): RedirectResponse|array
-    {
-        $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
-        $pageNumber = (int) $request->query->get('page', '1');
-
-        if (true === $pdf) {
-            $amountPerPage = null;
-            $pageNumber = null;
-        }
-
-        $data = $municipalityRepository->findAmountClients($filter, $amountPerPage, $pageNumber);
-
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
-        if ($paginator->isFromGreaterThanTotal()) {
-            return $paginator->greatherThanTotal($request, $router, $pageNumber);
-        }
-
-        return [$filter, $paginator];
     }
 
     /**

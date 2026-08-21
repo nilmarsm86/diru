@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\DTO\Paginator;
-use App\Repository\FilterInterface;
+use App\Repository\Interfaces\FilterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

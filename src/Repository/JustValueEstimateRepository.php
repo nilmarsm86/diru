@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Building;
 use App\Entity\JustValueEstimate;
+use App\Repository\Interfaces\FilterInterface;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

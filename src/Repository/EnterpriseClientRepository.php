@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\EnterpriseClient;
+use App\Repository\Interfaces\FilterInterface;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<EnterpriseClient>

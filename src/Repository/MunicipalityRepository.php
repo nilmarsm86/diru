@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Municipality;
+use App\Repository\Interfaces\FilterInterface;
+use App\Repository\Interfaces\UbicationInterface;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,7 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Municipality[]    findAll()
  * @method Municipality[]    findBy(mixed[] $criteria, mixed[] $orderBy = null, $limit = null, $offset = null)
  */
-class MunicipalityRepository extends ServiceEntityRepository implements FilterInterface
+class MunicipalityRepository extends ServiceEntityRepository implements FilterInterface, UbicationInterface
 {
     use SaveData;
     use PaginateTrait;
@@ -60,23 +62,24 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
      */
     public function findAmountProject(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
-        $dql = 'SELECT m.id AS id,
-       m.name AS name,
-       p.name AS province,
-       count(DISTINCT i.id) AS investments,
-       count(DISTINCT pr.id) AS projects,
-       count(DISTINCT b.id) AS buildings
-  FROM App\Entity\Municipality m
-       LEFT JOIN
-       App\Entity\Province p ON m.province = p.id
-       LEFT JOIN
-       App\Entity\Investment i ON m.id = i.municipality
-       LEFT JOIN
-       App\Entity\Project pr ON pr.investment = i.id
-       LEFT JOIN
-       App\Entity\Building b ON b.project = pr.id';
+        $builder = $this->createQueryBuilder('m')
+            ->select(
+                'm.id AS id',
+                'm.name AS name',
+                'p.name AS province',
+                'COUNT(DISTINCT i.id) AS investments',
+                'COUNT(DISTINCT pr.id) AS projects',
+                'COUNT(DISTINCT b.id) AS buildings'
+            )
+            ->leftJoin('App\Entity\Province', 'p', 'ON', 'm.province = p.id')
+            ->leftJoin('App\Entity\Investment', 'i', 'ON', 'm.id = i.municipality')
+            ->leftJoin('App\Entity\Project', 'pr', 'ON', 'pr.investment = i.id')
+            ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = pr.id');
 
-        return $this->pagination($dql, $filter, $page, $amountPerPage);
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('m.id')->orderBy('m.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
     }
 
     /**
@@ -84,39 +87,21 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
      */
     public function findAmountClients(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
-        $dql = 'SELECT m.id AS id,
-       m.name AS name,
-       p.name AS province,
-       count(DISTINCT ic.id) AS individual,
-       count(DISTINCT ec.id) AS enterprise
-  FROM App\Entity\Municipality m
-       LEFT JOIN
-       App\Entity\Province p ON m.province = p.id
-       LEFT JOIN
-       App\Entity\Client c ON m.id = c.municipality
-       LEFT JOIN
-       App\Entity\IndividualClient ic ON c.id = ic.id
-       LEFT JOIN
-       App\Entity\EnterpriseClient ec ON c.id = ec.id';
+        $builder = $this->createQueryBuilder('m')
+            ->select(
+                'm.id AS id',
+                'm.name AS name',
+                'p.name AS province',
+                'COUNT(DISTINCT ic.id) AS individual',
+                'COUNT(DISTINCT ec.id) AS enterprise'
+            )
+            ->leftJoin('App\Entity\Province', 'p', 'ON', 'm.province = p.id')
+            ->leftJoin('App\Entity\Client', 'c', 'ON', 'm.id = c.municipality')
+            ->leftJoin('App\Entity\IndividualClient', 'ic', 'ON', 'c.id = ic.id')
+            ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'c.id = ec.id');
 
-        return $this->pagination($dql, $filter, $page, $amountPerPage);
-    }
-
-    /**
-     * @return Paginator<mixed>
-     */
-    public function pagination(string $dql, string $filter, ?int $page, ?int $amountPerPage): Paginator
-    {
-        $parameters = [];
-        if ('' !== $filter) {
-            $dql .= ' WHERE m.name LIKE :filter OR p.name LIKE :filter';
-            $parameters['filter'] = '%'.$filter.'%';
-        }
-
-        $dql .= ' GROUP BY m.id ORDER BY m.name';
-
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameters($parameters);
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('m.id')->orderBy('m.name', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

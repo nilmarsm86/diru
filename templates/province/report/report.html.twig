@@ -1,0 +1,26 @@
+{% extends 'content.html.twig' %}
+
+{% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/titles.html.twig' import h1 %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ h1('Provincias', 'ic:outline-place') }}
+
+        {{ breadcrumb([
+            {label: 'Inicio', href: path('app_home')},
+            {label: 'Provincias', href: path('app_province_index')},
+            {label: 'Reporte'}
+        ]) }}
+    </div>
+
+    <h2 class="mb-4">{{ title }}</h2>
+
+    {% component ManagePage %}
+        {% block list %}
+            {{ include('province/report/'~list~'.html.twig') }}
+        {% endblock %}
+    {% endcomponent %}
+{% endblock %}

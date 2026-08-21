@@ -2,16 +2,22 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
+use App\DTO\Paginator;
 use App\Entity\Province;
 use App\Entity\Role;
 use App\Repository\ProvinceRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
+use App\Service\UbicationReport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -21,6 +27,8 @@ use Twig\Error\SyntaxError;
 #[IsGranted(Role::ROLE_ADMIN)]
 final class ProvinceController extends AbstractController
 {
+    use PdfResponseTrait;
+
     /**
      * @throws SyntaxError
      * @throws RuntimeError
@@ -102,5 +110,49 @@ final class ProvinceController extends AbstractController
         }
 
         throw new BadRequestHttpException('Ajax request');
+    }
+
+    #[Route('/print', name: 'app_province_print', methods: ['GET'])]
+    public function print(Request $request, ProvinceRepository $provinceRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+
+        $data = $provinceRepository->findProvinces($filter, null, null);
+
+        $paginator = new Paginator($data);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'province/pdf/print.html.twig', 'Listado de provincias', 'provincias');
+    }
+
+    #[Route('/amount_project_report', name: 'app_province_amount_project_report', methods: ['GET'])]
+    public function amountProjectReport(Request $request, RouterInterface $router, ProvinceRepository $provinceRepository, UbicationReport $ubicationReport): Response
+    {
+        $response = $ubicationReport->amountProjectsAndBuildings($request, $router, $provinceRepository);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_project.html.twig' : 'report.html.twig';
+
+        return $this->render("province/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Cantidad de proyectos y obras por provincia',
+            'list' => '_amount_project',
+        ]);
+    }
+
+    #[Route('/amount_project_report_print', name: 'app_province_amount_project_report_print', methods: ['GET'])]
+    public function amountProjectReportPrint(Request $request, ProvinceRepository $provinceRepository, UbicationReport $ubicationReport, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $response = $ubicationReport->amountProjectsAndBuildings($request, $router, $provinceRepository, true);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+        assert($paginator instanceof Paginator);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'province/pdf/amount_project.twig', 'Cantidad de proyectos y obras por provincia', 'provincias_proyectos_obras');
     }
 }

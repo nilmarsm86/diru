@@ -1,0 +1,15 @@
+{% extends 'province/pdf/pdf_province.html.twig' %}
+
+{% set colspan = 2 %}
+
+{% block columns %}
+    <tr>
+        <th>Provincia</th>
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        <td>{{ province.name }}</td>
+    </tr>
+{% endblock %}

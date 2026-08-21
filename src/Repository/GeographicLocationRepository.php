@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\GeographicLocation;
+use App\Repository\Interfaces\FilterInterface;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

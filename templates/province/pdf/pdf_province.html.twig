@@ -1,0 +1,24 @@
+{% extends 'pdf_nomenclator.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div>
+        <strong>Ubicaciones:</strong> Provincias
+        {% if filter %}
+            <br>
+            <strong>Filtrado por:</strong> {{ filter }}
+        {% endif %}
+    </div>
+    <br>
+    <table>
+        {% block columns %}{% endblock %}
+        {% for province in paginator.getData() %}
+            {% block data %}{% endblock %}
+        {% else %}
+            <tr>
+                <td colspan="{{ colspan|default(2) }}">No se encontraron provincias.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

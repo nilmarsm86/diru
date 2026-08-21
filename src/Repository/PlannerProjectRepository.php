@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\PlannerProject;
+use App\Repository\Interfaces\FilterInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;

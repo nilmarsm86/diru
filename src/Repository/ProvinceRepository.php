@@ -103,21 +103,20 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
      */
     public function findAmountClients(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
-        $builder = $this->createQueryBuilder('m')
+        $builder = $this->createQueryBuilder('p')
             ->select(
-                'm.id AS id',
-                'm.name AS name',
-                'p.name AS province',
+                'p.id AS id',
+                'p.name AS name',
                 'COUNT(DISTINCT ic.id) AS individual',
                 'COUNT(DISTINCT ec.id) AS enterprise'
             )
-            ->leftJoin('App\Entity\Province', 'p', 'ON', 'm.province = p.id')
+            ->leftJoin('App\Entity\Municipality', 'm', 'ON', 'm.province = p.id')
             ->leftJoin('App\Entity\Client', 'c', 'ON', 'm.id = c.municipality')
             ->leftJoin('App\Entity\IndividualClient', 'ic', 'ON', 'c.id = ic.id')
             ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'c.id = ec.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('m.id')->orderBy('m.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('p.id')->orderBy('p.name', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

@@ -1,0 +1,45 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('province/_header.html.twig', {'print_link':'app_province_amount_client_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'Empresarial', 'Natural']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Provincia</th>
+                    <th>Empresarial</th>
+                    <th>Natural</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for province in paginator.getData() %}
+                    <tr>
+                        <td>{{ province.name }}</td>
+                        <td>{{ province.enterprise }}</td>
+                        <td>{{ province.individual }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron provincias.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

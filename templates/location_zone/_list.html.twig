@@ -5,11 +5,7 @@
     title: 'Listado de zonas de ubicación',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
-
-        <div>
-            {{ tableActionButton3(path('app_location_zone_new'), 'bi:plus-lg', 'Nueva', 'Nueva zona de ubicación', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_location_zone_new')})) }}
-        </div>
+        {{ include('location_zone/_header.html.twig', {'print_link':'app_location_zone_print'}) }}
     {% endblock %}
 
     {% block body %}

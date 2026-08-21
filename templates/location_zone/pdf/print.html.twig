@@ -1,0 +1,15 @@
+{% extends 'location_zone/pdf/pdf.html.twig' %}
+
+{% set colspan = 1 %}
+
+{% block columns %}
+    <tr>
+        <th>Nombre</th>
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        <td>{{ location_zone.name }}</td>
+    </tr>
+{% endblock %}

@@ -15,24 +15,12 @@
         <ul class="dropdown-menu" data-bs-theme="light">
             <li>
                 <a class="dropdown-item"
-                   href="{{ path('app_province_amount_project_report') }}" title="">
-                    Cantidad de proyectos y obras
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item"
-                   href="{{ path('app_province_amount_finance_report') }}" title="">
-                    Financiero
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item"
-                   href="{{ path('app_province_amount_client_report') }}" title="">
-                    Tipos de clientes
+                   href="{{ path('app_location_zone_amount_project_report') }}" title="">
+                    Cantidad de inversiones y proyectos
                 </a>
             </li>
         </ul>
     </div>
-    {{ tableActionButton3(path('app_province_new'), 'bi:plus-lg', 'Nueva', 'Nueva provincia', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_province_new')})) }}
+    {{ tableActionButton3(path('app_location_zone_new'), 'bi:plus-lg', 'Nueva', 'Nueva zona de ubicación', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_location_zone_new')})) }}
     {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
 </div>

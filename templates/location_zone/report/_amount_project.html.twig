@@ -1,0 +1,47 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('location_zone/_header.html.twig', {'print_link':'app_location_zone_amount_project_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'Inversiones', 'Proyectos', 'Obras']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Inversiones</th>
+                    <th>Proyectos</th>
+                    <th>Obras</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for location_zone in paginator.getData() %}
+                    <tr>
+                        <td>{{ location_zone.name }}</td>
+                        <td>{{ location_zone.investments }}</td>
+                        <td>{{ location_zone.projects }}</td>
+                        <td>{{ location_zone.buildings }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron zonas de ubicación.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

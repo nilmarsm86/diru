@@ -1,0 +1,19 @@
+{% extends 'location_zone/pdf/pdf.html.twig' %}
+
+{% block columns %}
+    <tr>
+        {{ th(app.request, 0, 'column', 'Nombre') }}
+        {{ th(app.request, 1, 'column', 'Inversiones') }}
+        {{ th(app.request, 2, 'column', 'Proyectos') }}
+        {{ th(app.request, 3, 'column', 'Obras') }}
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        {{ td(app.request, 0, 'column', location_zone.name) }}
+        {{ td(app.request, 1, 'column', location_zone.investments) }}
+        {{ td(app.request, 2, 'column', location_zone.projects) }}
+        {{ td(app.request, 3, 'column', location_zone.buildings) }}
+    </tr>
+{% endblock %}

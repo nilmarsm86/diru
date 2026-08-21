@@ -19,25 +19,22 @@ class TableListTwigExtensionRuntime implements RuntimeExtensionInterface
         return '' !== $filter || 10 !== $amountPerPage || 1 !== $pageNumber;
     }
 
-    public function th(Request $request, int $position, string $queryName, string $columnName): string
+    public function th(Request $request, int $position, string $queryName, string $columnName, string $icon = ''): string
     {
-        return $this->cell($request, $position, $queryName, $columnName, 'th');
+        return $this->cell($request, $position, $queryName, $columnName, $icon, 'th');
     }
 
-    public function td(Request $request, int $position, string $queryName, string $columnName): string
+    public function td(Request $request, int $position, string $queryName, string $columnName, string $icon = ''): string
     {
-        return $this->cell($request, $position, $queryName, $columnName, 'td');
+        return $this->cell($request, $position, $queryName, $columnName, $icon, 'td');
     }
 
-    public function cell(Request $request, int $position, string $queryName, string $columnName, string $type): string
+    public function cell(Request $request, int $position, string $queryName, string $columnName, string $icon, string $type): string
     {
         $haystack = (array) json_decode(urldecode($request->query->get($queryName, '')));
-        if (0 === count($haystack)) {
-            return (('td' === $type) ? '<td>' : '<th>').$columnName.(('td' === $type) ? '</td>' : '</th>');
-        }
 
-        if (!in_array((string) $position, $haystack, true)) {
-            return (('td' === $type) ? '<td>' : '<th>').$columnName.(('td' === $type) ? '</td>' : '</th>');
+        if (0 === count($haystack) || !in_array((string) $position, $haystack, true)) {
+            return (('td' === $type) ? '<td>' : '<th>').$columnName.' '.$icon.(('td' === $type) ? '</td>' : '</th>');
         }
 
         return '';

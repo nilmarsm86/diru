@@ -5,13 +5,7 @@
     title: title,
 } %}
     {% block header %}
-        <div>
-            {{ component('Card:Refresh', {
-                queryNames:['column', 'amount', 'filter', 'page']
-            }) }}
-
             {{ include('municipality/report/_header.html.twig', {'print_link':'app_municipality_amount_project_report_print'}) }}
-        </div>
     {% endblock %}
 
     {% block body %}

@@ -11,6 +11,7 @@
     {% block body %}
         {% component 'Table:Table' with {
             paginator: paginator,
+            columns: [null, null, 'Empresarial', 'Natural']
         } %}
 
             {% block tableHead %}

@@ -13,11 +13,11 @@
     <br>
     <table>
         {% block columns %}{% endblock %}
-        {% for organization in paginator.getData() %}
+        {% for organism in paginator.getData() %}
             {% block data %}{% endblock %}
         {% else %}
             <tr>
-                <td colspan="{{ colspan|default(6) }}">No se encontraron organismos.</td>
+                <td colspan="{{ colspan|default(1) }}">No se encontraron organismos.</td>
             </tr>
         {% endfor %}
     </table>

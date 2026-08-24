@@ -1,0 +1,26 @@
+{% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+<div>
+    {{ component('Card:Refresh', {
+        queryNames:['column', 'amount', 'filter', 'page']
+    }) }}
+    <div class="dropdown d-inline-block">
+        <button type="button"
+                class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                data-bs-toggle="dropdown"
+                aria-expanded="false" title="{{ title }}"
+        >
+            Reportes
+        </button>
+        <ul class="dropdown-menu" data-bs-theme="light">
+            <li>
+                <a class="dropdown-item"
+                   href="{{ path('app_organism_amount_corporate_entity_report') }}" title="">
+                    Entidades corporativas por tipo
+                </a>
+            </li>
+        </ul>
+    </div>
+    {{ tableActionButton3(path('app_organism_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo organismo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_organism_new')})) }}
+    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+</div>

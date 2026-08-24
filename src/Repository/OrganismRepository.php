@@ -36,11 +36,54 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
     /**
      * @return Paginator<mixed>
      */
-    public function findOrganisms(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findOrganisms(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('o');
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('o.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findByCorporateEntityType(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('o')
+            ->select(
+                'o.id AS id',
+                'o.name AS name',
+                "SUM(CASE WHEN ce.type = '0' THEN 1 ELSE 0 END) AS client",
+                "SUM(CASE WHEN ce.type = '1' THEN 1 ELSE 0 END) AS constructor",
+                "SUM(CASE WHEN ce.type = '2' THEN 1 ELSE 0 END) AS client_constructor",
+                "SUM(CASE WHEN ce.type = '3' THEN 1 ELSE 0 END) AS draftman",
+                'COUNT(ce.id) AS total'
+            )
+            ->leftJoin('App\Entity\CorporateEntity', 'ce', 'ON', 'o.id = ce.organism');
+
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findByEnterpriseClient(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('o')
+            ->select(
+                'o.id AS id',
+                'o.name AS name',
+                'COUNT(ec.id) AS enterprise_client'
+            )
+            ->leftJoin('App\Entity\CorporateEntity', 'ce', 'ON', 'o.id = ce.organism')
+            ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'ce.id = ec.corporateEntity');
+
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

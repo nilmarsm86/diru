@@ -5,53 +5,81 @@
 {% block title %}Diru{% endblock %}
 
 {% block content %}
-    <div
-        style="background-image: url({{ asset('images/dashboard1.jpg') }});min-height: 500px;padding: 10px;background-size: cover">
+<div
+    style="background-image: url({{ asset('images/dashboard1.jpg') }});min-height: 500px;padding: 10px;background-size: cover">
 
-        <div class="row">
-            {#            <h2>Section title</h2> #}
-            <div class="col">
-                {% component 'Card:Card' with {
-                    cssClass: 'text-bg-light mb-3'
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Proyectos</h6>
-                        <h1>{{ project_amount }}</h1>
-                        <a href="#" class="card-link">Ver todo</a>
-                        {#                        <a href="#" class="card-link">Another link</a> #}
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
+    <div class="row">
+        {#            <h2>Section title</h2> #}
+        <div class="col">
+            {% component 'Card:Card' with {
+                cssClass: 'text-bg-light mb-3'
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Proyectos</h6>
+                    <h1>{{ project_amount }}</h1>
+                    <a href="{{ path('app_project_index') }}" class="card-link">Ver todo</a>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
 
-            <div class="col pb-3">
-                {% component 'Card:Card' with {
-                    title: 'Proyectos',
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Monto total del sistema</h6>
-                        <h1>{{ money(amount) }}</h1>
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
+        <div class="col pb-3">
+            {% component 'Card:Card' with {
+                title: 'Proyectos',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Monto total del sistema</h6>
+                    <h1>{{ money(amount) }}</h1>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
 
-            <div class="col">
-                {% component 'Card:Card' with {
-                    title: 'Proyectos',
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Ultimos Proyectos</h6>
-                        <ul class="list-group list-group-flush">
-                            {% for project in last_three %}
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a>
-                                    <span
-                                        class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
+        <div class="col">
+            {% component 'Card:Card' with {
+                title: 'Proyectos',
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Ultimos Proyectos</h6>
+                    <ul class="list-group list-group-flush">
+                        {% for project in last_three %}
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a>
+                                <span
+                                    class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+            {% endcomponent %}
         </div>
     </div>
-{% endblock %}
+    <br>
+
+    <div class="row">
+        <div class="col-4">
+            {% component 'Card:Card' with {
+                cssClass: 'text-bg-light mb-3'
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Regulaciones Urbanas utilizadas</h6>
+                    <h1>{{ urban_regulations }}</h1>
+                    <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            {% component 'Card:Card' with {
+                cssClass: 'text-bg-light mb-3'
+            } %}
+                {% block body %}
+                    <h6 class="card-subtitle mb-2">Obras</h6>
+                    <h1>{{ buildings }}</h1>
+                    {#                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a> #}
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+
+    {% endblock %}

@@ -118,4 +118,14 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    public function inSystems(): int
+    {
+        $builder = $this->createQueryBuilder('b')
+            ->select(
+                'COUNT(b.id) AS buildings',
+            );
+
+        return (int) $builder->getQuery()->getSingleScalarResult();
+    }
 }

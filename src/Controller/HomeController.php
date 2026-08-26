@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Role;
+use App\Repository\BuildingRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\ProjectUrbanRegulationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +16,7 @@ final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     #[IsGranted(Role::IS_AUTHENTICATED)]
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(ProjectRepository $projectRepository, ProjectUrbanRegulationRepository $projectUrbanRegulationRepository, BuildingRepository $buildingRepository): Response
     {
         $lastThree = $projectRepository->lastThree();
         $amount = 0;
@@ -27,6 +29,8 @@ final class HomeController extends AbstractController
             'last_three' => $lastThree,
             'amount' => $amount,
             'project_amount' => count($projectRepository->findAll()),
+            'urban_regulations' => $projectUrbanRegulationRepository->usedUrbanRegulations(),
+            'buildings' => $buildingRepository->inSystems(),
         ]);
     }
 

@@ -44,4 +44,14 @@ class ProjectUrbanRegulationRepository extends ServiceEntityRepository implement
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    public function usedUrbanRegulations(): int
+    {
+        $builder = $this->createQueryBuilder('pur')
+            ->select(
+                'COUNT(DISTINCT pur.id) AS distinct_urban_regulations_used',
+            );
+
+        return (int) $builder->getQuery()->getSingleScalarResult();
+    }
 }

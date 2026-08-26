@@ -36,7 +36,7 @@
                     target: 'places-collapse',
                     items: [
                         {link: 'app_organism_index', icon: 'bi:list-check', label: 'Organismos', base:'app_organism_'},
-                        {link: 'app_corporate_entity_index', icon: 'bi:building', label: 'Entidades', base:null},
+                        {link: 'app_corporate_entity_index', icon: 'bi:building', label: 'Entidades', base:'app_corporate_entity_'},
                     ]
                 }) }}
                 {#                {link: 'app_constructor_index', icon: 'uil:constructor', label: 'Constructoras'}, #}
@@ -44,34 +44,34 @@
                     title: 'Subsistemas',
                     target: 'subsystem-collapse',
                     items: [
-                        {link: 'app_subsystem_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos', base:null},
-                        {link: 'app_subsystem_sub_type_index', icon: 'lets-icons:paper', label: 'Subtipos', base:null},
+                        {link: 'app_subsystem_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos', base:'app_subsystem_type_'},
+                        {link: 'app_subsystem_sub_type_index', icon: 'lets-icons:paper', label: 'Subtipos', base:'app_subsystem_sub_type_'},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Regulaciones urbanas',
                     target: 'regulation-collapse',
                     items: [
-                        {link: 'app_urban_regulation_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos de Reg.', base:null},
-                        {link: 'app_urban_regulation_index', icon: 'lets-icons:paper', label: 'Reg. urbanas', base:null},
+                        {link: 'app_urban_regulation_type_index', icon: 'mingcute:paper-2-line', label: 'Tipos de Reg.', base:'app_urban_regulation_type_'},
+                        {link: 'app_urban_regulation_index', icon: 'lets-icons:paper', label: 'Reg. urbanas', base:'app_urban_regulation_'},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Edificación',
                     target: 'edification-collapse',
                     items: [
-                        {link: 'app_network_connection_index', icon: 'icon-park-outline:rectangular-circular-connection', label: 'Conexiones de red', base:null},
-                        {link: 'app_constructive_action_index', icon: 'mdi:construction-outline', label: 'Acc. Constructivas', base:null},
-                        {link: 'app_constructive_system_index', icon: 'roentgen:building-construction', label: 'Sistema Constructivo', base:null},
+                        {link: 'app_network_connection_index', icon: 'icon-park-outline:rectangular-circular-connection', label: 'Conexiones de red', base:'app_network_connection_'},
+                        {link: 'app_constructive_action_index', icon: 'mdi:construction-outline', label: 'Acc. Constructivas', base:'app_constructive_action_'},
+                        {link: 'app_constructive_system_index', icon: 'roentgen:building-construction', label: 'Sistema Constructivo', base:'app_constructive_system_'},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Otros',
                     target: 'other-collapse',
                     items: [
-                        {link: 'app_currency_index', icon: 'streamline-ultimate:begging-hand-coin-2-bold', label: 'Monedas', base:null},
-                        {link: 'app_measurement_unit_index', icon: 'formkit:unit', label: 'Unidad de medida', base:null},
-                        {link: 'app_separate_concept_index', icon: 'arcticons:breakdowntimer', label: 'Partida de presupuesto', base:null},
+                        {link: 'app_currency_index', icon: 'streamline-ultimate:begging-hand-coin-2-bold', label: 'Monedas', base:'app_currency_'},
+                        {link: 'app_measurement_unit_index', icon: 'formkit:unit', label: 'Unidad de medida', base:'app_measurement_unit_'},
+                        {link: 'app_separate_concept_index', icon: 'arcticons:breakdowntimer', label: 'Partida de presupuesto', base:'app_separate_concept_'},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {

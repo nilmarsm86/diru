@@ -1,0 +1,15 @@
+{% extends 'location_zone/pdf/pdf.html.twig' %}
+
+{% block columns %}
+    <tr>
+        {{ th(app.request, 0, 'column', 'Nombre') }}
+        {{ th(app.request, 1, 'column', 'Clientes Empresariales') }}
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        {{ td(app.request, 0, 'column', organization.name) }}
+        {{ td(app.request, 1, 'column', organization.enterprise_client) }}
+    </tr>
+{% endblock %}

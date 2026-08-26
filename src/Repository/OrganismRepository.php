@@ -87,4 +87,27 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findAmountProjectAndBuildings(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('o')
+            ->select(
+                'o.id AS id',
+                'o.name AS name',
+                'COUNT(DISTINCT p.id) AS projects',
+                'COUNT(DISTINCT b.id) AS buildings'
+            )
+            ->leftJoin('App\Entity\CorporateEntity', 'ce', 'ON', 'o.id = ce.organism')
+            ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'ce.id = ec.corporateEntity')
+            ->leftJoin('App\Entity\Project', 'p', 'ON', 'p.client = ec.id')
+            ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = p.id');
+
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
 }

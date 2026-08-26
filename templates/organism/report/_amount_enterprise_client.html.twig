@@ -1,0 +1,42 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('organism/_header.html.twig', {'print_link':'app_organism_amount_enterprise_client_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Clientes Empresariales</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for organism in paginator.getData() %}
+                    <tr>
+                        <td>{{ organism.name }}</td>
+                        <td>{{ organism.enterprise_client }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron organismos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

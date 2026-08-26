@@ -1,0 +1,45 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('organism/_header.html.twig', {'print_link':'app_organism_amount_project_building_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'Proyectos', 'Obras']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Proyectos</th>
+                    <th>Obras</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for organism in paginator.getData() %}
+                    <tr>
+                        <td>{{ organism.name }}</td>
+                        <td>{{ organism.projects }}</td>
+                        <td>{{ organism.buildings }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron organismos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

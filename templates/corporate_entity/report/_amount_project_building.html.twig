@@ -1,0 +1,48 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('corporate_entity/_header.html.twig', {
+            'print_link':'app_corporate_entity_amount_project_building_report_print',
+            'types':[]
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'Proyectos', 'Obras']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>Proyectos</th>
+                    <th>Obras</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for corporate_entity in paginator.getData() %}
+                    <tr>
+                        <td>{{ corporate_entity.name }}</td>
+                        <td>{{ corporate_entity.projects }}</td>
+                        <td>{{ corporate_entity.buildings }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No se encontraron entidades corporativas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

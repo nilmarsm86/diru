@@ -1,0 +1,24 @@
+{% extends 'pdf_nomenclator.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div>
+        <strong>Organizaciones:</strong> Entidades corporativas
+        {% if filter %}
+            <br>
+            <strong>Filtrado por:</strong> {{ filter }}
+        {% endif %}
+    </div>
+    <br>
+    <table>
+        {% block columns %}{% endblock %}
+        {% for corporate_entity in paginator.getData() %}
+            {% block data %}{% endblock %}
+        {% else %}
+            <tr>
+                <td colspan="{{ colspan|default(1) }}">No se encontraron entidades corporativas.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

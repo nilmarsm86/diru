@@ -1,0 +1,51 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('organism/_header.html.twig', {'print_link':'app_organism_amount_finance_report_print'}) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'V. Aprobado', 'V. Estimado', 'P. Estimado', 'P. Detallado', 'V. Real']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>V. Aprobado ({{ currency }})</th>
+                    <th>V. Estimado ({{ currency }})</th>
+                    <th>P. Estimado ({{ currency }})</th>
+                    <th>P. Detallado ({{ currency }})</th>
+                    <th>V. Real ({{ currency }})</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for organism in paginator.getData() %}
+                    <tr>
+                        <td>{{ organism.name }}</td>
+                        <td>{{ money(organism.approvedValue) }}</td>
+                        <td>{{ money(organism.estimatedValue) }}</td>
+                        <td>{{ money(organism.estimatedAdjustValue) }}</td>
+                        <td>{{ money(organism.constructionAssembly) }}</td>
+                        <td>{{ money(organism.constructionRealValue) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No se encontraron organismos.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

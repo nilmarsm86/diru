@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
-use App\Entity\Investment;
 use App\Entity\Organism;
 use App\Entity\Role;
 use App\Repository\CorporateEntityRepository;
-use App\Repository\InvestmentRepository;
+use App\Repository\EnterpriseClientRepository;
 use App\Repository\OrganismRepository;
+use App\Repository\ProjectRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
@@ -270,9 +270,14 @@ final class OrganismController extends AbstractController
      * @throws Exception
      */
     #[Route('/amount_finance_report', name: 'app_organism_amount_finance_report', methods: ['GET'])]
-    public function amountFinanceReport(Request $request, RouterInterface $router, OrganismRepository $organismRepository, InvestmentRepository $investmentRepository): Response
-    {
-        $response = $this->amountFinance($request, $router, $organismRepository, $investmentRepository);
+    public function amountFinanceReport(Request $request,
+        RouterInterface $router,
+        OrganismRepository $organismRepository,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
+    ): Response {
+        $response = $this->amountFinance($request, $router, $organismRepository, $corporateEntityRepository, $enterpriseClientRepository, $projectRepository);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -293,9 +298,16 @@ final class OrganismController extends AbstractController
      * @throws Exception
      */
     #[Route('/amount_finance_report_print', name: 'app_organism_amount_finance_report_print', methods: ['GET'])]
-    public function amountFinanceReportPrint(Request $request, OrganismRepository $organismRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, InvestmentRepository $investmentRepository): Response
-    {
-        $response = $this->amountFinance($request, $router, $organismRepository, $investmentRepository, true);
+    public function amountFinanceReportPrint(Request $request,
+        OrganismRepository $organismRepository,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
+        RouterInterface $router,
+        PdfAssetManager $pdfAssetManager,
+        PdfGenerator $pdfGenerator,
+    ): Response {
+        $response = $this->amountFinance($request, $router, $organismRepository, $corporateEntityRepository, $enterpriseClientRepository, $projectRepository, true);
         if ($response instanceof RedirectResponse) {
             return $response;
         }
@@ -314,7 +326,9 @@ final class OrganismController extends AbstractController
         Request $request,
         RouterInterface $router,
         OrganismRepository $organismRepository,
-        InvestmentRepository $investmentRepository,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
         bool $pdf = false,
     ): RedirectResponse|array {
         $filter = $request->query->get('filter', '');
@@ -327,7 +341,7 @@ final class OrganismController extends AbstractController
         }
 
         $data = $organismRepository->findOrganisms($filter, $amountPerPage, $pageNumber);
-        $newData = $this->addFinance($investmentRepository, $data);
+        $newData = $this->addFinance($corporateEntityRepository, $enterpriseClientRepository, $projectRepository, $data);
 
         $paginator = new Paginator($newData, $amountPerPage, $pageNumber, count($organismRepository->findOrganisms($filter, null, null)));
         if ($paginator->isFromGreaterThanTotal()) {
@@ -342,7 +356,7 @@ final class OrganismController extends AbstractController
      *
      * @return array<mixed>
      */
-    public function addFinance(InvestmentRepository $investmentRepository, \Doctrine\ORM\Tools\Pagination\Paginator $data): array
+    public function addFinance(CorporateEntityRepository $corporateEntityRepository, EnterpriseClientRepository $enterpriseClientRepository, ProjectRepository $projectRepository, \Doctrine\ORM\Tools\Pagination\Paginator $data): array
     {
         $newData = [];
         /* @var Organism $municipality */
@@ -352,7 +366,6 @@ final class OrganismController extends AbstractController
             $item = [];
             $item['id'] = $organism->getId();
             $item['name'] = $organism->getName();
-            //            $item['province'] = $organism->getProvince()?->getName();
 
             $approvedValue = 0;
             $estimatedValue = 0;
@@ -360,17 +373,19 @@ final class OrganismController extends AbstractController
             $constructionAssembly = 0;
             $constructionRealValue = 0;
 
-            /** @var Investment $investment */
-            $investments = $investmentRepository->findBy(['municipality' => $organism->getId()]);
-            foreach ($investments as $investment) {
-                $projects = $investment->getProjects();
-                foreach ($projects as $project) {
-                    foreach ($project->getBuildings() as $building) {
-                        $approvedValue += (int) $building->getTotalApprovedValue();
-                        $estimatedValue += $building->getPrice();
-                        $estimatedAdjustValue += $building->getEstimatedAdjustValue();
-                        $constructionAssembly += $building->getConstructionAssembly();
-                        $constructionRealValue += $building->getConstructionRealValue();
+            $corporateEntities = $corporateEntityRepository->findBy(['organism' => $organism]);
+            foreach ($corporateEntities as $corporateEntity) {
+                $enterpriseClients = $enterpriseClientRepository->findBy(['corporateEntity' => $corporateEntity]);
+                foreach ($enterpriseClients as $enterpriseClient) {
+                    $projects = $projectRepository->findBy(['client' => $enterpriseClient]);
+                    foreach ($projects as $project) {
+                        foreach ($project->getBuildings() as $building) {
+                            $approvedValue += (int) $building->getTotalApprovedValue();
+                            $estimatedValue += $building->getPrice();
+                            $estimatedAdjustValue += $building->getEstimatedAdjustValue();
+                            $constructionAssembly += $building->getConstructionAssembly();
+                            $constructionRealValue += $building->getConstructionRealValue();
+                        }
                     }
                 }
             }

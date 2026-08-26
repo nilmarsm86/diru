@@ -51,7 +51,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
     /**
      * @return Paginator<mixed>
      */
-    public function findEntities(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = ''): Paginator
+    public function findEntities(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1, string $type = ''): Paginator
     {
         $builder = $this->createQueryBuilder('ce')->select(['ce', 'mun', 'pro', 'o'])
             ->innerJoin('ce.municipality', 'mun')
@@ -78,5 +78,49 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
         if ($flush) {
             $this->flush();
         }
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findByType(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('ce')
+            ->select(
+                'ce.id AS id',
+                'ce.name AS name',
+                "SUM(CASE WHEN ce.type = '0' THEN 1 ELSE 0 END) AS client",
+                "SUM(CASE WHEN ce.type = '1' THEN 1 ELSE 0 END) AS constructor",
+                "SUM(CASE WHEN ce.type = '2' THEN 1 ELSE 0 END) AS client_constructor",
+                "SUM(CASE WHEN ce.type = '3' THEN 1 ELSE 0 END) AS draftman",
+                'COUNT(ce.id) AS total'
+            );
+
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('ce.id')->orderBy('ce.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
+    }
+
+    /**
+     * @return Paginator<mixed>
+     */
+    public function findAmountProjectAndBuildings(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
+    {
+        $builder = $this->createQueryBuilder('ce')
+            ->select(
+                'ce.id AS id',
+                'ce.name AS name',
+                'COUNT(DISTINCT p.id) AS projects',
+                'COUNT(DISTINCT b.id) AS buildings'
+            )
+            ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'ce.id = ec.corporateEntity')
+            ->leftJoin('App\Entity\Project', 'p', 'ON', 'p.client = ec.id')
+            ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = p.id');
+
+        $this->addFilter($builder, $filter);
+        $query = $builder->groupBy('ce.id')->orderBy('ce.name', 'ASC')->getQuery();
+
+        return $this->paginate($query, $page, $amountPerPage);
     }
 }

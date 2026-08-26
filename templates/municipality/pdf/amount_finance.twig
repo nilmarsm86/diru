@@ -16,10 +16,10 @@
     <tr>
         {{ td(app.request, 0, 'column', municipality.name) }}
         {{ td(app.request, 1, 'column', municipality.province) }}
-        {{ td(app.request, 2, 'column', municipality.approvedValue) }}
-        {{ td(app.request, 3, 'column', municipality.estimatedValue) }}
-        {{ td(app.request, 4, 'column', municipality.estimatedAdjustValue) }}
-        {{ td(app.request, 5, 'column', municipality.constructionAssembly) }}
-        {{ td(app.request, 6, 'column', municipality.constructionRealValue) }}
+        {{ td(app.request, 2, 'column', money(municipality.approvedValue)) }}
+        {{ td(app.request, 3, 'column', money(municipality.estimatedValue)) }}
+        {{ td(app.request, 4, 'column', money(municipality.estimatedAdjustValue)) }}
+        {{ td(app.request, 5, 'column', money(municipality.constructionAssembly)) }}
+        {{ td(app.request, 6, 'column', money(municipality.constructionRealValue)) }}
     </tr>
 {% endblock %}

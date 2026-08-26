@@ -39,11 +39,11 @@
                                 {{ municipality.province }}
                             </a>
                         </td>
-                        <td>{{ money(municipality.approvedValue, currency) }}</td>
-                        <td>{{ money(municipality.estimatedValue, currency) }}</td>
-                        <td>{{ money(municipality.estimatedAdjustValue, currency) }}</td>
-                        <td>{{ money(municipality.constructionAssembly, currency) }}</td>
-                        <td>{{ money(municipality.constructionRealValue, currency) }}</td>
+                        <td>{{ money(municipality.approvedValue) }}</td>
+                        <td>{{ money(municipality.estimatedValue) }}</td>
+                        <td>{{ money(municipality.estimatedAdjustValue) }}</td>
+                        <td>{{ money(municipality.constructionAssembly) }}</td>
+                        <td>{{ money(municipality.constructionRealValue) }}</td>
                     </tr>
                 {% else %}
                     <tr>

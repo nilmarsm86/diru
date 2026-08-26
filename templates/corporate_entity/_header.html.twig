@@ -1,0 +1,43 @@
+{% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
+
+<div>
+    {{ component('Card:Refresh', {
+        path: path('app_corporate_entity_index'),
+        queryNames:['entity', 'amount', 'filter', 'page', 'column']
+    }) }}
+    <div class="dropdown d-inline-block">
+        <button type="button"
+                class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                data-bs-toggle="dropdown"
+                aria-expanded="false" title="{{ title }}"
+        >
+            Reportes
+        </button>
+        <ul class="dropdown-menu" data-bs-theme="light">
+            <li>
+                <a class="dropdown-item"
+                   href="{{ path('app_corporate_entity_type_report') }}" title="">
+                    Entidades corporativas por tipo
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item"
+                   href="{{ path('app_corporate_entity_amount_project_building_report') }}" title="">
+                    Proyectos y obras
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    {% if types|length > 0 %}
+        {{ component('Card:FilterDropDown', {
+            path:'app_corporate_entity_index',
+            label:'Tipos de entidad corporativa',
+            queryName: 'entity',
+            options:types
+        }) }}
+    {% endif %}
+
+    {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad corporativa', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
+    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+</div>

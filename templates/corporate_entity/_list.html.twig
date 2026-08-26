@@ -5,23 +5,10 @@
     title: 'Listado de entidades corporativas',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
-
-        <div>
-            {{ component('Card:Refresh', {
-                path: path('app_corporate_entity_index'),
-                queryNames:['entity', 'amount', 'filter', 'page']
-            }) }}
-
-            {{ component('Card:FilterDropDown', {
-                path:'app_corporate_entity_index',
-                label:'Tipos de entidad corporativa',
-                queryName: 'entity',
-                options:types
-            }) }}
-
-            {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad corporativa', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-        </div>
+        {{ include('corporate_entity/_header.html.twig', {
+            'print_link':'app_corporate_entity_print',
+            'types':types
+        }) }}
     {% endblock %}
 
     {% block body %}

@@ -1,0 +1,15 @@
+{% extends 'corporate_entity/pdf/pdf.html.twig' %}
+
+{% set colspan = 1 %}
+
+{% block columns %}
+    <tr>
+        <th>Nombre</th>
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        <td>{{ corporate_entity.name }}</td>
+    </tr>
+{% endblock %}

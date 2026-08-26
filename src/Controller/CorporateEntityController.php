@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
 use App\Entity\CorporateEntity;
 use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Role;
 use App\Repository\CorporateEntityRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +26,8 @@ use Twig\Error\SyntaxError;
 #[Route('/corporate/entity')]
 final class CorporateEntityController extends AbstractController
 {
+    use PdfResponseTrait;
+
     #[Route(name: 'app_corporate_entity_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, CorporateEntityRepository $corporateEntityRepository): Response
     {
@@ -105,5 +110,112 @@ final class CorporateEntityController extends AbstractController
         }
 
         return $response;
+    }
+
+    #[Route('/print', name: 'app_corporate_entity_print', methods: ['GET'])]
+    public function print(Request $request, CorporateEntityRepository $corporateEntityRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $type = $request->query->get('entity', '');
+        $data = $corporateEntityRepository->findEntities($filter, null, null, $type);
+
+        $paginator = new Paginator($data);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'corporate_entity/pdf/print.html.twig', 'Listado de entidades corporativas', 'entidades');
+    }
+
+    #[Route('/amount_corporate_entity_type_report', name: 'app_corporate_entity_type_report', methods: ['GET'])]
+    public function amountTypeReport(Request $request, RouterInterface $router, CorporateEntityRepository $corporateEntityRepository): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $corporateEntityRepository->findByType($filter, $amountPerPage, $pageNumber);
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_type.html.twig' : 'report.html.twig';
+
+        return $this->render("corporate_entity/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Cantidad de entidades corporativas por tipo',
+            'list' => '_amount_type',
+            'types' => CorporateEntityType::cases(),
+        ]);
+    }
+
+    #[Route('/amount_corporate_entity_type_report_print', name: 'app_corporate_entity_type_report_print', methods: ['GET'])]
+    public function amountTypeReportPrint(Request $request, CorporateEntityRepository $corporateEntityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $corporateEntityRepository->findByType($filter, null, null);
+        $paginator = new Paginator($data, null, null);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        return $this->renderPdf(
+            $filter,
+            $paginator,
+            $pdfAssetManager,
+            $pdfGenerator,
+            'corporate_entity/pdf/amount_type.twig',
+            'Cantidad de entidades corporativas por tipo',
+            'entidades_tipo'
+        );
+    }
+
+    #[Route('/amount_project_building_report', name: 'app_corporate_entity_amount_project_building_report', methods: ['GET'])]
+    public function amountProjectAndBuildingReport(Request $request, RouterInterface $router, CorporateEntityRepository $corporateEntityRepository): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $corporateEntityRepository->findAmountProjectAndBuildings($filter, $amountPerPage, $pageNumber);
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_project_building.html.twig' : 'report.html.twig';
+
+        return $this->render("corporate_entity/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Cantidad de proyectos y obras',
+            'list' => '_amount_project_building',
+        ]);
+    }
+
+    #[Route('/amount_project_building_report_print', name: 'app_corporate_entity_amount_project_building_report_print', methods: ['GET'])]
+    public function amountProjectAndBuildingReportPrint(Request $request, CorporateEntityRepository $corporateEntityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $data = $corporateEntityRepository->findAmountProjectAndBuildings($filter, null, null);
+        $paginator = new Paginator($data, null, null);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        return $this->renderPdf(
+            $filter,
+            $paginator,
+            $pdfAssetManager,
+            $pdfGenerator,
+            'corporate_entity/pdf/amount_project_building.twig',
+            'Cantidad de proyectos y obras',
+            'corporate_entity_proyectos_obras'
+        );
     }
 }

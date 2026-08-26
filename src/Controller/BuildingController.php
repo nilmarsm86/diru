@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
@@ -9,6 +10,8 @@ use App\Entity\Project;
 use App\Entity\Role;
 use App\Repository\BuildingRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +27,8 @@ use Twig\Error\SyntaxError;
 #[Route('/building')]
 final class BuildingController extends AbstractController
 {
+    use PdfResponseTrait;
+
     /**
      * @throws SyntaxError
      * @throws RuntimeError
@@ -122,5 +127,27 @@ final class BuildingController extends AbstractController
         }
 
         return $response;
+    }
+
+    #[Route('/project/{project}/print', name: 'app_building_project_print', methods: ['GET'])]
+    public function print(Request $request, RouterInterface $router, BuildingRepository $buildingRepository, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+        $state = $request->query->get('state', '');
+
+        $data = $buildingRepository->findBuildingsByProject($project, $filter, null, null, $state);
+
+        $paginator = new Paginator($data);
+
+        return $this->renderPdf(
+            $filter,
+            $paginator,
+            $pdfAssetManager,
+            $pdfGenerator,
+            'building/pdf/print.html.twig',
+            'Listado de obras del proyecto '.$project->getName(),
+            'obras_'.$project->getName(),
+            ['project' => $project],
+        );
     }
 }

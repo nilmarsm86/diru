@@ -62,7 +62,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     /**
      * @return Paginator<mixed>
      */
-    public function findBuildingsByProject(Project $project, string $filter = '', int $amountPerPage = 10, int $page = 1, string $state = ''): Paginator
+    public function findBuildingsByProject(Project $project, string $filter = '', ?int $amountPerPage = 10, ?int $page = 1, string $state = ''): Paginator
     {
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
             ->leftJoin('b.project', 'p')

@@ -1,0 +1,31 @@
+{% extends 'building/pdf/pdf.html.twig' %}
+
+{% block columns %}
+    <tr>
+        {{ th(app.request, 0, 'column', 'Nombre') }}
+        {{ th(app.request, 1, 'column', 'Valor aprobado total') }}
+        {{ th(app.request, 2, 'column', 'Valor estimado total') }}
+        {{ th(app.request, 3, 'column', 'Existente') }}
+        {% if app.request.query.get('state') == '' %}
+            {{ th(app.request, 4, 'column', 'Estado') }}
+        {% endif %}
+        {{ th(app.request, 5, 'column', 'Constructora') }}
+        {{ th(app.request, 6, 'column', 'Proyecto') }}
+        {{ th(app.request, 7, 'column', 'Monto (CUP)') }}
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        {{ td(app.request, 0, 'column', building.name) }}
+        {{ td(app.request, 1, 'column', building.getTotalApprovedValueFormated()) }}
+        {{ td(app.request, 2, 'column', building.getTotalEstimatedValueFormated()) }}
+        {{ td(app.request, 3, 'column', building.isNew ? 'NO' : 'SI') }}
+        {% if app.request.query.get('state') == '' %}
+            {{ td(app.request, 4, 'column', building.state.getLabelFrom(building.state)) }}
+        {% endif %}
+        {{ td(app.request, 5, 'column', building.hasActiveConstructorCorporateEntity() ? building.getActiveConstructorCorporateEntityName() : 'Sin constructora') }}
+        {{ td(app.request, 6, 'column', building.project.name) }}
+        {{ td(app.request, 7, 'column', money(building.getPrice())) }}
+    </tr>
+{% endblock %}

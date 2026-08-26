@@ -1,0 +1,29 @@
+{% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+
+<div>
+    {{ component('Card:Refresh', {
+        path: path('app_building_project', {'project':project.id}),
+        queryNames:['type', 'state', 'amount', 'filter', 'page']
+    }) }}
+
+    {{ component('Card:FilterDropDown', {
+        path:'app_building_project',
+        pathParams: {'project':project.id},
+        label:'Estados de la obra',
+        queryName: 'state',
+        options:states
+    }) }}
+    {% if project is not null %}
+        {% set path = path('app_building_new', {'project':project.id}) %}
+    {% else %}
+        {% set path = path('app_building_new') %}
+    {% endif %}
+
+    {{ tableActionButton3(path, 'bi:plus-lg', 'Nueva', 'Nueva obra', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path})) }}
+    {% if project is not null %}
+        {{ tableActionButton3(path('app_project_edit', {'id':project.id}), 'bi:table', 'Proyecto', 'Proyecto') }}
+    {% else %}
+        {% set path = path('app_building_new') %}
+    {% endif %}
+    {{ tableActionButton3(path(print_link, {'project':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+</div>

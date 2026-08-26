@@ -64,8 +64,6 @@ final class CityForm extends AbstractController
                 $this->country = (string) $this->cit->getCountry()->getId();
             }
         }
-
-        dump($this->cit);
     }
 
     #[LiveAction]

@@ -8,9 +8,12 @@ use App\Entity\CorporateEntity;
 use App\Entity\Enums\CorporateEntityType;
 use App\Entity\Role;
 use App\Repository\CorporateEntityRepository;
+use App\Repository\EnterpriseClientRepository;
+use App\Repository\ProjectRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -217,5 +220,134 @@ final class CorporateEntityController extends AbstractController
             'Cantidad de proyectos y obras',
             'corporate_entity_proyectos_obras'
         );
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/amount_finance_report', name: 'app_corporate_entity_amount_finance_report', methods: ['GET'])]
+    public function amountFinanceReport(Request $request,
+        RouterInterface $router,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
+    ): Response {
+        $response = $this->amountFinance($request, $router, $corporateEntityRepository, $enterpriseClientRepository, $projectRepository);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+
+        $template = ($request->isXmlHttpRequest()) ? '_amount_finance.html.twig' : 'report.html.twig';
+
+        return $this->render("corporate_entity/report/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'title' => 'Finanzas de obras por entidades corporativas',
+            'list' => '_amount_finance',
+            'currency' => 'CUP', // TODO: poner la moneda del sistema
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/amount_finance_report_print', name: 'app_corporate_entity_amount_finance_report_print', methods: ['GET'])]
+    public function amountFinanceReportPrint(Request $request,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
+        RouterInterface $router,
+        PdfAssetManager $pdfAssetManager,
+        PdfGenerator $pdfGenerator,
+    ): Response {
+        $response = $this->amountFinance($request, $router, $corporateEntityRepository, $enterpriseClientRepository, $projectRepository, true);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        [$filter, $paginator] = $response;
+        assert($paginator instanceof Paginator);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'corporate_entity/pdf/amount_finance.twig', 'Finanzas de obras por entidades corporativas', 'corporate_entity_finanzas', ['currency' => 'CUP']);
+    }
+
+    /**
+     * @return RedirectResponse|array<mixed>
+     *
+     * @throws Exception
+     */
+    private function amountFinance(
+        Request $request,
+        RouterInterface $router,
+        CorporateEntityRepository $corporateEntityRepository,
+        EnterpriseClientRepository $enterpriseClientRepository,
+        ProjectRepository $projectRepository,
+        bool $pdf = false,
+    ): RedirectResponse|array {
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        if (true === $pdf) {
+            $amountPerPage = null;
+            $pageNumber = null;
+        }
+
+        $data = $corporateEntityRepository->findEntities($filter, $amountPerPage, $pageNumber);
+        $newData = $this->addFinance($enterpriseClientRepository, $projectRepository, $data);
+
+        $paginator = new Paginator($newData, $amountPerPage, $pageNumber, count($corporateEntityRepository->findEntities($filter, null, null)));
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        return [$filter, $paginator];
+    }
+
+    /**
+     * @param \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $data
+     *
+     * @return array<mixed>
+     */
+    public function addFinance(EnterpriseClientRepository $enterpriseClientRepository, ProjectRepository $projectRepository, \Doctrine\ORM\Tools\Pagination\Paginator $data): array
+    {
+        $newData = [];
+        /* @var CorporateEntity $corporateEntity */
+        foreach ($data as $corporateEntity) {
+            assert($corporateEntity instanceof CorporateEntity);
+
+            $item = [];
+            $item['id'] = $corporateEntity->getId();
+            $item['name'] = $corporateEntity->getName();
+
+            $approvedValue = 0;
+            $estimatedValue = 0;
+            $estimatedAdjustValue = 0;
+            $constructionAssembly = 0;
+            $constructionRealValue = 0;
+
+            $enterpriseClients = $enterpriseClientRepository->findBy(['corporateEntity' => $corporateEntity]);
+            foreach ($enterpriseClients as $enterpriseClient) {
+                $projects = $projectRepository->findBy(['client' => $enterpriseClient]);
+                foreach ($projects as $project) {
+                    foreach ($project->getBuildings() as $building) {
+                        $approvedValue += (int) $building->getTotalApprovedValue();
+                        $estimatedValue += $building->getPrice();
+                        $estimatedAdjustValue += $building->getEstimatedAdjustValue();
+                        $constructionAssembly += $building->getConstructionAssembly();
+                        $constructionRealValue += $building->getConstructionRealValue();
+                    }
+                }
+            }
+
+            $item['approvedValue'] = $approvedValue;
+            $item['estimatedValue'] = $estimatedValue;
+            $item['estimatedAdjustValue'] = $estimatedAdjustValue;
+            $item['constructionAssembly'] = $constructionAssembly;
+            $item['constructionRealValue'] = $constructionRealValue;
+            $newData[] = $item;
+        }
+
+        return $newData;
     }
 }

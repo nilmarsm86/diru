@@ -1,0 +1,54 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: '',
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+    {% block header %}
+        {{ include('corporate_entity/_header.html.twig', {
+            'print_link':'app_corporate_entity_amount_finance_report_print',
+            'types':[]
+        }) }}
+    {% endblock %}
+
+    {% block body %}
+        {% component 'Table:Table' with {
+            paginator: paginator,
+            columns: [null, 'V. Aprobado', 'V. Estimado', 'P. Estimado', 'P. Detallado', 'V. Real']
+        } %}
+
+            {% block tableHead %}
+                <tr>
+                    <th>Nombre</th>
+                    <th>V. Aprobado ({{ currency }})</th>
+                    <th>V. Estimado ({{ currency }})</th>
+                    <th>P. Estimado ({{ currency }})</th>
+                    <th>P. Detallado ({{ currency }})</th>
+                    <th>V. Real ({{ currency }})</th>
+                </tr>
+            {% endblock %}
+
+            {% block tableBody %}
+                {% from 'macros/link.html.twig' import filterLink %}
+
+                {% for corporate_entity in paginator.getData() %}
+                    <tr>
+                        <td>{{ corporate_entity.name }}</td>
+                        <td>{{ money(corporate_entity.approvedValue) }}</td>
+                        <td>{{ money(corporate_entity.estimatedValue) }}</td>
+                        <td>{{ money(corporate_entity.estimatedAdjustValue) }}</td>
+                        <td>{{ money(corporate_entity.constructionAssembly) }}</td>
+                        <td>{{ money(corporate_entity.constructionRealValue) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No se encontraron entidades corporativas.</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+        {% endcomponent %}
+
+    {% endblock %}
+
+{% endcomponent %}

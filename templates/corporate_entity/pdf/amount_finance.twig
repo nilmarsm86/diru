@@ -1,0 +1,23 @@
+{% extends 'corporate_entity/pdf/pdf.html.twig' %}
+
+{% block columns %}
+    <tr>
+        {{ th(app.request, 0, 'column', 'Nombre') }}
+        {{ th(app.request, 1, 'column', 'V. Aprobado ('~currency~')') }}
+        {{ th(app.request, 2, 'column', 'V. Estimado ('~currency~')') }}
+        {{ th(app.request, 3, 'column', 'P. Estimado ('~currency~')') }}
+        {{ th(app.request, 4, 'column', 'P. Detallado ('~currency~')') }}
+        {{ th(app.request, 5, 'column', 'V. Real ('~currency~')') }}
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        {{ td(app.request, 0, 'column', corporate_entity.name) }}
+        {{ td(app.request, 1, 'column', money(corporate_entity.approvedValue)) }}
+        {{ td(app.request, 2, 'column', money(corporate_entity.estimatedValue)) }}
+        {{ td(app.request, 3, 'column', money(corporate_entity.estimatedAdjustValue)) }}
+        {{ td(app.request, 4, 'column', money(corporate_entity.constructionAssembly)) }}
+        {{ td(app.request, 5, 'column', money(corporate_entity.constructionRealValue)) }}
+    </tr>
+{% endblock %}

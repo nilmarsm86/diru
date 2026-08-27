@@ -14,7 +14,12 @@ export default class extends AbstractController {
         isNew: {type: Boolean, default: false},
     };
 
-    static targets = ["name", "area", "type", "height", "technicalStatus"];
+    static targets = ["name", "area", "type", "height", "technicalStatus", "constructiveAction", "price", "constructiveSystem"];
+
+    currency = new Intl.NumberFormat('es-CU', {
+        style: 'currency',
+        currency: 'CUP',
+    });
 
     connect() {
         useCsrfToken(this);
@@ -38,6 +43,27 @@ export default class extends AbstractController {
         this.typeTarget.addEventListener('change', (event) => {
             this.heightTechnicalStatus();
         });
+
+        this.constructiveAction(this.constructiveActionTarget.value);
+
+        this.constructiveActionTarget.addEventListener('change', (event) => {
+            this.constructiveAction(event.target.value);
+        });
+    }
+
+    constructiveAction(value) {
+        if (value === this.constructiveActionTarget.options[1].value) {
+            this.priceTarget.value = 0;
+            this.priceTarget.dispatchEvent(new Event('change'));
+            this.priceTarget.setAttribute('readonly', '');
+
+            this.constructiveSystemTarget.value = this.constructiveSystemTarget.options[1].value;//1 Ninguno
+            this.constructiveSystemTarget.dispatchEvent(new Event('change'));
+            this.constructiveSystemTarget.setAttribute('readonly', '');
+        } else {
+            this.priceTarget.removeAttribute('readonly');
+            this.constructiveSystemTarget.removeAttribute('readonly');
+        }
     }
 
     async initialize() {

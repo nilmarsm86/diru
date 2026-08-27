@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\Paginator;
+use App\Entity\SubSystem;
 use App\Repository\BuildingRepository;
 use App\Repository\SubSystemRepository;
 use App\Service\Building\BuildingValuationService;
@@ -23,9 +24,20 @@ final class HistoricalIteController extends AbstractController
         $result = $crudActionService->getManageQuerys($request);
         list($filter, $amountPerPage, $pageNumber) = $result;
 
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator<mixed> $data */
         $data = $subSystemRepository->getIteReferences($filter, $amountPerPage, $pageNumber);
 
-        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        $data = iterator_to_array($data);
+        $newData = [];
+        for ($i = 0; $i < count($data); ++$i) {
+            /** @var SubSystem $subsystem */
+            $subsystem = $data[$i];
+            if ($subsystem->getPrice() > 0) {
+                $newData[] = $subsystem;
+            }
+        }
+
+        $paginator = new Paginator($newData, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
             return $paginator->greatherThanTotal($request, $router, $pageNumber);
         }

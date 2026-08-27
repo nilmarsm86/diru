@@ -145,6 +145,8 @@ class LocalType extends AbstractType
             'label' => 'Área:',
             'attr' => $attr,
             'constraints' => $constraints,
+            'help' => 'Desde '.$attr['min'].'m<sup>2</sup> hasta '.$leftArea.'m<sup>2</sup>',
+            'help_html' => true,
         ]);
 
         $subSystem = $local->getSubSystem();

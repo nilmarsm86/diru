@@ -56,15 +56,15 @@
             <br>
             <div class="mb-0 row">
                 <div class="col">
-                    {{ form_row(form.localConstructiveAction.constructiveAction) }}
+                    {{ form_row(form.localConstructiveAction.constructiveAction, {attr:{'data-live--local-form-target':'constructiveAction'}}) }}
                 </div>
                 {% if form.localConstructiveAction.price is defined %}
                     <div class="col" {{ stimulusController('usd-currency') }}>
-                        {{ form_row(form.localConstructiveAction.price) }}
+                        {{ form_row(form.localConstructiveAction.price, {attr:{'data-live--local-form-target':'price'}}) }}
                     </div>
                 {% endif %}
                 <div class="col">
-                    {{ form_row(form.localConstructiveAction.constructiveSystem) }}
+                    {{ form_row(form.localConstructiveAction.constructiveSystem, {attr:{'data-live--local-form-target':'constructiveSystem'}}) }}
                 </div>
             </div>
         </details>

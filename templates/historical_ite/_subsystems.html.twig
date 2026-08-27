@@ -35,7 +35,7 @@
                         <td>{{ sub_system.name|u.truncate(50, '...', false) }}</td>
                         <td>{{ sub_system.floor.building.name|u.truncate(50, '...', false) }}</td>
                         <td>{{ sub_system.floor.building.project.name|u.truncate(50, '...', false) }}</td>
-                        <td style="width: 100px">{{ sub_system.floor.building.revisedAt|date('Y-m-d') }}</td>
+                        <td style="width: 100px">{{ sub_system.floor.building.revisionDraftsmanAt|date('Y-m-d') }}</td>
 
                         <td class="text-end">{{ money(sub_system.getIte()) }}</td>
                     </tr>

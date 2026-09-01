@@ -10,6 +10,8 @@ namespace App\Service\IteImport\DTO;
  * Actúa como tipo frontera entre los Readers (específicos por formato) y el Mapper
  * (específico por persistencia). Añadir un formato nuevo solo requiere implementar
  * un Reader que produzca este DTO.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveParameterList)
  */
 final readonly class IteImportRow
 {

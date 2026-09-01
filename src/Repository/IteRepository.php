@@ -3,9 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Enums\IteQuality;
-use App\Entity\Enums\IteType;
 use App\Entity\Ite;
+use App\Repository\Criterias\IteSearchCriteria;
 use App\Repository\Interfaces\FilterInterface;
+use App\Repository\Pagination\Pagination;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -113,18 +114,8 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
     /**
      * @return Paginator<mixed>
      */
-    public function findItes(
-        string $filter = '',
-        int $amountPerPage = 10,
-        int $page = 1,
-        ?IteType $type = null,
-        string $quality = '',
-        string $measurementUnit = '',
-        string $source = '',
-        string $projectType = '',
-        string $city = '',
-        string $country = '',
-    ): Paginator {
+    public function findItes(IteSearchCriteria $criteria, Pagination $pagination): Paginator
+    {
         $builder = $this->createQueryBuilder('i')
             ->select(['i', 'mu', 'ites', 'c', 'ipt'])
             ->leftJoin('i.measurementUnit', 'mu')
@@ -132,20 +123,21 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
             ->leftJoin('i.city', 'c')
             ->leftJoin('c.country', 'cou')
             ->leftJoin('i.projectType', 'ipt');
-        if (null !== $type) {
-            $builder->where('i.type = :type')
-                ->setParameter(':type', $type);
+        if (null !== $criteria->type) {
+            $builder->andWhere('i.type = :type')
+                ->setParameter(':type', $criteria->type);
         }
-        $this->addQuality($builder, $quality);
-        $this->addMeasurementUnit($builder, $measurementUnit);
-        $this->addSource($builder, $source);
-        $this->addProjectType($builder, $projectType);
-        $this->addCity($builder, $city);
-        $this->addCountry($builder, $country);
-        $this->addFilter($builder, $filter);
+
+        $this->addQuality($builder, $criteria->quality);
+        $this->addMeasurementUnit($builder, $criteria->measurementUnit);
+        $this->addSource($builder, $criteria->source);
+        $this->addProjectType($builder, $criteria->projectType);
+        $this->addCity($builder, $criteria->city);
+        $this->addCountry($builder, $criteria->country);
+        $this->addFilter($builder, $criteria->filter);
         $query = $builder->orderBy('i.yearReference', 'DESC')
             ->getQuery();
 
-        return $this->paginate($query, $page, $amountPerPage);
+        return $this->paginate($query, $pagination->page, $pagination->amountPerPage);
     }
 }

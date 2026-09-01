@@ -12,7 +12,9 @@ use App\Entity\Ite;
 use App\Entity\IteProjectType;
 use App\Entity\IteSource;
 use App\Entity\MeasurementUnit;
+use App\Repository\Criterias\IteSearchCriteria;
 use App\Repository\IteRepository;
+use App\Repository\Pagination\Pagination;
 use App\Service\CrudActionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,7 +69,9 @@ final class IteController extends AbstractController
         $city = $request->query->get('city', '');
         $country = $request->query->get('country', '');
 
-        $data = $entityManager->getRepository(Ite::class)->findItes($filter, $amountPerPage, $pageNumber, IteType::National, $quality, $measurementUnit, $source, $projectType, $city, $country);
+        $iteSearchCriteria = new IteSearchCriteria($filter, IteType::National, $quality, $measurementUnit, $source, $projectType, $city, $country);
+        $pagination = new Pagination($pageNumber, $amountPerPage);
+        $data = $entityManager->getRepository(Ite::class)->findItes($iteSearchCriteria, $pagination);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -104,7 +108,10 @@ final class IteController extends AbstractController
         $city = $request->query->get('city', '');
         $country = $request->query->get('country', '');
 
-        $data = $entityManager->getRepository(Ite::class)->findItes($filter, $amountPerPage, $pageNumber, IteType::International, $quality, $measurementUnit, $source, $projectType, $city, $country);
+        $iteSearchCriteria = new IteSearchCriteria($filter, IteType::International, $quality, $measurementUnit, $source, $projectType, $city, $country);
+        $pagination = new Pagination($pageNumber, $amountPerPage);
+        $data = $entityManager->getRepository(Ite::class)->findItes($iteSearchCriteria, $pagination);
+        //        $data = $entityManager->getRepository(Ite::class)->findItes($filter, $amountPerPage, $pageNumber, IteType::International, $quality, $measurementUnit, $source, $projectType, $city, $country);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {

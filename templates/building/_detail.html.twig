@@ -6,7 +6,9 @@
 } %}
 
     {% block header %}
-        {{ include('building/_buttons_header.html.twig') }}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
+{#        {{ include('building/_buttons_header.html.twig') }}#}
+        {{ tableActionButton3('#', 'mdi:close', '', 'Cerrar', stimulusAction('twig/card/card', 'close:prevent'), 'btn-link') }}
     {% endblock %}
 
     {% block body %}
@@ -19,35 +21,35 @@
                 </tr>
                 <tr>
                     <th>Valor estimado de construcción:</th>
-                    <td>{{ building.getPrice() }}</td>
+                    <td>{{ money(building.getPrice(), building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Valor estimado de equipos:</th>
-                    <td>{{ building.estimatedValueEquipment }}</td>
+                    <td>{{ money(building.estimatedValueEquipment, building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Otros valores estimados:</th>
-                    <td>{{ building.estimatedValueOther }}</td>
+                    <td>{{ money(building.estimatedValueOther, building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Total valores estimados:</th>
-                    <td>{{ building.getTotalEstimatedValue() }}</td>
+                    <td>{{ money(building.getTotalEstimatedValue(), building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Valor aprobado de construcción:</th>
-                    <td>{{ building.approvedValueConstruction }}</td>
+                    <td>{{ money(building.approvedValueConstruction, building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Valor aprobado de equipos:</th>
-                    <td>{{ building.approvedValueEquipment }}</td>
+                    <td>{{ money(building.approvedValueEquipment, building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Otros valores aprobados:</th>
-                    <td>{{ building.approvedValueOther }}</td>
+                    <td>{{ money(building.approvedValueOther, building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Total valores aprobados:</th>
-                    <td>{{ building.getTotalApprovedValue() }}</td>
+                    <td>{{ money(building.getTotalApprovedValue(), building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
                     <th>Constructora:</th>

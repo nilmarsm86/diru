@@ -152,7 +152,7 @@ final class LandForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_land_edit', ['id' => $land->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_land_edit', ['id' => $land->getId(), 'building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

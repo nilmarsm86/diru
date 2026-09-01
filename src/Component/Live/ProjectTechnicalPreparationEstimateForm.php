@@ -94,7 +94,7 @@ final class ProjectTechnicalPreparationEstimateForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_ptp_estimate_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ptp_estimate_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

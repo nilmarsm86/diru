@@ -94,7 +94,7 @@ final class BuildingRevisionForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_building_revision_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_building_revision_index', ['building' => $br->getBuilding()?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

@@ -130,7 +130,7 @@ final class BuildingController extends AbstractController
     }
 
     #[Route('/project/{project}/print', name: 'app_building_project_print', methods: ['GET'])]
-    public function print(Request $request, RouterInterface $router, BuildingRepository $buildingRepository, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function print(Request $request, BuildingRepository $buildingRepository, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
         $state = $request->query->get('state', '');

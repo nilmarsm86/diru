@@ -10,7 +10,6 @@ use App\Repository\LocationZoneRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
 use App\Service\Pdf\PdfGenerator;
-use App\Service\UbicationReportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,7 +110,7 @@ final class LocationZoneController extends AbstractController
     }
 
     #[Route('/amount_project_report', name: 'app_location_zone_amount_project_report', methods: ['GET'])]
-    public function amountProjectReport(Request $request, RouterInterface $router, LocationZoneRepository $locationZoneRepository, UbicationReportService $ubicationReport): Response
+    public function amountProjectReport(Request $request, RouterInterface $router, LocationZoneRepository $locationZoneRepository): Response
     {
         $filter = $request->query->get('filter', '');
         $amountPerPage = (int) $request->query->get('amount', '10');
@@ -137,7 +136,6 @@ final class LocationZoneController extends AbstractController
     public function amountProjectReportPrint(Request $request, LocationZoneRepository $locationZoneRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $locationZoneRepository->findAmountProject($filter, null, null);

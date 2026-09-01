@@ -125,7 +125,7 @@ class BuildingType extends AbstractType
         $form = $event->getForm();
         $currency = 'CUP';
         $activeCorporateEntity = null;
-        $activeCorporateEntityDraftman = null;
+        //        $activeCorporateEntityDraftman = null;
         $projectPriceTechnicalPreparationAddConfig = [];
         $estimatedValueUrbanizationAddConfig = [];
         $estimatedJustValueAddConfig = [];
@@ -146,7 +146,7 @@ class BuildingType extends AbstractType
             $currency = $project?->getCurrency();
             $currency = $currency?->getCode();
             $activeCorporateEntity = $building->getActiveConstructorCorporateEntity();
-            $activeCorporateEntityDraftman = $building->getActiveConstructorCorporateEntity();
+            //            $activeCorporateEntityDraftman = $building->getActiveConstructorCorporateEntity();
 
             $projectPriceTechnicalPreparationAddConfig = [
                 'add' => true,
@@ -213,6 +213,7 @@ class BuildingType extends AbstractType
                     'data-currency-target' => 'field',
                     'data-vecpppt' => true,
                     'data-controller' => 'money',
+                    'data-usd-currency-target' => 'field',
                     'readonly' => 'readonly',
                     'tabindex' => '-1',
                     'title' => 'El valor de este campo es calculado automaticamente a medida que se llenen las acciones constructivas de los locales de la obra + conexiones de red interna.',
@@ -237,6 +238,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
@@ -253,6 +255,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
@@ -269,6 +272,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
@@ -285,6 +289,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-controller' => 'money',
                 ],
                 'empty_data' => 0,
@@ -302,6 +307,7 @@ class BuildingType extends AbstractType
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
                     'data-controller' => 'money',
+                    'data-usd-currency-target' => 'field',
                 ],
                 'empty_data' => 0,
                 'required' => false,
@@ -317,6 +323,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-vecpppt' => true,
                     'readonly' => 'readonly',
                     'data-controller' => 'money',
@@ -352,6 +359,7 @@ class BuildingType extends AbstractType
                     'min' => 0,
                     'data-summation-values-target' => 'field',
                     'data-currency-target' => 'field',
+                    'data-usd-currency-target' => 'field',
                     'data-vecpppt' => true,
                     'readonly' => 'readonly',
                     'data-type--money-plus-target' => 'field',

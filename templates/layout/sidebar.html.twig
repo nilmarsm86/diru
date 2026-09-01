@@ -78,22 +78,22 @@
                     title: 'Históricos',
                     target: 'history-collapse',
                     items: [
-                        {link: 'app_historical_ite_subsystem', icon: 'hugeicons:transaction-history', label: 'ITE Subsistema', base:null},
-                        {link: 'app_historical_ite_building', icon: 'hugeicons:transaction-history', label: 'ITE Obra', base:null},
-                        {link: 'app_historical_ite_building_ajust', icon: 'hugeicons:transaction-history', label: 'ITE Obra ajuste', base:null},
-                        {link: 'app_historical_ite_building_detail', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. det', base:null},
-                        {link: 'app_historical_ite_building_real', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. real', base:null},
+                        {link: 'app_historical_ite_subsystem', icon: 'hugeicons:transaction-history', label: 'ITE Subsistema', base:'app_historical_ite_subsystem'},
+                        {link: 'app_historical_ite_building_ajust', icon: 'hugeicons:transaction-history', label: 'ITE Obra ajuste', base:'app_historical_ite_building_ajust'},
+                        {link: 'app_historical_ite_building_detail', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. det', base:'app_historical_ite_building_detail'},
+                        {link: 'app_historical_ite_building_real', icon: 'hugeicons:transaction-history', label: 'ITE Obra presup. real', base:'app_historical_ite_building_real'},
+                        {link: 'app_historical_ite_building', icon: 'hugeicons:transaction-history', label: 'ITE Obra', base:'app_historical_ite_building'},
                     ]
                 }) }}
                 {{ component('nav:nav-item', {
                     title: 'Referencias ITE',
                     target: 'reference-collapse',
                     items: [
-                        {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar', base:null},
-                        {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales', base:null},
-                        {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales', base:null},
-                        {link: 'app_ite_source_index', icon: 'fluent-mdl2:source', label: 'Fuentes', base:null},
-                        {link: 'app_ite_project_type_index', icon: 'oi:project', label: 'Tipo de proyecto', base:null},
+                        {link: 'ite_upload_index', icon: 'bi:upload', label: 'Importar', base:'ite_upload_index'},
+                        {link: 'app_ite_national', icon: 'icon-park-outline:local', label: 'Nacionales', base:'app_ite_national'},
+                        {link: 'app_ite_international', icon: 'streamline-freehand:currency-international-currency', label: 'Internacionales', base:'app_ite_international'},
+                        {link: 'app_ite_source_index', icon: 'fluent-mdl2:source', label: 'Fuentes', base:'app_ite_source_index'},
+                        {link: 'app_ite_project_type_index', icon: 'oi:project', label: 'Tipo de proyecto', base:'app_ite_project_type_index'},
                     ]
                 }) }}
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}

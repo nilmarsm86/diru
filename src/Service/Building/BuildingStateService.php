@@ -88,6 +88,9 @@ readonly class BuildingStateService
         // TODO: guardar el ITE de los subsistemas
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     private function handleDesignTransition(Building $building): void
     {
         // Aquí puedes poner lógica específica de cuando pasa a Diseño

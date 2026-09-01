@@ -114,7 +114,7 @@ final class ProjectUrbanRegulationForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_project_urban_regulation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_project_urban_regulation_index', ['project' => $pur->getProject()?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

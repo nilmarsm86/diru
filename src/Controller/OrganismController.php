@@ -152,7 +152,6 @@ final class OrganismController extends AbstractController
     public function amountCorporateEntityReportPrint(Request $request, OrganismRepository $organismRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $organismRepository->findByCorporateEntityType($filter, null, null);
@@ -199,7 +198,6 @@ final class OrganismController extends AbstractController
     public function amountEnterpriseClientReportPrint(Request $request, OrganismRepository $organismRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $organismRepository->findByEnterpriseClient($filter, null, null);
@@ -246,7 +244,6 @@ final class OrganismController extends AbstractController
     public function amountProjectAndBuildingReportPrint(Request $request, OrganismRepository $organismRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $organismRepository->findAmountProjectAndBuildings($filter, null, null);

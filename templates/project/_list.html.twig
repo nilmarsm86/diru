@@ -60,7 +60,7 @@
                         <th>Estado</th>
                     {% endif %}
                     <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
-                    <th data-bs-toggle="tooltip" title="Costo de construcción">Monto (CUP)</th>
+                    <th data-bs-toggle="tooltip" title="Costo de construcción">Monto</th>
                     <th></th>
                 </tr>
             {% endblock %}
@@ -102,7 +102,7 @@
                                 {{ project.investment }}
                             </a>
                         </td>
-                        <td>{{ money(project.getPrice()) }}</td>
+                        <td>{{ money(project.getPrice(), project.currency.code) }}</td>
                         <td class="text-end">
                             <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Obras del proyecto">
                                 <button type="button"

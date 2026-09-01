@@ -65,13 +65,13 @@
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('summation-values') }}>
-        <div class="col">
+        <div class="col" {{ stimulusController('usd-currency') }}>
             {{ form_row(approvedValueConstruction) }}
         </div>
-        <div class="col">
+        <div class="col" {{ stimulusController('usd-currency') }}>
             {{ form_row(approvedValueEquipment) }}
         </div>
-        <div class="col">
+        <div class="col" {{ stimulusController('usd-currency') }}>
             {{ form_row(approvedValueOther) }}
         </div>
         <div class="col">
@@ -102,13 +102,13 @@
     <br>
     <div {{ stimulusController('summation-values') }}>
         <div class="mb-0 row">
-            <div class="col">
+            <div class="col" {{ stimulusController('usd-currency') }}>
                 {{ form_row(estimatedValueConstruction) }}
             </div>
-            <div class="col">
+            <div class="col" {{ stimulusController('usd-currency') }}>
                 {{ form_row(projectPriceTechnicalPreparation) }}
             </div>
-            <div class="col">
+            <div class="col" {{ stimulusController('usd-currency') }}>
                 {{ form_row(estimatedValueUrbanization) }}
             </div>
 
@@ -154,10 +154,10 @@
         </div>
 
         <div class="mb-0 row">
-            <div class="col-4">
+            <div class="col-4" {{ stimulusController('usd-currency') }}>
                 {{ form_row(estimatedValueEquipment) }}
             </div>
-            <div class="col-4">
+            <div class="col-4" {{ stimulusController('usd-currency') }}>
                 {{ form_row(estimatedValueOther) }}
             </div>
             <div class="col-4">

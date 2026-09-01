@@ -155,7 +155,6 @@ final class CorporateEntityController extends AbstractController
     public function amountTypeReportPrint(Request $request, CorporateEntityRepository $corporateEntityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $corporateEntityRepository->findByType($filter, null, null);
@@ -202,7 +201,6 @@ final class CorporateEntityController extends AbstractController
     public function amountProjectAndBuildingReportPrint(Request $request, CorporateEntityRepository $corporateEntityRepository, RouterInterface $router, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $data = $corporateEntityRepository->findAmountProjectAndBuildings($filter, null, null);

@@ -136,7 +136,7 @@ $level = isset($argv[1]) && is_numeric($argv[1])
 $levelFile = __DIR__.'/../phpmd/.level';
 if (null === $level) {
     $level = file_exists($levelFile)
-        ? (int) trim(file_get_contents($levelFile))
+        ? (int) trim(file_get_contents($levelFile) ?? '')
         : 0;
 }
 

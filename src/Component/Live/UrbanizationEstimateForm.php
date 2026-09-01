@@ -95,7 +95,7 @@ final class UrbanizationEstimateForm extends AbstractController
 
             $this->addFlash('success', $successMsg);
 
-            return $this->redirectToRoute('app_urbanization_estimate_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_urbanization_estimate_index', ['building' => $this->building?->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return null;

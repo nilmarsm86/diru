@@ -19,6 +19,9 @@ export default class extends AbstractController {
         this.fieldTargets.forEach((field) => {
             let inputGroupText = field.parentElement.querySelector('.input-group-text');
             inputGroupText.innerText = code;
+            if (inputGroupText.innerText === 'US$') {
+                inputGroupText.innerText = 'USD';
+            }
         });
     }
 

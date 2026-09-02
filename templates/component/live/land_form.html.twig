@@ -1,9 +1,9 @@
 <div {{ attributes.defaults(stimulusController('live/land-form', {modal:modal})) }}>
 
     {% if this.isNew() == true %}
-        {% set msg = 'Para un inmueble existente una vez creada la información de los datos del terreno, la misma <strong>NO</strong> podrá ser modificada.' %}
+        {% set msg = 'Para un inmueble existente una vez creada la información de los datos del terreno, la misma <strong>NO</strong> podrá ser modificada. Solo los documentos relacionados.' %}
     {% else %}
-        {% set msg = 'Esta información no puede ser modificada.' %}
+        {% set msg = 'Esta información no puede ser modificada. Solo los documentos relacionados.' %}
     {% endif %}
 
     {% if msg is defined %}
@@ -49,7 +49,8 @@
     {{ form_row(form.isNew) }}
 
     <details
-        class="collection" {{ stimulusTarget('live/land-form', 'details') }} open style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
+        class="collection" {{ stimulusTarget('live/land-form', 'details') }} open
+        style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
         <summary class="collection">
             <div class="row summary-btn-lis">
                 <div class="col">Tiene área a ocupada:</div>
@@ -83,49 +84,53 @@
                     {{ ux_icon('bi:download', {class:'bi'}) }}
                     Microlocalización
                 </a>
-            {% else %}
-                {{ form_row(form.micro) }}
-                {# TODO: crear una funcion para mostrar errores de subida de archivos #}
-                {% if pdfErrors is not empty %}
-                    {% for error in pdfErrors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
-                {% endif %}
+                <br>
+                <br>
             {% endif %}
+            {{ form_row(form.micro) }}
+            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+            {% if pdfErrors is not empty %}
+                {% for error in pdfErrors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+
         </div>
 
         <div class="col {% if l.photo is not null %}text-end{% endif %}">
             {% if l.photo is not null %}
                 <a type="button" class="btn btn-primary"
                    href="{{ absolute_url(constant('App\\Entity\\Land::PHOTO')~l.photo) }}" data-bs-toggle="tooltip"
-                   title="Foto del terreno" download="{{ l.photo }}">
+                   title="Foto del terreno" download="{{ l.photo }}" style="padding-left: 12px;padding-right: 12px;">
                     {{ ux_icon('bi:download', {class:'bi'}) }}
                     Foto del terreno
                 </a>
-            {% else %}
-                {{ form_row(form.picture) }}
-                {# TODO: crear una funcion para mostrar errores de subida de archivos #}
-                {% if pictureErrors is not empty %}
-                    {% for error in pictureErrors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
-                {% endif %}
+                <br>
+                <br>
             {% endif %}
+            {{ form_row(form.picture) }}
+            {# TODO: crear una funcion para mostrar errores de subida de archivos #}
+            {% if pictureErrors is not empty %}
+                {% for error in pictureErrors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+
         </div>
     </div>
 
     {#    {% if this.isNew() == true or this.building.isNew() == true %} #}
-    {% if this.isNew() == true %}
-        <div class="row mb-3">
-            <div class="col-sm-12">
-                {{ component('button:submit', {
-                    icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
-                    label: this.isNew() ? 'Agregar' : 'Modificar',
-                    component: this,
-                }) }}
-            </div>
+    {#    {% if this.isNew() == true %} #}
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            {{ component('button:submit', {
+                icon: this.isNew() ? 'bi:plus-lg' : 'fa:edit',
+                label: this.isNew() ? 'Agregar' : 'Modificar',
+                component: this,
+            }) }}
         </div>
-    {% endif %}
+    </div>
+    {#    {% endif %} #}
     {{ form_row(form._token) }}
     {{ form_end(form, {render_rest:false}) }}
 </div>

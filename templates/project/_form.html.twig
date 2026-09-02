@@ -8,6 +8,8 @@
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
+        <span>&nbsp;({{ money(project.getPrice(), project.currency.code) }})</span>
+
         <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
             {% if project.id is not null %}
                 <div class="btn-group" role="group" aria-label="Regulaciones Urbanas">

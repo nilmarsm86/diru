@@ -91,7 +91,7 @@ class LandType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'accept' => '.jpg,image/jpeg,.jpeg,.png,image/png',
-                ] + $disabled,
+                ],
                 'mapped' => false,
                 'help' => 'Imágenes *.jpg, *.jpeg, *.png',
             ])
@@ -100,7 +100,7 @@ class LandType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'accept' => '.pdf,application/pdf',
-                ] + $disabled,
+                ],
                 'mapped' => false,
                 'help' => 'Documentos *.pdf',
             ])

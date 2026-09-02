@@ -11,8 +11,8 @@ readonly class PdfAssetManager
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private string $projectDir,
-
         private Filesystem $filesystem,
+        #[Autowire('%kernel.project_dir%/public/uploads')] private string $uploadsDirectory,
     ) {
     }
 
@@ -20,6 +20,22 @@ readonly class PdfAssetManager
     {
         // Usar Path::join para manejar correctamente Windows y Linux
         $path = Path::join($this->projectDir, 'public', 'icono.jpg');
+
+        if (!$this->filesystem->exists($path)) {
+            throw new \RuntimeException('Logo no encontrado en: '.$path);
+        }
+
+        return $this->encodeBase64Image($path);
+    }
+
+    public function logoToBase64(string $targetDirectory, ?string $logo): string
+    {
+        if (null === $logo) {
+            $logo = 'blank.png';
+        }
+
+        // Usar Path::join para manejar correctamente Windows y Linux
+        $path = Path::join($this->uploadsDirectory, $targetDirectory, $logo);
 
         if (!$this->filesystem->exists($path)) {
             throw new \RuntimeException('Logo no encontrado en: '.$path);

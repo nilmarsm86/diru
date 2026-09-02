@@ -32,6 +32,9 @@ final class LandForm extends AbstractController
     use ComponentForm;
     use LiveCollectionTrait;
 
+    public const LAND_PHOTO = '/land/photo';
+    public const LAND_MICROLOCALIZATION = '/land/microlocalization';
+
     /**
      * The initial data used to create the form.
      */
@@ -87,7 +90,9 @@ final class LandForm extends AbstractController
     ): ?Response {
         $this->pictureErrors = []; // Limpiar errores previos
         $this->pdfErrors = []; // Limpiar errores previos
-        $successMsg = (is_null($this->l?->getId())) ? 'Se han agregado los datos del terreno.' : 'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
+        $successMsg = (is_null($this->l?->getId())) ?
+            'Se han agregado los datos del terreno.' :
+            'Se han modificado los datos del terreno.'; // TODO: personalizar los mensajes
 
         $this->submitForm();
 
@@ -204,8 +209,11 @@ final class LandForm extends AbstractController
                 return null;
             }
 
-            $newFilename = $fileUploader->upload($photoFile, '/land/photo');
+            $newFilename = $fileUploader->upload($photoFile, self::LAND_PHOTO);
             if (null !== $newFilename) {
+                if (null !== $land->getPhoto()) {
+                    $fileUploader->removeOld(self::LAND_PHOTO, $land->getPhoto());
+                }
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $land->setPhoto($newFilename);
@@ -248,8 +256,12 @@ final class LandForm extends AbstractController
                 return null;
             }
 
-            $newFilename = $fileUploader->upload($pdfFile, '/land/microlocalization');
+            $newFilename = $fileUploader->upload($pdfFile, self::LAND_MICROLOCALIZATION);
             if (null !== $newFilename) {
+                if (null !== $land->getMicrolocalization()) {
+                    $fileUploader->removeOld(self::LAND_MICROLOCALIZATION, $land->getMicrolocalization());
+                }
+
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $land->setMicrolocalization($newFilename);

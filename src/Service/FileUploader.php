@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -29,5 +30,13 @@ class FileUploader
         }
 
         return $fileName;
+    }
+
+    public function removeOld(string $targetDirectory, string $fileName): void
+    {
+        $fileSystem = new Filesystem();
+        if ($fileSystem->exists($this->uploadsDirectory.$targetDirectory.'/'.$fileName)) {
+            $fileSystem->remove($this->uploadsDirectory.$targetDirectory.'/'.$fileName);
+        }
     }
 }

@@ -15,7 +15,7 @@
                     cssClass: 'text-bg-light mb-3'
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Proyectos</h6>
+                        <h6 class="card-subtitle mb-2">Proyectos en el sistema</h6>
                         <h1>{{ project_amount }}</h1>
                         <a href="{{ path('app_project_index') }}" class="card-link">Ver todo</a>
                     {% endblock %}
@@ -72,7 +72,7 @@
                     cssClass: 'text-bg-light mb-3'
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Subsistemas utilizadas</h6>
+                        <h6 class="card-subtitle mb-2">Subsistemas utilizados en el sistema</h6>
                         <h1>{{ subsystems }}</h1>
                         <a href="{{ path('app_historical_ite_subsystem') }}" class="card-link">Ver todas</a>
                     {% endblock %}
@@ -86,7 +86,7 @@
                     cssClass: 'text-bg-light mb-3'
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Obras</h6>
+                        <h6 class="card-subtitle mb-2">Obras en el sistema</h6>
                         <h1>{{ buildings }}</h1>
                         {#                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a> #}
                     {% endblock %}

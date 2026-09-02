@@ -146,11 +146,19 @@ final class LocalController extends AbstractController
     #[Route('/{id}/local/technical_status', name: 'app_sub_system_report_local_technical_status', methods: ['GET'])]
     public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
+        $clientLogo = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient()?->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
+        $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();
+        $draftmanLogo = $subSystem->getFloor()?->getBuilding()?->getActiveDraftmanCorporateEntity()->getLogo();
+
         $html = $this->renderView('local/pdf/technical_status.html.twig', [
             'local_status' => $subSystem->getAmountTechnicalStatus(),
             'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
             'sub_system' => $subSystem,
             'logo' => $pdfAssetManager->getLogoBase64(),
+            'client_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $clientLogo),
+            'constructor_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $constructorLogo),
+            'draftman_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $draftmanLogo),
+            'title' => 'Estado técnico',
         ]);
 
         $pdfContent = $pdfGenerator->generate($html);

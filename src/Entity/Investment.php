@@ -212,4 +212,15 @@ class Investment
     {
         return $this->getProjects()->count() > 0;
     }
+
+    public function getAddress(): string
+    {
+        return 'Calle '.$this->getStreet().
+            ' #'.$this->getAddressNumber().
+            ', entre '.$this->getBetweenStreets().
+            ', consejo popular '.$this->getPopularCouncil().
+            ', reparto '.$this->getTown().
+            ', '.$this->getMunicipalityName().
+            ', '.$this->getProvinceName();
+    }
 }

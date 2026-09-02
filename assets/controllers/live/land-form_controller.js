@@ -24,7 +24,6 @@ export default class extends AbstractController {
 
         this.detailsTarget.style.visibility = (!this.isNewTarget.checked) ? 'hidden' : 'visible';
 
-        console.log(Number(this.occupiedTarget.value));
         if(Number(this.occupiedTarget.value) > 0){
             this.detailsTarget.style.visibility = 'visible';
         }

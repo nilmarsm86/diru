@@ -55,9 +55,6 @@ final class HomeController extends AbstractController
             'subsystems' => count($newData),
             'min' => $buildingValuationService->getResultIte($min),
             'max' => $buildingValuationService->getResultIte($max),
-            'individual_clients' => $entityManager->getRepository(IndividualClient::class)->amount(),
-            'enterprise_clients' => $entityManager->getRepository(EnterpriseClient::class)->amount(),
-            'representatives' => $entityManager->getRepository(Representative::class)->amount(),
             'chart1' => $this->chart1($chartBuilder, $finance),
             'chart2' => $this->chart2($chartBuilder, $lastThree),
             'chart3' => $this->chart3($chartBuilder, $finance),
@@ -87,7 +84,6 @@ final class HomeController extends AbstractController
         $constructionAssembly = 0;
         $constructionRealValue = 0;
         $buildings = $entityManager->getRepository(Building::class)->findAll();
-        //        $buildings = $buildingRepository->findAll();
         foreach ($buildings as $building) {
             $approvedValue += (int) $building->getTotalApprovedValue();
             $estimatedValue += $building->getPrice();
@@ -157,7 +153,7 @@ final class HomeController extends AbstractController
                 assert($item instanceof Project);
 
                 return $item->getName();
-            }, (array) $lastThree), // [$lastThree[0]->getName(), $lastThree[1]->getName(), $lastThree[2]->getName()],
+            }, (array) $lastThree),
             'datasets' => [
                 [
                     'label' => [''],

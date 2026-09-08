@@ -26,7 +26,8 @@
                 } %}
                     {% block body %}
                         <h3>{{ project_amount }} Proyectos</h3>
-                        <h5>{{ urban_regulations }} Regulaciones Urbanas <br>{{ subsystems }} Subsistemas en 3 Obras</h5>
+                        <h5>{{ urban_regulations }} Regulaciones Urbanas <br>{{ subsystems }} Subsistemas en 3 Obras
+                        </h5>
                     {% endblock %}
                 {% endcomponent %}
             </div>
@@ -50,7 +51,7 @@
                                     </div>
                                     <div class="col text-center">
                                         <output aria-hidden="true" class="badge text-bg-info" style="font-size: 1em">
-                                            {{ ((min + max) / 2)|number_format(2)  }}
+                                            {{ ((min + max) / 2)|number_format(2) }}
                                         </output>
                                     </div>
                                     <div class="col text-end">
@@ -62,25 +63,6 @@
                     {% endblock %}
                 {% endcomponent %}
             </div>
-
-
-            {#            <div class="col"> #}
-            {#                {% component 'Card:Card' with { #}
-            {#                    title: 'Últimos Proyectos', #}
-            {#                } %} #}
-            {#                    {% block body %} #}
-            {#                        <ul class="list-group list-group-flush"> #}
-            {#                            {% for project in last_three %} #}
-            {#                                <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a> #}
-            {#                                    <span #}
-            {#                                        class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span> #}
-            {#                                </li> #}
-            {#                            {% endfor %} #}
-            {#                        </ul> #}
-            {#                    {% endblock %} #}
-            {#                {% endcomponent %} #}
-            {#            </div> #}
         </div>
         <br>
         <div class="row">
@@ -92,13 +74,6 @@
                             title: '% Aprobado'
                         } %}
                             {% block body %}
-                                {#                        <h6 class="card-subtitle mb-2">Proyectos en el sistema</h6> #}
-                                {#                        <h1>{{ project_amount }}</h1> #}
-                                {#                        <a href="{{ path('app_project_index') }}" class="card-link">Ver todo</a> #}
-                                {#                        <div class="row"> #}
-                                {#                            <div class="col">{{ render_chart(chart1) }}</div> #}
-                                {#                        </div> #}
-
                                 <div class="row">
                                     <div class="col">
                                         <div class="progress" role="progressbar" aria-label="Info example"
@@ -112,6 +87,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col text-start">
                                         <strong>Meta:</strong> ${{ money(finance['estimatedValue']) }}
@@ -128,20 +104,6 @@
                             title: 'Clientes en el sistema',
                         } %}
                             {% block body %}
-{#                                <ul class="list-group list-group-flush">#}
-{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
-{#                                        <a href="{{ path('app_individual_client_index') }}">Personas naturales</a>#}
-{#                                        <span class="badge text-bg-primary rounded-pill">{{ individual_clients }}</span>#}
-{#                                    </li>#}
-{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
-{#                                        <a href="{{ path('app_enterprise_client_index') }}">Clientes entidades</a>#}
-{#                                        <span class="badge text-bg-primary rounded-pill">{{ enterprise_clients }}</span>#}
-{#                                    </li>#}
-{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
-{#                                        <a href="{{ path('app_representative_index') }}">Representantes</a>#}
-{#                                        <span class="badge text-bg-primary rounded-pill">{{ representatives }}</span>#}
-{#                                    </li>#}
-{#                                </ul>#}
                                 {{ render_chart(chart5) }}
                             {% endblock %}
                         {% endcomponent %}
@@ -185,79 +147,6 @@
                     {% endblock %}
                 {% endcomponent %}
             </div>
-
-            {#            <div class="col-4"> #}
-            {#                {% component 'Card:Card' with { #}
-            {#                    cssClass: 'text-bg-light mb-3' #}
-            {#                } %} #}
-            {#                    {% block body %} #}
-            {#                        <h6 class="card-subtitle mb-2">Regulaciones Urbanas utilizadas</h6> #}
-            {#                        <h1>{{ urban_regulations }}</h1> #}
-            {#                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a> #}
-            {#                    {% endblock %} #}
-            {#                {% endcomponent %} #}
-            {#            </div> #}
-
-            <div class="col">
-
-            </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-
-
-            {#          <div class="col-4"> #}
-            {#                {% component 'Card:Card' with { #}
-            {#                    cssClass: 'text-bg-light mb-3' #}
-            {#                } %} #}
-            {#                    {% block body %} #}
-            {#                        <h6 class="card-subtitle mb-2">Ite Obras ajuste (min - max)</h6> #}
-            {#                        <div class="row"> #}
-            {#                            <div class="col-5"><h3>{{ min|number_format(2) }} $/m<sup>2</sup></h3></div> #}
-            {#                            <div class="col">-</div> #}
-            {#                            <div class="col-5"><h3>{{ max|number_format(2) }} $/m<sup>2</sup></h3></div> #}
-            {#                        </div> #}
-            {#                    {% endblock %} #}
-            {#                {% endcomponent %} #}
-            {#            </div> #}
-
-            {#            <div class="col-4"> #}
-            {#                {% component 'Card:Card' with { #}
-            {#                    title: 'Total de finanzas de obras', #}
-            {#                } %} #}
-            {#                    {% block body %} #}
-            {#                        <ul class="list-group list-group-flush"> #}
-            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                <a>Valores aprobados</a> #}
-            {#                                <span #}
-            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['approvedValue']) }}</span> #}
-            {#                            </li> #}
-            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                <a>Valores estimados</a> #}
-            {#                                <span #}
-            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedValue']) }}</span> #}
-            {#                            </li> #}
-            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                <a>Presupuesto estimado</a> #}
-            {#                                <span #}
-            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedAdjustValue']) }}</span> #}
-            {#                            </li> #}
-            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                <a>Presupuesto detallado</a> #}
-            {#                                <span #}
-            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionAssembly']) }}</span> #}
-            {#                            </li> #}
-            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
-            {#                                <a>Valor real</a> #}
-            {#                                <span #}
-            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionRealValue']) }}</span> #}
-            {#                            </li> #}
-            {#                        </ul> #}
-            {#                    {% endblock %} #}
-            {#                {% endcomponent %} #}
-            {#            </div> #}
         </div>
     </div>
 {% endblock %}

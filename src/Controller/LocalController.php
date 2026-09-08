@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
+use App\Entity\EnterpriseClient;
 use App\Entity\Enums\LocalType;
 use App\Entity\Local;
 use App\Entity\Role;
@@ -146,9 +147,15 @@ final class LocalController extends AbstractController
     #[Route('/{id}/local/technical_status', name: 'app_sub_system_report_local_technical_status', methods: ['GET'])]
     public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
-        $clientLogo = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient()?->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
+        $client = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient();
+        if ($client instanceof EnterpriseClient) {
+            $clientLogo = $client->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
+        } else {
+            $clientLogo = null;
+        }
+
         $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();
-        $draftmanLogo = $subSystem->getFloor()?->getBuilding()?->getActiveDraftmanCorporateEntity()->getLogo();
+        $draftmanLogo = $subSystem->getFloor()?->getBuilding()?->getActiveDraftmanCorporateEntity()?->getLogo();
 
         $html = $this->renderView('local/pdf/technical_status.html.twig', [
             'local_status' => $subSystem->getAmountTechnicalStatus(),

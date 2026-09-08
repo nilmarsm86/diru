@@ -33,13 +33,12 @@
                     <tr>
                         <td>{{ building.name }}</td>
                         <td>{{ building.project.name }}</td>
-                        <td style="width: 100px">{{ building.revisedAt|date('Y-m-d') }}</td>
-
+                        <td style="width: 100px">{{ building.revisedDraftsmanAt|date('Y-m-d') }}</td>
                         <td class="text-end">{{ buildingValuationService.getResultIte(building)|number_format(2) }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="9">No se encontraron obras.</td>
+                        <td colspan="4">No se encontraron obras.</td>
                     </tr>
                 {% endfor %}
             {% endblock %}

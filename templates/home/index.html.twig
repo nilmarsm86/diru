@@ -9,126 +9,255 @@
         style="background-image: url({{ asset('images/dashboard1.jpg') }});min-height: 500px;padding: 10px;background-size: cover">
 
         <div class="row">
-            {#            <h2>Section title</h2> #}
-            <div class="col">
+            <div class="col-4">
                 {% component 'Card:Card' with {
-                    cssClass: 'text-bg-light mb-3'
+                    title: 'Monto Total',
+                    icon: ux_icon('streamline-cyber-color:money-bag-1', {class:'bi'})
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Proyectos en el sistema</h6>
-                        <h1>{{ project_amount }}</h1>
-                        <a href="{{ path('app_project_index') }}" class="card-link">Ver todo</a>
+                        <h1>$ {{ money(amount) }}</h1>
                     {% endblock %}
                 {% endcomponent %}
             </div>
 
-            <div class="col pb-3">
+            <div class="col-4">
                 {% component 'Card:Card' with {
-                    title: 'Proyectos',
+                    title: 'Compuesto por',
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Monto total del sistema</h6>
-                        <h1>{{ money(amount) }}</h1>
+                        <h3>{{ project_amount }} Proyectos</h3>
+                        <h5>{{ urban_regulations }} Regulaciones Urbanas <br>{{ subsystems }} Subsistemas en 3 Obras</h5>
                     {% endblock %}
                 {% endcomponent %}
             </div>
 
-            <div class="col">
+            <div class="col-4">
                 {% component 'Card:Card' with {
-                    title: 'Proyectos',
+                    cssClass: 'text-bg-light mb-3',
+                    title: 'Rango de Ite Obras ajuste',
+                    icon: ux_icon('material-symbols:arrow-range', {class:'bi'})
                 } %}
                     {% block body %}
-                        <h6 class="card-subtitle mb-2">Últimos Proyectos</h6>
-                        <ul class="list-group list-group-flush">
-                            {% for project in last_three %}
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a>
-                                    <span
-                                        class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="mb-0">
+                                    <input type="range" min="{{ min * 10 }}"
+                                           max="{{ max * 10 }}" class="form-range" value="14" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-start">
+                                        <output><strong>{{ min|number_format(2) }} $/m<sup>2</sup></strong></output>
+                                    </div>
+                                    <div class="col text-center">
+                                        <output aria-hidden="true" class="badge text-bg-info" style="font-size: 1em">
+                                            {{ ((min + max) / 2)|number_format(2)  }}
+                                        </output>
+                                    </div>
+                                    <div class="col text-end">
+                                        <output><strong>{{ max|number_format(2) }} $/m<sup>2</sup></strong></output>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+
+
+            {#            <div class="col"> #}
+            {#                {% component 'Card:Card' with { #}
+            {#                    title: 'Últimos Proyectos', #}
+            {#                } %} #}
+            {#                    {% block body %} #}
+            {#                        <ul class="list-group list-group-flush"> #}
+            {#                            {% for project in last_three %} #}
+            {#                                <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a> #}
+            {#                                    <span #}
+            {#                                        class="badge text-bg-primary rounded-pill">{{ money(project.getPrice()) }}</span> #}
+            {#                                </li> #}
+            {#                            {% endfor %} #}
+            {#                        </ul> #}
+            {#                    {% endblock %} #}
+            {#                {% endcomponent %} #}
+            {#            </div> #}
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        {% component 'Card:Card' with {
+                            cssClass: 'text-bg-light mb-3',
+                            title: '% Aprobado'
+                        } %}
+                            {% block body %}
+                                {#                        <h6 class="card-subtitle mb-2">Proyectos en el sistema</h6> #}
+                                {#                        <h1>{{ project_amount }}</h1> #}
+                                {#                        <a href="{{ path('app_project_index') }}" class="card-link">Ver todo</a> #}
+                                {#                        <div class="row"> #}
+                                {#                            <div class="col">{{ render_chart(chart1) }}</div> #}
+                                {#                        </div> #}
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="progress" role="progressbar" aria-label="Info example"
+                                             aria-valuenow="{{ finance['approvedValue'] }}" aria-valuemin="0"
+                                             aria-valuemax="{{ finance['estimatedValue'] }}" style="height: 20px">
+                                            <div class="progress-bar text-bg-info"
+                                                 style="width: {{ (finance['approvedValue'] * 100 / finance['estimatedValue'])|number_format(2) }}%">
+                                                <strong>{{ (finance['approvedValue'] * 100 / finance['estimatedValue'])|number_format(2) }}
+                                                    %</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-start">
+                                        <strong>Meta:</strong> ${{ money(finance['estimatedValue']) }}
+                                    </div>
+                                    <div class="col text-end">
+                                        <strong>Logro:</strong> ${{ money(finance['approvedValue']) }}
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        {% endcomponent %}
+                    </div>
+                    <div class="col-12">
+                        {% component 'Card:Card' with {
+                            title: 'Clientes en el sistema',
+                        } %}
+                            {% block body %}
+{#                                <ul class="list-group list-group-flush">#}
+{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
+{#                                        <a href="{{ path('app_individual_client_index') }}">Personas naturales</a>#}
+{#                                        <span class="badge text-bg-primary rounded-pill">{{ individual_clients }}</span>#}
+{#                                    </li>#}
+{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
+{#                                        <a href="{{ path('app_enterprise_client_index') }}">Clientes entidades</a>#}
+{#                                        <span class="badge text-bg-primary rounded-pill">{{ enterprise_clients }}</span>#}
+{#                                    </li>#}
+{#                                    <li class="list-group-item d-flex justify-content-between align-items-start">#}
+{#                                        <a href="{{ path('app_representative_index') }}">Representantes</a>#}
+{#                                        <span class="badge text-bg-primary rounded-pill">{{ representatives }}</span>#}
+{#                                    </li>#}
+{#                                </ul>#}
+                                {{ render_chart(chart5) }}
+                            {% endblock %}
+                        {% endcomponent %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                {% component 'Card:Card' with {
+                    cssClass: 'text-bg-light mb-3',
+                    title: 'Distribución por últimos proyectos'
+                } %}
+                    {% block body %}
+                        {{ render_chart(chart2) }}
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+
+            <div class="col-4">
+                {% component 'Card:Card' with {
+                    cssClass: 'text-bg-light mb-3',
+                    title: 'Proyectos por estado'
+                } %}
+                    {% block body %}
+                        {{ render_chart(chart4) }}
                     {% endblock %}
                 {% endcomponent %}
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                {% component 'Card:Card' with {
+                    title: 'Total de finanzas de obras',
+                    cssClass: 'text-bg-light mb-3',
+                } %}
+                    {% block body %}
+                        <div class="row">
+                            <div class="col" style="height: 300px;">{{ render_chart(chart3) }}</div>
+                        </div>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+
+            {#            <div class="col-4"> #}
+            {#                {% component 'Card:Card' with { #}
+            {#                    cssClass: 'text-bg-light mb-3' #}
+            {#                } %} #}
+            {#                    {% block body %} #}
+            {#                        <h6 class="card-subtitle mb-2">Regulaciones Urbanas utilizadas</h6> #}
+            {#                        <h1>{{ urban_regulations }}</h1> #}
+            {#                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a> #}
+            {#                    {% endblock %} #}
+            {#                {% endcomponent %} #}
+            {#            </div> #}
+
+            <div class="col">
+
+            </div>
+        </div>
+
         <br>
 
         <div class="row">
-            <div class="col-4">
-                {% component 'Card:Card' with {
-                    cssClass: 'text-bg-light mb-3'
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Regulaciones Urbanas utilizadas</h6>
-                        <h1>{{ urban_regulations }}</h1>
-                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a>
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
 
-            <div class="col-4">
-                {% component 'Card:Card' with {
-                    cssClass: 'text-bg-light mb-3'
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Subsistemas utilizados en el sistema</h6>
-                        <h1>{{ subsystems }}</h1>
-                        <a href="{{ path('app_historical_ite_subsystem') }}" class="card-link">Ver todas</a>
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-4">
-                {% component 'Card:Card' with {
-                    cssClass: 'text-bg-light mb-3'
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Obras en el sistema</h6>
-                        <h1>{{ buildings }}</h1>
-                        {#                        <a href="{{ path('app_urban_regulation_index') }}" class="card-link">Ver todas</a> #}
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
-            <div class="col-4"></div>
-            <div class="col-4">
-                {% component 'Card:Card' with {
-                    title: 'Finanzas',
-                } %}
-                    {% block body %}
-                        <h6 class="card-subtitle mb-2">Finanzas de obras</h6>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <a>Valores aprobados</a>
-                                <span
-                                    class="badge text-bg-primary rounded-pill">{{ money(finance['approvedValue']) }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <a>Valores estimados</a>
-                                <span
-                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedValue']) }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <a>Presupuesto estimado</a>
-                                <span
-                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedAdjustValue']) }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <a>Presupuesto detallado</a>
-                                <span
-                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionAssembly']) }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <a>valor real</a>
-                                <span
-                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionRealValue']) }}</span>
-                            </li>
-                        </ul>
-                    {% endblock %}
-                {% endcomponent %}
-            </div>
+            {#          <div class="col-4"> #}
+            {#                {% component 'Card:Card' with { #}
+            {#                    cssClass: 'text-bg-light mb-3' #}
+            {#                } %} #}
+            {#                    {% block body %} #}
+            {#                        <h6 class="card-subtitle mb-2">Ite Obras ajuste (min - max)</h6> #}
+            {#                        <div class="row"> #}
+            {#                            <div class="col-5"><h3>{{ min|number_format(2) }} $/m<sup>2</sup></h3></div> #}
+            {#                            <div class="col">-</div> #}
+            {#                            <div class="col-5"><h3>{{ max|number_format(2) }} $/m<sup>2</sup></h3></div> #}
+            {#                        </div> #}
+            {#                    {% endblock %} #}
+            {#                {% endcomponent %} #}
+            {#            </div> #}
+
+            {#            <div class="col-4"> #}
+            {#                {% component 'Card:Card' with { #}
+            {#                    title: 'Total de finanzas de obras', #}
+            {#                } %} #}
+            {#                    {% block body %} #}
+            {#                        <ul class="list-group list-group-flush"> #}
+            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                <a>Valores aprobados</a> #}
+            {#                                <span #}
+            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['approvedValue']) }}</span> #}
+            {#                            </li> #}
+            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                <a>Valores estimados</a> #}
+            {#                                <span #}
+            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedValue']) }}</span> #}
+            {#                            </li> #}
+            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                <a>Presupuesto estimado</a> #}
+            {#                                <span #}
+            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['estimatedAdjustValue']) }}</span> #}
+            {#                            </li> #}
+            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                <a>Presupuesto detallado</a> #}
+            {#                                <span #}
+            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionAssembly']) }}</span> #}
+            {#                            </li> #}
+            {#                            <li class="list-group-item d-flex justify-content-between align-items-start"> #}
+            {#                                <a>Valor real</a> #}
+            {#                                <span #}
+            {#                                    class="badge text-bg-primary rounded-pill">{{ money(finance['constructionRealValue']) }}</span> #}
+            {#                            </li> #}
+            {#                        </ul> #}
+            {#                    {% endblock %} #}
+            {#                {% endcomponent %} #}
+            {#            </div> #}
         </div>
     </div>
 {% endblock %}

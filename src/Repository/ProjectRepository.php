@@ -9,9 +9,12 @@ use App\Repository\Interfaces\FilterInterface;
 use App\Repository\Traits\PaginateTrait;
 use App\Repository\Traits\SaveData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+
+use function PHPUnit\Framework\assertIsArray;
 
 /**
  * @extends ServiceEntityRepository<Project>
@@ -99,5 +102,24 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         if ($flush) {
             $this->flush();
         }
+    }
+
+    public function countByState(): mixed
+    {
+        $builder = $this->createQueryBuilder('p')
+            ->select("SUM(CASE WHEN p.state = '0' THEN 1 ELSE 0 END) AS stopped",
+                "SUM(CASE WHEN p.state = '1' THEN 1 ELSE 0 END) AS canceled",
+                "SUM(CASE WHEN p.state = '2' THEN 1 ELSE 0 END) AS initiated",
+                "SUM(CASE WHEN p.state = '4' THEN 1 ELSE 0 END) AS urban_regulation",
+                "SUM(CASE WHEN p.state = '5' THEN 1 ELSE 0 END) AS design",
+                "SUM(CASE WHEN p.state = '6' THEN 1 ELSE 0 END) AS registered",
+            );
+
+        $query = $builder->getQuery();
+
+        $result = $query->getResult(AbstractQuery::HYDRATE_SCALAR);
+        assertIsArray($result);
+
+        return $result[0];
     }
 }

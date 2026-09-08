@@ -80,9 +80,7 @@ final class HistoricalIteController extends AbstractController
     #[Route('/building/ajust', name: 'app_historical_ite_building_ajust', methods: ['GET'])]
     public function buildingAjust(Request $request, RouterInterface $router, CrudActionService $crudActionService, BuildingRepository $buildingRepository, BuildingValuationService $buildingValuationService): Response
     {
-        /** @var array{string, int, int} $result */
-        $result = $crudActionService->getManageQuerys($request);
-        list($filter, $amountPerPage, $pageNumber) = $result;
+        list($filter, $amountPerPage, $pageNumber) = $crudActionService->getManageQuerys($request);
 
         $data = $buildingRepository->getIteReferences($filter, $amountPerPage, $pageNumber);
 

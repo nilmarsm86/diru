@@ -55,7 +55,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     {
         if ('' !== $state) {
             $state = BuildingState::from($state);
-            $builder->andWhere('b.state = :state ')->setParameter(':state', $state);
+            $builder->andWhere('b.state >= :state ')->setParameter(':state', $state);
         }
     }
 
@@ -108,11 +108,11 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     /**
      * @return Paginator<mixed>
      */
-    public function getIteReferences(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function getIteReferences(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1): Paginator
     {
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
             ->leftJoin('b.project', 'p');
-        $this->addState($builder, '5');
+        $this->addState($builder, BuildingState::RevisedDraftsman->value);
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', 'ASC')->getQuery();
 

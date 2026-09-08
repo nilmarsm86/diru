@@ -46,4 +46,14 @@ class RepresentativeRepository extends ServiceEntityRepository implements Filter
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    public function amount(): int
+    {
+        $builder = $this->createQueryBuilder('r')
+            ->select(
+                'COUNT(r.id) AS representatives',
+            );
+
+        return (int) $builder->getQuery()->getSingleScalarResult();
+    }
 }

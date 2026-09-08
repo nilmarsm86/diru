@@ -81,4 +81,14 @@ class EnterpriseClientRepository extends ServiceEntityRepository implements Filt
             $this->flush();
         }
     }
+
+    public function amount(): int
+    {
+        $builder = $this->createQueryBuilder('ec')
+            ->select(
+                'COUNT(ec.id) AS enterprise_client',
+            );
+
+        return (int) $builder->getQuery()->getSingleScalarResult();
+    }
 }

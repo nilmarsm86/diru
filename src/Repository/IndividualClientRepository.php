@@ -74,4 +74,14 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
             $this->flush();
         }
     }
+
+    public function amount(): int
+    {
+        $builder = $this->createQueryBuilder('ic')
+            ->select(
+                'COUNT(ic.id) AS individual_client',
+            );
+
+        return (int) $builder->getQuery()->getSingleScalarResult();
+    }
 }

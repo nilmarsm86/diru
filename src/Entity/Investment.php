@@ -215,12 +215,35 @@ class Investment
 
     public function getAddress(): string
     {
-        return 'Calle '.$this->getStreet().
-            ' #'.$this->getAddressNumber().
-            ', entre '.$this->getBetweenStreets().
-            ', consejo popular '.$this->getPopularCouncil().
-            ', reparto '.$this->getTown().
-            ', '.$this->getMunicipalityName().
-            ', '.$this->getProvinceName();
+        $address = '';
+        if ((bool) $this->getStreet()) {
+            $address .= 'Calle '.$this->getStreet();
+        }
+
+        if ((bool) $this->getAddressNumber()) {
+            $address .= ' #'.$this->getAddressNumber();
+        }
+
+        if ((bool) $this->getBetweenStreets()) {
+            $address .= ', entre '.$this->getBetweenStreets();
+        }
+
+        if ((bool) $this->getPopularCouncil()) {
+            $address .= ', consejo popular '.$this->getPopularCouncil();
+        }
+
+        if ((bool) $this->getTown()) {
+            $address .= ', reparto '.$this->getTown();
+        }
+
+        if ((bool) $this->getMunicipalityName()) {
+            $address .= ', '.$this->getMunicipalityName();
+        }
+
+        if ((bool) $this->getProvinceName()) {
+            $address .= ', '.$this->getProvinceName();
+        }
+
+        return $address;
     }
 }

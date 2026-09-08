@@ -64,7 +64,7 @@ readonly class CrudActionService
     }
 
     /**
-     * @return array<mixed>
+     * @return array{string, int, int}
      */
     public function getManageQuerys(Request $request): array
     {

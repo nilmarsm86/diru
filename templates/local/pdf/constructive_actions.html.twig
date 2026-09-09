@@ -2,22 +2,22 @@
 
 {% block title %}Estado técnico{% endblock %}
 
-{% block header %}
-    <div style=";width: 49%" class="col">
-        <img src="{{ logo }}" class="logo" alt="Logo" style="max-height: 60px;">
-        <h2 style="">Estado técnico</h2>
-    </div>
+{#{% block header %}#}
+{#    <div style=";width: 49%" class="col">#}
+{#        <img src="{{ logo }}" class="logo" alt="Logo" style="max-height: 60px;">#}
+{#        <h2 style="">Estado técnico</h2>#}
+{#    </div>#}
 
-    <div style="width: 49%;" class="col">
-        <div style="margin-left: 0px">
-            <h3>Proyecto:</h3>
-            <strong>Proyecto:</strong> {{ sub_system.floor.building.project.name }}<br>
-            <strong>Obra:</strong> {{ sub_system.floor.building.name }}<br>
-            <strong>Planta:</strong> {{ sub_system.floor.name }}<br>
-            <strong>Subsistema:</strong> {{ sub_system.name }}<br>
-        </div>
-    </div>
-{% endblock %}
+{#    <div style="width: 49%;" class="col">#}
+{#        <div style="margin-left: 0px">#}
+{#            <h3>Proyecto:</h3>#}
+{#            <strong>Proyecto:</strong> {{ sub_system.floor.building.project.name }}<br>#}
+{#            <strong>Obra:</strong> {{ sub_system.floor.building.name }}<br>#}
+{#            <strong>Planta:</strong> {{ sub_system.floor.name }}<br>#}
+{#            <strong>Subsistema:</strong> {{ sub_system.name }}<br>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
 
 {% block content %}
     <div>
@@ -50,7 +50,7 @@
     </table>
 {% endblock %}
 
-{% block footer %}
-    Procrea S.R.L.<br>
-    {{ 'now'|date('Y-m-d') }}
-{% endblock %}
+{#{% block footer %}#}
+{#    Procrea S.R.L.<br>#}
+{#    {{ 'now'|date('Y-m-d') }}#}
+{#{% endblock %}#}

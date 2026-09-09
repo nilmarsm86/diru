@@ -148,14 +148,22 @@ final class LocalController extends AbstractController
     public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $client = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient();
+        $clientLogo = null;
+        $clientName = '';
+        $representativeName = '';
         if ($client instanceof EnterpriseClient) {
             $clientLogo = $client->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
-        } else {
-            $clientLogo = null;
+            $clientName = $client->getCorporateEntity()?->getName();
+            $representativeName = $client->getRepresentative()->getName();
+        }else{
+            $clientName = $client->getPerson()->getName();
+            $representativeName = $client?->getRepresentative()?->getName();
         }
 
         $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();
         $draftmanLogo = $subSystem->getFloor()?->getBuilding()?->getActiveDraftmanCorporateEntity()?->getLogo();
+
+        $draftman = $subSystem->getFloor()?->getBuilding()?->getActiveDraftsman();
 
         $html = $this->renderView('local/pdf/technical_status.html.twig', [
             'local_status' => $subSystem->getAmountTechnicalStatus(),
@@ -166,6 +174,9 @@ final class LocalController extends AbstractController
             'constructor_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $constructorLogo),
             'draftman_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $draftmanLogo),
             'title' => 'Estado técnico',
+            'draftman' => $draftman,
+            'client_name' => $clientName,
+            'representative_name' => $representativeName,
         ]);
 
         $pdfContent = $pdfGenerator->generate($html);
@@ -178,10 +189,35 @@ final class LocalController extends AbstractController
     {
         $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository);
 
+        $client = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient();
+        $clientLogo = null;
+        $clientName = '';
+        $representativeName = '';
+        if ($client instanceof EnterpriseClient) {
+            $clientLogo = $client->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
+            $clientName = $client->getCorporateEntity()?->getName();
+            $representativeName = $client->getRepresentative()->getName();
+        }else{
+            $clientName = $client->getPerson()->getName();
+            $representativeName = $client?->getRepresentative()?->getName();
+        }
+
+        $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();
+        $draftmanLogo = $subSystem->getFloor()?->getBuilding()?->getActiveDraftmanCorporateEntity()?->getLogo();
+
+        $draftman = $subSystem->getFloor()?->getBuilding()?->getActiveDraftsman();
+
         $html = $this->renderView('local/pdf/constructive_actions.html.twig', [
             'constructive_action' => $ca,
             'sub_system' => $subSystem,
             'logo' => $pdfAssetManager->getLogoBase64(),
+            'title' => 'Acciones constructivas',
+            'client_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $clientLogo),
+            'constructor_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $constructorLogo),
+            'draftman_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $draftmanLogo),
+            'draftman' => $draftman,
+            'client_name' => $clientName,
+            'representative_name' => $representativeName,
         ]);
 
         $pdfContent = $pdfGenerator->generate($html);

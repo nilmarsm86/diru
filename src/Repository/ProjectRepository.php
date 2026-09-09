@@ -60,7 +60,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     /**
      * @return Paginator<mixed>
      */
-    public function findProjects(string $filter = '', int $amountPerPage = 10, int $page = 1, string $type = '', string $state = ''): Paginator
+    public function findProjects(string $filter = '', ?int $amountPerPage = 10, ?int $page = 1, string $type = '', string $state = ''): Paginator
     {
         $builder = $this->createQueryBuilder('p')->select(['p', 'i'])
             ->innerJoin('p.investment', 'i');

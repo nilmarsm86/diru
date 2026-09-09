@@ -28,6 +28,7 @@
             }) }}
 
             {{ tableActionButton3(path('app_project_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_new')})) }}
+            {{ tableActionButton3(path('app_project_print', app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}
 

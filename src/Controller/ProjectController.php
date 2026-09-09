@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Project;
 use App\Entity\Role;
+use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
 use App\Service\CrudActionService;
+use App\Service\Pdf\PdfAssetManager;
+use App\Service\Pdf\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +28,8 @@ use Twig\Error\SyntaxError;
 #[Route('/project')]
 final class ProjectController extends AbstractController
 {
+    use PdfResponseTrait;
+
     #[Route(name: 'app_project_index', methods: ['GET'])]
     public function index(Request $request, RouterInterface $router, ProjectRepository $projectRepository): Response
     {
@@ -71,7 +77,7 @@ final class ProjectController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_project_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Request $request, Project $project, CrudActionService $crudActionService): Response
     {
         return $crudActionService->showAction($request, $project, 'project', 'project', 'Detalles del proyecto');
@@ -107,5 +113,17 @@ final class ProjectController extends AbstractController
         }
 
         return $response;
+    }
+
+    #[Route('/print', name: 'app_project_print', methods: ['GET'])]
+    public function print(Request $request, ProjectRepository $projectRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $filter = $request->query->get('filter', '');
+
+        $data = $projectRepository->findProjects($filter, null, null);
+
+        $paginator = new Paginator($data);
+
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'project/pdf/print.html.twig', 'Listado de municipios', 'municipios');
     }
 }

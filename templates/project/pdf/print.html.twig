@@ -1,0 +1,33 @@
+{% extends 'project/pdf/pdf_project.html.twig' %}
+
+{% set colspan = 2 %}
+
+{% block columns %}
+    <tr>
+        <th>Nombre</th>
+        <th>Obras</th>
+        {% if app.request.query.get('type') == '' %}
+            <th>Tipo</th>
+        {% endif %}
+        {% if app.request.query.get('state') == '' %}
+            <th>Estado</th>
+        {% endif %}
+        <th>Inversión</th>
+        <th>Monto</th>
+    </tr>
+{% endblock %}
+
+{% block data %}
+    <tr>
+        <td>{{ project.name }}</td>
+        <td>{{ project.getBuildingsAmount() }}</td>
+        {% if app.request.query.get('type') == '' %}
+            <td>{{ project.type.getLabelFrom(project.type) }}</td>
+        {% endif %}
+        {% if app.request.query.get('state') == '' %}
+            <td>{{ project.state.getLabelFrom(project.state) }}</td>
+        {% endif %}
+        <td>{{ project.investment }}</td>
+        <td>{{ money(project.getPrice(), project.currency.code) }}</td>
+    </tr>
+{% endblock %}

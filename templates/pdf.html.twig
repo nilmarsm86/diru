@@ -100,7 +100,7 @@
             </div>
 
             <div style="width: 61%" class="col">
-                <span>{{ sub_system.floor.building.project.client.corporateEntity.name }}</span>
+                <span>{{ client_name }}</span>
             </div>
         </div>
 
@@ -191,10 +191,10 @@
     {% block footer %}
         <div style=";width: 49%" class="col">
             <p><strong>PIE DE FIRMA DEL REPORTE</strong></p>
-            <p><strong>Elaborado por:</strong> {{ app.user.person.name }}</p>
+            <p><strong>Elaborado por:</strong> {{ app.user.person.getFullName() }}</p>
             <p style="margin-top: -15px"><strong>(</strong>{{ app.user.getHightRole() }}<strong>)</strong></p>
             <p><strong>Firma:</strong> ____________________________________</p>
-            <p><strong>Revisado por:</strong> Orliet</p>
+            <p><strong>Revisado por:</strong> {{ draftman.getFullName() }}</p>
             <p style="margin-top: -15px"><strong>(</strong>Proyectista<strong>)</strong></p>
             <p><strong>Firma:</strong> ____________________________________</p>
             <p><strong>Aprobado por:</strong> Damian LLoyd Aguila</p>
@@ -202,11 +202,12 @@
             <p><strong>Firma y Cuño:</strong> _____________________________</p>
         </div>
 
-        <div style=";width: 49%;margin-bottom: 25px" class="col">
+        <div style=";width: 49%;margin-bottom: 13px" class="col">
             <p><strong>FECHA DEL REPORTE:</strong> {{ 'now'|date('d/m/Y') }}</p>
-            <p><strong>Nombre de la entidad cliente:</strong> {{ sub_system.floor.building.project.client.corporateEntity.name }}</p>
+            <p><strong>Nombre de la entidad</strong> {{ client_name }}</p>
+            <p style="margin-top: -15px;text-indent: 80px"><strong>cliente:</strong></p>
             <p><strong>Fecha de recibido:</strong> _______________________________</p>
-            <p><strong>Inversionista - &nbsp;</strong> Ricardo La Madrid Torres</p>
+            <p><strong>Inversionista - &nbsp;</strong> {{ representative_name }}</p>
             <p style="margin-top: -15px"><strong>Representante:</strong></p>
             <p><strong>Firma:</strong> _____________________________________________</p>
             <p><strong>Aprobado por:</strong> ____________________________________</p>

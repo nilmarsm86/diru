@@ -6,6 +6,7 @@ use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
 use App\Entity\EnterpriseClient;
 use App\Entity\Enums\LocalType;
+use App\Entity\IndividualClient;
 use App\Entity\Local;
 use App\Entity\Role;
 use App\Entity\SubSystem;
@@ -154,10 +155,12 @@ final class LocalController extends AbstractController
         if ($client instanceof EnterpriseClient) {
             $clientLogo = $client->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
             $clientName = $client->getCorporateEntity()?->getName();
-            $representativeName = $client->getRepresentative()->getName();
-        }else{
-            $clientName = $client->getPerson()->getName();
-            $representativeName = $client?->getRepresentative()?->getName();
+            $representativeName = $client->getRepresentative()?->getName();
+        }
+
+        if ($client instanceof IndividualClient) {
+            $clientName = $client->getPerson()?->getName();
+            $representativeName = $client->getRepresentative()?->getName();
         }
 
         $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();
@@ -196,10 +199,12 @@ final class LocalController extends AbstractController
         if ($client instanceof EnterpriseClient) {
             $clientLogo = $client->getCorporateEntity()?->getLogo(); // TODO: mejorar getClient
             $clientName = $client->getCorporateEntity()?->getName();
-            $representativeName = $client->getRepresentative()->getName();
-        }else{
-            $clientName = $client->getPerson()->getName();
-            $representativeName = $client?->getRepresentative()?->getName();
+            $representativeName = $client->getRepresentative()?->getName();
+        }
+
+        if ($client instanceof IndividualClient) {
+            $clientName = $client->getPerson()?->getName();
+            $representativeName = $client->getRepresentative()?->getName();
         }
 
         $constructorLogo = $subSystem->getFloor()?->getBuilding()?->getActiveConstructorCorporateEntity()?->getLogo();

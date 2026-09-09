@@ -8,7 +8,6 @@ use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
 use App\Entity\Project;
 use App\Entity\Role;
-use App\Repository\MunicipalityRepository;
 use App\Repository\ProjectRepository;
 use App\Service\CrudActionService;
 use App\Service\Pdf\PdfAssetManager;
@@ -115,8 +114,8 @@ final class ProjectController extends AbstractController
         return $response;
     }
 
-    #[Route('/print', name: 'app_project_print', methods: ['GET'])]
-    public function print(Request $request, ProjectRepository $projectRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    #[Route('/print_list', name: 'app_project_print_list', methods: ['GET'])]
+    public function printList(Request $request, ProjectRepository $projectRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
 
@@ -124,6 +123,6 @@ final class ProjectController extends AbstractController
 
         $paginator = new Paginator($data);
 
-        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'project/pdf/print.html.twig', 'Listado de municipios', 'municipios');
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'project/pdf/print.html.twig', 'Listado de proyectos', 'municipios');
     }
 }

@@ -317,7 +317,7 @@ final class HomeController extends AbstractController
 
             return ($actualValue > $itemValue) ? $carry : $item;
         };
-        $max = array_reduce($data, $maxReduce, $data[0]);
+        $max = array_reduce($data, $maxReduce, isset($data[0]) ? $data[0] : new Building());
 
         $minReduce = function ($carry, $item) use ($buildingValuationService): Building {
             assert($carry instanceof Building);
@@ -327,7 +327,7 @@ final class HomeController extends AbstractController
 
             return ($actualValue < $itemValue) ? $carry : $item;
         };
-        $min = array_reduce($data, $minReduce, $data[0]);
+        $min = array_reduce($data, $minReduce, isset($data[0]) ? $data[0] : new Building());
 
         return [$max, $min];
     }

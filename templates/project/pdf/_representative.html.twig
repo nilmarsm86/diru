@@ -1,0 +1,9 @@
+{% from 'macros/pdf.html.twig' import two_columns %}
+
+<div style="width: 67%;vertical-align: top;margin-top: -2px" class="col">
+    {{ two_columns('Nombre y Apellidos', representative?.getFullName(), widthName, widthValue) }}
+    {{ two_columns('Carne de identidad', representative?.identificationNumber, widthName, widthValue) }}
+    {{ two_columns('Pasaporte', representative?.passport, widthName, widthValue) }}
+    {{ two_columns('Teléfono', representative?.phone, widthName, widthValue) }}
+    {{ two_columns('Email', representative?.email, widthName, widthValue) }}
+</div>

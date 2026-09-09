@@ -1,33 +1,30 @@
-{% extends 'project/pdf/pdf_project.html.twig' %}
+{% extends 'pdf_nomenclator.html.twig' %}
 
-{% set colspan = 2 %}
+{% block content %}
+    {% from 'macros/pdf.html.twig' import two_columns %}
 
-{% block columns %}
-    <tr>
-        <th>Nombre</th>
-        <th>Obras</th>
-        {% if app.request.query.get('type') == '' %}
-            <th>Tipo</th>
-        {% endif %}
-        {% if app.request.query.get('state') == '' %}
-            <th>Estado</th>
-        {% endif %}
-        <th>Inversión</th>
-        <th>Monto</th>
-    </tr>
-{% endblock %}
+    {{ two_columns('Nombre', project.name) }}
+    {{ two_columns('Datos de la inversión', project.investment.getAddress()) }}
+    {{ two_columns('Tipo de cliente', client_type) }}
+    {{ two_columns('Detalle cliente', include('project/pdf/_enterprise_client.html.twig', {widthName: 26, widthValue: 62})) }}
+    {{ two_columns('Moneda', project.currency) }}
+    {{ two_columns('Planificador', project.getActivePlanner()?.getFullName()) }}
+    {{ two_columns('Contrato', include('project/pdf/_contract.html.twig', {widthName: 25, widthValue: 63})) }}
+    {{ two_columns('Estado', project.state.getLabelFrom(project.state)) }}
+    {{ two_columns('Detenido', project.stopReason) }}
+    {{ two_columns('Comentario', project.comment) }}
+    {{ two_columns('Monto', money(project.getPrice(), project.currency.code)) }}
 
-{% block data %}
-    <tr>
-        <td>{{ project.name }}</td>
-        <td>{{ project.getBuildingsAmount() }}</td>
-        {% if app.request.query.get('type') == '' %}
-            <td>{{ project.type.getLabelFrom(project.type) }}</td>
-        {% endif %}
-        {% if app.request.query.get('state') == '' %}
-            <td>{{ project.state.getLabelFrom(project.state) }}</td>
-        {% endif %}
-        <td>{{ project.investment }}</td>
-        <td>{{ money(project.getPrice(), project.currency.code) }}</td>
-    </tr>
+    <div>
+        <div style=";width: 100%;vertical-align: top" class="col">
+            <strong>Obras:</strong>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div style=";width: 100%;vertical-align: top" class="col">
+            {{ include('building/pdf/_list.html.twig', {'buildings':project.buildings}) }}
+        </div>
+    </div>
+
 {% endblock %}

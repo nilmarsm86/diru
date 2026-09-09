@@ -1,0 +1,12 @@
+{% from 'macros/pdf.html.twig' import two_columns %}
+
+<div style="width: 67%;vertical-align: top;margin-top: -2px" class="col">
+    {{ two_columns('Nombre', corporate_entity?.name, widthName, widthValue) }}
+    {{ two_columns('Código de empresa', corporate_entity?.code, widthName, widthValue) }}
+    {{ two_columns('NIT', corporate_entity?.nit, widthName, widthValue) }}
+    {{ two_columns('Organismo', corporate_entity?.organism.name, widthName, widthValue) }}
+    {{ two_columns('Tipo de entidad', corporate_entity?.type.getLabelFrom(corporate_entity.type), widthName, widthValue) }}
+    {{ two_columns('Provincia', corporate_entity?.provinceName, widthName, widthValue) }}
+    {{ two_columns('Municipio', corporate_entity?.municipalityName, widthName, widthValue) }}
+    {{ two_columns('Dirección', corporate_entity?.street, widthName, widthValue) }}
+</div>

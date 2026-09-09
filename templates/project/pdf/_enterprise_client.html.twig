@@ -1,0 +1,9 @@
+{% from 'macros/pdf.html.twig' import two_columns %}
+
+{{ two_columns('Representante', include('project/pdf/_representative.html.twig', {widthName: 35, widthValue: 53})) }}
+{{ two_columns('Entidad Corporativa', include('project/pdf/_corporate_entity.html.twig', {widthName: 35, widthValue: 53})) }}
+{{ two_columns('Telefono', client.phone, 21, 67) }}
+{{ two_columns('Correo', client.email, 21, 67) }}
+{{ two_columns('Provincia', client.provinceName, 21, 67) }}
+{{ two_columns('Municipio', client.municipalityName, 21, 67) }}
+{{ two_columns('Dirección', client.street, 21, 67) }}

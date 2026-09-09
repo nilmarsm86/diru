@@ -1,0 +1,6 @@
+{% from 'macros/pdf.html.twig' import two_columns %}
+
+<div style="width: 67%;vertical-align: top;margin-top: -2px" class="col">
+    {{ two_columns('Código', project.contract?.code) }}
+    {{ two_columns('Año', project.contract?.year) }}
+</div>

@@ -8,7 +8,9 @@
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
-        <span>&nbsp;({{ money(project.getPrice(), project.currency.code) }})</span>
+        {% if project.id is not null %}
+            <span>&nbsp;({{ money(project.getPrice(), project.currency.code) }})</span>
+        {% endif %}
 
         <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
             {% if project.id is not null %}
@@ -89,6 +91,9 @@
                 state: 'form',
                 showButton: (showButton is defined and showButton == true) ? true : false
             }) }}
+            {% if project.id is not null %}
+                {{ tableActionButton3(path('app_project_print', {'id':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+            {% endif %}
         </div>
 
     {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Service\Pdf;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 readonly class PdfAssetManager
 {
@@ -13,6 +14,7 @@ readonly class PdfAssetManager
         private string $projectDir,
         private Filesystem $filesystem,
         #[Autowire('%kernel.project_dir%/public/uploads')] private string $uploadsDirectory,
+        private KernelInterface $kernel,
     ) {
     }
 
@@ -31,11 +33,14 @@ readonly class PdfAssetManager
     public function logoToBase64(string $targetDirectory, ?string $logo): string
     {
         if (null === $logo) {
-            $logo = 'blank.png';
+            $env = $this->kernel->getEnvironment();
+            $path = Path::join($this->projectDir, 'assets', 'images', 'corporate_entity', 'blank.jpg');
+            if ('prod' === $env) {
+                $path = Path::join($this->projectDir, 'public', 'assets', 'images', 'corporate_entity', 'blank.jpg');
+            }
+        } else {
+            $path = Path::join($this->uploadsDirectory, $targetDirectory, $logo);
         }
-
-        // Usar Path::join para manejar correctamente Windows y Linux
-        $path = Path::join($this->uploadsDirectory, $targetDirectory, $logo);
 
         if (!$this->filesystem->exists($path)) {
             throw new \RuntimeException('Logo no encontrado en: '.$path);

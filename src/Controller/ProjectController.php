@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Controller\Traits\PdfResponseTrait;
 use App\DTO\Paginator;
+use App\Entity\EnterpriseClient;
 use App\Entity\Enums\ProjectState;
 use App\Entity\Enums\ProjectType;
+use App\Entity\IndividualClient;
 use App\Entity\Project;
 use App\Entity\Role;
 use App\Repository\ProjectRepository;
@@ -87,7 +89,7 @@ final class ProjectController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    #[Route('/{id}/edit', name: 'app_project_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Project $project, CrudActionService $crudActionService): Response
     {
         return $crudActionService->formLiveComponentAction($request, $project, 'project', [
@@ -100,7 +102,7 @@ final class ProjectController extends AbstractController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    #[Route('/{id}', name: 'app_project_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_project_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Project $project, ProjectRepository $projectRepository, CrudActionService $crudActionService): Response
     {
         $successMsg = 'Se ha eliminado el proyecto.';
@@ -123,6 +125,40 @@ final class ProjectController extends AbstractController
 
         $paginator = new Paginator($data);
 
-        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'project/pdf/print.html.twig', 'Listado de proyectos', 'municipios');
+        return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'project/pdf/print_list.html.twig', 'Listado de proyectos', 'municipios');
+    }
+
+    #[Route('/{id}/print', name: 'app_project_print', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function print(Request $request, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    {
+        $client = $project->getClient();
+        $clientType = ($client instanceof IndividualClient) ? 'Persona natural' : 'Cliente Empresarial-Negocio';
+        $clientName = '';
+        $corporateEntity = null;
+        if ($client instanceof EnterpriseClient) {
+            $clientName = $client->getCorporateEntity()?->getName();
+            $corporateEntity = $client->getCorporateEntity();
+        }
+
+        if ($client instanceof IndividualClient) {
+            $clientName = $client->getPerson()?->getFullName();
+        }
+
+        $representative = $client?->getRepresentative();
+
+        $html = $this->renderView('project/pdf/print.html.twig', [
+            'logo' => $pdfAssetManager->getLogoBase64(),
+            'title' => 'Proyecto: '.$project->getName(),
+            'project' => $project,
+            'client_type' => $clientType,
+            'client_name' => $clientName,
+            'representative' => $representative,
+            'corporate_entity' => $corporateEntity,
+            'client' => $client,
+        ]);
+
+        $pdfContent = $pdfGenerator->generate($html);
+
+        return $this->pdfResponse($pdfContent, 'proyecto');
     }
 }

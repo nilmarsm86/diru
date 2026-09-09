@@ -129,8 +129,8 @@ final class BuildingController extends AbstractController
         return $response;
     }
 
-    #[Route('/project/{project}/print', name: 'app_building_project_print', methods: ['GET'])]
-    public function print(Request $request, BuildingRepository $buildingRepository, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    #[Route('/project/{project}/print_list', name: 'app_building_project_print_list', methods: ['GET'])]
+    public function printList(Request $request, BuildingRepository $buildingRepository, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $filter = $request->query->get('filter', '');
         $state = $request->query->get('state', '');
@@ -144,7 +144,7 @@ final class BuildingController extends AbstractController
             $paginator,
             $pdfAssetManager,
             $pdfGenerator,
-            'building/pdf/print.html.twig',
+            'building/pdf/print_list.html.twig',
             'Listado de obras del proyecto '.$project->getName(),
             'obras_'.$project->getName(),
             ['project' => $project],

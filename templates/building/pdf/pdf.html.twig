@@ -11,14 +11,6 @@
         {% endif %}
     </div>
     <br>
-    <table>
-        {% block columns %}{% endblock %}
-        {% for building in paginator.getData() %}
-            {% block data %}{% endblock %}
-        {% else %}
-            <tr>
-                <td colspan="{{ colspan|default(8) }}">No se encontraron obras.</td>
-            </tr>
-        {% endfor %}
-    </table>
+{#    {{ include('building/pdf/_list.html.twig') }}#}
+    {% block data %}{% endblock %}
 {% endblock %}

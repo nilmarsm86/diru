@@ -1,0 +1,11 @@
+{% macro two_columns(name, value, widthName=21, widthValue=67) %}
+    <div>
+        <div style=";width: {{ widthName }}%;vertical-align: top" class="col">
+            <strong>{{ name }}:</strong>
+        </div>
+
+        <div style="width: {{ widthValue }}%;vertical-align: top;margin-top:3px" class="col">
+            {{ value }}
+        </div>
+    </div>
+{% endmacro %}

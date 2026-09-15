@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "symfony-mate": {
+            "command": "vendor/bin/mate",
+            "args": ["serve"],
+            "env": {
+                "APP_ENV": "dev"
+            }
+        }
+    }
+}

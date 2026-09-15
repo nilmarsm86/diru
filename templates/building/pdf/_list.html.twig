@@ -1,29 +1,29 @@
 
 <table>
     <tr>
-        {{ th(app.request, 0, 'column', 'Nombre') }}
-        {{ th(app.request, 1, 'column', 'Valor aprobado total') }}
-        {{ th(app.request, 2, 'column', 'Valor estimado total') }}
-        {{ th(app.request, 3, 'column', 'Existente') }}
+        {{ th( 0, 'column', 'Nombre') }}
+        {{ th(1, 'column', 'Valor aprobado total') }}
+        {{ th(2, 'column', 'Valor estimado total') }}
+        {{ th(3, 'column', 'Existente') }}
         {% if app.request.query.get('state') == '' %}
-            {{ th(app.request, 4, 'column', 'Estado') }}
+            {{ th(4, 'column', 'Estado') }}
         {% endif %}
-        {{ th(app.request, 5, 'column', 'Constructora') }}
-        {{ th(app.request, 6, 'column', 'Proyecto') }}
-        {{ th(app.request, 7, 'column', 'Monto (CUP)') }}
+        {{ th(5, 'column', 'Constructora') }}
+        {{ th(6, 'column', 'Proyecto') }}
+        {{ th(7, 'column', 'Monto (CUP)') }}
     </tr>
     {% for building in buildings %}
         <tr>
-            {{ td(app.request, 0, 'column', building.name) }}
-            {{ td(app.request, 1, 'column', building.getTotalApprovedValueFormated()) }}
-            {{ td(app.request, 2, 'column', building.getTotalEstimatedValueFormated()) }}
-            {{ td(app.request, 3, 'column', building.isNew ? 'NO' : 'SI') }}
+            {{ td(0, 'column', building.name) }}
+            {{ td(1, 'column', building.getTotalApprovedValueFormated()) }}
+            {{ td(2, 'column', building.getTotalEstimatedValueFormated()) }}
+            {{ td(3, 'column', building.isNew ? 'NO' : 'SI') }}
             {% if app.request.query.get('state') == '' %}
-                {{ td(app.request, 4, 'column', building.state.getLabelFrom(building.state)) }}
+                {{ td(4, 'column', building.state.getLabelFrom(building.state)) }}
             {% endif %}
-            {{ td(app.request, 5, 'column', building.hasActiveConstructorCorporateEntity() ? building.getActiveConstructorCorporateEntityName() : 'Sin constructora') }}
-            {{ td(app.request, 6, 'column', building.project.name) }}
-            {{ td(app.request, 7, 'column', money(building.getPrice())) }}
+            {{ td(5, 'column', building.hasActiveConstructorCorporateEntity() ? building.getActiveConstructorCorporateEntityName() : 'Sin constructora') }}
+            {{ td(6, 'column', building.project.name) }}
+            {{ td(7, 'column', money(building.getPrice())) }}
         </tr>
     {% else %}
         <tr>

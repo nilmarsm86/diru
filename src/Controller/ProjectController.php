@@ -129,7 +129,7 @@ final class ProjectController extends AbstractController
     }
 
     #[Route('/{id}/print', name: 'app_project_print', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function print(Request $request, Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    public function print(Project $project, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
     {
         $client = $project->getClient();
         $clientType = ($client instanceof IndividualClient) ? 'Persona natural' : 'Cliente Empresarial-Negocio';

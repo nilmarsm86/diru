@@ -2,22 +2,22 @@
 
 {% block columns %}
     <tr>
-        {{ th(app.request, 0, 'column', 'Nombre') }}
-        {{ th(app.request, 1, 'column', 'Clientes') }}
-        {{ th(app.request, 2, 'column', 'Constructora') }}
-        {{ th(app.request, 3, 'column', 'Cliente y Constructora') }}
-        {{ th(app.request, 4, 'column', 'Proyectista') }}
-        {{ th(app.request, 5, 'column', 'Total') }}
+        {{ th(0, 'column', 'Nombre') }}
+        {{ th(1, 'column', 'Clientes') }}
+        {{ th(2, 'column', 'Constructora') }}
+        {{ th(3, 'column', 'Cliente y Constructora') }}
+        {{ th(4, 'column', 'Proyectista') }}
+        {{ th(5, 'column', 'Total') }}
     </tr>
 {% endblock %}
 
 {% block data %}
     <tr>
-        {{ td(app.request, 0, 'column', organization.name) }}
-        {{ td(app.request, 1, 'column', organization.client) }}
-        {{ td(app.request, 2, 'column', organization.constructor) }}
-        {{ td(app.request, 3, 'column', organization.client_constructor) }}
-        {{ td(app.request, 4, 'column', organization.draftman) }}
-        {{ td(app.request, 5, 'column', organization.total) }}
+        {{ td(0, 'column', organization.name) }}
+        {{ td(1, 'column', organization.client) }}
+        {{ td(2, 'column', organization.constructor) }}
+        {{ td(3, 'column', organization.client_constructor) }}
+        {{ td(4, 'column', organization.draftman) }}
+        {{ td(5, 'column', organization.total) }}
     </tr>
 {% endblock %}

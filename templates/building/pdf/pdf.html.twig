@@ -3,14 +3,13 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <div>
-        <strong>Proyecto:</strong> {{ project.name }}
-        {% if filter %}
-            <br>
-            <strong>Filtrado por:</strong> {{ filter }}
-        {% endif %}
-    </div>
+    {% from 'macros/pdf.html.twig' import two_columns %}
+
+    {{ two_columns('Proyecto', project.name) }}
+    {% if filter %}
+        {{ two_columns('Filtrado por', filter) }}
+    {% endif %}
     <br>
-{#    {{ include('building/pdf/_list.html.twig') }}#}
+    {#    {{ include('building/pdf/_list.html.twig') }} #}
     {% block data %}{% endblock %}
 {% endblock %}

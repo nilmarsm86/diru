@@ -2,18 +2,18 @@
 
 {% block columns %}
     <tr>
-        {{ th(app.request, 0, 'column', 'Nombre') }}
-        {{ th(app.request, 1, 'column', 'Provincia') }}
-        {{ th(app.request, 2, 'column', 'Empresarial') }}
-        {{ th(app.request, 3, 'column', 'Natural') }}
+        {{ th(0, 'column', 'Nombre') }}
+        {{ th(1, 'column', 'Provincia') }}
+        {{ th(2, 'column', 'Empresarial') }}
+        {{ th(3, 'column', 'Natural') }}
     </tr>
 {% endblock %}
 
 {% block data %}
     <tr>
-        {{ td(app.request, 0, 'column', municipality.name) }}
-        {{ td(app.request, 1, 'column', municipality.province) }}
-        {{ td(app.request, 2, 'column', municipality.enterprise) }}
-        {{ td(app.request, 3, 'column', municipality.individual) }}
+        {{ td(0, 'column', municipality.name) }}
+        {{ td(1, 'column', municipality.province) }}
+        {{ td(2, 'column', municipality.enterprise) }}
+        {{ td(3, 'column', municipality.individual) }}
     </tr>
 {% endblock %}

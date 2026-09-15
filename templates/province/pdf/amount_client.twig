@@ -2,16 +2,16 @@
 
 {% block columns %}
     <tr>
-        {{ th(app.request, 1, 'column', 'Provincia') }}
-        {{ th(app.request, 2, 'column', 'Empresarial') }}
-        {{ th(app.request, 3, 'column', 'Natural') }}
+        {{ th(1, 'column', 'Provincia') }}
+        {{ th(2, 'column', 'Empresarial') }}
+        {{ th(3, 'column', 'Natural') }}
     </tr>
 {% endblock %}
 
 {% block data %}
     <tr>
-        {{ td(app.request, 1, 'column', province.name) }}
-        {{ td(app.request, 2, 'column', province.enterprise) }}
-        {{ td(app.request, 3, 'column', province.individual) }}
+        {{ td(1, 'column', province.name) }}
+        {{ td(2, 'column', province.enterprise) }}
+        {{ td(3, 'column', province.individual) }}
     </tr>
 {% endblock %}

@@ -2,11 +2,11 @@
 
 namespace App\Twig\Extension;
 
-use App\Twig\Runtime\TableListTwigExtensionRuntime;
+use App\Twig\Runtime\PdfTwigExtensionRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class TableListTwigExtension extends AbstractExtension
+class PdfTwigExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
@@ -21,7 +21,8 @@ class TableListTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('show_reload', [TableListTwigExtensionRuntime::class, 'showReload']),
+            new TwigFunction('th', [PdfTwigExtensionRuntime::class, 'th'], ['is_safe' => ['html']]),
+            new TwigFunction('td', [PdfTwigExtensionRuntime::class, 'td'], ['is_safe' => ['html']]),
         ];
     }
 }

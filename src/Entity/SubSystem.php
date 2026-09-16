@@ -279,7 +279,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
         foreach ($locals as $local) {
-            if (!$local->isClassified()) {
+            if (false === $local->isClassified()) {
                 return false;
             }
         }
@@ -652,6 +652,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
     public function getIte(): float
     {
+        if (0 === (int) $this->getTotalArea()) {
+            return 0;
+        }
+
         return $this->getPrice() / $this->getTotalArea();
     }
 
@@ -676,6 +680,23 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             return 'Mixto';
         }
 
-        return $constructiveSystems[0]?->getName() ?? 'Mixto';
+        if (1 === count($constructiveSystems)) {
+            if (null === $constructiveSystems[0]) {
+                return '';
+            }
+
+            return $constructiveSystems[0]->getName();
+        }
+
+        return '';
+    }
+
+    public function isDiagnostic(bool $reply): bool
+    {
+        if ($reply) {
+            return $this->allLocalsAreClassified() && $this->hasReplyLocals() && $this->allLocalsHasConstructiveAction();
+        }
+
+        return $this->allLocalsAreClassified() && $this->hasOriginalLocals();
     }
 }

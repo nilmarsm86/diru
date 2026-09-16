@@ -43,7 +43,8 @@ readonly class PdfAssetManager
         }
 
         if (!$this->filesystem->exists($path)) {
-            throw new \RuntimeException('Logo no encontrado en: '.$path);
+            $path = Path::join($this->projectDir, 'assets', 'images', 'corporate_entity', 'blank.jpg');
+            //            throw new \RuntimeException('Logo no encontrado en: '.$path);
         }
 
         return $this->encodeBase64Image($path);

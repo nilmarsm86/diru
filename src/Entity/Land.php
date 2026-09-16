@@ -20,7 +20,7 @@ class Land
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área de terreno está vacía.')]
     #[Assert\Positive(message: 'El area de terreno debe ser un número positivo.')]
-    private ?float $landArea = null;
+    private float $landArea = 0;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'El área ocupada está vacía.')]
@@ -58,7 +58,7 @@ class Land
         return $this->id;
     }
 
-    public function getLandArea(): ?float
+    public function getLandArea(): float
     {
         return $this->landArea;
     }

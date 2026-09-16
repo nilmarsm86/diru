@@ -802,9 +802,13 @@ class Building implements MeasurementDataInterface
     //        return $this;
     //    }
 
-    public function getLandArea(): int|float|null
+    public function getLandArea(): int|float
     {
-        return $this->getLand()?->getLandArea();
+        if (null === $this->getLand()) {
+            return 0;
+        }
+
+        return $this->getLand()->getLandArea();
     }
 
     public function getOccupiedArea(): ?float
@@ -915,6 +919,10 @@ class Building implements MeasurementDataInterface
 
     public function isFullyOccupied(?bool $original = null): bool
     {
+        if (true === $this->getLand()?->isBlocked()) {
+            return true;
+        }
+
         return $this->getTotalArea($original) >= $this->getMaxArea();
     }
 
@@ -954,10 +962,16 @@ class Building implements MeasurementDataInterface
                 return '0';
             }
 
-            return number_format($occupiedArea * 100 / (float) $this->getLand()->getLandArea(), 2);
+            return number_format($occupiedArea * 100 / $this->getLand()->getLandArea(), 2);
         }
 
-        return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / (float) $this->getLand()?->getLandArea(), 2);
+        if (null === $this->getLand()) {
+            $landArea = 0;
+        } else {
+            $landArea = $this->getLand()->getLandArea();
+        }
+
+        return number_format((float) $this->getLand()?->getOccupiedArea() * 100 / $landArea, 2);
     }
 
     public function canReply(): bool

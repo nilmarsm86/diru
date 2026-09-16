@@ -7,7 +7,7 @@
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
         <div>
-            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), '', 'Locales', 'Locales', '', 'btn-info') }}
+            {{ tableActionButton3(path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}), '', 'Locales y áreas', 'Locales y áreas', '', 'btn-info') }}
             {{ tableActionButton3(path('app_sub_system_report_local_technical_status', {'id':sub_system.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
         </div>
     {% endblock %}

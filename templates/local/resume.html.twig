@@ -3,16 +3,16 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Resumen de los locales{% endblock %}
+{% block title %}Resumen de los locales y áreas{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Resumen de los locales', 'lucide-lab:floor-plan') }}
+        {{ h1('Resumen general de los locales y áreas', 'lucide-lab:floor-plan') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
-            {label: 'Locales', href: path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}) },
-            {label: 'Resumen'},
+            {label: 'Locales y áreas', href: path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}) },
+            {label: 'Resumen general'},
         ]) }}
     </div>
 

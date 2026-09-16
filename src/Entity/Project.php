@@ -560,4 +560,19 @@ class Project
 
         $this->addPlannerProject($plannerProject);
     }
+
+    public function getTotalLandArea(): float
+    {
+        if (0 === $this->getBuildingsAmount()) {
+            return 0;
+        }
+
+        $totalLandArea = 0;
+        /** @var Building $building */
+        foreach ($this->getBuildings() as $building) {
+            $totalLandArea += $building->getLandArea();
+        }
+
+        return $totalLandArea;
+    }
 }

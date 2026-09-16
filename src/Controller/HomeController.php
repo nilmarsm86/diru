@@ -27,11 +27,21 @@ final class HomeController extends AbstractController
         ChartBuilderInterface $chartBuilder,
         EntityManagerInterface $entityManager,
     ): Response {
-        $lastThree = $entityManager->getRepository(Project::class)->lastThree();
+        $lastThreeProjects = $entityManager->getRepository(Project::class)->lastThree();
+        $lastThreeBuildings = $entityManager->getRepository(Building::class)->lastThree();
+
         $amount = 0;
+        $totalLandArea = 0;
+        $totalATP = 0;
         $allProjects = $entityManager->getRepository(Project::class)->findAll();
+        /** @var Project $project */
         foreach ($allProjects as $project) {
             $amount += $project->getPrice();
+            $totalLandArea += $project->getTotalLandArea();
+            /** @var Building $building */
+            foreach ($project->getBuildings() as $building) {
+                $totalATP += $building->getTotalArea();
+            }
         }
 
         $newData = $this->subsystems($entityManager);
@@ -42,8 +52,10 @@ final class HomeController extends AbstractController
         $finance = $this->finance($entityManager);
 
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-            'last_three' => $lastThree,
+            'last_three_projects' => $lastThreeProjects,
+            'last_three_buildings' => $lastThreeBuildings,
+            'total_land_area' => $totalLandArea,
+            'total_atp' => $totalATP,
             'amount' => $amount,
             'project_amount' => count($allProjects),
             'urban_regulations' => $entityManager->getRepository(ProjectUrbanRegulation::class)->usedUrbanRegulations(),
@@ -53,7 +65,7 @@ final class HomeController extends AbstractController
             'min' => $buildingValuationService->getResultIte($min),
             'max' => $buildingValuationService->getResultIte($max),
             'chart1' => $this->chart1($chartBuilder, $finance),
-            'chart2' => $this->chart2($chartBuilder, $lastThree),
+            'chart2' => $this->chart2($chartBuilder, $lastThreeProjects),
             'chart3' => $this->chart3($chartBuilder, $finance),
             'chart4' => $this->chart4($chartBuilder, $entityManager->getRepository(Project::class)->countByState()),
             'chart5' => $this->chart5($chartBuilder, $entityManager->getRepository(Client::class)->countClients()),

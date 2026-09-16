@@ -81,6 +81,7 @@
                     hasUnassignedArea: floor.hasUnassignedArea(),
                     unassignedArea: floor.getUnassignedArea(),
                     landArea: floor.building.getLandArea(),
+                    isBlocked: floor.building.land.isBlocked()
                 }) }}
 
                 {% if floor.building.hasFreeArea() and floor.hasFreeArea() %}
@@ -104,7 +105,7 @@
                     <th></th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacio">Á. Vacío (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área Total de Piso">Á.T.P (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
@@ -174,7 +175,7 @@
                         <td>{{ sub_system.getVolume()|number_format(2) }}</td>
                         <td>
                             {% if reply %}
-                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasReplyLocals() and sub_system.allLocalsHasConstructiveAction())
+                                {{ (sub_system.isDiagnostic(reply))
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",
@@ -182,7 +183,7 @@
                                     'data-bs-custom-class':"danger-tooltip"
                                 }) }}
                             {% else %}
-                                {{ (sub_system.allLocalsAreClassified() and sub_system.hasOriginalLocals())
+                                {{ (sub_system.isDiagnostic(reply))
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",
@@ -289,7 +290,7 @@
                     </th>
                     <th>{{ floor.getVolume()|number_format(2) }}</th>
                     <th>
-                        {% if floor.hasErrors() == false %}
+                        {% if floor.isDiagnostic(reply) %}
                             {{ ux_icon('ep:success-filled', {
                                 'class':'bi text-success',
                             }) }}
@@ -311,6 +312,16 @@
 
         {% endcomponent %}
 
+    {% endblock %}
+
+    {% block footer %}
+        <div class="card-footer">
+            <p style="margin-bottom: 0">
+                <em>
+                    * El área libre no puede contener edificaciones.
+                </em>
+            </p>
+        </div>
     {% endblock %}
 
 {% endcomponent %}

@@ -128,4 +128,12 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
 
         return (int) $builder->getQuery()->getSingleScalarResult();
     }
+
+    public function lastThree(): mixed
+    {
+        $builder = $this->createQueryBuilder('b')->select(['b']);
+        $query = $builder->orderBy('b.id', 'DESC')->setMaxResults(3)->getQuery();
+
+        return $query->getResult();
+    }
 }

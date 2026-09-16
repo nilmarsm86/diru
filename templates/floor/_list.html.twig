@@ -91,6 +91,7 @@
                     hasUnassignedArea: building.hasUnassignedArea(),
                     unassignedArea: building.getUnassignedArea(),
                     landArea: building.getLandArea(),
+                    isBlocked: building.land.isBlocked()
                 }) }}
 
             {% endblock %}
@@ -102,7 +103,7 @@
                     <th></th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacio">Á. Vacío (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
@@ -290,7 +291,18 @@
 
     {% endblock %}
 
+    {% block footer %}
+        <div class="card-footer">
+            <p style="margin-bottom: 0">
+                <em>
+                    * El área libre no puede contener edificaciones.
+                </em>
+            </p>
+        </div>
+    {% endblock %}
+
 {% endcomponent %}
+
 
 {% component 'Card:Card' with {
      cssClass: 'mb-4',

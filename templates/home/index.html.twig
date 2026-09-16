@@ -135,6 +135,68 @@
         </div>
 
         <div class="row">
+            <div class="col">
+                {% component 'Card:Card' with {
+                    title: 'Últimos 3 proyectos registrados',
+                } %}
+                    {% block body %}
+                        <ul>
+                            {% for project in last_three_projects %}
+                                <li>
+                                    <a href="{{ path('app_project_edit', {'id':project.id}) }}">{{ project.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+
+            <div class="col">
+                {% component 'Card:Card' with {
+                    title: 'Últimas 3 obras registradas',
+                } %}
+                    {% block body %}
+                        <ul>
+                            {% for building in last_three_buildings %}
+                                <li>
+                                    <a href="{{ path('app_building_edit', {'id':building.id, 'project':building.project.id}) }}">
+                                        {{ building.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col">
+                {% component 'Card:Card' with {
+                    title: 'Total de área de terreno del sistema',
+                } %}
+                    {% block body %}
+                        {{ total_land_area|number_format(2) }} m<sup>2</sup>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+
+            <div class="col">
+                {% component 'Card:Card' with {
+                    title: 'Área total de plantas en el sistema',
+                } %}
+                    {% block body %}
+                        {{ total_atp|number_format(2) }} m<sup>2</sup>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
             <div class="col-12">
                 {% component 'Card:Card' with {
                     title: 'Total de finanzas de obras',

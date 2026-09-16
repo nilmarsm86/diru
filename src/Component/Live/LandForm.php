@@ -97,17 +97,11 @@ final class LandForm extends AbstractController
         $this->submitForm();
 
         if ($this->isSubmitAndValid()) {
-            $land = $this->uploadPhoto($request, $validator, $fileUploader);
+            $land = $this->processLand($request, $validator, $fileUploader);
             if (null === $land) {
                 return null;
             }
 
-            $land = $this->uploadMicrolocation($request, $validator, $fileUploader, $land);
-            if (null === $land) {
-                return null;
-            }
-
-            $this->building?->setLand($land);
             $showFloorMessage = false;
             // cuando se salva los datos del terreno se crean automaticamente la cantidad de plantas
             if (is_null($land->getId())) {
@@ -127,7 +121,8 @@ final class LandForm extends AbstractController
                     $this->building?->setState(BuildingState::Diagnosis);
 
                     if (1 > $land->getOccupiedArea()) {
-                        $land->setOccupiedArea(($land->getPerimeter() ?? 1) - ($land->getLandArea() ?? 1));
+                        //                        $land->setOccupiedArea(($land->getPerimeter() ?? 1) - ($land->getLandArea() ?? 1));
+                        $land->setOccupiedArea(((null !== $land->getPerimeter()) ? $land->getPerimeter() : 1) - $land->getLandArea());
                     }
                 }
                 $this->building?->createFloors(false, $this->entityManager);
@@ -161,6 +156,23 @@ final class LandForm extends AbstractController
         }
 
         return null;
+    }
+
+    private function processLand(Request $request, ValidatorInterface $validator, FileUploader $fileUploader): ?Land
+    {
+        $land = $this->uploadPhoto($request, $validator, $fileUploader);
+        if (null === $land) {
+            return null;
+        }
+
+        $land = $this->uploadMicrolocation($request, $validator, $fileUploader, $land);
+        if (null === $land) {
+            return null;
+        }
+
+        $this->building?->setLand($land);
+
+        return $land;
     }
 
     /** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */

@@ -205,6 +205,10 @@ class Floor implements MeasurementDataInterface
 
     public function isFullyOccupied(?bool $original = null): bool
     {
+        if (true === $this->building?->isFullyOccupied($original)) {
+            return true;
+        }
+
         return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
     }
 
@@ -589,5 +593,23 @@ class Floor implements MeasurementDataInterface
         }
 
         return $constructiveSystems[0];
+    }
+
+    public function isDiagnostic(bool $reply): bool
+    {
+        if (0 === $this->getSubSystemAmount()) {
+            return true;
+        }
+
+        $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subSystem */
+        foreach ($subSystems as $subSystem) {
+            if (false === $subSystem->isDiagnostic($reply)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

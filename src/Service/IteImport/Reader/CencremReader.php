@@ -51,7 +51,7 @@ final class CencremReader extends AbstractIteExcelReader
             source: $this->requireString($row, 'source'),
             country: $this->requireString($row, 'country'),
             city: $this->requireString($row, 'city'),
-            projectType: $this->requireString($row, 'description'),
+            projectType: str_replace('m2', 'm²', $this->requireString($row, 'description')),
             quality: $this->requireString($row, 'quality'),
             measurementUnitCode: $this->requireString($row, 'unit'),
             min: $this->requireFloat($row, 'ite_2017_usd'),

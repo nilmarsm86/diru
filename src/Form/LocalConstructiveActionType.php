@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
 use App\Entity\LocalConstructiveAction;
+use App\Form\Types\EntityPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of LocalConstructiveAction
@@ -20,6 +22,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class LocalConstructiveActionType extends AbstractType
 {
+    public function __construct(
+        private readonly RouterInterface $router,
+    ) {
+    }
+
     /**
      * @param FormBuilderInterface<LocalConstructiveAction|null> $builder
      * @param array<string, mixed>                               $options
@@ -36,11 +43,15 @@ class LocalConstructiveActionType extends AbstractType
                 'placeholder' => '-Seleccione-',
                 'group_by' => fn (ConstructiveAction $constructiveAction, int $key, string $value) => $constructiveAction->getType()::getLabelFrom($constructiveAction->getType()),
             ])
-            ->add('constructiveSystem', EntityType::class, [
+            ->add('constructiveSystem', EntityPlusType::class, [
                 'class' => ConstructiveSystem::class,
                 'choice_label' => 'name',
                 'label' => 'Sistema constructivo:',
                 'placeholder' => '-Seleccione-',
+                'add' => true,
+                'add_title' => 'Agregar Sistema Constructivo',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_constructive_system_new', ['modal' => 'modal-load']),
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {

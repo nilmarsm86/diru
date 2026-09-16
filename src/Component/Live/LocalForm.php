@@ -48,6 +48,9 @@ final class LocalForm extends AbstractController
     #[LiveProp]
     public ?LocalConstructiveAction $localConstructiveAction = null;
 
+    #[LiveProp(writable: true)]
+    public ?string $country = null;
+
     #[LiveProp]
     public bool $reply = false;
 

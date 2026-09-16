@@ -2,7 +2,11 @@
 
 {% if isFullyOccupied %}
     {% if hasFreeArea %}
-        , ocupados totalmente, <br>con un área libre de {{ freeArea|number_format(2) }}m<sup>2</sup>.
+        {% if isBlocked %}
+            , ocupados, <br>con un área libre de {{ freeArea|number_format(2) }}m<sup>2</sup>.
+        {% else %}
+            , ocupados totalmente, <br>con un área libre de {{ freeArea|number_format(2) }}m<sup>2</sup>.
+        {% endif %}
     {% else %}
         , ocupados totalmente.
         {% if hasUnassignedArea %}

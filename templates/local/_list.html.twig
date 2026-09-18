@@ -34,7 +34,30 @@
                 queryName: 'type',
                 options:types
             }) }}
-            {{ tableActionButton3(path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}), '', 'Resumen', 'Resumen', '', 'btn-info') }}
+{#            {{ tableActionButton3(path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}), '', 'Resumen', 'Resumen', '', 'btn-info') }}#}
+            <div class="dropdown d-inline-block">
+                <button type="button"
+                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false" title="Resumen"
+                >
+                    Resumen
+                </button>
+                <ul class="dropdown-menu" data-bs-theme="light">
+                    <li>
+                        <a class="dropdown-item"
+                           href="{{ path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}" title="Resumen general">
+                            General
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="{{ path('app_local_resume_only_local', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}" title="Resumen áreas útiles">
+                            Áreas Útiles
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             {% if sub_system.floor.isFullyOccupied() == false or reply == true %}
                 {% set path = path('app_local_new', {'subSystem': sub_system.id, 'reply':reply}) %}

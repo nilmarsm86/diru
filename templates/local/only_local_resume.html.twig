@@ -3,16 +3,16 @@
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
 {% from 'macros/titles.html.twig' import h1 %}
 
-{% block title %}Resumen de los locales y áreas{% endblock %}
+{% block title %}Resumen áreas útiles{% endblock %}
 
 {% block content %}
     <div class="row">
-        {{ h1('Resumen general de los locales y áreas', 'lucide-lab:floor-plan') }}
+        {{ h1('Resumen áreas útiles', 'lucide-lab:floor-plan') }}
 
         {{ breadcrumb([
             {label: 'Inicio', href: path('app_home')},
             {label: 'Locales y áreas', href: path('app_local_index', {'subSystem': sub_system.id, 'reply': reply}) },
-            {label: 'Resumen general'},
+            {label: 'Resumen áreas útiles'},
         ]) }}
     </div>
 
@@ -27,6 +27,6 @@
         <li><strong>Proyecto: </strong>{{ sub_system.floor.building.project.name }}</li>
     </ul>
 
-    {{ include('local/resume/_technical_status.html.twig', {'showButton': true, 'title': title}) }}
-    {{ include('local/resume/_constructive_action.html.twig', {'showButton': true, 'title': title}) }}
+    {{ include('local/resume/_technical_status.html.twig', {'showButton': true, 'title': title, only_local: true}) }}
+    {{ include('local/resume/_constructive_action.html.twig', {'showButton': true, 'title': title, only_local: true}) }}
 {% endblock %}

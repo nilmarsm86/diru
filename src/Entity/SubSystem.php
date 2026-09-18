@@ -189,11 +189,12 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $this->getFloor()->isFullyOccupied();
     }
 
-    public function getLocalsAmount(): int
+    public function getLocalsAmount(bool $onlyLocals = false): int
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
 
-        return $locals->count();
+        return count($locals);
     }
 
     public function getUsefullAreaLocalsAmount(): int
@@ -376,7 +377,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     /**
      * @return array<int>
      */
-    public function getAmountTechnicalStatus(): array
+    public function getAmountTechnicalStatus(bool $onlyLocals = false): array
     {
         $undefined = 0;
         $critical = 0;
@@ -386,6 +387,9 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
 
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
+
+        /** @var Local $local */
         foreach ($locals as $local) {
             match ($local->getTechnicalStatus()) {
                 TechnicalStatus::Critical => $critical++,
@@ -408,7 +412,7 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     /**
      * @return array<float>
      */
-    public function getAmountMeterTechnicalStatus(): array
+    public function getAmountMeterTechnicalStatus(bool $onlyLocals = false): array
     {
         $undefined = 0;
         $critical = 0;
@@ -416,7 +420,12 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         $regular = 0;
         $good = 0;
 
-        foreach ($this->getLocals() as $local) {
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
             match ($local->getTechnicalStatus()) {
                 TechnicalStatus::Critical => $critical += (float) $local->getArea(),
                 TechnicalStatus::Bad => $bad += (float) $local->getArea(),
@@ -438,9 +447,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     /**
      * @return array<mixed>
      */
-    public function getAmountConstructiveAction(): array
+    public function getAmountConstructiveAction(bool $onlyLocals = false): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
         $constructiveAction = [];
 
         /** @var Local $local */
@@ -457,9 +467,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     /**
      * @return array<mixed>
      */
-    public function getPriceByConstructiveAction(): array
+    public function getPriceByConstructiveAction(bool $onlyLocals = false): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
         $constructiveAction = [];
 
         /** @var Local $local */
@@ -476,9 +487,10 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
     /**
      * @return array<mixed>
      */
-    public function getMeterByConstructiveAction(): array
+    public function getMeterByConstructiveAction(bool $onlyLocals = false): array
     {
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
         $constructiveAction = [];
 
         /** @var Local $local */
@@ -492,10 +504,11 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return $constructiveAction;
     }
 
-    public function getAmountMeters(): ?float
+    public function getAmountMeters(bool $onlyLocals = false): ?float
     {
         $total = 0;
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
         /** @var Local $local */
         foreach ($locals as $local) {
             $total += (float) $local->getArea();
@@ -611,13 +624,14 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         return true;
     }
 
-    public function getPrice(?bool $original = null): int|float
+    public function getPrice(?bool $original = null, bool $onlyLocals = false): int|float
     {
         if (0 === $this->getLocalsAmount()) {
             return 0;
         }
 
         $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+        $locals = $this->getFilterOnlyLocals($onlyLocals, $locals);
 
         $price = 0;
         /** @var Local $local */
@@ -698,5 +712,22 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
         }
 
         return $this->allLocalsAreClassified() && $this->hasOriginalLocals();
+    }
+
+    /**
+     * @param ArrayCollection<int, Local> $locals
+     *
+     * @return array<int, Local>|ArrayCollection<int, Local>
+     */
+    public function getFilterOnlyLocals(bool $onlyLocals, ArrayCollection $locals): array|ArrayCollection
+    {
+        if ($onlyLocals) {
+            $locals = array_filter($locals->toArray(), function ($local) {
+                /* @var Local $local */
+                return $local->isLocalType();
+            });
+        }
+
+        return $locals;
     }
 }

@@ -43,9 +43,9 @@
 
         <tr>
             <th>Totales</th>
-            <th>{{ sub_system.getLocalsAmount() }}</th>
-            <th>{{ money(sub_system.getPrice()) }}</th>
-            <th>{{ sub_system.getAmountMeters()|number_format(2) }}</th>
+            <th>{{ sub_system.getLocalsAmount(only_locals) }}</th>
+            <th>{{ money(sub_system.getPrice(null, only_locals)) }}</th>
+            <th>{{ sub_system.getAmountMeters(only_locals)|number_format(2) }}</th>
         </tr>
     </table>
 {% endblock %}

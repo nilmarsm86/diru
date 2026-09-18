@@ -133,20 +133,17 @@ final class LocalController extends AbstractController
     #[Route('/{subSystem}/resume/{reply}', name: 'app_local_resume', methods: ['GET'])]
     public function resumeLocal(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, bool $reply = false): Response
     {
-        $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository);
-
-        return $this->render('local/resume.html.twig', [
-            'local_status' => $subSystem->getAmountTechnicalStatus(),
-            'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
-            'constructive_action' => $ca,
-            'title' => 'Estado técnico de los locales del subsistema',
-            'sub_system' => $subSystem,
-            'reply' => $reply,
-        ]);
+        return $this->resume($subSystem, $constructiveActionRepository, $reply, false);
     }
 
-    #[Route('/{id}/local/technical_status', name: 'app_sub_system_report_local_technical_status', methods: ['GET'])]
-    public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    #[Route('/{subSystem}/resume/only_local/{reply}', name: 'app_local_resume_only_local', methods: ['GET'])]
+    public function resumeOnlyLocal(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, bool $reply = false): Response
+    {
+        return $this->resume($subSystem, $constructiveActionRepository, $reply, true);
+    }
+
+    #[Route('/{id}/local/technical_status/{onlyLocals}', name: 'app_sub_system_report_local_technical_status', methods: ['GET'])]
+    public function localTechnicalStatus(SubSystem $subSystem, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, bool $onlyLocals = false): Response
     {
         $client = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient();
         $clientLogo = null;
@@ -169,8 +166,8 @@ final class LocalController extends AbstractController
         $draftman = $subSystem->getFloor()?->getBuilding()?->getActiveDraftsman();
 
         $html = $this->renderView('local/pdf/technical_status.html.twig', [
-            'local_status' => $subSystem->getAmountTechnicalStatus(),
-            'meter_status' => $subSystem->getAmountMeterTechnicalStatus(),
+            'local_status' => $subSystem->getAmountTechnicalStatus($onlyLocals),
+            'meter_status' => $subSystem->getAmountMeterTechnicalStatus($onlyLocals),
             'sub_system' => $subSystem,
             'logo' => $pdfAssetManager->getLogoBase64(),
             'client_logo' => $pdfAssetManager->logoToBase64('/corporate_entity/logo', $clientLogo),
@@ -180,6 +177,7 @@ final class LocalController extends AbstractController
             'draftman' => $draftman,
             'client_name' => $clientName,
             'representative_name' => $representativeName,
+            'only_locals' => $onlyLocals,
         ]);
 
         $pdfContent = $pdfGenerator->generate($html);
@@ -187,10 +185,10 @@ final class LocalController extends AbstractController
         return $this->pdfResponse($pdfContent, 'estado_tecnico');
     }
 
-    #[Route('/{id}/local/constructive_action', name: 'app_sub_system_report_local_constructive_action', methods: ['GET'])]
-    public function localConstructiveAction(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator): Response
+    #[Route('/{id}/local/constructive_action/{onlyLocals}', name: 'app_sub_system_report_local_constructive_action', methods: ['GET'])]
+    public function localConstructiveAction(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, PdfAssetManager $pdfAssetManager, PdfGenerator $pdfGenerator, bool $onlyLocals = false): Response
     {
-        $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository);
+        $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository, $onlyLocals);
 
         $client = $subSystem->getFloor()?->getBuilding()?->getProject()?->getClient();
         $clientLogo = null;
@@ -223,6 +221,7 @@ final class LocalController extends AbstractController
             'draftman' => $draftman,
             'client_name' => $clientName,
             'representative_name' => $representativeName,
+            'only_locals' => $onlyLocals,
         ]);
 
         $pdfContent = $pdfGenerator->generate($html);
@@ -255,11 +254,11 @@ final class LocalController extends AbstractController
     /**
      * @return array<string, array<string, mixed>>
      */
-    private function constructiveActionStatus(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository): array
+    private function constructiveActionStatus(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, bool $onlyLocals = false): array
     {
-        $constructiveActionStatus = $subSystem->getAmountConstructiveAction();
-        $constructiveActionPrice = $subSystem->getPriceByConstructiveAction();
-        $constructiveActionMeter = $subSystem->getMeterByConstructiveAction();
+        $constructiveActionStatus = $subSystem->getAmountConstructiveAction($onlyLocals);
+        $constructiveActionPrice = $subSystem->getPriceByConstructiveAction($onlyLocals);
+        $constructiveActionMeter = $subSystem->getMeterByConstructiveAction($onlyLocals);
         $constructiveActions = $constructiveActionRepository->findAll();
         $ca = [];
 
@@ -301,5 +300,19 @@ final class LocalController extends AbstractController
         }
 
         return [$filter, $paginator, $subSystem, $reply];
+    }
+
+    private function resume(SubSystem $subSystem, ConstructiveActionRepository $constructiveActionRepository, bool $reply, bool $onlyLocals): Response
+    {
+        $ca = $this->constructiveActionStatus($subSystem, $constructiveActionRepository, $onlyLocals);
+
+        return $this->render('local/'.(($onlyLocals) ? 'only_local_resume' : 'general_resume').'.html.twig', [
+            'local_status' => $subSystem->getAmountTechnicalStatus($onlyLocals),
+            'meter_status' => $subSystem->getAmountMeterTechnicalStatus($onlyLocals),
+            'constructive_action' => $ca,
+            'title' => 'Estado técnico de los locales del subsistema',
+            'sub_system' => $subSystem,
+            'reply' => $reply,
+        ]);
     }
 }

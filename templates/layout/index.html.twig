@@ -16,7 +16,7 @@
 
     {% component ManagePage %}
         {% block list %}
-            {{ include({{ templateDir }}'/_list.html.twig') }}
+            {{ include(templateDir ~'/_list.html.twig') }}
         {% endblock %}
     {% endcomponent %}
 {% endblock %}

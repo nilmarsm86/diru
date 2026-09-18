@@ -149,7 +149,7 @@ class Building implements MeasurementDataInterface
      * @var Collection<int, BuildingSeparateConcept>
      */
     #[ORM\OneToMany(targetEntity: BuildingSeparateConcept::class, mappedBy: 'building', cascade: ['persist'])]
-    #[ORM\OrderBy(['separateConcept' => 'ASC'])]
+    #[ORM\OrderBy(['separateConcept' => \SortDirection::Ascending])]
     private Collection $buildingSeparateConcepts;
 
     #[ORM\Column(nullable: true)]

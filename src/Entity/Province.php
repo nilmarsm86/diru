@@ -30,7 +30,7 @@ class Province
         minMessage: 'Debe establecer al menos 1 municipio para esta provincia.',
     )]
     #[Assert\Valid]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy(['name' => \SortDirection::Ascending])]
     private Collection $municipalities;
 
     public function __construct()

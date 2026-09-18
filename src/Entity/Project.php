@@ -85,12 +85,12 @@ class Project
      */
     #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'project', cascade: ['persist'])]
     #[Assert\Valid]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy(['name' => \SortDirection::Ascending])]
     private Collection $buildings;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy(['name' => \SortDirection::Ascending])]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Seleccione la moneda de trabajo en el proyecto.')]
     private ?Currency $currency = null;

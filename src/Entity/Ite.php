@@ -61,7 +61,7 @@ class Ite
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\OrderBy(['name' => 'DESC'])]
+    #[ORM\OrderBy(['name' => \SortDirection::Descending])]
     private ?City $city = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]

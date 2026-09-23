@@ -63,6 +63,17 @@ class FloorType extends AbstractType
             ]);
 
         $nextPosition = 0;
+        $fieldOptions = [
+            'label' => 'Posición:',
+            'attr' => [
+                'placeholder' => 'Posición',
+            ] + $disabled,
+        ];
+
+        if ($floor->isGroundFloor()) {
+            $fieldOptions += ['help' => 'La posición de la planta baja no puede ser modificada'];
+        }
+
         if (!is_null($floor) && is_null($floor->getId()) && !is_null($floor->getBuilding())) {
             $floors = ((bool) $options['reply']) ? $floor->getBuilding()->getReplyExistsFloors() : $floor->getBuilding()->getOriginalExistsFloors();
 
@@ -71,21 +82,26 @@ class FloorType extends AbstractType
                 $nextPosition = $floors->last()->getPosition();
             }
 
-            $fieldOptions = [
-                'label' => 'Posición:',
-                'data' => ($nextPosition + 1),
-                'attr' => [
-                    'placeholder' => 'Posición',
-                ] + $disabled,
-            ];
-        } else {
-            $fieldOptions = [
-                'label' => 'Posición:',
-                'attr' => [
-                    'placeholder' => 'Posición',
-                ] + $disabled,
-            ];
+            //            $fieldOptions = [
+            //                'label' => 'Posición:',
+            //                'data' => ($nextPosition + 1),
+            //                'help' => 'La posición de la planta baja no puede ser modificada',
+            //                'attr' => [
+            //                    'placeholder' => 'Posición',
+            //                ] + $disabled,
+            //            ];
+            $fieldOptions += ['data' => ($nextPosition + 1)];
+            //            unset($fieldOptions['help']);
         }
+        //        else {
+        //            $fieldOptions = [
+        //                'label' => 'Posición:',
+        //                'help' => 'La posición de la planta baja no puede ser modificada',
+        //                'attr' => [
+        //                    'placeholder' => 'Posición',
+        //                ] + $disabled,
+        //            ];
+        //        }
 
         $form->add('position', null, $fieldOptions);
     }

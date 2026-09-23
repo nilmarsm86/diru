@@ -38,13 +38,6 @@ class LocalType extends AbstractType
                     'placeholder' => 'Nombre del local',
                 ],
             ])
-            ->add('number', TextType::class, [
-                'label' => 'Número:',
-                'attr' => [
-                    'placeholder' => 'Número del local',
-                    'min' => 1,
-                ],
-            ])
             ->add('type', LocalTypeEnumType::class, [
                 'label' => 'Tipo de local:',
             ])
@@ -101,6 +94,26 @@ class LocalType extends AbstractType
         $leftArea = $this->calculateAvailableArea($local, $options);
 
         $min = $local->isWallType() ? 0 : 1;
+
+        $numberOptions = [
+            'label' => 'Número:',
+            'attr' => [
+                'placeholder' => 'Número del local',
+                'min' => 1,
+            ],
+        ];
+        $nextPosition = 0;
+        if (!is_null($local) && is_null($local->getId()) && !is_null($local->getSubSystem())) {
+            $locals = ((bool) $options['reply']) ? $local->getSubSystem()->getReplyLocals() : $local->getSubSystem()->getOriginalLocals();
+            if ($locals->count() > 0 && false !== $locals->last()) {
+                /** @var int $nextPosition */
+                $nextPosition = (int) $local->getSubSystem()->getMaxLocalNumber();
+            }
+
+            $numberOptions += ['data' => ($nextPosition + 1)];
+        }
+
+        $form->add('number', TextType::class, $numberOptions);
 
         $form->add('area', UnitMeasurementFloatType::class, [
             'unit' => 'm<sup>2</sup>',

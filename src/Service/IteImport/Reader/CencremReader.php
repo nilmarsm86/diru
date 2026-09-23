@@ -21,6 +21,7 @@ use App\Service\IteImport\DTO\IteImportRow;
  */
 final class CencremReader extends AbstractIteExcelReader
 {
+    private const IMPLICIT_UNIT = 'USD/m²';
     protected const REQUIRED_HEADERS = [
         'source',
         'country',
@@ -53,7 +54,7 @@ final class CencremReader extends AbstractIteExcelReader
             city: $this->requireString($row, 'city'),
             projectType: str_replace('m2', 'm²', $this->requireString($row, 'description')),
             quality: $this->requireString($row, 'quality'),
-            measurementUnitCode: $this->requireString($row, 'unit'),
+            measurementUnitCode: self::IMPLICIT_UNIT,
             min: $this->requireFloat($row, 'ite_2017_usd'),
             max: $this->requireFloat($row, 'ite_2025_usd'),
             yearReference: $this->requireInt($row, 'year_reference'),

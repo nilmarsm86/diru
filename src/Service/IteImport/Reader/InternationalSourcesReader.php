@@ -18,7 +18,7 @@ use App\Service\IteImport\DTO\IteImportRow;
  */
 final class InternationalSourcesReader extends AbstractIteExcelReader
 {
-    private const IMPLICIT_UNIT = 'm2';
+    private const IMPLICIT_UNIT = 'USD/m²';
 
     protected const REQUIRED_HEADERS = [
         'source',

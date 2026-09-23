@@ -109,8 +109,8 @@
                         {% if app.request.query.get('quality') == '' %}
                             <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
                         {% endif %}
-                        <td>{{ ite.min }}</td>
-                        <td>{{ ite.max }}</td>
+                        <td>{{ money((ite.min * 100)) }}</td>
+                        <td>{{ money((ite.max * 100)) }}</td>
                         {% if app.request.query.get('mu') == '' %}
                             <td>{{ ite.measurementUnit.code }}</td>
                         {% endif %}

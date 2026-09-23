@@ -1799,4 +1799,18 @@ class Building implements MeasurementDataInterface
 
         $this->addDraftmanCorporateEntityBuilding($draftmanCorporateEntityBuilding);
     }
+
+    public function getATP(): float
+    {
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            if ($floor->isGroundFloor()) {
+                return $floor->getTotalArea();
+            }
+        }
+
+        return 0;
+    }
 }

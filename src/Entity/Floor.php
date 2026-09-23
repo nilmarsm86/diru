@@ -43,7 +43,7 @@ class Floor implements MeasurementDataInterface
     private ?Building $building = null;
 
     #[ORM\Column]
-    private ?bool $groundFloor = null;
+    private bool $groundFloor = false;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Establezca la posición de la planta.')]
@@ -191,7 +191,7 @@ class Floor implements MeasurementDataInterface
         return $this;
     }
 
-    public function isGroundFloor(): ?bool
+    public function isGroundFloor(): bool
     {
         return $this->groundFloor;
     }

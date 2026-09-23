@@ -59,7 +59,7 @@ class FloorType extends AbstractType
                 'label' => 'Nombre:',
                 'attr' => [
                     'placeholder' => 'Nombre de la planta',
-                ] + $disabled,
+                ],
             ]);
 
         $nextPosition = 0;

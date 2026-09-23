@@ -107,10 +107,12 @@
         "phpmd:6": "php bin/phpmd-pretty 6",
         "lsp": "..\\symfony_5.20.0.exe lsp:check",
         "lint_container": "php bin/console lint:container",
-        "lint_twig": "php bin/console lint:twig",
+        "lint_twig": "php bin/console lint:twig templates/",
+        "lint_config": "php bin/console lint:yaml config/",
         "quality": [
             "@lint_container",
             "@lint_twig",
+            "@lint_config",
             "@php-cs-fixer",
             "@phpstan",
             "@lsp",

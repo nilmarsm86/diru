@@ -226,7 +226,7 @@ class Local implements MoneyInterface
         return (float) $this->getArea() * (float) $this->getHeight();
     }
 
-    public static function createAutomaticWall(SubSystem $subSystem, float $area, int $number = 0, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
+    public static function createAutomaticWall(SubSystem $subSystem, float $area, string $number = '0', bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
         $name = ($reply) ? 'Á.E.V (R)' : 'Á.E.V';
         $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 2.40, $number, $entityManager);
@@ -244,7 +244,7 @@ class Local implements MoneyInterface
         return $wall;
     }
 
-    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, int $number, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
+    public static function createAutomaticLocal(?Local $local, SubSystem $subSystem, float $area, string $number, bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
         $technicalStatus = (true === $subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
 
@@ -265,7 +265,7 @@ class Local implements MoneyInterface
         return $local;
     }
 
-    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, float $area, float $height, int $number, ?EntityManagerInterface $entityManager = null): self
+    private static function createAutomatic(?Local $local, SubSystem $subSystem, LocalType $type, TechnicalStatus $technicalStatus, string $name, float $area, float $height, string $number, ?EntityManagerInterface $entityManager = null): self
     {
         if (is_null($local)) {
             $local = new Local();
@@ -273,7 +273,7 @@ class Local implements MoneyInterface
             $local->setType($type);
             $local->setArea($area);
             $local->setHeight($height);
-            $local->setNumber((string) $number);
+            $local->setNumber($number);
             $local->setTechnicalStatus($technicalStatus);
         }
 

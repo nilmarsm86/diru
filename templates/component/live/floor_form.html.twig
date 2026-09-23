@@ -19,7 +19,7 @@
     {{ form_row(form.name) }}
     {{ form_row(form.position) }}
 
-    {% if this.fl.isGroundFloor() == false %}
+{#    {% if this.fl.isGroundFloor() == false %}#}
         <div class="row mb-3">
             <div class="col-sm-10 offset-sm-2">
                 {{ component('button:submit', {
@@ -29,6 +29,6 @@
                 }) }}
             </div>
         </div>
-    {% endif %}
+{#    {% endif %}#}
     {{ form_end(form) }}
 </div>

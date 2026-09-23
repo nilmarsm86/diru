@@ -122,7 +122,7 @@ final class LocalController extends AbstractController
     public function wall(EntityManagerInterface $entityManager, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): Response
     {
         $area = 1;
-        $automaticWall = Local::createAutomaticWall($subSystem, $area, (int) $subSystem->getMaxLocalNumber() + 1, $reply, $entityManager);
+        $automaticWall = Local::createAutomaticWall($subSystem, $area, (string) ((int) $subSystem->getMaxLocalNumber() + 1), $reply, $entityManager);
         $localRepository->save($automaticWall, true);
 
         $this->addFlash('success', 'Se ha creado el área de muro del área restante.');

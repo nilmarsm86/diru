@@ -160,7 +160,6 @@ $command = sprintf(
     escapeshellarg($xmlFile),
     $redirect
 );
-
 exec($command, $output, $exitCode);
 
 if (!file_exists($xmlFile)) {

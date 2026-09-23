@@ -287,7 +287,7 @@ final class LocalController extends AbstractController
     private function findLocals(Request $request, RouterInterface $router, LocalRepository $localRepository, SubSystem $subSystem, bool $reply = false): RedirectResponse|array
     {
         $filter = $request->query->get('filter', '');
-        $amountPerPage = (int) $request->query->get('amount', '10');
+        $amountPerPage = (int) $request->query->get('amount', '100');
         $pageNumber = (int) $request->query->get('page', '1');
 
         $type = $request->query->get('type', '');

@@ -20,10 +20,10 @@
     </a>
 {% endmacro %}
 
-{% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary', badge=false) %}
+{% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary', badge=false, extra='') %}
     <a class="btn btn-sm position-relative {{ cssClass }}" title="{{ title }}" data-bs-toggle="tooltip"
-       href="{{ path }}"
-            {{ action|raw }}
+       {% if path != '' %}href="{{ path }}"{% endif %}
+            {{ action|raw }} {{ extra }}
     >
         {% if badge %}
             <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle btn-link-error-badge">

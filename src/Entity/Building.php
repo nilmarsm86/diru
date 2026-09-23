@@ -1813,4 +1813,18 @@ class Building implements MeasurementDataInterface
 
         return 0;
     }
+
+    public function getGroundFloor(): ?Floor
+    {
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            if ($floor->isGroundFloor()) {
+                return $floor;
+            }
+        }
+
+        return null;
+    }
 }

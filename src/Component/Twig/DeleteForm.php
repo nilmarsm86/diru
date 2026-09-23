@@ -15,4 +15,5 @@ final class DeleteForm
     public string $label = '';
     public bool $active = true;
     public string $cssClass = 'btn-danger';
+    public string $extra = '';
 }

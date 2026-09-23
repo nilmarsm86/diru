@@ -34,7 +34,7 @@
                 queryName: 'type',
                 options:types
             }) }}
-{#            {{ tableActionButton3(path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}), '', 'Resumen', 'Resumen', '', 'btn-info') }}#}
+            {#            {{ tableActionButton3(path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}), '', 'Resumen', 'Resumen', '', 'btn-info') }} #}
             <div class="dropdown d-inline-block">
                 <button type="button"
                         class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -46,13 +46,15 @@
                 <ul class="dropdown-menu" data-bs-theme="light">
                     <li>
                         <a class="dropdown-item"
-                           href="{{ path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}" title="Resumen general">
+                           href="{{ path('app_local_resume', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}"
+                           title="Resumen general">
                             General
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item"
-                           href="{{ path('app_local_resume_only_local', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}" title="Resumen áreas útiles">
+                           href="{{ path('app_local_resume_only_local', {'subSystem': sub_system.id, 'reply' : reply ? 1 : 0}) }}"
+                           title="Resumen áreas útiles">
                             Áreas Útiles
                         </a>
                     </li>
@@ -91,12 +93,12 @@
                 }) }}
 
                 {% if sub_system.floor.building.land.isBlocked() == false %}
-                {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() and (sub_system.floor.hasUnassignedArea() or sub_system.floor.hasFreeArea()) %}
-                    <br>
-                    <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'reply': reply }) }}">
-                        Convertir en área de espacio vertical
-                    </a>
-                {% endif %}
+                    {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() and (sub_system.floor.hasUnassignedArea() or sub_system.floor.hasFreeArea()) %}
+                        <br>
+                        <a href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'reply': reply }) }}">
+                            Convertir en área de espacio vertical
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endblock %}
 
@@ -128,7 +130,7 @@
                         class="
                         {% if local.hasStructuralChange() %} table-secondary {% endif %}
                         {% if local.isNewStructure() %} table-success {% endif %}
-                        {% if local.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if local.hasChangesFromOriginal() %} table-warning {% endif %}
                         {% if local.hasRemoveConstructiveAction() %} table-danger {% endif %}
                         "
                     >
@@ -213,30 +215,30 @@
                         {% endif %}
 
                         {% if local.isBuildingInRevisedState() === false %}
-                        <td class="text-end">
-                            {% set cssClass = 'btn-link' %}
-                            {% if local.hasBackgroundColorOfChange() %}
-                                {% set cssClass = cssClass ~ ' text-dark' %}
-                            {% endif %}
+                            <td class="text-end">
+                                {% set cssClass = 'btn-link' %}
+                                {% if local.hasBackgroundColorOfChange() %}
+                                    {% set cssClass = cssClass ~ ' text-dark' %}
+                                {% endif %}
 
-                            {#                            {{ tableActionButton3(path('app_floor_show', {'id': floor.id, 'building':building.id}), 'bi:eye', '', 'Detalle de la planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_show', {'id': floor.id, 'building':building.id})})) }} #}
+                                {{ tableActionButton3('', 'bi:eye', '', 'Ver original', '', cssClass) }}
 
-                            {% if local.hasReply() == false %}
-                                {% set path = path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id, 'reply':reply}) %}
-                                {{ tableActionButton3(path, 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path}), cssClass) }}
-                            {% endif %}
+                                {% if local.hasReply() == false %}
+                                    {% set path = path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id, 'reply':reply}) %}
+                                    {{ tableActionButton3(path, 'fa:edit', '', 'Editar local', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path}), cssClass) }}
+                                {% endif %}
 
-                            {% if local.hasReply() == false or local.inNewBuilding() %}
-                                {{ component('DeleteForm', {
-                                    path: path('app_local_delete', {'id': local.id, 'subSystem':sub_system.id}),
-                                    confirm: 'Está seguro que desea eliminar el local?',
-                                    token: 'delete' ~ local.id,
-                                    title: 'Eliminar local',
-                                    icon: 'bi:trash',
-                                    cssClass: 'btn-link text-danger'
-                                }) }}
-                            {% endif %}
-                        </td>
+                                {% if local.hasReply() == false or local.inNewBuilding() %}
+                                    {{ component('DeleteForm', {
+                                        path: path('app_local_delete', {'id': local.id, 'subSystem':sub_system.id}),
+                                        confirm: 'Está seguro que desea eliminar el local?',
+                                        token: 'delete' ~ local.id,
+                                        title: 'Eliminar local',
+                                        icon: 'bi:trash',
+                                        cssClass: 'btn-link text-danger'
+                                    }) }}
+                                {% endif %}
+                            </td>
                         {% endif %}
                     </tr>
                 {% else %}
@@ -248,23 +250,23 @@
 
             {% block tableFooter %}
                 {% if app.request.query.has('type') === false %}
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    {% if reply or sub_system.inNewBuilding() %}
+                    <tr>
                         <th></th>
-                        <th>{{ money(sub_system.getPrice()) }}</th>
-                    {% endif %}
-                    {% if sub_system.isBuildingInRevisedState() === false %}
                         <th></th>
-                    {% endif %}
-                </tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        {% if reply or sub_system.inNewBuilding() %}
+                            <th></th>
+                            <th>{{ money(sub_system.getPrice()) }}</th>
+                        {% endif %}
+                        {% if sub_system.isBuildingInRevisedState() === false %}
+                            <th></th>
+                        {% endif %}
+                    </tr>
                 {% endif %}
             {% endblock %}
         {% endcomponent %}
@@ -274,7 +276,8 @@
         <div class="card-footer">
             <p style="margin-bottom: 0">
                 <em>
-                    * Las Áreas de muro y Áreas de vacío con estado técnico "Sin definir", no son tenidas en cuenta en el inmueble existente, pero si en el inmueble replicado.
+                    * Las Áreas de muro y Áreas de vacío con estado técnico "Sin definir", no son tenidas en cuenta en
+                    el inmueble existente, pero si en el inmueble replicado.
                 </em>
             </p>
             <p style="margin-bottom: 0">

@@ -106,7 +106,7 @@
                     <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Piso">Á.T.P (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Subsistema">Á.T.S (m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
                     <th>Diagnosticados</th>
@@ -127,7 +127,7 @@
                     <tr {{ stimulusController('delete-form-container') }}
                         class="
                         {% if sub_system.isNewStructure() %}table-success {% endif %}
-                        {% if sub_system.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if sub_system.hasChangesFromOriginal() %} table-warning {% endif %}
                         {% if sub_system.hasRemoveConstructiveAction() %} table-danger {% endif %}
                         "
                     >

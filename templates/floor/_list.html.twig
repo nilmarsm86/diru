@@ -13,6 +13,8 @@
     }) %}
 {% endif %}
 
+{% set groundFloor = building.getGroundFloor() %}
+
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
@@ -123,7 +125,7 @@
                     <tr {{ stimulusController('delete-form-container') }}
                         class="
                         {% if floor.inNewBuilding() or floor.isNewInReply() %}table-success {% endif %}
-                        {% if floor.hasChangesFromOriginal() %} table-info {% endif %}
+                        {% if floor.hasChangesFromOriginal() %} table-warning {% endif %}
                         {% if floor.hasRemoveConstructiveAction() %} table-danger {% endif %}
                         "
                     >
@@ -262,7 +264,13 @@
                                 </ul>
                             </div>
 
-                            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply':reply}), 'ix:building-block' , '', (reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas', '', cssClass, floor.hasErrors()) }}
+                            {% set completeGround = (groundFloor.hasErrors()) ? "style=opacity:0.2 data-bs-custom-class=danger-tooltip" : "" %}
+                            {% if floor.isGroundFloor %}
+                                {% set completeGround = "" %}
+                            {% endif %}
+                            {% set tooltip = (completeGround == "") ? ((reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas') : 'Debe completar la información de la planta baja para poder editar este planta.' %}
+                            {% set path = (completeGround == "") ? path('app_sub_system_index', {'floor': floor.id, 'reply':reply}) : '' %}
+                            {{ tableActionButton3(path, 'ix:building-block' , '', tooltip, '', cssClass, floor.hasErrors(), completeGround) }}
                             {#                            {{ tableActionButton3(path('app_local_index', {'floor': floor.id}), 'lucide-lab:floor-plan', '', 'Locales', '', 'btn-info') }} #}
                             {% if floor.hasReply() == false %}
                                 {{ tableActionButton3(path('app_floor_edit', {'id': floor.id, 'building':building.id}), 'fa:edit', '', 'Editar planta', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_floor_edit', {'id': floor.id, 'building':building.id})}), cssClass) }}
@@ -276,7 +284,7 @@
                                     title: 'Eliminar planta',
                                     icon: 'bi:trash',
                                     active: floor.isGroundFloor() == false,
-                                    cssClass: 'btn-link text-danger'
+                                    cssClass: 'btn-link text-danger',
                                 }) }}
                             {% endif %}
                         </td>

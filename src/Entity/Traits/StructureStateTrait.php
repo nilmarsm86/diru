@@ -23,7 +23,7 @@ trait StructureStateTrait
     #[ORM\Column(nullable: true)]
     private ?bool $hasReply = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist'])] // no puedo borrar en cascada pq si borro una replica se borra el original
     private ?self $original = null;
 
     public function getState(): ?StructureState

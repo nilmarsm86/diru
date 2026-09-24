@@ -21,7 +21,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[DoctrineAssert\UniqueEntity(fields: ['name', 'project'], message: 'Ya existe en el proyecto una obra con este nombre.', errorPath: 'name')]
-/** @SuppressWarnings(PHPMD.TooManyMethods) */
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ */
 class Building implements MeasurementDataInterface
 {
     use NameToStringTrait;
@@ -1826,5 +1829,20 @@ class Building implements MeasurementDataInterface
         }
 
         return null;
+    }
+
+    public function isLocal(): bool
+    {
+        return $this instanceof Local;
+    }
+
+    public function isSubSystem(): bool
+    {
+        return false;
+    }
+
+    public function isFloor(): bool
+    {
+        return false;
     }
 }

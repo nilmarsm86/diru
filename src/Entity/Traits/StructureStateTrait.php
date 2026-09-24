@@ -219,4 +219,19 @@ trait StructureStateTrait
     {
         return (bool) $this->inNewBuilding() || $this->isNewInReply();
     }
+
+    public function isLocal(): bool
+    {
+        return $this instanceof Local;
+    }
+
+    public function isSubSystem(): bool
+    {
+        return $this instanceof SubSystem;
+    }
+
+    public function isFloor(): bool
+    {
+        return $this instanceof Floor;
+    }
 }

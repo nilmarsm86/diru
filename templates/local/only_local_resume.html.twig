@@ -20,12 +20,7 @@
         Datos de construcción:
     </h5>
 
-    <ul>
-        <li><strong>Subsistema: </strong>{{ sub_system.name }}</li>
-        <li><strong>Planta: </strong>{{ sub_system.floor.name }}</li>
-        <li><strong>Obra: </strong>{{ sub_system.floor.building.name }}</li>
-        <li><strong>Proyecto: </strong>{{ sub_system.floor.building.project.name }}</li>
-    </ul>
+    {{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
 
     {{ include('local/resume/_technical_status.html.twig', {'showButton': true, 'title': title, only_local: true}) }}
     {{ include('local/resume/_constructive_action.html.twig', {'showButton': true, 'title': title, only_local: true}) }}

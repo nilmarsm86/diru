@@ -13,6 +13,8 @@
     }) %}
 {% endif %}
 
+{{ include('structure/_structure_data.html.twig', {'structure' : building}) }}
+
 {% set groundFloor = building.getGroundFloor() %}
 
 {% component 'Card:Card' with {

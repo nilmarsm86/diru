@@ -11,6 +11,8 @@
     }) %}
 {% endif %}
 
+{{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
+
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',

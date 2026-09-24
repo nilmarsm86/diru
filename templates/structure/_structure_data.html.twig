@@ -1,0 +1,24 @@
+{% set projectName = (structure.isLocal() == false and structure.isSubSystem() == false and structure.isFloor() == false) ?
+    structure.project.name :
+    (structure.isFloor() ? structure.building.project.name : structure.floor.building.project.name) %}
+
+{% set buildingName = (structure.isLocal() == false and structure.isSubSystem() == false and structure.isFloor() == false) ?
+    structure.name :
+    (structure.isFloor() ? structure.building.name : structure.floor.building.name) %}
+
+{% set floorName = (structure.isSubSystem() == true) ?
+    structure.floor.name :
+    structure.name %}
+
+<ul>
+    {% if structure.isSubSystem() %}
+        <li><strong>Subsistema: </strong>{{ structure.name }}</li>
+    {% endif %}
+
+    {% if structure.isSubSystem() or structure.isFloor()  %}
+        <li><strong>Planta: </strong>{{ floorName }}</li>
+    {% endif %}
+
+    <li><strong>Obra: </strong>{{ buildingName }}</li>
+    <li><strong>Proyecto: </strong>{{ projectName }}</li>
+</ul>

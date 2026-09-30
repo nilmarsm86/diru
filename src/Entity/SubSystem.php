@@ -730,4 +730,27 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
 
         return $locals;
     }
+
+    public function getTechnicalStatus(): string
+    {
+        return TechnicalStatus::getLabelFrom((string) $this->getTechnicalStatusNumber());
+    }
+
+    public function getTechnicalStatusNumber(): int
+    {
+        $technicalStatus = 0;
+        $amountLocal = 0;
+        $locals = ($this->isOriginal()) ? $this->getOriginalLocals() : $this->getReplyLocals();
+
+        /** @var Local $local */
+        foreach ($locals as $local) {
+            if ($local->isLocalType()) {
+                ++$amountLocal;
+                $value = (int) $local->getTechnicalStatus()->value;
+                $technicalStatus += $value;
+            }
+        }
+
+        return (int) floor($technicalStatus / $amountLocal);
+    }
 }

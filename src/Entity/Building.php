@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Enums\BuildingState;
 use App\Entity\Enums\NetworkConnectionType;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 // use App\Entity\Traits\HasReplyTrait;
 use App\Entity\Traits\ClientTrait;
@@ -1833,7 +1834,7 @@ class Building implements MeasurementDataInterface
 
     public function isLocal(): bool
     {
-        return $this instanceof Local;
+        return false;
     }
 
     public function isSubSystem(): bool
@@ -1844,5 +1845,23 @@ class Building implements MeasurementDataInterface
     public function isFloor(): bool
     {
         return false;
+    }
+
+    public function getTechnicalStatus(): string
+    {
+        $technicalStatus = 0;
+        $amountFloor = 0;
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            ++$amountFloor;
+            $value = $floor->getTechnicalStatusNumber();
+            $technicalStatus += (int) TechnicalStatus::tryFrom((string) $value)?->value;
+        }
+
+        $status = floor($technicalStatus / $amountFloor);
+
+        return TechnicalStatus::getLabelFrom((string) $status);
     }
 }

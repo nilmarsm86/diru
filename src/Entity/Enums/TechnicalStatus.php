@@ -32,4 +32,20 @@ enum TechnicalStatus: string
             default => '-Seleccione-',// translate
         };
     }
+
+    public static function getBackground(\BackedEnum|string $enum): string
+    {
+        if (is_string($enum)) {
+            $enum = self::from($enum);
+        }
+
+        return match ($enum) {
+            //            self::Undefined => '',// translate
+            self::Critical => 'bg-danger',// translate
+            self::Bad => 'bg-warning',// translate
+            self::Regular => 'bg-info',// translate
+            self::Good => 'bg-success',// translate
+            default => '',// translate
+        };
+    }
 }

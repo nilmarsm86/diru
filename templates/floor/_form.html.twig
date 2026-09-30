@@ -6,6 +6,12 @@
 } %}
 
     {% block header %}
+        {% if floor.id is not null %}
+            &nbsp;
+            <span class="badge bg-success">{{ floor.getTechnicalStatus() }}</span>
+            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar"></div>
+        {% endif %}
+
         {{ include('partials/_card_header_options.html.twig', {
             goTo: '',
             label: '',

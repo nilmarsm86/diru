@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Enums\SubsystemFunctionalClassification;
+use App\Entity\Enums\TechnicalStatus;
 use App\Entity\Interfaces\MeasurementDataInterface;
 use App\Entity\Traits\MeasurementDataTrait;
 use App\Entity\Traits\NameToStringTrait;
@@ -611,5 +612,26 @@ class Floor implements MeasurementDataInterface
         }
 
         return true;
+    }
+
+    public function getTechnicalStatus(): string
+    {
+        return TechnicalStatus::getLabelFrom((string) $this->getTechnicalStatusNumber());
+    }
+
+    public function getTechnicalStatusNumber(): int
+    {
+        $technicalStatus = 0;
+        $amountSubsystem = 0;
+        $subSystems = ($this->isOriginal()) ? $this->getOriginalSubsystems() : $this->getReplySubsystems();
+
+        /** @var SubSystem $subSystem */
+        foreach ($subSystems as $subSystem) {
+            ++$amountSubsystem;
+            $value = $subSystem->getTechnicalStatusNumber();
+            $technicalStatus += (int) TechnicalStatus::tryFrom((string) $value)?->value;
+        }
+
+        return (int) floor($technicalStatus / $amountSubsystem);
     }
 }

@@ -7,6 +7,8 @@
 
     {% block header %}
         {% if building.id is not null %}
+            &nbsp;
+            <span class="badge bg-success">{{ building.getTechnicalStatus() }}</span>
             <span>&nbsp;({{ building.state.getLabelFrom(building.state) }})</span>
             <span>&nbsp;[{{ building.getConstructiveSystem() }}]</span>
         {% endif %}

@@ -1,0 +1,19 @@
+{% macro tab(options, entity=null) %}
+    {% set current = app.request.attributes.get('_route') %}
+
+    <ul class="nav nav-tabs"
+        style="margin-bottom: -1px;position: relative;z-index: 9;margin-left: 0px;width: 99% !important;">
+        {% for option in options %}
+            <li class="nav-item ">
+                <a class="nav-link
+                    {% if option.href is same as current %}active{% endif %}"
+                    {% if option.href is same as current %}aria-current="page"{% endif %}
+                    {% if option.href is not same as current %}href="{{ (entity is not null) ? path(option.href, {'id':entity.id}) : path(option.href) }}"{% endif %}
+                    {% if option.href is same as current %}style="background-color: #272b2f;border-bottom: 1px solid#272b2f"{% endif %}
+                >
+                    {{ option.label }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}

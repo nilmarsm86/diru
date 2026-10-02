@@ -1,9 +1,15 @@
 sensiolabs_minify:
     asset_mapper:
+        enabled: true
+        types:
+            # Minificar CSS y JS (ambos son true por defecto, pero se explicita)
+            css: true
+            js: true
         # Exclude already minified assets
         ignore_paths:
             - '*.min.js'
             - '*.min.css'
+        ignore_vendor: true    
     minify:
         # Use local binary if available
         # local_binary: 'auto'
@@ -25,8 +31,10 @@ sensiolabs_minify:
 
 when@dev:
     sensiolabs_minify:
-        asset_mapper: false
+        asset_mapper:
+            enabled: true
 
 when@test:
     sensiolabs_minify:
-        asset_mapper: false
+        asset_mapper:
+            enabled: false

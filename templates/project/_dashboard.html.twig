@@ -1,6 +1,6 @@
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
-    extra: (project.id is not null) ? "style='border-top-left-radius: 0'" : '',
+    extra: "style='border-top-left-radius: 0'",
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: title
 } %}
@@ -99,21 +99,6 @@
     {% endblock %}
 
     {% block body %}
-        {{ component('ProjectForm', {modal:null, pro: project, ajax: ajax}) }}
+{#        {{ component('ProjectForm', {modal:null, pro: project, ajax: ajax}) }}#}
     {% endblock %}
-
-    {#    {% block footer %} #}
-    {#        {{ include('partials/_card_footer.html.twig', { #}
-    {#            list: {href: 'app_project_index', label: 'Listado', title:'Volver al listado'}, #}
-    {#            delete: {href: 'app_project_delete', label: 'Eliminar', title:'Eliminar proyecto'}, #}
-    {#            id: project.id, #}
-    {#            message: 'Está seguro que desea eliminar el proyecto?', #}
-    {#            state: 'form', #}
-    {#            showButton: (showButton is defined and showButton == true) ? true : false, #}
-    {#            entity: project #}
-    {#        }) }} #}
-    {#    {% endblock %} #}
-
 {% endcomponent %}
-
-{{ include('partials/modal/_modal_load.html.twig') }}

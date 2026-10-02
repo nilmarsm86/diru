@@ -94,6 +94,16 @@ final class ProjectController extends AbstractController
     {
         return $crudActionService->formLiveComponentAction($request, $project, 'project', [
             'title' => 'Editar proyecto',
+            'tab' => '_form',
+        ]);
+    }
+
+    #[Route('/{id}/dashboard', name: 'app_project_dashboard', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function dashboard(Request $request, Project $project, CrudActionService $crudActionService): Response
+    {
+        return $crudActionService->formLiveComponentAction($request, $project, 'project', [
+            'title' => 'Editar proyecto',
+            'tab' => '_dashboard',
         ]);
     }
 

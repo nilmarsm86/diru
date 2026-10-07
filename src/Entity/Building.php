@@ -1862,6 +1862,7 @@ class Building implements MeasurementDataInterface
     {
         $technicalStatus = 0;
         $amountFloor = 0;
+        $amountNetworkConecction = 0;
         $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
 
         /** @var Floor $floor */
@@ -1871,7 +1872,18 @@ class Building implements MeasurementDataInterface
             $technicalStatus += (int) TechnicalStatus::tryFrom((string) $value)?->value;
         }
 
-        $status = floor($technicalStatus / $amountFloor);
+        foreach ($this->landNetworkConnections as $networkConnections) {
+            ++$amountNetworkConecction;
+            $value = $networkConnections->getTechnicalStatus()->value;
+            $technicalStatus += $value;
+        }
+
+        $amountElements = $amountFloor + $amountNetworkConecction;
+        if (0 === $amountElements) {
+            $status = floor($technicalStatus);
+        } else {
+            $status = floor($technicalStatus / $amountElements);
+        }
 
         return TechnicalStatus::getLabelFrom((string) $status);
     }

@@ -1,5 +1,7 @@
 {# TODO: refactorizar #}
 
+{% set msgUnassignedSpace = 'Queda espacio sin asignar.' %}
+
 {% if building.hasErrors(not reply) %}
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
@@ -167,11 +169,11 @@
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUsefulArea()|number_format(2) }}
                             {% else %}
-                                <span class="text-warning" data-bs-toggle="tooltip"
-                                      data-bs-title="Queda espacio sin aprovechar."
-                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+{#                                <span class="text-warning" data-bs-toggle="tooltip"#}
+{#                                      data-bs-title="{{ msgUnassignedSpace }}"#}
+{#                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">#}
                                     {{ floor.getUsefulArea()|number_format(2) }}
-                                </span>
+{#                                </span>#}
                             {% endif %}
                         </td>
                         <td>
@@ -199,7 +201,7 @@
                             {% else %}
                                 {% if floor.isGroundFloor() %}
                                     <span class="text-warning" data-bs-toggle="tooltip"
-                                          data-bs-title="Queda espacio sin aprovechar."
+                                          data-bs-title="{{ msgUnassignedSpace }}"
                                           data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ floor.getUnassignedArea()|number_format(2) }}
                                 </span>
@@ -217,11 +219,11 @@
                                 {% endif %}
                             {% else %}
                                 {% if floor.isGroundFloor() %}
-                                    <span class="text-warning" data-bs-toggle="tooltip"
-                                          data-bs-title="Queda espacio libre."
-                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+{#                                    <span class="text-warning" data-bs-toggle="tooltip"#}
+{#                                          data-bs-title="Queda espacio libre."#}
+{#                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer">#}
                                     {{ floor.getFreeArea()|number_format(2) }}
-                                </span>
+{#                                </span>#}
                                 {% else %}
                                     -
                                 {% endif %}

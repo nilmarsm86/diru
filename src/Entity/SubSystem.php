@@ -751,6 +751,12 @@ class SubSystem implements MeasurementDataInterface, MoneyInterface
             }
         }
 
-        return (int) floor($technicalStatus / $amountLocal);
+        if (0 === $amountLocal) {
+            $status = (int) floor($technicalStatus);
+        } else {
+            $status = (int) floor($technicalStatus / $amountLocal);
+        }
+
+        return $status;
     }
 }

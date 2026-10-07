@@ -148,11 +148,24 @@ class Floor implements MeasurementDataInterface
         $isNew = (bool) $this->getBuilding()->isNew();
         $landArea = (float) $this->getBuilding()->getLandArea();
         $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
-        if ($this->getTotalArea() > $occupiedArea) {
-            return $landArea - $this->getTotalArea();
+        //        if ($this->getTotalArea() > $occupiedArea) {
+        //            return $landArea - $this->getTotalArea();
+        //        }
+        $groundFloorTotalArea = $this->getBuilding()->getGroundFloor()?->getTotalArea() ?? 0;
+        if ($groundFloorTotalArea > $occupiedArea) {
+            if ($this->isGroundFloor()) {
+                return $landArea - $this->getTotalArea();
+            }
+
+            return $groundFloorTotalArea - $this->getTotalArea();
         }
 
-        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        if ($this->isGroundFloor()) {
+            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        }
+
+        return (($isNew) ? $groundFloorTotalArea : $occupiedArea) - $this->getTotalArea();
     }
 
     public function getUnassignedArea(?bool $original = null): float
@@ -206,11 +219,16 @@ class Floor implements MeasurementDataInterface
 
     public function isFullyOccupied(?bool $original = null): bool
     {
-        if (true === $this->building?->isFullyOccupied($original)) {
-            return true;
-        }
+        //        if (true === $this->building?->isFullyOccupied($original)) {
+        //            return true;
+        //        }
 
-        return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
+        if ($this->isGroundFloor()) {
+            return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
+        }
+        $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;
+
+        return $this->getTotalArea() >= $groundFloorTotalArea;
     }
 
     public function getSubSystemAmount(): int

@@ -818,7 +818,17 @@ class Building implements MeasurementDataInterface
     public function getOccupiedArea(): ?float
     {
         // TODO: esto esta mal, debe ser por sumatoria tambien de sus elementos, pues si se derrumba algo el numero no es real
-        return $this->getLand()?->getOccupiedArea();
+        //        return $this->getLand()?->getOccupiedArea();
+
+        $occupiedArea = 0;
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            $occupiedArea += $floor->getTotalArea();
+        }
+
+        return $occupiedArea;
     }
 
     /*
@@ -927,7 +937,8 @@ class Building implements MeasurementDataInterface
             return true;
         }
 
-        return $this->getTotalArea($original) >= $this->getMaxArea();
+        //        return $this->getTotalArea($original) >= $this->getMaxArea();
+        return $this->getATP() >= $this->getMaxArea();
     }
 
     private function getFloorAmount(): int

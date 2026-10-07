@@ -1875,7 +1875,7 @@ class Building implements MeasurementDataInterface
         foreach ($this->landNetworkConnections as $networkConnections) {
             ++$amountNetworkConecction;
             $value = $networkConnections->getTechnicalStatus()->value;
-            $technicalStatus += $value;
+            $technicalStatus += (int) $value;
         }
 
         $amountElements = $amountFloor + $amountNetworkConecction;

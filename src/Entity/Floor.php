@@ -171,7 +171,11 @@ class Floor implements MeasurementDataInterface
     public function getUnassignedArea(?bool $original = null): float
     {
         if (true === $this->getBuilding()?->getLand()?->isBlocked()) {
-            return 0;
+            if ($this->isGroundFloor()) {
+                return 0;
+            }
+
+            return $this->unassignedOrFreeArea();
         }
 
         return $this->unassignedOrFreeArea();
@@ -222,8 +226,11 @@ class Floor implements MeasurementDataInterface
         //        if (true === $this->building?->isFullyOccupied($original)) {
         //            return true;
         //        }
-
         if ($this->isGroundFloor()) {
+            if (0 == $this->getUnassignedArea($original) && $this->getFreeArea($original) > 0) {
+                return true;
+            }
+
             return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
         }
         $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;

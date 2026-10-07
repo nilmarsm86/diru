@@ -227,7 +227,7 @@ class Floor implements MeasurementDataInterface
         //            return true;
         //        }
         if ($this->isGroundFloor()) {
-            if (0 == $this->getUnassignedArea($original) && $this->getFreeArea($original) > 0) {
+            if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) > 0) {
                 return true;
             }
 

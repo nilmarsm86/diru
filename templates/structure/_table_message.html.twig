@@ -17,6 +17,6 @@
     {% endif %}
     {% if reply %}<br>De un área de terreno: {{ landArea|number_format(2) }}m<sup>2</sup><br>{% endif %}
 {% else %}
-    , quedan {{ unassignedArea|number_format(2) }}m<sup>2</sup>
-    {% if isNew %}de área sin asignar.{% else %}por asignar al área ocupada.{% endif %}
+    , quedan {{ unassignedArea|number_format(2) }}m<sup>2</sup> en total
+    {% if isNew %}de área sin asignar.{% else %}por asignar en el área ocupada.{% endif %}
 {% endif %}

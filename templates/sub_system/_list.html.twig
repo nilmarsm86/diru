@@ -93,7 +93,7 @@
                     </a>
                 {% endif %}
 
-                {% if floor.building.hasUnassignedArea() and floor.hasUnassignedArea() and floor.isGroundFloor() %}
+                {% if floor.building.hasUnassignedArea() and floor.hasUnassignedArea() and floor.isGroundFloor() and floor.building.isNew() %}
                     <br>
                     <a href="{{ path('app_land_unassigned-free', {'id': floor.building.land.id, 'building': floor.building.id, 'reply': reply }) }}">
                         Convertir en área libre
@@ -163,7 +163,7 @@
                         <td>{{ sub_system.getUsefulArea()|number_format(2) }}</td>
                         <td>
                             {% if sub_system.notWallArea() %}
-                                <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Sin área de muro."
+                                <span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Sin A.E.V."
                                       data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ sub_system.getWallArea()|number_format(2) }}
                                 </span>
@@ -189,7 +189,7 @@
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",
-                                    'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan locales por diagnosticar.",
+                                    'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan áreas por diagnosticar.",
                                     'data-bs-custom-class':"danger-tooltip"
                                 }) }}
                             {% endif %}
@@ -300,7 +300,7 @@
                             {{ ux_icon('material-symbols:dangerous', {
                                 'class':'bi text-danger',
                                 'data-bs-toggle':"tooltip",
-                                'data-bs-title':"Para poder realizar la réplica se debe diagnosticar el estado técnico de todos los locales.",
+                                'data-bs-title':"Para poder realizar la réplica se debe diagnosticar el estado técnico de todas las áreas.",
                                 'data-bs-custom-class':"danger-tooltip"
                             }) }}
                         {% endif %}

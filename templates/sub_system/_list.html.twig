@@ -83,7 +83,8 @@
                     hasUnassignedArea: floor.hasUnassignedArea(),
                     unassignedArea: floor.getUnassignedArea(),
                     landArea: floor.building.getLandArea(),
-                    isBlocked: floor.building.land.isBlocked()
+                    isBlocked: floor.building.land.isBlocked(),
+                    occupateArea: floor.building.getLand().getOccupiedArea()
                 }) }}
 
                 {% if floor.building.hasFreeArea() and floor.hasFreeArea() and floor.isGroundFloor() %}

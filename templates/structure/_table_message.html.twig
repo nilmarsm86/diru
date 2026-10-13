@@ -1,4 +1,5 @@
 {% if isNew %}Área de terreno{% else %}Área ocupada{% endif %} de la obra: {{ maxArea|number_format(2) }}m<sup>2</sup>
+{% if not isNew %} de {{ occupateArea|number_format(2) }}m<sup>2</sup> {% endif %}
 
 {% if isFullyOccupied %}
     {% if hasFreeArea %}

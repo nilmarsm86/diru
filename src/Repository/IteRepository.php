@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Enums\IteQuality;
+use App\Entity\Enums\IteType;
 use App\Entity\Ite;
 use App\Repository\Criterias\IteSearchCriteria;
 use App\Repository\Interfaces\FilterInterface;
@@ -139,5 +140,21 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
             ->getQuery();
 
         return $this->paginate($query, $pagination->page, $pagination->amountPerPage);
+    }
+
+    public function findByType(IteType $type): mixed
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.type = :type')
+            ->setParameter('type', $type->value) // porque guardas el string en BD
+            ->leftJoin('i.measurementUnit', 'mu')->addSelect('mu')
+            ->leftJoin('i.source', 's')->addSelect('s')
+            ->leftJoin('i.city', 'c')->addSelect('c')
+            ->leftJoin('c.country', 'co')->addSelect('co') // asume que City tiene country
+            ->leftJoin('i.projectType', 'pt')->addSelect('pt')
+            ->orderBy('i.yearReference', 'DESC')
+            ->addOrderBy('i.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

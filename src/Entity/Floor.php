@@ -148,6 +148,7 @@ class Floor implements MeasurementDataInterface
         $isNew = (bool) $this->getBuilding()->isNew();
         $landArea = (float) $this->getBuilding()->getLandArea();
         $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
+
         //        if ($this->getTotalArea() > $occupiedArea) {
         //            return $landArea - $this->getTotalArea();
         //        }
@@ -162,7 +163,7 @@ class Floor implements MeasurementDataInterface
 
         //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
         if ($this->isGroundFloor()) {
-            return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+            return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
         }
 
         return (($isNew) ? $groundFloorTotalArea : $occupiedArea) - $this->getTotalArea();

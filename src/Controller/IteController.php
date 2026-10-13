@@ -16,11 +16,13 @@ use App\Repository\Criterias\IteSearchCriteria;
 use App\Repository\IteRepository;
 use App\Repository\Pagination\Pagination;
 use App\Service\CrudActionService;
+use App\Service\IteExport\IteExportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Error\LoaderError;
@@ -192,5 +194,17 @@ final class IteController extends AbstractController
         }
 
         return $response;
+    }
+
+    #[Route('/export/{type}', name: 'ite_export', methods: ['GET'])]
+    public function export(string $type, IteExportService $exportService): StreamedResponse
+    {
+        $iteType = match (strtolower($type)) {
+            'national', 'nacional' => IteType::National,
+            'international', 'internacional' => IteType::International,
+            default => throw $this->createNotFoundException('Tipo de ITE inválido'),
+        };
+
+        return $exportService->export($iteType);
     }
 }

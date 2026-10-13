@@ -1,12 +1,23 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
+    
+    # Rechaza cualquier cabecera Host distinta de la local (defensa en profundidad contra DNS rebinding)
+    trusted_hosts: ['^127\.0\.0\.1$', '^localhost$']
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        # Vuelve a los valores seguros. SameSite=None + Secure ya NO hace falta: PHP y la ventana
+        # comparten host (127.0.0.1), así que el iframe es same-site. 'none' dejaría la cookie de
+        # sesión viajar en peticiones de otros sitios y anularía la protección CSRF de Lax.
+        cookie_secure: auto
+        cookie_samesite: lax
+        cookie_httponly: true
+        cookie_lifetime: 0       # cookie de sesión: muere al cerrar la app
+        #use_strict_mode: true
 
     #esi: true
-    #fragments: true
+    #fragments: true    
 
 when@test:
     framework:

@@ -97,7 +97,8 @@
                     hasUnassignedArea: building.hasUnassignedArea(),
                     unassignedArea: building.getUnassignedArea(),
                     landArea: building.getLandArea(),
-                    isBlocked: building.land.isBlocked()
+                    isBlocked: building.land.isBlocked(),
+                    occupateArea: building.getLand().getOccupiedArea()
                 }) }}
 
             {% endblock %}

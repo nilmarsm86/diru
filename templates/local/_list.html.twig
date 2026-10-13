@@ -91,7 +91,8 @@
                     hasUnassignedArea: sub_system.floor.hasUnassignedArea(),
                     unassignedArea: sub_system.floor.getUnassignedArea(),
                     landArea: sub_system.floor.building.getLandArea(),
-                    isBlocked: sub_system.floor.building.land.isBlocked()
+                    isBlocked: sub_system.floor.building.land.isBlocked(),
+                    occupateArea: sub_system.floor.building.getLand().getOccupiedArea()
                 }) }}
 
                 {% if sub_system.floor.building.land.isBlocked() == false %}

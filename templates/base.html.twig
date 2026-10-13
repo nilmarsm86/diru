@@ -45,6 +45,22 @@
                     event.preventDefault();
                 }
             });
+			
+			if (window.top !== window.self) {
+    // F5 / Ctrl+R: recargar solo esta página, no el splash de Neutralino
+    addEventListener("keydown", (e) => {
+      if (e.key === "F5" || (e.ctrlKey && e.key.toLowerCase() === "r")) {
+        e.preventDefault();
+        location.reload();
+      }
+    });
+    // Caso: el foco está fuera del iframe, el splash nos pide recargar
+    addEventListener("message", (e) => {
+      if (e.source === window.parent && e.data?.type === "diru:reload") {
+        location.reload();
+      }
+    });
+  }
         </script>
     {% endif %}
 </body>

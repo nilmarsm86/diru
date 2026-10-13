@@ -87,21 +87,21 @@
             paginator: paginator,
         } %}
 
-            {% block message %}
-                {{ include('structure/_table_message.html.twig', {
-                    isNew: building.isNew(),
-                    maxArea: building.getMaxArea(),
-                    isFullyOccupied: building.isFullyOccupied(),
-                    hasFreeArea: building.hasFreeArea(),
-                    freeArea: building.getFreeArea(),
-                    hasUnassignedArea: building.hasUnassignedArea(),
-                    unassignedArea: building.getUnassignedArea(),
-                    landArea: building.getLandArea(),
-                    isBlocked: building.land.isBlocked(),
-                    occupateArea: building.getLand().getOccupiedArea()
-                }) }}
+            {#            {% block message %} #}
+            {#                {{ include('structure/_table_message.html.twig', { #}
+            {#                    isNew: building.isNew(), #}
+            {#                    maxArea: building.getMaxArea(), #}
+            {#                    isFullyOccupied: building.isFullyOccupied(), #}
+            {#                    hasFreeArea: building.hasFreeArea(), #}
+            {#                    freeArea: building.getFreeArea(), #}
+            {#                    hasUnassignedArea: building.hasUnassignedArea(), #}
+            {#                    unassignedArea: building.getUnassignedArea(), #}
+            {#                    landArea: building.getLandArea(), #}
+            {#                    isBlocked: building.land.isBlocked(), #}
+            {#                    occupateArea: building.getLand().getOccupiedArea() #}
+            {#                }) }} #}
 
-            {% endblock %}
+            {#            {% endblock %} #}
 
             {% block tableHead %}
                 <tr>
@@ -170,11 +170,11 @@
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUsefulArea()|number_format(2) }}
                             {% else %}
-{#                                <span class="text-warning" data-bs-toggle="tooltip"#}
-{#                                      data-bs-title="{{ msgUnassignedSpace }}"#}
-{#                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">#}
-                                    {{ floor.getUsefulArea()|number_format(2) }}
-{#                                </span>#}
+                                {#                                <span class="text-warning" data-bs-toggle="tooltip" #}
+                                {#                                      data-bs-title="{{ msgUnassignedSpace }}" #}
+                                {#                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
+                                {{ floor.getUsefulArea()|number_format(2) }}
+                                {#                                </span> #}
                             {% endif %}
                         </td>
                         <td>
@@ -189,7 +189,18 @@
                             {% endif %}
                         </td>
                         <td>{{ floor.getEmptyArea()|number_format(2) }}</td>
-                        <td>{{ floor.getTotalArea()|number_format(2) }}</td>
+                        <td>
+                            {% if floor.isFullyOccupied() %}
+                                {{ floor.getTotalArea()|number_format(2) }}
+                            {% else %}
+                                <span class="text-warning" data-bs-toggle="tooltip"
+                                      data-bs-title="{{ msgUnassignedSpace }}"
+                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                {{ floor.getTotalArea()|number_format(2) }}
+                                                                </span>
+                            {% endif %}
+
+                        </td>
                         <td>{{ floor.getMaxHeight()|number_format(2) }}</td>
                         <td>{{ floor.getVolume()|number_format(2) }}</td>
                         <td>
@@ -197,18 +208,18 @@
                                 {% if floor.isGroundFloor() %}
                                     {{ floor.getUnassignedArea()|number_format(2) }}
                                 {% else %}
-                                    -
+                                    {{ floor.getUnassignedArea()|number_format(2) }}
                                 {% endif %}
                             {% else %}
-                                {% if floor.isGroundFloor() %}
+{#                                {% if floor.isGroundFloor() %}#}
                                     <span class="text-warning" data-bs-toggle="tooltip"
                                           data-bs-title="{{ msgUnassignedSpace }}"
                                           data-bs-custom-class="warning-tooltip" style="cursor: pointer">
                                     {{ floor.getUnassignedArea()|number_format(2) }}
                                 </span>
-                                {% else %}
-                                    -
-                                {% endif %}
+{#                                {% else %}#}
+{#                                    {{ floor.getUnassignedArea()|number_format(2) }}#}
+{#                                {% endif %}#}
                             {% endif %}
                         </td>
                         <td>
@@ -220,11 +231,11 @@
                                 {% endif %}
                             {% else %}
                                 {% if floor.isGroundFloor() %}
-{#                                    <span class="text-warning" data-bs-toggle="tooltip"#}
-{#                                          data-bs-title="Queda espacio libre."#}
-{#                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer">#}
+                                    {#                                    <span class="text-warning" data-bs-toggle="tooltip" #}
+                                    {#                                          data-bs-title="Queda espacio libre." #}
+                                    {#                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
                                     {{ floor.getFreeArea()|number_format(2) }}
-{#                                </span>#}
+                                    {#                                </span> #}
                                 {% else %}
                                     -
                                 {% endif %}
@@ -307,7 +318,7 @@
                     <th>{{ building.getUsefulArea(not reply)|number_format(2) }}</th>
                     <th>{{ building.getWallArea(not reply)|number_format(2) }}</th>
                     <th>{{ building.getEmptyArea(not reply)|number_format(2) }}</th>
-{#                    <th>{{ building.getATP(not reply)|number_format(2) }}</th>#}
+                    {#                    <th>{{ building.getATP(not reply)|number_format(2) }}</th> #}
                     <th>{{ building.getTotalArea(not reply)|number_format(2) }}</th>
                     <th>{{ building.getMaxHeight(not reply)|number_format(2) }}</th>
                     <th>{{ building.getVolume(not reply)|number_format(2) }}</th>

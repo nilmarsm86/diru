@@ -74,18 +74,18 @@
         } %}
 
             {% block message %}
-                {{ include('structure/_table_message.html.twig', {
-                    isNew: floor.building.isNew(),
-                    maxArea: floor.building.getMaxArea(),
-                    isFullyOccupied: floor.isFullyOccupied(),
-                    hasFreeArea: floor.hasFreeArea(),
-                    freeArea: floor.getFreeArea(),
-                    hasUnassignedArea: floor.hasUnassignedArea(),
-                    unassignedArea: floor.getUnassignedArea(),
-                    landArea: floor.building.getLandArea(),
-                    isBlocked: floor.building.land.isBlocked(),
-                    occupateArea: floor.building.getLand().getOccupiedArea()
-                }) }}
+{#                {{ include('structure/_table_message.html.twig', {#}
+{#                    isNew: floor.building.isNew(),#}
+{#                    maxArea: floor.building.getMaxArea(),#}
+{#                    isFullyOccupied: floor.isFullyOccupied(),#}
+{#                    hasFreeArea: floor.hasFreeArea(),#}
+{#                    freeArea: floor.getFreeArea(),#}
+{#                    hasUnassignedArea: floor.hasUnassignedArea(),#}
+{#                    unassignedArea: floor.getUnassignedArea(),#}
+{#                    landArea: floor.building.getLandArea(),#}
+{#                    isBlocked: floor.building.land.isBlocked(),#}
+{#                    occupateArea: floor.building.getLand().getOccupiedArea()#}
+{#                }) }}#}
 
                 {% if floor.building.hasFreeArea() and floor.hasFreeArea() and floor.isGroundFloor() %}
                     <br>
@@ -182,7 +182,7 @@
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",
-                                    'data-bs-title':(sub_system.hasReplyLocals() == false) ? "No tiene definido locales replicados para diagnosticar." : "Faltan locales replicados por diagnosticar.",
+                                    'data-bs-title':(sub_system.hasReplyLocals() == false) ? "No tiene definido áreas replicadas para diagnosticar." : "Faltan áreas replicadas por asignar acciones constructivas.",
                                     'data-bs-custom-class':"danger-tooltip"
                                 }) }}
                             {% else %}
@@ -190,7 +190,7 @@
                                 ? ux_icon('bi:check-lg', {'class':'bi text-success'})
                                 : ux_icon('material-symbols:close-rounded', {
                                     'class':'bi text-danger', 'data-bs-toggle':"tooltip",
-                                    'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido locales para diagnosticar." : "Faltan áreas por diagnosticar.",
+                                    'data-bs-title':(sub_system.hasOriginalLocals() == false) ? "No tiene definido áreas para diagnosticar." : "Faltan áreas por diagnosticar.",
                                     'data-bs-custom-class':"danger-tooltip"
                                 }) }}
                             {% endif %}
@@ -265,15 +265,16 @@
                 <tr>
                     <th colspan="2">Resumen de la planta:</th>
                     <th>
-                        {% if floor.isFullyOccupied() %}
-                            {{ floor.getUsefulArea()|number_format(2) }}
-                        {% else %}
-                            <span class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="warning-tooltip"
-                                  style="cursor: pointer">
-                                {{ floor.getUsefulArea()|number_format(2) }}
-                            </span>
-                        {% endif %}
+                        {{ floor.getUsefulArea()|number_format(2) }}
+{#                        {% if floor.isFullyOccupied() %}#}
+{#                            {{ floor.getUsefulArea()|number_format(2) }}#}
+{#                        {% else %}#}
+{#                            <span class="text-warning" data-bs-toggle="tooltip"#}
+{#                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="warning-tooltip"#}
+{#                                  style="cursor: pointer">#}
+{#                                {{ floor.getUsefulArea()|number_format(2) }}#}
+{#                            </span>#}
+{#                        {% endif %}#}
                     </th>
                     <th>
                         {% if floor.notWallArea() %}
@@ -286,11 +287,19 @@
                         {% endif %}
                     </th>
                     <th>{{ floor.getEmptyArea()|number_format(2) }}</th>
-                    <th>{{ floor.getTotalArea()|number_format(2) }}</th>
                     <th>
-                        {{ floor.getMaxHeight()|number_format(2) }}
+                        {% if floor.isFullyOccupied() %}
+                            {{ floor.getTotalArea()|number_format(2) }}
+                        {% else %}
+                            <span class="text-warning" data-bs-toggle="tooltip"
+                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="warning-tooltip"
+                                  style="cursor: pointer">
+                                {{ floor.getTotalArea()|number_format(2) }}
+                            </span>
+                        {% endif %}
 
                     </th>
+                    <th>{{ floor.getMaxHeight()|number_format(2) }}</th>
                     <th>{{ floor.getVolume()|number_format(2) }}</th>
                     <th>
                         {% if floor.isDiagnostic(reply) %}
@@ -309,7 +318,7 @@
                     {% if reply or floor.inNewBuilding() %}
                         <th>{{ money(floor.getPrice()) }}</th>
                     {% endif %}
-                    <th></th>
+                    <th>S.A: {{ floor.getUnassignedArea()|number_format(2) }}</th>
                 </tr>
             {% endblock %}
 

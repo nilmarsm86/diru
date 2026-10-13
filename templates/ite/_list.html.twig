@@ -58,7 +58,7 @@
             {% endif %}
 
             {{ tableActionButton3(path('app_ite_new', {'type':type.value}), 'bi:plus-lg', 'Nuevo', 'Nuevo ITE', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_ite_new', {'type':type.value})})) }}
-            <a href="{{ path('ite_export', {type: ( path is same as 'app_ite_international') ? 'international' : 'national'}) }}" class="btn btn-success">Exportar Excel</a>
+            {{ tableActionButton3(path('ite_export', {type: ( path is same as 'app_ite_international') ? 'international' : 'national'}), 'bi:file-earmark-excel', '', 'Exportar a excel', '', 'btn-info') }}
         </div>
     {% endblock %}
 

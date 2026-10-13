@@ -825,7 +825,9 @@ class Building implements MeasurementDataInterface
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {
-            $occupiedArea += $floor->getTotalArea();
+            if ($floor->isGroundFloor()) {
+                $occupiedArea += $floor->getTotalArea();
+            }
         }
 
         return $occupiedArea;
@@ -938,7 +940,8 @@ class Building implements MeasurementDataInterface
         }
 
         //        return $this->getTotalArea($original) >= $this->getMaxArea();
-        return $this->getATP() >= $this->getMaxArea();
+        //        return $this->getATP() >= $this->getMaxArea();
+        return $this->getLand()?->getOccupiedArea() === $this->getATP();
     }
 
     private function getFloorAmount(): int

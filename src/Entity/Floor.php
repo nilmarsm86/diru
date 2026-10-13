@@ -147,26 +147,30 @@ class Floor implements MeasurementDataInterface
 
         $isNew = (bool) $this->getBuilding()->isNew();
         $landArea = (float) $this->getBuilding()->getLandArea();
-        $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
+        //        $occupiedArea = (float) $this->getBuilding()->getOccupiedArea();
+        //        $landOccupiedArea = (float) $this->getBuilding()->getLand()?->getOccupiedArea();
 
         //        if ($this->getTotalArea() > $occupiedArea) {
         //            return $landArea - $this->getTotalArea();
         //        }
-        $groundFloorTotalArea = $this->getBuilding()->getGroundFloor()?->getTotalArea() ?? 0;
-        if ($groundFloorTotalArea > $occupiedArea) {
-            if ($this->isGroundFloor()) {
-                return $landArea - $this->getTotalArea();
-            }
 
-            return $groundFloorTotalArea - $this->getTotalArea();
-        }
+        //        $groundFloorTotalArea = $this->getBuilding()->getGroundFloor()?->getTotalArea() ?? 0;
 
-        //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
-        if ($this->isGroundFloor()) {
-            return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
-        }
-
-        return (($isNew) ? $groundFloorTotalArea : $occupiedArea) - $this->getTotalArea();
+        //        if ($groundFloorTotalArea > $occupiedArea) {
+        //            if ($this->isGroundFloor()) {
+        //                return $landArea - $this->getTotalArea();
+        //            }
+        //
+        //            return $groundFloorTotalArea - $this->getTotalArea();
+        //        }
+        //
+        //        //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
+        //        if ($this->isGroundFloor()) {
+        //            return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
+        //        }
+        //
+        //        return (($isNew) ? $groundFloorTotalArea : $occupiedArea) - $this->getTotalArea();
+        return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
     }
 
     public function getUnassignedArea(?bool $original = null): float
@@ -227,16 +231,19 @@ class Floor implements MeasurementDataInterface
         //        if (true === $this->building?->isFullyOccupied($original)) {
         //            return true;
         //        }
-        if ($this->isGroundFloor()) {
-            if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) > 0) {
-                return true;
-            }
 
-            return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
+        //        if ($this->isGroundFloor()) {
+        if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) > 0) {
+            return true;
         }
-        $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;
 
-        return $this->getTotalArea() >= $groundFloorTotalArea;
+        //
+        //            return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
+        //        }
+        //        $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;
+        //
+        //        return $this->getTotalArea() >= $groundFloorTotalArea;
+        return $this->getBuilding()?->getLand()?->getOccupiedArea() === $this->getTotalArea();
     }
 
     public function getSubSystemAmount(): int

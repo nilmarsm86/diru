@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+/**
+ * @SuppressWarnings(PHPMD.UnusedPrivateField)
+ */
 class Project
 {
     use NameToStringTrait;
@@ -108,6 +111,10 @@ class Project
     #[ORM\OneToMany(targetEntity: PlannerProject::class, mappedBy: 'project', cascade: ['persist'])]
     #[Assert\Valid]
     private Collection $plannersProjects;
+
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[Assert\Valid]
+    private ?Client $client = null;
 
     public function __construct()
     {

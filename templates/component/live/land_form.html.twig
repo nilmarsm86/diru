@@ -54,31 +54,52 @@
 
     {{ form_row(form.isNew) }}
 
-    <details
-        class="collection" {{ stimulusTarget('live/land-form', 'details') }} open
-        style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
-        <summary class="collection">
-            <div class="row summary-btn-lis">
-                <div class="col">Tiene área a ocupada:</div>
-                <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+    <div class="row">
+        <div class="col">
+            <details
+                class="collection" {{ stimulusTarget('live/land-form', 'details') }} open
+                style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
+                <summary class="collection">
+                    <div class="row summary-btn-lis">
+                        <div class="col">Tiene área intervenida:</div>
+                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        </div>
+                    </div>
+                </summary>
+                <br>
+                <div class="mb-0 row">
+                    <div class="col">
+                        {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3">
+                            <p class="" title="Coeficiente de Ocupación del Suelo" data-bs-toggle="tooltip">COS (%):</p>
+                            <h5 class="">
+                                <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span>
+                            </h5>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </summary>
-        <br>
-        <div class="mb-0 row">
-            <div class="col-sm-4">
-                {{ form_row(form.occupiedArea, {attr:{'data-live--land-form-target':'occupied'}}) }}
-            </div>
-            <div class="col">
-                <div class="mb-3">
-                    <p class="" title="Coeficiente de Ocupación del Suelo" data-bs-toggle="tooltip">COS (%):</p>
-                    <h5 class="">
-                        <span class="badge text-bg-info" {{ stimulusTarget('live/land-form', 'cos') }}>0</span>
-                    </h5>
-                </div>
-            </div>
+            </details>
         </div>
-    </details>
+        <div class="col">
+            <details
+                class="collection" {{ stimulusTarget('live/land-form', 'details') }} open
+                style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
+                <summary class="collection">
+                    <div class="row summary-btn-lis">
+                        <div class="col">Tiene área sin intervenir:</div>
+                        <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
+                        </div>
+                    </div>
+                </summary>
+                <br>
+                <div class="mb-0 row">
+
+                </div>
+            </details>
+        </div>
+    </div>
 
     <div class="mb-0 row">
         <div class="col">

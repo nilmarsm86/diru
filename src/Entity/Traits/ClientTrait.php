@@ -7,15 +7,9 @@ use App\Entity\EnterpriseClient;
 use App\Entity\IndividualClient;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 trait ClientTrait
 {
-    #[ORM\ManyToOne(inversedBy: 'projects')]
-    #[Assert\Valid]
-    private ?Client $client = null;
-
     public function getClient(): ?Client
     {
         return $this->client;

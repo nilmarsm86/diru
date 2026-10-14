@@ -15,7 +15,40 @@
     }) %}
 {% endif %}
 
-{{ include('structure/_structure_data.html.twig', {'structure' : building}) }}
+
+<div class="row mb-3">
+    <div class="col">
+        {{ include('structure/_structure_data.html.twig', {'structure' : building}) }}
+    </div>
+    <div class="col">
+        <ul class="list-group list-group-flush">
+            <li>
+                <strong>Terreno:</strong>
+                {{ building.land.getLandArea()|number_format(2) }}m<sup>2</sup>
+            </li>
+
+            {% if building.isNew() == true %}
+                {% set occupiedLand = building.getATP() %}
+                <li>
+                    <strong>Ocupado en terreno:</strong>
+                    {{ building.getATP()|number_format(2) }}m<sup>2</sup>
+                </li>
+            {% else %}
+                {% set occupiedLand = building.land.getOccupiedArea() %}
+                <li>
+                    <strong>Ocupado en terreno:</strong>
+                    {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
+                </li>
+            {% endif %}
+
+            <li>
+                <strong>Libre:</strong>
+                {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+            </li>
+        </ul>
+
+    </div>
+</div>
 
 {% set groundFloor = building.getGroundFloor() %}
 

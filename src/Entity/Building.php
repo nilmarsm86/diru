@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
 class Building implements MeasurementDataInterface
 {
@@ -208,6 +209,10 @@ class Building implements MeasurementDataInterface
     /** @var array<mixed> */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $objects = [];
+
+    #[ORM\ManyToOne(inversedBy: 'buildings')]
+    #[Assert\Valid]
+    private ?Client $client = null;
 
     public function __construct()
     {

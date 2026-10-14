@@ -11,7 +11,14 @@
     }) %}
 {% endif %}
 
-{{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
+<div class="row mb-3">
+    <div class="col">
+        {{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
+    </div>
+    <div class="col">
+        {{ include('structure/_resume_data.html.twig', {'structure' : sub_system.floor}) }}
+    </div>
+</div>
 
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
@@ -82,18 +89,18 @@
             {% set original = reply ? false : true %}
 
             {% block message %}
-                {{ include('structure/_table_message.html.twig', {
-                    isNew: sub_system.floor.building.isNew(),
-                    maxArea: sub_system.floor.building.getMaxArea(),
-                    isFullyOccupied: sub_system.floor.isFullyOccupied(),
-                    hasFreeArea: sub_system.floor.hasFreeArea(),
-                    freeArea: sub_system.floor.getFreeArea(),
-                    hasUnassignedArea: sub_system.floor.hasUnassignedArea(),
-                    unassignedArea: sub_system.floor.getUnassignedArea(),
-                    landArea: sub_system.floor.building.getLandArea(),
-                    isBlocked: sub_system.floor.building.land.isBlocked(),
-                    occupateArea: sub_system.floor.building.getLand().getOccupiedArea()
-                }) }}
+{#                {{ include('structure/_table_message.html.twig', {#}
+{#                    isNew: sub_system.floor.building.isNew(),#}
+{#                    maxArea: sub_system.floor.building.getMaxArea(),#}
+{#                    isFullyOccupied: sub_system.floor.isFullyOccupied(),#}
+{#                    hasFreeArea: sub_system.floor.hasFreeArea(),#}
+{#                    freeArea: sub_system.floor.getFreeArea(),#}
+{#                    hasUnassignedArea: sub_system.floor.hasUnassignedArea(),#}
+{#                    unassignedArea: sub_system.floor.getUnassignedArea(),#}
+{#                    landArea: sub_system.floor.building.getLandArea(),#}
+{#                    isBlocked: sub_system.floor.building.land.isBlocked(),#}
+{#                    occupateArea: sub_system.floor.building.getLand().getOccupiedArea()#}
+{#                }) }}#}
 
                 {% if sub_system.floor.building.land.isBlocked() == false %}
                     {% if sub_system.floor.hasSubSystemAndIsNotCompletlyEmptyArea() and (sub_system.floor.hasUnassignedArea() or sub_system.floor.hasFreeArea()) %}

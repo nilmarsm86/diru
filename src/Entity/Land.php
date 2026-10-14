@@ -44,6 +44,10 @@ class Land
     #[ORM\Column(nullable: true)]
     private ?bool $isBlocked = null;
 
+    #[ORM\OneToOne(inversedBy: 'land', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Building $building = null;
+
     public function __construct()
     {
         $this->occupiedArea = 0;
@@ -148,6 +152,29 @@ class Land
     public function setIsBlocked(bool $isBlocked): static
     {
         $this->isBlocked = $isBlocked;
+
+        return $this;
+    }
+
+    public function getFreeArea(): ?float
+    {
+        // TODO:hay que tener en cuenta en la obra nueva la construccion que se hizo
+        $freeArea = $this->getLandArea() - (float) $this->getOccupiedArea();
+        if ((bool) $this->building?->isNew()) {
+            $freeArea = $freeArea - $this->building->getATP();
+        }
+
+        return $freeArea;
+    }
+
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?Building $building): static
+    {
+        $this->building = $building;
 
         return $this;
     }

@@ -170,7 +170,8 @@ class Floor implements MeasurementDataInterface
         //        }
         //
         //        return (($isNew) ? $groundFloorTotalArea : $occupiedArea) - $this->getTotalArea();
-        return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
+
+        return (($isNew) ? ($landArea) : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
     }
 
     public function getUnassignedArea(?bool $original = null): float

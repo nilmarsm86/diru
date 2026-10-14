@@ -96,7 +96,7 @@ class Building implements MeasurementDataInterface
     #[Assert\Valid]
     private Collection $draftmanCorporateEntityBuildings;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'building', cascade: ['persist'])]
     #[Assert\Valid]
     private ?Land $land = null;
 
@@ -825,9 +825,9 @@ class Building implements MeasurementDataInterface
 
         /** @var Floor $floor */
         foreach ($floors as $floor) {
-            if ($floor->isGroundFloor()) {
-                $occupiedArea += $floor->getTotalArea();
-            }
+            // if ($floor->isGroundFloor()) {
+            $occupiedArea += $floor->getTotalArea();
+            // }
         }
 
         return $occupiedArea;

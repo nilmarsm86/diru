@@ -227,7 +227,7 @@
                                 {% if floor.isGroundFloor() %}
                                     {{ floor.getFreeArea()|number_format(2) }}
                                 {% else %}
-                                    -
+                                    {{ floor.getFreeArea()|number_format(2) }}
                                 {% endif %}
                             {% else %}
                                 {% if floor.isGroundFloor() %}
@@ -237,7 +237,7 @@
                                     {{ floor.getFreeArea()|number_format(2) }}
                                     {#                                </span> #}
                                 {% else %}
-                                    -
+                                    {{ floor.getFreeArea()|number_format(2) }}
                                 {% endif %}
                             {% endif %}
                         </td>

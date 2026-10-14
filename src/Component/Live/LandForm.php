@@ -171,6 +171,7 @@ final class LandForm extends AbstractController
         }
 
         $this->building?->setLand($land);
+        $land->setBuilding($this->building);
 
         return $land;
     }

@@ -11,7 +11,14 @@
     }) %}
 {% endif %}
 
-{{ include('structure/_structure_data.html.twig', {'structure' : floor}) }}
+<div class="row mb-3">
+    <div class="col">
+        {{ include('structure/_structure_data.html.twig', {'structure' : floor}) }}
+    </div>
+    <div class="col">
+        {{ include('structure/_resume_data.html.twig', {'structure' : floor}) }}
+    </div>
+</div>
 
 {% component 'Card:Card' with {
     cssClass: 'mb-4',

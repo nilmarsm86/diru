@@ -1,0 +1,33 @@
+<ul class="list-group list-group-flush">
+    <li>
+        <strong>Terreno:</strong>
+        {{ structure.building.land.getLandArea()|number_format(2) }}m<sup>2</sup>
+    </li>
+
+    {% if structure.building.isNew() == true %}
+        {% set occupiedLand = structure.building.getATP() %}
+        <li>
+            <strong>Ocupado en terreno:</strong>
+            {{ structure.building.getATP()|number_format(2) }}m<sup>2</sup>
+        </li>
+    {% else %}
+        {% set occupiedLand = structure.building.land.getOccupiedArea() %}
+        <li>
+            <strong>Ocupado en terreno:</strong>
+            {{ structure.building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
+        </li>
+    {% endif %}
+
+    <li {% if (occupiedLand !== structure.getTotalArea()) %}style="color:red"{% endif %}>
+        <strong>Ocupado en planta:</strong>
+        {{ structure.getTotalArea()|number_format(2) }}m<sup>2</sup>
+    </li>
+    <li {% if (structure.getUnassignedArea() > 0) %}style="color:red"{% endif %}>
+        <strong>Sin Asignar en planta:</strong>
+        {{ structure.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
+    </li>
+    <li>
+        <strong>Libre:</strong>
+        {{ structure.building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+    </li>
+</ul>

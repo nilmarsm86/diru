@@ -11,14 +11,12 @@
     structure.name %}
 
 <ul>
-    {% if structure.isSubSystem() %}
-        <li><strong>Subsistema: </strong>{{ structure.name }}</li>
-    {% endif %}
-
+    <li><strong>Proyecto: </strong>{{ projectName }}</li>
+    <li><strong>Obra: </strong>{{ buildingName }}</li>
     {% if structure.isSubSystem() or structure.isFloor()  %}
         <li><strong>Planta: </strong>{{ floorName }}</li>
     {% endif %}
-
-    <li><strong>Obra: </strong>{{ buildingName }}</li>
-    <li><strong>Proyecto: </strong>{{ projectName }}</li>
+    {% if structure.isSubSystem() %}
+        <li><strong>Subsistema: </strong>{{ structure.name }}</li>
+    {% endif %}
 </ul>

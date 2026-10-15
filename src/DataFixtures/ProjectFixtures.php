@@ -26,7 +26,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 {
     public function load(ObjectManager $manager): void
     {
-        return;
         $projects = ['Proyect1', 'Proyect2', 'Proyect3'];
         foreach ($projects as $project) {
             $projectEntity = $manager->getRepository(Project::class)->findOneBy(['name' => $project]);
@@ -66,11 +65,11 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 
                 $projectEntity->setCurrency($this->findCurrency($manager, 'CUP'));
 
-                $manager->persist($projectEntity);
+                // $manager->persist($projectEntity);
             }
         }
 
-        $manager->flush();
+        // $manager->flush();
     }
 
     private function findPlanner(ObjectManager $manager, string $name): ?Planner

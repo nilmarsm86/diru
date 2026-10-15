@@ -21,8 +21,8 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
 {
     public function load(ObjectManager $manager): void
     {
-        return;
         $buildings = ['Obra1', 'Obra2', 'Obra3'];
+
         foreach ($buildings as $building) {
             $buildingEntity = $manager->getRepository(Building::class)->findOneBy(['name' => $building]);
             if (is_null($buildingEntity)) {
@@ -61,11 +61,11 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
 
                 $this->addSeparateConcepts($manager, $buildingEntity);
 
-                $manager->persist($buildingEntity);
+                // $manager->persist($buildingEntity);
             }
         }
 
-        $manager->flush();
+        // $manager->flush();
     }
 
     private function addBuildingObject(Building $buildingEntity): void

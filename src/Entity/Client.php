@@ -43,9 +43,17 @@ class Client
     #[Assert\Valid]
     protected Collection $projects;
 
+    /**
+     * @var Collection<int, Building>
+     */
+    #[ORM\OneToMany(targetEntity: Building::class, mappedBy: 'client')]
+    #[Assert\Valid]
+    protected Collection $buildings;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,5 +118,40 @@ class Client
     public function hasProjects(): bool
     {
         return $this->getProjects()->count() > 0;
+    }
+
+    /**
+     * @return Collection<int, Building>
+     */
+    public function getBuildings(): Collection
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Building $building): static
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuilding(Building $building): static
+    {
+        if ($this->buildings->removeElement($building)) {
+            // set the owning side to null (unless already changed)
+            if ($building->getClient() === $this) {
+                $building->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasBuildings(): bool
+    {
+        return $this->getBuildings()->count() > 0;
     }
 }

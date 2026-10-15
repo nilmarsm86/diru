@@ -1,14 +1,27 @@
 <form
         method="post"
         action="{{ path }}"
-        onsubmit="return confirm('{{ confirm }}');"
+{#        onsubmit="return confirm('{{ confirm }}');"#}
         style="display: inline"
         {{ attributes }}
 >
     <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
-    <button class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %} data-bs-toggle="tooltip" {{ extra }}>
+    <button type="button" class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %}  {{ extra }} data-bs-toggle="modal" data-bs-target="#remove">
         {{ ux_icon(icon, {class:'bi'}) }}
         {{ label }}
     </button>
+
+    {% component 'Modal:Confirm' with {
+        title: 'Confirmar',
+        id: 'remove',
+        question: confirm,
+        href: path,
+        render: '<button class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>'
+    } %}
+        {% block body %}
+            Cargando...
+        {% endblock %}
+    {% endcomponent %}
 </form>
+
 

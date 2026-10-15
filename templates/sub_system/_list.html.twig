@@ -325,7 +325,7 @@
                     {% if reply or floor.inNewBuilding() %}
                         <th>{{ money(floor.getPrice()) }}</th>
                     {% endif %}
-                    <th>S.A: {{ floor.getUnassignedArea()|number_format(2) }}</th>
+                    <th>{#  S.A: {{ floor.getUnassignedArea()|number_format(2) }}#}</th>
                 </tr>
             {% endblock %}
 

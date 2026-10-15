@@ -79,9 +79,14 @@
                                         <div class="progress" role="progressbar" aria-label="Info example"
                                              aria-valuenow="{{ finance['approvedValue'] }}" aria-valuemin="0"
                                              aria-valuemax="{{ finance['estimatedValue'] }}" style="height: 20px">
+                                            {% if finance['estimatedValue'] == 0 %}
+                                                {% set data = (finance['approvedValue'] * 100) %}
+                                            {% else %}
+                                                {% set data = (finance['approvedValue'] * 100 / finance['estimatedValue']) %}
+                                            {% endif %}
                                             <div class="progress-bar text-bg-info"
-                                                 style="width: {{ (finance['approvedValue'] * 100 / finance['estimatedValue'])|number_format(2) }}%">
-                                                <strong>{{ (finance['approvedValue'] * 100 / finance['estimatedValue'])|number_format(2) }}
+                                                 style="width: {{ data|number_format(2) }}%">
+                                                <strong>{{ data|number_format(2) }}
                                                     %</strong>
                                             </div>
                                         </div>

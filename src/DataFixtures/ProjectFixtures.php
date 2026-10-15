@@ -26,6 +26,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface, Fixt
 {
     public function load(ObjectManager $manager): void
     {
+        return;
         $projects = ['Proyect1', 'Proyect2', 'Proyect3'];
         foreach ($projects as $project) {
             $projectEntity = $manager->getRepository(Project::class)->findOneBy(['name' => $project]);

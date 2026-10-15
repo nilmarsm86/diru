@@ -21,6 +21,7 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface, Fix
 {
     public function load(ObjectManager $manager): void
     {
+        return;
         $buildings = ['Obra1', 'Obra2', 'Obra3'];
         foreach ($buildings as $building) {
             $buildingEntity = $manager->getRepository(Building::class)->findOneBy(['name' => $building]);

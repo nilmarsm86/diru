@@ -126,7 +126,7 @@ final class HomeController extends AbstractController
             'labels' => [''],
             'datasets' => [
                 [
-                    'label' => number_format($approvedValue * 100 / $estimatedValue, 2).'% aprobado',
+                    'label' => ($estimatedValue == 0) ? number_format($approvedValue * 100, 2).'% aprobado' : number_format($approvedValue * 100 / $estimatedValue, 2).'% aprobado',
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => [$approvedValue / 100],

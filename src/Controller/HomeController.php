@@ -193,7 +193,7 @@ final class HomeController extends AbstractController
             'datasets' => [
                 [
                     'label' => 'Valor aprobado',
-                    'data' => ['9000000'],
+                    'data' => [$finance['approvedValue']],
                 ],
                 [
                     'label' => 'Valor estimado',

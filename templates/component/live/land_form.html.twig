@@ -3,7 +3,7 @@
     {% if this.isNew() == true %}
         {% set msg = 'Para un inmueble existente una vez creada la información de los datos del terreno, la misma <strong>NO</strong> podrá ser modificada. Solo los documentos relacionados.' %}
     {% else %}
-        {% set msg = 'Esta información no puede ser modificada. Solo los documentos relacionados.' %}
+        {% set msg = 'Esta información no puede ser modificada. Solo los documentos relacionados con el terreno.' %}
     {% endif %}
 
     {% if msg is defined %}
@@ -14,11 +14,7 @@
         }) }}
     {% endif %}
 
-    {{ component('message:alert', {
-        'icon': 'lets-icons:check-fill',
-        'type': 'info',
-        'message': 'Area libre del terreno: '~this.l.getFreeArea()~'m<sup>2</sup><br><p style="color:red">hay que tener en cuenta en la obra nueva la construccion que se hizo</p>'
-    }) }}
+    <p><strong>Area libre del terreno:</strong> {{ this.l.getFreeArea() }}m<sup>2</sup></p>
 
     {{ form_start(form, {
         attr: {

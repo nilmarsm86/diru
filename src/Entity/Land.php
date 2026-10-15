@@ -158,7 +158,6 @@ class Land
 
     public function getFreeArea(): ?float
     {
-        // TODO:hay que tener en cuenta en la obra nueva la construccion que se hizo
         $freeArea = $this->getLandArea() - (float) $this->getOccupiedArea();
         if ((bool) $this->building?->isNew()) {
             $freeArea = $freeArea - $this->building->getATP();

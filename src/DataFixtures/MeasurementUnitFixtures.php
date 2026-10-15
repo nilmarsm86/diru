@@ -11,45 +11,24 @@ class MeasurementUnitFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $units = ['m', 'm2', 'm3', 'v', 'texto', '%', '#', 'USD/m2', 'USD/ml', 'USD/tn', 'u'];
-        foreach ($units as $code) {
+        $units = [
+            'Metro' => 'm',
+            'Metro cuadrado' => 'm²',
+            'Metro cúbico' => 'm³',
+            'Volumen' => 'v',
+            'Texto' => 'texto',
+            'Porciento' => '%',
+            'Numérico' => '#',
+            'Dolar por metro cuadrado' => 'USD/m²',
+            'Dolar por metro lineal' => 'USD/ml',
+            'Dolar por tonelada' => 'USD/tn',
+            'Unidad' => 'u',
+        ];
+        foreach ($units as $name => $code) {
             $unit = $manager->getRepository(MeasurementUnit::class)->findOneBy(['code' => $code]);
             if (is_null($unit)) {
                 $unit = new MeasurementUnit();
-                if ('m' === $code) {
-                    $unit->setName('Metro');
-                }
-                if ('m2' === $code) {
-                    $unit->setName('Metro cuadrado');
-                }
-                if ('m3' === $code) {
-                    $unit->setName('Metro cúbico');
-                }
-                if ('v' === $code) {
-                    $unit->setName('Volumne');
-                }
-                if ('texto' === $code) {
-                    $unit->setName('Texto');
-                }
-                if ('%' === $code) {
-                    $unit->setName('Porciento');
-                }
-                if ('#' === $code) {
-                    $unit->setName('Numérico');
-                }
-                if ('USD/m2' === $code) {
-                    $unit->setName('Dolar por metro cuadrado');
-                }
-                if ('USD/ml' === $code) {
-                    $unit->setName('Dolar por metro lineal ?');
-                }
-                if ('USD/tn' === $code) {
-                    $unit->setName('Dolar por tonelada');
-                }
-                if ('u' === $code) {
-                    $unit->setName('Unidad');
-                }
-
+                $unit->setName($name);
                 $unit->setCode($code);
                 $manager->persist($unit);
             }

@@ -6,17 +6,17 @@
         {{ attributes }}
 >
     <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
-    <button type="button" class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %}  {{ extra }} data-bs-toggle="modal" data-bs-target="#remove">
+    <button type="button" class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %}  {{ extra }} data-bs-toggle="modal" data-bs-target="#{{ path|replace({'/':'-'}) }}">
         {{ ux_icon(icon, {class:'bi'}) }}
         {{ label }}
     </button>
 
     {% component 'Modal:Confirm' with {
         title: 'Confirmar',
-        id: 'remove',
-        question: confirm,
+        id: path|replace({'/':'-'}),
+        question: confirm~'<br><h6 style="color:red">Está acción es irreversible.</h6>',
         href: path,
-        render: '<button class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>'
+        render: '<button class="btn btn-danger" data-bs-dismiss="modal" style="padding-left: 12px;padding-right: 12px">Aceptar</button>'
     } %}
         {% block body %}
             Cargando...

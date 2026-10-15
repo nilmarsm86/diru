@@ -229,7 +229,8 @@ class Local implements MoneyInterface
     public static function createAutomaticWall(SubSystem $subSystem, float $area, string $number = '0', bool $reply = false, ?EntityManagerInterface $entityManager = null): self
     {
         $name = ($reply) ? 'Á.E.V (R)' : 'Á.E.V';
-        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, TechnicalStatus::Undefined, $name, $area, 2.40, $number, $entityManager);
+        $technicalStatus = (true === $subSystem->inNewBuilding()) ? TechnicalStatus::Good : TechnicalStatus::Undefined;
+        $wall = self::createAutomatic(null, $subSystem, LocalType::WallArea, $technicalStatus, $name, $area, 2.40, $number, $entityManager);
         if ($reply) {
             $wall->setHasReply(false);
             $wall->setTechnicalStatus(TechnicalStatus::Good);

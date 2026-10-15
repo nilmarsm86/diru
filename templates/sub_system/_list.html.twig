@@ -2,7 +2,7 @@
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
-        'data-bs-title':"Revisar datos de los subsistemas.",
+        'data-bs-title':"Revisar datos de los subsistemas y sus locales.",
         'data-bs-custom-class':"danger-tooltip"
     }) %}
 {% else %}
@@ -113,18 +113,18 @@
                 <tr>
                     <th>Nombre</th>
                     <th></th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Subsistema">Á.T.S (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
-                    <th>Diagnosticados</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Subsistema">Á.T.S<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt.<br>(m)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol.<br>(m<sup>3</sup>)</th>
+                    <th>Diagnosticados<br>&nbsp;</th>
                     {% if reply or floor.inNewBuilding() %}
-                        <th>Importe ({{ floor.building.getProjectCurrency() }})</th>
+                        <th>Importe<br>({{ floor.building.getProjectCurrency() }})</th>
                     {% endif %}
                     {% if reply or floor.inNewBuilding() %}
-                        <th>ITE ($/m<sup>2</sup>)</th>
+                        <th>ITE<br>($/m<sup>2</sup>)</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -298,8 +298,8 @@
                         {% if floor.isFullyOccupied() %}
                             {{ floor.getTotalArea()|number_format(2) }}
                         {% else %}
-                            <span class="text-warning" data-bs-toggle="tooltip"
-                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="warning-tooltip"
+                            <span class="text-danger" data-bs-toggle="tooltip"
+                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="danger-tooltip"
                                   style="cursor: pointer">
                                 {{ floor.getTotalArea()|number_format(2) }}
                             </span>

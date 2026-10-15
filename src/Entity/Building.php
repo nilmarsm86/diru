@@ -946,6 +946,10 @@ class Building implements MeasurementDataInterface
 
         //        return $this->getTotalArea($original) >= $this->getMaxArea();
         //        return $this->getATP() >= $this->getMaxArea();
+        if ((bool) $this->isNew()) {
+            return $this->getLand()?->getLandArea() === $this->getATP();
+        }
+
         return $this->getLand()?->getOccupiedArea() === $this->getATP();
     }
 
@@ -1142,8 +1146,9 @@ class Building implements MeasurementDataInterface
                 }
             }
         }
+        dump($this->isFullyOccupied($original));
 
-        return $this->notWallArea() || (false === $this->hasOriginalLocals()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original));
+        return $this->notWallArea() || (false === $this->hasOriginalLocals()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original) || (false === $this->correctATPInFloors()));
     }
 
     public function getPopulation(): ?int
@@ -1894,5 +1899,22 @@ class Building implements MeasurementDataInterface
         }
 
         return TechnicalStatus::getLabelFrom((string) $status);
+    }
+
+    public function correctATPInFloors(): bool
+    {
+        $floors = (false === $this->hasReply()) ? $this->getOriginalFloors() : $this->getReplyFloors();
+        $groundFloor = $this->getGroundFloor();
+
+        /** @var Floor $floor */
+        foreach ($floors as $floor) {
+            if (!$floor->isGroundFloor()) {
+                if ($floor?->getTotalArea() > $groundFloor?->getTotalArea()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

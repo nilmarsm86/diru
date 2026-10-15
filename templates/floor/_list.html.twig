@@ -6,7 +6,7 @@
     {% set card_icon = ux_icon('material-symbols:dangerous', {
         'class':'bi text-danger',
         'data-bs-toggle':"tooltip",
-        'data-bs-title':"Revisar datos de las plantas.",
+        'data-bs-title':"Revisar datos de las plantas y sus subsistemas.",
         'data-bs-custom-class':"danger-tooltip"
     }) %}
 {% else %}
@@ -26,21 +26,14 @@
                 <strong>Terreno:</strong>
                 {{ building.land.getLandArea()|number_format(2) }}m<sup>2</sup>
             </li>
-
-            {% if building.isNew() == true %}
-                {% set occupiedLand = building.getATP() %}
-                <li>
-                    <strong>Ocupado en terreno:</strong>
+            <li>
+                <strong>Ocupado en terreno:</strong>
+                {% if building.isNew() == true %}
                     {{ building.getATP()|number_format(2) }}m<sup>2</sup>
-                </li>
-            {% else %}
-                {% set occupiedLand = building.land.getOccupiedArea() %}
-                <li>
-                    <strong>Ocupado en terreno:</strong>
+                {% else %}
                     {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
-                </li>
-            {% endif %}
-
+                {% endif %}
+            </li>
             <li>
                 <strong>Libre:</strong>
                 {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
@@ -141,16 +134,16 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th></th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Planta">Á.T.P (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt. (m)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol. (m<sup>3</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Espacio sin asignar">Sin asignar (m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Espacio libre">Libre (m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área Total de Planta">Á.T.P<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt.<br>(m)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol.<br>(m<sup>3</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Espacio sin asignar">Sin asignar<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Espacio libre">Libre<br>(m<sup>2</sup>)</th>
                     {% if reply or building.isNew() %}
-                        <th>Importe ({{ building.getProjectCurrency() }})</th>
+                        <th>Importe<br>({{ building.getProjectCurrency() }})</th>
                     {% endif %}
                     <th></th>
                 </tr>
@@ -224,11 +217,19 @@
                         <td>{{ floor.getEmptyArea()|number_format(2) }}</td>
                         <td>
                             {% if floor.isFullyOccupied() %}
+                                {% if floor.building.groundFloor.getTotalArea() < floor.getTotalArea() %}
+                                    <span class="text-danger" data-bs-toggle="tooltip"
+                                          data-bs-title="Esta planta tiene un A.T.P mayor que la Planta Baja."
+                                          data-bs-custom-class="danger-tooltip" style="cursor: pointer">
                                 {{ floor.getTotalArea()|number_format(2) }}
+                                                                </span>
+                                {% else %}
+                                    {{ floor.getTotalArea()|number_format(2) }}
+                                {% endif %}
                             {% else %}
-                                <span class="text-warning" data-bs-toggle="tooltip"
+                                <span class="text-danger" data-bs-toggle="tooltip"
                                       data-bs-title="{{ msgUnassignedSpace }}"
-                                      data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                      data-bs-custom-class="danger-tooltip" style="cursor: pointer">
                                 {{ floor.getTotalArea()|number_format(2) }}
                                                                 </span>
                             {% endif %}
@@ -245,9 +246,9 @@
                                 {% endif %}
                             {% else %}
 {#                                {% if floor.isGroundFloor() %}#}
-                                    <span class="text-warning" data-bs-toggle="tooltip"
+                                    <span class="text-danger" data-bs-toggle="tooltip"
                                           data-bs-title="{{ msgUnassignedSpace }}"
-                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer">
+                                          data-bs-custom-class="danger-tooltip" style="cursor: pointer">
                                     {{ floor.getUnassignedArea()|number_format(2) }}
                                 </span>
 {#                                {% else %}#}

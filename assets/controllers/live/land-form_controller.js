@@ -44,9 +44,9 @@ export default class extends AbstractController {
                 this.occupiedTarget.value = this.areaTarget.value;
             }
 
-            if (Number(this.perimeterTarget.value) < Number(this.areaTarget.value)) {
-                this.perimeterTarget.value = this.areaTarget.value;
-            }
+            // if (Number(this.perimeterTarget.value) < Number(this.areaTarget.value)) {
+            //     this.perimeterTarget.value = this.areaTarget.value;
+            // }
 
             this.calculateOccupatedArea();
 
@@ -98,7 +98,7 @@ export default class extends AbstractController {
         }
 
         this.occupiedTarget.max = this.areaTarget.value;
-        this.perimeterTarget.min = this.areaTarget.value;
+        // this.perimeterTarget.min = this.areaTarget.value;
     }
 
     calculateHectare() {

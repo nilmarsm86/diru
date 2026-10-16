@@ -98,7 +98,7 @@ final class LandController extends AbstractController
         $land->setIsBlocked(!(bool) $land->isBlocked());
         $landRepository->save($land, true);
 
-        $this->addFlash('success', 'Se ha transformado el área.');
+        $this->addFlash('success', 'Se ha transformado el área restante.');
 
         return $this->redirectToRoute('app_floor_index', ['building' => $building->getId(), 'reply' => $reply], Response::HTTP_SEE_OTHER);
     }

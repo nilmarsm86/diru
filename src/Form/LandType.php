@@ -82,7 +82,7 @@ class LandType extends AbstractType
                 'unit' => 'm',
                 'label' => 'Perímetro de terreno:',
                 'attr' => [
-                    'min' => 0,
+                    'min' => 1,
                 ] + $disabled,
                 'required' => false,
             ])

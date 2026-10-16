@@ -191,7 +191,7 @@
                                 </span>
                             {% endif %}
                         </td>
-
+                        {# Area Util #}
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {{ floor.getUsefulArea()|number_format(2) }}
@@ -203,6 +203,8 @@
                                 {#                                </span> #}
                             {% endif %}
                         </td>
+
+                        {# Area de Elementos Verticales #}
                         <td>
                             {% if floor.notWallArea() %}
                                 <span class="text-danger" data-bs-toggle="tooltip"
@@ -214,7 +216,11 @@
                                 {{ floor.getWallArea()|number_format(2) }}
                             {% endif %}
                         </td>
+
+                        {# Area de vacio #}
                         <td>{{ floor.getEmptyArea()|number_format(2) }}</td>
+
+                        {# Area Total de Piso #}
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {% if floor.building.groundFloor.getTotalArea() < floor.getTotalArea() %}
@@ -233,17 +239,22 @@
                                 {{ floor.getTotalArea()|number_format(2) }}
                                                                 </span>
                             {% endif %}
-
                         </td>
+
+                        {# Altura #}
                         <td>{{ floor.getMaxHeight()|number_format(2) }}</td>
+
+                        {# Volumen #}
                         <td>{{ floor.getVolume()|number_format(2) }}</td>
+
+                        {# Area Sin Asignar #}
                         <td>
                             {% if floor.isFullyOccupied() %}
-                                {% if floor.isGroundFloor() %}
+{#                                {% if floor.isGroundFloor() %}#}
                                     {{ floor.getUnassignedArea()|number_format(2) }}
-                                {% else %}
-                                    {{ floor.getUnassignedArea()|number_format(2) }}
-                                {% endif %}
+{#                                {% else %}#}
+{#                                    {{ floor.getUnassignedArea()|number_format(2) }}#}
+{#                                {% endif %}#}
                             {% else %}
 {#                                {% if floor.isGroundFloor() %}#}
                                     <span class="text-danger" data-bs-toggle="tooltip"
@@ -256,13 +267,15 @@
 {#                                {% endif %}#}
                             {% endif %}
                         </td>
+
+                        {# Area Libre #}
                         <td>
                             {% if floor.isFullyOccupied() %}
-                                {% if floor.isGroundFloor() %}
+{#                                {% if floor.isGroundFloor() %}#}
                                     {{ floor.getFreeArea()|number_format(2) }}
-                                {% else %}
-                                    {{ floor.getFreeArea()|number_format(2) }}
-                                {% endif %}
+{#                                {% else %}#}
+{#                                    {{ floor.getFreeArea()|number_format(2) }}#}
+{#                                {% endif %}#}
                             {% else %}
                                 {% if floor.isGroundFloor() %}
                                     {#                                    <span class="text-warning" data-bs-toggle="tooltip" #}

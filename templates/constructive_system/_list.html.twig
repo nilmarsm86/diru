@@ -5,7 +5,7 @@
     title: 'Listado de sistemas constructivos',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
             {{ tableActionButton3(path('app_constructive_system_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo sistema constructivo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_constructive_system_new')})) }}
@@ -25,7 +25,7 @@
             {% endblock %}
 
             {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
 
                 {% for constructive_system in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>

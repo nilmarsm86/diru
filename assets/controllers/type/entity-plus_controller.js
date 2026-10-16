@@ -1,7 +1,7 @@
 import {useContentLoader} from "../../behaviors/content-loader/use-content-loader.js";
 import AbstractController from "../AbstractController.js";
 import {useProcessResponse} from "../../behaviors/use-process-response.js";
-import {Modal} from "bootstrap";
+import {Modal, Tooltip} from "bootstrap";
 
 /*
 * The following line makes this controller "lazy": it won't be downloaded until needed
@@ -34,6 +34,8 @@ export default class extends AbstractController {
             container: this.selectTarget,
             // eventLoadedName: "loaded",
         });
+
+        // this.tooltips();
 
         window.addEventListener(this.identifier + ':update', this.updateList.bind(this));
         // this.element.addEventListener(this.identifier+':loaded', async (event) => {
@@ -123,6 +125,15 @@ export default class extends AbstractController {
         }
 
 
+    }
+
+    tooltips(){
+        setTimeout(() => {
+            const tooltipTriggerList = this.element.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
+                return new Tooltip(tooltipTriggerEl, {'container':'body'});
+            });
+        }, 300);
     }
 
     /**

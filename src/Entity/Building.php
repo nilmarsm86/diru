@@ -1146,7 +1146,6 @@ class Building implements MeasurementDataInterface
                 }
             }
         }
-        dump($this->isFullyOccupied($original));
 
         return $this->notWallArea() || (false === $this->hasOriginalLocals()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied($original) || (false === $this->correctATPInFloors()));
     }

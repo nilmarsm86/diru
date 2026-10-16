@@ -6,7 +6,7 @@
 } %}
 
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
         {% if project.id is not null %}
             <span>&nbsp;({{ money(project.getPrice(), project.currency.code) }})</span>
@@ -16,7 +16,7 @@
             {% if project.id is not null %}
                 <div class="btn-group" role="group" aria-label="Regulaciones Urbanas">
                     <button
-                        class="btn text-decoration-none btn-sm btn-primary"
+                        class="btn text-decoration-none btn-sm btn-primary" data-bs-toggle="tooltip" title="Regulaciones Urbanas del proyecto"
                         {{ stimulusController('modal-content-loader', {
                             url: path('app_project_urban_regulation_index', {'project': project.id, 'state':'modal', 'modal':'modal-load'}),
                             id: 'modal-load',
@@ -41,9 +41,9 @@
                     </button>
                 </div>
 
-                <div class="btn-group" role="group" aria-label="Regulaciones Urbanas">
+                <div class="btn-group" role="group" aria-label="Obras del proyecto">
                     <a
-                        class="btn text-decoration-none btn-sm btn-primary"
+                        class="btn text-decoration-none btn-sm btn-primary" data-bs-toggle="tooltip" title="Obras del proyecto"
                         href="{{ path('app_building_project', {'project': project.id}) }}"
                     >
                         {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}

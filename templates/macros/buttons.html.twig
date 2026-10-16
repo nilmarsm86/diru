@@ -1,24 +1,24 @@
-{% macro tableActionButton(path, icon, label='', title='', dataAction='page#showFormContent', cssClass='btn-primary') %}
-    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
-       href="{{ path }}"
-       data-action="{{ dataAction }}"
-    >
-        {{ ux_icon(icon, {class:'bi'}) }}
-        {{ label }}
-    </a>
-{% endmacro %}
+{#{% macro tableActionButton(path, icon, label='', title='', dataAction='page#showFormContent', cssClass='btn-primary') %}#}
+{#    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"#}
+{#       href="{{ path }}"#}
+{#       data-action="{{ dataAction }}"#}
+{#    >#}
+{#        {{ ux_icon(icon, {class:'bi'}) }}#}
+{#        {{ label }}#}
+{#    </a>#}
+{#{% endmacro %}#}
 
-{% macro tableActionButton2(path, icon, label='', title='', dataAction='', dataLiveActionParam='', cssClass='btn-primary') %}
-    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"
-       href="{{ path }}"
-       data-action="{{ dataAction }}"
-       data-live-action-param="{{ dataLiveActionParam }}"
-       data-live-url-param="{{ path }}"
-    >
-        {{ ux_icon(icon, {class:'bi'}) }}
-        {{ label }}
-    </a>
-{% endmacro %}
+{#{% macro tableActionButton2(path, icon, label='', title='', dataAction='', dataLiveActionParam='', cssClass='btn-primary') %}#}
+{#    <a class="btn btn-sm {{ cssClass }}" title="{{ title }}"#}
+{#       href="{{ path }}"#}
+{#       data-action="{{ dataAction }}"#}
+{#       data-live-action-param="{{ dataLiveActionParam }}"#}
+{#       data-live-url-param="{{ path }}"#}
+{#    >#}
+{#        {{ ux_icon(icon, {class:'bi'}) }}#}
+{#        {{ label }}#}
+{#    </a>#}
+{#{% endmacro %}#}
 
 {% macro tableActionButton3(path, icon='', label='', title='', action='', cssClass='btn-primary', badge=false, extra='') %}
     <a class="btn btn-sm position-relative {{ cssClass }}" title="{{ title }}" data-bs-toggle="tooltip"

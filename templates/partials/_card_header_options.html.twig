@@ -1,4 +1,4 @@
-{% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton,tableActionButton2, tableActionButton3 %}
+{% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
 {% if state == 'detail' %}
     {% set state = app.request.query.get('state') ?? 'detail' %}
@@ -8,12 +8,12 @@
     {% if showButton is defined and showButton == true %}
         {% if state == 'form' %}
             {% if entity.id is not null %}
-                {{ tableActionButton(path(goTo), 'bi:plus-lg', label, title) }}
+                {{ tableActionButton3(path(goTo), 'bi:plus-lg', label, title) }}
             {% endif %}
         {% endif %}
 
         {% if state == 'detail' %}
-            {{ tableActionButton(path(goTo), 'bi:plus-lg', label, title) }}
+            {{ tableActionButton3(path(goTo), 'bi:plus-lg', label, title) }}
         {% endif %}
     {% else %}
         {% if state != 'modal' %}

@@ -1,5 +1,5 @@
 import './stimulus_bootstrap.js';
-
+import {Tooltip} from "bootstrap";
 
 
 // import './js/color-modes.js';
@@ -26,3 +26,16 @@ document.getElementById('icons_only')?.addEventListener('click', function (e) {
 });
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 customElements.define("backdrop-component", Backdrop);//register un webcomponent
+
+function tooltips(){
+    setTimeout(() => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
+            console.log('tooltip');
+            return new Tooltip(tooltipTriggerEl, {'container':'body'});
+        });
+    }, 500);
+}
+
+tooltips();
+

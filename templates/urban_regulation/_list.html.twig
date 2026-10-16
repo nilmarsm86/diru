@@ -5,7 +5,7 @@
     title: 'Listado de regulaciones urbanas',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
             {{ component('Card:Refresh', {
@@ -51,7 +51,7 @@
             {% endblock %}
 
             {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
 
                 {% for urban_regulation in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>

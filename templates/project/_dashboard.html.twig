@@ -6,7 +6,7 @@
 } %}
 
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3, tableHeaderButton, tableHeaderButtonDropdown %}
 
         {% if project.id is not null %}
             <span>&nbsp;({{ money(project.getPrice(), project.currency.code) }})</span>

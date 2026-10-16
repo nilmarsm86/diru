@@ -235,13 +235,17 @@ class LocalType extends AbstractType
         $floor = $subSystem->getFloor();
         $building = $floor?->getBuilding();
 
-        //        $landArea = (bool) ($options['reply'] ?? false)
-        //            ? ($building?->getLandArea() ?? 0.0)
-        //            : ($building?->getMaxArea() ?? 0.0);
+        $landArea = (bool) ($options['reply'] ?? false)
+            ? ($building?->getLandArea() ?? 0.0)
+            : ($building?->getMaxArea() ?? 0.0);
         $totalLocalsArea = $floor?->getTotalArea() ?? 0.0;
         //        $leftArea = $landArea - $totalLocalsArea;
         if ((bool) $building?->isNew()) {
-            $leftArea = (float) $building->getLand()?->getLandArea() - $totalLocalsArea;
+            if ($floor->isGroundFloor()) {
+                $leftArea = (float) $landArea - $totalLocalsArea;
+            } else {
+                $leftArea = (float) $building->getGroundFloor()?->getTotalArea() - $totalLocalsArea;
+            }
         } else {
             $leftArea = (float) $building?->getLand()?->getOccupiedArea() - $totalLocalsArea;
         }
@@ -253,7 +257,19 @@ class LocalType extends AbstractType
 
         // Si el local ya existe, devolvemos el área que él mismo ocupa
         if (null !== $local->getId()) {
-            $leftArea += $local->getArea() ?? 0.0;
+            if ((bool) $building?->isNew()) {
+                if ((bool) $building->getLand()?->isBlocked()) {
+                    $leftArea = $leftArea + ($local->getArea() ?? 0.0) - (float) $building->getLand()->getFreeArea();
+                } else {
+                    $leftArea = $leftArea + ($local->getArea() ?? 0.0);
+                }
+            } else {
+                $leftArea = $leftArea + ($local->getArea() ?? 0.0);
+            }
+        }
+
+        if (null === $local->getId()) {
+            return max(0.0, $floor?->getUnassignedArea());
         }
 
         return max(0.0, $leftArea);

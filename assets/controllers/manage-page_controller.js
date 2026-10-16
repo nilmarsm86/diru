@@ -82,7 +82,7 @@ export default class extends AbstractController {
         setTimeout(() => {
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
-                return new Tooltip(tooltipTriggerEl);
+                return new Tooltip(tooltipTriggerEl, {'container':'body'});
             });
         }, 500);
     }
@@ -110,6 +110,8 @@ export default class extends AbstractController {
     contentLoaded(event) {
         if (event.detail.container.id === this.formContainerTarget.id) {
             this.backdrop(this.backdropTarget, BACKDROP_HIDE);
+
+            this.tooltips();
         }
     }
 

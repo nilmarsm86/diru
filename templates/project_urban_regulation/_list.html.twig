@@ -6,7 +6,7 @@
         title: 'Listado de regulaciones urbanas',
     } %}
         {% block header %}
-            {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+            {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
             <div>
                 {{ tableActionButton3(path('app_project_urban_regulation_new', {'project' : project}), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new', {'project':project})})) }}

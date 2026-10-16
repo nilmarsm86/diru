@@ -5,7 +5,7 @@
     title: 'Listado de inversiones',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
             {{ tableActionButton3(path('app_investment_new'), 'bi:plus-lg', 'Nueva', 'Nueva inversión', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_investment_new')})) }}
@@ -28,7 +28,7 @@
             {% endblock %}
 
             {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
                 {% from 'macros/link.html.twig' import filterLink %}
 
                 {% for investment in paginator.getData() %}

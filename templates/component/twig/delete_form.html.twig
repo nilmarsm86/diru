@@ -6,10 +6,12 @@
         {{ attributes }}
 >
     <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
+    <div data-bs-toggle="tooltip" title="{{ title }}" style="display: inline">
     <button type="button" class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %}  {{ extra }} data-bs-toggle="modal" data-bs-target="#{{ path|replace({'/':'-'}) }}">
         {{ ux_icon(icon, {class:'bi'}) }}
         {{ label }}
     </button>
+    </div>
 
     {% component 'Modal:Confirm' with {
         title: 'Confirmar',

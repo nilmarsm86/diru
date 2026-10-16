@@ -14,7 +14,7 @@
         }) }}
     {% endif %}
 
-    <p><strong>Area libre del terreno:</strong> {{ this.l.getFreeArea() }}m<sup>2</sup></p>
+    <p><strong>Área Libre de Terreno (A.L.T):</strong> {{ this.l.getFreeArea() }}m<sup>2</sup></p>
 
     {{ form_start(form, {
         attr: {
@@ -57,7 +57,7 @@
                 style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
                 <summary class="collection">
                     <div class="row summary-btn-lis">
-                        <div class="col">Tiene área intervenida:</div>
+                        <div class="col">Área intervenida:</div>
                         <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                 style="visibility: {% if this.building.isNew() == true or this.building.isNew() is null %}hidden{% else %}visible{% endif %};">
                 <summary class="collection">
                     <div class="row summary-btn-lis">
-                        <div class="col">Tiene área sin intervenir:</div>
+                        <div class="col">Área sin intervenir:</div>
                         <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
                         </div>
                     </div>

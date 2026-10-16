@@ -1,17 +1,17 @@
-{% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton %}
+{% from 'macros/buttons.html.twig' import tableActionButton3, deleteFormButton %}
 
 {% if showButton is defined and showButton == true %}
     <div class="card-footer text-body-secondary">
         <div class="row">
             <div class="col-6">
                 {% if list.href is defined %}
-                    {{ tableActionButton(path(list.href, (list.data is defined) ? list.data : {}), (list.icon is defined) ? list.icon : 'bi:arrow-left-circle', list.label, list.title) }}
+                    {{ tableActionButton3(path(list.href, (list.data is defined) ? list.data : {}), (list.icon is defined) ? list.icon : 'bi:arrow-left-circle', list.label, list.title) }}
                 {% endif %}
             </div>
             <div class="col-6 text-end">
                 {% if state == 'detail' %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        {{ tableActionButton(path(edit.href, {'id': id}), 'fa:edit', edit.label, edit.title) }}
+                        {{ tableActionButton3(path(edit.href, {'id': id}), 'fa:edit', edit.label, edit.title) }}
                         {% if delete is defined and delete is not null %}
                             {{ component('DeleteForm', {
                                 path: path(delete.href, {'id': id}),

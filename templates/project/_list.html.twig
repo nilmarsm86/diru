@@ -5,7 +5,7 @@
     title: 'Listado de proyectos',
 } %}
     {% block header %}
-        {% from 'macros/buttons.html.twig' import tableActionButton2,tableActionButton3 %}
+        {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
             {{ component('Card:Refresh', {
@@ -67,15 +67,15 @@
             {% endblock %}
 
             {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import tableActionButton, deleteFormButton, deleteFormButton2, tableActionButton2, tableActionButton3 %}
+                {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
 
                 {% for project in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
-                        <td>
-                            <a href="{{ path('app_project_edit', {'id': project.id}) }}">{{ project.name }}</a>
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ path('app_building_project', {'project':project.id}) }}">
+<tr {{ stimulusController('delete-form-container') }}>
+    <td>
+        <a href="{{ path('app_project_edit', {'id': project.id}) }}">{{ project.name }}</a>
+    </td>
+    <td class="text-center">
+        <a href="{{ path('app_building_project', {'project':project.id}) }}">
                                 <span
                                     class="badge rounded-pill bg-success"
                                     title="Obras del proyecto"
@@ -85,81 +85,83 @@
                                 {{ project.getBuildingsAmount() }}
                                 <span class="visually-hidden">Obras</span>
                                 </span>
-                            </a>
-                        </td>
-                        {% if app.request.query.get('type') == '' %}
-                            <td>{{ project.type.getLabelFrom(project.type) }}</td>
-                        {% endif %}
-                        {% if app.request.query.get('state') == '' %}
-                            <td>{{ project.state.getLabelFrom(project.state) }}</td>
-                        {% endif %}
-                        <td>
-                            <a data-bs-toggle="modal" data-bs-target="#detail-investment"
-                               href="#" style="text-decoration: none" {{ stimulusController('detail-link-modal', {
-                                url: path('app_investment_show', {id:project.investment.id, state:'modal'}),
-                                container: '#detail-investment .modal-body'
-                            }) }}
-                            >
-                                {{ project.investment }}
-                            </a>
-                        </td>
-                        <td>{{ money(project.getPrice(), project.currency.code) }}</td>
-                        <td class="text-end">
-                            <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Obras del proyecto">
-                                <button type="button"
-                                        class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-link"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false" title="Obras del proyecto"
-                                >
-                                    {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
-                                </button>
-                                <ul class="dropdown-menu" data-bs-theme="light">
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="{{ path('app_building_new', {'project': project.id}) }}"
-                                           title="Nueva obra">
-                                            <small>Nueva Obra</small>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="{{ path('app_building_project', {'project': project.id}) }}"
-                                           title="Todas las obras">
-                                            <small>Todas</small>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    {% for building in project.buildings %}
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="{{ path('app_building_edit', {'id': building.id, 'project': project.id}) }}"
-                                               title="{{ building.name }}">
-                                                <small>{{ building.shortName() }}</small>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})}), 'btn-link') }}
-                            {#                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }} #}
-                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', '', 'btn-link') }}
+        </a>
+    </td>
+    {% if app.request.query.get('type') == '' %}
+        <td>{{ project.type.getLabelFrom(project.type) }}</td>
+    {% endif %}
+    {% if app.request.query.get('state') == '' %}
+        <td>{{ project.state.getLabelFrom(project.state) }}</td>
+    {% endif %}
+    <td>
+        <a data-bs-toggle="modal" data-bs-target="#detail-investment"
+           href="#" style="text-decoration: none" {{ stimulusController('detail-link-modal', {
+            url: path('app_investment_show', {id:project.investment.id, state:'modal'}),
+            container: '#detail-investment .modal-body'
+        }) }}
+        >
+            {{ project.investment }}
+        </a>
+    </td>
+    <td>{{ money(project.getPrice(), project.currency.code) }}</td>
+    <td class="text-end">
+        <div class="dropdown d-inline-block" data-bs-toggle="tooltip" title="Obras del proyecto">
+            <button type="button"
+                    class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-link"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false" title="Obras del proyecto"
+            >
+                {{ ux_icon('streamline-pixel:construction-building-real-eastate', {'class':'bi'}) }}
+            </button>
+            <ul class="dropdown-menu" data-bs-theme="light">
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_building_new', {'project': project.id}) }}"
+                       title="Nueva obra">
+                        <small>Nueva Obra</small>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ path('app_building_project', {'project': project.id}) }}"
+                       title="Todas las obras">
+                        <small>Todas</small>
+                    </a>
+                </li>
+                {% if project.buildings|length > 0 %}
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                {% endif %}
+                {% for building in project.buildings %}
+                    <li>
+                        <a class="dropdown-item"
+                           href="{{ path('app_building_edit', {'id': building.id, 'project': project.id}) }}"
+                           title="{{ building.name }}">
+                            <small>{{ building.shortName() }}</small>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {{ tableActionButton3(path('app_project_show', {'id': project.id}), 'bi:eye', '', 'Detalle del proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_show', {'id': project.id})}), 'btn-link') }}
+        {#                            {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_project_edit', {'id': project.id})})) }} #}
+        {{ tableActionButton3(path('app_project_edit', {'id': project.id}), 'fa:edit', '', 'Editar proyecto', '', 'btn-link') }}
 
-                            {{ component('DeleteForm', {
-                                path: path('app_project_delete', {'id': project.id}),
-                                confirm: 'Está seguro que desea eliminar el proyecto?',
-                                token: 'delete' ~ project.id,
-                                title: 'Eliminar proyecto',
-                                icon: 'bi:trash',
-                                cssClass: 'btn-link text-danger'
-                            }) }}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5">No se encontraron proyectos.</td>
-                    </tr>
+        {{ component('DeleteForm', {
+            path: path('app_project_delete', {'id': project.id}),
+            confirm: 'Está seguro que desea eliminar el proyecto?',
+            token: 'delete' ~ project.id,
+            title: 'Eliminar proyecto',
+            icon: 'bi:trash',
+            cssClass: 'btn-link text-danger'
+        }) }}
+    </td>
+</tr>
+{% else %}
+    <tr>
+        <td colspan="5">No se encontraron proyectos.</td>
+    </tr>
                 {% endfor %}
             {% endblock %}
 

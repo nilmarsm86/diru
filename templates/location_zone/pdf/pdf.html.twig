@@ -4,7 +4,7 @@
 
 {% block content %}
     <div>
-        <strong>Organizaciones:</strong> Organismos
+        <strong>Ubicaciones:</strong> Zonas de localizacion
         {% if filter %}
             <br>
             <strong>Filtrado por:</strong> {{ filter }}
@@ -13,7 +13,7 @@
     <br>
     <table>
         {% block columns %}{% endblock %}
-        {% for organization in paginator.getData() %}
+        {% for location_zone in paginator.getData() %}
             {% block data %}{% endblock %}
         {% else %}
             <tr>

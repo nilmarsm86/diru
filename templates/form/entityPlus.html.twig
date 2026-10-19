@@ -88,12 +88,22 @@
             {% if detail == true %}
                 <button
                         class="btn btn_detail btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                        type="button" title="Detalle del elemento" data-bs-toggle="tooltip"
+                        type="button" title="Detalle del elemento"
                         {{ stimulusTarget('type/entity-plus', 'detail') }}
+                         data-bs-target="#detail"
                 >
                     {{ ux_icon(detail_icon, {class:'bi', style:'color:white'}) }}
                 </button>
+
+                {% component 'Modal:Alert' with {
+                    title: 'Alerta',
+                    id: 'detail',
+                    text: 'Debe seleccionar al menos un valor para ver el detalle del mismo.',
+                    href: '',
+                } %}
+                {% endcomponent %}
             {% endif %}
+
 
             {% if add == true %}
                 <button

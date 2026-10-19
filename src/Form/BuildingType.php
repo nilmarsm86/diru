@@ -152,20 +152,32 @@ class BuildingType extends AbstractType
                 'add' => true,
                 'add_title' => 'Agregar estimado de proyecto y preparación técnica',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_ptp_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+                'add_url' => $this->router->generate('app_ptp_estimate_new', [
+                    'building' => $building->getId(),
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                ]),
             ];
 
             $estimatedValueUrbanizationAddConfig = [
                 'add' => true,
                 'add_title' => 'Agregar estimado de urbanización',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_urbanization_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+                'add_url' => $this->router->generate('app_urbanization_estimate_new', [
+                    'building' => $building->getId(),
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                ]),
             ];
             $estimatedJustValueAddConfig = [
                 'add' => true,
                 'add_title' => 'Agregar valor estimado ajustado',
                 'add_id' => 'modal-load',
-                'add_url' => $this->router->generate('app_just_value_estimate_new', ['building' => (null !== $building) ? $building->getId() : 0, 'modal' => 'modal-load', 'screen' => $options['screen']]),
+                'add_url' => $this->router->generate('app_just_value_estimate_new', [
+                    'building' => $building->getId(),
+                    'modal' => 'modal-load',
+                    'screen' => $options['screen'],
+                ]),
             ];
         }
 
@@ -334,7 +346,7 @@ class BuildingType extends AbstractType
                     'class' => 'disabled-field',
                 ],
                 'help' => 'Suma automática de los diferentes conceptos de gastos de proyecto y preparación técnica.',
-                'data' => (null !== $building && null !== $building->getId()) ? $building->getProjectTechnicalPreparationEstimateTotalPrice() : $options['ptpEstimate'],
+                'data' => (null !== $building->getId()) ? $building->getProjectTechnicalPreparationEstimateTotalPrice() : $options['ptpEstimate'],
                 'required' => false,
                 'currency' => $currency,
                 'input' => 'integer',
@@ -348,7 +360,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                    'building' => (null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $projectPriceTechnicalPreparationAddConfig)
             ->add('estimatedValueUrbanization', MoneyPlusType::class, [
@@ -369,7 +381,7 @@ class BuildingType extends AbstractType
                 'row_attr' => [
                     'class' => 'disabled-field',
                 ],
-                'data' => (null !== $building && null !== $building->getId()) ? $this->buildingValuationService->getEstimatedUrbanizationAndNetworkConnection($building) : $options['urbanizationEstimate'],
+                'data' => (null !== $building->getId()) ? $this->buildingValuationService->getEstimatedUrbanizationAndNetworkConnection($building) : $options['urbanizationEstimate'],
                 'required' => false,
                 'currency' => $currency,
                 'input' => 'integer',
@@ -383,7 +395,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                    'building' => (null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedValueUrbanizationAddConfig)
             ->add('estimatedJustValue', MoneyPlusType::class, [
@@ -402,7 +414,7 @@ class BuildingType extends AbstractType
                 'row_attr' => [
                     'class' => 'disabled-field',
                 ],
-                'data' => (null !== $building && null !== $building->getId()) ? $building->getJustValueEstimateTotalPrice() : $options['justValueEstimate'],
+                'data' => (null !== $building->getId()) ? $building->getJustValueEstimateTotalPrice() : $options['justValueEstimate'],
                 'required' => false,
                 'currency' => $currency,
                 'input' => 'integer',
@@ -416,7 +428,7 @@ class BuildingType extends AbstractType
                     'modal' => 'modal-load',
                     'screen' => $options['screen'],
                     'amount' => 100,
-                    'building' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                    'building' => (null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ] + $estimatedJustValueAddConfig)
             ->add('coefficient', NumberType::class, [
@@ -447,7 +459,7 @@ class BuildingType extends AbstractType
                 'list_id' => 'desglose',
                 'list_title' => 'Desglose de ejecución',
                 'list_url' => $this->router->generate('app_building_report_separate_presupposition_execute', [
-                    'id' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                    'id' => (null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ])
             ->add('landNetworkConnections', LiveCollectionType::class, [
@@ -539,7 +551,7 @@ class BuildingType extends AbstractType
                 'list_id' => 'desglose',
                 'list_title' => 'Desglose de valor real',
                 'list_url' => $this->router->generate('app_building_report_separate_presupposition_real', [
-                    'id' => (null !== $building && null !== $building->getId()) ? $building->getId() : 0,
+                    'id' => (null !== $building->getId()) ? $building->getId() : 0,
                 ]),
             ])
             ->add('draftsman', EntityType::class, [

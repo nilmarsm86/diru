@@ -348,6 +348,10 @@ final class ProjectForm extends AbstractController
             return $this->router->generate('app_land_new', ['modal' => 'modal-load', 'building' => $building->getId()]);
         }
 
-        return $this->router->generate('app_land_edit', ['modal' => 'modal-load', 'building' => $building->getId(), 'id' => $building->getLand()->getId()]);
+        return $this->router->generate('app_land_edit', [
+            'modal' => 'modal-load',
+            'building' => $building->getId(),
+            'id' => $building->getLand()->getId(),
+        ]);
     }
 }

@@ -1,0 +1,27 @@
+<div
+    class="modal fade"
+    id="{{ id }}"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    {{ attributes }}
+    {{ stimulusController('twig/modal/modal') }}
+>
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel" style="color:white">{{ title }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" style="text-align: left;color:white">
+                <p>{{ text|raw }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-primary" data-bs-dismiss="modal" href="{{ href }}"
+                   style="padding-left: 12px;padding-right: 12px">Aceptar</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -82,9 +82,12 @@ export default class extends AbstractController {
                 event.preventDefault();
 
                 if (!this.selectTarget.value) {
-                    alert('Debe seleccionar al menos un valor para el detalle del mismo.');//TODO: dar la posibilidad de personalizar
+                    this.detailTarget.dataset.bsToggle = 'modal';
+                    //alert('Debe seleccionar al menos un valor para el detalle del mismo.');//TODO: dar la posibilidad de personalizar
                     return;
                 }
+
+                this.detailTarget.dataset.bsToggle = 'tooltip';
 
                 const modalBody = document.querySelector('#'+this.detailIdValue+' .modal-body-content');
                 this.addChildsNodes(this.detailPlaceholderValue, modalBody);

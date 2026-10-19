@@ -31,7 +31,6 @@ function tooltips(){
     setTimeout(() => {
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
-            console.log('tooltip');
             return new Tooltip(tooltipTriggerEl, {'container':'body'});
         });
     }, 500);

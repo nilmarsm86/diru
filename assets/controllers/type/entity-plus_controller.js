@@ -56,7 +56,7 @@ export default class extends AbstractController {
                 event.preventDefault();
 
                 if (!this.selectTarget.value) {
-                    alert('Debe seleccionar al menos un valor a modificar.');//TODO: dar la posibilidad de personalizar
+                    Modal.getOrCreateInstance(this.modifyTarget.dataset.bsTarget).toggle();
                     return;
                 }
 
@@ -82,12 +82,9 @@ export default class extends AbstractController {
                 event.preventDefault();
 
                 if (!this.selectTarget.value) {
-                    this.detailTarget.dataset.bsToggle = 'modal';
-                    //alert('Debe seleccionar al menos un valor para el detalle del mismo.');//TODO: dar la posibilidad de personalizar
+                    Modal.getOrCreateInstance(this.detailTarget.dataset.bsTarget).toggle();
                     return;
                 }
-
-                this.detailTarget.dataset.bsToggle = 'tooltip';
 
                 const modalBody = document.querySelector('#'+this.detailIdValue+' .modal-body-content');
                 this.addChildsNodes(this.detailPlaceholderValue, modalBody);
@@ -130,14 +127,14 @@ export default class extends AbstractController {
 
     }
 
-    tooltips(){
-        setTimeout(() => {
-            const tooltipTriggerList = this.element.querySelectorAll('[data-bs-toggle="tooltip"]');
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
-                return new Tooltip(tooltipTriggerEl, {'container':'body'});
-            });
-        }, 300);
-    }
+    // tooltips(){
+    //     setTimeout(() => {
+    //         const tooltipTriggerList = this.element.querySelectorAll('[data-bs-toggle="tooltip"]');
+    //         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
+    //             return new Tooltip(tooltipTriggerEl, {'container':'body'});
+    //         });
+    //     }, 300);
+    // }
 
     /**
      * When add form show

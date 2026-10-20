@@ -25,6 +25,9 @@ class ConstructiveSystemType extends AbstractType
         $builder
             ->add('name', null, [
                 'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del sistema constructivo',
+                ],
             ])
         ;
     }

@@ -89,6 +89,10 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     {
         $msg = 'Si desea podría cambiarle el estado al proyecto a: Cancelado.';
 
+        if ($entity->hasBuildings()) {
+            throw new \Exception('El proyecto tiene obras asociadas, debe eliminarlas. '.$msg, 1);
+        }
+
         if (ProjectState::Canceled !== $entity->getState()) {
             throw new \Exception($msg, 1);
         }
@@ -96,10 +100,6 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         //        if (!is_null($entity->getClient())) {
         //            throw new \Exception('El proyecto aun tiene un cliente asociado. '.$msg, 1);
         //        }
-
-        if ($entity->hasBuildings()) {
-            throw new \Exception('El proyecto tiene obras asociadas, debe eliminarlas. '.$msg, 1);
-        }
 
         $this->getEntityManager()->remove($entity);
 

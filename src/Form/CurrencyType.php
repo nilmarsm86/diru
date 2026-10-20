@@ -22,9 +22,15 @@ class CurrencyType extends AbstractType
         $builder
             ->add('code', null, [
                 'label' => 'Código:',
+                'attr' => [
+                    'placeholder' => 'Código ISO de la moneda',
+                ],
             ])
             ->add('name', null, [
                 'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre de la moneda',
+                ],
             ])
         ;
     }

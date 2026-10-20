@@ -23,7 +23,7 @@ final class ExcelImportType extends AbstractType
     {
         $builder
             ->add('excel', FileType::class, [
-                'label' => 'Archivo de salva (*.xls, *.xlsx, *.ods, *.fods)',
+                'label' => 'Archivo de excel:',
                 'mapped' => false,
                 'required' => true,
                 'attr' => [
@@ -39,7 +39,7 @@ final class ExcelImportType extends AbstractType
                             'application/vnd.oasis.opendocument.spreadsheet',
                             'application/vnd.oasis.opendocument.spreadsheet-flat-xml',
                         ],
-                        mimeTypesMessage: 'Debes seleccionar un archivo de excel válido.',
+                        mimeTypesMessage: 'Debe seleccionar un archivo de excel válido.',
                     ),
                 ],
                 'help' => 'Archivos *.xls, *.xlsx, *.ods, *.odsx',

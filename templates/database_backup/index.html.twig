@@ -12,11 +12,12 @@
     <div class="row">
         <div class="col">
             {% component 'Card:Card' with {
-                cssClass: 'text-bg-light mb-3'
+                cssClass: 'text-bg-light mb-3',
+                title: 'Exportar',
             } %}
                 {% block body %}
-                    <h6 class="card-subtitle mb-2">Exportar</h6>
-                    <p>Realiza una salva del sistema.</p>
+{#                    <h6 class="card-subtitle mb-2">Exportar</h6>#}
+                    <p>Realice una salva completa del sistema.</p>
                     <form action="{{ path('database_backup_export') }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token('export-db') }}">
                         <button type="submit" class="btn btn-primary">
@@ -30,13 +31,13 @@
 
         <div class="col">
             {% component 'Card:Card' with {
-                title: 'Proyectos',
+                title: 'Importar',
             } %}
                 {% block body %}
-                    <h6 class="card-subtitle mb-2">Importar</h6>
+{#                    <h6 class="card-subtitle mb-2">Importar</h6>#}
                     <p class="text-danger">
-                        <strong>Advertencia:</strong> se reemplazará la base de datos actual.
-                        Se guardará un backup automático junto al archivo original (<code>.backup</code>).
+                        <strong>Advertencia:</strong> se reemplazará toda la información actual del sistema.
+                        Se guardará un backup automático en caso de ser necesaria recuperar la información.
                     </p>
                     {{ form_start(import_form, { attr: { enctype: 'multipart/form-data' }, action: path('database_backup_import') }) }}
                     {{ form_row(import_form.database) }}

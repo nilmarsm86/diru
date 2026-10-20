@@ -22,9 +22,15 @@ class MeasurementUnitType extends AbstractType
         $builder
             ->add('code', null, [
                 'label' => 'Código:',
+                'attr' => [
+                    'placeholder' => 'Código de la unidad de medida',
+                ],
             ])
             ->add('name', null, [
                 'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre de la unidad de medida',
+                ],
             ])
         ;
     }

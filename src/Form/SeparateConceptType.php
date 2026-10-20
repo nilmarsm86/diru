@@ -39,12 +39,21 @@ class SeparateConceptType extends AbstractType
             ->add('number', NumberType::class, [
                 'html5' => true,
                 'label' => 'Número:',
+                'attr' => [
+                    'placeholder' => 'Numeración',
+                ],
             ])
             ->add('formula', null, [
                 'label' => 'Fórmula:',
+                'attr' => [
+                    'placeholder' => 'Fórmula del concepto',
+                ],
             ])
             ->add('name', null, [
                 'label' => 'Nombre:',
+                'attr' => [
+                    'placeholder' => 'Nombre del concepto',
+                ],
             ])
             ->add('parent', EntityType::class, [
                 'placeholder' => 'Seleccione',

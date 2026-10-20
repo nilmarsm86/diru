@@ -30,7 +30,7 @@ final class IteUploadController extends AbstractController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            $this->addFlash('danger', 'Formulario inválido. Revisa el archivo seleccionado.');
+            $this->addFlash('danger', 'Debe seleccionar un archivo de excel válido.');
 
             return $this->redirectToRoute('ite_upload_index');
         }

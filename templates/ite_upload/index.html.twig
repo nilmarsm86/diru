@@ -15,7 +15,7 @@
                 title: 'Importar',
             } %}
                 {% block body %}
-                    <h6 class="card-subtitle mb-2">Importar</h6>
+{#                    <h6 class="card-subtitle mb-2">Importar</h6>#}
                     {{ form_start(import_form, { attr: { enctype: 'multipart/form-data' }, action: path('ite_upload_import') }) }}
                     {{ form_row(import_form.excel) }}
                     {{ component('button:submit', {

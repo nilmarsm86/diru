@@ -8,7 +8,7 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
         <div>
 {#            {{ tableActionButton3(path('app_sub_system_index', {'floor': floor.id, 'reply': true}), '', 'Subsistemas', 'Subsistemas', '', 'btn-info') }}#}
-            {{ tableActionButton3(path('app_sub_system_report_classification', {'floor':floor.id}), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+            {{ tableActionButton3(path('app_sub_system_report_classification', {'floor':floor.id}), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
         </div>
     {% endblock %}
 

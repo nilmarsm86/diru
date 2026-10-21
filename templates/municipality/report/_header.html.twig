@@ -34,5 +34,5 @@
     </div>
 
     {{ tableActionButton3(path('app_municipality_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo municipio', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_municipality_new')})) }}
-    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
 </div>

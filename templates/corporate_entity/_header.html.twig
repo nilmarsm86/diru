@@ -45,5 +45,5 @@
     {% endif %}
 
     {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad corporativa', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
-    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
 </div>

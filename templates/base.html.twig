@@ -6,9 +6,9 @@
     <meta name="description" content="Sistema para el Diseño con Indicadores y Regulaciones Urbanas">
     <meta name="author" content="Nilmar Sanchez Muguercia, Enrique Capote Passanaout">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" type="image/png" sizes="16x16" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" type="image/png" sizes="16x16"/>
+    <link rel="manifest" href="/manifest.json"/>
 
     {% block stylesheets %}{% endblock %}
 
@@ -23,45 +23,45 @@
     {% endif %}
 </head>
 <body>
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-        <a class="btn btn-bd-primary py-2 d-flex align-items-center"
-                id="bd-theme"
-                href="#top"
-                aria-label="Go up">
-            {{ ux_icon('gg:arrow-up-o', {'class':'bi'}) }}
-        </a>
-    </div>
-    {% block body %}{% endblock %}
-    {% if app.environment == 'prod' %}
-        <script>
-            document.getElementsByTagName('body')[0].addEventListener('keydown', function (event) {
-                if (
-                    event.key === 'F12' ||
-                    (event.ctrlKey && event.key === 'r') ||
-                    event.key === 'F5' ||
-                    (event.ctrlKey && event.key === 's') ||
-                    (event.ctrlKey && event.key === 'p') ||
-                    (event.ctrlKey && event.key === 'u')) {
-                    event.preventDefault();
+<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <a class="btn btn-bd-primary py-2 d-flex align-items-center"
+       id="bd-theme"
+       href="#top"
+       aria-label="Go up">
+        {{ ux_icon('gg:arrow-up-o', {'class':'bi'}) }}
+    </a>
+</div>
+{% block body %}{% endblock %}
+{% if app.environment == 'prod' %}
+    <script>
+        document.getElementsByTagName('body')[0].addEventListener('keydown', function (event) {
+            if (
+                event.key === 'F12' ||
+                (event.ctrlKey && event.key === 'r') ||
+                event.key === 'F5' ||
+                (event.ctrlKey && event.key === 's') ||
+                (event.ctrlKey && event.key === 'p') ||
+                (event.ctrlKey && event.key === 'u')) {
+                event.preventDefault();
+            }
+        });
+
+        if (window.top !== window.self) {
+            // F5 / Ctrl+R: recargar solo esta página, no el splash de Neutralino
+            addEventListener("keydown", (e) => {
+                if (e.key === "F5" || (e.ctrlKey && e.key.toLowerCase() === "r")) {
+                    e.preventDefault();
+                    location.reload();
                 }
             });
-			
-			if (window.top !== window.self) {
-    // F5 / Ctrl+R: recargar solo esta página, no el splash de Neutralino
-    addEventListener("keydown", (e) => {
-      if (e.key === "F5" || (e.ctrlKey && e.key.toLowerCase() === "r")) {
-        e.preventDefault();
-        location.reload();
-      }
-    });
-    // Caso: el foco está fuera del iframe, el splash nos pide recargar
-    addEventListener("message", (e) => {
-      if (e.source === window.parent && e.data?.type === "diru:reload") {
-        location.reload();
-      }
-    });
-  }
-        </script>
-    {% endif %}
+            // Caso: el foco está fuera del iframe, el splash nos pide recargar
+            addEventListener("message", (e) => {
+                if (e.source === window.parent && e.data?.type === "diru:reload") {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+{% endif %}
 </body>
 </html>

@@ -63,7 +63,7 @@ final class DatabaseBackupController extends AbstractController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            $this->addFlash('danger', 'Formulario inválido. Revisa el archivo seleccionado.');
+            $this->addFlash('danger', 'Revise la configuración importada.');
 
             return $this->redirectToRoute('database_backup_index');
         }
@@ -72,7 +72,7 @@ final class DatabaseBackupController extends AbstractController
             $backup = $form->get('database')->getData();
             assert($backup instanceof UploadedFile);
             $this->backupService->replaceWithUpload($backup);
-            $this->addFlash('success', 'Base de datos importada correctamente.');
+            $this->addFlash('success', 'Configuración importada correctamente.');
         } catch (DatabaseBackupException $e) {
             $this->addFlash('danger', $e->getMessage());
         }

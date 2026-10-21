@@ -77,7 +77,7 @@
 
             {{ tableActionButton3(path('app_sub_system_index', {'floor':sub_system.floor.id, 'reply':reply}), 'ix:building-block-filled', (reply) ? 'Subsistemas replicados' : 'Subsistemas', (reply) ? 'Listado de subsistemas replicados' : 'Listado de subsistemas') }}
             {{ tableActionButton3(path('app_building_edit', {'id':sub_system.floor.building.id, 'project': sub_system.floor.building.project.id}), 'streamline-pixel:construction-building-real-eastate', 'Ir a la obra', 'Ir a la obra') }}
-            {{ tableActionButton3(path('app_local_print', {'subSystem':sub_system.id, 'reply': reply} + app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+            {{ tableActionButton3(path('app_local_print', {'subSystem':sub_system.id, 'reply': reply} + app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
         </div>
     {% endblock %}
 

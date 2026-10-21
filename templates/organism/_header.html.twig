@@ -40,5 +40,5 @@
         </ul>
     </div>
     {{ tableActionButton3(path('app_organism_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo organismo', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_organism_new')})) }}
-    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
 </div>

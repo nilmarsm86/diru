@@ -25,5 +25,5 @@
     {% else %}
         {% set path = path('app_building_new') %}
     {% endif %}
-    {{ tableActionButton3(path(print_link, {'project':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+    {{ tableActionButton3(path(print_link, {'project':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
 </div>

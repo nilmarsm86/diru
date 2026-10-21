@@ -99,7 +99,7 @@
                 showButton: (showButton is defined and showButton == true) ? true : false
             }) }}
             {% if project.id is not null %}
-                {{ tableActionButton3(path('app_project_print', {'id':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', 'target="_blank"', 'btn-info') }}
+                {{ tableActionButton3(path('app_project_print', {'id':project.id} + app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
             {% endif %}
         </div>
 

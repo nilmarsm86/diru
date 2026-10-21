@@ -226,6 +226,7 @@ class LocalType extends AbstractType
      * @param array<mixed> $options
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function calculateAvailableArea(Local $local, array $options): float
     {
@@ -269,6 +270,10 @@ class LocalType extends AbstractType
             if ((bool) $building?->isNew()) {
                 if ((bool) $building->getLand()?->isBlocked()) {
                     $leftArea = $leftArea + ($local->getArea() ?? 0.0) - (float) $building->getLand()->getFreeArea();
+                    // TODO: revisar en todas las formas
+                    if ($leftArea < $local->getArea() && $floor->getUnassignedArea() > 0) {
+                        $leftArea = $local->getArea() + $floor->getUnassignedArea();
+                    }
                 } else {
                     $leftArea = $leftArea + ($local->getArea() ?? 0.0);
                 }

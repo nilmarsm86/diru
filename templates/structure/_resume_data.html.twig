@@ -27,7 +27,13 @@
         {{ structure.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
     </li>
     <li>
-        <strong>Libre:</strong>
-        {{ structure.building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+        {% if reply %}
+            <strong>Libre con posibilidad de ocupar:</strong>
+            {{ structure.building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+        {% else %}
+            <strong>Libre:</strong>
+            {{ structure.building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+        {% endif %}
+
     </li>
 </ul>

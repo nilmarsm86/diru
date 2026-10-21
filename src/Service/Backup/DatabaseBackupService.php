@@ -38,7 +38,7 @@ final class DatabaseBackupService
         );
 
         if (!$this->filesystem->exists($snapshotPath)) {
-            throw new DatabaseBackupException('No se pudo generar el snapshot de la base de datos.');
+            throw new DatabaseBackupException('No se pudo generar el snapshot de la configuración actual.');
         }
 
         return $snapshotPath;
@@ -88,7 +88,7 @@ final class DatabaseBackupService
         $params = $this->connection->getParams();
 
         if ('' === $params['path']) {
-            throw new DatabaseBackupException('La conexión activa no es SQLite basada en archivo.');
+            throw new DatabaseBackupException('La configuración activa no es correcta.');
         }
 
         return $params['path'];
@@ -131,11 +131,11 @@ final class DatabaseBackupService
             $stmt = $pdo->query('PRAGMA integrity_check');
             $result = (false !== $stmt) ? $stmt->fetchColumn() : '';
         } catch (\PDOException $e) {
-            throw new DatabaseBackupException('El archivo no se puede abrir como SQLite: '.$e->getMessage());
+            throw new DatabaseBackupException('La configuración no puede ser verificada: '.$e->getMessage());
         }
 
         if ('ok' !== $result) {
-            throw new DatabaseBackupException('La base de datos subida está corrupta: '.$result);
+            throw new DatabaseBackupException('La configuración subida está corrupta: '.$result);
         }
     }
 

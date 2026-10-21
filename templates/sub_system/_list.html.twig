@@ -300,11 +300,15 @@
                         {% if floor.isFullyOccupied() %}
                             {{ floor.getTotalArea()|number_format(2) }}
                         {% else %}
-                            <span class="text-danger" data-bs-toggle="tooltip"
-                                  data-bs-title="Queda espacio sin asignar." data-bs-custom-class="danger-tooltip"
-                                  style="cursor: pointer">
+                            {% if reply %}
                                 {{ floor.getTotalArea()|number_format(2) }}
-                            </span>
+                            {% else %}
+                                <span class="text-danger" data-bs-toggle="tooltip"
+                                      data-bs-title="Queda espacio sin asignar." data-bs-custom-class="danger-tooltip"
+                                      style="cursor: pointer">
+                                    {{ floor.getTotalArea()|number_format(2) }}
+                                </span>
+                            {% endif %}
                         {% endif %}
 
                     </th>

@@ -51,8 +51,8 @@
     <div class="row mb-3">
         <div class="col-sm-12">
             {{ component('button:submit', {
-                icon: (entity.id is null) ? 'fa:save' : 'fa:edit',
-                label: (entity.id is null) ? 'Agregar' : 'Modificar',
+                icon: (this.indicator.id is null) ? 'fa:save' : 'fa:edit',
+                label: (this.indicator.id is null) ? 'Agregar' : 'Modificar',
                 component: this
             }) }}
         </div>

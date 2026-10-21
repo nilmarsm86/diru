@@ -237,16 +237,19 @@ class Floor implements MeasurementDataInterface
         //        }
 
         //        if ($this->isGroundFloor()) {
-        if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) >= 0) {
-            return true;
-        }
-
         //
         //            return $this->getTotalArea() >= $this->getBuilding()?->getMaxArea();
         //        }
         //        $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;
         //
         //        return $this->getTotalArea() >= $groundFloorTotalArea;
+        if ($this->isReplica()) {
+            return $this->getBuilding()?->getLand()?->getLandArea() === $this->getTotalArea();
+        }
+        if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) >= 0) {
+            return true;
+        }
+
         return $this->getBuilding()?->getLand()?->getOccupiedArea() === $this->getTotalArea();
     }
 

@@ -35,7 +35,11 @@
                 {% endif %}
             </li>
             <li>
-                <strong>Terreno Libre:</strong>
+                {% if reply %}
+                    <strong>Terreno Libre con posibilidad de ocupar:</strong>
+                {% else %}
+                    <strong>Terreno Libre:</strong>
+                {% endif %}
                 {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
             </li>
             <li {% if (building.getUnassignedArea() > 0) %}style="color:red"{% endif %}>
@@ -139,13 +143,16 @@
                     <th>Nombre</th>
                     <th></th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util<br>(m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V<br>(m<sup>2</sup>)
+                    </th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de vacío">Á. Vacío<br>(m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área Total de Planta">Á.T.P<br>(m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Altura">Alt.<br>(m)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Volumen">Vol.<br>(m<sup>3</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Espacio sin asignar">Sin asignar<br>(m<sup>2</sup>)</th>
-                    <th data-bs-toggle="tooltip" data-bs-title="Espacio libre">Libre<br>(m<sup>2</sup>)</th>
+                    <th data-bs-toggle="tooltip"
+                        data-bs-title="Espacio libre">{% if reply %}A ocupar{% else %}Libre{% endif %}<br>(m<sup>2</sup>)
+                    </th>
                     {% if reply or building.isNew() %}
                         <th>Importe<br>({{ building.getProjectCurrency() }})</th>
                     {% endif %}
@@ -237,11 +244,15 @@
                                     {{ floor.getTotalArea()|number_format(2) }}
                                 {% endif %}
                             {% else %}
-                                <span class="text-danger" data-bs-toggle="tooltip"
-                                      data-bs-title="{{ msgUnassignedSpace }}"
-                                      data-bs-custom-class="danger-tooltip" style="cursor: pointer">
+                                {% if reply %}
+                                    {{ floor.getTotalArea()|number_format(2) }}
+                                {% else %}
+                                    <span class="text-danger" data-bs-toggle="tooltip"
+                                          data-bs-title="{{ msgUnassignedSpace }}"
+                                          data-bs-custom-class="danger-tooltip" style="cursor: pointer">
                                 {{ floor.getTotalArea()|number_format(2) }}
                                                                 </span>
+                                {% endif %}
                             {% endif %}
                         </td>
 
@@ -254,38 +265,47 @@
                         {# Area Sin Asignar #}
                         <td>
                             {% if floor.isFullyOccupied() %}
-{#                                {% if floor.isGroundFloor() %}#}
-                                    {{ floor.getUnassignedArea()|number_format(2) }}
-{#                                {% else %}#}
-{#                                    {{ floor.getUnassignedArea()|number_format(2) }}#}
-{#                                {% endif %}#}
+                                {#                                {% if floor.isGroundFloor() %} #}
+                                {{ floor.getUnassignedArea()|number_format(2) }}
+                                {#                                {% else %} #}
+                                {#                                    {{ floor.getUnassignedArea()|number_format(2) }} #}
+                                {#                                {% endif %} #}
                             {% else %}
-{#                                {% if floor.isGroundFloor() %}#}
+                                {#                                {% if floor.isGroundFloor() %} #}
+                                {% if reply %}
+                                    {{ floor.getUnassignedArea()|number_format(2) }}
+                                {% else %}
                                     <span class="text-danger" data-bs-toggle="tooltip"
                                           data-bs-title="{{ msgUnassignedSpace }}"
                                           data-bs-custom-class="danger-tooltip" style="cursor: pointer">
-                                    {{ floor.getUnassignedArea()|number_format(2) }}
-                                </span>
-{#                                {% else %}#}
-{#                                    {{ floor.getUnassignedArea()|number_format(2) }}#}
-{#                                {% endif %}#}
+                                        {{ floor.getUnassignedArea()|number_format(2) }}
+                                    </span>
+                                {% endif %}
+
+                                {#                                {% else %} #}
+                                {#                                    {{ floor.getUnassignedArea()|number_format(2) }} #}
+                                {#                                {% endif %} #}
                             {% endif %}
                         </td>
 
                         {# Area Libre #}
                         <td>
                             {% if floor.isFullyOccupied() %}
-{#                                {% if floor.isGroundFloor() %}#}
-                                    {{ floor.getFreeArea()|number_format(2) }}
-{#                                {% else %}#}
-{#                                    {{ floor.getFreeArea()|number_format(2) }}#}
-{#                                {% endif %}#}
+                                {#                                {% if floor.isGroundFloor() %} #}
+                                {{ floor.getFreeArea()|number_format(2) }}
+                                {#                                {% else %} #}
+                                {#                                    {{ floor.getFreeArea()|number_format(2) }} #}
+                                {#                                {% endif %} #}
                             {% else %}
                                 {% if floor.isGroundFloor() %}
                                     {#                                    <span class="text-warning" data-bs-toggle="tooltip" #}
                                     {#                                          data-bs-title="Queda espacio libre." #}
                                     {#                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
-                                    {{ floor.getFreeArea()|number_format(2) }}
+                                    {% if reply %}
+                                        {{ floor.building.land.getFreeArea()|number_format(2) }}
+                                    {% else %}
+                                        {{ floor.getFreeArea()|number_format(2) }}
+                                    {% endif %}
                                     {#                                </span> #}
                                 {% else %}
                                     {{ floor.getFreeArea()|number_format(2) }}

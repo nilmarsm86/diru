@@ -224,6 +224,8 @@ class LocalType extends AbstractType
 
     /**
      * @param array<mixed> $options
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function calculateAvailableArea(Local $local, array $options): float
     {
@@ -247,11 +249,14 @@ class LocalType extends AbstractType
                 $leftArea = (float) $building->getGroundFloor()?->getTotalArea() - $totalLocalsArea;
             }
         } else {
-            if ((bool) $floor?->isReplica()) {
-                $leftArea = (float) $building?->getLand()?->getLandArea() - $totalLocalsArea;
-            } else {
-                $leftArea = (float) $building?->getLand()?->getOccupiedArea() - $totalLocalsArea;
-            }
+            //            if ((bool) $floor?->isReplica()) {
+            //                $leftArea = (float) $building?->getLand()?->getLandArea() - $totalLocalsArea;
+            //            } else {
+            //                $leftArea = (float) $building?->getLand()?->getOccupiedArea() - $totalLocalsArea;
+            //            }
+
+            $landData = ((bool) $floor?->isReplica()) ? (float) $building?->getLand()?->getLandArea() : (float) $building?->getLand()?->getOccupiedArea();
+            $leftArea = $landData - $totalLocalsArea;
         }
 
         // Ajuste cuando es un local nuevo y el sub-sistema no cuenta muro

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Building;
 use App\Entity\Enums\BuildingState;
 use App\Entity\Floor;
+use App\Entity\Land;
 use App\Entity\Role;
 use App\Form\ExtraFloorForReplyType;
 use App\Service\Building\BuildingResetService;
@@ -61,6 +62,13 @@ final class BuildingStateController extends AbstractController
                         $building->createAutomaticFloor('Planta '.$i, false, $i, true, $entityManager);
                     }
                     $entityManager->persist($building);
+
+                    // Cuando se replica se bloquea
+                    $land = $building->getLand();
+                    assert($land instanceof Land);
+                    $land->setIsBlocked(true);
+                    $entityManager->persist($land);
+
                     $entityManager->flush();
                 }
                 $this->addFlash('success', 'Se ha replicado la obra');

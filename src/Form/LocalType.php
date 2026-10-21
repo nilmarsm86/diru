@@ -247,7 +247,11 @@ class LocalType extends AbstractType
                 $leftArea = (float) $building->getGroundFloor()?->getTotalArea() - $totalLocalsArea;
             }
         } else {
-            $leftArea = (float) $building?->getLand()?->getOccupiedArea() - $totalLocalsArea;
+            if ((bool) $floor?->isReplica()) {
+                $leftArea = (float) $building?->getLand()?->getLandArea() - $totalLocalsArea;
+            } else {
+                $leftArea = (float) $building?->getLand()?->getOccupiedArea() - $totalLocalsArea;
+            }
         }
 
         // Ajuste cuando es un local nuevo y el sub-sistema no cuenta muro
@@ -269,7 +273,9 @@ class LocalType extends AbstractType
         }
 
         if (null === $local->getId()) {
-            return max(0.0, $floor?->getUnassignedArea());
+            if (false === (bool) $floor?->isReplica()) {
+                return max(0.0, $floor?->getUnassignedArea());
+            }
         }
 
         return max(0.0, $leftArea);

@@ -15,7 +15,6 @@
     }) %}
 {% endif %}
 
-
 <div class="row mb-3">
     <div class="col">
         {{ include('structure/_structure_data.html.twig', {'structure' : building}) }}
@@ -31,23 +30,27 @@
                 {% if building.isNew() == true %}
                     {{ building.getATP()|number_format(2) }}m<sup>2</sup>
                 {% else %}
-                    {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
+                    {% if reply %}
+                        {{ building.getATP()|number_format(2) }}m<sup>2</sup>
+                    {% else %}
+                        {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
+                    {% endif %}
                 {% endif %}
             </li>
             <li>
                 {% if reply %}
                     <strong>Terreno Libre con posibilidad de ocupar:</strong>
+                    {{ (building.land.getLandArea() - building.getATP())|number_format(2) }}m<sup>2</sup>
                 {% else %}
                     <strong>Terreno Libre:</strong>
+                    {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
                 {% endif %}
-                {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
             </li>
             <li {% if (building.getUnassignedArea() > 0) %}style="color:red"{% endif %}>
                 <strong>Sin Asignar:</strong>
                 {{ building.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
             </li>
         </ul>
-
     </div>
 </div>
 
@@ -288,7 +291,7 @@
                             {% endif %}
                         </td>
 
-                        {# Area Libre #}
+                        {# Area Libre o A ocupar #}
                         <td>
                             {% if floor.isFullyOccupied() %}
                                 {#                                {% if floor.isGroundFloor() %} #}
@@ -302,7 +305,7 @@
                                     {#                                          data-bs-title="Queda espacio libre." #}
                                     {#                                          data-bs-custom-class="warning-tooltip" style="cursor: pointer"> #}
                                     {% if reply %}
-                                        {{ floor.building.land.getFreeArea()|number_format(2) }}
+                                        {{ (floor.building.land.getLandArea() - floor.getTotalArea())|number_format(2) }}
                                     {% else %}
                                         {{ floor.getFreeArea()|number_format(2) }}
                                     {% endif %}
@@ -394,7 +397,14 @@
                     <th>{{ building.getMaxHeight(not reply)|number_format(2) }}</th>
                     <th>{{ building.getVolume(not reply)|number_format(2) }}</th>
                     <th>{{ building.getUnassignedArea(not reply)|number_format(2) }}</th>
-                    <th>{{ building.getFreeArea(not reply)|number_format(2) }}</th>
+                    <th>
+                        {% if reply %}
+{#                            {{ building.getFreeArea(reply)|number_format(2) }}#}
+                            {{ (building.land.getLandArea() - building.getATP())|number_format(2) }}
+                        {% else %}
+                            {{ building.getFreeArea(not reply)|number_format(2) }}
+                        {% endif %}
+                    </th>
                     {% if reply or building.isNew() %}
                         <th>{{ money(building.getPrice()) }}</th>
                     {% endif %}

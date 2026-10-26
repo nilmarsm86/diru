@@ -14,6 +14,8 @@ import 'bootstrap';
 import Backdrop from "./components/backdrop.js";
 
 import './styles/app.css';
+// import './js/pdf.min.js';
+// import './js/pdf.worker.min.js';
 
 document.getElementById('icons_only')?.addEventListener('click', function (e) {
     const sidebar = document.querySelector('.sidebar');
@@ -32,6 +34,12 @@ function tooltips(){
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
             return new Tooltip(tooltipTriggerEl, {'container':'body'});
+        });
+
+        [...tooltipTriggerList].map(tooltipTriggerEl => {
+            tooltipTriggerEl.addEventListener('click', () => {
+                Tooltip.getInstance(tooltipTriggerEl).hide();
+            });
         });
     }, 500);
 }

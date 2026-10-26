@@ -1,6 +1,11 @@
+{% if isModalPdf is not defined %}
+    {% set isModalPdf = false  %}
+{% endif %}
+
 {% component 'Modal:Modal' with {
     title: 'Titulo',
-    id: 'modal-load'
+    id: 'modal-load',
+    isModalPdf: isModalPdf
 } %}
     {% block body %}
         Cargando...

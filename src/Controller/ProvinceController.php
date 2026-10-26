@@ -127,6 +127,23 @@ final class ProvinceController extends AbstractController
         return $this->renderPdf($filter, $paginator, $pdfAssetManager, $pdfGenerator, 'province/pdf/print.html.twig', 'Listado de provincias', 'provincias');
     }
 
+    //    #[Route('/modal-pdf', name: 'app_province_modalpdf', methods: ['GET'])]
+    //    public function modalPdf(Request $request): Response
+    //    {
+    //        return new Response('<iframe
+    //            id="pdfIframe"
+    //            sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-downloads allow-popups"
+    //            referrerpolicy="same-origin"
+    //            src="'.urldecode((string) $request->get('url', '')).'"
+    //            width="798"
+    //            height="500"
+    //            style="border:none;">
+    //        </iframe>', 200, [
+    //            'X-Frame-Options' => 'SAMEORIGIN',
+    //            'Content-Security-Policy' => "frame-ancestors 'self'"
+    //        ]);
+    //    }
+
     #[Route('/amount_project_report', name: 'app_province_amount_project_report', methods: ['GET'])]
     public function amountProjectReport(Request $request, RouterInterface $router, ProvinceRepository $provinceRepository, UbicationReportService $ubicationReport): Response
     {

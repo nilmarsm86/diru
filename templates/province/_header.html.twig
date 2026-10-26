@@ -34,5 +34,18 @@
         </ul>
     </div>
     {{ tableActionButton3(path('app_province_new'), 'bi:plus-lg', 'Nueva', 'Nueva provincia', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_province_new')})) }}
-    {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
+
+{#    {% set action = stimulusController('modal-content-loader', {#}
+{#        url: path('app_province_modalpdf', {#}
+{#            'modal':'modal-load',#}
+{#            'state':'modal',#}
+{#            'url': url('app_province_print')|url_encode#}
+{#        }+app.request.query.all),#}
+{#        id: 'modal-load',#}
+{#        placeholder: 'Cargando...',#}
+{#        title: 'Listado de provincias',#}
+{#    }) ~ stimulusTarget('modal-content-loader', 'button') %}#}
+    {{ tableActionButton3(path(print_link), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}
 </div>
+
+{#{{ include('partials/modal/_modal_load.html.twig', {'isModalPdf':true}) }}#}

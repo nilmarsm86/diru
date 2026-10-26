@@ -8,6 +8,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_enterprise_client_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
             {{ tableActionButton3(path('app_enterprise_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_enterprise_client_new')})) }}
         </div>
     {% endblock %}
@@ -34,22 +38,26 @@
                 {% for client in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
-                            <a data-bs-toggle="modal" data-bs-target="#detail_entity"
-                               href="#" {{ stimulusController('detail-link-modal', {
-                                url: path('app_corporate_entity_show', {id:client.corporateEntity.id, state:'modal'}),
-                                container: '#detail_entity .modal-body'
-                            }) }}
+                            <a href="#"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_corporate_entity_show', {'id':client.corporateEntity.id, 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Entidad corporativa',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
                             >
                                 {{ client.corporateEntity }}
                             </a>
                         </td>
                         <td>
                             {% if client.representative %}
-                                <a data-bs-toggle="modal" data-bs-target="#detail_person"
-                                   href="#" {{ stimulusController('detail-link-modal', {
-                                    url: path('app_representative_show', {id:client.representative.id, state:'modal'}),
-                                    container: '#detail_person .modal-body'
-                                }) }}
+                                <a href="#"
+                                    {{ stimulusController('modal-content-loader', {
+                                        url: path('app_representative_show', {'id':client.representative.id, 'modal':'modal-load', 'state':'modal'}),
+                                        id: 'modal-load',
+                                        placeholder: 'Cargando...',
+                                        title: 'Representante',
+                                    }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
                                 >
                                     {{ client.representative.getFullName() }}
                                 </a>
@@ -86,24 +94,26 @@
 
         {% endcomponent %}
 
-        {% component 'Modal:Modal' with {
-            title: 'Detalle del representante',
-            id: 'detail_person',
+{#        {% component 'Modal:Modal' with {#}
+{#            title: 'Detalle del representante',#}
+{#            id: 'detail_person',#}
 
-        } %}
-            {% block body %}
-                Cargando datos del representante...
-            {% endblock %}
-        {% endcomponent %}
+{#        } %}#}
+{#            {% block body %}#}
+{#                Cargando datos del representante...#}
+{#            {% endblock %}#}
+{#        {% endcomponent %}#}
 
-        {% component 'Modal:Modal' with {
-            title: 'Detalle de la entidad',
-            id: 'detail_entity',
-        } %}
-            {% block body %}
-                Cargando datos de la entidad corporativa...
-            {% endblock %}
-        {% endcomponent %}
+{#        {% component 'Modal:Modal' with {#}
+{#            title: 'Detalle de la entidad',#}
+{#            id: 'detail_entity',#}
+{#        } %}#}
+{#            {% block body %}#}
+{#                Cargando datos de la entidad corporativa...#}
+{#            {% endblock %}#}
+{#        {% endcomponent %}#}
 
     {% endblock %}
 {% endcomponent %}
+
+{#{{ include('partials/modal/_modal_load.html.twig') }}#}

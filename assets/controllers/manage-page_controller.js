@@ -84,6 +84,12 @@ export default class extends AbstractController {
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
                 return new Tooltip(tooltipTriggerEl, {'container':'body'});
             });
+
+            [...tooltipTriggerList].map(tooltipTriggerEl => {
+                tooltipTriggerEl.addEventListener('click', () => {
+                    Tooltip.getInstance(tooltipTriggerEl).hide();
+                });
+            });
         }, 500);
     }
 

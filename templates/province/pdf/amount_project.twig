@@ -10,8 +10,8 @@
 
 {% block data %}
     <tr>
-        {{ td(app.request, 0, 'column', province.name) }}
-        {{ td(app.request, 1, 'column', province.projects) }}
-        {{ td(app.request, 2, 'column', province.buildings) }}
+        {{ td(0, 'column', province.name) }}
+        {{ td(1, 'column', province.projects) }}
+        {{ td(2, 'column', province.buildings) }}
     </tr>
 {% endblock %}

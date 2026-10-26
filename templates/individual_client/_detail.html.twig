@@ -55,7 +55,14 @@
                 <tr>
                     <th>Provincia:</th>
                     <td>
-                        <a href="{{ path('app_province_show', {'id': individual_client.municipality.province.id }) }}" target="_blank">
+                        <a href="#"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_province_show', {'id':individual_client.municipality.province.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Detalles de la ciudad',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
                             {{ individual_client.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -63,7 +70,14 @@
                 <tr>
                     <th>Municipio:</th>
                     <td>
-                        <a href="{{ path('app_municipality_show', {'id': individual_client.municipality.id }) }}" target="_blank">
+                        <a href="#"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_municipality_show', {'id':individual_client.municipality.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Detalles de la ciudad',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
                             {{ individual_client.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -101,6 +115,8 @@
     {% endblock %}
 
 {% endcomponent %}
+
+{#{{ include('partials/modal/_modal_load.html.twig') }}#}
 
 
 

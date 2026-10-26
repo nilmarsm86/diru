@@ -82,7 +82,14 @@
                 <tr>
                     <th>Inversión:</th>
                     <td>
-                        <a href="{{ path('app_investment_show', {'id': project.investment.id }) }}" target="_blank">
+                        <a href="#"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_investment_show', {'id':project.investment.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Inversión del proyecto',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
                             {{ project.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -91,7 +98,14 @@
                     <th>Contrato:</th>
                     <td>
                         {% if project.contract is not null %}
-                            <a href="{{ path('app_contract_show', {'id': project.contract.id }) }}" target="_blank">
+                            <a href="#"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_contract_show', {'id':project.contract.id, 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Contrato del proyecto',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
                                 {{ project.contract.code }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
                         {% else %}
@@ -112,7 +126,14 @@
                         <ul class="px-0 list-unstyled">
                             {% for planner in project.getPlanners() %}
                                 <li>
-                                    <a href="{{ path('app_person_show', {'id': planner.id}) }}" target="_blank">
+                                    <a href="#"
+                                        {{ stimulusController('modal-content-loader', {
+                                            url: path('app_person_show', {'id':planner.id, 'modal':'modal-load', 'state':'modal'}),
+                                            id: 'modal-load',
+                                            placeholder: 'Cargando...',
+                                            title: 'Planificadores',
+                                        }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                                    >
                                         {{ planner.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                                     </a>
                                 </li>
@@ -143,4 +164,4 @@
 
 {% endcomponent %}
 
-
+{#{{ include('partials/modal/_modal_load.html.twig') }}#}

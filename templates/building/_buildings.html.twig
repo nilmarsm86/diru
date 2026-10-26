@@ -4,7 +4,14 @@
         <ul class="px-0 list-unstyled">
             {% for building in entity.buildings %}
                 <li>
-                    <a href="{{ path('app_building_show', {'id': building.id}) }}" target="_blank">
+                    <a href="#"
+                        {{ stimulusController('modal-content-loader', {
+                            url: path('app_building_show', {'id':building.id, 'modal':'modal-load', 'state':'modal'}),
+                            id: 'modal-load',
+                            placeholder: 'Cargando...',
+                            title: 'Obra',
+                        }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                    >
                         {{ building.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                     </a>
                 </li>

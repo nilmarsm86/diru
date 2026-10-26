@@ -1,4 +1,4 @@
-{% extends 'location_zone/pdf/pdf.html.twig' %}
+{% extends 'corporate_entity/pdf/pdf.html.twig' %}
 
 {% block columns %}
     <tr>
@@ -13,11 +13,11 @@
 
 {% block data %}
     <tr>
-        {{ td(0, 'column', organization.name) }}
-        {{ td(1, 'column', organization.client) }}
-        {{ td(2, 'column', organization.constructor) }}
-        {{ td(3, 'column', organization.client_constructor) }}
-        {{ td(4, 'column', organization.draftman) }}
-        {{ td(5, 'column', organization.total) }}
+        {{ td(0, 'column', corporate_entity.name) }}
+        {{ td(1, 'column', corporate_entity.client) }}
+        {{ td(2, 'column', corporate_entity.constructor) }}
+        {{ td(3, 'column', corporate_entity.client_constructor) }}
+        {{ td(4, 'column', corporate_entity.draftman) }}
+        {{ td(5, 'column', corporate_entity.total) }}
     </tr>
 {% endblock %}

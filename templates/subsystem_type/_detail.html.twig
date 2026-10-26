@@ -30,9 +30,7 @@
                         <ul class="px-0 list-unstyled">
                             {% for subsystemTypeSubsystemSubType in subsystem_type.subsystemTypeSubsystemSubTypes %}
                                 <li>
-                                    <a href="" target="_blank">
-                                        {{ subsystemTypeSubsystemSubType.subsystemSubType }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                                    </a>
+                                    {{ subsystemTypeSubsystemSubType.subsystemSubType }}
                                 </li>
                             {% else %}
                                 <li class="text-danger">No tiene sub tipos asociados</li>

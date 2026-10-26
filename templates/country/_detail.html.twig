@@ -30,9 +30,12 @@
                         <ul class="px-0 list-unstyled">
                             {% for city in country.cities %}
                                 <li>
-                                    <a href="{{ path('app_city_show', {'id': city.id}) }}" target="_blank">
-                                        {{ city.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                                    </a>
+                                    <a href="#" {{ stimulusController('modal-content-loader', {
+                                        url: path('app_city_show', {'id':city.id, 'modal':'modal-load', 'state':'modal'}),
+                                        id: 'modal-load',
+                                        placeholder: 'Cargando...',
+                                        title: 'Detalles de la ciudad',
+                                    }) }} {{ stimulusTarget('modal-content-loader', 'button') }}>{{ city.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}</a>
                                 </li>
                             {% else %}
                                 <li class="text-danger">No tiene ciudades asociadas</li>
@@ -59,3 +62,4 @@
 
 {% endcomponent %}
 
+{#{{ include('partials/modal/_modal_load.html.twig') }}#}

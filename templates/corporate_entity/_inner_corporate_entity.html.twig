@@ -35,7 +35,14 @@
         <th>Provincia:</th>
         <td>
             {# TODO: refactoraizar #}
-            <a href="{{ path('app_province_show', {'id': entity.municipality.province.id }) }}">
+            <a href="#"
+                {{ stimulusController('modal-content-loader', {
+                    url: path('app_province_show', {'id':entity.municipality.province.id, 'modal':'modal-load', 'state':'modal'}),
+                    id: 'modal-load',
+                    placeholder: 'Cargando...',
+                    title: 'Provincia',
+                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+            >
                 {{ entity.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
             </a>
         </td>
@@ -44,7 +51,14 @@
         <th>Municipio:</th>
         <td>
             {# TODO: refactoraizar #}
-            <a href="{{ path('app_municipality_show', {'id': entity.municipality.id }) }}">
+            <a href="#"
+                {{ stimulusController('modal-content-loader', {
+                    url: path('app_municipality_show', {'id':entity.municipality.id, 'modal':'modal-load', 'state':'modal'}),
+                    id: 'modal-load',
+                    placeholder: 'Cargando...',
+                    title: 'Municipio',
+                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+            >
                 {{ entity.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
             </a>
         </td>

@@ -23,7 +23,7 @@ final class DatabaseImportType extends AbstractType
     {
         $builder
             ->add('database', FileType::class, [
-                'label' => 'Archivo de salva (*.sqlite, *.db)',
+                'label' => 'Archivo de salva (*.sqlite, *.db):',
                 'mapped' => false,
                 'required' => true,
                 'attr' => [

@@ -24,6 +24,8 @@ trait PdfResponseTrait
             'Content-Length' => strlen($pdfContent),
             'X-Content-Type-Options' => 'nosniff',
             'Cache-Control' => 'private, must-revalidate',
+            //            'X-Frame-Options' => 'SAMEORIGIN',
+            //            'Content-Security-Policy' => "frame-ancestors 'self'"
         ]);
     }
 

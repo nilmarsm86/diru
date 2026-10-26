@@ -52,10 +52,17 @@
                     <td>{{ money(building.getTotalApprovedValue(), building.getProjectCurrency()) }}</td>
                 </tr>
                 <tr>
-                    <th>Constructora:</th>
+                    <th>Entidad Constructora:</th>
                     <td>
                         {% if building.getActiveConstructorCorporateEntity() %}
-                            <a href="{{ path('app_corporate_entity_show', {'id': building.getActiveConstructorCorporateEntityId() }) }}" target="_blank">
+                            <a href="#"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_corporate_entity_show', {'id':building.getActiveConstructorCorporateEntityId(), 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Constructora de la obra',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
                                 {{ building.getActiveConstructorCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
                         {% else%}
@@ -64,10 +71,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Proyectista:</th>
+                    <th>Entidad Proyectista:</th>
                     <td>
                         {% if building.getActiveDraftmanCorporateEntity() %}
-                            <a href="{{ path('app_corporate_entity_show', {'id': building.getActiveDraftmanCorporateEntityId() }) }}" target="_blank">
+                            <a href="#"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_corporate_entity_show', {'id':building.getActiveDraftmanCorporateEntityId(), 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Proyectista de la obra',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
                                 {{ building.getActiveDraftmanCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
                         {% else%}
@@ -78,7 +92,14 @@
                 <tr>
                     <th>Proyecto:</th>
                     <td>
-                        <a href="{{ path('app_project_show', {'id': building.project.id }) }}" target="_blank">
+                        <a href="#"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_project_show', {'id':building.project.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Proyecto al cual pertenece',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
                             {{ building.project.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -86,7 +107,14 @@
                 <tr>
                     <th>Inversión:</th>
                     <td>
-                        <a href="{{ path('app_investment_show', {'id': building.project.investment.id }) }}" target="_blank">
+                        <a href="#"
+                            {{ stimulusController('modal-content-loader', {
+                                url: path('app_investment_show', {'id':building.project.investment.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Inversión',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                        >
                             {{ building.project.investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -98,7 +126,14 @@
                         <ul class="px-0 list-unstyled">
                             {% for draftsman in building.getDraftsmans() %}
                                 <li>
-                                    <a href="{{ path('app_person_show', {'id': draftsman.id}) }}" target="_blank">
+                                    <a href="#"
+                                        {{ stimulusController('modal-content-loader', {
+                                            url: path('app_person_show', {'id':draftsman.id, 'modal':'modal-load', 'state':'modal'}),
+                                            id: 'modal-load',
+                                            placeholder: 'Cargando...',
+                                            title: 'Proyectista',
+                                        }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                                    >
                                         {{ draftsman.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                                     </a>
                                 </li>
@@ -127,6 +162,6 @@
 
 {% endcomponent %}
 
-{{ include('partials/modal/_modal_load.html.twig') }}
+{#{{ include('partials/modal/_modal_load.html.twig') }}#}
 
 

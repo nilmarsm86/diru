@@ -35,6 +35,8 @@
         {{ include('layout/footer.html.twig') }}
     </div>
 
+    {{ include('partials/modal/_modal_load.html.twig') }}
+
     {% component 'Modal:Modal' with {
         title: 'Crear nuevo proyecto',
         id: 'add-project'

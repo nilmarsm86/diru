@@ -166,10 +166,29 @@ class Floor implements MeasurementDataInterface
         //
         //        //        return (($isNew) ? $landArea : $occupiedArea) - $this->getTotalArea();
         if ($this->isGroundFloor()) {
-            return (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
+            $result = (($isNew) ? $landArea : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
+            if ($result < 0) {
+                return 0;
+            }
+
+            return $result;
         }
 
-        return (($isNew) ? $groundFloorTotalArea : $landOccupiedArea) - $this->getTotalArea();
+        if ((bool) $this->building?->hasReply()) {
+            $result = (($isNew) ? $groundFloorTotalArea : $groundFloorTotalArea) - $this->getTotalArea();
+            if ($result < 0) {
+                return 0;
+            }
+
+            return $result;
+        }
+        $result = (($isNew) ? $groundFloorTotalArea : $landOccupiedArea) - $this->getTotalArea();
+        if ($result < 0) {
+            return 0;
+        }
+
+        return $result;
+
         //        return (($isNew) ? ($landArea) : ($this->getBuilding()->getLand()?->getOccupiedArea() ?? 0)) - $this->getTotalArea();
     }
 
@@ -243,9 +262,11 @@ class Floor implements MeasurementDataInterface
         //        $groundFloorTotalArea = $this->getBuilding()?->getGroundFloor()?->getTotalArea() ?? 0;
         //
         //        return $this->getTotalArea() >= $groundFloorTotalArea;
-        if ($this->isReplica()) {
+
+        if ($this->isReplica() || $this->isNewInReply()) {
             return $this->getBuilding()?->getLand()?->getLandArea() === $this->getTotalArea();
         }
+
         if (0 === (int) $this->getUnassignedArea($original) && $this->getFreeArea($original) >= 0) {
             return true;
         }
@@ -488,12 +509,36 @@ class Floor implements MeasurementDataInterface
 
     public function hasErrors(): bool
     {
-        $share = (true === $this->notWallArea()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
-        if ($this->isOriginal()) {
-            return $share || false === $this->hasOriginalLocals();
+        if ($this->notWallArea()) {
+            return true;
         }
 
-        return $share || false === $this->hasReplyLocals() || false === $this->allLocalsHasConstructiveAction();
+        if (!$this->allLocalsAreClassified()) {
+            return true;
+        }
+
+        if (!$this->isFullyOccupied()) {
+            return true;
+        }
+
+        //        $share = (true === $this->notWallArea()) || (false === $this->allLocalsAreClassified()) || (false === $this->isFullyOccupied());
+        if ($this->isOriginal()) {
+            //            return $share || false === $this->hasOriginalLocals();
+            if (!$this->hasOriginalLocals()) {
+                return true;
+            }
+        }
+
+        //        return $share || false === $this->hasReplyLocals() || false === $this->allLocalsHasConstructiveAction();
+        if (!$this->hasReplyLocals()) {
+            return true;
+        }
+
+        if (!$this->allLocalsHasConstructiveAction()) {
+            return true;
+        }
+
+        return false;
     }
 
     public function hasFreeArea(): bool

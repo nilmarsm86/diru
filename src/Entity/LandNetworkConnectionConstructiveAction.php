@@ -28,7 +28,7 @@ class LandNetworkConnectionConstructiveAction
     #[Assert\PositiveOrZero(message: 'El valor debe ser positivo')]
     #[Assert\Expression(
         'this.validPrice()',
-        message: 'El precio para esta acción constructiva debe ser mayor que 0.',
+        message: 'El precio para esta acción constructiva debe ser mayor que 0.00.',
         negate: false
     )]
     private int $price = 0;

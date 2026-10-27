@@ -37,10 +37,23 @@
     {% endif %}
 
     {% if ce.logo %}
-        <img src="{{ asset(constant('App\\Entity\\CorporateEntity::LOGO')~ce.logo) }}"
-             alt="{{ ce.name }}"
-             width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
-             fetchpriority="low">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#img-load"><img
+                src="{{ asset(constant('App\\Entity\\CorporateEntity::LOGO')~ce.logo) }}"
+                alt="{{ ce.name }}"
+                width="61" height="50" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+                fetchpriority="low"></a>
+
+        {% component 'Modal:Modal' with {
+            title: 'Titulo',
+            id: 'img-load'
+        } %}
+            {% block body %}
+                <img src="{{ asset(constant('App\\Entity\\CorporateEntity::LOGO')~ce.logo) }}"
+                     alt="{{ ce.name }}"
+                     width="750" height="500" class="d-inline-block align-text-top rounded me-2" loading="lazy"
+                     fetchpriority="low">
+            {% endblock %}
+        {% endcomponent %}
     {% endif %}
 
     <div class="row mb-3 mt-3">

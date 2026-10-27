@@ -88,7 +88,7 @@
             {% if detail == true %}
                 <button
                         class="btn btn_detail btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                        type="button" title="Detalle del elemento"
+                        type="button" title="{{ form.vars.detail_title }}"
                         {{ stimulusTarget('type/entity-plus', 'detail') }}
                          data-bs-target="#{{ form.vars.id }}_detail" data-bs-toggle="tooltip"
                 >
@@ -107,7 +107,7 @@
             {% if add == true %}
                 <button
                         class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                        type="button" title="Agregar elemento" data-bs-toggle="tooltip"
+                        type="button" title="{{ form.vars.add_title }}" data-bs-toggle="tooltip"
                         {{ stimulusTarget('type/entity-plus', 'add') }}
                 >
                     {{ ux_icon(add_icon, {class:'bi', style:'color:white'}) }}
@@ -117,7 +117,7 @@
             {% if modify == true %}
                 <button
                     class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                    type="button" title="Modificar elemento" data-bs-target="#{{ form.vars.id }}_modify" data-bs-toggle="tooltip"
+                    type="button" title="{{ form.vars.modify_title }}" data-bs-target="#{{ form.vars.id }}_modify" data-bs-toggle="tooltip"
                     {{ stimulusTarget('type/entity-plus', 'modify') }}
                 >
                     {{ ux_icon(modify_icon, {class:'bi', style:'color:white'}) }}

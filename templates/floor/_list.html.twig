@@ -355,7 +355,7 @@
                             </div>
 
                             {% set completeGround = (groundFloor.hasErrors()) ? "style=opacity:0.2 data-bs-custom-class=danger-tooltip" : "" %}
-                            {% if floor.isGroundFloor %}
+                            {% if floor.isGroundFloor() %}
                                 {% set completeGround = "" %}
                             {% endif %}
                             {% set tooltip = (completeGround == "") ? ((reply) ? ((floor.isNewInReply()) ? 'Subsistemas nuevos' : 'Subsistemas replicados') : 'Subsistemas') : 'Debe completar la información de la planta baja para poder editar este planta.' %}

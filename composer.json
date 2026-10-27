@@ -115,7 +115,6 @@
             "@lint_config",
             "@php-cs-fixer",
             "@phpstan",
-            "@lsp",
             "@phpmd"
         ]
     },

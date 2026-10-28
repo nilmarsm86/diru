@@ -43,7 +43,7 @@ class JustValueEstimateRepository extends ServiceEntityRepository implements Fil
             ->where('jve.building = :building')
             ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('jve.concept', 'ASC')->getQuery();
+        $query = $builder->orderBy('jve.concept', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

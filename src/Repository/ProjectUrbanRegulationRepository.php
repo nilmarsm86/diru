@@ -40,7 +40,7 @@ class ProjectUrbanRegulationRepository extends ServiceEntityRepository implement
         $builder->join('pur.urbanRegulation', 'ur');
         $builder->andWhere('pur.project  = :project');
         $builder->setParameter('project', $project->getId());
-        $query = $builder->orderBy('pur.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('pur.id', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

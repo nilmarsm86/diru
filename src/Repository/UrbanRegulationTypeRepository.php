@@ -40,7 +40,7 @@ class UrbanRegulationTypeRepository extends ServiceEntityRepository implements F
     {
         $builder = $this->createQueryBuilder('urt');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('urt.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('urt.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

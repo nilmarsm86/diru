@@ -46,7 +46,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
     {
         $builder = $this->createQueryBuilder('p');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('p.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('p.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -93,7 +93,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = pr.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('p.id')->orderBy('p.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('p.id')->orderBy('p.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -116,7 +116,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'c.id = ec.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('p.id')->orderBy('p.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('p.id')->orderBy('p.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

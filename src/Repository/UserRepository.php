@@ -65,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $builder->andWhere('u.username <> :superadmin')
             ->setParameter(':superadmin', 'superadmin');
 
-        $query = $builder->orderBy('u.id', 'ASC')
+        $query = $builder->orderBy('u.id', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

@@ -43,7 +43,7 @@ class ProjectTechnicalPreparationEstimateRepository extends ServiceEntityReposit
             ->where('ptpe.building = :building')
             ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('ptpe.concept', 'ASC')->getQuery();
+        $query = $builder->orderBy('ptpe.concept', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

@@ -51,7 +51,7 @@ class InvestmentRepository extends ServiceEntityRepository implements FilterInte
             ->innerJoin('i.municipality', 'mun')
             ->leftJoin('mun.province', 'pro');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('i.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('i.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

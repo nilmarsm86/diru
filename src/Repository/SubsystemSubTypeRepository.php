@@ -48,7 +48,7 @@ class SubsystemSubTypeRepository extends ServiceEntityRepository implements Filt
                     ->select(['ssst', 'sst'])
                     ->leftJoin('ssst.subsystemTypeSubsystemSubTypes', 'sst');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ssst.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('ssst.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

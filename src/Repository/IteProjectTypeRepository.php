@@ -32,7 +32,7 @@ class IteProjectTypeRepository extends ServiceEntityRepository implements Filter
     //        return $this->createQueryBuilder('i')
     //            ->andWhere('i.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
+    //            ->orderBy('i.id', \SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -65,7 +65,7 @@ class IteProjectTypeRepository extends ServiceEntityRepository implements Filter
     {
         $builder = $this->createQueryBuilder('ipt');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ipt.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('ipt.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

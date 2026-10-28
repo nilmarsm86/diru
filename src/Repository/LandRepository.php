@@ -31,7 +31,7 @@ class LandRepository extends ServiceEntityRepository implements FilterInterface
     {
         $builder = $this->createQueryBuilder('l')->select(['l']);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('l.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('l.id', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

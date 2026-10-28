@@ -32,7 +32,7 @@ class IteSourceRepository extends ServiceEntityRepository implements FilterInter
     //        return $this->createQueryBuilder('i')
     //            ->andWhere('i.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
+    //            ->orderBy('i.id', \SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -65,7 +65,7 @@ class IteSourceRepository extends ServiceEntityRepository implements FilterInter
     {
         $builder = $this->createQueryBuilder('ites');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ites.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('ites.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

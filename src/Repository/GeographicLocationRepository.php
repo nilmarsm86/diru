@@ -40,7 +40,7 @@ class GeographicLocationRepository extends ServiceEntityRepository implements Fi
     {
         $builder = $this->createQueryBuilder('gl');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('gl.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('gl.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

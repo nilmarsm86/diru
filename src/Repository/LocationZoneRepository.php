@@ -40,7 +40,7 @@ class LocationZoneRepository extends ServiceEntityRepository implements FilterIn
     {
         $builder = $this->createQueryBuilder('lz');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('lz.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('lz.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -63,7 +63,7 @@ class LocationZoneRepository extends ServiceEntityRepository implements FilterIn
             ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = pr.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('lz.id')->orderBy('lz.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('lz.id')->orderBy('lz.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

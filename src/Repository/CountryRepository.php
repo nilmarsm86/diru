@@ -32,7 +32,7 @@ class CountryRepository extends ServiceEntityRepository implements FilterInterfa
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
+    //            ->orderBy('c.id', \SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -65,7 +65,7 @@ class CountryRepository extends ServiceEntityRepository implements FilterInterfa
     {
         $builder = $this->createQueryBuilder('c');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('c.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('c.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

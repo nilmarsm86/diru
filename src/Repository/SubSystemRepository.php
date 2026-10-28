@@ -47,7 +47,7 @@ class SubSystemRepository extends ServiceEntityRepository implements FilterInter
         $builder->andWhere($dqlReply);
         $builder->setParameter(':idFloor', $floor->getId());
         $this->addFilter($builder, $filter, false);
-        $query = $builder->addOrderBy('ss.name', 'ASC')
+        $query = $builder->addOrderBy('ss.name', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
@@ -82,7 +82,7 @@ class SubSystemRepository extends ServiceEntityRepository implements FilterInter
         ->setParameter(':hasReply', '0');
         $this->addFilter($builder, $filter, false);
 
-        $query = $builder->addOrderBy('ss.name', 'ASC')
+        $query = $builder->addOrderBy('ss.name', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

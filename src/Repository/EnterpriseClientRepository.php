@@ -56,7 +56,7 @@ class EnterpriseClientRepository extends ServiceEntityRepository implements Filt
             ->leftJoin('ec.corporateEntity', 'ce');
         $this->addFilter($builder, $filter);
         $builder->andWhere('ce.type <> '.\App\Entity\Enums\CorporateEntityType::Constructor->value);
-        $query = $builder->orderBy('ec.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('ec.id', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

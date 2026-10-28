@@ -36,7 +36,7 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
     //        return $this->createQueryBuilder('i')
     //            ->andWhere('i.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
+    //            ->orderBy('i.id', \SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -136,7 +136,7 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
         $this->addCity($builder, $criteria->city);
         $this->addCountry($builder, $criteria->country);
         $this->addFilter($builder, $criteria->filter);
-        $query = $builder->orderBy('i.yearReference', 'DESC')
+        $query = $builder->orderBy('i.yearReference', \SortDirection::Descending)
             ->getQuery();
 
         return $this->paginate($query, $pagination->page, $pagination->amountPerPage);
@@ -152,8 +152,8 @@ class IteRepository extends ServiceEntityRepository implements FilterInterface
             ->leftJoin('i.city', 'c')->addSelect('c')
             ->leftJoin('c.country', 'co')->addSelect('co') // asume que City tiene country
             ->leftJoin('i.projectType', 'pt')->addSelect('pt')
-            ->orderBy('i.yearReference', 'DESC')
-            ->addOrderBy('i.id', 'ASC')
+            ->orderBy('i.yearReference', \SortDirection::Descending)
+            ->addOrderBy('i.id', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
     }

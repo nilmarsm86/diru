@@ -37,7 +37,7 @@ class BuildingRevisionRepository extends ServiceEntityRepository implements Filt
             ->andWhere('br.state = :state')
             ->setParameter('state', \App\Entity\Enums\State::Active->value);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('br.createdAt', 'ASC')->getQuery();
+        $query = $builder->orderBy('br.createdAt', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

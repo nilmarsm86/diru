@@ -32,7 +32,7 @@ class MeasurementUnitRepository extends ServiceEntityRepository implements Filte
     //        return $this->createQueryBuilder('m')
     //            ->andWhere('m.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
+    //            ->orderBy('m.id', \SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -66,7 +66,7 @@ class MeasurementUnitRepository extends ServiceEntityRepository implements Filte
     {
         $builder = $this->createQueryBuilder('mu');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('mu.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('mu.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

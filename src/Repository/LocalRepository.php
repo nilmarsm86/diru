@@ -50,7 +50,7 @@ class LocalRepository extends ServiceEntityRepository implements FilterInterface
         $builder->setParameter(':idSubSystem', $subSystem->getId());
         $this->addType($builder, $type);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('l.number', 'ASC')
+        $query = $builder->orderBy('l.number', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);

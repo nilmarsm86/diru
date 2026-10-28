@@ -58,7 +58,7 @@ class UrbanRegulationRepository extends ServiceEntityRepository implements Filte
         $this->addType($builder, $type);
         $this->addStructure($builder, $structure);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ur.code', 'ASC')->getQuery();
+        $query = $builder->orderBy('ur.code', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -68,7 +68,7 @@ class UrbanRegulationRepository extends ServiceEntityRepository implements Filte
         $builder = $this->createQueryBuilder('ur')
             ->leftJoin('ur.type', 'urt');
         $this->addType($builder, null === $urbanRegulationType ? '' : $urbanRegulationType->getName());
-        $builder->orderBy('ur.code', 'ASC')->getQuery();
+        $builder->orderBy('ur.code', \SortDirection::Ascending)->getQuery();
 
         return $builder;
     }

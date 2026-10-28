@@ -50,7 +50,7 @@ class ConstructiveActionRepository extends ServiceEntityRepository implements Fi
         $builder = $this->createQueryBuilder('ca');
         $this->addType($builder, $type);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ca.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('ca.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

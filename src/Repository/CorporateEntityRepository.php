@@ -59,7 +59,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
             ->leftJoin('ce.organism', 'o');
         $this->addType($builder, $type);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ce.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('ce.id', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -97,7 +97,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
             );
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('ce.id')->orderBy('ce.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('ce.id')->orderBy('ce.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -119,7 +119,7 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
             ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = p.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('ce.id')->orderBy('ce.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('ce.id')->orderBy('ce.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

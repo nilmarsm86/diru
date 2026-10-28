@@ -47,9 +47,9 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
 
         $builder->setParameter(':idBuilding', $building->getId());
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('f.groundFloor', 'DESC')
-            ->addOrderBy('f.position', 'ASC')
-            ->addOrderBy('f.name', 'ASC')
+        $query = $builder->orderBy('f.groundFloor', \SortDirection::Descending)
+            ->addOrderBy('f.position', \SortDirection::Ascending)
+            ->addOrderBy('f.name', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
@@ -86,9 +86,9 @@ class FloorRepository extends ServiceEntityRepository implements FilterInterface
     //            ->andWhere('f.original IS NOT NULL');
     //        $builder->setParameter(':idBuilding', $building->getId());
     //        $this->addFilter($builder, $filter, false);
-    //        $query = $builder->orderBy('f.groundFloor', 'DESC')
-    //            ->addOrderBy('f.position', 'ASC')
-    //            ->addOrderBy('f.name', 'ASC')
+    //        $query = $builder->orderBy('f.groundFloor', \SortDirection::Descending)
+    //            ->addOrderBy('f.position', \SortDirection::Ascending)
+    //            ->addOrderBy('f.name', \SortDirection::Ascending)
     //            ->getQuery();
     //        return $this->paginate($query, $page, $amountPerPage);
     //    }

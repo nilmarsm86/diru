@@ -40,7 +40,7 @@ class SeparateConceptRepository extends ServiceEntityRepository implements Filte
     {
         /*$builder = $this->createQueryBuilder('sc')->select(['sc']);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->addOrderBy('sc.id', 'ASC')
+        $query = $builder->addOrderBy('sc.id', \SortDirection::Ascending)
             ->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);*/

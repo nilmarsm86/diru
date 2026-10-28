@@ -40,7 +40,7 @@ class NetworkConnectionRepository extends ServiceEntityRepository implements Fil
     {
         $builder = $this->createQueryBuilder('nc');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('nc.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('nc.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

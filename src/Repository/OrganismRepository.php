@@ -40,7 +40,7 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
     {
         $builder = $this->createQueryBuilder('o');
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('o.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('o.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -63,7 +63,7 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('App\Entity\CorporateEntity', 'ce', 'ON', 'o.id = ce.organism');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('o.id')->orderBy('o.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -83,7 +83,7 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'ce.id = ec.corporateEntity');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('o.id')->orderBy('o.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -106,7 +106,7 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = p.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('o.id')->orderBy('o.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('o.id')->orderBy('o.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

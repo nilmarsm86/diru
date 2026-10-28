@@ -66,7 +66,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         $this->addType($builder, $type);
         $this->addState($builder, $state);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('p.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('p.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -75,7 +75,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
     {
         $builder = $this->createQueryBuilder('p')->select(['p', 'i'])
             ->innerJoin('p.investment', 'i');
-        $query = $builder->orderBy('p.id', 'DESC')->setMaxResults(3)->getQuery();
+        $query = $builder->orderBy('p.id', \SortDirection::Descending)->setMaxResults(3)->getQuery();
 
         return $query->getResult();
     }

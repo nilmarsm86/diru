@@ -52,7 +52,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
             ->select(['m', 'p'])
             ->leftJoin('m.province', 'p');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('m.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('m.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -77,7 +77,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
             ->leftJoin('App\Entity\Building', 'b', 'ON', 'b.project = pr.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('m.id')->orderBy('m.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('m.id')->orderBy('m.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -101,7 +101,7 @@ class MunicipalityRepository extends ServiceEntityRepository implements FilterIn
             ->leftJoin('App\Entity\EnterpriseClient', 'ec', 'ON', 'c.id = ec.id');
 
         $this->addFilter($builder, $filter);
-        $query = $builder->groupBy('m.id')->orderBy('m.name', 'ASC')->getQuery();
+        $query = $builder->groupBy('m.id')->orderBy('m.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

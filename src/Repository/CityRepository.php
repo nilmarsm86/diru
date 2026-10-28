@@ -32,7 +32,7 @@ class CityRepository extends ServiceEntityRepository implements FilterInterface
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
+    //            ->orderBy('c.id', '\SortDirection::Ascending)
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
@@ -71,7 +71,7 @@ class CityRepository extends ServiceEntityRepository implements FilterInterface
             ->select(['ci', 'c'])
             ->leftJoin('ci.country', 'c');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ci.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('ci.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

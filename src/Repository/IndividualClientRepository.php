@@ -54,7 +54,7 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
             ->leftJoin('ic.person', 'p');
         //        $this->addType($builder, $type);
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('ic.id', 'ASC')->getQuery();
+        $query = $builder->orderBy('ic.id', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

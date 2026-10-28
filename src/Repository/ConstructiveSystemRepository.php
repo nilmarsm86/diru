@@ -40,7 +40,7 @@ class ConstructiveSystemRepository extends ServiceEntityRepository implements Fi
     {
         $builder = $this->createQueryBuilder('cs');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('cs.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('cs.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

@@ -42,7 +42,7 @@ class PersonRepository extends ServiceEntityRepository implements FilterInterfac
     {
         $builder = $this->createQueryBuilder('p');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('p.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('p.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

@@ -41,7 +41,7 @@ class ContractRepository extends ServiceEntityRepository implements FilterInterf
     {
         $builder = $this->createQueryBuilder('c');
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('c.year', 'DESC')->getQuery();
+        $query = $builder->orderBy('c.year', \SortDirection::Descending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

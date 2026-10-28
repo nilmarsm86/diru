@@ -42,7 +42,7 @@ class RepresentativeRepository extends ServiceEntityRepository implements Filter
     {
         $builder = $this->createQueryBuilder('r');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('r.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('r.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

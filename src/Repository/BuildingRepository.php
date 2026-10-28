@@ -46,7 +46,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
             ->leftJoin('b.project', 'p');
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('b.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -70,7 +70,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
             ->setParameter(':project', $project->getId());
         $this->addState($builder, $state);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('b.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -114,7 +114,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
             ->leftJoin('b.project', 'p');
         $this->addState($builder, BuildingState::RevisedDraftsman->value);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('b.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('b.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }
@@ -132,7 +132,7 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     public function lastThree(): mixed
     {
         $builder = $this->createQueryBuilder('b')->select(['b']);
-        $query = $builder->orderBy('b.id', 'DESC')->setMaxResults(3)->getQuery();
+        $query = $builder->orderBy('b.id', \SortDirection::Descending)->setMaxResults(3)->getQuery();
 
         return $query->getResult();
     }

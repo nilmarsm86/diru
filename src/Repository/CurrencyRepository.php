@@ -41,7 +41,7 @@ class CurrencyRepository extends ServiceEntityRepository implements FilterInterf
     {
         $builder = $this->createQueryBuilder('c');
         $this->addFilter($builder, $filter);
-        $query = $builder->orderBy('c.name', 'ASC')->getQuery();
+        $query = $builder->orderBy('c.name', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

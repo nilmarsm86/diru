@@ -43,7 +43,7 @@ class UrbanizationEstimateRepository extends ServiceEntityRepository implements 
             ->where('ue.building = :building')
             ->setParameter('building', $building);
         $this->addFilter($builder, $filter, false);
-        $query = $builder->orderBy('ue.concept', 'ASC')->getQuery();
+        $query = $builder->orderBy('ue.concept', \SortDirection::Ascending)->getQuery();
 
         return $this->paginate($query, $page, $amountPerPage);
     }

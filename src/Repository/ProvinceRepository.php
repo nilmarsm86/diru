@@ -70,7 +70,7 @@ class ProvinceRepository extends ServiceEntityRepository implements FilterInterf
     public function findProvincesForForm(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->where("p.name NOT LIKE '%provincia%'")
+            // ->where("p.name NOT LIKE '%provincia%'")
             ->orderBy('p.name');
     }
 

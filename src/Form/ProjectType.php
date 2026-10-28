@@ -107,7 +107,10 @@ class ProjectType extends AbstractType
         ]);
     }
 
-    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     private function onPreSetData(FormEvent $event): void
     {
         /** @var Project $project */
@@ -170,6 +173,7 @@ class ProjectType extends AbstractType
                 'label_attr' => ['class' => 'radio-inline'],
             ])
             ->add('individualClient', EntityPlusType::class, [
+                'placeholder' => false,
                 'class' => IndividualClient::class,
                 'choice_label' => function (IndividualClient $individualClient) {
                     $person = $individualClient->getPerson();
@@ -179,16 +183,24 @@ class ProjectType extends AbstractType
                 'mapped' => false,
                 'label' => 'Persona natural',
                 'data' => $project->getIndividualClient($this->individualClientRepository),
+
                 'detail' => true,
                 'detail_title' => 'Detalle del cliente individual',
                 'detail_id' => 'modal-load',
                 'detail_url' => $this->router->generate('app_individual_client_show', ['id' => 0, 'state' => 'modal']),
+
                 'add' => true,
                 'add_title' => 'Agregar cliente individual',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
+
+                'modify' => true,
+                'modify_title' => 'Detalle del cliente individual',
+                'modify_id' => 'modal-load',
+                'modify_url' => $this->router->generate('app_individual_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ])
             ->add('enterpriseClient', EntityPlusType::class, [
+                'placeholder' => false,
                 'class' => EnterpriseClient::class,
                 'choice_label' => function (EnterpriseClient $enterpriseClient) {
                     $representative = $enterpriseClient->getRepresentative();
@@ -200,14 +212,17 @@ class ProjectType extends AbstractType
                 'mapped' => false,
                 'label' => 'Cliente empresarial-negocio (representante)',
                 'data' => $project->getEnterpriseClient($this->enterpriseClientRepository),
+
                 'detail' => true,
                 'detail_title' => 'Detalle del cliente empresarial',
                 'detail_id' => 'modal-load',
                 'detail_url' => $this->router->generate('app_enterprise_client_show', ['id' => 0, 'state' => 'modal']),
+
                 'add' => true,
                 'add_title' => 'Agregar cliente empresarial-negocio',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
+
                 'modify' => true,
                 'modify_title' => 'Detalle del cliente empresarial',
                 'modify_id' => 'modal-load',

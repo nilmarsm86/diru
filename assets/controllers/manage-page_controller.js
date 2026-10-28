@@ -90,7 +90,7 @@ export default class extends AbstractController {
                     Tooltip.getInstance(tooltipTriggerEl).hide();
                 });
             });
-        }, 500);
+        }, 600);
     }
 
     backdrop(backdropElement, action) {

@@ -67,6 +67,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_floor_index', {'building': building.id, 'reply':(not reply)}),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
             {% if building.hasReply() %}
                 {% if reply %}
                     {{ tableActionButton3("", '', 'Sistema constructivo', 'Clasificar sistema constructivo') }}

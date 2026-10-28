@@ -9,6 +9,10 @@
             {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
             <div>
+                {{ component('Card:Refresh', {
+                    path: path('app_just_value_estimate_index'),
+                    queryNames:['type', 'state', 'amount', 'filter', 'page']
+                }) }}
                 {{ tableActionButton3(path('app_just_value_estimate_new'), 'bi:plus-lg', 'Nueva', 'Nuevo estimado de urbanización', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_just_value_estimate_new')})) }}
             </div>
         {% endblock %}

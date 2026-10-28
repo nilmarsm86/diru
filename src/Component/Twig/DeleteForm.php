@@ -2,10 +2,11 @@
 
 namespace App\Component\Twig;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(template: 'component/twig/delete_form.html.twig')]
-final class DeleteForm
+final class DeleteForm extends AbstractController
 {
     public string $path;
     public string $confirm = 'Está seguro que desea borrarlo?';

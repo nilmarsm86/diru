@@ -34,14 +34,16 @@ export default class extends AbstractController {
             this.addChildsNodes(this.titleValue, document.querySelector('#' + this.idValue + ' .modal-title'));
             Modal.getOrCreateInstance(document.querySelector('#' + this.idValue)).show();
 
-            const eventDetail = new CustomEvent('loadData', {
-                detail: {
-                    url: this.urlValue,
-                    container: modalBody,
-                    eventLoadedName: 'loadedData',
-                }
-            });
-            this.refreshContent(eventDetail);
+            if(this.urlValue){
+                const eventDetail = new CustomEvent('loadData', {
+                    detail: {
+                        url: this.urlValue,
+                        container: modalBody,
+                        eventLoadedName: 'loadedData',
+                    }
+                });
+                this.refreshContent(eventDetail);
+            }
         });
 
     }

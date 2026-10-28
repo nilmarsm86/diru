@@ -12,7 +12,8 @@ final class Password extends Constraint
         public readonly string $mode = 'strict',
         ?array $groups = null,
         mixed $payload = null,
+        mixed $options = null,
     ) {
-        parent::__construct([], $groups, $payload);
+        parent::__construct($options, $groups, $payload);
     }
 }

@@ -8,6 +8,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_currency_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
             {{ tableActionButton3(path('app_currency_new'), 'bi:plus-lg', 'Nueva', 'Nueva moneda', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_currency_new')})) }}
         </div>
     {% endblock %}

@@ -23,9 +23,7 @@
                 <tr>
                     <th>Nombre:</th>
                     <td>
-                        <a href="{{ path('app_investment_edit', {'id': investment.id }) }}" target="_blank">
-                            {{ investment.name }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
-                        </a>
+                        {{ investment.name }}
                     </td>
                 </tr>
                 <tr>
@@ -63,7 +61,13 @@
                 <tr>
                     <th>Municipio:</th>
                     <td>
-                        <a href="{{ path('app_municipality_show', {'id': investment.municipality.id }) }}" target="_blank">
+                        <a href="#" {{ stimulusController('modal-content-loader', {
+                                url: path('app_municipality_show', {'id':investment.municipality.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Detalles de la ciudad',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
                             {{ investment.getMunicipalityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>
@@ -71,7 +75,13 @@
                 <tr>
                     <th>Provincia:</th>
                     <td>
-                        <a href="{{ path('app_province_show', {'id': investment.municipality.province.id }) }}" target="_blank">
+                        <a href="#" {{ stimulusController('modal-content-loader', {
+                                url: path('app_province_show', {'id':investment.municipality.province.id, 'modal':'modal-load', 'state':'modal'}),
+                                id: 'modal-load',
+                                placeholder: 'Cargando...',
+                                title: 'Detalles de la ciudad',
+                            }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
+                            >
                             {{ investment.getProvinceName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                         </a>
                     </td>

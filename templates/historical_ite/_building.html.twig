@@ -8,7 +8,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
-
+            {{ component('Card:Refresh', {
+                path: path('app_historical_ite_building'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
         </div>
     {% endblock %}
 

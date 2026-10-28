@@ -12,6 +12,6 @@ final class Card
     public string $cssClass = '';
     public string $extra = '';
     public string $headerCssClass = '';
-    public string $title = '';
+    public ?string $title = null;
     public string $icon = '';
 }

@@ -1,19 +1,32 @@
 <form
-        method="post"
-        action="{{ path }}"
-{#        onsubmit="return confirm('{{ confirm }}');"#}
-        style="display: inline"
-        {{ attributes }}
+    method="post"
+    action="{{ path }}"
+    style="display: inline"
+    {{ attributes }}
 >
     <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
     <div data-bs-toggle="tooltip" title="{{ title }}" style="display: inline">
-    <button type="button" class="btn btn-sm {{ cssClass }}" title="{{ title }}" {% if active == false %}disabled{% endif %}  {{ extra }} data-bs-toggle="modal" data-bs-target="#{{ path|replace({'/':'-'}) }}">
-        {{ ux_icon(icon, {class:'bi'}) }}
-        {{ label }}
-    </button>
+        <button
+            type="button"
+            class="btn btn-sm {{ cssClass }}"
+            title="{{ title }}"
+            {% if active == false %}disabled{% endif %}
+            {{ extra }}
+            data-bs-toggle="modal" data-bs-target="#{{ path|replace({'/':'-'}) }}"
+            onclick="var button = this;setTimeout(function(){
+            if(button.closest('#modal-load')){
+                document.getElementById('modal-load').removeAttribute('aria-hidden');
+                document.getElementById('modal-load').style.display='block';
+                document.getElementById('modal-load').classList.add('show');
+            }
+        }, 100)"
+        >
+            {{ ux_icon(icon, {class:'bi'}) }}
+            {{ label }}
+        </button>
     </div>
 
-    {% component 'Modal:Confirm' with {
+    {% component 'Modal:Confirm' with  {
         title: 'Confirmar',
         id: path|replace({'/':'-'}),
         question: confirm~'<br><h6 style="color:red">Está acción es irreversible.</h6>',
@@ -22,5 +35,3 @@
     } %}
     {% endcomponent %}
 </form>
-
-

@@ -9,6 +9,10 @@
             {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
             <div>
+                {{ component('Card:Refresh', {
+                    path: path('app_project_urban_regulation_index', {'project' : project}),
+                    queryNames:['type', 'state', 'amount', 'filter', 'page']
+                }) }}
                 {{ tableActionButton3(path('app_project_urban_regulation_new', {'project' : project}), 'bi:plus-lg', 'Agregar', 'Agregar regulación al proyecto', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_project_urban_regulation_new', {'project':project})})) }}
             </div>
         {% endblock %}

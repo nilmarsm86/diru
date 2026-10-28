@@ -5,6 +5,14 @@
         path: path('app_corporate_entity_index'),
         queryNames:['entity', 'amount', 'filter', 'page', 'column']
     }) }}
+    {% if types|length > 0 %}
+        {{ component('Card:FilterDropDown', {
+            path:'app_corporate_entity_index',
+            label:'Tipos de entidad corporativa',
+            queryName: 'entity',
+            options:types
+        }) }}
+    {% endif %}
     <div class="dropdown d-inline-block">
         <button type="button"
                 class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -34,15 +42,6 @@
             </li>
         </ul>
     </div>
-
-    {% if types|length > 0 %}
-        {{ component('Card:FilterDropDown', {
-            path:'app_corporate_entity_index',
-            label:'Tipos de entidad corporativa',
-            queryName: 'entity',
-            options:types
-        }) }}
-    {% endif %}
 
     {{ tableActionButton3(path('app_corporate_entity_new'), 'bi:plus-lg', 'Nueva', 'Nueva entidad corporativa', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_corporate_entity_new')})) }}
     {{ tableActionButton3(path(print_link, app.request.query.all), 'bi:printer', '', 'Imprimir', '', 'btn-info') }}

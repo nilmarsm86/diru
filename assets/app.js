@@ -41,7 +41,7 @@ function tooltips(){
                 Tooltip.getInstance(tooltipTriggerEl).hide();
             });
         });
-    }, 500);
+    }, 600);
 }
 
 tooltips();

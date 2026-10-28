@@ -12,8 +12,6 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-use function PHPUnit\Framework\assertIsArray;
-
 /**
  * @extends ServiceEntityRepository<Client>
  */
@@ -43,7 +41,7 @@ class ClientRepository extends ServiceEntityRepository implements FilterInterfac
         $query = $builder->getQuery();
 
         $result = $query->getResult(AbstractQuery::HYDRATE_SCALAR);
-        assertIsArray($result);
+        assert(is_array($result));
 
         return $result[0];
     }

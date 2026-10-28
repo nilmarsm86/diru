@@ -8,6 +8,10 @@
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
         <div>
+            {{ component('Card:Refresh', {
+                path: path('app_investment_index'),
+                queryNames:['type', 'state', 'amount', 'filter', 'page']
+            }) }}
             {{ tableActionButton3(path('app_investment_new'), 'bi:plus-lg', 'Nueva', 'Nueva inversión', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_investment_new')})) }}
         </div>
     {% endblock %}
@@ -35,7 +39,7 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>
                             {{ investment.name }}
-                            <span class="badge rounded-pill bg-danger" title="Obras de la inversión">
+                            <span class="badge rounded-pill bg-danger" data-bs-toggle="tooltip" title="Obras de la inversión">
                                 {{ investment.getBuildingsAmount() }}
                                 <span class="visually-hidden">Obras</span>
                             </span>

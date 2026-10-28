@@ -11,7 +11,7 @@
         pathParams: {'project':project.id},
         label:'Estados de la obra',
         queryName: 'state',
-        options:states
+        options:states ?? []
     }) }}
     {% if project is not null %}
         {% set path = path('app_building_new', {'project':project.id}) %}

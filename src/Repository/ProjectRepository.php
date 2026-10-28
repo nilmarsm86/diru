@@ -14,8 +14,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
-use function PHPUnit\Framework\assertIsArray;
-
 /**
  * @extends ServiceEntityRepository<Project>
  */
@@ -122,7 +120,7 @@ class ProjectRepository extends ServiceEntityRepository implements FilterInterfa
         $query = $builder->getQuery();
 
         $result = $query->getResult(AbstractQuery::HYDRATE_SCALAR);
-        assertIsArray($result);
+        assert(is_array($result));
 
         return $result[0];
     }

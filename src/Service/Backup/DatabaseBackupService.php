@@ -74,7 +74,7 @@ final class DatabaseBackupService
             $upload->move(\dirname($targetPath), \basename($targetPath));
         } catch (\Throwable $e) {
             $this->rollback($backupPath, $targetPath);
-            throw new DatabaseBackupException('Error al importar la base de datos: '.$e->getMessage(), previous: $e);
+            throw new DatabaseBackupException('Error al importar la configuración: '.$e->getMessage(), previous: $e);
         }
 
         // Opcional: borrar el backup tras éxito. Recomiendo conservarlo por seguridad.

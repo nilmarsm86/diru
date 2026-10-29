@@ -26,4 +26,13 @@ class Kernel extends BaseKernel
             ? $dir.'/log'
             : parent::getLogDir();
     }
+
+    public function getShareDir(): ?string
+    {
+        $dir = $_SERVER['DIRU_DATA_DIR'] ?? null;
+
+        return \is_string($dir) && '' !== $dir
+            ? $dir.'/share/'.$this->environment
+            : parent::getShareDir();
+    }
 }

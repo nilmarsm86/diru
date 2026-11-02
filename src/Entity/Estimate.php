@@ -28,6 +28,7 @@ class Estimate
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Establesca la unidad de medida.')]
     private ?MeasurementUnit $measurementUnit = null;
 
     #[ORM\Column(type: Types::BIGINT)]

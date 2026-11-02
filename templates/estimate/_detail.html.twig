@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th>Precio:</th>
-            <td>{{ estimate.price }}</td>
+            <td>{{ money(estimate.price, estimate.building.getProjectCurrency()) }}</td>
         </tr>
         <tr>
             <th>Comentario:</th>

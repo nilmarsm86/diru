@@ -24,7 +24,6 @@ export default class extends AbstractController {
             // eventLoadedName: "loaded",
         });
 
-
         this.buttonTarget.addEventListener('click', (event) => {
             event.preventDefault();
 

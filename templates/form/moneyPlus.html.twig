@@ -93,8 +93,9 @@
                 {% if list == true %}
                     <button
                         class="btn btn_detail btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                        type="button"
+                        type="button" title="{{ form.vars.list_title }}"
                         {{ stimulusTarget('type/money-plus', 'list') }}
+                        data-bs-toggle="tooltip"
                     >
                         {{ ux_icon(list_icon, {class:'bi', style:'color:white'}) }}
                     </button>
@@ -103,8 +104,8 @@
                 {% if add == true %}
                     <button
                         class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                        type="button"
-                        {{ stimulusTarget('type/money-plus', 'add') }}
+                        type="button" title="{{ form.vars.add_title }}"
+                        {{ stimulusTarget('type/money-plus', 'add') }} data-bs-toggle="tooltip"
                     >
                         {{ ux_icon(add_icon, {class:'bi', style:'color:white'}) }}
                     </button>

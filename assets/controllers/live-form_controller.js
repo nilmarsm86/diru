@@ -46,6 +46,20 @@ export default class extends AbstractController {
         //         toastEl.remove();
         //     });
         // });
+
+        this.noFocus();
+    }
+
+    noFocus(){
+        const readonlyFields = this.element.querySelectorAll('[readonly]');
+        [...readonlyFields].map(readonlyField => {
+            readonlyField.addEventListener('focus', (e) => e.target.blur());
+            readonlyField.addEventListener('mousedown', (e) => e.preventDefault());
+        });
+        // const input = document.getElementById('miInput');
+        // input.addEventListener('focus', (e) => e.target.blur());
+        // // Opcional: impedir el foco con el ratón
+        // input.addEventListener('mousedown', (e) => e.preventDefault());
     }
 
     async initialize() {

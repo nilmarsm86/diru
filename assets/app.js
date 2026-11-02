@@ -45,4 +45,3 @@ function tooltips(){
 }
 
 tooltips();
-

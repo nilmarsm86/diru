@@ -115,13 +115,6 @@
             {% endif %}
 
             {% if modify == true %}
-                <button
-                    class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
-                    type="button" title="{{ form.vars.modify_title }}" data-bs-target="#{{ form.vars.id }}_modify" data-bs-toggle="tooltip"
-                    {{ stimulusTarget('type/entity-plus', 'modify') }}
-                >
-                    {{ ux_icon(modify_icon, {class:'bi', style:'color:white'}) }}
-                </button>
                 {% component 'Modal:Alert' with {
                     title: 'Alerta',
                     id: form.vars.id ~ '_modify',
@@ -129,6 +122,13 @@
                     href: '',
                 } %}
                 {% endcomponent %}
+                <button
+                    class="btn btn-outline-secondary {% if form_errors(form) %}is-invalid{% endif %}"
+                    type="button" title="{{ form.vars.modify_title }}" data-bs-target="#{{ form.vars.id }}_modify" data-bs-toggle="tooltip"
+                    {{ stimulusTarget('type/entity-plus', 'modify') }}
+                >
+                    {{ ux_icon(modify_icon, {class:'bi', style:'color:white'}) }}
+                </button>
             {% endif %}
         </div>
 

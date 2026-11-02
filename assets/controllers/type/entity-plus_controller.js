@@ -70,7 +70,7 @@ export default class extends AbstractController {
                     detail: {
                         url: this.modifyUrlValue.replace('0', this.selectTarget.value),
                         container: modalBody,
-                        eventLoadedName: 'loadDetail',
+                        eventLoadedName: 'loadModify',
                     }
                 });
                 this.refreshContent(eventDetail);
@@ -124,7 +124,8 @@ export default class extends AbstractController {
             });
         }
 
-
+        this.element.addEventListener('type--entity-plus:loadAdd', this.tooltips.bind(this));
+        this.element.addEventListener('type--entity-plus:loadModify', this.tooltips.bind(this));
     }
 
     // tooltips(){
@@ -159,6 +160,21 @@ export default class extends AbstractController {
 
             await this.processResponseToast(event.detail.response);
         }
+    }
+
+    tooltips(event){
+        setTimeout(() => {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => {
+                return new Tooltip(tooltipTriggerEl, {'container':'body'});
+            });
+
+            [...tooltipTriggerList].map(tooltipTriggerEl => {
+                tooltipTriggerEl.addEventListener('click', () => {
+                    Tooltip.getInstance(tooltipTriggerEl).hide();
+                });
+            });
+        }, 600);
     }
 
 }

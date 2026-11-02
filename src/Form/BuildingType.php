@@ -509,7 +509,7 @@ class BuildingType extends AbstractType
                 'add_url' => $this->router->generate('app_individual_client_new', ['modal' => 'modal-load']),
 
                 'modify' => true,
-                'modify_title' => 'Detalle del cliente individual',
+                'modify_title' => 'Editar cliente individual',
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_individual_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ])
@@ -538,7 +538,7 @@ class BuildingType extends AbstractType
                 'add_url' => $this->router->generate('app_enterprise_client_new', ['modal' => 'modal-load']),
 
                 'modify' => true,
-                'modify_title' => 'Detalle del cliente empresarial',
+                'modify_title' => 'Editar cliente empresarial',
                 'modify_id' => 'modal-load',
                 'modify_url' => $this->router->generate('app_enterprise_client_edit', ['id' => 0, 'state' => 'modal', 'modal' => 'modal-load']),
             ])

@@ -70,13 +70,14 @@
                     <th>Número</th>
                     <th>Concepto</th>
                     <th>Importe</th>
-                    <th class="text-end" {{ stimulusController('separate-concept', {
-                        urlResetData: path('app_building_separate_concept_estimate_reset', {'id': building.id}),
-                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': building.id})
+{#                    <th class="text-end" {{ stimulusController('separate-concept', {#}
+{#                        urlResetData: path('app_building_separate_concept_estimate_reset', {'id': building.id}),#}
+{#                        urlLoadData: path('app_building_report_separate_presupposition_estimate', {'id': building.id})#}
 
-                    }) }}>
-                        {{ tableActionButton3('', 'ix:reset' , '', 'Resetear desglose', stimulusAction('separate-concept', 'reset:prevent'), 'btn-danger') }}
-                    </th>
+{#                    }) }}>#}
+{#                        {{ tableActionButton3('', 'ix:reset' , '', 'Resetear desglose', stimulusAction('separate-concept', 'reset:prevent'), 'btn-danger') }}#}
+{#                    </th>#}
+                    <th></th>
                 </tr>
             {% endblock %}
 

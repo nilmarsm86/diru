@@ -14,7 +14,6 @@ export default class extends AbstractController {
     }
 
     setCode(event) {
-        console.log('OK');
         let inputGroupText = this.fieldTarget.parentElement.querySelector('.input-group-text');
         if (inputGroupText.innerText === 'US$') {
             inputGroupText.innerText = 'USD';

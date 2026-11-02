@@ -66,6 +66,7 @@ export default class extends AbstractController {
         //procesar una respuesta de una accion de un formulario bien enviado
         this.element.addEventListener(FORM_SUCCESS, this.onManagePageProcessResponse.bind(this));
         this.element.addEventListener(DELETE_FORM_SUCCESS, this.deleteFormSuccess.bind(this));
+        this.element.addEventListener('user-role:endChange', this.refreshListContent.bind(this));
         // window.addEventListener(START_REMOVE_ITEM, this.startRemoveItem.bind(this));
 
         const toastList = document.querySelectorAll('.toast');

@@ -67,7 +67,9 @@ class SeparateConceptType extends AbstractType
             ]);
 
         $builder->addDependent('childs', 'parent', function (DependentField $field, ?SeparateConcept $separateConcept) use ($options) {
-            $isValid = (!is_null($separateConcept));
+            $childs = $this->separateConceptRepository->findSubtree($separateConcept?->getId() ?? 0);
+            $isValid = (!is_null($separateConcept) && count($childs) > 0);
+
             if ((bool) $options['hasParent']) {
             }
             $typeAttr = [

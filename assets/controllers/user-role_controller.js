@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import {Toast} from "bootstrap";
+import {useContentLoader} from "../behaviors/content-loader/use-content-loader.js";
 
 /*
 * The following line makes this controller "lazy": it won't be downloaded until needed
@@ -12,6 +13,14 @@ export default class extends Controller {
         urlAddRole: String,
         urlRemoveRole: String,
         urlState: String,
+    }
+
+    connect() {
+        useContentLoader(this, {
+            // url: '',
+            // container: this.selectTarget,
+            // eventLoadedName: "loaded",
+        });
     }
 
     async onChangeRole(event){
@@ -78,6 +87,16 @@ export default class extends Controller {
             });
         }
         await this.processResponse(response);
+        if(this.urlValue){
+            const eventDetail = new CustomEvent('loadData', {
+                detail: {
+                    url: '/user/',
+                    container: modalBody,
+                    eventLoadedName: 'loadedData',
+                }
+            });
+            this.refreshContent(eventDetail);
+        }
         this.dispatch('endChange');
     }
 

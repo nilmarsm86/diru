@@ -15,10 +15,7 @@
     {% block body %}
         {% embed "embeds/table.html.twig" %}
             {% block table_container %}
-                data-action="
-                user-role:startChange->twig--table--table#showBackdrop
-                user-role:endChange->twig--table--table#hideBackdrop
-                "
+
             {% endblock %}
 
             {% block table_head %}
@@ -52,8 +49,8 @@
                                             class="form-check-input"
                                             type="checkbox"
                                             {{ stimulus_action('user-role', 'onChangeState', 'change') }}
-                                            role="switch"
-                                            title="{% if user.isActive() %}activo{% else %}inactivo{% endif %}"
+                                            role="switch" data-bs-toggle="tooltip"
+                                            title="{% if user.isActive() %}Desactivar usuario{% else %}Activar usuario{% endif %}"
                                             {% if user.isActive() %}checked{% endif %}
                                         >
                                     </div>
@@ -66,8 +63,8 @@
                                     <td>
                                         <div class="form-check">
                                             <input
-                                                type="checkbox"
-                                                title="{% if user.isActive() %}quitar{% else %}asignar{% endif %} permisos"
+                                                type="checkbox" data-bs-toggle="tooltip"
+                                                title="Quitar/Asignar permiso"
                                                 {{ stimulus_action('user-role', 'onChangeRole', 'change') }}
                                                 {% if role.name is same as constant('ROLE_CLIENT', role) %}
                                                     class="client"

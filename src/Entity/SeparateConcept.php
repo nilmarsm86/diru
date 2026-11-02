@@ -258,4 +258,18 @@ class SeparateConcept
     {
         return null !== $this->parent;
     }
+
+    public function getBase(): ?self
+    {
+        if (null === $this->getParent()) {
+            return null;
+        }
+
+        $parent = $this->getParent();
+        while (null !== $parent->getParent()) {
+            $parent = $parent->getParent();
+        }
+
+        return $parent;
+    }
 }

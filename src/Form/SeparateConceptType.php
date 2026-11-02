@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DependentField;
@@ -36,8 +35,8 @@ class SeparateConceptType extends AbstractType
         $builder = new DynamicFormBuilder($builder);
 
         $builder
-            ->add('number', NumberType::class, [
-                'html5' => true,
+            ->add('number', null, [
+                //                                'html5' => true,
                 'label' => 'Número:',
                 'attr' => [
                     'placeholder' => 'Numeración',
@@ -61,9 +60,10 @@ class SeparateConceptType extends AbstractType
                 'choice_label' => function (SeparateConcept $separateConcept) {
                     return $separateConcept->getNumber().' - '.$separateConcept->getName();
                 },
-                'label' => 'Concepto padre:',
+                'label' => 'Concepto base:',
                 'required' => false,
                 'query_builder' => $this->getParentConcepts(),
+                'data' => $options['base'],
             ]);
 
         $builder->addDependent('childs', 'parent', function (DependentField $field, ?SeparateConcept $separateConcept) use ($options) {
@@ -84,6 +84,7 @@ class SeparateConceptType extends AbstractType
                 'required' => false,
                 //                'choices' => $this->getChildsConcepts($separateConcept),
                 'choices' => $this->separateConceptRepository->findSubtree($separateConcept?->getId() ?? 0),
+                'data' => $options['parent'],
             ];
 
             //            if (0 !== $options['type']) {
@@ -103,16 +104,20 @@ class SeparateConceptType extends AbstractType
                 'novalidate' => 'novalidate',
             ],
             'hasParent' => false,
+            'base' => null,
+            'parent' => null,
         ]);
 
         $resolver->setAllowedTypes('hasParent', ['bool', 'null']);
+        $resolver->setAllowedTypes('base', [SeparateConcept::class, 'null']);
+        $resolver->setAllowedTypes('parent', [SeparateConcept::class, 'null']);
     }
 
     private function getParentConcepts(): \Closure
     {
         return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('sc')
             ->where('sc.parent IS NULL')
-            ->orderBy('sc.number', 'ASC');
+            ->orderBy('sc.id', 'ASC');
     }
 
     //    private function getChildsConcepts(?SeparateConcept $parentSeparateConcept = null): array

@@ -13,24 +13,28 @@
         </div>
     </div>
 
+    <details class="collection" open>
+        <summary class="collection">Concepto padre:</summary>
+        <br>
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.parent) }}
+            </div>
+        </div>
+
+        <div class="mb-0 row">
+            <div class="col">
+                {{ form_row(form.childs) }}
+            </div>
+        </div>
+    </details>
+
     <div class="mb-0 row">
         <div class="col">
             {{ form_row(form.number) }}
         </div>
         <div class="col">
             {{ form_row(form.formula) }}
-        </div>
-    </div>
-
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.parent) }}
-        </div>
-    </div>
-
-    <div class="mb-0 row">
-        <div class="col">
-            {{ form_row(form.childs) }}
         </div>
     </div>
 

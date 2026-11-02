@@ -49,6 +49,8 @@ final class SeparateConceptForm extends AbstractController
     {
         return $this->createForm(SeparateConceptType::class, $this->sc, [
             'hasParent' => $this->sc?->getParent()?->hasParent(),
+            'base' => $this->sc?->getBase(),
+            'parent' => $this->sc?->getParent(),
         ]);
     }
 

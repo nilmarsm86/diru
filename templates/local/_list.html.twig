@@ -231,7 +231,7 @@
                                     {% set cssClass = cssClass ~ ' text-dark' %}
                                 {% endif %}
 
-                                {{ tableActionButton3('', 'bi:eye', '', 'Ver original', '', cssClass) }}
+{#                                {{ tableActionButton3('', 'bi:eye', '', 'Ver original', '', cssClass) }}#}
 
                                 {% if local.hasReply() == false %}
                                     {% set path = path('app_local_edit', {'id': local.id, 'subSystem':sub_system.id, 'reply':reply}) %}

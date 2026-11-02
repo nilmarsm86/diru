@@ -33,8 +33,6 @@ class IteType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $yearList = range((int) date('Y') - 10, (int) date('Y'));
-
         $builder
 //            ->add('type')
 
@@ -51,12 +49,6 @@ class IteType extends AbstractType
                 'attr' => [
                     'min' => 0,
                 ],
-            ])
-            ->add('yearReference', ChoiceType::class, [
-                'label' => 'Año de referencia:',
-                'placeholder' => '-Seleccione-',
-                'choices' => array_combine($yearList, $yearList),
-                'data' => date('Y'),
             ])
             ->add('comment', TrixEditorType::class, [
                 'label' => 'Comentario:',
@@ -79,7 +71,6 @@ class IteType extends AbstractType
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_ite_source_new', ['modal' => 'modal-load']),
             ])
-
             ->add('cityCountry', CityCountryType::class, [
                 'country' => $options['country'],
                 'city' => $options['city'],
@@ -94,8 +85,7 @@ class IteType extends AbstractType
                 'add_title' => 'Agregar tipo de proyecto',
                 'add_id' => 'modal-load',
                 'add_url' => $this->router->generate('app_ite_project_type_new', ['modal' => 'modal-load']),
-            ])
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $this->onPreSetData($event);
@@ -137,5 +127,17 @@ class IteType extends AbstractType
         $form->add('quality', IteQualityEnumType::class, [
             'label' => 'Calidad:',
         ]);
+
+        $present = [];
+        if (null === $ite->getId()) {
+            $present = ['data' => date('Y')];
+        }
+        $yearList = range((int) date('Y') - 10, (int) date('Y'));
+
+        $form->add('yearReference', ChoiceType::class, [
+            'label' => 'Año de referencia:',
+            'placeholder' => '-Seleccione-',
+            'choices' => array_combine($yearList, $yearList),
+        ] + $present);
     }
 }

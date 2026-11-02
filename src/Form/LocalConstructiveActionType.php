@@ -6,9 +6,9 @@ use App\Entity\ConstructiveAction;
 use App\Entity\ConstructiveSystem;
 use App\Entity\LocalConstructiveAction;
 use App\Form\Types\EntityPlusType;
+use App\Form\Types\MoneyPlusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -86,7 +86,7 @@ class LocalConstructiveActionType extends AbstractType
             }
         }
 
-        $form->add('price', MoneyType::class, [
+        $form->add('price', MoneyPlusType::class, [
             'label' => 'Indicador técnico económico ($/m<sup>2</sup>):',
             'label_html' => true,
             'currency' => $currency,
@@ -97,9 +97,30 @@ class LocalConstructiveActionType extends AbstractType
                 'min' => 0,
                 'data-usd-currency-target' => 'field',
                 'data-controller' => 'money',
+                'data-type--money-plus-target' => 'field',
             ],
             'data' => (!is_null($local)) ? $local->getPrice() : 0,
             'grouping' => true,
+
+            'list' => true,
+            'list_icon' => 'icon-park-outline:local',
+            'list_title' => 'Referencias nacionales',
+            'list_id' => 'modal-load',
+            'list_url' => $this->router->generate('app_ite_national', [
+                'modal' => 'modal-load',
+                'screen' => 'modal',
+                'amount' => 100,
+            ]),
+
+            'add' => true,
+            'add_icon' => 'streamline-freehand:currency-international-currency',
+            'add_title' => 'Referencias internacionales',
+            'add_id' => 'modal-load',
+            'add_url' => $this->router->generate('app_ite_international', [
+                'modal' => 'modal-load',
+                'screen' => 'modal',
+                'amount' => 100,
+            ]),
         ]);
     }
 }

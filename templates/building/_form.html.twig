@@ -8,9 +8,15 @@
     {% block header %}
         {% if building.id is not null %}
             &nbsp;
-            <span class="badge bg-success" data-bs-toggle="tooltip" data-bs-title="Queda espacio libre." data-bs-custom-class="warning-tooltip" title="Estado técnico">{{ building.getTechnicalStatus() }}</span>
-            <span data-bs-toggle="tooltip" data-bs-title="Fase" data-bs-custom-class="warning-tooltip" title="Fase">&nbsp;({{ building.state.getLabelFrom(building.state) }})</span>
-            <span data-bs-toggle="tooltip" data-bs-title="Sistema constructivo" data-bs-custom-class="warning-tooltip" title="Sistema constructivo">&nbsp;[{{ building.getConstructiveSystem() }}]</span>
+            <span class="badge bg-success" data-bs-toggle="tooltip" title="Estado técnico" style="cursor: pointer;">
+                {{ building.getTechnicalStatus() }}
+            </span>
+            <span data-bs-toggle="tooltip" title="Fase" style="cursor: pointer;">
+                &nbsp;({{ building.state.getLabelFrom(building.state) }})
+            </span>
+            <span data-bs-toggle="tooltip" title="Sistema constructivo" style="cursor: pointer;">
+                &nbsp;[{{ building.getConstructiveSystem() }}]
+            </span>
         {% endif %}
         {{ include('building/_buttons_header.html.twig', {'building': building}) }}
     {% endblock %}
@@ -39,7 +45,7 @@
 
 {% endcomponent %}
 
-{#{{ include('partials/modal/_modal_load.html.twig') }}#}
+{# {{ include('partials/modal/_modal_load.html.twig') }} #}
 
 {% if building.id is not null %}
     {% component 'Modal:Confirm' with {

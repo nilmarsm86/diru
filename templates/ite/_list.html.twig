@@ -1,3 +1,4 @@
+{% if not app.request.query.get('modal') %}
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
     extra: '',
@@ -63,96 +64,10 @@
     {% endblock %}
 
     {% block body %}
-        {% component 'Table:Table' with {
-            paginator: paginator,
-        } %}
-
-            {% block tableHead %}
-                <tr>
-                    {% if type is not defined %}
-                        <th>Tipo</th>
-                    {% endif %}
-                    {% if app.request.query.get('quality') == '' %}
-                        <th>Calidad</th>
-                    {% endif %}
-                    <th>Min</th>
-                    <th>Max</th>
-                    {% if app.request.query.get('mu') == '' %}
-                        <th>Unidad de Medida</th>
-                    {% endif %}
-                    {% if app.request.query.get('source') == '' %}
-                        <th>Fuente</th>
-                    {% endif %}
-                    <th>Año de referencia</th>
-                    {% if path is same as 'app_ite_international' %}
-                        {% if app.request.query.get('city') == '' %}
-                            <th>Ciudad</th>
-                        {% endif %}
-                        {% if app.request.query.get('country') == '' %}
-                            <th>País</th>
-                        {% endif %}
-                    {% endif %}
-                    {% if app.request.query.get('pt') == '' %}
-                        <th>Tipo de proyecto</th>
-                    {% endif %}
-                    <th></th>
-                </tr>
-            {% endblock %}
-
-            {% block tableBody %}
-                {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
-
-                {% for ite in paginator.getData() %}
-                    <tr {{ stimulusController('delete-form-container') }}>
-                        {% if type is not defined %}
-                            <td>{{ ite.type.getLabelFrom(ite.type) }}</td>
-                        {% endif %}
-                        {% if app.request.query.get('quality') == '' %}
-                            <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
-                        {% endif %}
-                        <td>{{ money((ite.min * 100)) }}</td>
-                        <td>{{ money((ite.max * 100)) }}</td>
-                        {% if app.request.query.get('mu') == '' %}
-                            <td>{{ ite.measurementUnit.code }}</td>
-                        {% endif %}
-                        {% if app.request.query.get('source') == '' %}
-                            <td>{{ ite.source.name }}</td>
-                        {% endif %}
-                        <td>{{ ite.yearReference }}</td>
-                        {% if path is same as 'app_ite_international' %}
-                            {% if app.request.query.get('city') == '' %}
-                                <td>{{ ite.city.name }}</td>
-                            {% endif %}
-                            {% if app.request.query.get('country') == '' %}
-                                <td>{{ ite.city.country.name }}</td>
-                            {% endif %}
-                        {% endif %}
-                        {% if app.request.query.get('pt') == '' %}
-                            <td>{{ ite.projectType.name }}</td>
-                        {% endif %}
-                        <td class="text-end">
-                            {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
-                            {{ tableActionButton3(path('app_ite_edit', {'id': ite.id}), 'fa:edit', '', 'Editar ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_edit', {'id': ite.id})}), 'btn-link') }}
-
-                            {{ component('DeleteForm', {
-                                path: path('app_ite_delete', {'id': ite.id}),
-                                confirm: 'Está seguro que desea eliminar el ITE?',
-                                token: 'delete' ~ ite.id,
-                                title: 'Eliminar ITE',
-                                icon: 'bi:trash',
-                                cssClass: 'btn-link text-danger'
-                            }) }}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="2">No se encontraron ITE de referencia.</td>
-                    </tr>
-                {% endfor %}
-            {% endblock %}
-
-        {% endcomponent %}
-
+        {{ include('ite/_table.html.twig') }}
     {% endblock %}
 
 {% endcomponent %}
+{% else %}
+    {{ include('ite/_table.html.twig') }}
+{% endif %}

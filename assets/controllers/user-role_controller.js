@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import {Toast} from "bootstrap";
+import {Toast, Modal} from "bootstrap";
 import {useContentLoader} from "../behaviors/content-loader/use-content-loader.js";
 
 /*
@@ -45,10 +45,17 @@ export default class extends Controller {
 
     async onChange(event, type, checkAction, uncheckAction){
         if(type === 'state'){
-            if(!event.target.checked && !confirm('Está seguro que desea desactivar el usuario?')){
+            if(!event.target.checked){
+
+               let modal = Modal.getOrCreateInstance(event.target.dataset.bsTarget).toggle();
                 event.target.checked = true;
-                return ;
+               return;
             }
+
+            // if(!event.target.checked && !confirm('Está seguro que desea desactivar el usuario?')){
+            //     event.target.checked = true;
+            //     return ;
+            // }
         }
 
         this.dispatch('startChange');
@@ -87,7 +94,7 @@ export default class extends Controller {
             });
         }
         await this.processResponse(response);
-        if(this.urlValue){
+        /*if(this.urlValue){
             const eventDetail = new CustomEvent('loadData', {
                 detail: {
                     url: '/user/',
@@ -96,7 +103,38 @@ export default class extends Controller {
                 }
             });
             this.refreshContent(eventDetail);
+        }*/
+        this.dispatch('endChange');
+    }
+
+    async onChange2(event){
+        let check = this.element.querySelector('.form-check-input');
+
+        let uncheckAction = async () => {
+            return await this.doRequest(this.urlStateValue, 'action', 'dectivate');
+        };
+
+        this.dispatch('startChange');
+        let response = null;
+
+        response = await uncheckAction();
+        if(!response.ok){
+            check.checked = true;
         }
+
+        if(response.status === 422){
+            check.disabled = true;
+        }
+
+        //si se desactivo el usuario que se desactiven sus checkbox
+        let roleChecks = this.element.querySelectorAll('input');
+        roleChecks.forEach((check) => {
+            if(!check.classList.contains('client') && !check.classList.contains('form-check-input')){
+                check.disabled = true;
+            }
+        });
+
+        await this.processResponse(response);
         this.dispatch('endChange');
     }
 

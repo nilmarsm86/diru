@@ -44,16 +44,28 @@
                         }) }}>
                             <td>
                                 {% if app.user.isAdmin() %}
-                                    <div class="form-check form-switch">
+                                    <div class="form-check form-switch" data-bs-toggle="tooltip"
+                                         title="{% if user.isActive() %}Desactivar usuario{% else %}Activar usuario{% endif %}"
+                                    >
                                         <input
                                             class="form-check-input"
                                             type="checkbox"
                                             {{ stimulus_action('user-role', 'onChangeState', 'change') }}
-                                            role="switch" data-bs-toggle="tooltip"
-                                            title="{% if user.isActive() %}Desactivar usuario{% else %}Activar usuario{% endif %}"
+                                            role="switch"
                                             {% if user.isActive() %}checked{% endif %}
+                                    {% if user.isActive() %}data-bs-toggle="modal" data-bs-target="#change-user-{{ app.user.id }}"{% endif%}
                                         >
                                     </div>
+                                    {% if user.isActive() %}
+                                        {% component 'Modal:Confirm' with  {
+                                            title: 'Confirmar',
+                                            id: 'change-user-'~app.user.id,
+                                            question: 'Está seguro que desea desactivar el usuario?',
+                                            href: 'null',
+                                            render: '<button data-action="click->user-role#onChange2" data-switch="#change-user-'~app.user.id~'" class="btn btn-danger" data-bs-dismiss="modal" style="padding-left: 12px;padding-right: 12px">Aceptar</button>'
+                                        } %}
+                                        {% endcomponent %}
+                                    {% endif%}
                                 {% endif %}
                             </td>
                             <td>{{ user.person.getFullName() }}</td>
@@ -64,7 +76,7 @@
                                         <div class="form-check">
                                             <input
                                                 type="checkbox" data-bs-toggle="tooltip"
-                                                title="Quitar/Asignar permiso"
+                                                title="{% if user.isActive() == false %}Usuario inactivo{% else %}Quitar/Asignar permiso{% endif %}"
                                                 {{ stimulus_action('user-role', 'onChangeRole', 'change') }}
                                                 {% if role.name is same as constant('ROLE_CLIENT', role) %}
                                                     class="client"

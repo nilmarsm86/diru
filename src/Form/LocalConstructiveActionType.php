@@ -48,6 +48,7 @@ class LocalConstructiveActionType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Sistema constructivo:',
                 'placeholder' => '-Seleccione-',
+
                 'add' => true,
                 'add_title' => 'Agregar Sistema Constructivo',
                 'add_id' => 'modal-load',

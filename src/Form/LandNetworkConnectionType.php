@@ -4,14 +4,15 @@ namespace App\Form;
 
 use App\Entity\LandNetworkConnection;
 use App\Entity\NetworkConnection;
+use App\Form\Types\EntityPlusType;
 use App\Form\Types\NetworkConnectionEnumType;
 use App\Form\Types\TechnicalStatusEnumType;
 use App\Form\Types\TrixEditorType;
 use App\Form\Types\UnitMeasurementFloatType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @template TData of LandNetworkConnection
@@ -20,6 +21,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class LandNetworkConnectionType extends AbstractType
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+    }
+
     /**
      * @param FormBuilderInterface<LandNetworkConnection|null> $builder
      * @param array<string, mixed>                             $options
@@ -32,11 +37,16 @@ class LandNetworkConnectionType extends AbstractType
             'label' => 'Explicación:',
             'required' => false,
         ])
-            ->add('networkConnection', EntityType::class, [
+            ->add('networkConnection', EntityPlusType::class, [
                 'class' => NetworkConnection::class,
                 'choice_label' => 'name',
                 'label' => 'Red:',
                 'placeholder' => '-Seleccione-',
+
+                'add' => true,
+                'add_title' => 'Agregar Conexion de Red:',
+                'add_id' => 'modal-load',
+                'add_url' => $this->router->generate('app_network_connection_new', ['modal' => 'modal-load']),
             ])
             ->add('type', NetworkConnectionEnumType::class, [
                 'label' => 'Tipo de conexión:',

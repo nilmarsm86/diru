@@ -46,7 +46,14 @@
                         <td>{{ building.getTotalEstimatedValueFormated() }}</td>
                         <td>{{ building.isNew ? 'NO' : 'SI' }}</td>
                         {% if app.request.query.get('state') == '' %}
-                            <td>{{ building.state.getLabelFrom(building.state) }}</td>
+                            <td>
+                                <a href="{{ path('app_building_project', {'project':project.id, 'state':building.state.value}) }}" {{ stimulusController('filter-link', {
+                                    'queryName' : 'state',
+                                    'data' : building.state.value
+                                }) }}>
+                                    {{ building.state.getLabelFrom(building.state) }}
+                                </a>
+                            </td>
                         {% endif %}
                         <td>
                             {% if building.hasActiveConstructorCorporateEntity() %}

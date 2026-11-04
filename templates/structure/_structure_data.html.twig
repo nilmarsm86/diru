@@ -10,13 +10,17 @@
     structure.floor.name :
     structure.name %}
 
-<ul>
-    <li><strong>Proyecto: </strong>{{ projectName }}</li>
-    <li><strong>Obra: </strong>{{ buildingName }}</li>
-    {% if structure.isSubSystem() or structure.isFloor()  %}
-        <li><strong>Planta: </strong>{{ floorName }}</li>
-    {% endif %}
-    {% if structure.isSubSystem() %}
-        <li><strong>Subsistema: </strong>{{ structure.name }}</li>
-    {% endif %}
-</ul>
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush" style="list-style: none;">
+            <li><strong>Proyecto: </strong>{{ projectName }}</li>
+            <li><strong>Obra: </strong>{{ buildingName }}</li>
+            {% if structure.isSubSystem() or structure.isFloor() %}
+                <li><strong>Planta: </strong>{{ floorName }}</li>
+            {% endif %}
+            {% if structure.isSubSystem() %}
+                <li><strong>Subsistema: </strong>{{ structure.name }}</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

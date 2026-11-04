@@ -16,10 +16,10 @@
             {% endif %}
             <th>Min</th>
             <th>Max</th>
-            {% if app.request.query.get('mu') == '' and app.request.query.get('modal') === false %}
+            {% if app.request.query.get('mu') == '' %}
                 <th>Unidad de Medida</th>
             {% endif %}
-            {% if app.request.query.get('source') == '' and app.request.query.get('modal') === false  %}
+            {% if app.request.query.get('source') == '' %}
                 <th>Fuente</th>
             {% endif %}
             <th>Año de referencia</th>
@@ -49,12 +49,20 @@
                 {% if app.request.query.get('quality') == '' %}
                     <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
                 {% endif %}
-                <td>{{ money((ite.min * 100)) }}</td>
-                <td>{{ money((ite.max * 100)) }}</td>
-                {% if app.request.query.get('mu') == '' and app.request.query.get('modal') === false %}
+                <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
+                    <a onclick="document.getElementById('local_localConstructiveAction_price').value = '{{ money((ite.min * 100)) }}';">
+                        {{ money((ite.min * 100)) }}
+                    </a>
+                </td>
+                <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
+                    <a onclick="document.getElementById('local_localConstructiveAction_price').value = '{{ money((ite.max * 100)) }}';">
+                        {{ money((ite.max * 100)) }}
+                    </a>
+                </td>
+                {% if app.request.query.get('mu') == '' %}
                     <td>{{ ite.measurementUnit.code }}</td>
                 {% endif %}
-                {% if app.request.query.get('source') == '' and app.request.query.get('modal') === false  %}
+                {% if app.request.query.get('source') == '' %}
                     <td>{{ ite.source.name }}</td>
                 {% endif %}
                 <td>{{ ite.yearReference }}</td>
@@ -70,7 +78,7 @@
                     <td>{{ ite.projectType.name }}</td>
                 {% endif %}
                 <td class="text-end">
-                    {% if app.request.query.get('modal') === false %}
+{#                    {% if app.request.query.get('modal') %}#}
                         {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
                         {{ tableActionButton3(path('app_ite_edit', {'id': ite.id}), 'fa:edit', '', 'Editar ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_edit', {'id': ite.id})}), 'btn-link') }}
 
@@ -82,9 +90,7 @@
                             icon: 'bi:trash',
                             cssClass: 'btn-link text-danger'
                         }) }}
-                    {% else %}
-                        {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
-                    {% endif%}
+{#                    {% endif %}#}
                 </td>
             </tr>
         {% else %}

@@ -56,12 +56,7 @@
 <details class="collection"
          {% if approvedValueConstruction.vars.data > 0 or approvedValueEquipment.vars.data > 0 or approvedValueOther.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Valores aprobados:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
+        Valores aprobados:
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('summation-values') }}>
@@ -92,12 +87,7 @@
     {{ stimulusController('estimate-value') }}
 >
     <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Valores estimados:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
+        Valores estimados:
     </summary>
     <br>
     <div {{ stimulusController('summation-values') }}>
@@ -176,12 +166,7 @@
 
 <details class="collection" {% if bui.getCoefficient() > 0 %}open{% endif %}>
     <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Presupusto estimado:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
+        Presupusto estimado:
     </summary>
     <br>
     <div class="mb-0 row" {{ stimulusController('estimate-presupposition', {
@@ -258,12 +243,7 @@
 
 <details class="collection" {% if constructionAssembly.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Valor de presupuesto detallado:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
+        Valor de presupuesto detallado:
     </summary>
     <br>
     <div class="mb-0 row">
@@ -301,12 +281,7 @@
 
 <details class="collection" {% if constructionRealValue.vars.data > 0 %}open{% endif %}>
     <summary class="collection">
-        <div class="row summary-btn-lis">
-            <div class="col">Valor real de construcción:</div>
-            <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-
-            </div>
-        </div>
+        Valor real de construcción:
     </summary>
     <br>
     <div class="mb-0 row">

@@ -260,13 +260,14 @@ details.collection{
 }
 
 .summary-btn-lis{
-    margin-top: -1.20rem;
-    margin-left: 0;
+    margin-top: -1.5rem;
+    margin-left: 5px;
 }
 
 summary.collection{
     padding-top: 0.5rem;
     padding-bottom: 0;
+    font-size: 16px;
 }
 
 summary.collection::marker{

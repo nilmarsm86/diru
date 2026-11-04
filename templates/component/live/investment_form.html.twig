@@ -10,11 +10,11 @@
     {{ form_row(form.name) }}
 
     {{ form_row(form.streetAddress) }}
-    <details class="mb-3 mt-0" style="padding: 0 var(--bs-card-spacer-x);" {% if (this.inv.id is not null) %}open{% endif %}>
-        <summary class="mb-3 mt-0" style="font-weight: bold;margin-left: calc(var(--bs-card-spacer-x) * -1);">
-            Otros datos de la dirección
+    <details class="collection" {% if (this.inv.id is not null) %}open{% endif %}>
+        <summary class="collection">
+            Otros datos de la dirección:
         </summary>
-
+        <br>
         {{ form_row(form.betweenStreets) }}
         <div class="mb-0 row">
             <div class="col">

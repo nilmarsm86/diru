@@ -7,7 +7,7 @@ use App\Entity\EnterpriseClient;
 use App\Entity\Representative;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
-use Doctrine\ORM\EntityRepository;
+use App\Repository\CorporateEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -60,7 +60,7 @@ class EnterpriseClientType extends AbstractType
             ->add('corporateEntity', EntityPlusType::class, [
                 'class' => CorporateEntity::class,
                 'label' => 'Entidad corporativa:',
-                'query_builder' => $this->getEntityQueryBuilder(),
+                'query_builder' => $this->getCorporateEntityNotConstructorOnly(),
 
                 'detail' => true,
                 'detail_title' => 'Detalle de la entidad',
@@ -101,11 +101,9 @@ class EnterpriseClientType extends AbstractType
         $resolver->setAllowedTypes('street', 'string');
     }
 
-    private function getEntityQueryBuilder(): \Closure
+    private function getCorporateEntityNotConstructorOnly(): \Closure
     {
-        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
-            ->andWhere('ce.type <> '.\App\Entity\Enums\CorporateEntityType::Constructor->value)
-            ->orderBy('ce.name', 'ASC');
+        return fn (CorporateEntityRepository $er): QueryBuilder => $er->getCorporateEntityNotConstructorOnly();
     }
 
     private function onPreSetData(FormEvent $event): void

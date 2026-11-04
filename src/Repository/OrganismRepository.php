@@ -110,4 +110,10 @@ class OrganismRepository extends ServiceEntityRepository implements FilterInterf
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    public function getOrganismQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.name', \SortDirection::Ascending);
+    }
 }

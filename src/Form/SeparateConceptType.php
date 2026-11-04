@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\SeparateConcept;
 use App\Repository\SeparateConceptRepository;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -117,13 +116,6 @@ class SeparateConceptType extends AbstractType
 
     private function getParentConcepts(): \Closure
     {
-        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('sc')
-            ->where('sc.parent IS NULL')
-            ->orderBy('sc.id', 'ASC');
+        return fn (SeparateConceptRepository $er): QueryBuilder => $er->getParentConcepts();
     }
-
-    //    private function getChildsConcepts(?SeparateConcept $parentSeparateConcept = null): array
-    //    {
-    //        return $this->separateConceptRepository->findSubtree($parentSeparateConcept?->getId() ?? 0);
-    //    }
 }

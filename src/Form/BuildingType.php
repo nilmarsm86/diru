@@ -12,10 +12,10 @@ use App\Form\Types\EntityPlusType;
 use App\Form\Types\MoneyPlusType;
 use App\Form\Types\SimpleArrayTextareaType;
 use App\Form\Types\TrixEditorType;
+use App\Repository\CorporateEntityRepository;
 use App\Repository\EnterpriseClientRepository;
 use App\Repository\IndividualClientRepository;
 use App\Service\Building\BuildingValuationService;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -578,17 +578,11 @@ class BuildingType extends AbstractType
 
     private function getCorporateEntityConstructor(): \Closure
     {
-        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
-            ->andWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::Constructor->value)
-            ->orWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::ClientAndConstructor->value)
-            ->orderBy('ce.name', 'ASC');
+        return fn (CorporateEntityRepository $er): QueryBuilder => $er->getCorporateEntityConstructor();
     }
 
     private function getCorporateEntityDraftman(): \Closure
     {
-        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('ce')
-            ->andWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::Draftman->value)
-//            ->orWhere('ce.type = '.\App\Entity\Enums\CorporateEntityType::ClientAndConstructor->value)
-            ->orderBy('ce.name', 'ASC');
+        return fn (CorporateEntityRepository $er): QueryBuilder => $er->getCorporateEntityDraftman();
     }
 }

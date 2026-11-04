@@ -224,4 +224,11 @@ SQL;
 
         return $result;
     }
+
+    public function getParentConcepts(): QueryBuilder
+    {
+        return $this->createQueryBuilder('sc')
+            ->where('sc.parent IS NULL')
+            ->orderBy('sc.id', \SortDirection::Ascending);
+    }
 }

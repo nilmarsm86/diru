@@ -123,4 +123,26 @@ class CorporateEntityRepository extends ServiceEntityRepository implements Filte
 
         return $this->paginate($query, $page, $amountPerPage);
     }
+
+    public function getCorporateEntityConstructor(): QueryBuilder
+    {
+        return $this->createQueryBuilder('ce')
+            ->andWhere('ce.type = '.CorporateEntityType::Constructor->value)
+            ->orWhere('ce.type = '.CorporateEntityType::ClientAndConstructor->value)
+            ->orderBy('ce.name', \SortDirection::Ascending);
+    }
+
+    public function getCorporateEntityDraftman(): QueryBuilder
+    {
+        return $this->createQueryBuilder('ce')
+            ->andWhere('ce.type = '.CorporateEntityType::Draftman->value)
+            ->orderBy('ce.name', \SortDirection::Ascending);
+    }
+
+    public function getCorporateEntityNotConstructorOnly(): QueryBuilder
+    {
+        return $this->createQueryBuilder('ce')
+            ->andWhere('ce.type <> '.CorporateEntityType::Constructor->value)
+            ->orderBy('ce.name', \SortDirection::Ascending);
+    }
 }

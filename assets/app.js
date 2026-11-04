@@ -38,7 +38,7 @@ function tooltips(){
 
         [...tooltipTriggerList].map(tooltipTriggerEl => {
             tooltipTriggerEl.addEventListener('click', () => {
-                Tooltip.getInstance(tooltipTriggerEl).hide();
+                Tooltip.getInstance(tooltipTriggerEl).hide();//TODO: a veces el tooltip no se oculta pq esta en el elemento padre o hijo
             });
         });
     }, 600);

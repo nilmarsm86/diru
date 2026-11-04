@@ -7,7 +7,7 @@ use App\Entity\Organism;
 use App\Form\Types\CorporateEntityTypeEnumType;
 use App\Form\Types\EntityPlusType;
 use App\Form\Types\StreetAddressType;
-use Doctrine\ORM\EntityRepository;
+use App\Repository\OrganismRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -120,6 +120,6 @@ class CorporateEntityType extends AbstractType
 
     private function getOrganismQueryBuilder(): \Closure
     {
-        return fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('o')->orderBy('o.name');
+        return fn (OrganismRepository $er): QueryBuilder => $er->getOrganismQueryBuilder();
     }
 }

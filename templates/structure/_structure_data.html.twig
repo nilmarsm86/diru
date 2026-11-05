@@ -1,8 +1,9 @@
-{% set projectName = (structure.isLocal() == false and structure.isSubSystem() == false and structure.isFloor() == false) ?
+{% set isBuilding = (structure.isLocal() == false and structure.isSubSystem() == false and structure.isFloor() == false) %}
+{% set projectName = (isBuilding === true) ?
     structure.project.name :
     (structure.isFloor() ? structure.building.project.name : structure.floor.building.project.name) %}
 
-{% set buildingName = (structure.isLocal() == false and structure.isSubSystem() == false and structure.isFloor() == false) ?
+{% set buildingName = (isBuilding === true) ?
     structure.name :
     (structure.isFloor() ? structure.building.name : structure.floor.building.name) %}
 
@@ -10,7 +11,7 @@
     structure.floor.name :
     structure.name %}
 
-<div class="card">
+<div class="card text-bg-secondary" style="min-height: 155px">
     <div class="card-body">
         <ul class="list-group list-group-flush" style="list-style: none;">
             <li><strong>Proyecto: </strong>{{ projectName }}</li>

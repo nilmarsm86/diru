@@ -19,6 +19,9 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
     use SaveData;
     use PaginateTrait;
 
+    public const WITH_REPRESENTATIVE = 'Con representante';
+    public const WITHOUT_REPRESENTATIVE = 'Sin representante';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, IndividualClient::class);
@@ -46,13 +49,22 @@ class IndividualClientRepository extends ServiceEntityRepository implements Filt
     /**
      * @return Paginator<mixed>
      */
-    public function findIndividuals(string $filter = '', int $amountPerPage = 10, int $page = 1): Paginator
+    public function findIndividuals(string $filter = '', int $amountPerPage = 10, int $page = 1, ?string $representative = null): Paginator
     {
         $builder = $this->createQueryBuilder('ic')->select(['ic', 'mun', 'pro', 'p'])
             ->innerJoin('ic.municipality', 'mun')
             ->leftJoin('mun.province', 'pro')
             ->leftJoin('ic.person', 'p');
-        //        $this->addType($builder, $type);
+        if (null !== $representative && '' !== $representative) {
+            if (self::WITH_REPRESENTATIVE === $representative) {
+                $builder->where('ic.representative is not null');
+            }
+
+            if (self::WITHOUT_REPRESENTATIVE === $representative) {
+                $builder->where('ic.representative is null');
+            }
+        }
+
         $this->addFilter($builder, $filter);
         $query = $builder->orderBy('ic.id', \SortDirection::Ascending)->getQuery();
 

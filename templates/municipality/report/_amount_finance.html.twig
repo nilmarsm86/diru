@@ -33,7 +33,10 @@
                     <tr>
                         <td>{{ municipality.name }}</td>
                         <td>
-                            <a href="{{ filterLink(municipality.province) }}"
+                            <a href="{{ filterLink(municipality.province) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : municipality.province
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ municipality.province }}

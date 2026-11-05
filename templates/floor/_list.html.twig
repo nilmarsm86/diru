@@ -20,37 +20,41 @@
         {{ include('structure/_structure_data.html.twig', {'structure' : building}) }}
     </div>
     <div class="col">
-        <ul class="list-group list-group-flush">
-            <li>
-                <strong>Terreno:</strong>
-                {{ building.land.getLandArea()|number_format(2) }}m<sup>2</sup>
-            </li>
-            <li>
-                <strong>Ocupado en Terreno:</strong>
-                {% if building.isNew() == true %}
-                    {{ building.getATP()|number_format(2) }}m<sup>2</sup>
-                {% else %}
-                    {% if reply %}
-                        {{ building.getATP()|number_format(2) }}m<sup>2</sup>
-                    {% else %}
-                        {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
-                    {% endif %}
-                {% endif %}
-            </li>
-            <li>
-                {% if reply %}
-                    <strong>Terreno Libre con posibilidad de ocupar:</strong>
-                    {{ (building.land.getLandArea() - building.getATP())|number_format(2) }}m<sup>2</sup>
-                {% else %}
-                    <strong>Terreno Libre:</strong>
-                    {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
-                {% endif %}
-            </li>
-            <li {% if (building.getUnassignedArea() > 0) %}style="color:red"{% endif %}>
-                <strong>Sin Asignar:</strong>
-                {{ building.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
-            </li>
-        </ul>
+        <div class="card text-bg-secondary" style="min-height: 155px">
+            <div class="card-body">
+                <ul class="list-group list-group-flush" style="list-style: none;">
+                    <li>
+                        <strong>Terreno:</strong>
+                        {{ building.land.getLandArea()|number_format(2) }}m<sup>2</sup>
+                    </li>
+                    <li>
+                        <strong>Ocupado en Terreno:</strong>
+                        {% if building.isNew() == true %}
+                            {{ building.getATP()|number_format(2) }}m<sup>2</sup>
+                        {% else %}
+                            {% if reply %}
+                                {{ building.getATP()|number_format(2) }}m<sup>2</sup>
+                            {% else %}
+                                {{ building.land.getOccupiedArea()|number_format(2) }}m<sup>2</sup>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if reply %}
+                            <strong>Terreno Libre con posibilidad de ocupar:</strong>
+                            {{ (building.land.getLandArea() - building.getATP())|number_format(2) }}m<sup>2</sup>
+                        {% else %}
+                            <strong>Terreno Libre:</strong>
+                            {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
+                        {% endif %}
+                    </li>
+                    <li {% if (building.getUnassignedArea() > 0) %}class="text-danger-emphasis"{% endif %}>
+                        <strong>Sin Asignar:</strong>
+                        {{ building.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -71,6 +75,7 @@
                 path: path('app_floor_index', {'building': building.id, 'reply':(not reply)}),
                 queryNames:['type', 'state', 'amount', 'filter', 'page']
             }) }}
+            {{ tableActionButton3('#', '', 'Resumen', 'Resumen', '', 'btn-info') }}
             {% if building.hasReply() %}
                 {% if reply %}
                     {{ tableActionButton3("", '', 'Sistema constructivo', 'Clasificar sistema constructivo') }}
@@ -403,7 +408,7 @@
                     <th>{{ building.getUnassignedArea(not reply)|number_format(2) }}</th>
                     <th>
                         {% if reply %}
-{#                            {{ building.getFreeArea(reply)|number_format(2) }}#}
+                            {#                            {{ building.getFreeArea(reply)|number_format(2) }} #}
                             {{ (building.land.getLandArea() - building.getATP())|number_format(2) }}
                         {% else %}
                             {{ building.getFreeArea(not reply)|number_format(2) }}
@@ -471,4 +476,4 @@
 
 {% endcomponent %}
 
-{#{{ include('partials/modal/_modal_load.html.twig') }}#}
+{# {{ include('partials/modal/_modal_load.html.twig') }} #}

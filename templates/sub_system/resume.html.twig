@@ -16,16 +16,14 @@
         ]) }}
     </div>
 
-    <h5 class="mb-4">
-        Datos de construcción:
-    </h5>
-
-    <ul>
-{#        <li><strong>Subsistema: </strong>{{ sub_system.name }}</li>#}
-        <li><strong>Planta: </strong>{{ floor.name }}</li>
-        <li><strong>Obra: </strong>{{ floor.building.name }}</li>
-        <li><strong>Proyecto: </strong>{{ floor.building.project.name }}</li>
-    </ul>
+    <div class="row mb-3">
+        <div class="col">
+            {{ include('structure/_structure_data.html.twig', {'structure' : floor}) }}
+        </div>
+        <div class="col">
+            {{ include('structure/_resume_data.html.twig', {'structure' : floor}) }}
+        </div>
+    </div>
 
     {{ include('sub_system/resume/_classification.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

@@ -7,7 +7,7 @@
 
     {% block header %}
         {% from 'macros/buttons.html.twig' import tableActionButton3 %}
-{#        {{ include('building/_buttons_header.html.twig') }}#}
+        {#        {{ include('building/_buttons_header.html.twig') }} #}
         {{ tableActionButton3('#', 'mdi:close', '', 'Cerrar', stimulusAction('twig/card/card', 'close:prevent'), 'btn-link') }}
     {% endblock %}
 
@@ -65,7 +65,7 @@
                             >
                                 {{ building.getActiveConstructorCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
-                        {% else%}
+                        {% else %}
                             <span class="text-danger">Sin constructora</span>
                         {% endif %}
                     </td>
@@ -84,7 +84,7 @@
                             >
                                 {{ building.getActiveDraftmanCorporateEntityName() }} {{ ux_icon('bx:link-external', {class:'bi'}) }}
                             </a>
-                        {% else%}
+                        {% else %}
                             <span class="text-danger">Sin proyectista</span>
                         {% endif %}
                     </td>
@@ -161,7 +161,3 @@
     {% endblock %}
 
 {% endcomponent %}
-
-{#{{ include('partials/modal/_modal_load.html.twig') }}#}
-
-

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\Paginator;
 use App\Entity\IndividualClient;
 use App\Entity\Role;
 use App\Repository\IndividualClientRepository;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -26,9 +28,28 @@ final class IndividualClientController extends AbstractController
      * @throws LoaderError
      */
     #[Route(name: 'app_individual_client_index', methods: ['GET'])]
-    public function index(Request $request, IndividualClientRepository $individualClientRepository, CrudActionService $crudActionService): Response
+    public function index(Request $request, RouterInterface $router, IndividualClientRepository $individualClientRepository): Response
     {
-        return $crudActionService->indexAction($request, $individualClientRepository, 'findIndividuals', 'individual_client');
+        $filter = $request->query->get('filter', '');
+        $amountPerPage = (int) $request->query->get('amount', '10');
+        $pageNumber = (int) $request->query->get('page', '1');
+
+        $representative = $request->query->get('representative', null) ?? null;
+
+        $data = $individualClientRepository->findIndividuals($filter, $amountPerPage, $pageNumber, $representative);
+
+        $paginator = new Paginator($data, $amountPerPage, $pageNumber);
+        if ($paginator->isFromGreaterThanTotal()) {
+            return $paginator->greatherThanTotal($request, $router, $pageNumber);
+        }
+
+        $template = ($request->isXmlHttpRequest()) ? '_list.html.twig' : 'index.html.twig';
+
+        return $this->render("individual_client/$template", [
+            'filter' => $filter,
+            'paginator' => $paginator,
+            'representatives' => [IndividualClientRepository::WITH_REPRESENTATIVE, IndividualClientRepository::WITHOUT_REPRESENTATIVE],
+        ]);
     }
 
     /**

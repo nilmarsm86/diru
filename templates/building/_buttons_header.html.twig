@@ -1,10 +1,6 @@
 {% from 'macros/buttons.html.twig' import tableActionButton3 %}
 
 <div class="col d-grid gap-2 d-md-flex justify-content-md-end summary-btn-bar">
-    {#    {% if building.hasReply() %} #}
-    {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id, 'reply': true}), 'dinkie-icons:house-buildings-small', 'Inmueble a modificar', 'Inmueble a modificar') }} #}
-    {#    {% endif %} #}
-
     <div class="dropdown d-inline-block">
         <button type="button"
                 class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-info"
@@ -41,15 +37,12 @@
     </div>
 
     {% if building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftsman') %}
-        {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'3'}), '', 'Virar a diseño', 'Pasar a estado de diseño') }} #}
-        {#        {{ tableActionButton3(path('app_building_state_transition', {'id': building.id, 'type':'5'}), '', 'Revisado', 'Pasar a estado de revisado') }} #}
         <div class="dropdown d-inline-block">
             <button type="button"
                     class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
                     data-bs-toggle="dropdown"
                     aria-expanded="false" title="Estados"
             >
-                {#                {{ ux_icon('bi:list', {'class':'bi'}) }} #}
                 Estados
             </button>
 
@@ -76,20 +69,6 @@
     {% if building.state not in notRegisteredOrDiagnosis %} {# TODO: pasar esta comprobacion para la entidad #}
         <div class="btn-group" role="group" aria-label="Revisiones">
             {% if building.hasBuildingRevisions() or building.state is same as constant('App\\Entity\\Enums\\BuildingState::RevisionDraftsman') %}
-                {#                <button #}
-                {#                    class="btn text-decoration-none btn-sm btn-primary" #}
-                {#                    {{ stimulusController('modal-content-loader', { #}
-                {#                        url: path('app_building_revision_index', {'building': building.id, 'modal':'modal-load'}), #}
-                {#                        id: 'modal-load', #}
-                {#                        placeholder: 'Cargando...', #}
-                {#                        title: 'Revisiones realizadas', #}
-                {#                    }) }} #}
-                {#                    {{ stimulusTarget('modal-content-loader', 'button') }} #}
-                {#                > #}
-                {#                    {{ ux_icon('bi:list', {'class':'bi'}) }} #}
-                {#                    Revisiones #}
-                {#                </button> #}
-
                 <div class="dropdown d-inline-block">
                     <button type="button"
                             class="btn text-decoration-none btn-sm dropdown-toggle show dropdown-sm btn-primary"
@@ -133,21 +112,6 @@
 
                 </div>
             {% endif %}
-
-            {#            {% if building.state.value is same as '4' %} #}
-            {#                <button #}
-            {#                    class="btn text-decoration-none btn-sm btn-primary show" #}
-            {#                    {{ stimulusController('modal-content-loader', { #}
-            {#                        url: path('app_building_revision_new', {'building': building.id, 'state':'modal', 'modal':'modal-load'}), #}
-            {#                        id: 'modal-load', #}
-            {#                        placeholder: 'Cargando...', #}
-            {#                        title: 'Agregar revisión', #}
-            {#                    }) }} #}
-            {#                    {{ stimulusTarget('modal-content-loader', 'button') }} #}
-            {#                > #}
-            {#                    {{ ux_icon('bi:plus-lg', {'class':'bi'}) }} #}
-            {#                </button> #}
-            {#            {% endif %} #}
         </div>
     {% endif %}
 
@@ -164,16 +128,6 @@
         }) ~ stimulusTarget('modal-content-loader', 'button') %}
         {{ tableActionButton3(path('app_building_state_more_floors', {'id':building.id}), 'gis:copy-poly', 'Salvar', 'Crear inmueble a modificar', action_save) }}
     {% endif %}
-
-{#    {% if building.id is not null and building.getEstimatedConstructionAndNetworkConnection() > 0 %}#}
-{#        {% set action_save = stimulusController('modal-content-loader', {#}
-{#            url: path('app_building_report_separate_presupposition', {'id': building.id, 'modal':'modal-load', 'state':'modal'}),#}
-{#            id: 'desglose',#}
-{#            placeholder: 'Cargando...',#}
-{#            title: 'Desglose de presupuesto del valor estimado ajustado',#}
-{#        }) ~ stimulusTarget('modal-content-loader', 'button') %}#}
-{#        {{ tableActionButton3(path('app_building_report_separate_presupposition', {'id': building.id}), 'streamline-ultimate:presentation-projector-screen-budget-analytics', 'Desglose', 'Desglose', action_save) }}#}
-{#    {% endif %}#}
 
     {% if building.isNew() is not null %}
         <div class="dropdown d-inline-block">
@@ -210,24 +164,7 @@
         </div>
     {% endif %}
 
-    {#    {% if building.isNew() is not null %} #}
-    {#        {% if building.isNew() == false %} #}
-    {#            {% set labelAndTitle = 'Inmueble existente' %} #}
-    {#        {% else %} #}
-    {#            {% set labelAndTitle = 'Inmueble nuevo' %} #}
-    {#        {% endif %} #}
-    {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', labelAndTitle, labelAndTitle) }} #}
-    {#        {{ tableActionButton3(path('app_floor_index', {'building': building.id}), 'dinkie-icons:house-buildings-small', 'Inmueble nuevo', 'Inmueble nuevo') }} #}
-    {#    {% endif %} #}
-
     {% if building.isNew() is not null and building.hasReply() === false %}
-        {#        <a class="btn btn-sm position-relative btn-primary" title="Resetear" data-bs-toggle="tooltip" #}
-        {#           href="{{ path('app_building_state_reset', {'id':building.id}) }}" #}
-        {#           onclick="return confirm('Esta seguro que desea resetear la obra?')"> #}
-        {#            {{ ux_icon('ix:reset', {class:'bi'}) }} #}
-        {#            Resetear #}
-        {#        </a> #}
-
         <a class="btn btn-sm position-relative btn-primary" title="Resetear"
            data-bs-toggle="modal" data-bs-target="#confirm_reset">
             {{ ux_icon('ix:reset', {class:'bi'}) }}
@@ -236,20 +173,6 @@
     {% endif %}
 
     {% if building.id is not null %}
-{#        <button class="btn btn-sm btn-primary"#}
-{#                title="Conexiones de red"#}
-{#            {{ stimulusTarget('modal-content-loader', 'button') }}#}
-{#            {{ stimulusController('modal-content-loader', {#}
-{#                url: path('app_network_connection_index'),#}
-{#                id: 'modal-load',#}
-{#                placeholder: 'Cargando...',#}
-{#                title: 'Conexiones de red',#}
-{#            }) }}#}
-{#        >#}
-{#            {{ ux_icon('mdi:land-plots-marker', {'class':'bi'}) }}#}
-{#            Conexiones de red#}
-{#        </button>#}
-
         {% if building.land is null %}
             {% set urlPath = path('app_land_new', {'building': building.id, 'modal' : 'modal-load'}) %}
         {% else %}

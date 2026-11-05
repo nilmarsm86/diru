@@ -51,7 +51,10 @@
                         <td>{{ corporateEntity.code }}</td>
                         <td>{{ corporateEntity.nit }}</td>
                         <td>
-                            <a href="{{ filterLink(corporateEntity.organism.name) }}"
+                            <a href="{{ filterLink(corporateEntity.organism.name) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : corporateEntity.organism.name
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ corporateEntity.organism.name }}
@@ -61,7 +64,10 @@
                             <td>{{ corporateEntity.type.getLabelFrom(corporateEntity.type) }}</td>
                         {% endif %}
                         <td>
-                            <a href="{{ filterLink(corporateEntity.getProvinceName()) }}"
+                            <a href="{{ filterLink(corporateEntity.getProvinceName()) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : corporateEntity.getProvinceName()
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ corporateEntity.getProvinceName() }}

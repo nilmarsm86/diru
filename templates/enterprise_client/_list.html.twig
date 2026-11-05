@@ -61,13 +61,18 @@
                                 >
                                     {{ client.representative.getFullName() }}
                                 </a>
-                            {% else%}
+                            {% else %}
                                 <span class="text-danger">Sin representante</span>
                             {% endif %}
                         </td>
                         <td><a href="phone:{{ client.phone }}">{{ client.phone }}</a></td>
                         <td>
-                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
+                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none"
+                                {{ stimulusController('filter-link', {
+                                    'queryName' : 'filter',
+                                    'data' : client.getProvinceName()
+                                }) }}
+                            >
                                 {{ client.getProvinceName() }}
                             </a>
                         </td>
@@ -94,26 +99,5 @@
 
         {% endcomponent %}
 
-{#        {% component 'Modal:Modal' with {#}
-{#            title: 'Detalle del representante',#}
-{#            id: 'detail_person',#}
-
-{#        } %}#}
-{#            {% block body %}#}
-{#                Cargando datos del representante...#}
-{#            {% endblock %}#}
-{#        {% endcomponent %}#}
-
-{#        {% component 'Modal:Modal' with {#}
-{#            title: 'Detalle de la entidad',#}
-{#            id: 'detail_entity',#}
-{#        } %}#}
-{#            {% block body %}#}
-{#                Cargando datos de la entidad corporativa...#}
-{#            {% endblock %}#}
-{#        {% endcomponent %}#}
-
     {% endblock %}
 {% endcomponent %}
-
-{#{{ include('partials/modal/_modal_load.html.twig') }}#}

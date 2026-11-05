@@ -55,10 +55,10 @@
                     <th>Nombre</th>
                     <th class="text-center">Obras {{ ux_icon('bx:link-external', {class:'bi'}) }}</th>
                     {% if app.request.query.get('type') == '' %}
-                        <th>Tipo</th>
+                        <th>Tipo {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     {% endif %}
                     {% if app.request.query.get('state') == '' %}
-                        <th>Estado</th>
+                        <th>Estado {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     {% endif %}
                     <th>Inversión {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th data-bs-toggle="tooltip" title="Costo de construcción">Monto</th>
@@ -106,11 +106,13 @@
                             </td>
                         {% endif %}
                         <td>
-                            <a data-bs-toggle="modal" data-bs-target="#detail-investment"
-                               href="#" style="text-decoration: none" {{ stimulusController('detail-link-modal', {
-                                url: path('app_investment_show', {id:project.investment.id, state:'modal'}),
-                                container: '#detail-investment .modal-body'
-                            }) }}
+                            <a href="#" style="text-decoration: none"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_investment_show', {'id':project.investment.id, 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Detalle de la inversión',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
                             >
                                 {{ project.investment }}
                             </a>
@@ -178,16 +180,6 @@
             {% endblock %}
 
         {% endcomponent %}
-
-        {% component 'Modal:Modal' with {
-            title: 'Detalle de la inversión',
-            id: 'detail-investment',
-        } %}
-            {% block body %}
-                Cargando datos de la inversión...
-            {% endblock %}
-        {% endcomponent %}
-
     {% endblock %}
 
 {% endcomponent %}

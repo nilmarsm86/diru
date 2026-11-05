@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card text-bg-secondary" style="min-height: 155px">
     <div class="card-body">
         <ul class="list-group list-group-flush" style="list-style: none;">
             <li>
@@ -27,13 +27,13 @@
                     {{ structure.getTotalArea()|number_format(2) }}m<sup>2</sup>
                 </li>
             {% else %}
-                <li {% if (occupiedLand > structure.getTotalArea()) %}style="color:red"{% endif %}>
+                <li {% if (occupiedLand > structure.getTotalArea()) %}class="text-danger-emphasis"{% endif %}>
                     <strong>Ocupado en planta:</strong>
                     {{ structure.getTotalArea()|number_format(2) }}m<sup>2</sup>
                 </li>
             {% endif %}
 
-            <li {% if (structure.getUnassignedArea() > 0) %}style="color:red"{% endif %}>
+            <li {% if (structure.getUnassignedArea() > 0) %}class="text-danger-emphasis"{% endif %}>
                 <strong>Sin Asignar en planta:</strong>
                 {{ structure.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
             </li>

@@ -15,19 +15,26 @@
             {% endif %}
         </div>
 
-        <div class="{% if columns|length > 0 %}col-md-3{% else %}col-md-6{% endif %} {#  text-nowrap#}">
+        {#        <div class="{% if columns|length > 0 %}col-md-3{% else %}col-md-6{% endif %} #}{#  text-nowrap #}{# "> #}
+        <div class="col-md-5">
             {% block message %}{% endblock %}
         </div>
 
-        {% if columns|length > 0 %}
-            <div class="col-md-3 text-md-end">
-                {{ component('Table:Column', {
-                    columns: columns
-                }) }}
-            </div>
-        {% endif %}
+        {#        {% if columns|length > 0 %} #}
+        {#            <div class="col-md-3 text-md-end"> #}
+        {#                #}
+        {#            </div> #}
+        {#        {% endif %} #}
 
-        <div class="col-md-3">
+        <div class="col-md-4 d-flex flex-row justify-content-end">
+            {% if columns|length > 0 %}
+                <div style="margin-right: 5px">
+                    {{ component('Table:Column', {
+                        columns: columns
+                    }) }}
+                </div>
+            {% endif %}
+
             {% if paginator is not null and filter %}
                 {% block filter %}
                     {{ component('Table:Filter', {

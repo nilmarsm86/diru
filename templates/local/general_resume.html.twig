@@ -16,11 +16,14 @@
         ]) }}
     </div>
 
-    <h5 class="mb-4">
-        Datos de construcción:
-    </h5>
-
-    {{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
+    <div class="row mb-3">
+        <div class="col">
+            {{ include('structure/_structure_data.html.twig', {'structure' : sub_system}) }}
+        </div>
+        <div class="col">
+            {{ include('structure/_resume_data.html.twig', {'structure' : sub_system.floor}) }}
+        </div>
+    </div>
 
     {{ include('local/resume/_technical_status.html.twig', {'showButton': true, 'title': title, only_local: false}) }}
     {{ include('local/resume/_constructive_action.html.twig', {'showButton': true, 'title': title, only_local: false}) }}

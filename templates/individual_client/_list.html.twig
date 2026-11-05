@@ -10,7 +10,13 @@
         <div>
             {{ component('Card:Refresh', {
                 path: path('app_individual_client_index'),
-                queryNames:['type', 'state', 'amount', 'filter', 'page']
+                queryNames:['representative', 'amount', 'filter', 'page']
+            }) }}
+            {{ component('Card:FilterDropDown', {
+                path:'app_individual_client_index',
+                label:'Representante',
+                queryName: 'representative',
+                options:representatives
             }) }}
             {{ tableActionButton3(path('app_individual_client_new'), 'bi:plus-lg', 'Nuevo', 'Nuevo cliente', stimulusAction('twig/card/card', 'newElement:prevent', null, {url:path('app_individual_client_new')})) }}
         </div>
@@ -64,7 +70,12 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none">
+                            <a href="{{ filterLink(client.getProvinceName()) }}" class="text-decoration-none"
+                                {{ stimulusController('filter-link', {
+                                    'queryName' : 'filter',
+                                    'data' : client.getProvinceName()
+                                }) }}
+                            >
                                 {{ client.getProvinceName() }}
                             </a>
                         </td>

@@ -46,14 +46,20 @@
                         </td>
                         <td>{{ investment.getLocationZoneName() }}</td>
                         <td>
-                            <a href="{{ filterLink(investment.getProvinceName()) }}"
+                            <a href="{{ filterLink(investment.getProvinceName()) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : investment.getProvinceName()
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ investment.getProvinceName() }}
                             </a>
                         </td>
                         <td>
-                            <a href="{{ filterLink(investment.getMunicipalityName()) }}"
+                            <a href="{{ filterLink(investment.getMunicipalityName()) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : investment.getMunicipalityName()
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ investment.getMunicipalityName() }}

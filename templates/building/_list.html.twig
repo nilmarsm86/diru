@@ -9,10 +9,7 @@
     {% endblock %}
 
     {% block body %}
-        {% set columns = [] %}
-        {% if app.request.query.get('state') == '' %}
-            {% set columns = [null, 'Valor aprobado total', 'Valor estimado total', 'Existente', 'Estado', 'Constructora', 'Proyecto', 'Monto (CUP)'] %}
-        {% endif %}
+        {% set columns = [null, 'Valor aprobado total', 'Valor estimado total', 'Existente', 'Estado', 'Constructora', 'Proyecto', 'Monto (CUP)'] %}
 
         {% component 'Table:Table' with {
             paginator: paginator,
@@ -22,11 +19,15 @@
             {% block tableHead %}
                 <tr>
                     <th>Nombre</th>
-                    <th>Valor aprobado total</th>
-                    <th>Valor estimado total</th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Valor aprobado total">V.A.T ({{ project.currency.code }}
+                        )
+                    </th>
+                    <th data-bs-toggle="tooltip" data-bs-title="Valor estimado total">V.E.T ({{ project.currency.code }}
+                        )
+                    </th>
                     <th>Existente</th>
                     {% if app.request.query.get('state') == '' %}
-                        <th>Estado</th>
+                        <th>Estado {{ ux_icon('mdi:filter', {class:'bi'}) }}</th>
                     {% endif %}
                     <th>Constructora {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
                     <th>Proyecto {{ ux_icon('bi:window-stack', {class:'bi'}) }}</th>
@@ -42,8 +43,8 @@
                 {% for building in paginator.getData() %}
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ building.name }}</td>
-                        <td>{{ building.getTotalApprovedValueFormated() }}</td>
-                        <td>{{ building.getTotalEstimatedValueFormated() }}</td>
+                        <td>{{ money(building.getTotalApprovedValue()) }}</td>
+                        <td>{{ money(building.getTotalEstimatedValue()) }}</td>
                         <td>{{ building.isNew ? 'NO' : 'SI' }}</td>
                         {% if app.request.query.get('state') == '' %}
                             <td>
@@ -57,11 +58,13 @@
                         {% endif %}
                         <td>
                             {% if building.hasActiveConstructorCorporateEntity() %}
-                                <a data-bs-toggle="modal" data-bs-target="#detail-constructor"
-                                   href="#" {{ stimulusController('detail-link-modal', {
-                                    url: path('app_corporate_entity_show', {id:building.getActiveConstructorCorporateEntityId(), state:'modal'}),
-                                    container: '#detail-constructor .modal-body'
-                                }) }}
+                                <a href="#"
+                                    {{ stimulusController('modal-content-loader', {
+                                        url: path('app_corporate_entity_show', {'id':building.getActiveConstructorCorporateEntityId(), 'modal':'modal-load', 'state':'modal'}),
+                                        id: 'modal-load',
+                                        placeholder: 'Cargando...',
+                                        title: 'Detalle de la constructora',
+                                    }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
                                 >
                                     {{ building.getActiveConstructorCorporateEntityName() }}
                                 </a>
@@ -70,29 +73,20 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a data-bs-toggle="modal" data-bs-target="#detail-investment"
-                               href="#" {{ stimulusController('detail-link-modal', {
-                                url: path('app_project_show', {id:building.project.id, state:'modal'}),
-                                container: '#detail-investment .modal-body'
-                            }) }}
+                            <a href="#"
+                                {{ stimulusController('modal-content-loader', {
+                                    url: path('app_project_show', {'id':building.project.id, 'modal':'modal-load', 'state':'modal'}),
+                                    id: 'modal-load',
+                                    placeholder: 'Cargando...',
+                                    title: 'Detalle del proyecto',
+                                }) }} {{ stimulusTarget('modal-content-loader', 'button') }}
                             >
                                 {{ building.project.name }}
                             </a>
                         </td>
-                        {#                        <td> #}
-                        {#                            <a data-bs-toggle="modal" data-bs-target="#detail-investment" #}
-                        {#                               href="#" {{ stimulusController('detail-link-modal', { #}
-                        {#                                url: path('app_project_show', {id:building.investment.project.id, state:'modal'}), #}
-                        {#                                container: '#detail-investment .modal-body' #}
-                        {#                            }) }} #}
-                        {#                            > #}
-                        {#                                {{ building.investment.project.name }} #}
-                        {#                            </a> #}
-                        {#                        </td> #}
                         <td>{{ money(building.getPrice(), building.project.currency.code) }}</td>
                         <td class="text-end">
                             {{ tableActionButton3(path('app_building_show', {'id': building.id}), 'bi:eye', '', 'Detalle de la obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_show', {'id': building.id})}), 'btn-link') }}
-                            {#                            {{ tableActionButton3(path('app_building_edit', {'id': building.id}), 'fa:edit', '', 'Editar obra', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_building_edit', {'id': building.id})})) }} #}
                             {{ tableActionButton3(path('app_building_edit', {'id': building.id, 'project': building.project.id}), 'fa:edit', '', 'Editar obra', '', 'btn-link') }}
 
                             {{ component('DeleteForm', {
@@ -112,24 +106,6 @@
                 {% endfor %}
             {% endblock %}
 
-        {% endcomponent %}
-
-        {% component 'Modal:Modal' with {
-            title: 'Detalle de la constructora',
-            id: 'detail-constructor',
-        } %}
-            {% block body %}
-                Cargando datos de la constructora...
-            {% endblock %}
-        {% endcomponent %}
-
-        {% component 'Modal:Modal' with {
-            title: 'Detalle de la inversión',
-            id: 'detail-investment',
-        } %}
-            {% block body %}
-                Cargando datos de la invesión...
-            {% endblock %}
         {% endcomponent %}
 
     {% endblock %}

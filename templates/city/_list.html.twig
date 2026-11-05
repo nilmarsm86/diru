@@ -37,7 +37,10 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ city.name }}</td>
                         <td>
-                            <a href="{{ filterLink(city.country) }}"
+                            <a href="{{ filterLink(city.country) }}" {{ stimulusController('filter-link', {
+                                'queryName' : 'filter',
+                                'data' : city.country.name
+                            }) }}
                                class="text-decoration-none"
                             >
                                 {{ city.country }}

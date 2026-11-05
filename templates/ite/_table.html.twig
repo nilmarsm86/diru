@@ -50,12 +50,18 @@
                     <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
                 {% endif %}
                 <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
-                    <a onclick="document.getElementById('local_localConstructiveAction_price').value = '{{ money((ite.min * 100)) }}';">
+                    <a onclick="let priceField = document.getElementById('local_localConstructiveAction_price');
+                    priceField.value = '{{ money((ite.min * 100)) }}';
+                        priceField.dispatchEvent(new Event('input', { bubbles: true }));
+                        priceField.dispatchEvent(new Event('change', { bubbles: true }));">
                         {{ money((ite.min * 100)) }}
                     </a>
                 </td>
                 <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
-                    <a onclick="document.getElementById('local_localConstructiveAction_price').value = '{{ money((ite.max * 100)) }}';">
+                    <a onclick="let priceField = document.getElementById('local_localConstructiveAction_price');
+                        priceField.value = '{{ money((ite.max * 100)) }}';
+                        priceField.dispatchEvent(new Event('input', { bubbles: true }));
+                        priceField.dispatchEvent(new Event('change', { bubbles: true }));">
                         {{ money((ite.max * 100)) }}
                     </a>
                 </td>
@@ -78,7 +84,7 @@
                     <td>{{ ite.projectType.name }}</td>
                 {% endif %}
                 <td class="text-end">
-{#                    {% if app.request.query.get('modal') %}#}
+                    {% if app.request.query.get('modal') === null %}
                         {{ tableActionButton3(path('app_ite_show', {'id': ite.id}), 'bi:eye', '', 'Detalle del ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_show', {'id': ite.id})}), 'btn-link') }}
                         {{ tableActionButton3(path('app_ite_edit', {'id': ite.id}), 'fa:edit', '', 'Editar ITE', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_ite_edit', {'id': ite.id})}), 'btn-link') }}
 
@@ -90,7 +96,7 @@
                             icon: 'bi:trash',
                             cssClass: 'btn-link text-danger'
                         }) }}
-{#                    {% endif %}#}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

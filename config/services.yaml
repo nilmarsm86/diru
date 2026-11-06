@@ -32,3 +32,5 @@ services:
             -
                 - '@App\Service\IteImport\Reader\CencremReader'
                 - '@App\Service\IteImport\Reader\InternationalSourcesReader'
+                - '@App\Service\IteImport\Reader\InternationalDiruReader'
+                - '@App\Service\IteImport\Reader\NationalDiruReader'

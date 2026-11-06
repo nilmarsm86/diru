@@ -51,6 +51,9 @@ final class IteUploadController extends AbstractController
 
             if ($result->getErrorCount() > 0) {
                 $this->addFlash('warning', 'Ocurrieron algunos errores durante la importación.');
+                foreach ($result->getErrors() as $error) {
+                    $this->addFlash('danger', $error);
+                }
             }
         } catch (\Exception $e) {
             $this->addFlash('danger', $e->getMessage());

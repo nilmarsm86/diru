@@ -21,6 +21,9 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     use SaveData;
     use PaginateTrait;
 
+    public const NEW_BUILDING = 'Nueva';
+    public const EXIST_BUILDING = 'Existente';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Building::class);
@@ -62,13 +65,22 @@ class BuildingRepository extends ServiceEntityRepository implements FilterInterf
     /**
      * @return Paginator<mixed>
      */
-    public function findBuildingsByProject(Project $project, string $filter = '', ?int $amountPerPage = 10, ?int $page = 1, string $state = ''): Paginator
+    public function findBuildingsByProject(Project $project, string $filter = '', ?int $amountPerPage = 10, ?int $page = 1, string $state = '', ?string $exist = null): Paginator
     {
         $builder = $this->createQueryBuilder('b')->select(['b', 'p'])
             ->leftJoin('b.project', 'p')
             ->where('p.id = :project')
             ->setParameter(':project', $project->getId());
         $this->addState($builder, $state);
+        if (null !== $exist && '' !== $exist) {
+            if (self::NEW_BUILDING === $exist) {
+                $builder->andWhere('b.isNew = 1');
+            }
+
+            if (self::EXIST_BUILDING === $exist) {
+                $builder->andWhere('b.isNew = 0');
+            }
+        }
         $this->addFilter($builder, $filter, false);
         $query = $builder->orderBy('b.name', \SortDirection::Ascending)->getQuery();
 

@@ -49,21 +49,40 @@
                 {% if app.request.query.get('quality') == '' %}
                     <td>{{ ite.quality.getLabelFrom(ite.quality) }}</td>
                 {% endif %}
-                <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
+                <td
+                    {% if app.request.query.get('modal') !== null %}
+                        style="cursor:pointer;color: #0dcaf0"
+                        data-bs-dismiss="modal"
+                        data-bs-toggle="tooltip"
+                        title="Aplicar"
+                    {% endif %}
+                >
+                    {% if app.request.query.get('modal') !== null %}
                     <a onclick="let priceField = document.getElementById('local_localConstructiveAction_price');
-                    priceField.value = '{{ money((ite.min * 100)) }}';
+                        priceField.value = '{{ money((ite.min * 100)) }}';
                         priceField.dispatchEvent(new Event('input', { bubbles: true }));
-                        priceField.dispatchEvent(new Event('change', { bubbles: true }));">
+                        priceField.dispatchEvent(new Event('change', { bubbles: true }));"
+                    >
+                        {% endif %}
                         {{ money((ite.min * 100)) }}
-                    </a>
+                        {% if app.request.query.get('modal') !== null %}</a>{% endif %}
                 </td>
-                <td style="cursor:pointer;color: #0dcaf0" data-bs-dismiss="modal" data-bs-toggle="tooltip" title="Aplicar">
+                <td
+                    {% if app.request.query.get('modal') !== null %}
+                        style="cursor:pointer;color: #0dcaf0"
+                        data-bs-dismiss="modal"
+                        data-bs-toggle="tooltip"
+                        title="Aplicar"
+                    {% endif %}
+                >
+                    {% if app.request.query.get('modal') !== null %}
                     <a onclick="let priceField = document.getElementById('local_localConstructiveAction_price');
                         priceField.value = '{{ money((ite.max * 100)) }}';
                         priceField.dispatchEvent(new Event('input', { bubbles: true }));
                         priceField.dispatchEvent(new Event('change', { bubbles: true }));">
+                        {% endif %}
                         {{ money((ite.max * 100)) }}
-                    </a>
+                        {% if app.request.query.get('modal') !== null %}</a>{% endif %}
                 </td>
                 {% if app.request.query.get('mu') == '' %}
                     <td>{{ ite.measurementUnit.code }}</td>

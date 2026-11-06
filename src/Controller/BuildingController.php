@@ -50,8 +50,9 @@ final class BuildingController extends AbstractController
         $pageNumber = (int) $request->query->get('page', '1');
 
         $state = $request->query->get('state', '');
+        $exist = $request->query->get('exist', null) ?? null;
 
-        $data = $buildingRepository->findBuildingsByProject($project, $filter, $amountPerPage, $pageNumber, $state);
+        $data = $buildingRepository->findBuildingsByProject($project, $filter, $amountPerPage, $pageNumber, $state, $exist);
 
         $paginator = new Paginator($data, $amountPerPage, $pageNumber);
         if ($paginator->isFromGreaterThanTotal()) {
@@ -65,6 +66,7 @@ final class BuildingController extends AbstractController
             'paginator' => $paginator,
             'project' => $project,
             'states' => BuildingState::cases(),
+            'exists' => ['Nueva', 'Existente'],
         ]);
     }
 
@@ -134,8 +136,9 @@ final class BuildingController extends AbstractController
     {
         $filter = $request->query->get('filter', '');
         $state = $request->query->get('state', '');
+        $exist = $request->query->get('exist', null) ?? null;
 
-        $data = $buildingRepository->findBuildingsByProject($project, $filter, null, null, $state);
+        $data = $buildingRepository->findBuildingsByProject($project, $filter, null, null, $state, $exist);
 
         $paginator = new Paginator($data);
 

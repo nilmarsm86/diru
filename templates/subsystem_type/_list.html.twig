@@ -56,7 +56,14 @@
                     <tr {{ stimulusController('delete-form-container') }}>
                         <td>{{ subsystemType.name }}</td>
                         {% if app.request.query.get('classification') == '' %}
-                            <td>{{ subsystemType.classification.getLabelFrom(subsystemType.classification) }}</td>
+                            <td>
+                                <a href="#" {{ stimulusController('filter-link', {
+                                    'queryName' : 'classification',
+                                    'data' : subsystemType.classification.value
+                                }) }}>
+                                    {{ subsystemType.classification.getLabelFrom(subsystemType.classification) }}
+                                </a>
+                            </td>
                         {% endif %}
                         <td class="text-end">
                             {{ tableActionButton3(path('app_subsystem_type_show', {'id': subsystemType.id}), 'bi:eye', '', 'Detalle del tipo', stimulusAction('twig/table/table', 'selectElement:prevent', null, {url:path('app_subsystem_type_show', {'id': subsystemType.id})}), 'btn-link') }}

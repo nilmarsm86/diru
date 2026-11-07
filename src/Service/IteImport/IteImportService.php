@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\IteImport;
 
 use App\Service\IteImport\DTO\IteImportRow;
+use App\Service\IteImport\Exception\ExistRowException;
 use App\Service\IteImport\Exception\InvalidExcelFormatException;
 use App\Service\IteImport\Mapper\IteEntityMapper;
 use App\Service\IteImport\Reader\IteReaderResolver;
@@ -99,6 +100,7 @@ final class IteImportService
         ImportResult $result,
         int $batchSize,
     ): void {
+        $exist = false;
         foreach ($reader->read($worksheet) as $rowReadResult) {
             if (!$rowReadResult->isSuccess()) {
                 $result->recordError(new ImportError(
@@ -117,6 +119,9 @@ final class IteImportService
                 $entity = $this->mapper->toEntity($row);
                 $this->em->persist($entity);
                 $result->recordImported();
+            } catch (ExistRowException $e) {
+                $exist = true;
+                continue;
             } catch (\Throwable $e) {
                 $result->recordError(new ImportError(
                     $rowReadResult->sheetName,
@@ -129,6 +134,14 @@ final class IteImportService
             if (0 === $result->getImportedCount() % $batchSize) {
                 $this->em->flush();
             }
+        }
+
+        if ($exist) {
+            $result->recordError(new ImportError(
+                null,
+                null,
+                'Algunos registros ya existian.',
+            ));
         }
     }
 

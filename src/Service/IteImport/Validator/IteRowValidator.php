@@ -7,6 +7,7 @@ namespace App\Service\IteImport\Validator;
 use App\Entity\Enums\IteQuality;
 use App\Entity\Ite;
 use App\Service\IteImport\DTO\IteImportRow;
+use App\Service\IteImport\Exception\ExistRowException;
 use App\Service\IteImport\Repository\CityProvider;
 use App\Service\IteImport\Repository\IteProjectTypeProvider;
 use App\Service\IteImport\Repository\IteSourceProvider;
@@ -94,7 +95,8 @@ final class IteRowValidator
         ]);
 
         if (null !== $ite) {
-            throw new \Exception('El registro ITE ya existe.');
+            //            throw new \Exception('El registro ITE ya existe.');
+            throw new ExistRowException('El registro ITE ya existe.');
         }
     }
 }

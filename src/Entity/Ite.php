@@ -38,12 +38,15 @@ class Ite
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Seleccine la unidad de medida.')]
     private ?MeasurementUnit $measurementUnit = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(value: 1)]
     private ?float $min = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(value: 1)]
     private ?float $max = null;
 
     #[ORM\Column]
@@ -57,6 +60,7 @@ class Ite
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'ites')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Seleccine la fuente de información.')]
     private ?IteSource $source = null;
 
     #[ORM\ManyToOne]
@@ -66,6 +70,7 @@ class Ite
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Seleccine el tipo de proyecto.')]
     private ?IteProjectType $projectType = null;
 
     public function __construct()

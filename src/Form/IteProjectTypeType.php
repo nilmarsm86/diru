@@ -36,6 +36,9 @@ class IteProjectTypeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => IteProjectType::class,
+            'attr' => [
+                'novalidate' => 'novalidate',
+            ],
         ]);
     }
 }

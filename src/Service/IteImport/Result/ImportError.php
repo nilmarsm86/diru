@@ -7,14 +7,18 @@ namespace App\Service\IteImport\Result;
 final readonly class ImportError
 {
     public function __construct(
-        public string $sheet,
-        public int $rowNumber,
-        public string $message,
+        public ?string $sheet = null,
+        public ?int $rowNumber = null,
+        public string $message = 'Ha ocurrido un error.',
     ) {
     }
 
     public function __toString(): string
     {
-        return sprintf('[%s:%d] %s', $this->sheet, $this->rowNumber, $this->message);
+        if (null !== $this->rowNumber || null !== $this->sheet) {
+            return sprintf('[%s:%d] %s', $this->sheet, $this->rowNumber, $this->message);
+        }
+
+        return sprintf('%s', $this->message);
     }
 }

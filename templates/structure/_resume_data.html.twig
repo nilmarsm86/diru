@@ -1,3 +1,7 @@
+{% if in_subsystem is not defined %}
+    {% set in_subsystem = false %}
+{% endif %}
+
 <div class="card text-bg-secondary" style="min-height: 155px">
     <div class="card-body">
         <ul class="list-group list-group-flush" style="list-style: none;">
@@ -27,15 +31,52 @@
                     {{ structure.getTotalArea()|number_format(2) }}m<sup>2</sup>
                 </li>
             {% else %}
-                <li {% if (occupiedLand > structure.getTotalArea()) %}class="text-danger-emphasis"{% endif %}>
+                <li {% if structure.building.land.isBlocked() == false and (occupiedLand > structure.getTotalArea()) %}style="color:#d14451"{% endif %}>
                     <strong>Ocupado en planta:</strong>
                     {{ structure.getTotalArea()|number_format(2) }}m<sup>2</sup>
                 </li>
             {% endif %}
 
-            <li {% if (structure.getUnassignedArea() > 0) %}class="text-danger-emphasis"{% endif %}>
+            <li {% if (structure.getUnassignedArea() > 0) %}style="color:#d14451"{% endif %}>
                 <strong>Sin Asignar en planta:</strong>
                 {{ structure.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
+                {% if structure.isFloor() and in_subsystem == false %}
+                    {% if structure.hasSubSystemAndIsNotCompletlyEmptyArea() and (structure.hasUnassignedArea() or structure.hasFreeArea()) %}
+                        <a
+                            class="badge bg-primary" style="text-decoration:none"
+                            title="Convertir en Área de Elementos Vertical"
+                            data-bs-tooltip="tooltip"
+                            href="{{ path('app_local_wall', {'subSystem': sub_system.id, 'reply': reply }) }}"
+                        >
+                            Convertir en A.E.V
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+                {% if structure.isFloor() and in_subsystem == true %}
+                    {% if floor.building.hasFreeArea() and floor.hasFreeArea() %}
+                        <a
+                            class="badge bg-primary" style="text-decoration:none"
+                            title="Convertir en área sin asignar"
+                            data-bs-tooltip="tooltip"
+                            href="{{ path('app_land_unassigned-free', {'id': floor.building.land.id, 'building': floor.building.id, 'reply': reply }) }}"
+                        >
+                            Convertir en área sin asignar
+                        </a>
+                    {% endif %}
+
+                    {#                {% if floor.building.hasUnassignedArea() and floor.hasUnassignedArea() and floor.isGroundFloor() and floor.building.isNew() %} #}
+                    {% if floor.building.hasUnassignedArea() and floor.hasUnassignedArea() and floor.isGroundFloor() %}
+                        <a
+                            class="badge bg-primary" style="text-decoration:none"
+                            title="Convertir en área libre"
+                            data-bs-tooltip="tooltip"
+                            href="{{ path('app_land_unassigned-free', {'id': floor.building.land.id, 'building': floor.building.id, 'reply': reply }) }}"
+                        >
+                            Convertir en área libre
+                        </a>
+                    {% endif %}
+                {% endif %}
             </li>
             <li>
                 {% if reply %}

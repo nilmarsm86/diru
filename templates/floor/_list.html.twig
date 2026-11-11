@@ -48,7 +48,7 @@
                             {{ building.land.getFreeArea()|number_format(2) }}m<sup>2</sup>
                         {% endif %}
                     </li>
-                    <li {% if (building.getUnassignedArea() > 0) %}class="text-danger-emphasis"{% endif %}>
+                    <li {% if (building.getUnassignedArea() > 0) %}style="color:#d14451"{% endif %}>
                         <strong>Sin Asignar:</strong>
                         {{ building.getUnassignedArea()|number_format(2) }}m<sup>2</sup>
                     </li>

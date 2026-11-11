@@ -82,17 +82,25 @@ export default class extends AbstractController {
     //     this.element.querySelector('button[class=btn-close]').click();
     // }
 
-    submitForm(event){
+    submitForm(event) {
         const selector = `form[name='${event.detail.form.name}']`;
-        if(this.element.querySelector(selector)){
+        if (this.element.querySelector(selector)) {
             this.backdrop(this.backdropTarget, BACKDROP_SHOW);
         }
     }
 
-    submitEndForm(event){
+    submitEndForm(event) {
         const selector = `form[name='${event.detail.form.name}']`;
-        if(this.element.querySelector(selector)){
+        if (this.element.querySelector(selector)) {
             this.backdrop(this.backdropTarget, BACKDROP_HIDE);
         }
+    }
+
+    close() {
+        this.modal = Modal.getOrCreateInstance(this.element);
+        this.modal.hide();
+
+        let modalLoad = Modal.getOrCreateInstance(document.getElementById("modal-load"));
+        modalLoad.show();
     }
 }

@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-6">
             {% component 'Card:Card' with {
-                title: 'Presupuesto estimado',
             } %}
                 {% block body %}
                     <h6 class="card-subtitle mb-2">Presupuesto ajustado:</h6>
@@ -10,21 +9,19 @@
                     <h6 class="card-subtitle mb-2">ITE (resultante):</h6>
                     <h1>{{ buildingValuationService.getResultIte(building)|number_format(2) }} $/m<sup>2</sup></h1>
                     <h6 class="card-subtitle mb-2">Coeficiente de ajuste:</h6>
-                    <h1>{{ building.getCoefficient() }}</h1>
+                    <h1>{{ building.getCoefficient()|number_format(2) }}</h1>
                 {% endblock %}
             {% endcomponent %}
         </div>
 
         <div class="col-6">
             {% component 'Card:Card' with {
-                title: 'Anexo',
             } %}
                 {% block body %}
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Constructor</strong>
-                            <span
-                                class="badge text-bg-primary rounded-pill">{{ building.getActiveConstructorCorporateEntityName() }}</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getActiveConstructorCorporateEntityName() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Obra</strong>
@@ -32,8 +29,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Objetos de obra</strong>
-                            <span
-                                class="badge text-bg-primary rounded-pill">{{ building.getObjects()|join(', ') }}</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ building.getObjects()|join(', ') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <strong>Cliente</strong>
@@ -78,6 +74,7 @@
                 {% from 'macros/buttons.html.twig' import deleteFormButton, deleteFormButton2, tableActionButton3 %}
 
                 {% for buildingSeparateConcept in building.getBuildingSeparateConcepts() %}
+                    {% set parentColor = (buildingSeparateConcept.separateConcept.parent is null) ? true : false %}
                     {% set buildingEstimatedAdjustValue = buildingSeparateConcept.building.getEstimatedAdjustValue() %}
                     {% set parentPercent = 0 %}
                     {% set parentImport = 0 %}
@@ -93,8 +90,9 @@
                         ? buildingEstimatedAdjustValue
                         : parentImport
                         )
-                    }) }}>
-                        <td style="width: 190px">
+                    }) }}
+                    >
+                        <td style="width: 190px" {% if parentColor %}class="text-bg-secondary"{% endif %}>
                             {% set separateConcepts = [] %}
                             {% set imports = [] %}
                             {% set totalImport = 0 %}
@@ -124,23 +122,35 @@
                                 {% endif %}
                             > %
                         </td>
-                        <td>{{ buildingSeparateConcept.separateConcept.number }}</td>
-                        <td>
-                            {{ buildingSeparateConcept.separateConcept.name }}
+                        <td {% if parentColor %}class="text-bg-secondary"{% endif %}>
+                            {% if parentColor %}<strong>{% endif %}
+                                {{ buildingSeparateConcept.separateConcept.number }}
+                            {% if parentColor %}</strong>{% endif %}
                         </td>
-                        <td {{ stimulusTarget('separate-concept', 'import') }}>
+                        <td {% if parentColor %}class="text-bg-secondary"{% endif %}>
+                            {% if parentColor %}<strong>{% endif %}
+                                {{ buildingSeparateConcept.separateConcept.name }}
+                            {% if parentColor %}</strong>{% endif %}
+                        </td>
+                        <td {{ stimulusTarget('separate-concept', 'import') }} {% if parentColor %}class="text-bg-secondary"{% endif %}>
                             {% if buildingSeparateConcept.separateConcept.parent is null %}
                                 {% if buildingSeparateConcept.separateConcept.formula %}
                                     {% if buildingSeparateConcept.separateConcept.number == '20' %}
                                         <span
                                             {% if (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) > 100 or (buildingSeparateConcept.getPercentEstimatedAdjustValueByFormula(totalImport)|number_format(2)*1) < 100 %}style="color: red"{% endif %}>
+                                            {% if parentColor %}<strong>{% endif %}
                                             ~${{ money(totalImport) }}
+                                            {% if parentColor %}</strong>{% endif %}
                                         </span>
                                     {% else %}
+                                        {% if parentColor %}<strong>{% endif %}
                                         ${{ money(totalImport) }}
+                                        {% if parentColor %}</strong>{% endif %}
                                     {% endif %}
                                 {% else %}
+                                    {% if parentColor %}<strong>{% endif %}
                                     ${{ money(buildingSeparateConcept.getImport()) }}
+                                    {% if parentColor %}</strong>{% endif %}
                                 {% endif %}
                             {% else %}
                                 {% if buildingSeparateConcept.separateConcept.number in ['13.1', '13.2'] %}
@@ -172,12 +182,12 @@
                                 </span>{# Si > 1 ponerlo todo en rojo con mensaje #}
                             {% endif %}
                         </td>
-                        <td class="text-end">
+                        <td class="text-end {% if parentColor %}text-bg-secondary{% endif %}">
                             {% set cssClass = 'btn-link' %}
                             {% if buildingSeparateConcept.separateConcept.formula %}
                                 {% set cssClass = 'btn-link disabled' %}
                             {% endif %}
-                            {{ tableActionButton3('', 'fa:save', '', 'Salvar', stimulusAction('separate-concept', 'save:prevent'), cssClass) }}
+                            {{ tableActionButton3('', 'fa:save', '', 'Salvar', stimulusAction('separate-concept', 'save:prevent'), cssClass, false, "style=color:white") }}
                         </td>
                     </tr>
 

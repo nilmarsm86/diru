@@ -89,10 +89,10 @@ class UrbanRegulationType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Tipo de regulación',
 
-                'detail' => true,
-                'detail_title' => 'Detalle del tipo de regulación',
-                'detail_id' => 'modal-load', // 'detail_investment_entity',
-                'detail_url' => $this->router->generate('app_urban_regulation_type_show', ['id' => 0, 'state' => 'modal']),
+                //                'detail' => true,
+                //                'detail_title' => 'Detalle del tipo de regulación',
+                //                'detail_id' => 'modal-load', // 'detail_investment_entity',
+                //                'detail_url' => $this->router->generate('app_urban_regulation_type_show', ['id' => 0, 'state' => 'modal']),
 
                 'add' => true,
                 'add_title' => 'Agregar tipo',

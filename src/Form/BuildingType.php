@@ -329,7 +329,8 @@ class BuildingType extends AbstractType
                 'grouping' => true,
             ])
             ->add('projectPriceTechnicalPreparation', MoneyPlusType::class, [
-                'label' => 'Proy. y preparación técnica:',
+                'label' => 'Proy. y preparación técnica (m<sup>2</sup>):',
+                'label_html' => true,
                 'attr' => [
                     'placeholder' => '0',
                     'min' => 0,

@@ -1,6 +1,6 @@
 {% component 'Card:Card' with {
     cssClass: 'mb-4',
-    extra: '',
+    extra: (building.id is not null) ? "style='border-top-left-radius: 0'" : '',
     headerCssClass: 'd-flex justify-content-between align-items-center',
     title: title,
 } %}

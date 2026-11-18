@@ -15,7 +15,6 @@
         {% component 'Table:Table' with {
             paginator: paginator,
         } %}
-
             {% block message %}
                 {% if app.request.query.get('entity') != '' %}
                     <span class="text-primary">

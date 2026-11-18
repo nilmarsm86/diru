@@ -96,6 +96,11 @@
                         {link: 'app_ite_project_type_index', icon: 'oi:project', label: 'Tipo de proyecto', base:'app_ite_project_type_index'},
                     ]
                 }) }}
+                {{ component('nav:nav-link', {
+                    link: 'reporte_pdf',
+                    icon: 'iconmind:eval-report-outline-thin',
+                    label: 'Reportes',
+                }) }}
                 {% if is_granted(constant('App\\Entity\\Role::ROLE_ADMIN')) %}
                     {{ component('nav:nav-link', {
                         link: 'database_backup_index',

@@ -108,6 +108,7 @@ final class BuildingController extends AbstractController
         return $crudActionService->formLiveComponentAction($request, $building, 'building', [
             'title' => 'Editar Obra',
             'project' => $project,
+            'tab' => '_form',
         ]);
     }
 
@@ -152,5 +153,20 @@ final class BuildingController extends AbstractController
             'obras_'.$project->getName(),
             ['project' => $project],
         );
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    #[Route('/{id}/dashboard/{project}', name: 'app_building_dashboard', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function dashboard(Request $request, Building $building, CrudActionService $crudActionService, ?Project $project = null): Response
+    {
+        return $crudActionService->formLiveComponentAction($request, $building, 'building', [
+            'title' => 'Editar obra',
+            'tab' => '_dashboard',
+            'project' => $project,
+        ]);
     }
 }

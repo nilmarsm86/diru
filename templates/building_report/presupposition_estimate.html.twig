@@ -92,7 +92,7 @@
                         )
                     }) }}
                     >
-                        <td style="width: 190px" {% if parentColor %}class="text-bg-secondary"{% endif %}>
+                        <td style="width: 190px;text-indent: {{ buildingSeparateConcept.separateConcept.getIdentent() * 20 }}px" {% if parentColor %}class="text-bg-secondary"{% endif %}>
                             {% set separateConcepts = [] %}
                             {% set imports = [] %}
                             {% set totalImport = 0 %}

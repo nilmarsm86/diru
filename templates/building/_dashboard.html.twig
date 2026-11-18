@@ -1,0 +1,56 @@
+{% component 'Card:Card' with {
+    cssClass: 'mb-4',
+    extra: "style='border-top-left-radius: 0'",
+    headerCssClass: 'd-flex justify-content-between align-items-center',
+    title: title,
+} %}
+
+    {% block header %}
+        {% if building.id is not null %}
+            &nbsp;
+            <span class="badge bg-success" data-bs-toggle="tooltip" title="Estado técnico" style="cursor: pointer;">
+                {{ building.getTechnicalStatus() }}
+            </span>
+            <span data-bs-toggle="tooltip" title="Fase" style="cursor: pointer;">
+                &nbsp;({{ building.state.getLabelFrom(building.state) }})
+            </span>
+            <span data-bs-toggle="tooltip" title="Sistema constructivo" style="cursor: pointer;">
+                &nbsp;[{{ building.getConstructiveSystem() }}]
+            </span>
+        {% endif %}
+        {{ include('building/_buttons_header.html.twig', {'building': building}) }}
+    {% endblock %}
+
+    {% block body %}
+{#        {{ component('BuildingForm', {modal:null, bui: building, ajax: ajax, project: (project is not null) ? project.id : 0}) }}#}
+    {% endblock %}
+
+    {% block footer %}
+
+    {% endblock %}
+
+{% endcomponent %}
+
+{% if building.id is not null %}
+    {% component 'Modal:Confirm' with {
+        title: 'Confirmar',
+        id: 'confirm_reset',
+        question: 'Esta seguro que desea resetear la obra?<br><h6 style="color:red">Se borrarán todos los datos de la obra.</h6>',
+        href: path('app_building_state_reset', {'id':building.id}),
+        render: '<a class="btn btn-danger" href="'~ path('app_building_state_reset', {'id':building.id}) ~'">Aceptar</a>'
+    } %}
+        {% block body %}
+            Cargando...
+        {% endblock %}
+    {% endcomponent %}
+{% endif %}
+
+{% component 'Modal:Modal' with {
+    title: 'Desglose',
+    id: 'desglose',
+    cssClass: 'modal-xl'
+} %}
+    {% block body %}
+        Cargando...
+    {% endblock %}
+{% endcomponent %}

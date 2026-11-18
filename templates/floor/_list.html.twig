@@ -153,7 +153,16 @@
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th></th>
+                    <th>
+                        <span class="badge" title="Subsistemas de la planta" data-bs-toggle="tooltip">
+                            {{ ux_icon('ix:building-block', {class:'bi'}) }}
+                        </span>
+                    </th>
+                    <th>
+                        <span class="badge" title="Locales de la planta" data-bs-toggle="tooltip">
+                            {{ ux_icon('lucide-lab:floor-plan', {class:'bi'}) }}
+                        </span>
+                    </th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área útil">Á. Util<br>(m<sup>2</sup>)</th>
                     <th data-bs-toggle="tooltip" data-bs-title="Área de Elementos Verticales">Á.E.V<br>(m<sup>2</sup>)
                     </th>
@@ -213,6 +222,18 @@
                                     <span class="visually-hidden">Subsistemas</span>
                                 </span>
                             {% endif %}
+                        </td>
+                        <td>
+                            <span
+                                class="badge rounded-pill {% if floor.hasOriginalSubSystems() %}bg-success{% else %}bg-danger{% endif %}"
+                                title="Locales de la planta" data-bs-toggle="tooltip"
+                                      {% if floor.hasOriginalSubSystems() == false %}
+                                          data-bs-title="No tiene definido locales." data-bs-custom-class="danger-tooltip"
+                                      {% endif %}
+                                      style="cursor: pointer">
+                                    {{ floor.getLocalsAmount() }}
+                                    <span class="visually-hidden">Locales</span>
+                                </span>
                         </td>
                         {# Area Util #}
                         <td>

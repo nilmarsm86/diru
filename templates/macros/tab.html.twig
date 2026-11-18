@@ -6,10 +6,17 @@
         {% for option in options %}
             <li class="nav-item ">
                 <a class="nav-link
-                    {% if option.href is same as current %}active{% endif %}"
-                    {% if option.href is same as current %}aria-current="page"{% endif %}
-                    {% if option.href is not same as current %}href="{{ (entity is not null) ? path(option.href, {'id':entity.id}) : path(option.href) }}"{% endif %}
-                    {% if option.href is same as current %}style="background-color: #272b2f;border-bottom: 1px solid#272b2f"{% endif %}
+                    {% if option.href is not null %}
+                        {% if option.href is same as current %}active{% endif %}"
+                        {% if option.href is same as current %}aria-current="page"{% endif %}
+                        {% if option.href is not same as current %}href="{{ (entity is not null) ? path(option.href, {'id':entity.id}) : path(option.href) }}"{% endif %}
+                        {% if option.href is same as current %}style="background-color: #272b2f;border-bottom: 1px solid#272b2f"{% endif %}
+                    {% else %}
+                        {% if option.path is same as app.request.pathInfo %}active{% endif %}"
+                        {% if option.path is same as app.request.pathInfo %}aria-current="page"{% endif %}
+                        {% if option.path is not same as app.request.pathInfo %}href="{{ option.path }}"{% endif %}
+                        {% if option.path is same as app.request.pathInfo %}style="background-color: #272b2f;border-bottom: 1px solid#272b2f"{% endif %}
+                    {% endif %}
                 >
                     {{ option.label }}
                 </a>

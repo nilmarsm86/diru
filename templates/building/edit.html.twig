@@ -1,6 +1,7 @@
 {% extends 'content.html.twig' %}
 
 {% from 'macros/breadcrumb.html.twig' import breadcrumb %}
+{% from 'macros/tab.html.twig' import tab %}
 {% from 'macros/titles.html.twig' import h1 %}
 
 {% block title %}Editar Obra{% endblock %}
@@ -18,5 +19,10 @@
 
     <h2 class="mb-4">Editar: {{ building.name }} del proyecto {{ building.project.name }}</h2>
 
-    {{ include('building/_form.html.twig', {'showButton': true, 'title': title}) }}
+    {{ tab([
+        {label: 'Dashboard', href: null, path: path('app_building_dashboard', {'id': building.id, 'project':project.id})},
+        {label: 'Formulario', href: null, path: path('app_building_edit', {'id': building.id, 'project':project.id})},
+    ], building) }}
+
+    {{ include('building/'~tab~'.html.twig', {'showButton': true, 'title': title}) }}
 {% endblock %}

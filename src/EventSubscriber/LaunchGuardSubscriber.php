@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -78,20 +79,7 @@ final class LaunchGuardSubscriber implements EventSubscriberInterface
         }
 
         if (self::AUTH_PATH === $path) {
-            $given = $request->query->all()['t'] ?? null;
-            if (!$request->isMethod('GET') || !\is_string($given) || !hash_equals($this->token, $given)) {
-                $event->setResponse($this->deny());
-
-                return;
-            }
-
-            $response = new RedirectResponse('/');
-            $response->headers->setCookie(
-                Cookie::create(self::COOKIE, $this->token, 0, '/', null, false, true, false, Cookie::SAMESITE_LAX),
-            );
-            $response->headers->set('Cache-Control', 'no-store');
-            $response->headers->set('Referrer-Policy', 'no-referrer');
-            $event->setResponse($response);
+            $this->itIsAuthPath($request, $event);
 
             return;
         }
@@ -132,5 +120,31 @@ final class LaunchGuardSubscriber implements EventSubscriberInterface
             'Content-Type' => 'text/plain; charset=utf-8',
             'Cache-Control' => 'no-store',
         ]);
+    }
+
+    public function itIsAuthPath(Request $request, RequestEvent $event): void
+    {
+        $given = $request->query->all()['t'] ?? null;
+        if (!$request->isMethod('GET') || !\is_string($given) || !hash_equals((string) $this->token, $given)) {
+            $event->setResponse($this->deny());
+
+            return;
+        }
+
+        if ('prod' === $this->environment && $request->headers->has('sec-fetch-dest')) {
+            if ('document' === $request->headers->get('sec-fetch-dest')) {
+                $event->setResponse($this->deny());
+
+                return;
+            }
+        }
+
+        $response = new RedirectResponse('/');
+        $response->headers->setCookie(
+            Cookie::create(self::COOKIE, $this->token, 0, '/', null, false, true, false, Cookie::SAMESITE_LAX),
+        );
+        $response->headers->set('Cache-Control', 'no-store');
+        $response->headers->set('Referrer-Policy', 'no-referrer');
+        $event->setResponse($response);
     }
 }

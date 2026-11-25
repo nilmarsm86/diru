@@ -43,6 +43,8 @@ final class LaunchGuardSubscriber implements EventSubscriberInterface
         private readonly ?string $parentOrigin,
         #[Autowire('%kernel.environment%')]
         private readonly string $environment,
+        #[Autowire('%env(default::DIRU_TYPE)%')]
+        private readonly ?string $type,
     ) {
     }
 
@@ -58,6 +60,10 @@ final class LaunchGuardSubscriber implements EventSubscriberInterface
     public function onRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if ('web' === $this->type) {
             return;
         }
 
@@ -93,6 +99,10 @@ final class LaunchGuardSubscriber implements EventSubscriberInterface
     public function onResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if ('web' === $this->type) {
             return;
         }
 

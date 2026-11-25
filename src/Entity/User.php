@@ -60,6 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Seleccione o cree la persona.')]
     private ?Person $person = null;
 
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $sessionToken = null;
+
     public function __construct(string $name, string $lastname, string $username, string $password, ?string $identificationNumber, ?string $phone, ?string $email, bool $isDraftsman = false, bool $isPlanner = false)
     {
         if ($isPlanner) {
@@ -284,5 +287,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return '';
+    }
+
+    public function getSessionToken(): ?string
+    {
+        return $this->sessionToken;
+    }
+
+    public function setSessionToken(?string $t): static
+    {
+        $this->sessionToken = $t;
+
+        return $this;
     }
 }

@@ -1,0 +1,44 @@
+{% extends 'login.html.twig' %}
+
+{% block title %}Ha ocurrido un error!{% endblock %}
+
+{% block content %}
+    <div class="col-lg-6 d-none d-lg-flex">
+        <div class="flex-grow-1 bg-login-image rounded"
+             style="background-image: url({{ asset('images/logo.jpg') }});"></div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="p-5" style="padding-top: 0 !important;padding-bottom: 0 !important;">
+            <div class="text-center">
+                <h4 class="mb-4">
+                    <div class="sidebar-brand-icon rotate-n-15" style="display:inline">
+                        {{ ux_icon('bi:backpack', {class:'bi', style:'width:32px;height:32px'}) }}
+                    </div>
+                    Ha ocurrido un error en el sistema.
+                </h4>
+            </div>
+            {% component 'Card:Card' with {
+                title: null,
+                extra: 'style="border:none"'
+            } %}
+                {% block body %}
+                    <div>
+                        <hr>
+                        <br><br>
+                        <br><br>
+                        <br><br>
+                        <a class="btn btn-primary d-block btn-user w-100" href="{{ path('app_home') }}">
+                            {{ ux_icon('bi:house', {class:'bi'}) }} Ir al inicio
+                        </a>
+                        <br><br>
+                        <br><br>
+                        <br><br>
+                        <hr>
+                    </div>
+                {% endblock %}
+            {% endcomponent %}
+        </div>
+    </div>
+{% endblock %}
+
